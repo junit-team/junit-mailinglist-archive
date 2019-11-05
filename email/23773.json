@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 23774, 
+    "senderId": "_mMIOoArItfVMfXbg3TZI_qZaaLuV1Cwny2Evw8Xv80YePTNqj3aGDa6UaUPgg6tb3sp7UUBrIVT64m1ygOVOAg5PNrZPUFd_Sk", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Reporting on test runs from a custom Runner", 
+    "from": "Jonathan Fuerth &lt;jfuerth@...&gt;", 
+    "authorName": "Jonathan Fuerth", 
+    "msgSnippet": "Thanks for the pointer, Dawid. I have to admit I didn t find JUnitBenchmarks in my searches. I went looking for something back in September and again earier", 
+    "msgId": 23773, 
+    "profile": "jfuerth", 
+    "topicId": 23768, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 511044896, 
+    "messageBody": "<div id=\"ygrps-yiv-1859015017\">Thanks for the pointer, Dawid. I have to admit I didn&#39;t find<br/>\nJUnitBenchmarks in my searches. I went looking for something back in<br/>\nSeptember and again earier this week and came up empty.<br/>\n<br/>\nAs far as what I&#39;m trying to accomplish, it&#39;s kind of two things.<br/>\n<br/>\nFirst, I want to microbenchmark the performance of some internal data<br/>\nstructures we&#39;re experimenting with for a web framework. I need to vary<br/>\nmore than one parameter for these tests: number of threads allowed, number<br/>\nof messages to send through it, size of those messages, timing of the<br/>\nmessages, and more. A single test method is likely to run thousands of<br/>\ntimes and produce multiple 2D charts worth of data. It looks like Google<br/>\nCaliper (thanks for that pointer too!) may be well suited to this task.<br/>\n<br/>\nSecond, I want to run end-to-end scalability tests in various Java EE 6<br/>\ncontainers. These tests will have many of the same variables. For these<br/>\ntests, I think Caliper is out. We&#39;re going to need Arquillian to wrangle<br/>\nall the server setup and teardown work. Arquillian is a JUnit 4 test runner<br/>\ntoo--I haven&#39;t thought through how to reconcile my test runner with<br/>\nArquillian&#39;s, but I work on the same team as the Arquillian guys, and I&#39;m<br/>\nhoping we can figure something out. It will probably involve pointing<br/>\nArquillian at my test runner, or vice-versa.<br/>\n<br/>\nThank you once again for the responses. I really appreciate it!<br/>\n<br/>\nCheers,<br/>\n<br/>\n-Jonathan<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thu, Dec 15, 2011 at 3:47 AM, Dawid Weiss &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dawid.weiss@...\">dawid.weiss@...</a>&gt; wrote:<br/>\n<br/>\n&gt; **<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; You may want to check out JUnitBenchmarks -- it does what I think you want<br/>\n&gt; to achieve:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://labs.carrotsearch.com/junit-benchmarks.html\">http://labs.carrotsearch.com/junit-benchmarks.html</a><br/>\n&gt;<br/>\n&gt; Dawid<br/>\n&gt;<br/>\n&gt; On Wed, Dec 14, 2011 at 11:01 PM, jfuerth &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jfuerth@...\">jfuerth@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt; &gt; **<br/>\n&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hi everyone,<br/>\n&gt; &gt;<br/>\n&gt; &gt; I&#39;ve created a custom Runner meant to help with performance and<br/>\n&gt; &gt; scalability testing. It lets you create tests like this:<br/>\n&gt; &gt;<br/>\n&gt; &gt; @RunWith(PerfRunner.class)<br/>\n&gt; &gt; public class MultiThreadUsageExampleTest {<br/>\n&gt; &gt;<br/>\n&gt; &gt; @Test<br/>\n&gt; &gt; public void demonstrationTest(<br/>\n&gt; &gt; @Varying(from=1, to=10) int threadCount,<br/>\n&gt; &gt; @Varying(from=100000, to=1000000, step=100000) int entryCount) {<br/>\n&gt; &gt;<br/>\n&gt; &gt; // code here that relies on threadCount and entryCount<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; In the above example, my runner calls demonstrationTest() 100 times, with<br/>\n&gt; &gt; parameter values (1, 100000), (2, 100000), ... (1, 200000), ... (10,<br/>\n&gt; &gt; 1000000).<br/>\n&gt; &gt;<br/>\n&gt; &gt; What I want to do now is produce charts of how long each call took. There<br/>\n&gt; &gt; are a lot of approaches, but I don&#39;t know which is &quot;right.&quot;<br/>\n&gt; &gt;<br/>\n&gt; &gt; 1. Register a TestListener and write my own reports to disk from it (but<br/>\n&gt; &gt; is there a generic way to register listeners?)<br/>\n&gt; &gt; 2. Create my own main program that runs the test suite, and have it<br/>\n&gt; create<br/>\n&gt; &gt; the report when the suite is done (maybe this is the only way to<br/>\n&gt; register a<br/>\n&gt; &gt; TestListener anyhow?)<br/>\n&gt; &gt; 3. Transform the XML output of the ant junit task (but then it&#39;s bound to<br/>\n&gt; &gt; Ant)<br/>\n&gt; &gt; 4. Transform the XML output of the maven-surefure-plugin (but then it&#39;s<br/>\n&gt; &gt; bound to Maven)<br/>\n&gt; &gt; 5. Write performance results to disk directly from my TestRunner (should<br/>\n&gt; &gt; work in any environment, but feels like a dirty approach)<br/>\n&gt; &gt;<br/>\n&gt; &gt; Other ideas are welcome too, of course. My test runner is open source and<br/>\n&gt; &gt; published on GitHub; I want a solution that can work for everyone. So I<br/>\n&gt; &gt; think ideas 3 and 4 are out.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Has anyone else thought about getting data from custom test runners into<br/>\n&gt; &gt; human-readable reports?<br/>\n&gt; &gt;<br/>\n&gt; &gt; -Jonathan<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 23772, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1323967218", 
+    "canDelete": false, 
+    "nextInTopic": 23774, 
+    "prevInTopic": 23772, 
+    "headers": {
+        "inReplyToHeader": "PENBTTIxUnQtM2c5SExUM1FTMDkxTDFlVktMM3pORzJPWWUreDhvX2s3QlhpZ1RndlY2Z0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBQzF0c0J2Z3dPdUFzem9EbTBIaTEzazdlUWF1X21NcDgrNzVtRlhLMjFqUStpLWZKZ0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGpjYjZjbCszY3JpQGVHcm91cHMuY29tPgk8Q0FNMjFSdC0zZzlITFQzUVMwOTFMMWVWS0wzek5HMk9ZZSt4OG9fazdCWGlnVGd2VjZnQG1haWwuZ21haWwuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 16135, 
+    "senderId": "6fu6gnDLtzR5XdbCE0HHnqRwHpn-anh6TxVkxkbSg4MmN5xJBtZL-6Qj-mPbTftnBzNxy_kp8oKhvwaqeb6rlMTW6pM-OyX0Z1XmQ4O0dWVEK57NNVs", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing methods that throw an exception", 
+    "from": "&quot;Simon Chappell&quot; &lt;simonpeterchappell@...&gt;", 
+    "authorName": "Simon Chappell", 
+    "msgSnippet": "The JUnit FAQ has an entry that should help you with your test of a thrown exception. http://junit.sourceforge.net/doc/faq/faq.htm#tests_7 Simon ... -- ", 
+    "msgId": 16134, 
+    "rawEmail": "Return-Path: &lt;simonpeterchappell@...&gt;\r\nX-Sender: simonpeterchappell@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 20211 invoked from network); 18 Feb 2006 01:54:31 -0000\r\nReceived: from unknown (66.218.67.34)\n  by m22.grp.scd.yahoo.com with QMQP; 18 Feb 2006 01:54:31 -0000\r\nReceived: from unknown (HELO zproxy.gmail.com) (64.233.162.193)\n  by mta8.grp.scd.yahoo.com with SMTP; 18 Feb 2006 01:54:31 -0000\r\nReceived: by zproxy.gmail.com with SMTP id 8so528106nzo\n        for &lt;junit@yahoogroups.com&gt;; Fri, 17 Feb 2006 17:54:31 -0800 (PST)\r\nReceived: by 10.36.12.7 with SMTP id 7mr2838945nzl;\n        Fri, 17 Feb 2006 17:54:31 -0800 (PST)\r\nReceived: by 10.36.157.6 with HTTP; Fri, 17 Feb 2006 17:54:30 -0800 (PST)\r\nMessage-ID: &lt;8ed733900602171754g43ceabfdg9d5082064dc0289e@...&gt;\r\nDate: Fri, 17 Feb 2006 19:54:30 -0600\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;5B10E50E14A4594EB1B5566B69AD94070CEE8C1C@maileast&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;5B10E50E14A4594EB1B5566B69AD94070CEE8C1C@maileast&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Simon Chappell&quot; &lt;simonpeterchappell@...&gt;\r\nSubject: Re: [junit] Testing methods that throw an exception\r\nX-Yahoo-Group-Post: member; u=211142374; y=BIqH6FezqBc4UVFRrOob-bGG08dTbMGAzeMBtB8ind-Lmp_gkA\r\nX-Yahoo-Profile: spchappell\r\n\r\nThe JUnit FAQ has an entry that should help you with your test of a\nthrown =\r\nexception.\n\nhttp://junit.sourceforge.net/doc/faq/faq.htm#tests_7\n\nSimon\n\nOn=\r\n 2/17/06, Kamal Ahmed &lt;KAhmed@...&gt; wrote:\n&gt; Hi,\n&gt;\n&gt;\n&gt;\n&gt; I am try=\r\ning to figure out how to &quot;Test methods that throw an exception&quot;. The\n&gt; test=\r\n pattern is taken from &quot;AsyncAppenderTestCase.java&quot; (below)\n&gt;\n&gt;\n&gt;\n&gt; // this=\r\n test checks whether it is possible to write to a closed\n&gt; AsyncAppender\n&gt; =\r\n  public void test1() throws Exception {\n&gt;     asyncAppender.setName(&quot;async=\r\n-CloseTest&quot;);\n&gt;     root.debug(&quot;m1&quot;);\n&gt;     asyncAppender.close();\n&gt;     ro=\r\not.debug(&quot;m2&quot;);\n&gt;     Vector v =3D vectorAppender.getVector();\n&gt;     assert=\r\nEquals(v.size(), 1);\n&gt;   }\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Here is an example:\n&gt;\n&gt;\n&gt;\n&gt; try {\n&gt;\n=\r\n&gt;                              logger.debug(&quot;m1&quot;);\n&gt;\n&gt;                     =\r\n         wmDfa.close();\n&gt;\n&gt;                              logger.debug(&quot;m2&quot;)=\r\n;\n&gt;\n&gt;                              fail(&quot;log4j:WARN No appenders could be f=\r\nound\n&gt; for logger (com.webmethods.sc.logging.test.unit.WmLoggerFilterTest).=\r\n\n&gt; log4j:WARN Please initialize the log4j system properly.&quot;);\n&gt;\n&gt;          =\r\n                    } catch (RuntimeException e) {\n&gt;\n&gt;\n&gt;\n&gt;                 =\r\n   }\n&gt;\n&gt;\n&gt;\n&gt; Now, in this try/catch block, logger.debug(&quot;m2&quot;); would throw =\r\nan exception,\n&gt; now what I need to do is:\n&gt;\n&gt;\n&gt;\n&gt; 1.      Catch this except=\r\nion, Since I have the text for the exception:\n&gt;\n&gt; log4j:WARN No appenders c=\r\nould be found for logger\n&gt; (com.webmethods.sc.logging.test.unit.WmLoggerFil=\r\nterTest). log4j:WARN Please\n&gt; initialize the log4j system properly.\n&gt;\n&gt; 2. =\r\n     Fail the test\n&gt; 3.      Compare the exception thrown by logger.debug(&quot;=\r\nm2&quot;); with the actual\n&gt; excption\n&gt; 4.      if same , pass the test\n&gt; 5.    =\r\n  if not, then fail the test\n&gt;\n&gt;\n&gt;\n&gt; Thanks,\n&gt;\n&gt; -Kamal.\n&gt;\n&gt;\n&gt;\n&gt; [Non-text =\r\nportions of this message have been removed]\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;=\r\n\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n--\nwww.simonpeter.org\nuab.blogspot.com\n\n", 
+    "profile": "spchappell", 
+    "topicId": 16110, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 211142374, 
+    "prevInTime": 16133, 
+    "contentTrasformed": false, 
+    "postDate": "1140227670", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16110, 
+    "headers": {
+        "inReplyToHeader": "PDVCMTBFNTBFMTRBNDU5NEVCMUI1NTY2QjY5QUQ5NDA3MENFRThDMUNAbWFpbGVhc3Q+", 
+        "messageIdInHeader": "PDhlZDczMzkwMDYwMjE3MTc1NGc0M2NlYWJmZGc5ZDUwODIwNjRkYzAyODllQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDVCMTBFNTBFMTRBNDU5NEVCMUI1NTY2QjY5QUQ5NDA3MENFRThDMUNAbWFpbGVhc3Q+"
+    }
+}

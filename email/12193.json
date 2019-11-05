@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 12194, 
+    "senderId": "saQ7ZF7C78ymz1Q7rGxom2Ypw6f3ANnohW34v7EcnlzrHvxZ0p_XGx7ShnUd4p6pQ_VC3Ae-5pmVs0GajKwCfcC8kcrpB1zOclFv4p0", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing Spring/Hibernate", 
+    "from": "Shane Mingins &lt;shanemingins@...&gt;", 
+    "authorName": "Shane Mingins", 
+    "msgSnippet": "... My reply has taken just as long ... I am on leave at the moment with child #3 :-) I left the original msg unsnipped for reference. To answer your", 
+    "msgId": 12193, 
+    "profile": "shanemingins", 
+    "topicId": 11972, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 154456095, 
+    "messageBody": "<div id=\"ygrps-yiv-301906926\">--- &quot;J. B. Rainsberger&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; First, I apologize for taking this long to get to<br/>\n&gt; this message.<br/>\n&gt; <br/>\n&gt; Shane Mingins wrote:<br/>\n&gt; <br/>\n&gt; &gt; Our app is a Swing client calling WebServices<br/>\n&gt; running in WebSphere. <br/>\n&gt; &gt; The Webservices uses a DAO object which extends<br/>\n&gt; the<br/>\n&gt; &gt; HibernateDaoSupport class provided by the Spring<br/>\n&gt; framework.<br/>\n&gt; &gt; <br/>\n&gt; &gt; Now according to the contractor, the way we have<br/>\n&gt; the transaction<br/>\n&gt; &gt; manager setup in our applicationContext.xml file<br/>\n&gt; &gt; using &quot;PROPAGATION_REQUIRED&quot; for our<br/>\n&gt; get/save/update/delete<br/>\n&gt; &gt; operations means that the &quot;commit&quot; of the<br/>\n&gt; transaction will only occur<br/>\n&gt; &gt; when the starting method is finished.<br/>\n&gt; &gt; <br/>\n&gt; &gt; So if we were to create a JUnit test:<br/>\n&gt; &gt; <br/>\n&gt; &gt; public void testUpdate()<br/>\n&gt; &gt; {<br/>\n&gt; &gt;         InvestorWebServices iws = new<br/>\n&gt; InvestorWebServices();<br/>\n&gt; &gt;         InvestorDTO identity =<br/>\n&gt; iws.getInvestorByPK(new Integer<br/>\n&gt; &gt; (7000011));<br/>\n&gt; &gt;         identity.setName(&quot;Bob);<br/>\n&gt; &gt; <br/>\n&gt; &gt;         iws.updateInvestor(identity);<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; He is telling me that the commit to the Db will<br/>\n&gt; not have happened<br/>\n&gt; &gt; until the testUpdate method has completed.<br/>\n&gt; &gt; <br/>\n&gt; &gt; As part of the test we want to be able to assert<br/>\n&gt; that the record in<br/>\n&gt; &gt; the db has indeed been updated so in our current<br/>\n&gt; situation we could<br/>\n&gt; &gt; not do that within the testUpdate method.<br/>\n&gt; <br/>\n&gt; What is your goal here? Are you trying to test end<br/>\n&gt; to end? Are you <br/>\n&gt; trying to test your integration with some part of<br/>\n&gt; the framework? Is this <br/>\n&gt; a Learning Test?<br/>\n&gt; <br/>\n&gt; What are you afraid is broken right now?<br/>\n&gt; <br/>\n&gt; &gt; I was wondering if anyone with more experience<br/>\n&gt; than us is doing<br/>\n&gt; &gt; similar testing with Spring/Hibernate and how are<br/>\n&gt; the doing such<br/>\n&gt; &gt; testing?<br/>\n&gt; <br/>\n&gt; I have no experience, but I have ideas. You said<br/>\n&gt; that you want to verify <br/>\n&gt; that data makes it to the database. Who&#39;s<br/>\n&gt; responsible for making sure <br/>\n&gt; the data gets into the database? (Your code?<br/>\n&gt; Hibernate? WebSphere?) If <br/>\n&gt; you still need to/want to solve this problem, then<br/>\n&gt; I&#39;d like to start by <br/>\n&gt; establishing who has which responsibilities.<br/>\n&gt; -- <br/>\n<br/>\n </span></blockquote>My reply has taken just as long ... I am on leave at<br/>\nthe moment with child #3 :-)<br/>\n<br/>\nI left the original msg unsnipped for reference.<br/>\n<br/>\nTo answer your questions:<br/>\n<br/>\n1. What was my goal?  <br/>\n<br/>\nIt was a type of end to end test.  The test&#39;s point of<br/>\nentry was the InvestorWebService object.  I asked the<br/>\nInvestorWebService for a PersonDTO (a person is one<br/>\ninvestor type), modified it, and sent it to the update<br/>\nmethod on the InvestorWebService.   <br/>\n<br/>\nTo check that this indeed worked as expected, in that<br/>\nall the tables in DB were updated as expected, I used<br/>\nDbUnit to assert that the tables matched XML datasets.<br/>\n<br/>\n2.  Responsibilities<br/>\n<br/>\nThe InvestorWebService is responsible for returning an<br/>\ninvestor as a DTO.  It uses a DAO object (this is<br/>\ninstantiated using Spring) to retrieve an investor<br/>\nbusiness object.  The DAO uses Hibernate to retreive<br/>\nthe requested investor object.<br/>\n<br/>\nThe InvestorWebService is responsible for updating an<br/>\ninvestor from a passed DTO.  It uses a DAO object<br/>\n(this is instantiated using Spring) to update an<br/>\ninvestor business object.  The DAO uses Hibernate to<br/>\nupdate the requested investor object.<br/>\n<br/>\nHibernate ultimately updates the database.<br/>\n<br/>\nIs that enough to start some discussion on your ideas?<br/>\n<br/>\nCheers<br/>\nShane<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n=====<br/>\n<br/>\nShane Mingins<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:shanemingins@...\">shanemingins@...</a><br/>\n<br/>\nplease remove clothes before emailing<br/>\n<br/>\n<br/>\n__________________________________________________<br/>\nDo You Yahoo!?<br/>\nTired of spam?  Yahoo! Mail has the best spam protection around <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://mail.yahoo.com\">http://mail.yahoo.com</a></div>", 
+    "prevInTime": 12192, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1098863188", 
+    "canDelete": false, 
+    "nextInTopic": 12200, 
+    "prevInTopic": 12072, 
+    "headers": {
+        "inReplyToHeader": "PDQxNTk4NkY1LjcwNTA4MDJAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDQxMDI3MDc0NjI4LjU5NzE2LnFtYWlsQHdlYjYwMjA4Lm1haWwueWFob28uY29tPg=="
+    }
+}

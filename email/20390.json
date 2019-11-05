@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20391, 
+    "senderId": "mtfLb8-w8D-_KxY8wokT9REA0cRqlJjkwKxspRawwrEt_WgKg9ugLvPQVOljPhK7As7b1oSEvLjOZtkwz98-uBMr2vwiRhcCStFfbg", 
+    "systemMessage": true, 
+    "subject": "Re: Looking for advice on testing scenario", 
+    "from": "&quot;toalexsmail&quot; &lt;toalexsmail@...&gt;", 
+    "authorName": "toalexsmail", 
+    "msgSnippet": "... @RunWith(Parameterized.class) public class ParserTest { @Parameters public static Collection testParser(){ return Arrays. asList(new", 
+    "msgId": 20390, 
+    "profile": "toalexsmail", 
+    "topicId": 20385, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 340165037, 
+    "messageBody": "<div id=\"ygrps-yiv-2022538576\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;techstuff1971&quot; &lt;techstuff1971@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hi,<br/>\n&gt; <br/>\n&gt; I am new to JUNIT ...<br/>\n&gt; <br/>\n&gt; I have written a SQL parser which parses a SQL query and builds an<br/>\n&gt; object model representation of same which it returns as the result of<br/>\n&gt; a parse. <br/>\n&gt; <br/>\n </span></blockquote>@RunWith(Parameterized.class)<br/>\npublic class ParserTest {<br/>\n\t<br/>\n    @Parameters<br/>\n    public static Collection&lt;?&gt; testParser(){<br/>\n\t\treturn Arrays.&lt;Object[]&gt;asList(new Object[][]{<br/>\n                       //String expectedQry, String orgnlQry<br/>\n<br/>\n\t\t\t{&quot;Select * from MyTable.MyColumn&quot;, &quot;Select * from MyColumn&quot;}, // 0<br/>\n                       //write down here all the rest 119 test cases<br/>\n                       //you can also write a real computational<br/>\nmethod that return Collection besides<br/>\n\t\t});<br/>\n\t};<br/>\n\t<br/>\n\tprivate String expectedQry;<br/>\n\tprivate String orgnlQry;<br/>\n<br/>\n        private Parser myParser;<br/>\n\t<br/>\n\t<br/>\n\tpublic ParserTest (String expectedQry, String orgnlQry){<br/>\n\t\tthis.expectedQry= expectedQry;<br/>\n\t\tthis.orgnlQry= orgnlQry;<br/>\n\t}<br/>\n<br/>\n\t@Before<br/>\n\tpublic void setUp() throws Exception {<br/>\n           myParser = new Parser();<br/>\n           // A bunch of code to construct Parser and connect to data<br/>\nstore<br/>\n<br/>\n\t}<br/>\n\t<br/>\n\t@Test<br/>\n\tpublic void testParser() throws Exception {<br/>\n                myParser.parse(orgnlQry);<br/>\n                SQLTree tree = myParser.getTree( );<br/>\n                String outQry = tree.printMe( );<br/>\n                assertEquals(outQry, expectedQry);<br/>\n        }<br/>\n}<br/>\n<br/>\nThis implementation use Parametrized test that is really you want to<br/>\ndo. (I have never use Theories though). testParser() function returns<br/>\nyou 120 test cases. You can hard coded them, you can write<br/>\n&quot;computation method&quot;, you can load them from file, do whatever you<br/>\nthink is appropriate. Here you have function, not data-member, so you<br/>\ncan do whatever you want. ParserTest() constructor will be called by<br/>\nJUnit before every run of you test method testParser(). Afterwards,<br/>\nmethod that is mark-up as @Before will be called and afterwards<br/>\ntestParser. In testParser you will have all data-members initialized,<br/>\nexpectedQry and orgnlQry will ne initialized in contructor (they will<br/>\nreceives their value from @Parameters mehtod), myParser will be<br/>\ninitialize in @Before method. Note, that in my scenario you will<br/>\ninitialize 120 times! Each time for each test case.<br/>\nIn general, you should write you test so, that they will run in<br/>\nisolation. That is, if your 10 test case will fail, it shouldn&#39;t<br/>\naffect your next test cases. The best strategy to achieve it is to<br/>\ncreate your test unit each time. But if you think that initializing<br/>\nthe parser each time is too expensive you have 2 base choices. First,<br/>\nto change your code a little:<br/>\n...<br/>\n private Parser myParser;<br/>\n..<br/>\n@Before<br/>\n\tpublic void setUp() throws Exception {<br/>\n           myParser = new Parser();<br/>\n\t\tParser myParser = new Parser( );<br/>\n                // A bunch of code to construct Parser and connect to<br/>\ndata store<br/>\n<br/>\n\t}<br/>\n<br/>\nshould be changed to:<br/>\n...<br/>\n private static Parser myParser;<br/>\n..<br/>\n        @BeforeClass<br/>\n\tpublic static void oneTimeSetUp() throws Exception {<br/>\n           myParser = new Parser();<br/>\n           // A bunch of code to construct Parser and connect to data<br/>\nstore<br/>\n<br/>\n\t}<br/>\n<br/>\nIn such a case oneTimeSetUp() will be called only once, before running<br/>\n120 test cases, so myParser will be initialized only once. <br/>\nSecond option is to extract code that really does parsing (it<br/>\nshouldn&#39;t be expensive) and to test only this code with initial code.<br/>\nYou can also combine these approaches.</div>", 
+    "prevInTime": 20389, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1206284288", 
+    "canDelete": false, 
+    "nextInTopic": 20414, 
+    "prevInTopic": 20389, 
+    "headers": {
+        "inReplyToHeader": "PGZydW84ZStqbnUzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGZzNXI2MCtqdWk5QGVHcm91cHMuY29tPg=="
+    }
+}

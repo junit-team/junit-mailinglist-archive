@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 2568, 
+    "senderId": "W78LRRwDve4QyTp8QEQusIHWUUP85C0qY02HXA18rGSdIZ_gKD7dMLfxMQAPZ-Z0xegS9q7YKoOkcx4smvFm_5PqdOAqaw1AkWSUjQ7P", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] GUI Runner, Class Loader & excluded.properties", 
+    "from": "&quot;David Corbin&quot; &lt;dcorbin@...&gt;", 
+    "authorName": "David Corbin", 
+    "msgSnippet": "My mistake was putting the file in the classes subdir, instead of classes/junit/runner .  Your code made that clear. Thanks. ... From: Mark Meyers", 
+    "msgId": 2567, 
+    "topicId": 2548, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-527539397\">My mistake was putting the file in the &quot;classes&quot; subdir, instead of<br/>\n&quot;classes/junit/runner&quot;.  Your code made that clear.<br/>\n<br/>\nThanks.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> ----- Original Message -----<br/>\nFrom: &quot;Mark Meyers&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:markm@...\">markm@...</a>&gt;<br/>\nTo: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\nSent: Tuesday, September 04, 2001 3:48 AM<br/>\nSubject: RE: [junit] GUI Runner, Class Loader & excluded.properties<br/>\n<br/>\n<br/>\n&gt; The Exception you get is exactly what happens when you don&#39;t have excluded<br/>\n&gt; anything. So, what can go wrong:<br/>\n&gt; -properties file not first in search path<br/>\n&gt; -wrong properties file edited<br/>\n&gt; -with notepad: excluded.properties.txt saved<br/>\n&gt; -the syntax in the properties file is wrong (some keys contain spaces)<br/>\n&gt; -wrong path (/junit/runner/excluded.properties)<br/>\n&gt;<br/>\n&gt; If you have a batch file to start JUnit containing something like:<br/>\n&gt; c:&#92;jdk131&#92;bin&#92;java -cp c:&#92;work;xxx.jar;yyy.jar junit.swingui.TestRunner<br/>\n&gt;<br/>\n&gt; try to a simple class with main method to load and print the properties:<br/>\n&gt;<br/>\n&gt; ...<br/>\n&gt; public static void main (String args[]) {<br/>\n&gt;         Properties prop = new Properties();<br/>\n&gt;         InputStream<br/>\n&gt;<br/>\nis=ClassLoader.getSystemClassLoader().getResourceAsStream(&quot;junit/runner/excl<br/>\n&gt; uded.properties&quot;);<br/>\n&gt;         if(is!=null){<br/>\n&gt;             try{<br/>\n&gt;                 prop.load(is);<br/>\n&gt;             }catch(Exception e){<br/>\n&gt;<br/>\n&gt;             }<br/>\n&gt;         }<br/>\n&gt;         prop.list(System.out);<br/>\n&gt;     }<br/>\n&gt; -----Original Message-----<br/>\n&gt; From: Scott Stirling<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; What works for me and most people is to exclude:<br/>\n&gt;<br/>\n&gt; org.xml.sax.*<br/>\n&gt; org.w3c.dom.*<br/>\n&gt;<br/>\n&gt; Not just org.*<br/>\n&gt;<br/>\n&gt; Scott Stirling<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; -----Original Message-----<br/>\n&gt; From: David Corbin<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Sent: 9/2/01 7:21 AM<br/>\n&gt; Subject: [junit] GUI Runner, Class Loader & excluded.properties<br/>\n&gt;<br/>\n&gt; I&#39;ve run into a problem referenced several time here on the mailing<br/>\n&gt; list,<br/>\n&gt; but the work around doesn&#39;t seem to do anything for me.<br/>\n&gt;<br/>\n&gt; I extracted excluded.properties.  Modified it to add &quot;excluded.6=org.*&quot;,<br/>\n&gt; and<br/>\n&gt; placed it my classes directory (which IS the first thing in my class<br/>\n&gt; path).<br/>\n&gt; But, when I run the gui runner, I still get:<br/>\n&gt;<br/>\n&gt; java.lang.LinkageError: Class org/xml/sax/HandlerBase violates loader<br/>\n&gt; constraints<br/>\n&gt;  at java.lang.ClassLoader.defineClass0(Native Method)<br/>\n&gt;  at java.lang.ClassLoader.defineClass(ClassLoader.java:486)<br/>\n&gt; , , ,<br/>\n&gt;<br/>\n&gt; Any ideas?  Would and include be simpler than an exclude for future<br/>\n&gt; versions?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 2566, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "999688599", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 2559, 
+    "headers": {
+        "messageIdInHeader": "PDAwYzIwMWMxMzVmYyQzYmVjZjQyMCQyN2EzZTljN0BnYXRlcz4=", 
+        "referencesHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxMzA2OUExQENBU0UwNTI+"
+    }
+}

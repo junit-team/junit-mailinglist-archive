@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 14349, 
+    "senderId": "qYG-D1ijI_W6EiYKLLmXPJkZ6tTbK4DvV1OMEwucw_MBYIgrlpE9YyX6VEePSD90ieHQgvc6nnjZXddRFg7mvq_W7RemIkfZyj8", 
+    "systemMessage": true, 
+    "subject": "Writing a test for a PrintStream and for a log rotation method", 
+    "from": "Asif Sattar &lt;sattar_asif@...&gt;", 
+    "authorName": "Asif Sattar", 
+    "msgSnippet": "Hi everyone, Two questions: 1. I m trying to write a test for a method that does not return anything.  It creates a printstream for writing to a log file.", 
+    "msgId": 14348, 
+    "rawEmail": "Return-Path: &lt;sattar_asif@...&gt;\r\nReceived: (qmail 19270 invoked from network); 11 Aug 2005 14:34:32 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m28.grp.scd.yahoo.com with QMQP; 11 Aug 2005 14:34:32 -0000\r\nReceived: from unknown (HELO n27.bulk.scd.yahoo.com) (66.94.237.56)\n  by mta4.grp.scd.yahoo.com with SMTP; 11 Aug 2005 14:34:32 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.5] by n27.bulk.scd.yahoo.com with NNFMP; 11 Aug 2005 14:33:34 -0000\r\nReceived: from [66.218.66.91] by mailer5.bulk.scd.yahoo.com with NNFMP; 11 Aug 2005 14:33:34 -0000\r\nX-Sender: sattar_asif@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 30905 invoked from network); 11 Aug 2005 09:19:24 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m21.grp.scd.yahoo.com with QMQP; 11 Aug 2005 09:19:24 -0000\r\nReceived: from unknown (HELO web30008.mail.mud.yahoo.com) (68.142.200.71)\n  by mta4.grp.scd.yahoo.com with SMTP; 11 Aug 2005 09:19:23 -0000\r\nReceived: (qmail 76017 invoked by uid 60001); 11 Aug 2005 09:19:22 -0000\r\nMessage-ID: &lt;20050811091922.76015.qmail@...&gt;\r\nReceived: from [195.194.4.65] by web30008.mail.mud.yahoo.com via HTTP; Thu, 11 Aug 2005 02:19:22 PDT\r\nDate: Thu, 11 Aug 2005 02:19:22 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;42FB0736.70909@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Asif Sattar &lt;sattar_asif@...&gt;\r\nSubject: Writing a test for a PrintStream and for a log rotation method\r\nX-Yahoo-Group-Post: member; u=46895256; y=5gBAN7veOq2sxyDb4NAifJ0PqGn8Vj9kOXa4IcD0TeJCk_Ca7LM\r\nX-Yahoo-Profile: sattar_asif\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 11 Aug 2005 14:33:34 -0000\r\n\r\nHi everyone,\n\nTwo questions:\n\n1. I&#39;m trying to write a test for a method that does not\nreturn anything.  It creates a printstream for writing to a\nlog file.  I&#39;ve included the code below.  How do I go about\nwriting a test for this?\n\n    private static void createLogFile() {\n\n        Date currentDate = new Date();\n        if (logFilePrintStream == null || logFileDate ==\nnull || currentDate.after(logFileDate)) {\n            String logFileInstanceName = logFileDirectory +\n&#39;&#92;&#92;&#39; + logFilePrefix\n                    +\nlogFileNameDateFormat.format(logFileDate) + &quot;.log&quot;;\n            logFileDate = currentDate;\n\n            try {\n                logFilePrintStream = new PrintStream(new\nFileOutputStream(logFileInstanceName, true));\n                System.setErr(logFilePrintStream);\n                System.setOut(logFilePrintStream);\n            } catch (IOException ioe) {\n                ioe.printStackTrace();\n            } catch (SecurityException e) {\n                e.printStackTrace();\n            }\n            \n            logRotation();\n        }\n    }\n\n2. The logrotation method above basically rotates log files\nbased on dates and deletes files if they are more than 7\ndays old.  Any ideas on how to write a test for this? \nAgain, code attached below:\n\n    private static void logRotation() {\n        LinkedList logFilesInLogDirectory = new\nLinkedList();     \n        \n        // Populate logFilesInLogDirectory with files in\nlogFileDirectory\n        File logFilesInDirectory = new\nFile(logFileDirectory);\n        String[] logFilesArray =\nlogFilesInDirectory.list();\n        logFilesInLogDirectory = new\nLinkedList(Arrays.asList(logFilesArray));\n\n\n        \n        // Remove files that are not smart card log files\nfrom file list\n        for (int i = 0; i &lt; logFilesInLogDirectory.size();\ni++) {\n           \nif(!((String)logFilesInLogDirectory.get(i)).startsWith(logFilePrefix))\n{\n                logFilesInLogDirectory.remove(i);\n            }\n        }\n        \n        // Delete oldest files if there are more than\nnoOfPreviousLogFiles files  \n        if (logFilesInLogDirectory.size() &gt;\nnoOfPreviousLogFiles) {\n            Collections.sort(logFilesInLogDirectory);\n            for (int i = (noOfPreviousLogFiles-1); i &lt;\nlogFilesInLogDirectory.size(); i++) {\n                new\nFile((String)logFilesInLogDirectory.remove(i)).delete();\n            }\n        }\n    }\n\nRegards\n\nAsif\n\n__________________________________________________\nDo You Yahoo!?\nTired of spam?  Yahoo! Mail has the best spam protection around \nhttp://mail.yahoo.com \n\n\n\n", 
+    "profile": "sattar_asif", 
+    "topicId": 14345, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 46895256, 
+    "prevInTime": 14347, 
+    "contentTrasformed": false, 
+    "postDate": "1123751962", 
+    "canDelete": false, 
+    "nextInTopic": 14349, 
+    "prevInTopic": 14347, 
+    "headers": {
+        "inReplyToHeader": "PDQyRkIwNzM2LjcwOTA5QHN0ZXBoZW4tc21pdGguY28udWs+", 
+        "messageIdInHeader": "PDIwMDUwODExMDkxOTIyLjc2MDE1LnFtYWlsQHdlYjMwMDA4Lm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

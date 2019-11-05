@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 11665, 
+    "senderId": "PKiLaDr6lEFQ_4S14kUzO_U0-nAOZgC6tVVpuM3Z_8L90AVw4BsDgiVsEIs3mgNGqex0XPkk0yyuyxZMqNffK3xt-SYC7FHCxiOQprbc9Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Testing async calls", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Is this right? 1. The server talks to the database synchronously, the database responds. 2. The server formats the response into a message, then puts the", 
+    "msgId": 11664, 
+    "profile": "nails762", 
+    "topicId": 11653, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1753492576\">Kalyan Kumar M wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; There is one db sitting behind the server. The server would execute<br/>\n&gt; the query (mostly stored procs) on the db would get the result,<br/>\n&gt; convert it to markup and sends it to the client. So, if I understand<br/>\n&gt; you correctly, you are asking me to separate the testing work for<br/>\n&gt; both the server and the db. How can I do that? What will the server<br/>\n&gt; query then?<br/>\n<br/>\n </span></blockquote>Is this right?<br/>\n<br/>\n1. The server talks to the database synchronously, the database responds.<br/>\n<br/>\n2. The server formats the response into a message, then puts the message <br/>\non a queue.<br/>\n<br/>\n3. The client receives the queued message.<br/>\n<br/>\nHere&#39;s my plan of attack:<br/>\n<br/>\n  * Write one set of tests for interaction #1: check the database <br/>\ncontents for each query the server executes.<br/>\n<br/>\n  * Write a small set of tests for #2: verify that the server can format <br/>\neach kind of database response correctly as a message.<br/>\n<br/>\n  * Write /one/ more test for #2: verify that whenever the server <br/>\nexecutes a query, it also puts a message on a queue. (The preceding <br/>\ntests verify that it&#39;s the correct message, because the preceding tests <br/>\nverify that the message matches the database response.)<br/>\n<br/>\n  * Write a set of tests on the client for #3: verify that for each <br/>\ndifferent kind of message the client could receive--just invoke <br/>\nonMessage()--the client reacts correctly.<br/>\n<br/>\nThat&#39;s the whole thing.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 11663, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1090860563", 
+    "canDelete": false, 
+    "nextInTopic": 11665, 
+    "prevInTopic": 11663, 
+    "headers": {
+        "inReplyToHeader": "PGNlMzZndis1OG1sQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxMDUzNjEzLjcwMDAwMDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNlMzZndis1OG1sQGVHcm91cHMuY29tPg=="
+    }
+}

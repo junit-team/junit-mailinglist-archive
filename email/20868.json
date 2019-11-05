@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20869, 
+    "senderId": "qLhEE8Cjxi4-KdHuTVigpOysM8Ep3jMFNe0nhH4kWHHXrF2LwjsEZB7nuk6unhFizJsRYb5uphEPvT7z0ZdY26s-s5mEn2vG", 
+    "systemMessage": true, 
+    "subject": "Re: Mock objects in JUnit 4.5 vs. 4.4", 
+    "from": "&quot;pmcevoy12&quot; &lt;pmcevoy12@...&gt;", 
+    "authorName": "pmcevoy12", 
+    "msgSnippet": "Steve, We are using both jmockit and easymock. I have not figured out what is going on with the tests using EasyMock. They have several unexpected invocation", 
+    "msgId": 20868, 
+    "profile": "pmcevoy12", 
+    "topicId": 20857, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127573640, 
+    "messageBody": "<div id=\"ygrps-yiv-2142071039\">Steve,<br/>\n<br/>\nWe are using both jmockit and easymock.<br/>\n<br/>\nI have not figured out what is going on with the tests using EasyMock.<br/>\n They have several &quot;unexpected invocation&quot; errors.  The tests work<br/>\nfine in 4.4 and have the errors with 4.5.  The developer that owns it<br/>\nis looking into it.<br/>\n<br/>\nThe test class using jmockit was like the following code.  This is not<br/>\nthe original code, but it has the important elements.<br/>\nDisclaimer - The code organization is a bit weird.  E.g. there is no<br/>\nreason for a mock class to also extend the same class.  This was<br/>\nwritten by someone else.  I&#39;ve since cleaned it up a bit.<br/>\n<br/>\n/** The class to be tested. */<br/>\npublic class RealClass<br/>\n{<br/>\n   public List someMethod(Set input) {<br/>\n       // do something<br/>\n   }<br/>\n}<br/>\n<br/>\n<br/>\n/** The test class. */<br/>\npublic class SomeTest<br/>\n{<br/>\n    // for some reason they had both an instance of<br/>\n    // the mocked class and one of the real class<br/>\n    private static MockClass mockObj;<br/>\n    private static RealClass realObj;<br/>\n<br/>\n    // the data to be returned by the mocked method<br/>\n    private static List someData;<br/>\n<br/>\n    @BeforeClass<br/>\n    private static void classSetup() {<br/>\n        Mockit.setUpMocks(MockClass.class);<br/>\n    }<br/>\n<br/>\n    @AfterClass<br/>\n    public static void classTearDown() {<br/>\n        Mockit.restoreAllOriginalDefinitions();<br/>\n    }<br/>\n<br/>\n    public class MockClass extends RealClass<br/>\n    {<br/>\n        @Override<br/>\n        public List someMethod(Set input) {<br/>\n            return someData;<br/>\n        }<br/>\n    }<br/>\n<br/>\n    // here is the problem<br/>\n    // they use an instance of the real class and call someMethod<br/>\n    // the method is mocked and setup above<br/>\n    // in 4.4 it would call RealClass.someMethod()<br/>\n    // in 4.5 it would call MockClass.someMethod()<br/>\n    @Test<br/>\n    public void test1() {<br/>\n        Set input = ...;<br/>\n        List list = realClass.someMethod(input);<br/>\n        assertNotNull(list);<br/>\n        // and so on...<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\n--- Patrick<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Steve Freeman &lt;smgfreeman@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Which mock framework, if any, are you using? Can you post an example?<br/>\n&gt; <br/>\n&gt; S.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; On 9 Sep 2008, at 13:00, pmcevoy12 wrote:<br/>\n&gt; &gt; Hi,<br/>\n&gt; &gt;<br/>\n&gt; &gt; Are there any changes between 4.4 and 4.5 in regards to Mock objects?<br/>\n&gt; &gt;<br/>\n&gt; &gt; I am updating at work and I am seeing some tests that use mock objects<br/>\n&gt; &gt; pass in 4.4 and now fail in 4.5.  In one case I found that a class<br/>\n&gt; &gt; that had one method mocked was using the real method in 4.4 (which<br/>\n&gt; &gt; seems wrong) and was using the mocked method in 4.5 (which seems  <br/>\n&gt; &gt; right).<br/>\n&gt; &gt;<br/>\n&gt; &gt; That is, it seems as if a bug was fixed from 4.4 to 4.5.<br/>\n&gt; &gt;<br/>\n&gt; &gt; I fixed that one test of ours and now I am looking at a few others for<br/>\n&gt; &gt; similar situations.  I am mostly just curious.  Thanks.<br/>\n&gt; &gt;<br/>\n&gt; &gt; --- Patrick<br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; Steve Freeman<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.mockobjects.com\">http://www.mockobjects.com</a><br/>\n&gt; <br/>\n&gt; Winner of the Agile Alliance Gordon Pask award 2006<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 20867, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1221137115", 
+    "canDelete": false, 
+    "nextInTopic": 20875, 
+    "prevInTopic": 20864, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDgwOTEwMTk0NS5tOEFKajNzYzAzMjI2OEByczQ5Lmx1eHNjaS5jb20+", 
+        "messageIdInHeader": "PGdhYjNzcis0a3RuQGVHcm91cHMuY29tPg=="
+    }
+}

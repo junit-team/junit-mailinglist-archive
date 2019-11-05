@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 16139, 
+    "senderId": "KHp94VESOBdqAVB1D0YWVKPnTS5wizEXU_0-PxBMgooGBgC1G3sAvmiev5aVVZo-zn7vX2BGET85C3U3F3tJc1EC9wmISunL", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] What makes a class &quot;testable&quot;?", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Ian, To support JUnit 4, you also need to include these criteria: 8. Does the class have a @RunWith annotation? 9. Do any of the methods have a @Test", 
+    "msgId": 16138, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 70480 invoked from network); 20 Feb 2006 03:52:02 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m26.grp.scd.yahoo.com with QMQP; 20 Feb 2006 03:52:02 -0000\r\nReceived: from unknown (HELO smtpauth04.mail.atl.earthlink.net) (209.86.89.64)\n  by mta7.grp.scd.yahoo.com with SMTP; 20 Feb 2006 03:52:02 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth04.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1FB25c-0003rM-Um\n\tfor junit@yahoogroups.com; Sun, 19 Feb 2006 22:51:57 -0500\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Sun, 19 Feb 2006 19:51:52 -0800\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nThread-Index: AcYz9xKuk6d4IJVGS6ypieoU8qZxFQA9Q5Bg\r\nIn-Reply-To: &lt;dsvplv$uk7$1@...&gt;\r\nMessage-ID: &lt;E1FB25c-0003rM-Um@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478ba9fb7525390da1ab550f049b0d65a77a78cf5f2cacc6106350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] What makes a class &quot;testable&quot;?\r\nX-Yahoo-Group-Post: member; u=173198504; y=M40Hk0V1xgx_ytIqUU6hrtfhgy0_tWVrvDdDZtVS_adzI3uL\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nIan,\n\nTo support JUnit 4, you also need to include these criteria: \n  8. Does the class have a @RunWith annotation?\n  9. Do any of the methods have a @Test annotation?\n\nTake care,\n\nKent Beck\nThree Rivers Institute\n\n&gt; -----Original Message-----\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; Behalf Of Ian Pilcher\n&gt; Sent: Wednesday, February 15, 2006 9:51 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] What makes a class &quot;testable&quot;?\n&gt; \n&gt; In this context, &quot;testable&quot; means a class that a TestRunner won&#39;t barf\n&gt; on.\n&gt; \n&gt; I am writing an Ant selector:\n&gt; \n&gt;     http://ant.apache.org/manual/CoreTypes/selectors.html\n&gt; \n&gt; It&#39;s purpose is to identify the classes which should be &quot;run&quot; \n&gt; by an Ant\n&gt; JUnit task:\n&gt; \n&gt;     &lt;target name=&quot;test-run&quot; depends=&quot;test-build&quot;&gt;\n&gt;       &lt;junit&gt;\n&gt;         &lt;batchtest&gt;\n&gt;           &lt;fileset dir=&quot;test/bin&quot;&gt;&lt;junitselector/&gt;&lt;/fileset&gt;\n&gt;         &lt;/batchtest&gt;\n&gt;       &lt;/junit&gt;\n&gt;     &lt;/target&gt;\n&gt; \n&gt; This will allow me to write a a generic testing target, without\n&gt; constraining the names of my test classes.\n&gt; \n&gt; In order to do this properly, I need a precise definition of \n&gt; what makes\n&gt; a class &quot;testable&quot; (in the above sense).  Here&#39;s the \n&gt; algorithm that I&#39;ve\n&gt; come up with:\n&gt; \n&gt;     1.  Is the class public?\n&gt;           *  Yes - go to step 2\n&gt;           *  No - NOT testable - DONE\n&gt; \n&gt;     2.  Is the class an interface?\n&gt;           *  Yes - NOT testable - DONE\n&gt;           *  No - go to step 3\n&gt; \n&gt;     3.  Does the class have a &quot;suite method&quot; --\n&gt;         public static Test suite()?\n&gt;           * Yes - TESTABLE - DONE\n&gt;           * No - go to step 4\n&gt; \n&gt;     4.  Is the class abstract?\n&gt;           * Yes - NOT testable - DONE\n&gt;           * No - go to step 5\n&gt; \n&gt;     5.  Does the class implement junit.framework.Test?\n&gt;           *  Yes - go to step 6\n&gt;           *  No - NOT testable - DONE\n&gt; \n&gt;     6.  Does the class have a public default constructor --\n&gt;         public &lt;init&gt;()?\n&gt;           * Yes - TESTABLE - DONE\n&gt;           * No - go to step 7\n&gt; \n&gt;     7.  Does the class have a public string constructor --\n&gt;         public &lt;init&gt;(String)?\n&gt;           * Yes - TESTABLE - DONE\n&gt;           * No - NOT testable - DONE\n&gt; \n&gt; Thoughts?\n&gt; \n&gt; Thanks!\n&gt; \n&gt; -- \n&gt; ==============================================================\n&gt; ==========\n&gt; Ian Pilcher                                        \n&gt; i.pilcher@...\n&gt; ==============================================================\n&gt; ==========\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 16116, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 16137, 
+    "contentTrasformed": false, 
+    "postDate": "1140407512", 
+    "canDelete": false, 
+    "nextInTopic": 16139, 
+    "prevInTopic": 16136, 
+    "headers": {
+        "inReplyToHeader": "PGRzdnBsdiR1azckMUBzZWEuZ21hbmUub3JnPg==", 
+        "messageIdInHeader": "PEUxRkIyNWMtMDAwM3JNLVVtQHNtdHBhdXRoMDQubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

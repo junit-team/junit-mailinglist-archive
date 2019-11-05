@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 15971, 
+    "senderId": "L6nX0AM0XQ6pTgCWzNT3fWU-_I4UXkvnnuF4CKYLV7ePkRgpNpYbxkXQ0-OHQHDtT2AE9z_kX-cn9nsorOU_t5D94TcGKrB9eGSguw", 
+    "systemMessage": false, 
+    "subject": "Reliability of Timeout", 
+    "from": "&quot;Ben Maurer&quot; &lt;bmaurer@...&gt;", 
+    "authorName": "Ben Maurer", 
+    "msgSnippet": "Hey guys, On the junit4 I am using for the the testing server described in a previous email, I m noticing that the support for timeouts can be less than fully", 
+    "msgId": 15970, 
+    "profile": "benjamindavidmaurer", 
+    "topicId": 15970, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 256083789, 
+    "messageBody": "<div id=\"ygrps-yiv-419811396\">Hey guys,<br/>\n<br/>\nOn the junit4 I am using for the the testing server described in a<br/>\nprevious email, I&#39;m noticing that the support for timeouts can be less<br/>\nthan fully reliable. My server has an OS level protection system that<br/>\nkicks in a ulimit-like functionality in Windows to protect against<br/>\nfailures in Java. However, the down-side of this failsafe is that it<br/>\nmakes it impossible to recover junit information.<br/>\n<br/>\nI think this is due to the way junit aborts threads:<br/>\n<br/>\nboolean terminated = service.awaitTermination(timeout,<br/>\n\tTimeUnit.MILLISECONDS);<br/>\n\tif (!terminated)<br/>\n\t\tservice.shutdownNow();<br/>\n<br/>\nBy tracing through the java code, it seems that the shutdownNow method<br/>\nends up calling thread.interrupt. This *only* aborts the thread if it<br/>\nis caught in a sleep/wait/etc. In my case, the thread stays in some<br/>\ncpu intensive loop, causing other tests to timeout, or possibly<br/>\ncausing a kick-in of the OS level protection.<br/>\n<br/>\nA few options that I can see:<br/>\n<br/>\n- Provide an option to call .stop on non-responsive threads. My<br/>\nunderstanding is that stop uses the same method that the GC does to<br/>\nsuspend threads.<br/>\n<br/>\n- Set the priority of a run-away thread to be as low as possible to<br/>\nminimize damage.<br/>\n<br/>\n- In the Assert api, poll (every N calls) for a command to stop. If<br/>\nthe program in question is slow (but not completely out of control),<br/>\nthis may allow junit to safely stop.<br/>\n<br/>\nIn any case, if the functionaliy of the timeout api can&#39;t be correct<br/>\nfor most programs, I&#39;m not exactly sure what value it provides.<br/>\n<br/>\n-- Ben</div>", 
+    "prevInTime": 15969, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1139191589", 
+    "canDelete": false, 
+    "nextInTopic": 16000, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGRzNmF2NStpcWs5QGVHcm91cHMuY29tPg=="
+    }
+}

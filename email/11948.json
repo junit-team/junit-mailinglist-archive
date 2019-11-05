@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 11949, 
+    "senderId": "Nfscp3XPF6ZFyQqvdw9qKs5nKaGaVWGiUMFNtVNefrUXoZ2ty2_GshiWSj1clfqv1HbkgRjAUosOZizK4Ny9U5TSvQPV1zLNdW2E_OQ", 
+    "systemMessage": false, 
+    "subject": "[OT] RE: [junit] Writing tests first", 
+    "from": "&quot;Chip Dunning&quot; &lt;cdunning@...&gt;", 
+    "authorName": "Chip Dunning", 
+    "msgSnippet": "... That depends on your need. Using longs to represent everything in pennies fails when you are attempting to use multiple currencies. As an example from our", 
+    "msgId": 11948, 
+    "profile": "chipdunning", 
+    "topicId": 11948, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 146967878, 
+    "messageBody": "<div id=\"ygrps-yiv-1715782079\">J. B. Rainsberger wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Please, please, please do not use floating point numbers to represent<br/>\n&gt; quantities of money. This is a classic source of error in software, and<br/>\n&gt; I would hate to see you present it to students as a good idea.<br/>\n&gt; <br/>\n&gt; Also, in your example, the price can be wrong by up to 1% in either<br/>\n&gt; direction! Is this really what you want? If the price comes back as<br/>\n&gt; 7.93, that&#39;s good enough?! No way.<br/>\n<br/>\n </span></blockquote>That depends on your need. Using longs to represent everything in pennies fails when you are attempting to use multiple currencies. As an example from our product taken at today&#39;s rate.<br/>\n<br/>\n1 USD = 3.36820 PEN (Peru Nuevos Soles)<br/>\n<br/>\nThus a $10.56 transaction is S/35,57 (rounds up according to our local contact). So now that I have taken 100 transactions throughout the day I have S/355,70 in my cash drawer, but someone seeing it from the USD side will think that there is $105.60 in the drawer - which converts into S/355,68. Thus the drawer doesn&#39;t balance.<br/>\n\tNow add in the complexity that the purchaser in question wants to give you $5 and pay the rest in PEN (S/18,73). The customer loves this because the more USD they get in the better off they are (stable currency and all of that). Thus at the end of the day they might have PEN, USD, and EUR in their drawer.<br/>\n\tNow all of this could be avoided if you accept 4 decimal digits for money - 1 away from your significant should cancel any rounding errors, or you can get each transaction as an individual. However, if you only get a lump long for the amount then it won&#39;t work.<br/>\n<br/>\nI have found BigDecimal is actually very accurate when you initially load values into them using Strings [new BigDecimal(&quot;10.56&quot;)], so I have been using them.<br/>\n<br/>\n<br/>\n<br/>\nChip<br/>\n-----<br/>\n&quot;The reason the mainstream is thought of as a stream is because it&#39;s so shallow&quot; --George Carlin<br/>\n <br/>\n<br/>\n-----Original Message-----<br/>\nFrom: J. B. Rainsberger [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>]<br/>\nSent: Friday, September 10, 2004 11:09 AM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: Re: [junit] Writing tests first<br/>\n<br/>\n<br/>\n<br/>\nsharpe_simon wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I hope to use JUNIT to teach programming to my Y1 students this year.<br/>\n&gt; I&#39;d planned to write the test class, then ask the students to write<br/>\n&gt; the code e.g for a Book class, a test in the TestBook class might<br/>\n&gt; look like this.<br/>\n&gt; <br/>\n&gt; public void testPrice()<br/>\n&gt; {<br/>\n&gt;       Book b1 = new Book();<br/>\n&gt;       b1.setPrice(7.99);<br/>\n&gt;       assertEquals(7.99, b1.getPrice(), 0.0799);<br/>\n&gt; }<br/>\n<br/>\n<br/>\n </span></blockquote>At least for now, use an integer to express price in cents, so you would <br/>\nhave this:<br/>\n<br/>\npublic void testPrice()<br/>\n{<br/>\n       Book book = new Book();<br/>\n       book.setPrice(799);<br/>\n       assertEquals(799, book.getPrice());<br/>\n}<br/>\n<br/>\nThere&#39;s also no reason to call the variable &quot;b1&quot;. If it&#39;s a book, then <br/>\ncall it a book.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Sudents should write the set and get methods and set values<br/>\n&gt; correctly so this test is passed.<br/>\n&gt; <br/>\n&gt; Problem : - I want them to work through the exercises and tests one<br/>\n&gt; at a time, but the test class will obviously not compile until all<br/>\n&gt; of the correct methods are in place in the Book class.<br/>\n<br/>\n </span></blockquote>Why is this a problem? That&#39;s part of test-driven development: you write <br/>\na test, then write enough code to make it /compile/, then run the test <br/>\nand watch it fail, then write enough code to make the test pass. That&#39;s <br/>\n&quot;textbook&quot; test-driven development, and exactly the way I teach it.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Is my approach to this incorrect. Is there better way?<br/>\n<br/>\n </span></blockquote>Well, your code needed some work, but your approach is solid.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Hope you can help.<br/>\n<br/>\n </span></blockquote>You be the judge. :)<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand<br/>\n<br/>\n<br/>\n<br/>\n <br/>\nYahoo! Groups Links</div>", 
+    "prevInTime": 11947, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1094834766", 
+    "canDelete": false, 
+    "nextInTopic": 11951, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEIwNjBCNDVEMzNBNURGNDc5MjkwNTk1MzhDRDAxODBBMDYyMzdCQGNpdGF0aW9uLmNoYXJsc29uLmxvY2FsPg=="
+    }
+}

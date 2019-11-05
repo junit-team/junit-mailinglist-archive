@@ -1,0 +1,28 @@
+{
+    "topicId": 1943, 
+    "postDate": "995302799", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "John Pletka &lt;John.Pletka@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "52vfLXch5aLp4W-pYRuoN1CSf0xCeSjRzYCgbIvK0sHyZxXefGIIOZTEsaENPtciAcYF7HOxOlW1MIinWVoZ1kzbfzgT1oINdGU", 
+    "nextInTime": 1944, 
+    "userId": 0, 
+    "prevInTime": 1942, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEFDOEQ2NUU5QzhBREQzMTFBN0NGMDAwOEM3REY2MDhEMDNBREZBRTBAc3BhY2VsZXkuYWx0cmFuZXQuY29tPg=="
+    }, 
+    "authorName": "John Pletka", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "I m trying to use JUnit 3.7 to test my EJB beans on Orion 1.5.2  I setup a simple test case that connects to the server in the setUp() method, then does an", 
+    "contentTrasformed": false, 
+    "msgId": 1943, 
+    "nextInTopic": 1946, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;John.Pletka@...&gt;\r\nX-Sender: John.Pletka@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 16 Jul 2001 16:59:27 -0000\r\nReceived: (qmail 45482 invoked from network); 16 Jul 2001 16:59:25 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 16 Jul 2001 16:59:25 -0000\r\nReceived: from unknown (HELO listserver.altranet.com) (198.63.100.14) by mta3 with SMTP; 16 Jul 2001 16:59:25 -0000\r\nReceived: from spaceley.altranet.com [198.63.160.38] by listserver.altranet.com with ESMTP (SMTPD32-6.06) id A1C17A7C00EA; Mon, 16 Jul 2001 12:17:53 -0500\r\nReceived: by spaceley.altranet.com with Internet Mail Service (5.5.2650.21) id &lt;NWLR9P39&gt;; Mon, 16 Jul 2001 12:00:00 -0500\r\nMessage-ID: &lt;AC8D65E9C8ADD311A7CF0008C7DF608D03ADFAE0@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: ClassCastException only using swing/awt ui\r\nDate: Mon, 16 Jul 2001 11:59:59 -0500\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2650.21)\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: John Pletka &lt;John.Pletka@...&gt;\r\n\r\nI&#39;m trying to use JUnit 3.7 to test my EJB beans on Orion 1.5.2  I setup a\nsimple test case that connects to the server in the setUp() method, then\ndoes an JNDI lookup of the bean&#39;s home interface in the test method.  The\ntest runs fine in the textui and when I run it outside the JUnit container,\nhowever when I try to run it using the awtui or the swingui, I get a\nClassCastException when I try cast the remote interface.  Using reflection,\nI can examine the class that was returned and see that it is the correct\nclass with all the correct methods -- I just can not cast it to the proper\ninterface.\n\nDoes the Visual UI runners have their own ClassLoader that may be causing\nthis?  \nDoes anyone have any other idea why this may be happening?  \nHas anyone been able to use JUnit with Orion?\n\nThanks in advance for your help.\n\n\nHere is my test case.  The testPoint() method works in textui but not\nswingui\n\n\nimport javax.naming.*;\nimport java.io.*;\nimport java.util.*;\nimport javax.rmi.PortableRemoteObject;\n\npublic class TestBusinessAssociateAPI extends junit.framework.TestCase\n{\n\tInitialContext ctx = null;\n\n\tpublic TestBusinessAssociateAPI(String name){\n\t\tsuper(name);\n\t}\n\tprotected void setUp() throws NamingException,\nFileNotFoundException, IOException\n\t{\n\t\tProperties serverProperties = new Properties();\n\t\t//serverProperties.load(new\nFileInputStream(&quot;ejbserver.properties&quot;));\n\n\t\tSystem.setProperty(Context.PROVIDER_URL,\nserverProperties.getProperty(&quot;url&quot;,&quot;ormi://appsvr/app&quot;));\n\t\tSystem.setProperty(Context.INITIAL_CONTEXT_FACTORY,\nserverProperties.getProperty(&quot;icf&quot;,&quot;com.evermind.server.ApplicationClientIni\ntialContextFactory&quot;));\n\t\nSystem.setProperty(Context.SECURITY_PRINCIPAL,serverProperties.getProperty(&quot;\nuser&quot;,&quot;admin&quot;));\n\t\tSystem.setProperty(Context.SECURITY_CREDENTIALS,\nserverProperties.getProperty(&quot;password&quot;,&quot;password&quot;));\n\t\tctx = new InitialContext();\n\t\tSystem.out.println(&quot;Setup succeeded&quot;);\n\t}\n\tpublic void testPoint() throws Exception, java.rmi.RemoteException\n\t{\n\t\tPoint point;\n\t\tPointHome pointHome;\n\t\t//The next line works in textui, but throws\nClassCastException in swingui\n\t\tpointHome = (PointHome)\nPortableRemoteObject.narrow(ctx.lookup(&quot;base/PointHome&quot;),PointHome.class);\n\t\tpoint = pointHome.create();\n\t\tSystem.out.println(point.getAbout());\n\n\t}\n\t/**\n\t * Executing this as a standalone class works\n    \t*/\n\tpublic static void main(String[] args) {\n        \t\tTestBusinessAssociateAPI quickTest = new\nTestBusinessAssociateAPI(&quot;TheTest&quot;);\n\t\ttry{\n\t\t\tquickTest.setUp();\n\t\t\tquickTest.testPoint();\n\t\t}catch(Exception ex){\n\t\t\tex.printStackTrace();\n\t\t}\n    \t}\n}\n\n\n\n", 
+    "subject": "ClassCastException only using swing/awt ui"
+}

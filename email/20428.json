@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20429, 
+    "senderId": "4Clk5OXDMrnxxLbJVOiu1K6zVILQhtXFNyppMkylh854-sJ2ceh1xJV87rD_RwBBQwD2yU51r7zMrxzMqN4NezgbFBK4p1uTZaNIvw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running parallel tests in JUnit4.4+", 
+    "from": "&quot;James Abley&quot; &lt;james.abley@...&gt;", 
+    "authorName": "James Abley", 
+    "msgSnippet": "... Hi Daniel, Nice thinking. Did you consider using java.util.concurrent.CountDownLatch and maybe the Executor framework? That might better communicate the", 
+    "msgId": 20428, 
+    "profile": "taboozizi", 
+    "topicId": 20427, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 212683928, 
+    "messageBody": "<div id=\"ygrps-yiv-1294791129\">On 03/04/2008, Daniel Brolund &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:daniel.brolund@...\">daniel.brolund@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hi all,<br/>\n&gt;<br/>\n&gt;  I&#39;ve been looking around a bit for some sort of parallel execution of<br/>\n&gt;  JUnit 4.4+ tests, but I didn&#39;t find much.<br/>\n&gt;<br/>\n&gt;  So, I tried a few things myself and came up with the two examples below;<br/>\n&gt;  one is a parallel suite, and the other is for running parameterized test<br/>\n&gt;  instances in parallel. It is almost too simple for me to really believe<br/>\n&gt;  in it. ;-)<br/>\n&gt;<br/>\n&gt;  I would really like some feedback on it; things I&#39;ve missed, cases where<br/>\n&gt;  it won&#39;t work etc.<br/>\n&gt;<br/>\n&gt;  ===========================================<br/>\n&gt;<br/>\n&gt;  package com.agical.junit;<br/>\n&gt;<br/>\n&gt;  import java.util.List;<br/>\n&gt;<br/>\n&gt;  import org.junit.internal.runners.InitializationError;<br/>\n&gt;  import org.junit.runner.Runner;<br/>\n&gt;  import org.junit.runner.notification.RunNotifier;<br/>\n&gt;  import org.junit.runners.Suite;<br/>\n&gt;<br/>\n&gt;  public class ParallelSuite extends Suite {<br/>\n&gt;<br/>\n&gt;  public ParallelSuite(Class&lt;?&gt; klass) throws InitializationError {<br/>\n&gt;          super(klass);<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;  public ParallelSuite(Class&lt;?&gt; klass, Class&lt;?&gt;[] annotatedClasses)<br/>\n&gt;              throws InitializationError {<br/>\n&gt;          super(klass, annotatedClasses);<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;  @Override<br/>\n&gt;      protected void runChildren(final RunNotifier runNotifier) {<br/>\n&gt;          final List&lt;Runner&gt; runners = getRunners();<br/>\n&gt;          runRunnersInParallel(runNotifier, runners);<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;  public static void runRunnersInParallel(final RunNotifier<br/>\n&gt;  runNotifier,<br/>\n&gt;              final List&lt;Runner&gt; runners) {<br/>\n&gt;          Thread[] threads = new Thread[runners.size()];<br/>\n&gt;          for (int i = 0; i &lt; threads.length; i++) {<br/>\n&gt;              final int index = i;<br/>\n&gt;              threads[i] = new Thread(new Runnable() {<br/>\n&gt;                  public void run() {<br/>\n&gt;                      runners.get(index).run(runNotifier);<br/>\n&gt;                  }});<br/>\n&gt;              threads[i].start();<br/>\n&gt;          }<br/>\n&gt;          for (int i = 0; i &lt; threads.length; i++) {<br/>\n&gt;              try {<br/>\n&gt;                  threads[i].join();<br/>\n&gt;              } catch (InterruptedException e) {<br/>\n&gt;                  throw new RuntimeException(&quot;Couldn&#39;t join thread<br/>\n&gt;  nicely&quot;, e);<br/>\n&gt;              }<br/>\n&gt;          }<br/>\n&gt;      }<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt;  ===========================================<br/>\n&gt;<br/>\n&gt;  package com.agical.junit;<br/>\n&gt;<br/>\n&gt;  import java.util.List;<br/>\n&gt;<br/>\n&gt;  import org.junit.runner.Runner;<br/>\n&gt;  import org.junit.runner.notification.RunNotifier;<br/>\n&gt;  import org.junit.runners.Parameterized;<br/>\n&gt;<br/>\n&gt;  public class ParallelAndParameterized extends Parameterized {<br/>\n&gt;<br/>\n&gt;  public ParallelAndParameterized(Class&lt;?&gt; klass) throws Exception {<br/>\n&gt;          super(klass);<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;  @Override<br/>\n&gt;      protected void runChildren(final RunNotifier runNotifier) {<br/>\n&gt;          final List&lt;Runner&gt; runners = getRunners();<br/>\n&gt;          ParallelSuite.runRunnersInParallel(runNotifier, runners);<br/>\n&gt;      }<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt;  ===========================================<br/>\n&gt;<br/>\n&gt;  There is still some work needed to be done, but I would like to hear if<br/>\n&gt;  I&#39;m totally on the wrong path.<br/>\n&gt;<br/>\n&gt;  Cheers<br/>\n&gt;  Daniel<br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>Hi Daniel,<br/>\n<br/>\nNice thinking. Did you consider using<br/>\njava.util.concurrent.CountDownLatch and maybe the Executor framework?<br/>\nThat might better communicate the intention.<br/>\n<br/>\nRegards,<br/>\n<br/>\nJames</div>", 
+    "prevInTime": 20427, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1207252270", 
+    "canDelete": false, 
+    "nextInTopic": 20452, 
+    "prevInTopic": 20427, 
+    "headers": {
+        "inReplyToHeader": "PDEyMDcyMzQ0NjEuMTgzNDcuNDAuY2FtZWxAZGFuaWVsLWt1YnVudHU+", 
+        "messageIdInHeader": "PDIzZmNlOGU2MDgwNDAzMTI1MWgzZWE1ZjhlOG4xMWYzNTI0YWI4NzhlYjlmQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDEyMDcyMzQ0NjEuMTgzNDcuNDAuY2FtZWxAZGFuaWVsLWt1YnVudHU+"
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 7693, 
+    "postDate": "1050011882", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Jesse Marlin &lt;jlm@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "KtUaRGWP5ZVGCv-Pw7AgaiZ57PHE0Ixw0C3WDv57qnLoBDnrLPOIpQLzMil3kEbOZ9GfJE5rnl61F06GcTPvxhgF0pCj", 
+    "nextInTime": 7694, 
+    "userId": 74650912, 
+    "prevInTime": 7692, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDE2MDIxLjU5NjI2LjcwNTY5MC44NDkwNzJAYmFzcy5jb21wZ2VuLmNvbT4="
+    }, 
+    "authorName": "Jesse Marlin", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "I want to be able to either use textui or swingui to call my set of tests, so I have the following: public class MyTest extends TestCase { private static", 
+    "contentTrasformed": false, 
+    "msgId": 7693, 
+    "nextInTopic": 7709, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;jlm@...&gt;\r\nReceived: (qmail 4951 invoked by uid 7800); 10 Apr 2003 23:04:09 -0000\r\nX-Sender: jlm@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 10 Apr 2003 21:58:03 -0000\r\nReceived: (qmail 95696 invoked from network); 10 Apr 2003 21:58:03 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m7.grp.scd.yahoo.com with QMQP; 10 Apr 2003 21:58:03 -0000\r\nReceived: from unknown (HELO mx.compgen.com) (158.155.2.6)\n  by mta2.grp.scd.yahoo.com with SMTP; 10 Apr 2003 21:58:03 -0000\r\nReceived: from bass.compgen.com (IDENT:St2MGVgkys8CbI/UOduWMcJM6XtiMQRC@... [158.155.4.59])\n\tby mx.compgen.com (8.11.6/8.11.6) with ESMTP id h3ALtoS08828\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 10 Apr 2003 17:55:50 -0400\r\nReceived: (from jlm@localhost)\n\tby bass.compgen.com (8.11.6/8.11.6) id h3ALw2C07062;\n\tThu, 10 Apr 2003 17:58:02 -0400\r\nX-Authentication-Warning: bass.compgen.com: jlm set sender to jlm@... using -f\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nMessage-ID: &lt;16021.59626.705690.849072@...&gt;\r\nDate: Thu, 10 Apr 2003 17:58:02 -0400\r\nTo: JUnit Mailing List &lt;junit@yahoogroups.com&gt;\r\nSubject: Using the swingui TestRunner\r\nX-Mailer: VM 7.00 under 21.4 (patch 6) &quot;Common Lisp&quot; XEmacs Lucid\r\nX-Face: FbxF/xY&lt;F@|f.|JNG)lOL.T0@&gt;!V&gt;vZ.$FXyN9:*&#39;ZV?cib-&#92;o&#39;fWz2=}_Pb!#.JveZp_T18ZKC5T0RXNN=~_HPOF&lt;X-]))4v@k&quot;zVg(BQ$WN/TLSiy(5.UsehDm6*kK`j]&#92;va%pe}7xUvl/4I@Ce6HVFP/P}Y/|74^~rO-CYcTf6+~VwiO;O0%\r\nFrom: Jesse Marlin &lt;jlm@...&gt;\r\nReply-To: jlm@...\r\nX-Yahoo-Group-Post: member; u=74650912\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 10 Apr 2003 23:04:09 -0000\r\n\r\n\nI want to be able to either use textui or swingui to call my set of\ntests, so I have the following:\n\npublic class MyTest extends TestCase\n{\n\tprivate static String url;\n\n\tprivate SoapClient client;\n\n\tpublic static void main (String[] args)\n\t{\n\t\ttry\n\t\t{\n\t\t\turl = new String (args[0]);\n\t\t}\n\t\tcatch (Exception x)\n\t\t{\n\t\t\tSystem.err.println (x);\n\t\t\tSystem.exit (-1);\n\t\t}\n\n\t\t//junit.textui.TestRunner.run (suite());\n\t\tjunit.swingui.TestRunner.run (MyTest.class);\n\t}\n\n\tprotected void setUp()\n\t{\n\t\ttry\n\t\t{\n\t\t\tclient = SoapClient.getInstance (url);\n\t\t}\n\t\tcatch (Exception x)\n\t\t{\n\t\t\tSystem.err.println (&quot;&#92;nFailed to get instance of client to &quot; + url);\n\t\t\tSystem.err.println (x);\n\t\t\tSystem.exit (-1);\n\t\t}\n\n\t\tclient.setKeepAlive (true);\n\t}\n\n\tpublic static Test suite()\n\t{\n\t\treturn new TestSuite (DcsDashboardSoapMethodsTest.class);\n\t}\n\n\tpublic void testNumberOne()\n\t{\n\t\t// Client here is null when called from swingui but\n\t\t// works when called from textui.\n\n\t\tassertTrue (true);\n\t}\n};\n\nWhen running in textui mode the url gets set fine.  But while running\nin swingui mode url is null.  I have also tried passing a property\nthrough the -Durl=&quot;something&quot; and in setup reading that property to\nno avail.  Hard coding the url is the only thing that works.  I have\nleft some code out here, but the general layout is the same.  The test\nabove always succeeds, but in my case I am accessing client which is\nnull because url is null.  Does anybody have suggestions as to what I\ncan do?\n\nThis is my first use of JUnit, and I am fairly new to Java as well.\nThanks for any help.\n\n\n\n", 
+    "subject": "Using the swingui TestRunner"
+}

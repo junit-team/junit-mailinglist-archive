@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 18555, 
+    "senderId": "JAPkTlPyCBmuIe5BoUVgp_ywEZZY_FRgOLnh-doMCSE0lmd83b3UMb1LdbbGAB3-wh4GOu_3t-HcG_T9bEVz19nBX4AJPBUbW6TuDbU0v-jy", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] help building test methods", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... If you are new to testing in general, then I recommend you ignore mocks for now and instead try to test this method by observing what it does and comparing", 
+    "msgId": 18554, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 49547 invoked from network); 17 Dec 2006 22:31:02 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m30.grp.scd.yahoo.com with QMQP; 17 Dec 2006 22:31:02 -0000\r\nReceived: from unknown (HELO chilco.textdrive.com) (207.7.108.242)\n  by mta9.grp.scd.yahoo.com with SMTP; 17 Dec 2006 22:31:00 -0000\r\nReceived: from [192.168.1.115] (CPE000cf1c2033e-CM0012c9daf7de.cpe.net.cable.rogers.com [74.102.135.232])\n\tby chilco.textdrive.com (Postfix) with ESMTP id EF2DBDC763\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 17 Dec 2006 22:30:52 +0000 (UTC)\r\nMessage-ID: &lt;4585C519.3090409@...&gt;\r\nDate: Sun, 17 Dec 2006 17:30:49 -0500\r\nUser-Agent: Thunderbird 1.5.0.8 (Macintosh/20061025)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20061216144202.53091.qmail@...&gt;\r\nIn-Reply-To: &lt;20061216144202.53091.qmail@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\nSubject: Re: [junit] help building test methods\r\nX-Yahoo-Group-Post: member; u=282027414; y=mizkzoeiTZWfhYuIj21Qj4tgsLzvfaJwPJSXw-1u8yWkYU4\r\nX-Yahoo-Profile: nails762\r\n\r\nRoger Milla wrote:\n\n&gt; Hi,\n&gt; i am a beginner in testing stuffs and i needs ur help teting this skins \n&gt; of methods using junit4 and mock object(actually easymock) because i \n&gt; read somewhere that\n&gt; it make test devellopement quick and simple. I&#39;m also newbie with the \n&gt; concept of stubs and i basicaly know how to use expectations\n&gt; this is the skin of methods :\n&gt; \n&gt; public boolean contains(String userName, String password){\n&gt; boolean result = false;\n&gt; if(password == null || userName == null){\n&gt; return false;\n&gt; }\n&gt; for(User p:this.userSet) {\n&gt; if(p.getAccount().equalsIgnoreCase(userName) && \n&gt; p.getPsswd().equals(password)) {\n&gt; result = true;\n&gt; break;\n&gt; }\n&gt; }\n&gt; \n&gt; return result;\n&gt; }\n&gt; \n&gt; where &quot;this.userSet&quot; is a generics List. This method is called from \n&gt; another class that just know about the two parameters.\n\nIf you are new to testing in general, then I recommend you ignore mocks \nfor now and instead try to test this method by observing what it does \nand comparing that to what you expect. If you read more articles, many \nauthors call this &quot;state-based testing&quot;, because you check the end state \nof the object you&#39;re testing.\n\nThinking of your feature, I see the following test scenarios \nimmediately, but there might be more:\n\n1. password is null\n2. userName is null\n3. userName and password found in this.userSet\n4. userName found, but password doesn&#39;t match\n5. userName not found\n6. userName matches with &quot;case insensitive match&quot; and password matches\n\nSo I would write each test the best way I can. Let me write the first \ntwo for you:\n\n@Test public void userNameCannotBeNull() {\n     assertFalse(yourObject.contains(null, &quot;ignored password&quot;));\n}\n\n@Test public void passwordCannotBeNull() {\n     assertFalse(yourObject.contains(&quot;ignored user name&quot;, null));\n}\n\nFor the case where the user name and password are found, can you give \nyour object (I&#39;ll call it a UserRegistry, since that is what I would \ncall it if I designed it) the userSet to operate with? I think of \nsomething like this:\n\n@Test public void foundUser() {\n     Set validUsers = new HashSet();\n     validUsers.add(new User(&quot;jbrains&quot;, &quot;magic password&quot;));\n     UserRegistry registry = new UserRegistry(validUsers);\n\n     assertTrue(registry.contains(&quot;jbrains&quot;, &quot;magic password&quot;));\n}\n\nAfter this, the &quot;case insensitive&quot; test is easy.\n\n@Test public void foundUserWithCaseInsensitiveMatch() {\n     Set validUsers = new HashSet();\n     validUsers.add(new User(&quot;jbrains&quot;, &quot;magic password&quot;));\n     UserRegistry registry = new UserRegistry(validUsers);\n\n     assertTrue(registry.contains(&quot;JBRAINS&quot;, &quot;magic password&quot;));\n}\n\nDo you now see how to write the other two tests? Good luck.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.ca\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 18553, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "prevInTime": 18553, 
+    "contentTrasformed": false, 
+    "postDate": "1166394649", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18553, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDYxMjE2MTQ0MjAyLjUzMDkxLnFtYWlsQHdlYjMwNzAyLm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDQ1ODVDNTE5LjMwOTA0MDlAZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDYxMjE2MTQ0MjAyLjUzMDkxLnFtYWlsQHdlYjMwNzAyLm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

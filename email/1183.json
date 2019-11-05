@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 1184, 
+    "senderId": "LEZa00Xs2FoXqehPAXsE8t81992-stNHUcuNxMVxgQuzdSUQH6dmTKXr_9DjiNp06YCYW0erllI_kijTUeCGS19tpAMxYkC-f4tB07dUdqUMVtFoeAvhWWMRoU0", 
+    "systemMessage": false, 
+    "subject": "Filtering of JUnit tests (was: Re: [junit] Suite() method.)", 
+    "from": "Vitezslav Stejskal &lt;vitezslav.stejskal@czech.sun.com&gt;", 
+    "authorName": "Vitezslav Stejskal", 
+    "msgSnippet": "Hi All, from the testing activity in Netbeans open source project (http://www.netbeans.org) I got the strong requirement for filtering developed tests.", 
+    "msgId": 1183, 
+    "topicId": 1183, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1043440871\">Hi All,<br/>\n<br/>\nfrom the testing activity in Netbeans open source project<br/>\n(http://www.netbeans.org) I got the strong requirement for<br/>\nfiltering developed tests. Netbeans QA & RE departments<br/>\nrequired ability to define subset of existing tests, which are<br/>\nstable enough to be executed continuously and whose<br/>\npotential failure will discover real regression in Netbean&#39;s product.<br/>\n<br/>\nWell, that was my motivation for writing JUnit extension allowing<br/>\ntest filtering. The idea was simple: assign filter to each test in the<br/>\nsuite and let it decide if it can or can not run depending on its name<br/>\nand assigned filter.<br/>\n<br/>\nImplementation was surprisingly simple too:<br/>\n<br/>\n* there is new class junit.framework.Filter, which you can<br/>\nset list of include and exclude patterns, each pattern is wildcard-like mask<br/>\n<br/>\n* the Test interface was extended by functions:<br/>\npublic void setFilter(Filter)<br/>\npublic boolean canRun()<br/>\n<br/>\n* all classes implementing Test were updated, it means<br/>\nTestCase, TestSuite, TestDecorator; their behavior is as follows:<br/>\n<br/>\nTestCase - uses filter for decision if it can or can not run (doesn&#39;t run if it<br/>\ncan&#39;t)<br/>\nTestSuite - always can run (ignores filter), but delegates filter to contained<br/>\ntests<br/>\nTestDecorator - delegates decision on filtering to decorated test<br/>\n<br/>\n* doing that should keep as much as possible of existing testing code<br/>\nworking, as it should be derived from above three classes (all you need<br/>\nis to recompile your tests)<br/>\n<br/>\n* and finally, new FilteredTestRunner was added to allow test filtering<br/>\n<br/>\nAnd now, the reason of this mail, I would like to share my<br/>\ncode with community as there are still voices asking for<br/>\nsomething similar.<br/>\n<br/>\nAttached ZIP-archive contains all of my code and simple example,<br/>\nwhich will demonstrate the feature. I have included source files only,<br/>\nbut there is simple Ant&#39;s script, which will build all for you, just<br/>\nfollow these steps:<br/>\n<br/>\n1. unzip attached archive somewhere to your disk<br/>\n2. write &#39;ant&#39; to build JUnit extension, this should create lib/junit-f.jar<br/>\nfile<br/>\n3. copy junit.jar (JUnit 3.6 or 3.5 frameworks) to created lib directory<br/>\n4. write &#39;ant example&#39; to compile and start example of tests, you should<br/>\nget output like this:<br/>\nBuildfile: build.xml<br/>\n<br/>\ne-compile:<br/>\n    [javac] Compiling 2 source files to V:&#92;work&#92;jj&#92;example&#92;tested<br/>\n    [javac] Compiling 4 source files to V:&#92;work&#92;jj&#92;example&#92;test<br/>\n<br/>\nexample:<br/>\n     [java] .testGreeting1<br/>\n     [java] .testGreeting2<br/>\n     [java] .testHello<br/>\n     [java]<br/>\n     [java] Time: 0.032<br/>\n     [java]<br/>\n     [java] OK (3 tests)<br/>\n     [java]<br/>\n<br/>\nBUILD SUCCESSFUL<br/>\n<br/>\nNote, that three tests were executed.<br/>\n<br/>\n5. enable filter in build.xml file (comment line<br/>\n&lt;arg line=&quot;RootSuite&quot;/&gt;<br/>\n<br/>\nand uncoment line<br/>\n&lt;!-- &lt;arg line=&quot;RootSuite -i *Greeting* -e *2&quot;/&gt; --&gt;<br/>\n<br/>\nand write &#39;ant example&#39; again, you should get following output:<br/>\nBuildfile: build.xml<br/>\n<br/>\ne-compile:<br/>\n<br/>\nexample:<br/>\n     [java] .testGreeting1<br/>\n     [java]<br/>\n     [java] Time: 0.016<br/>\n     [java]<br/>\n     [java] OK (1 tests)<br/>\n     [java]<br/>\n<br/>\nBUILD SUCCESSFUL<br/>\n<br/>\nNote, that tests contained in RootSuite class were filtered<br/>\nby active filter &#39;-i *Greeting* -e *2&#39;, thus only testGreeting1<br/>\nwas executed.<br/>\n<br/>\nThat&#39;s the demonstration, please try it and let me know.<br/>\nI am looking forward your comments!<br/>\n<br/>\nGood luck,<br/>\nVita<br/>\n<br/>\nP.S.: If you don&#39;t have Ant already installed, you can<br/>\ndownload it from http://jakarta.apache.org.<br/>\n<br/>\nP.P.S: For those really interested I have refectored Ant&#39;s<br/>\njunit task to support filtering of tests.<br/>\n<br/>\n<br/>\n--<br/>\nVitezslav Stejskal, Software engineer<br/>\n<br/>\nSUN Microsystems Czech s.r.o.<br/>\ne-mail: vitezslav.stejskal@czech.sun.com<br/>\ntel:    +420 2 3300-9232</div>", 
+    "prevInTime": 1182, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "989700035", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNBRkQ5RkMzLkIzNkI4RkRCQGN6ZWNoLnN1bi5jb20+", 
+        "referencesHeader": "PDIwMDEwNTEwMTcwMzA1LjI4MjYwLnFtYWlsQHdlYjExNjA3Lm1haWwueWFob28uY29tPiA8M0FGQjlBOTIuODRENjgwRjRAY3plY2guc3VuLmNvbT4gPDAwNjUwMWMwZGEwNyQ2NWY0YzQ2MCQwNTJiODQzZUBhbmRyZW5hLmRlPg=="
+    }
+}

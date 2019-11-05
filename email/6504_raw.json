@@ -1,0 +1,29 @@
+{
+    "topicId": 1696, 
+    "postDate": "1040315256", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Michael Silverstein&quot; &lt;msilverstein@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "78HLiF19sZIrF7edlonxXvjr-JL-6hZUQJgoVjiM1SHz1KE6BfG0ROWgBrTYGabVjAOCj1Z9vC3iq2iH5cexfAsKMt9pp9ARi_3LALAv36VFbPt2o7eN22iU", 
+    "nextInTime": 6505, 
+    "userId": 62742148, 
+    "prevInTime": 6503, 
+    "prevInTopic": 6503, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMjE5MDA0MDQ5LkEyMDkxQHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "messageIdInHeader": "PDAwMDMwMWMyYTc3YiQ4YzA0YjU1MCQ2NDAxYThjMEBsYXRpdHVkZTAxPg=="
+    }, 
+    "authorName": "Michael Silverstein", 
+    "numMessagesInTopic": 108, 
+    "msgSnippet": "... There s no need to use private methods to test this. Assuming the code paths for the two constructors converge at some point immediately after the input", 
+    "contentTrasformed": false, 
+    "msgId": 6504, 
+    "nextInTopic": 6505, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;msilverstein@...&gt;\r\nX-Sender: msilverstein@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 19 Dec 2002 16:27:52 -0000\r\nReceived: (qmail 81149 invoked from network); 19 Dec 2002 16:27:44 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 19 Dec 2002 16:27:44 -0000\r\nReceived: from unknown (HELO ncsmtp02.ogw.rr.com) (24.93.67.83)\n  by mta3.grp.scd.yahoo.com with SMTP; 19 Dec 2002 16:27:43 -0000\r\nReceived: from mail4.nc.rr.com (fe4 [24.93.67.51])\n\tby ncsmtp02.ogw.rr.com (8.12.5/8.12.2) with ESMTP id gBJGR4ut009180\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 19 Dec 2002 11:27:05 -0500 (EST)\r\nReceived: from latitude01 ([24.74.163.86]) by mail4.nc.rr.com  with Microsoft SMTPSVC(5.5.1877.757.75);\n\t Thu, 19 Dec 2002 11:28:23 -0500\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Re: Testing Private Methods\r\nDate: Thu, 19 Dec 2002 11:27:36 -0500\r\nMessage-ID: &lt;000301c2a77b$8c04b550$6401a8c0@latitude01&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.3416\r\nImportance: Normal\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nIn-Reply-To: &lt;20021219004049.A2091@...&gt;\r\nFrom: &quot;Michael Silverstein&quot; &lt;msilverstein@...&gt;\r\nX-Yahoo-Group-Post: member; u=62742148\r\n\r\n\n&gt; -----Original Message-----\n&gt; From: Steven Taschuk [mailto:staschuk@...] \n&gt;\n&gt; So, I decide I want a partwise constructor\n&gt; \tpublic GregorianDate( int year, int month, int date )\n&gt; which will throw IllegalArgumentException if any of these \n&gt; constraints are violated.  I write some tests to express the \n&gt; expectation of such exceptions, watch them fail, write the \n&gt; constructor, watch them pass, go for a beer.\n&gt; \n&gt; Now I want a parsing constructor\n&gt; \tpublic GregorianDate( String s ) throws \n&gt; DateParseException which will parse strings in ISO 8601 \n&gt; format (such as &quot;2002-12-18&quot;), throwing a DateParseException \n&gt; if the string is malformed or if the constraints on valid \n&gt; dates are violated.  I factor the constraint checking out of \n&gt; the partwise constructor and into private methods so it can \n&gt; be reused by this new constructor, and now the problem arises.\n\n\nThere&#39;s no need to use private methods to test this. Assuming the code\npaths for the two constructors converge at some point immediately after\nthe input String is parsed, you can test the parsing code and the date\nprocessing code separately.\n\nTo test the parsing code, you would compare instances created partwise\nwith instances created through parsing for equality, or assert that they\nthrow identical exceptions. Once you know that the two constructors\nbehave similarly across a set of reasonable variations, you can\nconcentrate on behavioral tests with just one of the constructor forms.\n\nYou can probably make things a little easier by  creating a method that\nconverts any partwise specification into a String formatted\nspecification. That way you only define your data variations in one\nplace and convert on the fly for the other constructor.\n\nI&#39;d also make a bunch of helper methods, such as one that takes a\npartwise date specification and an expected exception, and then\ninstantiates using both constructors, asserting that both cause the\nexpected exception to be thrown. That way you&#39;re not replicating a lot\nof code.\n\n- Mike\n\n-------------------\nMike Silverstein\nSilverMark, Inc.\nThe Object Testing Company\nwww.javatesting.com\n\n\n", 
+    "subject": "RE: [junit] Re: Testing Private Methods"
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 9519, 
+    "senderId": "oBJfHysLb0fYsk0jaFVZ9VrrcmgQL5Xjjq34eKjHSCUnEiTyCDIRmUSbVNfNmo8nH3faRLXTm2-IEpLJmPvuswl9CzvrSkVM", 
+    "systemMessage": false, 
+    "subject": "Re: How to test threaded method?", 
+    "from": "&quot;russh347&quot; &lt;russh347@...&gt;", 
+    "authorName": "russh347", 
+    "msgSnippet": "... Is there some reason you can t test the run() method separately from the threading?  I don t see anything in the snippets provided that would prevent this.", 
+    "msgId": 9518, 
+    "profile": "russh347", 
+    "topicId": 9506, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90891710, 
+    "messageBody": "<div id=\"ygrps-yiv-1456178350\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Kris Henderson&quot; &lt;khenderson@p...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I have a method that when called creates a thread and does all its work<br/>\n&gt; in the new thread.  It looks kind of like this:<br/>\n&gt; <br/>\n&gt; public void doSomething()<br/>\n&gt; {<br/>\n&gt;     Thread requestThread = new Thread()<br/>\n&gt;     {<br/>\n&gt;         public void run()<br/>\n&gt;         {<br/>\n&gt;             fireStartEvent();<br/>\n&gt; <br/>\n&gt;             //do some stuff that takes a long time<br/>\n&gt; <br/>\n&gt;             fireDoneEvent();<br/>\n&gt;         }<br/>\n&gt;     };<br/>\n&gt;     requestThread.start();<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>Is there some reason you can&#39;t test the run() method separately from<br/>\nthe threading?  I don&#39;t see anything in the snippets provided that<br/>\nwould prevent this. Is OperationAdapter dependent on having events<br/>\nfired from an active thread?  <br/>\n<br/>\nYou&#39;d have to extract a named class to hold the run method.  Then your<br/>\ntest would look something like:<br/>\n<br/>\npublic void testRun()<br/>\n{<br/>\n    m_eventCount = 0;<br/>\n    final MockService service = new MockService();<br/>\n    DoSomthingRunner runner(service);<br/>\n    service.addOperationListener(new OperationAdapter()<br/>\n    {<br/>\n        public void operationUpdate(OperationEvent event)<br/>\n        {<br/>\n            m_eventCount += 1;<br/>\n        }<br/>\n    });<br/>\n        <br/>\n    runner.run();<br/>\n            <br/>\n    assertEquals(2, m_eventCount);<br/>\n}<br/>\n<br/>\nQuestions: <br/>\nDo you trust Thread?<br/>\nIf run() is tested separately, can you trust service.doSomething() to<br/>\nstart the thread?<br/>\n<br/>\nYou could give the service a RunnerFactory (and a MockRunnerFactory<br/>\nfor testing) if you feel it is worth the effort.</div>", 
+    "prevInTime": 9517, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1064604287", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 9517, 
+    "headers": {
+        "inReplyToHeader": "PEY3QjE2RUI4OTg0QjE0NDA5QUNCMDE1RjEzMjZCQjY2MUZGMkE4QEFUTDFWRVhDMDA1LnVzZG9tMDA0LnRjby50Yz4=", 
+        "messageIdInHeader": "PGJsMjNwdithdW9vQGVHcm91cHMuY29tPg=="
+    }
+}

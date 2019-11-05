@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 6873, 
+    "senderId": "dptGzVSR798YvfuewJwUIMjFopoVLfjIh_5QtUK3Q-G4Gm9AysSGIsMPK349PncfK10KK4yxlQglFw1Rv3slD34k7E00p40SnMx8IaZzC9HbGngK", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Dynamically generating test methods?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "The JUnit framework is not treating your tests as a single test; you are. :) Just code your TestSuite to add a TestCase instance for each  element. ", 
+    "msgId": 6872, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 4 Feb 2003 23:26:37 -0000\r\nReceived: (qmail 67475 invoked from network); 4 Feb 2003 23:26:37 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m4.grp.scd.yahoo.com with QMQP; 4 Feb 2003 23:26:37 -0000\r\nReceived: from unknown (HELO fep03-mail.bloor.is.net.cable.rogers.com) (66.185.86.73)\n  by mta3.grp.scd.yahoo.com with SMTP; 4 Feb 2003 23:26:37 -0000\r\nReceived: from quincy ([129.37.170.192])\n          by fep03-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.06 201-253-122-126-106-20020509) with ESMTP\n          id &lt;20030204232629.PMXX121195.fep03-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Tue, 4 Feb 2003 18:26:29 -0500\r\nMessage-ID: &lt;200302041826330618.013EE97E@...&gt;\r\nIn-Reply-To: &lt;0D744775858AD411AF5400508BAF31EA0727A3AB@...&gt;\r\nReferences: &lt;0D744775858AD411AF5400508BAF31EA0727A3AB@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Tue, 04 Feb 2003 18:26:33 -0500\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Dynamically generating test methods?\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep03-mail.bloor.is.net.cable.rogers.com from [129.37.170.192] using ID &lt;srainsberger5790@...&gt; at Tue, 4 Feb 2003 18:26:28 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nThe JUnit framework is not treating your tests as a single test; you\nare. :) Just code your TestSuite to add a TestCase instance for each\n&lt;file&gt; element.\n\nsuite() {\n    suite = new TestSuite();\n    dom = makeDomFrom(&quot;xml_testing.xml&quot;);\n    fileNodes = dom.getNodeList(... &quot;/file&quot;);\n    for each node in fileNodes {\n        suite.addTest(new MyTestCase(new File(node.getFileName()),\nnode.getExpectedXpathExpressions()))\n    }\n    return suite;\n}\n\nAdd constructor:\n\nTestCase(file, xpathExpressions) {\n    super(file.getName());\n    set expected xpath expressions\n}\n\nThat ought to do it.\n\nRemember folks: you can add constructors! :)\n\nGood luck.\n\n\nSo said  David Goudreau  on  2003-02-04 --------------------\n\n&gt;I&#39;m creating a framework to test XML responses to our system.  Right\nnow I\n&gt;have a properties file that contains 1) every file request I want to\nsend\n&gt;to\n&gt;our system and 2) the xpath expressions I want to run on the XML\nresponse,\n&gt;to make sure it&#39;s correct.  The properties file looks like this:\n&gt;\n&gt;&lt;xml_testing controldir=&quot;controlxml&quot; requestdir=&quot;requestxml&quot;&gt;\n&gt;   &lt;file name=&quot;test1.xml&quot;&gt;\n&gt;      &lt;xpath expression=&quot;//FUNCTION/RESPONSE_DATA&quot;/&gt;\n&gt;      &lt;xpath expression=&quot;//USER&quot;/&gt;\n&gt;   &lt;/file&gt;\n&gt;   &lt;file name=&quot;test2.xml&quot;&gt;\n&gt;      &lt;xpath expression=&quot;//HEADER/IP_ADDRESS&quot;/&gt;\n&gt;   &lt;/file&gt;\n&gt;   &lt;file name=&quot;test3.xml&quot;&gt;\n&gt;      &lt;xpath expression=&quot;//USER/NAME&quot;/&gt;\n&gt;      &lt;xpath expression=&quot;//USER/ADDRESS&quot;/&gt;\n&gt;   &lt;/file&gt;\n&gt;&lt;/xml_testing&gt;\n&gt;\n&gt;The problem I&#39;m having is that I want each &lt;file&gt; to run as a separate\ntest\n&gt;in the JUnit framework.  Right now, even if I have 100 files that I\nwant to\n&gt;test in my properties file, the JUnit framework treats it all as one\ntest.\n&gt;I don&#39;t want test #4 to fail and then prevent the other 96 tests from\n&gt;running, which is what&#39;s happening now.  Any ideas?  Thanks.\n&gt;\n&gt;\n&gt;\n&gt;=======================\n&gt;David Goudreau\n&gt;Senior QA Automation Engineer\n&gt;QRS Corporation\n&gt;1400 Marina Way South\n&gt;Richmond, CA 94804 USA\n&gt;t: 510-965-4742\n&gt;f: 510-621-4742\n&gt;DGoudreau@...\n&gt;http://www.qrs.com\n&gt;=======================\n&gt;\n&gt;\n&gt;\n&gt;------------------------ Yahoo! Groups Sponsor\n---------------------~--&gt;\n&gt;Get 128 Bit SSL Encryption!\n&gt;http://us.click.yahoo.com/LIgTpC/vN2EAA/xGHJAA/5cFolB/TM\n&gt;---------------------------------------------------------------------~-\n&gt;\n&gt;\n&gt;To unsubscribe from this group, send an email to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt; \n&gt;\n&gt;Your use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\nAll correspondence (c) 2002 Diaspar Software Services.\nIf you want to use it, just ask; don&#39;t steal.\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 6867, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 6871, 
+    "contentTrasformed": false, 
+    "postDate": "1044401193", 
+    "canDelete": false, 
+    "nextInTopic": 6874, 
+    "prevInTopic": 6868, 
+    "headers": {
+        "inReplyToHeader": "PDBENzQ0Nzc1ODU4QUQ0MTFBRjU0MDA1MDhCQUYzMUVBMDcyN0EzQUJAZXhjaGFuZ2UyLnFycy5jb20+", 
+        "messageIdInHeader": "PDIwMDMwMjA0MTgyNjMzMDYxOC4wMTNFRTk3RUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDBENzQ0Nzc1ODU4QUQ0MTFBRjU0MDA1MDhCQUYzMUVBMDcyN0EzQUJAZXhjaGFuZ2UyLnFycy5jb20+"
+    }
+}

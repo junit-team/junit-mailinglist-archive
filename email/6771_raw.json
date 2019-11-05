@@ -1,0 +1,29 @@
+{
+    "topicId": 6743, 
+    "postDate": "1043718301", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Celis &lt;shane.celis@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "TcCj-Yewbl79lbo5cZODcXdZ6jPkm9aRUM_OTehdxv5x9CxpLFkjW1942ibVQRCVK3FvY5C-IqYz-o-TPGOv3K51321IFT-s", 
+    "nextInTime": 6772, 
+    "userId": 132411217, 
+    "prevInTime": 6770, 
+    "prevInTopic": 6764, 
+    "headers": {
+        "inReplyToHeader": "PGIxMHV0aCtudjQzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDFEQTNERDQ3LTMyNjItMTFENy04NEQ5LTAwMzA2NUY5QTgwRUBzdW4uY29tPg=="
+    }, 
+    "authorName": "Shane Celis", 
+    "numMessagesInTopic": 15, 
+    "msgSnippet": "Often times when I have parts of an interface that I d rather not expose publicly, I ll use an inner class that extends the class I m testing.  That way I can", 
+    "contentTrasformed": false, 
+    "msgId": 6771, 
+    "nextInTopic": 6777, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;shane.celis@...&gt;\r\nReceived: (qmail 73525 invoked by uid 7800); 28 Jan 2003 02:17:07 -0000\r\nX-Sender: shane.celis@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 28 Jan 2003 01:45:01 -0000\r\nReceived: (qmail 53245 invoked from network); 28 Jan 2003 01:45:01 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m3.grp.scd.yahoo.com with QMQP; 28 Jan 2003 01:45:01 -0000\r\nReceived: from unknown (HELO nwkea-mail-2.sun.com) (192.18.42.14)\n  by mta2.grp.scd.yahoo.com with SMTP; 28 Jan 2003 01:45:01 -0000\r\nReceived: from dm-usca19-13.red.iplanet.com (host-179-56-18-192.iplanet.com [192.18.56.179] (may be forged))\n\tby nwkea-mail-2.sun.com (8.9.3+Sun/8.9.3) with ESMTP id RAA23996\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 27 Jan 2003 17:45:00 -0800 (PST)\r\nReceived: from ms-usca15-11.red.iplanet.com (ms-usca15-11.red.iplanet.com [192.18.56.153])\n\tby dm-usca19-13.red.iplanet.com (8.10.2+Sun/8.10.2/IPLANET,v1.1) with ESMTP id h0S1iLa27124\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 27 Jan 2003 17:44:22 -0800 (PST)\r\nReceived: from sun.com (h-192-18-115-209.red.iplanet.com [192.18.115.209])\n by ipost.red.iplanet.com\n (iPlanet Messaging Server 5.2 HotFix 1.03 (built Oct  1 2002))\n with ESMTP id &lt;0H9E00K5NI70Z8@...&gt; for\n junit@yahoogroups.com; Mon, 27 Jan 2003 17:45:00 -0800 (PST)\r\nDate: Mon, 27 Jan 2003 17:45:01 -0800\r\nSubject: Re: [junit] ** How to test objects that depend on other objects with\n mock objects **\r\nIn-reply-to: &lt;b10uth+nv43@...&gt;\r\nTo: junit@yahoogroups.com\r\nMessage-id: &lt;1DA3DD47-3262-11D7-84D9-003065F9A80E@...&gt;\r\nMIME-version: 1.0\r\nX-Mailer: Apple Mail (2.551)\r\nContent-type: text/plain; charset=US-ASCII; format=flowed\r\nContent-transfer-encoding: 7BIT\r\nFrom: Shane Celis &lt;shane.celis@...&gt;\r\nX-Yahoo-Group-Post: member; u=132411217\r\nX-eGroups-Approved-By: nails762 &lt;jbr@...&gt; via email; 28 Jan 2003 02:17:07 -0000\r\n\r\nOften times when I have parts of an interface that I&#39;d rather not \nexpose publicly, I&#39;ll use an inner class that extends the class I&#39;m \ntesting.  That way I can still have the interface I want publicly, but \nit&#39;s internal parts are still accessible enough for testing.\n\nIt would look like this in ConfigManager.java:\n\nprotected ConfigManager() {\n\tthis(CONFIG_FILE_DIRECTORY);\n}\n\nprotected ConfigManager(String dir) {\n\t// do your thing\n}\n\nAnd then in ConfigManagerTests.java:\n\npublic static class TestableConfigManager extends ConfigManager {\n\n\tpublic ConfigManager(String dir) { // actually this constructor may \nnot even be necessary.\n\t\tsuper(dir);\n      }\n}\n\n-shane\n\nOn Sunday, January 26, 2003, at 07:29  AM, tobemligado \n&lt;jasbell@...&gt; wrote:\n\n&gt; I have a singleton called &quot;ConfigManager&quot;, where in its constructor\n&gt; it reads in a bunch of files from a directory and creates objectsfrom\n&gt; the files.  I am doing this because I want to say &quot;ConfigManager is\n&gt; not valid until these other objects have also been successfully\n&gt; created&quot;.\n&gt;\n&gt; I want the &quot;ConfigManager&quot; to be able to read a directory full\n&gt; of &quot;bad files&quot; in some test scenarios, a directory full of &quot;good\n&gt; files&quot; in other test scenarios, and a directory full of &quot;good and bad\n&gt; files&quot; in yet other test scenarios.  Ultimately, the program will\n&gt; have to handle &quot;good and bad files&quot;,\n&gt;\n&gt; My problem is that I need to &quot;trick&quot; the &quot;ConfigManager&quot; into using\n&gt; the three directories in different test scenarios, but I dont want to\n&gt; alter the fact that all objects are created in &quot;ConfigManager&#39;s&quot;\n&gt; constructor.  Here is what is in the constructor for the\n&gt; singleton &quot;ConfigManager&quot;:\n&gt; ----------------------------------------------------\n&gt; String basePath = ServiceResources.CONFIG_FILE_DIRECTORY;\n&gt; setBaseDirectory(basePath);\n&gt; loadAllFilesFound(getBaseDirectory());\n&gt; loadConfigFilesFound(getAllFilesFoundList());\n&gt; ArrayList configList = createConfigurations(getConfigFilesFound());\n&gt; TriggerManager tm = TriggerManager.getInstance();\n&gt; ArrayList triggerList = tm.createTriggers(configList);\n&gt; tm.registerTriggers(triggerList);\n&gt; ----------------------------------------------------\n&gt;\n&gt; How can I switch the CONFIG_FILE_DIRECTORY value for testing when its\n&gt; in the constructor?\n\n\n\n", 
+    "subject": "Re: [junit] ** How to test objects that depend on other objects with mock objects **"
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 8278, 
+    "senderId": "hjGgyLJ3MScEKZCstmeNmytO0qFak3I_8CmNQkPHCEyLusevK0NYs_34x-8QMrPDMq-eLI5WsQaclYHKm8vIN-vsQZoXjSZpRrIU9w0ThQ8", 
+    "systemMessage": false, 
+    "subject": "singletons and running tests more than once", 
+    "from": "Christian Pekeler &lt;christian@...&gt;", 
+    "authorName": "Christian Pekeler", 
+    "msgSnippet": "Background: I m using a custom junit testrunner in a custom testing application. The testing application protects itself against testcases running amok by", 
+    "msgId": 8277, 
+    "rawEmail": "Return-Path: &lt;christian@...&gt;\r\nReceived: (qmail 29109 invoked from network); 5 Jun 2003 17:23:58 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m1.grp.scd.yahoo.com with QMQP; 5 Jun 2003 17:23:58 -0000\r\nReceived: from unknown (HELO n24.grp.scd.yahoo.com) (66.218.66.80)\n  by mta1.grp.scd.yahoo.com with SMTP; 5 Jun 2003 17:23:57 -0000\r\nX-eGroups-Return: christian@...\r\nReceived: from [66.218.67.254] by n24.grp.scd.yahoo.com with NNFMP; 05 Jun 2003 17:23:35 -0000\r\nX-Sender: christian@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 59843 invoked from network); 5 Jun 2003 17:21:13 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m13.grp.scd.yahoo.com with QMQP; 5 Jun 2003 17:21:13 -0000\r\nReceived: from unknown (HELO ponyexpress.wirelessmatrixcorp.com) (66.46.106.131)\n  by mta2.grp.scd.yahoo.com with SMTP; 5 Jun 2003 17:21:13 -0000\r\nReceived: (qmail 918 invoked from network); 5 Jun 2003 17:21:12 -0000\r\nReceived: from superglue.wirelessmatrixcorp.com (HELO pekeler.org) (192.168.1.254)\n  by 0 with SMTP; 5 Jun 2003 17:21:12 -0000\r\nDate: Thu, 5 Jun 2003 11:21:10 -0600\r\nX-Image-Url: http://pekeler.org/images/christian@...\r\nSubject: singletons and running tests more than once\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nMime-Version: 1.0 (Apple Message framework v552)\r\nTo: junit@yahoogroups.com\r\nContent-Transfer-Encoding: 7bit\r\nMessage-Id: &lt;19F62E92-977A-11D7-9117-0003937C0DCC@...&gt;\r\nX-Mailer: Apple Mail (2.552)\r\nFrom: Christian Pekeler &lt;christian@...&gt;\r\nX-Yahoo-Group-Post: member; u=63615397\r\nX-Yahoo-Profile: pekeler\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 05 Jun 2003 17:23:34 -0000\r\n\r\nBackground: I&#39;m using a custom junit testrunner in a custom testing \napplication. The testing application protects itself against testcases \nrunning amok by making a backup of System.properties when starting the \ntests and restoring that backup when it&#39;s done.\n\nNow I want to test a class implemented as a singleton which depends on \ncertain System.properties being set. Currently, this class&#39; constructor \nis loading some properties from somewhere and sticks them into \nSystem.properties. So if I test this class in my test environment, it \nonly passes the tests the first time they are run. Running the tests \nagain fails, because the same singleton instance is used but this time \nthe system.properties are reseted.\n\nI see several options for dealing with this situation:\n\na) tearDown() is setting the static ivar which holds the singleton to \nnull, so that the lazy static sharedInstance() always creates a new \ninstance and by that always sets the correct System.properties. That \nwould require to make that ivar set-able from outside the class it&#39;s \ndeclared in.\n\nb) setUp() is explicitly telling the singleton instance to reload the \nproperties.\n\nc) The singleton loads the properties and copies the values into ivars \nand uses them instead of System.properties. This would only work if the \nsingleton is isolated from other classes that don&#39;t depend on these \nSystem.properties, so it&#39;s not a general solution (and when using \nframeworks, it&#39;s not always possible to isolate classes using mocks).\n\nd) The singleton&#39;s static sharedInstance() method could check if the \nnecessary system.properties are set and load them if required. This \nwould cause a little performance hit because sharedInstance() is used a \nlot. Also, it&#39;s wouldn&#39;t be obvious to the reader of the source why \nthat is done and would require inline documentation.\n\ne) Always use a new classloader instance when running the tests, which \nwould cause singletons to get recreated. However, I think a test should \nalways pass, no matter how often I run it using the same classloader.\n\nf) Make the singleton non-exclusive, i.e. have a public constructor in \nthat class for users that want their own instance, like the testcase. \nBut that would mean that the testcase doesn&#39;t test the singleton aspect \nof the class.\n\ng) The testing app doesn&#39;t run the tests in the same process/vm, \ninstead creates a new sandbox every time the tests are run. That would \nrequire too much work for me and make running the tests slower.\n\nAre there other options for dealing with my problem? Which one would \nyou prefer?\n\n\nThanks,\nChristian\n\n\n\n", 
+    "profile": "pekeler", 
+    "topicId": 8277, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 63615397, 
+    "prevInTime": 8276, 
+    "contentTrasformed": false, 
+    "postDate": "1054833670", 
+    "canDelete": false, 
+    "nextInTopic": 8284, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDE5RjYyRTkyLTk3N0EtMTFENy05MTE3LTAwMDM5MzdDMERDQ0BwZWtlbGVyLm9yZz4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 17883, 
+    "senderId": "AxhFLSEzAf6TOZwlK-_JPX-Vp0fbRqt4eDjDBQ2AcHshDkc8CdhxhXhy5Co3jCOZTiY8KQdN0Ew22aBTCn_yRkQgAxQuT8TooSpUoDKNEOCmiQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: JUnit Testing Code That Has System.exit(n);", 
+    "from": "Michael Feathers &lt;mfeathers@...&gt;", 
+    "authorName": "Michael Feathers", 
+    "msgSnippet": "I was thinking about this last night and I realized that you can mock System by creating your own: package ownsys; class FakeExit extends RuntimeException { ", 
+    "msgId": 17882, 
+    "rawEmail": "Return-Path: &lt;mfeathers@...&gt;\r\nX-Sender: mfeathers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 62211 invoked from network); 10 Sep 2006 14:17:47 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m36.grp.scd.yahoo.com with QMQP; 10 Sep 2006 14:17:47 -0000\r\nReceived: from unknown (HELO elasmtp-spurfowl.atl.sa.earthlink.net) (209.86.89.66)\n  by mta9.grp.scd.yahoo.com with SMTP; 10 Sep 2006 14:17:46 -0000\r\nReceived: from [66.32.71.202] (helo=[192.168.2.5])\n\tby elasmtp-spurfowl.atl.sa.earthlink.net with asmtp (Exim 4.34)\n\tid 1GMQ7Y-0001EJ-4j\n\tfor junit@yahoogroups.com; Sun, 10 Sep 2006 10:17:16 -0400\r\nMessage-ID: &lt;45041E69.6080705@...&gt;\r\nDate: Sun, 10 Sep 2006 10:17:13 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;eds8r2+7kvu@...&gt;\r\nIn-Reply-To: &lt;eds8r2+7kvu@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-ELNK-Trace: dfc3550eb2f12a8d819ed13a7e3bf8f140683398e744b8a47fb9b792a6de39262429b360f74c92e9350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Michael Feathers &lt;mfeathers@...&gt;\r\nReply-To: mfeathers@...\r\nSubject: Re: [junit] Re: JUnit Testing Code That Has System.exit(n);\r\nX-Yahoo-Group-Post: member; u=78021826; y=KHgzYet9Z8kP3EklGas6abC_GvtXHM-rqmJF85nRq-NzFTM5E0bU\r\nX-Yahoo-Profile: mfeathers256\r\n\r\n\nI was thinking about this last night and I realized that you can mock \nSystem by creating your own:\n\npackage ownsys;\n\nclass FakeExit extends RuntimeException {\n        public FakeExit(int status) {\n            super(status+ &quot;&quot;);\n        }\n}\n\npublic class System {\n    public static boolean testing = false;   \n\n    public static void exit(int status) {\n        if (testing)\n            throw new FakeExit(status);\n        java.lang.System.exit(status);\n    }\n}\n\n\nYou have to import the class explicitly, however:\n\nimport ownsys.System;\n\npublic class Section {\n\n    private int startingIndex;\n    private int endingIndex;\n    private int [] values;\n\n    public Section(int [] values, int startingIndex) {\n        this.startingIndex = startingIndex;\n        this.endingIndex = startingIndex;\n        this.values = values;\n        ...\n        System.exit(0);\n    }\n}\n\nUnfortunately, it&#39;s not a transparent replacement unless all of the code \nusing System is in the default namespace.  If it is, you don&#39;t need the \nimport.\n\nNot quite as easy as Ruby where you can open the Object class and \nrewrite the exit method, but interesting nonetheless.\n\nOn balance, I&#39;d still get rid of the exit calls in the OP&#39;s example and \nreplace them with exceptions to get the code under test.  Then I&#39;d \nrefactor toward something more sensible.\n\nMichael Feathers\nwww.objectmentor.com\n\n\n\n", 
+    "profile": "mfeathers256", 
+    "topicId": 17851, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78021826, 
+    "prevInTime": 17881, 
+    "contentTrasformed": false, 
+    "postDate": "1157897833", 
+    "canDelete": false, 
+    "nextInTopic": 17883, 
+    "prevInTopic": 17877, 
+    "headers": {
+        "inReplyToHeader": "PGVkczhyMis3a3Z1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ1MDQxRTY5LjYwODA3MDVAbWluZHNwcmluZy5jb20+", 
+        "referencesHeader": "PGVkczhyMis3a3Z1QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13248, 
+    "senderId": "1YbfmmGqR6TFy2FwHgzXJdQrIv7PdjtxWw5F4FnLjiM4vLGDjYaGsnkU_f4o0L0Lm1bUsRMW9o-WG07-AMxti7j9", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How does Unit test in a heirarchy works...", 
+    "from": "Arun J &lt;mail.jak@...&gt;", 
+    "authorName": "Arun J", 
+    "msgSnippet": "Thanks folks for your inputs.  Lots of discomfort using jUnit, is it only me..:-( Though this is not my usecase. Do not get carried away by this example..I am", 
+    "msgId": 13247, 
+    "profile": "jayarunkumar", 
+    "topicId": 13233, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190187075, 
+    "messageBody": "<div id=\"ygrps-yiv-1357717489\">Thanks folks for your inputs.  Lots of discomfort using jUnit, is it<br/>\nonly me..:-(<br/>\n<br/>\nThough this is not my usecase. Do not get carried away by this<br/>\nexample..I am trying to sample a similar one..<br/>\nAssume the following heirarchy structure.. <br/>\nBizDoc = Performs versions/history relation functions.<br/>\nOrderDoc -&gt; BizDoc = Performs Order related functions.<br/>\nRequestDoc -&gt; BizDoc = Performs Request related functions.<br/>\nPurchaseOrder -&gt;OrderDoc = Performs PO specific functions.<br/>\nInvoice -&gt; OrderDoc = Performs Invoice specific functions.<br/>\nShipment -&gt; Orderdoc = Performs Shipment specific functions.<br/>\nAuction -&gt; RequestDoc = Performs auctions specific functions.<br/>\nPurchaseRequest -&gt; RequestDoc = Performs PR specific functions.<br/>\n<br/>\nI would prefer to organize my tests with a similar hierarchy structure<br/>\nto test the functions at the respective level.  Also I would like to<br/>\ninitialise the objects needed in the appropriate level for the childs<br/>\nto make use of them without doing them again.<br/>\n<br/>\nCurrently when PurchaseRequestUt and AuctionUt tests are run, it<br/>\nexecutes RequestDocUt tests as well BizDocUt tests twice which is<br/>\nunnecessary.<br/>\n<br/>\nI see two options .<br/>\n1. Have a single parent without testXXX methods do the on demand<br/>\ninitialisation at the top level and all Uts inherit from this single<br/>\nparent. And have Uts in a single level. In the above case BizDocUt &<br/>\nPurchaseRequestUt will be in the same level.  BizDocUt initialises<br/>\nsome objects in the helpers and make available for all Uts.  Or if<br/>\nPurchaseRequestUt is run first it initialises first all Bizdoc objects<br/>\nso that BizdocUt can run w/o initializing them again.<br/>\n<br/>\n2. Maintain the heirarchy of Ut and use the Test suite in all Ut<br/>\nclasses to add the child tests only.<br/>\n<br/>\nGuys - don&#39;t you feel this is a very common need for any OO<br/>\napplication.  I am surprised JUnit doesn&#39;t provided this flexibility<br/>\ndirectly.  I have posted my requirement for Logical flow of tests<br/>\nwhich is also good to have.  JUnit has these missing.  I can<br/>\nhack(override) into jUnit to support these but I do not want to<br/>\nmaintain this for every release.<br/>\n<br/>\nJUnit folks..are you hearing...?<br/>\n<br/>\n~JAK<br/>\n<blockquote><span title=\"qreply\"> On Apr 8, 2005 1:04 AM, J. B. Rainsberger &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>&gt; wrote:<br/>\n&gt;  Arun J wrote:<br/>\n&gt;  &gt; Folks,<br/>\n&gt;  &gt; <br/>\n&gt;  &gt; I have a heirarchy of test cases.(jUnit/cactus based).  Some test<br/>\n&gt;  &gt; cases are run at the parent level and some are run at the child level.<br/>\n&gt;  &gt; My observation is this. When I run my child test cases it traverses<br/>\n&gt;  &gt; to the parent and runs the parent&#39;s tests also.  My question is this..<br/>\n&gt;  &gt; <br/>\n&gt;  &gt; #1. Can I stop my derived Unit tests from running parent tests.?<br/>\n&gt;  <br/>\n&gt;  Yes: collect the tests yourself with suite().<br/>\n&gt;  <br/>\n&gt;  &gt; #2. If I cannot stop them, can I run them in a specific order so that<br/>\n&gt;  &gt; parent tests and then child tests..?  One I could think of is add them<br/>\n&gt;  &gt; to the Test Suite in every derived Uts.<br/>\n&gt;  <br/>\n&gt;  You could use GSBase&#39;s OrderedTestSuite.<br/>\n&gt;  <br/>\n&gt;  A bigger question: if you don&#39;t want to inherit the tests, then why have <br/>\n&gt;  one test case class inherit from another? If it&#39;s to share utility <br/>\n&gt;  features, then I recommend pushing those out to another class that both <br/>\n&gt;  can use.<br/>\n&gt;  -- <br/>\n&gt;  J. B. (Joe) Rainsberger<br/>\n&gt;  Diaspar Software Services<br/>\n&gt;  <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\n&gt;  Author, JUnit Recipes: Practical Methods for Programmer Testing<br/>\n&gt;  <br/>\n&gt;  <br/>\n&gt;  ________________________________<br/>\n&gt;  Yahoo! Groups Links<br/>\n&gt;  <br/>\n&gt;  <br/>\n&gt; To visit your group on the web, go to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/\">http://groups.yahoo.com/group/junit/</a><br/>\n&gt;   <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;   <br/>\n&gt; Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service. <br/>\n<br/>\n<br/>\n-- <br/>\n,,,,,      Arunkumar Jayaraman     <br/>\n( &#39;,&#39;)      <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mail.jak@...\">mail.jak@...</a><br/>\n&lt;|&quot;|&gt;    Work: +91-80-51988318<br/>\n_/&quot;|_    Mobile: +91-9845283731 </span></blockquote></div>", 
+    "prevInTime": 13246, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1112939039", 
+    "canDelete": false, 
+    "nextInTopic": 13248, 
+    "prevInTopic": 13245, 
+    "headers": {
+        "inReplyToHeader": "PDQyNTU4QjJCLjcwMTAzMDBAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGU3MTczMzBlMDUwNDA3MjI0MzNlZDAyZGRkQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGU3MTczMzBlMDUwNDA2MDUzMzYyYjYwNzZAbWFpbC5nbWFpbC5jb20+CSA8NDI1NThCMkIuNzAxMDMwMEByb2dlcnMuY29tPg=="
+    }
+}

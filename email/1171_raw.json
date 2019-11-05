@@ -1,0 +1,29 @@
+{
+    "topicId": 1167, 
+    "postDate": "989598851", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "mcphee@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "IQwVIYYWMXGCkiIE1iKjWFF5qrg2ia-mOOSP0B_uRDie3XIcyFlVqUk6_HPJF2oVSpwEm5RdDMLB", 
+    "nextInTime": 1172, 
+    "userId": 0, 
+    "prevInTime": 1170, 
+    "prevInTopic": 1170, 
+    "headers": {
+        "inReplyToHeader": "PDAwNWEwMWMwZGEzNCRlNTA1ZWZlMCQzNWNmYThjMEBvYmplY3RtZW50b3IuY29tPg==", 
+        "messageIdInHeader": "PDlkaDRhMytnN2U5QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "mcphee@mrs.umn.edu", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "... to plug ... to ... Well, sort of... The problem is that our system is quite complex, with lots of different components all feeding off the same random", 
+    "contentTrasformed": false, 
+    "msgId": 1171, 
+    "nextInTopic": 1172, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;mcphee@...&gt;\r\nX-Sender: mcphee@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 11 May 2001 16:34:18 -0000\r\nReceived: (qmail 22304 invoked from network); 11 May 2001 16:34:12 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 11 May 2001 16:34:12 -0000\r\nReceived: from unknown (HELO ch.egroups.com) (10.1.10.51) by mta1 with SMTP; 11 May 2001 16:34:12 -0000\r\nX-eGroups-Return: mcphee@...\r\nReceived: from [10.1.10.110] by ch.egroups.com with NNFMP; 11 May 2001 16:34:12 -0000\r\nDate: Fri, 11 May 2001 16:34:11 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Unit testing stochastic (random) methods\r\nMessage-ID: &lt;9dh4a3+g7e9@...&gt;\r\nIn-Reply-To: &lt;005a01c0da34$e505efe0$35cfa8c0@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2001\r\nX-Mailer: eGroups Message Poster\r\nFrom: mcphee@...\r\n\r\n--- In junit@y..., &quot;Brian Button&quot; &lt;bbutton01@e...&gt; wrote:\n&gt; I&#39;ve never done this myself, but the answer I&#39;ve seen others give is\nto plug\n&gt; in your own random number generator for your tests that just happens\nto\n&gt; return the same sequence of numbers each time. Your tests are now\n&gt; repeatable.\n\nWell, sort of...\n\nThe problem is that our system is quite complex, with lots of\ndifferent components all feeding off the same random number stream. \nIf all you were doing was simulating a 6-sixed die, then fixing the\nseed (or having a &quot;fake&quot; PRNG that returned all the possible values)\nwould work quite nicely.  In our case, though, we have tons of\ncomponents interacting, and the results of one component can affect,\ne.g., how many times another component is called, which can affect how\nmany times the random number generator is called, which then changes\nthe behavior of every component that makes calls to the generator\nafter that, etc., etc.\n\nWe have actually done something like what&#39;s been suggested here. \nWe&#39;ve run the system with a fixed seed, saved the results to a file,\nand then just used diff to compare against that &quot;standard&quot; output. \nUnfortunately even small changes can cascade in ways that lead to very\ndifferent (but statistically similar) results, rendering this approach\nessentially useless.  \n\nIn one case, for example, profiling pointed up a method that was\nchewing up more time than we expected.  A little inspection turned up\na silly inefficiency, so we fixed it.  We then re-ran our test, and\nLo! and Behold! we&#39;d broken the system (in the sense that the new\noutput was diff(erent) from the &quot;standard&quot;).  Turns out that the\n(legitimate) improvement had changed the number of calls to the random\nnumber generator with predictable consequences.\n\nSo...the proposed ideas would probably work for the low level\ncomponents of the system, but it won&#39;t scale up as we test the higher\nlevel components.  I&#39;m hoping for something more robust.\n\nThoughts?\n\nThanks,\n\n\tNic (mcphee@...)\n\n\n", 
+    "subject": "Re: Unit testing stochastic (random) methods"
+}

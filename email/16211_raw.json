@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 16212, 
+    "senderId": "2KI7n5Z9gJULJjcVOBTCUpHFsERThhmJCiWgbumIk2b6Yy1wVdQPI1eXYLThJ7Km0bc18IkjxBnGu0-jou4QsK2GXzmtz5Q_qhkXzD-qeGVfYG2sqA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit Anti-patterns", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "... This is an important point. For example, what if you have a method that will throw an IllegalArgumentException if any of its three arguments is null? It s", 
+    "msgId": 16211, 
+    "rawEmail": "Return-Path: &lt;tibbettj@...&gt;\r\nX-Sender: tibbettj@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 32633 invoked from network); 1 Mar 2006 15:05:32 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m32.grp.scd.yahoo.com with QMQP; 1 Mar 2006 15:05:32 -0000\r\nReceived: from unknown (HELO mailhost2.sra.com) (163.252.31.55)\n  by mta3.grp.scd.yahoo.com with SMTP; 1 Mar 2006 15:05:32 -0000\r\nReceived: from verdi.iisd.sra.com ([163.252.29.9]) by mailhost2.sra.com with Microsoft SMTPSVC(6.0.3790.211);\n\t Wed, 1 Mar 2006 10:04:23 -0500\r\nReceived: from [163.252.3.3] (exaiphnes [163.252.3.3])\n\tby verdi.iisd.sra.com (8.9.3p2/8.9.3) with ESMTP id KAA13365\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 1 Mar 2006 10:04:21 -0500 (EST)\r\nMessage-ID: &lt;4405B7F5.9010401@...&gt;\r\nDate: Wed, 01 Mar 2006 10:04:21 -0500\r\nUser-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.7) Gecko/20040517\r\nX-Accept-Language: en-US, en, ja, ko\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;E1FDnue-0002Ca-TM@...&gt; &lt;4404F44B.1060907@...&gt;\r\nIn-Reply-To: &lt;4404F44B.1060907@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nReturn-Path: tibbettj@...\r\nX-OriginalArrivalTime: 01 Mar 2006 15:04:23.0234 (UTC) FILETIME=[6CB0EA20:01C63D41]\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: jason r tibbetts &lt;tibbettj@...&gt;\r\nReply-To: tibbettj@...\r\nSubject: Re: [junit] JUnit Anti-patterns\r\nX-Yahoo-Group-Post: member; u=224061497; y=he4ikkQkn62e2VFED2DPuhD65ua1cuM5Slu4m_ya6xw0BnGBScaPTl_b0RgEkrgo6HjQDA\r\nX-Yahoo-Profile: tibbettj_at_verdi_sra_com\r\n\r\n&gt;&gt;Re: code that throws exceptions. I prefer to declare the test case as\n&gt;&gt;throwing the exception. I haven&#39;t ever had trouble debugging from the\n&gt;&gt;information provided in the exception. Discarding that exception and getting\n&gt;&gt;a generic AssertionError seems a step backwards to me.\n&gt; \n&gt; \n&gt; How often have you wished your test verified data stored in the expected \n&gt; exception? Ever? This is the one bit that surprises me, because I often \n&gt; want to check more than merely catching an instanceof the expected type. \n&gt; Can you think of a time when you would have preferred, in retrospect, to \n&gt; have checked more than just the exception type?\n\nThis is an important point. For example, what if you have a method that \nwill throw an IllegalArgumentException if any of its three arguments is \nnull? It&#39;s all well and good to have three separate test cases targeting \neach of the three arguments, but it&#39;s rather sloppy to have your tests \nsimply catch the expected IllegalArgumentException without checking its \nmessage to determine /which/ of the arguments caused it.\n\nMy solution to this is twofold:\n\n1) Use a utility class (called ArgChecker) with static methods that will \ntest arguments for null, negative values, mismatched class types, etc., \nand will throw IllegalArgumentExceptions with appropriate messages. For \nexample,\n\nin the ArgChecker class:\n     public static void throwIfNull(Object arg, String description);\n       if (arg == null) {\n\tthrow new IllegalArgumentException(\n           /* generate message from description (see below) */);\n       }\n     }\n\nin the Foo class:\n     public Foo(String type, int index) {\n       ArgChecker.throwIfNull(type, &quot;initial type&quot;);\n                       // msg = &quot;The initial type cannot be null&quot;\n       this.type = type;\n       ArgChecker.throwIfNegative(index, &quot;initial index&quot;);\n                       // msg = &quot;The initial index cannot be negative&quot;\n       this.idx = index;\n     }\n\n2) I have test utility that test methods use to check the exception \nmessages for the expected value.\n\nin the FooTest class:\n   public void test_ctor_nullType() {\n     String type = null;\n     int index = 99;\n     try {\n       new Foo(type, index);\n       fail(&quot;Should reject a null type&quot;);\n     } catch (IllegalArgumentException iax) {\n       IllegalArgumentAssert.assertNullMessage(&quot;initial type&quot;);\n     }\n\nThis second part introduces some admittedly shaky dependencies between \nthe ArgChecker, the IllegalArgumentAssert, and the class under test:\n\n* the IllegalArgumentAssert has to know the exact text of the \nexception&#39;s message, as generated by the ArgChecker. I get away with \nthis by storing the ArgChecker&#39;s messages in a boilerplate properties \nfile with publicly-scoped property keys.\n* the Foo test method has to know the descriptions that Foo passes to \nthe ArgChecker&#39;s methods. I /don&#39;t/ expose these as public constants on \nFoo, just because that seems like more work than it has to be, and \nbecause any subsequent change that someone may make to Foo&#39;s \ndescriptions will quickly fail the relevant test(s) and should be easy \nfor the developer to fix.\n\n", 
+    "profile": "tibbettj_at_verdi_sra_com", 
+    "topicId": 16150, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "prevInTime": 16210, 
+    "contentTrasformed": false, 
+    "postDate": "1141225461", 
+    "canDelete": false, 
+    "nextInTopic": 16227, 
+    "prevInTopic": 16205, 
+    "headers": {
+        "inReplyToHeader": "PDQ0MDRGNDRCLjEwNjA5MDdAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQ0MDVCN0Y1LjkwMTA0MDFAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "referencesHeader": "PEUxRkRudWUtMDAwMkNhLVRNQGVsYXNtdHAta3VrdXIuYXRsLnNhLmVhcnRobGluay5uZXQ+IDw0NDA0RjQ0Qi4xMDYwOTA3QHJvZ2Vycy5jb20+"
+    }
+}

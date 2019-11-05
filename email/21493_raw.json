@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21494, 
+    "senderId": "Dks5_x6y1quZTMAsBGPN1cM9mtFAhDIK5SKSotf8QnhoOtMBnqtuWJgmNaRQNCnowkJdhhsuO7iXOyl8QSjWBJYJNE-FIStrifFl8bV7B0lAqZekigaQu3OQSnW-sSjc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Race condition with timeouts", 
+    "from": "=?ISO-8859-1?Q?Ilja_Preu=DF?= &lt;iljapreuss@...&gt;", 
+    "authorName": "Ilja Preuß", 
+    "msgSnippet": "I m assuming that the InterruptedException is caused by service.shutdownNow(), which, according to javadoc, typical implementations will cancel via", 
+    "msgId": 21493, 
+    "rawEmail": "Return-Path: &lt;iljapreuss@...&gt;\r\nX-Sender: iljapreuss@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 91476 invoked from network); 10 Apr 2009 09:37:50 -0000\r\nX-Received: from unknown (69.147.108.201)\n  by m5.grp.sp2.yahoo.com with QMQP; 10 Apr 2009 09:37:50 -0000\r\nX-Received: from unknown (HELO mail-ew0-f177.google.com) (209.85.219.177)\n  by mta2.grp.re1.yahoo.com with SMTP; 10 Apr 2009 09:37:50 -0000\r\nX-Received: by ewy25 with SMTP id 25so1459271ewy.18\n        for &lt;junit@yahoogroups.com&gt;; Fri, 10 Apr 2009 02:36:49 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.210.130.14 with SMTP id c14mr203697ebd.91.1239356209516; Fri, \n\t10 Apr 2009 02:36:49 -0700 (PDT)\r\nIn-Reply-To: &lt;CFB57F117CE94B0196CD8BF65B8F70DE@kentspavilion&gt;\r\nReferences: &lt;CFB57F117CE94B0196CD8BF65B8F70DE@kentspavilion&gt;\r\nDate: Fri, 10 Apr 2009 11:36:49 +0200\r\nMessage-ID: &lt;fba296970904100236x65dc313xdbbbef43c2cfaae5@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: =?ISO-8859-1?Q?Ilja_Preu=DF?= &lt;iljapreuss@...&gt;\r\nSubject: Re: [junit] Race condition with timeouts\r\nX-Yahoo-Group-Post: member; u=362862841; y=z661xai4_j_0mHyxfe0VFFUx6IsXCaHHreCMjZJbJLTEAbmF\r\nX-Yahoo-Profile: ipreussde\r\n\r\nI&#39;m assuming that the InterruptedException is caused by\nservice.shutdownNow=\r\n(), which, according to javadoc, &quot;typical\nimplementations will cancel via T=\r\nhread.interrupt()&quot;.\n\nWhat is causing the TimeoutException? Unfortunately, y=\r\nour code throws\naway the original stacktrace, and I don&#39;t know the executor=\r\n API well\nenough to guess...\n\nCheers, Ilja\n\n2009/4/9 kentb &lt;kentb@earthlink=\r\n.net&gt;:\n&gt;\n&gt;\n&gt; All,\n&gt;\n&gt; This is a test of the &quot;with enough eyeballs, all bugs=\r\n are shallow&quot;\n&gt; hypothesis.\n&gt;\n&gt; I am experiencing a race condition with tim=\r\neouts. Say I have a test like\n&gt; this:\n&gt;\n&gt; public class WaitTooLong {\n&gt; @Tes=\r\nt(timeout=3D10) public void ripVanWinkle() throws\n&gt; InterruptedException {\n=\r\n&gt; Thread.sleep(100);\n&gt; }\n&gt; }\n&gt;\n&gt; When I run this I get one of two errors, n=\r\non-deterministically:\n&gt;\n&gt; java.lang.InterruptedException: sleep interrupted=\r\n\n&gt; at java.lang.Thread.sleep(Native Method)\n&gt; at UnpredictableTest.takeTen(=\r\nUnpredictableTest.java:5)\n&gt; ...\n&gt;\n&gt; or\n&gt;\n&gt; java.lang.Exception: test timed =\r\nout after 10 milliseconds\n&gt; at\n&gt; org.junit.internal.runners.statements.Fail=\r\nOnTimeout.evaluate(FailOnTimeout.j\n&gt; ava:48)\n&gt; ...\n&gt;\n&gt; Here&#39;s the relevant =\r\ncode in JUnit (FailOnTimeout):\n&gt;\n&gt; public void evaluate() throws Throwable =\r\n{\n&gt; ExecutorService service=3D\n&gt; Executors.newSingleThreadExecutor();\n&gt; Cal=\r\nlable&lt;Object&gt; callable=3D new Callable&lt;Object&gt;() {\n&gt; public Object call() t=\r\nhrows Exception {\n&gt; try {\n&gt; fNext.evaluate();\n&gt; } catch (Throwable e) {\n&gt; t=\r\nhrow new ExecutionException(e);\n&gt; }\n&gt; return null;\n&gt; }\n&gt; };\n&gt; Future&lt;Object=\r\n&gt; result=3D service.submit(callable);\n&gt; service.shutdown();\n&gt; try {\n&gt; boole=\r\nan terminated=3D\n&gt; service.awaitTermination(fTimeout, TimeUnit.MILLISECONDS=\r\n);\n&gt; if (!terminated)\n&gt; service.shutdownNow();\n&gt; result.get(0, TimeUnit.MIL=\r\nLISECONDS); // throws the\n&gt; exception if one occurred during the invocation=\r\n\n&gt; } catch (TimeoutException e) {\n&gt; throw new Exception(String.format(&quot;test=\r\n timed out\n&gt; after %d milliseconds&quot;, fTimeout));\n&gt; } catch (ExecutionExcept=\r\nion e) {\n&gt; throw unwrap(e);\n&gt; }\n&gt; }\n&gt;\n&gt; It seems that sometimes the Timeout=\r\nException gets thrown and caught and the\n&gt; Exception thrown. Sometimes, tho=\r\nugh, the InterruptedException that is\n&gt; terminating the test-running thread=\r\n gets thrown/caught first. I&#39;ve stared at\n&gt; this enough minutes to be ready=\r\n for help.\n&gt;\n&gt; One strangeness is that if I run the test programmatically\n&gt;=\r\n (&quot;JUnitCore.runClass(WaitTooLong.class)&quot;) the Exception is always thrown. =\r\nIf\n&gt; I run the test with the Eclipse JUnit runner or with JUnit Max, the re=\r\nsults\n&gt; are non-deterministic.\n&gt;\n&gt; Any ideas for making this deterministic?=\r\n I would prefer the second result\n&gt; above, if I can get it.\n&gt;\n&gt; Regards,\n&gt;\n=\r\n&gt; Kent Beck\n&gt; Three Rivers Institute\n&gt;\n&gt; \n\n", 
+    "profile": "ipreussde", 
+    "topicId": 21487, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 362862841, 
+    "prevInTime": 21492, 
+    "contentTrasformed": false, 
+    "postDate": "1239356209", 
+    "canDelete": false, 
+    "nextInTopic": 21494, 
+    "prevInTopic": 21492, 
+    "headers": {
+        "inReplyToHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PGZiYTI5Njk3MDkwNDEwMDIzNng2NWRjMzEzeGRiYmJlZjQzYzJjZmFhZTVAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+"
+    }
+}

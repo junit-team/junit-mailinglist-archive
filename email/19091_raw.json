@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 19092, 
+    "senderId": "fWlqYdQqSmkFky1UQiW6N38LG5qB8smvdW83TRjGACC-u3Rd3rq8yAyXfbgqc1WYi_urgpwefs8PDxkuSsnVnk9t", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Custom runner in a creation loop", 
+    "from": "Dani Zweig &lt;dani@...&gt;", 
+    "authorName": "Dani Zweig", 
+    "msgSnippet": "... That was it, thanks. The actual goal was to filter out tests annotated as @Optional unless a flag was set, so the runner wound up looking like this: public", 
+    "msgId": 19091, 
+    "rawEmail": "Return-Path: &lt;dani@...&gt;\r\nReceived: (qmail 1885 invoked by uid 7800); 12 Mar 2007 18:11:07 -0000\r\nX-Sender: dani@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 22397 invoked from network); 12 Mar 2007 16:21:48 -0000\r\nReceived: from unknown (66.218.66.71)\n  by m51.grp.scd.yahoo.com with QMQP; 12 Mar 2007 16:21:48 -0000\r\nReceived: from unknown (HELO talk.nabble.com) (72.21.53.35)\n  by mta13.grp.scd.yahoo.com with SMTP; 12 Mar 2007 16:21:48 -0000\r\nReceived: from [72.21.53.38] (helo=jubjub.nabble.com)\n\tby talk.nabble.com with esmtp (Exim 4.50)\n\tid 1HQnHM-0000Rl-Ja\n\tfor junit@yahoogroups.com; Mon, 12 Mar 2007 09:21:44 -0700\r\nMessage-ID: &lt;9437749.post@...&gt;\r\nDate: Mon, 12 Mar 2007 09:21:44 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;4f7da6b90703092253t5eace9ddhec2983257d6ef560@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nX-Nabble-From: dani@...\r\nReferences: &lt;9395825.post@...&gt; &lt;4f7da6b90703092253t5eace9ddhec2983257d6ef560@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Dani Zweig &lt;dani@...&gt;\r\nSubject: Re: [junit] Custom runner in a creation loop\r\nX-Yahoo-Group-Post: member; u=28278056; y=NCNM7ZOFbn7JldD2wndgoSVZcQ9-9N_AoB21mtRZqCnR70Q-\r\nX-Yahoo-Profile: danizweig\r\nX-eGroups-Approved-By: ddoss_2006 &lt;didoss@...&gt; via email; 12 Mar 2007 18:11:07 -0000\r\n\r\n\n&gt;Here, Request.aClass(testClass).getRunner() will look at the @RunWith\n&gt;annotation, and will attempt to assign to delegate, you guessed it,\n&gt;another VerboseRunner, which will call\n&gt;Request.aClass(testClass).getRunner(), which will...\n\n&gt;Probably what you want here is\n\n&gt;delegate= new TestClassRunner(testClass);\n\n&gt;Let me know if that nails it,\n&gt;   David Saff\n\nThat was it, thanks.\n\nThe actual goal was to filter out tests annotated as @Optional unless a flag\nwas set, so the runner wound up looking like this:\n\n    public OptionalRunner(Class&lt;?&gt; testClass) throws Exception {\n        delegate = new TestClassRunner(testClass);\n        new OptionalFilter().apply(delegate);\n    }\n\nand the filter wound up with:\n\n    @Override\n    public boolean shouldRun(Description description) {\n        return (runAll() || !isOptional(description));\n    } // shouldRun\n\nThis works, though the isOptional() method is clunky, since it parses the\ndescription string to get the class to get the method to get the\nannotations.\n\nAgain, thanks.\n\n- Dani Zweig\n  dani@...\n\n\n-- \nView this message in context: http://www.nabble.com/Custom-runner-in-a-creation-loop-tf3376116.html#a9437749\nSent from the JUnit - User mailing list archive at Nabble.com.\n\n\n", 
+    "profile": "danizweig", 
+    "topicId": 19082, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 28278056, 
+    "prevInTime": 19090, 
+    "contentTrasformed": false, 
+    "postDate": "1173716504", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19087, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwMzA5MjI1M3Q1ZWFjZTlkZGhlYzI5ODMyNTdkNmVmNTYwQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDk0Mzc3NDkucG9zdEB0YWxrLm5hYmJsZS5jb20+", 
+        "referencesHeader": "PDkzOTU4MjUucG9zdEB0YWxrLm5hYmJsZS5jb20+IDw0ZjdkYTZiOTA3MDMwOTIyNTN0NWVhY2U5ZGRoZWMyOTgzMjU3ZDZlZjU2MEBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

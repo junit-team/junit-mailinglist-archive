@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 5679, 
+    "senderId": "A_hFIBc5qtdPiTVPMN4LsJmqTAq6yXqxDVaxIqtEJLTRIi0N2WTCvqH6gt7Mn-TPxBlW5dXYjHkgv0rsee8HgmwWN-W2GuJQdsaAOLhq", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Just replaced my 3.7 jar with 3.8", 
+    "from": "&quot;Berin Loritsch&quot; &lt;bloritsch@...&gt;", 
+    "authorName": "Berin Loritsch", 
+    "msgSnippet": "... Most factory methods that use a classloader rely on the context classloader being set.  The reason is that if they are smart, they will try to use the", 
+    "msgId": 5678, 
+    "profile": "bloritsch", 
+    "topicId": 5663, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64910131, 
+    "messageBody": "<div id=\"ygrps-yiv-1195418563\"><blockquote><span title=\"ireply\">&gt; From: Vladimir Bossicard [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:vbossica@...\">vbossica@...</a>] <br/>\n&gt; <br/>\n&gt; When I read the code for the new version, I noticed the <br/>\n&gt; following line in the<br/>\n&gt; ReloadingTestSuiteLoader:<br/>\n&gt; <br/>\n&gt;         Thread.currentThread().setContextClassLoader( loader );<br/>\n&gt; <br/>\n&gt; I don&#39;t know if this is the cause of your problem, but it&#39;s <br/>\n&gt; worth trying recompiling the 3.8 without this line and see <br/>\n&gt; what happens.<br/>\n<br/>\n<br/>\n </span></blockquote>Most factory methods that use a classloader rely on the context<br/>\nclassloader being set.  The reason is that if they are smart,<br/>\nthey will try to use the current thread&#39;s context classloader.<br/>\n<br/>\nThread.currentThread().getContextClassLoader().loadClass( className<br/>\n).newInstance();<br/>\n<br/>\n<br/>\nIf you remove that method you could potentially screw up those methods.<br/>\n<br/>\nThen again if jUnit and whatever J2EE server are both setting the thread<br/>\ncontext classloader then there is a problem.  Someone has to use the<br/>\nother classloader as a parent.<br/>\n<br/>\nWhat would be smart is if jUnit would create its classloader using the<br/>\ncurrent thread context classloader as the parent--then set the context<br/>\nclassloader.  Then the two classloaders should be compatible.</div>", 
+    "prevInTime": 5677, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1030644273", 
+    "canDelete": false, 
+    "nextInTopic": 5679, 
+    "prevInTopic": 5677, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwODI5MTA1NjM3LjE0ODQxLmgwMTEuYzAwMy53bUBtYWlsLnRlbG9jaXR5LmNvbS5jcml0aWNhbHBhdGgubmV0Pg==", 
+        "messageIdInHeader": "PDAwMDMwMWMyNGY4NiQ4OGM5MjIxMCRhYzAwYThjMEBHYWJyaWVsPg=="
+    }
+}

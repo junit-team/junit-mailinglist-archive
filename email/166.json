@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 167, 
+    "senderId": "6EUDw7mecKlSV9VtJ1h0DCzSJ2jOj39B9ulYol4oSzu75DQg71RPJcDGW03-lFWLmgkCmMeajXu5YDA0BK8aaYY", 
+    "systemMessage": false, 
+    "subject": "Re: newbie question: how to avoid rerunning fixture code on every test", 
+    "from": "charliehubbard76@...", 
+    "authorName": "charliehubbard76@yahoo.com", 
+    "msgSnippet": "... Stephen, What you want to do is create a class that extends TestSetup. TestSetups allow you to do some initilization/de-initilization around a test suite", 
+    "msgId": 166, 
+    "topicId": 161, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-2077033068\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a>, &quot;Stephen P Peterson&quot; <br/>\n&lt;stephen.peterson@i...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; What if the setup logic involves connecting to databases and <br/>\n&gt; running queries that tends to be a bit slow for doing on every <br/>\n&gt; single test?  Is an explanation available anywhere on the web <br/>\n&gt; telling how to get tests to run faster by executing slow <br/>\n&gt; initialization code only once before all the tests?<br/>\n<br/>\n </span></blockquote>Stephen,<br/>\n<br/>\nWhat you want to do is create a class that extends TestSetup.  <br/>\nTestSetups allow you to do some initilization/de-initilization around <br/>\na test suite just as you described.<br/>\n<br/>\nclass MyTestSetup extends TestSetup {<br/>\n  public MyTestSetup( Test t ) {<br/>\n    super(t);<br/>\n  }<br/>\n<br/>\n  protected void setUp() {<br/>\n    Connection = DriverManager.getConnection(&quot;jdbc:url&quot;);<br/>\n  }<br/>\n<br/>\n  protected void tearDown() {<br/>\n  }<br/>\n}<br/>\n<br/>\nclass MyTest extends TestCase {<br/>\n  public MyTest( String name ) {<br/>\n    super( name );<br/>\n  }<br/>\n<br/>\n  public void testOne() {<br/>\n  }<br/>\n<br/>\n  public static Test suite() {<br/>\n     return new MyTestSetup( new TestSuite( MyTest.class ) );<br/>\n  }<br/>\n<br/>\n  public static void main( String args[] ) {<br/>\n     TestRunner.run( suite() );<br/>\n  }<br/>\n}</div>", 
+    "prevInTime": 165, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "977843584", 
+    "canDelete": false, 
+    "nextInTopic": 171, 
+    "prevInTopic": 162, 
+    "headers": {
+        "inReplyToHeader": "PDg1MjU2OUJELjAwNzE1QTA1LjAwQHVoY25oMDAyLnVoYy5jb20+", 
+        "messageIdInHeader": "PDkyYWNpMCt1cDIxQGVHcm91cHMuY29tPg=="
+    }
+}

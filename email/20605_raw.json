@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 20606, 
+    "senderId": "DkAQLMUClBp7Qy2oWql_c3tzln1TuSEED3mE4uomXUg0JQSMV3TIr9UDjbfaKpwRCCmutUZeawZ0RZ44Zqtqzlv_d07rdwFL", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: 4.5 release candidate", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Nat, I m glad the new format worked better for you. BlockJUnit4TestRunner and its supporting cast are intended to be published in the next release. However, ", 
+    "msgId": 20605, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 27557 invoked from network); 19 Jun 2008 15:09:08 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m43.grp.scd.yahoo.com with QMQP; 19 Jun 2008 15:09:08 -0000\r\nX-Received: from unknown (HELO elasmtp-curtail.atl.sa.earthlink.net) (209.86.89.64)\n  by mta17.grp.scd.yahoo.com with SMTP; 19 Jun 2008 15:09:08 -0000\r\nX-Received: from [65.100.6.133] (helo=kentspavilion)\n\tby elasmtp-curtail.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1K9Ll4-0000Da-7Z\n\tfor junit@yahoogroups.com; Thu, 19 Jun 2008 11:09:07 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;17fa53d0806181516n36129ddenbb7011a88e9028f1@...&gt; &lt;g3dblm+vl6p@...&gt;\r\nDate: Thu, 19 Jun 2008 08:08:53 -0700\r\nMessage-ID: &lt;019901c8d21e$695ca430$4000a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;g3dblm+vl6p@...&gt;\r\nX-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.3198\r\nThread-index: AcjR9YgPbjDGZM5iTVuatz1n9jIgcwAJrD7w\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d4780182ff3a4749f0d9e6e2b70adbd2a9da8bccd5e87801b615350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] Re: 4.5 release candidate\r\nX-Yahoo-Group-Post: member; u=173198504; y=a_BHNV3iUrzZWZF3xs563NbZa33O63TadJgdRlOU1z4yMouo\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nNat,\n \nI&#39;m glad the new format worked better for you. BlockJUnit4TestRunner and its\nsupporting cast are intended to be published in the next release. However,\nthey are new enough that we wanted to verify their efficacy and give\nourselves a chance to refine them before many people used them.\n \nPoint well taken on the redundancy of deprecation and moving the classes.\nWe&#39;ll move them back before releasing. We will compile the final release\nwith Java 5 as well.\n \nThank you very much for the feedback.\n \nRegards,\n \nKent Beck\nThree Rivers Institute\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nnat_pryce\nSent: Thursday, June 19, 2008 3:16 AM\nTo: junit@yahoogroups.com\nSubject: [junit] Re: 4.5 release candidate\n\n\n\nI&#39;ve ported the jMock runner over to the new structure. Here are some\ncomments on the experience.\n\nI extended BlockJUnit4ClassRunner and override the invoke(...) method\nto verify the mock objects after the test has run, but before tear-down.\n\nThis way reduces the amount of code in the custom runner. I also\ndidn&#39;t have to duplicate existing functionality because the invoke\nmethod let me hook in at the right point.\n\nHowever, I still had to use classes in the org.junit.internal package,\nwhich feels wrong. Have I missed the right way of doing this?\n\nOther niggles...\n\n- The classes are compiled for Java 6 only, but only seem to need\nlanguage features from 5 and above. Can the release be compiled for\nJava 5?\n\n- The JUnit 4.4 classes have been deprecated *and* moved to another\npackage, which breaks any code that used them. There&#39;s no point in\ndoing both. Either break backward compatability or keep backward\ncompatability and deprecate the classes. I&#39;d prefer the latter, since\nit will allow me to do a jMock with new features supporting both JUnit\n4.4 and 4.5 and then release a version that brings support forward to\n4.5 onwards.\n\nCheers,\n--Nat.\n\n--- In junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com, &quot;Nat Pryce&quot;\n&lt;nat.pryce@...&gt; wrote:\n&gt;\n&gt; JUnit 4.5 breaks jMock 2 because the TestMethod class has been moved\n&gt; to a different package.\n&gt; \n&gt; It&#39;s our fault for subclassing JUnit4ClassRunner, but it would be nice\n&gt; if JUnit4ClassRunner did not change at all in this release.\n&gt; \n&gt; --Nat\n&gt; \n&gt; 2008/6/16 Kent Beck &lt;kentb@...&gt;:\n&gt; &gt; All,\n&gt; &gt;\n&gt; &gt; Following our discussions last week, we have incorporated the old\n&gt; &gt; JUnit4ClassRunner into 4.5. (The new runner is called\nBlockJUnit4ClassRunner\n&gt; &gt; because it is organized as a &quot;block&quot; of &quot;statements&quot; instead of nested\n&gt; &gt; procedures). Those of you who have written custom runners, we&#39;d\nappreciate\n&gt; &gt; it if you could try out the release candidate to make sure it\nsupports your\n&gt; &gt; existing runners.\n&gt; &gt;\n&gt; &gt; Next up, release notes and then out the door!\n&gt; &gt;\n&gt; &gt; Whew!\n&gt; &gt;\n&gt; &gt; Kent Beck\n&gt; &gt; Three Rivers Institute\n&gt; &gt;\n&gt; &gt;\n&gt;\n\n\n\n \n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 20585, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 20604, 
+    "contentTrasformed": false, 
+    "postDate": "1213888133", 
+    "canDelete": false, 
+    "nextInTopic": 20606, 
+    "prevInTopic": 20602, 
+    "headers": {
+        "inReplyToHeader": "PGczZGJsbSt2bDZwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAxOTkwMWM4ZDIxZSQ2OTVjYTQzMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PDE3ZmE1M2QwODA2MTgxNTE2bjM2MTI5ZGRlbmJiNzAxMWE4OGU5MDI4ZjFAbWFpbC5nbWFpbC5jb20+IDxnM2RibG0rdmw2cEBlR3JvdXBzLmNvbT4="
+    }
+}

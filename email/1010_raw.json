@@ -1,0 +1,29 @@
+{
+    "topicId": 1008, 
+    "postDate": "987829215", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "UZPqpFuacokTKaY_vi6j2NtCiCTEG0gOcpYVfDpRTKfrPHrcUJlclkylAjsCylNNmbt12h7HvsTTsH6a0j1m6sbrFLJh", 
+    "nextInTime": 1011, 
+    "userId": 0, 
+    "prevInTime": 1009, 
+    "prevInTopic": 1008, 
+    "headers": {
+        "inReplyToHeader": "PDU4OUQyQzQ3NTBCRUE2NENBMzJCN0ZFMUFGMUVGRTk0MTdDNzYyQGxhc3Nlbi5wcmlzYS5jb20+", 
+        "messageIdInHeader": "PDIwMDEwNDIxMDUwMDE1Ljg3NDQ1LnFtYWlsQHdlYjExNjA4Lm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "Robert Sartin", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "/* ... [assert() in callbacks] Works fine if the callback runs in the same thread as the TestCase. If the callback may/will run in a different thread, you may", 
+    "contentTrasformed": false, 
+    "msgId": 1010, 
+    "nextInTopic": 1014, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;sartin@...&gt;\r\nX-Sender: sartin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 21 Apr 2001 05:00:16 -0000\r\nReceived: (qmail 35579 invoked from network); 21 Apr 2001 05:00:15 -0000\r\nReceived: from unknown (10.1.10.27) by l7.egroups.com with QMQP; 21 Apr 2001 05:00:15 -0000\r\nReceived: from unknown (HELO web11608.mail.yahoo.com) (216.136.172.60) by mta2 with SMTP; 21 Apr 2001 05:00:15 -0000\r\nMessage-ID: &lt;20010421050015.87445.qmail@...&gt;\r\nReceived: from [66.68.56.143] by web11608.mail.yahoo.com; Fri, 20 Apr 2001 22:00:15 PDT\r\nDate: Fri, 20 Apr 2001 22:00:15 -0700 (PDT)\r\nReply-To: sartin@...\r\nSubject: Re: [junit] assert() in callbacks\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;589D2C4750BEA64CA32B7FE1AF1EFE9417C762@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Robert Sartin &lt;sartin@...&gt;\r\nFrom: Robert Sartin &lt;sartin@...&gt;\r\n\r\n/*\n--- Ruth Adrineda &lt;radrineda@...&gt; wrote:\n&gt; \n&gt; has anybody used\n&gt; \n[assert() in callbacks]\n\nWorks fine if the callback runs in the same thread as the TestCase.\n\nIf the callback may/will run in a different thread, you may want\nsomething like:\n*/\n\n// Warning: I have not tested this, it is from memory\n// I don&#39;t have a Java environment handy right now and\n// apologize in advance for any errors that may have\n// slipped into my memory. Notably, I&#39;m not certain\n// at this instant that the write to failureMessage\n// is guaranteed to be visible in the test thread....\npublic class FooTest extends TestCase {\n  Object callbackSync = new Object;\n  String failureMessage = null;\n\n  public void callback() {\n    // Do callback stuff\n    if ( /* got a failure */ ) {\n      failureMessage = &quot;Some informative failure message&quot;;\n    }\n    synchronized(callbackSync) {\n      callbackSync.notify();\n    }\n  }\n\n  public void testSomethingWithCallback() {\n    // Do test stuff that should cause callback to execute\n    synchronized(callbackSync) {\n      try {\n        callbackSync.wait(SOME_REASONABLE_TIMEOUT);\n        if (failureMessage != null) {\n          fail(failureMessage);\n        }\n      } catch (InterruptedException e) {\n        fail(&quot;Callback was not called within timeout&quot;);\n      }\n    }\n  }\n}\n\n/*\nRegards,\n\nRob\n*/\n\n\n__________________________________________________\nDo You Yahoo!?\nYahoo! Auctions - buy the things you want at great prices\nhttp://auctions.yahoo.com/\n\n", 
+    "subject": "Re: [junit] assert() in callbacks"
+}

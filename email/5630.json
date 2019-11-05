@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 25, 
+    "nextInTime": 5631, 
+    "senderId": "QiZb7x4TRUyi_Q_fC2cIVos2JnuirHcndaXpyN91WFFUjwvmzhDT1igGACdMm29ISPVxKNlcvSoGCkbPWGvh4NHXPDg", 
+    "systemMessage": false, 
+    "subject": "Re: A Growing Problem", 
+    "from": "&quot;dhemeryy&quot; &lt;dale@...&gt;", 
+    "authorName": "dhemeryy", 
+    "msgSnippet": "Hi Parag, ... Consider extracting the repeated code into a separate method, somehing like this: private void checkCreate_Label(String date, String lot, String", 
+    "msgId": 5630, 
+    "profile": "dhemeryy", 
+    "topicId": 5610, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 5352550, 
+    "messageBody": "<div id=\"ygrps-yiv-937696202\">Hi Parag,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; You might work around this limitation by placing all test cases and<br/>\n&gt; assert statements sequentially inside a single method. This<br/>\n&gt; approachsuffers from two limitations. The first limitation is the<br/>\n&gt; need to replicate the test code for every test case. Even if you<br/>\n&gt; have only two or three lines of code per test case, the size of the<br/>\n&gt; method will mushroom and become hard to maintain (and read). See<br/>\n&gt; example below<br/>\n<br/>\n </span></blockquote>Consider extracting the repeated code into a separate method, somehing<br/>\nlike this:<br/>\n<br/>\n<br/>\nprivate void checkCreate_Label(String date, String lot,              <br/>\n                                   <br/>\n                               String parm3, String expectedLabel)<br/>\n{<br/>\n    try {<br/>\n        BatchLabel aBatchLabel = new BatchLabel(date, lot, parm3);<br/>\n        assert ( aBatchLabel.getBatchLabel().equals(expectedLabel)) ;<br/>\n    } catch (Exception e) {<br/>\n        assert ( &quot;Exception:&quot; + e, false );<br/>\n    }<br/>\n}<br/>\n<br/>\nprivate void checkCreate_Exception(String date, String lot,<br/>\n                                   String parm3,<br/>\n                                   Class expectedException)<br/>\n{<br/>\n    try {<br/>\n        BatchLabel aBatchLabel = new BatchLabel(date, lot, parm3);<br/>\n    } catch (Exception e) {<br/>\n        assert(&quot;Wrong Exception thrown: &quot; + e,<br/>\n               e.getClass().equals(expectedException)) ;<br/>\n    }<br/>\n}<br/>\n<br/>\npublic void testCreateBatchLabelNoInnerClass()<br/>\n{<br/>\n    checkCreate_Label(&quot;20010530&quot;, &quot;A13&quot;, &quot;1&quot;, &quot;A13-1 EXP. 05/01&quot;);<br/>\n    checkCreate_Label(&quot;20010530&quot;, &quot;A13&quot;, &quot;&quot;, &quot;A13 EXP. 05/01&quot;);<br/>\n    checkCreate_Label(&quot;20011231&quot;, &quot;A13&quot;, &quot;1&quot;, &quot;A13-1 EXP. 12/01&quot;);<br/>\n    checkCreate_Label(&quot;20010101&quot;, &quot;A13&quot;, &quot;1&quot;, &quot;A13-1 EXP. 01/01&quot;);<br/>\n    checkCreate_Label(&quot;20010101&quot;, &quot;A123&quot;, &quot;99&quot;, &quot;A123-99 EXP. 01/01&quot;);<br/>\n<br/>\n    checkCreate_Exception(&quot;2001530&quot;, &quot;A999&quot;, &quot;&quot;, BadDateException.class);<br/>\n    checkCreate_Exception(&quot;20010530&quot;, &quot;913&quot;, &quot;1&quot;, BadLotException.class);<br/>\n<br/>\n// etc<br/>\n<br/>\n}<br/>\n<br/>\nI&#39;ve just done that for a bunch of my own tests.  The one drawback is<br/>\nthat I have to scan more the stack trace to identify the actual test,<br/>\nbut so far I haven&#39;t found that to be a problem.<br/>\n<br/>\nDale</div>", 
+    "prevInTime": 5629, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1029959696", 
+    "canDelete": false, 
+    "nextInTopic": 5633, 
+    "prevInTopic": 5629, 
+    "headers": {
+        "inReplyToHeader": "PDNCODFFQkFGLjJDOUVFMzFEQHNhdnZpb24uY29tPg==", 
+        "messageIdInHeader": "PGFrMHI2Zys5bjVyQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 7242, 
+    "senderId": "m3vPrUSjtcfIU2lgZl6LUD01jYlumucjpOZ00UfzhsFlS4wXQy3XkcLXmchdcX43v6HEYi3Z1YEF5C8eXyBS4s-m", 
+    "systemMessage": false, 
+    "subject": "UnsatisfiedLinkError: Native Library  already loaded in another classloader", 
+    "from": "&quot;t7p76n&quot; &lt;t7p76n@...&gt;", 
+    "authorName": "t7p76n", 
+    "msgSnippet": "I created two small initial tests in a suite. Each test utilizes a singleton called DBManager. Each test causes an object to acquire a DB connection from", 
+    "msgId": 7241, 
+    "profile": "t7p76n", 
+    "topicId": 7241, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 141492997, 
+    "messageBody": "<div id=\"ygrps-yiv-1261004920\">I created two small initial tests in a suite. Each test utilizes a <br/>\nsingleton called DBManager. Each test causes an object to acquire a <br/>\nDB connection from DBManager. The test that I configure to run first <br/>\n(through a class name change) will work correctly. The second test <br/>\ncauses this error:<br/>\n<br/>\nUnsatisfiedLinkError: Native Library C:&#92;oracle&#92;ora90&#92;BIN&#92;ocijdbc9.dll <br/>\nalready loaded in another classloader<br/>\n<br/>\nEach test causes a method to invoke connect() from my DBManager:<br/>\n<br/>\n    public static boolean connect(String jdbc_driver, String <br/>\nconnection_str,<br/>\n                                  String user, String password) <br/>\nthrows Exception {<br/>\n        if (db_conn == null) {<br/>\n            Class.forName( jdbc_driver );<br/>\n            logger.info(&quot;Loaded JDBC Driver: &quot; + jdbc_driver);<br/>\n            <br/>\n            // Acquire DB connection<br/>\n            try {<br/>\n                db_conn = DriverManager.getConnection(connection_str, <br/>\nuser, password);<br/>\n            } catch (Exception e) {<br/>\n                logger.severe(&quot;Exception while acquiring a DB <br/>\nconnection: &quot; + e);<br/>\n            }<br/>\n        }<br/>\n        if ( db_conn != null ) {<br/>\n            return true;<br/>\n        } else {<br/>\n            return false;<br/>\n        }<br/>\n    }<br/>\n<br/>\nFrom the log messages, I see that the second test has a new instance <br/>\nof the DBManager singleton. The db_conn is null. The getConnection() <br/>\nis invoked again. But, the JUnit environment still has the Oracle <br/>\nlibrary. And, it causes a major exception:<br/>\n<br/>\n    [junit] Testcase: testConvertDateStr<br/>\n(com.verancecorp.EventConverter.Converter.ConvertDateTest): Caused an <br/>\nERROR<br/>\n    [junit] Native Library C:&#92;oracle&#92;ora90&#92;BIN&#92;ocijdbc9.dll already <br/>\nloaded in another classloader<br/>\n    [junit] java.lang.UnsatisfiedLinkError: Native Library <br/>\nC:&#92;oracle&#92;ora90&#92;BIN&#92;ocijdbc9.dll already loaded in another classloader<br/>\n    [junit]     at java.lang.ClassLoader.loadLibrary0<br/>\n(ClassLoader.java:1444)<br/>\n    [junit]     at java.lang.ClassLoader.loadLibrary<br/>\n(ClassLoader.java:1404)<br/>\n    [junit]     at java.lang.Runtime.loadLibrary0(Runtime.java:772)<br/>\n    [junit]     at java.lang.System.loadLibrary(System.java:832)<br/>\n    [junit]     at oracle.jdbc.oci8.OCIDBAccess.logon<br/>\n(OCIDBAccess.java:294)<br/>\n    [junit]     at oracle.jdbc.driver.OracleConnection.&lt;init&gt;<br/>\n(OracleConnection.java:307)<br/>\n    [junit]     at <br/>\noracle.jdbc.driver.OracleDriver.getConnectionInstance<br/>\n(OracleDriver.java:442)<br/>\n    [junit]     at oracle.jdbc.driver.OracleDriver.connect<br/>\n(OracleDriver.java:321)<br/>\n    [junit]     at java.sql.DriverManager.getConnection<br/>\n(DriverManager.java:512)<br/>\n    [junit]     at java.sql.DriverManager.getConnection<br/>\n(DriverManager.java:171)<br/>\n    [junit]     at <br/>\ncom.verancecorp.EventConverter.Scheduler.DBConnectionBean.connect<br/>\n(DBConnectionBean.java:82)<br/>\n    [junit]     at <br/>\ncom.verancecorp.EventConverter.Scheduler.Connector.establishConnection<br/>\n(Connector.java:137)<br/>\n    [junit]     at <br/>\ncom.verancecorp.EventConverter.Scheduler.Connector.startConnect<br/>\n(Connector.java:94)<br/>\n    [junit]     at <br/>\ncom.verancecorp.EventConverter.Converter.ConvertDateTest.setUp<br/>\n(ConvertDateTest.java:29)<br/>\n<br/>\nI have read about the JUnit custom class loader. I have added this <br/>\nline into both<br/>\njunit&#92;runner&#92;excluded.properies in the &quot;&lt;junit&gt; &lt;classpath&gt;&quot; and <br/>\ndirectly into an updated junit.jar in &lt;ANT&gt;&#92;lib&#92;. to no effect:<br/>\n<br/>\nexcluded.9=oracle.*<br/>\n<br/>\nAny suggestions or small examples for dealing with this DB/JUnit <br/>\nissue?<br/>\n<br/>\nThanks<br/>\n-Tim</div>", 
+    "prevInTime": 7240, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1047945306", 
+    "canDelete": false, 
+    "nextInTopic": 7242, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGI1NW44cStncTAzQGVHcm91cHMuY29tPg=="
+    }
+}

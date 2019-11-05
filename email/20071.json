@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 20072, 
+    "senderId": "zkfkOPLqhqKnjDFXmI1eBQuNCMHcWnyhW6CjaWlg5c7HO8R20vEME-O6OOK4VUt7ap8HAULbcFqt-W4MXXcEAg_oD9b5JM_1WjY", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to test a method that logs to a file", 
+    "from": "&quot;Joel Neely&quot; &lt;joel.neely@...&gt;", 
+    "authorName": "Joel Neely", 
+    "msgSnippet": "I ve used two techniques in similar situations, but I m sure there are others (including some more elegant than my quick hacks). 1) Inspect the log file: 1.1)", 
+    "msgId": 20071, 
+    "profile": "joelneely", 
+    "topicId": 20070, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 236637683, 
+    "messageBody": "<div id=\"ygrps-yiv-364021314\">I&#39;ve used two techniques in similar situations, but I&#39;m sure there are<br/>\nothers (including some more elegant than my quick hacks).<br/>\n<br/>\n1) Inspect the log file:<br/>\n<br/>\n1.1) Start logging with a fresh log file name.<br/>\n1.2) Run code under test.<br/>\n1.3) Run an assertion against the content of the file from step one.<br/>\n<br/>\nThe clean way to do the above, of course, is to have a small library<br/>\nof tools that e.g. given a file name return the entire content of the<br/>\nfile as a single string, given a file name and a string, verify that<br/>\nsome line in the file contains the given string, etc.<br/>\n<br/>\n2) Mock or stub the logging:<br/>\n<br/>\nBreak the dependency that&#39;s hanging you up.<br/>\n<br/>\nApache commons logging provides an interface-oriented wrapper around<br/>\nseveral widely-used logging implementations (including Log4J). By<br/>\nwriting against the apache.commons.logging.Log interface in your<br/>\nactual code, you break the dependency on Log4J implementation details.<br/>\nFor unit testing, you can then:<br/>\n<br/>\n2.1) create a stub implementation of Log that e.g. puts all log<br/>\nmessages in a StringWriter which you can then inspect, or<br/>\n2.2) write a mock that implements Log and verifies that the expected<br/>\nseverity call was made with the expected message properties, or<br/>\n2.3) use your imagination for more options.<br/>\n<br/>\nIf you have reasons for not bringing in another set of outside code<br/>\n(e.g. time-consuming certification/approval/legal processes), you can<br/>\nwrite your own simple interface that has the key &quot;level&quot; methods<br/>\n(error(...), warn(...), etc.) and create two implementations: one that<br/>\nproxies for Log4J and the other that provides the stub/mock<br/>\ncapabilities you need for testing.<br/>\n<br/>\nHope this helps!<br/>\n-jn-<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 11/7/07, Hemanth &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:hemanthdv_yid@...\">hemanthdv_yid@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Hi<br/>\n&gt;<br/>\n&gt;  I would like to know how to JUnit test a method that writes logs to a<br/>\n&gt;  file. I am using log4j and I have methods that write different logs to<br/>\n&gt;  a file. How do I Junit test that these methods are working fine.<br/>\n&gt;<br/>\n&gt;  Regards<br/>\n&gt;  Hemanth<br/>\n&gt;<br/>\n&gt;                    <br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\nProgramming is the art of writing essays in crystal clear prose and<br/>\nmaking them execute. - Per Brinch Hansen </span></blockquote></div>", 
+    "prevInTime": 20070, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1194439785", 
+    "canDelete": false, 
+    "nextInTopic": 20074, 
+    "prevInTopic": 20070, 
+    "headers": {
+        "inReplyToHeader": "PGZncm5uditkdGE5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDVlMGI5NjhhMDcxMTA3MDQ0OWs0Zjc5NGJkOHA4OTQ4ZGNjNGYwMjNiZDY1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZncm5uditkdGE5QGVHcm91cHMuY29tPg=="
+    }
+}

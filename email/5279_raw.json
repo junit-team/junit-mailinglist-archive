@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5280, 
+    "senderId": "nAQnyR1F_e4AsTMdc9pgAQMjB_UTMEGkLFC91n_LeDb2FH_Lfn0kE_GzDkxPRJoFRT0vJA0aVc3enzHt4yBdVXYe8dVr1q32VVmDnfNFb_Kz", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] design issue", 
+    "from": "Vladimir Bossicard &lt;vbossica@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "... Thanks J.B. I ll answer :-) From what I saw from your code, I guess that you want to write the errors/failures into a log file.  First question to answer:", 
+    "msgId": 5279, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nReceived: (qmail 61054 invoked from network); 28 Jun 2002 21:17:20 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m11.grp.scd.yahoo.com with QMQP; 28 Jun 2002 21:17:20 -0000\r\nReceived: from unknown (HELO n21.grp.scd.yahoo.com) (66.218.66.77)\n  by mta2.grp.scd.yahoo.com with SMTP; 28 Jun 2002 21:17:20 -0000\r\nX-eGroups-Return: vladimir@...\r\nReceived: from [66.218.67.182] by n21.grp.scd.yahoo.com with NNFMP; 28 Jun 2002 21:17:19 -0000\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 28 Jun 2002 21:17:19 -0000\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_7_3); 28 Jun 2002 20:55:41 -0000\r\nReceived: (qmail 81514 invoked from network); 28 Jun 2002 20:55:41 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m15.grp.scd.yahoo.com with QMQP; 28 Jun 2002 20:55:41 -0000\r\nReceived: from unknown (HELO c003.snv.cp.net) (209.228.32.214)\n  by mta1.grp.scd.yahoo.com with SMTP; 28 Jun 2002 20:55:41 -0000\r\nReceived: (cpmta 19812 invoked from network); 28 Jun 2002 13:55:40 -0700\r\nReceived: from 64.34.185.145 (HELO bossicard.com)\n  by smtp.telocity.com (209.228.32.214) with SMTP; 28 Jun 2002 13:55:40 -0700\r\nX-Sent: 28 Jun 2002 20:55:40 GMT\r\nMessage-ID: &lt;3D1CCE46.4080308@...&gt;\r\nDate: Fri, 28 Jun 2002 13:59:50 -0700\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.0rc1) Gecko/20020417\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] design issue\r\nReferences: &lt;20020626220144.57685.qmail@...&gt; &lt;200206280920520205.0016DEF1@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-From: Vladimir Bossicard &lt;vladimir@...&gt;\r\nFrom: Vladimir Bossicard &lt;vbossica@...&gt;\r\nX-Yahoo-Group-Post: member; u=112965394\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; Vladimir is probably a better person to answer these questions than I\n&gt; am, since he has worked more closely with the API from a developer&#39;s\n&gt; point of view. Vladimir? :)\n\nThanks J.B. I&#39;ll answer :-)\n\n From what I saw from your code, I guess that you want to write the \nerrors/failures into a log file.  First question to answer: is \nTestListener the right solution?  In this case, I would rather go with \nthe JUnitReport task from Ant.  Another solution would be to pipe the \nTextUIRunner into a file (with junit.textrunner ... &gt; result.log).\n\nBut I imagine that you really want to use a TestListener and the task is \nto record all errors/failures into a log file.  The quickest solution I \nfound (with the version 3.7 of JUnit) is the following:\n\npackage junit.textui;    // (1)\n\npublic class VBORunner\n     extends TestRunner {\n\n\tpublic TestResult doRun(Test suite, boolean wait) {\n\t\tTestResult result= createTestResult();\n\n\t\tresult.addListener(new VBOListener());      // (2)\n\t\t\n\t\tresult.addListener(this);\n\t\tlong startTime= System.currentTimeMillis();\n\t\tsuite.run(result);\n\t\tlong endTime= System.currentTimeMillis();\n\t\tlong runTime= endTime-startTime;\n\t\twriter().println();\n\t\twriter().println(&quot;Time: &quot;+elapsedTimeAsString(runTime));\n\t\tprint(result);\n\n\t\twriter().println();\n\n\t\tpause(wait);\n\t\treturn result;\n\t}\n\n\tpublic static void main(String args[]) {\n\t\tTestRunner aTestRunner= new VBORunner();   // (3)\n\t\ttry {\n\t\t\tTestResult r= aTestRunner.start(args);  // (4)\n\t\t\tif (!r.wasSuccessful())\n\t\t\t\tSystem.exit(-1);\n\t\t\tSystem.exit(0);\n\t\t} catch(Exception e) {\n\t\t\tSystem.err.println(e.getMessage());\n\t\t\tSystem.exit(-2);\n\t\t}\n\t}\n\n}\n\n(1) the VBORunner class must be placed into the junit.textui package \nsince the method start (4) is defined as protected\n(2) only the TestResult object allows several listeners, so we will use \nit to add our listener (VBOListener simply implements TestListener). The \nversion 3.8 introduces the TestRunListener, but there&#39;s no mechanism yet \nto specify several TestRunListeners].\n(3) I had to overwrite the main method to create my special VBORunner.\n\nThis class can only be used with the console but the idea is the same \nfor the other runners.\n\nThere are several other possibilities but I think that this one is the \nquickest.  Anyone has another idea?\n\nHope this help\n\n-Vladimir\n\n-- \nVladimir Bossicard\nwww.bossicard.com\n\n\n\n", 
+    "profile": "vbossica", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "prevInTime": 5278, 
+    "contentTrasformed": false, 
+    "postDate": "1025297990", 
+    "canDelete": false, 
+    "nextInTopic": 5294, 
+    "prevInTopic": 5278, 
+    "headers": {
+        "messageIdInHeader": "PDNEMUNDRTQ2LjQwODAzMDhAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PDIwMDIwNjI2MjIwMTQ0LjU3Njg1LnFtYWlsQHdlYjIwNDE0Lm1haWwueWFob28uY29tPiA8MjAwMjA2MjgwOTIwNTIwMjA1LjAwMTZERUYxQHNtdHAxLnN5bXBhdGljby5jYT4="
+    }
+}

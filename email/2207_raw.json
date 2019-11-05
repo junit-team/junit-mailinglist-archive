@@ -1,0 +1,29 @@
+{
+    "topicId": 2136, 
+    "postDate": "996568523", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Richard Dallaway &lt;richard@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "-KTjK3CINVnSa-40STPiLgaVAdX1sMx14EfGQ9xithwe_GRHK0Pqzk8MHRiQEbluaxpRXHA-onyKNUkXzeBsXLMdUNqrboaWIxx183o8", 
+    "nextInTime": 2208, 
+    "userId": 0, 
+    "prevInTime": 2206, 
+    "prevInTopic": 2197, 
+    "headers": {
+        "inReplyToHeader": "PDk5NjUzNzU1OC4yNjc2LjU5OTQxLmw5QHlhaG9vZ3JvdXBzLmNvbT4=", 
+        "messageIdInHeader": "PDUuMC4yLjEuMC4yMDAxMDczMTA5MDYyOS4wNDBjZjBiMEBwb3AzLm5vcnRvbi5hbnRpdmlydXM+"
+    }, 
+    "authorName": "Richard Dallaway", 
+    "numMessagesInTopic": 11, 
+    "msgSnippet": "Mathieu - thanks for putting together that list of options.  I think there s some good stuff in there to think about. ... If... - you need a lot of data for", 
+    "contentTrasformed": false, 
+    "msgId": 2207, 
+    "nextInTopic": 2208, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;richard@...&gt;\r\nX-Sender: richard@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 31 Jul 2001 08:34:20 -0000\r\nReceived: (qmail 52170 invoked from network); 31 Jul 2001 08:34:20 -0000\r\nReceived: from unknown (10.1.10.27) by l9.egroups.com with QMQP; 31 Jul 2001 08:34:20 -0000\r\nReceived: from unknown (HELO carbon.btinternet.com) (194.73.73.92) by mta2 with SMTP; 31 Jul 2001 08:34:20 -0000\r\nReceived: from [213.122.12.141] (helo=bigdog.dallaway.com) by carbon.btinternet.com with esmtp (Exim 3.22 #9) id 15RUyo-0007Sg-00; Tue, 31 Jul 2001 09:34:19 +0100\r\nMessage-Id: &lt;5.0.2.1.0.20010731090629.040cf0b0@...&gt;\r\nX-Sender: richard/edith.hatters.org.uk@...\r\nX-Mailer: QUALCOMM Windows Eudora Version 5.0.2\r\nDate: Tue, 31 Jul 2001 09:35:23 +0100\r\nTo: junit@yahoogroups.com\r\nSubject: Re: testing database operation\r\nCc: egoine_@...\r\nIn-Reply-To: &lt;996537558.2676.59941.l9@yahoogroups.com&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;; format=flowed\r\nFrom: Richard Dallaway &lt;richard@...&gt;\r\n\r\nMathieu - thanks for putting together that list of options.  I think \nthere&#39;s some good stuff in there to think about.\n\n&gt;Option 1 - Data refresh:  refresh data after/before every test.\n&gt;...from a copy of the baseline data somewhere.\n&gt;Really impossible due to performance. If you think not, let me know how.\n\nIf...\n  - you need a lot of data for unit tests (and some codes does); or\n  - your DB machine is on the wrong side of the planet; or\n  - your DB machine/DB product is under-powered; or\n  - you have so many DB tests that you&#39;ve reached a limit...\n...then yes, performance is an issue with this approach.  For an \never-growing project it&#39;s something you&#39;re going to run into sooner or \nlater, I guess.\n\nOn the other hand, there are some things you can do to make it \nworkable.  For example:\n\n- if a subsection of tests only touch a couple of tables, then you don&#39;t \nneed to wipe and recreate the whole database for those tests.  I tend to \nwrite helper methods to set up database scenarios and call them as required \n(rather than touch every table every time in setUp and tearDown).\n\n- how much data do you need for unit tests?  If you craft your tests \ncarefully, you may be able to get away with just a hand full of records.\n\n- as you point out, truncate is very fast for getting rid of data.  And for \nsome tests, that&#39;s all you need to do.\n\n- if your tests are all in one test class, then it&#39;s going to be a pain to \nrun that class.  You may get better mileage from option 1 if you can break \nyour testing into a number of smaller classes.  During a coding frenzy you \ncan run the test class covering just the area you&#39;re working on... and run \nall tests a little less frequently.\n\nI guess the viability of option 1 depends on your aims and circumstances.\n\n\n&gt;Option 4 - Data Reset: reverse the changes via some generic black-magic\n&gt;after every test.\n&gt;The dream! Fast, efficient, generic! :)\n\nOh yes, this is what we want.\n\n\n&gt;4b) DB tricks, triggers and al.\n&gt;You need a DB that is a copy of your baseline stable data. (Might be in the\n&gt;same DB, but with table names prefixed with &#39;STBL&#39;(stable)).\n\nThe only downside I see to this is the complexity it brings, and I&#39;m not \nsure I want to add much more complexity to my testing environment.   I \nguess it&#39;s a trade off: extra complexity for time gained from something \nlike option 1.\n\nRegards\nRichard\n\n\n", 
+    "subject": "Re: testing database operation"
+}

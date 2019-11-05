@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 19, 
+    "nextInTime": 19918, 
+    "senderId": "8Se2ZuV8veLmR1HRSqwCpofCbvcav5At9dRRRhUZjFtk7jWpObh8l7JQR-DFEQoywcPIaDTI8w3qDhtjuFeWaNldOb8", 
+    "systemMessage": true, 
+    "subject": "Re: How to change dynamically (runtime) the classpath for a given test", 
+    "from": "&quot;David&quot; &lt;achepati67@...&gt;", 
+    "authorName": "David", 
+    "msgSnippet": "... the ... the ... under ... can ... placed ... Dear Lasse, I have the opossite problem, I would like to create a file during the testing process on some", 
+    "msgId": 19917, 
+    "profile": "achepati67", 
+    "topicId": 19905, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 152694144, 
+    "messageBody": "<div id=\"ygrps-yiv-234085496\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt; <br/>\nwrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hi David,<br/>\n&gt; <br/>\n&gt; On 9/21/07, David &lt;achepati67@...&gt; wrote:<br/>\n&gt; &gt;  Thanks for your reply, but you are assuming to much, because you<br/>\n&gt; &gt;  have to modify the classpath by hand. For example under eclipse <br/>\n </span></blockquote>the<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;  current folder (.) is not on the classpath, so you have addapt <br/>\n </span></blockquote>the<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;  test to the IDE configuration. I know this can be done very easy<br/>\n&gt; &gt;  using Ant, but I don&#39;t want to impose to use such tools for this<br/>\n&gt; &gt;  particular example.<br/>\n&gt; <br/>\n&gt; Actually, I don&#39;t need to modify the classpath by hand because <br/>\n </span></blockquote>under<br/>\n<blockquote><span title=\"ireply\"> &gt; Eclipse the source folders are in the class path. For example, you <br/>\n </span></blockquote>can<br/>\n<blockquote><span title=\"ireply\"> &gt; do the following successfully in your tests:<br/>\n&gt; <br/>\n&gt; getClass().getResource(&quot;/com/acme/stuff/testdata.txt&quot;);<br/>\n&gt; <br/>\n&gt; ...which will give you access to the testdata.txt file you&#39;ve <br/>\n </span></blockquote>placed<br/>\n<blockquote><span title=\"ireply\"> &gt; under your source directory:<br/>\n&gt; <br/>\n&gt; ${basedir}/src/com/acme/stuff/testdata.txt<br/>\n&gt; <br/>\n&gt; Or maybe I misunderstood what you meant?<br/>\n<br/>\n </span></blockquote>Dear Lasse,<br/>\n<br/>\nI have the opossite problem, I would like to create a file during <br/>\nthe testing process on some place on the classpath. What I would <br/>\nlike is to know for sure a place that will be always on classpath <br/>\n(such place doesn&#39;t exist, it depends on IDE&#39;s). After the test I <br/>\nwill delete the file. Becuse, there is no universal place that will <br/>\nbe always on classpath, another solution would be to add a place <br/>\ndinamycally on classpath during the test, that was the reason of my <br/>\noriginal post.<br/>\n<br/>\nYour suggestion requires to have at the begining of the test to have <br/>\na certain file on the classpath. Such information you have assuming <br/>\nyou are using Eclipse IDE, because the source files are on <br/>\nclasspath, but you have to assume that some particular folders are <br/>\non classpath.<br/>\n<br/>\nI show you now on my test (it works because I assume <br/>\nSystem.getProperty(&quot;user.dir&quot;)/bin in on classpath. What I prefer is <br/>\nto add location (dinamycally) of: System.getProperty<br/>\n(&quot;java.io.tmpdir&quot;) on classpath,<br/>\nthen create a file and at the end of execution to set the classpath <br/>\ninto original value and also delete the temporary file.<br/>\n<br/>\npublic class TestFileUtils extends TestCase {<br/>\n<br/>\n    final String testFileName = &quot;fileInClassPath.txt&quot;;<br/>\n<br/>\n    final String parent = &quot;bin&quot;;<br/>\n    <br/>\n    final static File TMP_DIR = new File(&quot;bin&quot;);<br/>\n<br/>\n    /**<br/>\n     * {@link com.b2b2000.FileUtils#findFileInClasspath<br/>\n(java.lang.String)}.<br/>\n     * <br/>\n     * Note: We assume: {@linkplain System#getProperty(String) <br/>\nSystem.getProperty(&quot;user.dir&quot;)/bin}  is on &lt;code&gt;classpath&lt;/code&gt;.<br/>\n     * <br/>\n     */<br/>\n    public void testFindFileInClasspath() throws Exception {<br/>\n        File newFile = new File(TMP_DIR, testFileName);<br/>\n        newFile.createNewFile();<br/>\n        modifyClasspath();<br/>\n        File foundFile = FileUtils.findFileInClasspath(testFileName);<br/>\n        assertEquals(newFile.getAbsoluteFile(), <br/>\nfoundFile.getAbsoluteFile());<br/>\n    }<br/>\n<br/>\n    protected void setUp() throws Exception {<br/>\n        modifyClasspath();<br/>\n        File newFile = new File(TMP_DIR, testFileName);<br/>\n        if (newFile.exists()) {<br/>\n            if (!newFile.delete()) {<br/>\n                throw new FileNotFoundException(newFile.toString());<br/>\n<br/>\n            }<br/>\n        }<br/>\n        super.setUp();<br/>\n    }<br/>\n<br/>\n    protected void tearDown() throws Exception {<br/>\n        File file = new File(TMP_DIR, testFileName);<br/>\n        file.deleteOnExit();<br/>\n        super.tearDown();<br/>\n    }<br/>\n}<br/>\n<br/>\nThanks in advance,<br/>\n<br/>\nDavid<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; Lasse<br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt; Lasse Koskela<br/>\n&gt; * Author of &quot;Test Driven&quot; (Manning Publications, 2007) *<br/>\n&gt; * Reaktor Innovations * <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.ri.fi/en\">http://www.ri.fi/en</a> *<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19916, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1190554866", 
+    "canDelete": false, 
+    "nextInTopic": 19918, 
+    "prevInTopic": 19916, 
+    "headers": {
+        "inReplyToHeader": "PDM5NzVlMmQxMDcwOTIxMDAxNW81ZTNkOGU5N2k0MTg1ZDdiZGY0YTRkNTkyQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGZkNXFkaSt0YXQ1QGVHcm91cHMuY29tPg=="
+    }
+}

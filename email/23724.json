@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 23725, 
+    "senderId": "WVdmGpGISwiq5FBTe5jfcpGuTnpOcjFLqq_sWZMYP7ZWbDpXXJRD_VY1FuQAqORgH0lu2NIil2QPaBCvJ2lZRcNK", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Overhauling exisiting JUnit tests", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Lewis, TestGoraStorage, if run as a Java application, does whatever its main() method tells it to, just like all Java classes do. The errors you re seeing seem", 
+    "msgId": 23724, 
+    "profile": "dsaff", 
+    "topicId": 23719, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1781964824\">Lewis,<br/>\n<br/>\nTestGoraStorage, if run as a Java application, does whatever its<br/>\nmain() method tells it to, just like all Java classes do.<br/>\n<br/>\nThe errors you&#39;re seeing seem specific to the database setup assumed<br/>\nby the tests, and are probably best diagnosed by people familiar with<br/>\nthe application and test suite.<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Fri, Sep 30, 2011 at 7:04 AM, lewismc2 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:lewis.mcgibbney@...\">lewis.mcgibbney@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; I have a pretty significant update on this issue. My understanding of our existing test infrastructure was not sufficient enough and in my initial post I&#39;ve provided a somewhat inaccurate description of the problem I&#39;m trying to address.<br/>\n&gt;<br/>\n&gt; The AbstractNutchTest is in full use and does an excellent job of extending TestCase to provide a platform for many other tests to build from. The test case I have identified as being pretty hectic is TestGoraStorage [1]. The initial thing I found puzzling about this test case is that, if run as a java application without any arguments, it passes a usage message &quot;Usage: TestGoraStore &lt;id&gt; &lt;startKey&gt; &lt;numRecords&gt;&quot;. I&#39;ve never experienced anything like this is any previous JUnit test cases, can anyone explain this to me please?<br/>\n&gt;<br/>\n&gt; The errors I&#39;m getting when I run the test class can be seen here [2].<br/>\n&gt;<br/>\n&gt; I understand that the errors might not be JUnit specific, however if I was able to get a bit of guidance as to the nature of the test etc then it would be more than helpful.<br/>\n&gt;<br/>\n&gt; Thank you<br/>\n&gt;<br/>\n&gt; Lewis<br/>\n&gt;<br/>\n&gt; [1] <a rel=\"nofollow\" target=\"_blank\" href=\"https://svn.apache.org/repos/asf/nutch/branches/nutchgora/src/test/org/apache/nutch/storage/TestGoraStorage.java\">https://svn.apache.org/repos/asf/nutch/branches/nutchgora/src/test/org/apache/nutch/storage/TestGoraStorage.java</a><br/>\n&gt; [2] <a rel=\"nofollow\" target=\"_blank\" href=\"https://issues.apache.org/jira/browse/NUTCH-1135\">https://issues.apache.org/jira/browse/NUTCH-1135</a><br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;lewismc2&quot; &lt;lewis.mcgibbney@...&gt; wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt; Hi list,<br/>\n&gt;&gt;<br/>\n&gt;&gt; I&#39;m attempting to overhaul our test source as per this Jira issue [1] and sub-issues. When looking at one existing test class [2] I see that instead of extending TestCase the case extends AbstractNutchTest. Apart from my initial thoughts that this was a previously used testing mechanism, I am pretty convinced that this has now been deprecated in favour of JUnit 4.5 test cases. This can also be seen in [3], which you will notice is also failing as documented in [1].<br/>\n&gt;&gt;<br/>\n&gt;&gt; Further to this, I notice that there are a number of parameters that cannot be resolved e.g. in the case of TestInjector, testDir as shown below. This is consistent across &#39;all&#39; four of the test cases I am trying to fix. I wonder if anyone can point me in the right direction to getting the configuration correct and getting these test cases working again.<br/>\n&gt;&gt;<br/>\n&gt;&gt; {code}<br/>\n&gt;&gt; lewis@lewis-01:~/ASF/nutchgora/runtime/local$ bin/nutch junit org.apache.nutch.crawl.TestInjector<br/>\n&gt;&gt; .E<br/>\n&gt;&gt; Time: 0.003<br/>\n&gt;&gt; There was 1 error:<br/>\n&gt;&gt; 1) testInject(org.apache.nutch.crawl.TestInjector)java.lang.Error: Unresolved compilation problem:<br/>\n&gt;&gt;       testdir cannot be resolved<br/>\n&gt;&gt;<br/>\n&gt;&gt;       at org.apache.nutch.crawl.TestInjector.setUp(TestInjector.java:57)<br/>\n&gt;&gt;<br/>\n&gt;&gt; FAILURES!!!<br/>\n&gt;&gt; Tests run: 1,  Failures: 0,  Errors: 1<br/>\n&gt;&gt; {code}<br/>\n&gt;&gt;<br/>\n&gt;&gt; [1] <a rel=\"nofollow\" target=\"_blank\" href=\"https://issues.apache.org/jira/browse/NUTCH-1081\">https://issues.apache.org/jira/browse/NUTCH-1081</a><br/>\n&gt;&gt; [2] <a rel=\"nofollow\" target=\"_blank\" href=\"https://svn.apache.org/repos/asf/nutch/branches/nutchbase/src/test/org/apache/nutch/crawl/TestInjector.java\">https://svn.apache.org/repos/asf/nutch/branches/nutchbase/src/test/org/apache/nutch/crawl/TestInjector.java</a><br/>\n&gt;&gt; [3] <a rel=\"nofollow\" target=\"_blank\" href=\"https://svn.apache.org/repos/asf/nutch/branches/nutchbase/src/test/org/apache/nutch/crawl/TestGenerator.java\">https://svn.apache.org/repos/asf/nutch/branches/nutchbase/src/test/org/apache/nutch/crawl/TestGenerator.java</a><br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23723, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1317409603", 
+    "canDelete": false, 
+    "nextInTopic": 23725, 
+    "prevInTopic": 23722, 
+    "headers": {
+        "inReplyToHeader": "PGo2NDdvays3bnJpQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBQ2o4QnVOZVc5MFFnK0pWbmI0cXlkY2JKcHR6Z3NFQ3pPRUV1TkhxMWJiUWQxY3Rxd0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGo2MmRzaytmdWEwQGVHcm91cHMuY29tPgk8ajY0N29rKzducmlAZUdyb3Vwcy5jb20+"
+    }
+}

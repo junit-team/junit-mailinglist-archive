@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 17862, 
+    "senderId": "ZIck4pW1wXctsccs2UTKEJ0fos7mZGTPwspN_0pINGNZ8xcQ93JRgTSYI_HoCa4sAUgeR6tZEdl4okBj-vZN46Q1LTz-xUxeNy4RWp2DCB9lRIA7", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit Testing Code That Has System.exit(n);", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "I would like to second this idea. It seems most natural to refactor so that System.exit is only called in one place in the application (from the main method). ", 
+    "msgId": 17861, 
+    "profile": "j0hlrogge", 
+    "topicId": 17851, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-1619457158\">I would like to second this idea. It seems most natural to refactor so that<br/>\nSystem.exit is only called in one place in the application (from the main<br/>\nmethod).<br/>\n<br/>\npublic static void main(String args[]) {<br/>\n    MyApplication myApplication = new MyApplication();<br/>\n    try {<br/>\n        myApplication.start();<br/>\n    }<br/>\n    catch(MyExitRuntimeException e) {<br/>\n        System.exit(e.getErrorCode());<br/>\n    }<br/>\n<br/>\n}<br/>\n<br/>\nOr maybe even<br/>\n<br/>\npublic static void main(String args[]) {<br/>\n    MyApplication myApplication = new MyApplication();<br/>\n    try {<br/>\n        myApplication.start();<br/>\n    }<br/>\n    catch(TotalFailureRuntimeException e) {<br/>\n        System.exit(TOTAL_FAILURE_CODE);<br/>\n    }<br/>\n    catch(PartialFailureRuntimeException e) {<br/>\n        System.exit(PARTIAL_FAILURE_CODE);<br/>\n    }<br/>\n    &lt;etc...&gt;<br/>\n}<br/>\n<br/>\n<br/>\nIt should be fairly easy to get something flying by just searching for a<br/>\nregexp in your source and replacing it with &quot;throw new<br/>\nMyExitRuntimeException(&#92;1);&quot; to get you started.<br/>\n<br/>\nI think having System.exit in only one place in the code is a sensible rule,<br/>\nhandle all other error conditions with exceptions that are caught at the<br/>\n&quot;top level&quot;.<br/>\n<br/>\nWhile mocking can certainly work it needlessly complex since you need to<br/>\ninject the &quot;exiter object&quot; in every class that needs to provide an<br/>\nerror-code.<br/>\n<br/>\nCédrics suggestion is an interesting one although I generally sort security<br/>\npolicies into the &quot;more trouble than it&#39;s worth category&quot; especially if<br/>\nsecurity is not your main concern. That is just one mans opinion though. I<br/>\ndid try once to run JUnit under a custom policy-file since we were deploying<br/>\nit to a constrained environment and I thought it was difficult to get this<br/>\nto work both in eclipse and ant. I´m not excluding the possibility that this<br/>\nis simpler in test-NG<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 9/8/06, Michael Feathers &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mfeathers@...\">mfeathers@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;   Bob Russell wrote:<br/>\n&gt;<br/>\n&gt; &gt;I&#39;m involved on a project as the QA. To improve my development<br/>\n&gt; &gt;skills and my JUnit skills, I am writing some JUnit tests. Today, I<br/>\n&gt; &gt;found that the developer had implemented System.exit(n) throughout<br/>\n&gt; &gt;the application whenever there was a trapped exception.<br/>\n&gt; &gt;<br/>\n&gt; &gt;Now, the requirements call for the application to return some exit<br/>\n&gt; &gt;code telling any downstream processes whether this application was<br/>\n&gt; &gt;100% successful with no warnings (rc=0), 100% successful with<br/>\n&gt; &gt;warnings (rc=4), not successful at all (rc=8). However, the only<br/>\n&gt; &gt;java mechanism for reporting return codes is System.exit(n), based on<br/>\n&gt; &gt;my use of Google.<br/>\n&gt; &gt;<br/>\n&gt; &gt;My JUnit dilemma then, is that System.exit(n) gives the required<br/>\n&gt; &gt;application behavior but doesn&#39;t seem to be good for running JUnit<br/>\n&gt; &gt;tests from a test suite since System.exit(n) ends the JVM.<br/>\n&gt; &gt;<br/>\n&gt; &gt;Does anyone have any insights they can share? Since this is my first<br/>\n&gt; &gt;post to this forum, I&#39;m happy to Google some more if you&#39;ll only give<br/>\n&gt; &gt;me some keyword hint(s) beyond what I&#39;ve already tried: &quot;java exit<br/>\n&gt; &gt;code&quot;.<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; It&#39;s hard to know who to be more upset at.. the developer for littering<br/>\n&gt; the app with static calls or Sun for making the call static, and<br/>\n&gt; therefore pretty much unmockable.<br/>\n&gt;<br/>\n&gt; You may want to provide a try block at the entry point of your app and<br/>\n&gt; then define an unchecked exception that you can throw instead of calling<br/>\n&gt; System.exit. The exception can accept the exit code in its constructor.<br/>\n&gt;<br/>\n&gt; It&#39;s not an ideal solution, but it will allow you to slowly refactor to<br/>\n&gt; something saner. Your entry point can catch the exception, glean the<br/>\n&gt; error code and then call System.exit. You can write tests that catch<br/>\n&gt; the exception so that you can test the cases where you are supposed to<br/>\n&gt; exit. If you do do this, make sure that you check for finally-blocks in<br/>\n&gt; your exception chain. If they do anything unnice, you&#39;ll have to do<br/>\n&gt; somethng else.<br/>\n&gt;<br/>\n&gt; Michael Feathers<br/>\n&gt; www.objectmentor.com<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 17860, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1157709706", 
+    "canDelete": false, 
+    "nextInTopic": 17862, 
+    "prevInTopic": 17860, 
+    "headers": {
+        "inReplyToHeader": "PDQ1MDBBMzA3LjkwODA2MDBAbWluZHNwcmluZy5jb20+", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwOTA4MDMwMW42ZWU5ZGQ4MHRhMDUzYjA3YjdhOTcyMDBkQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVkcTJzOStvZGVrQGVHcm91cHMuY29tPiA8NDUwMEEzMDcuOTA4MDYwMEBtaW5kc3ByaW5nLmNvbT4="
+    }
+}

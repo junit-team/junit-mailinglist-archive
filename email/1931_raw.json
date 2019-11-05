@@ -1,0 +1,29 @@
+{
+    "topicId": 1924, 
+    "postDate": "995185352", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Mike Duffy &lt;mduffy_lists@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "27M4BXOvs8vT3_kyRTUIWiC2IAnbBrAH-2KQdT97DIRl3giNXjBf0MX7HQAYGx_O3GZ1D9KIUxXLhREqEhfDlQyEXoOCEXciiLA", 
+    "nextInTime": 1932, 
+    "userId": 0, 
+    "prevInTime": 1930, 
+    "prevInTopic": 1930, 
+    "headers": {
+        "inReplyToHeader": "PDNCNTE0NEVCLjM2RjY2RjhDQGdteC5uZXQ+", 
+        "messageIdInHeader": "PDIwMDEwNzE1MDgyMjMyLjIzNzQxLnFtYWlsQHdlYjE0OTA5Lm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "Mike Duffy", 
+    "numMessagesInTopic": 18, 
+    "msgSnippet": "I agree with the point that listing all the possible exceptions greatly increases code maintenance.  The goal was to know what exception was thrown if the", 
+    "contentTrasformed": false, 
+    "msgId": 1931, 
+    "nextInTopic": 1932, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;mduffy_lists@...&gt;\r\nX-Sender: mduffy_lists@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 15 Jul 2001 08:22:42 -0000\r\nReceived: (qmail 76300 invoked from network); 15 Jul 2001 08:22:41 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 15 Jul 2001 08:22:41 -0000\r\nReceived: from unknown (HELO web14909.mail.yahoo.com) (216.136.225.61) by mta1 with SMTP; 15 Jul 2001 08:22:41 -0000\r\nMessage-ID: &lt;20010715082232.23741.qmail@...&gt;\r\nReceived: from [24.160.6.4] by web14909.mail.yahoo.com via HTTP; Sun, 15 Jul 2001 01:22:32 PDT\r\nDate: Sun, 15 Jul 2001 01:22:32 -0700 (PDT)\r\nSubject: Re: [junit] How do I implement a test case for a thrown exception ?\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;3B5144EB.36F66F8C@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Mike Duffy &lt;mduffy_lists@...&gt;\r\n\r\nI agree with the point that listing all the possible exceptions\ngreatly increases code maintenance.  The goal was to know what\nexception was thrown if the specific exception being tested is not\nthrown (without having to go to a stack trace).  This goal can be\naccomplished by catching Exception with a fail in the catch block and\nincluding the name of the exception in the fail message.\n\nThe test method below has three possible out comes:\n\n1.  The specific exception is thrown and the test succeeds.\n2.  The test fails without throwing an exception.\n3.  The test fails by throwing an exception different from the\n    specific exception being tested (and the name of the unexpected\n    exception is in the fail message).\n\n     // Test SpecificException is thrown under conditions...\n     public void test_00_methodName() {\n \n         try {\n             instanceClass.methodName(argument);\n             fail(&quot;SpecificException should be thrown.\n                  No exception was thrown.&quot;);\n \n         } catch (SpecificException se) {\n \n             assert(true);\n \n         } catch (Exception e){\n \n             fail(&quot;SpecificException should be thrown.\n                  The follwoing exception was thrown:&quot; + \ne.toString);\n         } \n     }\n\n\n--- Johannes Link &lt;john.link@...&gt; wrote:\n&gt; IMO, the second and third catch don&#39;t buy you a thing. I guess you\n&gt; have\n&gt; them to show explicitly that they could possibly be thrown by the\n&gt; method\n&gt; under test. However, sticking to that pattern results in lots of\n&gt; changes\n&gt; when adding or deleting an exception type from the throws block of\n&gt; a\n&gt; method. Why not just add a &quot;throws Exception&quot; to the test method&#39;s\n&gt; signature? The set of possibly thrown exceptions is in the\n&gt; method-under-test&#39;s signature anyway.\n&gt; \n&gt; Johannes\n&gt; \n&gt; Jason Rogers wrote:\n&gt; &gt; \n&gt; &gt; If you want to eliminate the boolean, use your first example and\n&gt; do the\n&gt; &gt; assert in the catch block.\n&gt; &gt; \n&gt; &gt;     public void test_00_isPartnerAssigned() {\n&gt; &gt; \n&gt; &gt;         try {\n&gt; &gt;            \n&gt; instancePartnerHierarchyWorker.isPartnerAssigned(null);\n&gt; &gt;             fail(&quot;IllegalArgumentException should be thrown.&quot;);\n&gt; &gt; \n&gt; &gt;         } catch (IllegalArgumentException iae) {\n&gt; &gt; \n&gt; &gt;             assert(true);\n&gt; &gt; \n&gt; &gt;         } catch (PartnerNotFoundException pnfe){\n&gt; &gt; \n&gt; &gt;             fail(&quot;PartnerNotFoundException should not be\n&gt; thrown.&quot;);\n&gt; &gt; \n&gt; &gt;         } catch (PersistenceException pe){\n&gt; &gt; \n&gt; &gt;             fail(&quot;PersistenceException should not be thrown.&quot;);\n&gt; &gt;         }\n&gt; &gt;     }\n&gt; &gt;\n&gt; \n\n\n__________________________________________________\nDo You Yahoo!?\nGet personalized email addresses from Yahoo! Mail\nhttp://personal.mail.yahoo.com/\n\n", 
+    "subject": "Re: [junit] How do I implement a test case for a thrown exception ?"
+}

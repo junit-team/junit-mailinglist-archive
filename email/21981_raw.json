@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21982, 
+    "senderId": "yDm0EKlTFEsv2hAAegT02knxAVPZLoVUqvKISyheMVDC3FG2jeaRnUzZ7-XIstCciVJDWFSuW_GaTcS7NDJA46BWsO4", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Enhancing JUnit myself, how to?", 
+    "from": "&quot;kentb&quot; &lt;kentb@...&gt;", 
+    "authorName": "kentb", 
+    "msgSnippet": "Remo, This sounds like a good fit for a @Rule. See org.junit.rules.ExpectedException for a model you can extend. The advantage I can see for doing this as a", 
+    "msgId": 21981, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 97731 invoked from network); 22 Oct 2009 14:29:03 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m5.grp.re1.yahoo.com with QMQP; 22 Oct 2009 14:29:03 -0000\r\nX-Received: from unknown (HELO elasmtp-scoter.atl.sa.earthlink.net) (209.86.89.67)\n  by mta1.grp.sp2.yahoo.com with SMTP; 22 Oct 2009 14:29:02 -0000\r\nX-Received: from [67.42.51.9] (helo=kentspavilion)\n\tby elasmtp-scoter.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1N0yez-0007UP-6l\n\tfor junit@yahoogroups.com; Thu, 22 Oct 2009 10:29:02 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;hbornu+uhei@...&gt; &lt;hbots4+nedn@...&gt;\r\nDate: Thu, 22 Oct 2009 07:28:51 -0700\r\nMessage-ID: &lt;5017DCC069D24CF58F6782AB9DAC7237@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;hbots4+nedn@...&gt;\r\nThread-Index: AcpS4zJkFwJDWN6fQ4W/gFvDcRBQAgAQAX2w\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5579\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d47825eaa575e9e39ae60bcb780c151c6d1cfc28b0334c29eed4350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 2:4:8:0:1\r\nFrom: &quot;kentb&quot; &lt;kentb@...&gt;\r\nReply-To: &lt;kentb@...&gt;\r\nSubject: RE: [junit] Re: Enhancing JUnit myself, how to?\r\nX-Yahoo-Group-Post: member; u=173198504; y=acXed15XyJrgr_1iO7gRxwDhUlCscuakYsYUsry2278l9LhE\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nRemo,\n \nThis sounds like a good fit for a @Rule. See\norg.junit.rules.ExpectedException for a model you can extend. The advantage\nI can see for doing this as a rule instead of extending the annotation is\nthat someone can easily maintain the rule themself without having to change\nthe shared source of JUnit. Our philosophy with JUnit has always been to\nprovide the intersection of functionality needed by developer testers. The\nkind of extensions Remo wants, while useful, don&#39;t seem to me to be broadly\nenough useful to warrant adding complexity to the core of JUnit.\n \nRegards,\n \nKent\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nremoliechti\nSent: Wednesday, October 21, 2009 11:25 PM\nTo: junit@yahoogroups.com\nSubject: [junit] Re: Enhancing JUnit myself, how to?\n\n\n  \n\nThat&#39;s true, but it would be possible to enhance the annotation in a way\nwhere this would still work:\n\n@Test(expected=MyException.class,errorCodeValue=myString,errorCodeMethod=get\nErrorCode,errorCodeType=String.class)\n\nI think that&#39;be sufficient for most cases. default values for method name\nand type could be set as well(most likely int).\n\n--- In junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com, &quot;Bogdan&quot;\n&lt;bogdan.mocanu.notifications@...&gt; wrote:\n&gt;\n&gt; Regarding the feeding of this change back to the JUnit sources, I think\nthe most appropriate person to answer is (one of) the author(s) of the\nframework.\n&gt; \n&gt; However, you need to think that changes like these can be found in a\nmillion combinations. I might, for example, want to have the errorCode not\nas a an int, but as a String, or as an enumeration item. I might also have\nmultiple error codes, a major one and a minor one, and so on. \n&gt; \n&gt; Therefore it is very unlikely that this change will get to the sources.\n&gt; \n&gt; There is a mail sent by David Saff on 20th of Oct, regarding the feature\nprioritization on JUnit. You can read there what is the process of placing\nyour request on the list of ToDos for JUnit.\n&gt; \n&gt; Regards,\n&gt; Bogdan\n&gt; \n&gt; --- In junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com,\n&quot;remoliechti&quot; &lt;remo.liechti@&gt; wrote:\n&gt; &gt;\n&gt; &gt; Hi guys,\n&gt; &gt; \n&gt; &gt; JUnit4 comes with a nice annotation that supports checking for a special\nexception:\n&gt; &gt; @Test(expected=MyException.class)\n&gt; &gt; \n&gt; &gt; Well, the exception contains an error code which should be checked as\nwell, so I thought, why not enhancing JUnit to check this as well:\n&gt; &gt; @Test(expected=MyException.class,errorCode=5)\n&gt; &gt; \n&gt; &gt; So I downloaded the JUnit sources and customized the org.junit.Test\nannotation, as well as org.junit.internal.runners.MethodRoodie and\norg.junit.internal.runners.TestMethod to fit my needs.\n&gt; &gt; \n&gt; &gt; Within eclipse, my new annotation is recognized by the code completion\ntool, but when running the tests it still uses the shipped junit version.\n&gt; &gt; How can I exchange the junit jar file used by eclipse? Just replacing\nthe jar within the junit plugins folder will crash eclipse since it\nrecognizes the change...\n&gt; &gt; \n&gt; &gt; Any ideas?\n&gt; &gt; Maybe this enhancement could be fed back to the junit sources?\n&gt; &gt; \n&gt; &gt; Thanks,\n&gt; &gt; Remo\n&gt; &gt;\n&gt;\n\n\n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 21974, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 21980, 
+    "contentTrasformed": false, 
+    "postDate": "1256221731", 
+    "canDelete": false, 
+    "nextInTopic": 21984, 
+    "prevInTopic": 21980, 
+    "headers": {
+        "inReplyToHeader": "PGhib3RzNCtuZWRuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDUwMTdEQ0MwNjlEMjRDRjU4RjY3ODJBQjlEQUM3MjM3QGtlbnRzcGF2aWxpb24+", 
+        "referencesHeader": "PGhib3JudSt1aGVpQGVHcm91cHMuY29tPiA8aGJvdHM0K25lZG5AZUdyb3Vwcy5jb20+"
+    }
+}

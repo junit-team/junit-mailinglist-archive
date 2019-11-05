@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12520, 
+    "senderId": "UHE-xXsWI7F-je7iS3igivJOb4nXdqJzXogHsk11br9NchLHYOSyqoAXR7mR-goC2c9P-0ZJDPfmCdCa2ulyZQr7bP8n92sIYHH4uGo", 
+    "systemMessage": false, 
+    "subject": "Multithreading: Testing scheduled method invocation?!", 
+    "from": "Michael Schuerig &lt;michael@...&gt;", 
+    "authorName": "Michael Schuerig", 
+    "msgSnippet": "I m working on a class that interacts with the Spring framework s application context and the Quartz scheduler. I m pretty new to the latter, thus I m testing", 
+    "msgId": 12519, 
+    "profile": "mschuerig", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 83951433, 
+    "messageBody": "<div id=\"ygrps-yiv-1464377259\">I&#39;m working on a class that interacts with the Spring framework&#39;s <br/>\napplication context and the Quartz scheduler. I&#39;m pretty new to the <br/>\nlatter, thus I&#39;m testing my understanding of Quartz just as much as I&#39;m <br/>\ntesting my code. In effect, I can&#39;t (yet) build the fixture for my code <br/>\ncompletely with mocks as I have to ascertain what these mocks are <br/>\nsupposed to do first.<br/>\n<br/>\nThe complication here is that Quartz uses its own &quot;hidden&quot; thread(s) to <br/>\nfulfill its duties. It is such a thread that effects the change that I <br/>\nneed to check for. As I don&#39;t want to test Quartz, of course, I&#39;m <br/>\ncontent with checking that my scheduled job is executed at all. Thus I <br/>\nschedule it for immediate execution, wait for 2 secs to give Quartz <br/>\nsome time before the fixture is torn down again.<br/>\n<br/>\nNow, all this works surprisingly well. Still, I don&#39;t like the part of <br/>\nwaiting some arbitrary time.<br/>\n<br/>\n(Thinking break)<br/>\n<br/>\nAfter getting this far, I remembered that Doug Lea&#39;s concurrency utils <br/>\nhave made their way into J2SE 5.0 and there I found just what I needed: <br/>\njava.util.concurrent.CountDownLatch<br/>\n<br/>\nNow I have a TestCase that looks in outline like this<br/>\n<br/>\n<br/>\npublic class MultiThreadedTest extends TestCase {<br/>\n    private static CountDownLatch latch;<br/>\n    private MyMock mock;<br/>\n<br/>\n    protected void setUp() {<br/>\n        latch = new CountDownLatch(1);<br/>\n        mock = new MyMock();<br/>\n    }<br/>\n<br/>\n    public void testMe() throws Exception {<br/>\n        startSomeWorkInAnotherThread(mock);<br/>\n        latch.await(); // some timeout might be prudent<br/>\n        mock.verify();<br/>\n    }<br/>\n<br/>\n<br/>\n    private static class MyMock implements Whatever {<br/>\n        private boolean wasCalled = false;<br/>\n<br/>\n        public void methodCalledFromOtherThread() {<br/>\n            wasCalled = true;<br/>\n            latch.countDown();<br/>\n        }<br/>\n<br/>\n        public void verify() {<br/>\n            assertTrue(wasCalled);<br/>\n        }<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\nI appreciate your comments.<br/>\n<br/>\nMichael<br/>\n<br/>\n-- <br/>\nMichael Schuerig                            This is not a false alarm<br/>\nmailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:michael@...\">michael@...</a>                         This is not a test<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.schuerig.de/michael/\">http://www.schuerig.de/michael/</a>                      --Rush, Red Tide</div>", 
+    "prevInTime": 12518, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1103675465", 
+    "canDelete": false, 
+    "nextInTopic": 12520, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg=="
+    }
+}

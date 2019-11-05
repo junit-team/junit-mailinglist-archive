@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 12358, 
+    "senderId": "PLFQM6hYAL7Ikkm-L4X_5vwSDFG-_6ETKQtDOEy-OvaoUgSNJrTAmyttLPVmvzs_O_zMVAOK0I-QymsEihSmp5k_wW3O2w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Virtualmock in practice?", 
+    "from": "Steve Freeman &lt;steve@...&gt;", 
+    "authorName": "Steve Freeman", 
+    "msgSnippet": "... Not directly. jMock is intended to help drive the design of your code, testing existing code is an added bonus if it works. One thing you might consider is", 
+    "msgId": 12357, 
+    "rawEmail": "Return-Path: &lt;steve@...&gt;\r\nX-Sender: steve@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 68228 invoked from network); 20 Nov 2004 10:51:43 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m22.grp.scd.yahoo.com with QMQP; 20 Nov 2004 10:51:43 -0000\r\nReceived: from unknown (HELO rs16.luxsci.com) (64.49.254.58)\n  by mta3.grp.scd.yahoo.com with SMTP; 20 Nov 2004 10:51:43 -0000\r\nReceived: from [192.168.1.4] ([82.152.68.33])\n\t(authenticated bits=0)\n\tby rs16.luxsci.com (8.12.11/8.12.11) with ESMTP id iAKAnche013974\n\t(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)\n\tfor &lt;junit@yahoogroups.com&gt;; Sat, 20 Nov 2004 04:49:39 -0600\r\nMessage-ID: &lt;419F216D.4070906@...&gt;\r\nDate: Sat, 20 Nov 2004 10:50:21 +0000\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.3) Gecko/20040910\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cnl42v+m5v4@...&gt;\r\nIn-Reply-To: &lt;cnl42v+m5v4@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 64.49.254.58\r\nFrom: Steve Freeman &lt;steve@...&gt;\r\nSubject: Re: [junit] Virtualmock in practice?\r\nX-Yahoo-Group-Post: member; u=30618548\r\nX-Yahoo-Profile: smg_freeman\r\n\r\nwellman_daniel wrote:\n&gt; I&#39;ve got the need to test some legacy code which uses some hard-coded \n&gt; references to other concrete objects, or uses a service \n&gt; locator/factory to obtain other business objects.  I&#39;m reading J. B. \n&gt; Rainsberger&#39;s excellent &quot;JUnit Recipes&quot; book and this led me to check \n&gt; out mock objects.\n &gt;\n&gt; 3. Does jMock with CGLib provide the functionality to intercept calls \n&gt; to concrete objects instantiated by the object under test? (As \n&gt; virtualmock appears to do)\n\nNot directly. jMock is intended to help drive the design of your code, \ntesting existing code is an added bonus if it works.\n\nOne thing you might consider is adding helper methods for object \ncreation within the class, for example:\n\nclass Thing {\n    void doIt(Blob aBlob) {\n       aBlob.passThrough(new OtherThing());\n    }\n}\n\nchanges to:\n\nclass Thing {\n    void doIt(Blob aBlob) {\n       aBlob.passThrough(makeOtherThing());\n    }\n    OtherThing makeOtherThing() {\n       return new OtherThing():\n    }\n}\n\nYou can then override makeOtherThing() in your test to introduce a mock.\n\nThis is not a pretty solution, but it&#39;s a workable interim step until a \nbetter structure becomes clearer.\n\nS.\n\n", 
+    "profile": "smg_freeman", 
+    "topicId": 12349, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30618548, 
+    "prevInTime": 12356, 
+    "contentTrasformed": false, 
+    "postDate": "1100947821", 
+    "canDelete": false, 
+    "nextInTopic": 12407, 
+    "prevInTopic": 12354, 
+    "headers": {
+        "inReplyToHeader": "PGNubDQydittNXY0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxOUYyMTZELjQwNzA5MDZAbTNwLmNvLnVrPg==", 
+        "referencesHeader": "PGNubDQydittNXY0QGVHcm91cHMuY29tPg=="
+    }
+}

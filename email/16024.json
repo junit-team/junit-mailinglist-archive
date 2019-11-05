@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 74, 
+    "nextInTime": 16025, 
+    "senderId": "GBuRE3i-LB9alryMynrK1KAADokzbjRM4sVi1MJF4_GJkEYypOiI6pbUyvai2b8Yd4jqPQfM-PKUmkvUXqVo4QbHUYhQptU_", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Observations from a production use of JUnit4", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Ben, Thank you for the clarifying example. I coded up a test like the one you proposed, but I haven t been able to figure out how to make it pass. Given the", 
+    "msgId": 16024, 
+    "profile": "kentlbeck", 
+    "topicId": 15891, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-1920338640\">Ben,<br/>\n<br/>\nThank you for the clarifying example. I coded up a test like the one you<br/>\nproposed, but I haven&#39;t been able to figure out how to make it pass. Given<br/>\nthe short timeframe to the first release of JUnit 4, we will probably leave<br/>\nthe timeout stuff as it is and make sure the javadoc reflects the<br/>\nlimitations.<br/>\n<br/>\nSincerely yours,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute <br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of Ben Maurer<br/>\n&gt; Sent: Friday, February 03, 2006 5:12 PM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] Re: Observations from a production use of JUnit4<br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Kent Beck&quot; &lt;kentb@...&gt; wrote:<br/>\n&gt; <br/>\n&gt; &gt; Does the following test capture what you mean? In other words, an<br/>\n&gt; Exception<br/>\n&gt; &gt; is thrown in JUnit the cause of which is the exception thrown by the<br/>\n&gt; test<br/>\n&gt; &gt; case. Once again, UIs can format this however they want to.<br/>\n&gt; &gt; <br/>\n&gt; &gt; \tpublic static class Unexpected {<br/>\n&gt; &gt; \t\t@Test(expected= Exception.class) public void expected()<br/>\n&gt; &gt; throws Exception {<br/>\n&gt; &gt; \t\t\tthrow new Error();<br/>\n&gt; &gt; \t\t}<br/>\n&gt; &gt; \t}<br/>\n&gt; &gt; \t@Test public void unexpected() {<br/>\n&gt; &gt; \t\tResult result= JUnitCore.runClasses(Unexpected.class);<br/>\n&gt; &gt; \t\tFailure failure= result.getFailures().get(0);<br/>\n&gt; &gt; \t\tString message= failure.getMessage();<br/>\n&gt; &gt; \t\t<br/>\n&gt; assertTrue(message.contains(&quot;expected&lt;java.lang.Exception&gt;<br/>\n&gt; &gt; but was&lt;java.lang.Error&gt;&quot;));<br/>\n&gt; &gt; \t\tassertEquals(Error.class,<br/>\n&gt; &gt; failure.getException().getCause().getClass());<br/>\n&gt; &gt; \t}<br/>\n&gt; <br/>\n&gt; Yes, I think this does.<br/>\n&gt; <br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; Thanks. This also comes up with timeouts. It&#39;d be really <br/>\n&gt; cool to have<br/>\n&gt; &gt; &gt; a stacktrace from where the thread was hung.<br/>\n&gt; &gt; <br/>\n&gt; &gt; Can you turn this into a test case? That would help me with the<br/>\n&gt; &gt; implementation.<br/>\n&gt; <br/>\n&gt; I *think* this captures the meaning of what I want. I&#39;ve got quite a<br/>\n&gt; few other tasks tonight, so I&#39;m just writing this off the top <br/>\n&gt; of my head:<br/>\n&gt; <br/>\n&gt; \t static public class InfiniteLoopTest {<br/>\n&gt; <br/>\n&gt;                  private void dumb3141(){ for (;;); }<br/>\n&gt; \t\t @Test(timeout= 100) public void failure() {<br/>\n&gt; \t\t\t dumb3141 ();<br/>\n&gt; \t\t }<br/>\n&gt; \t }<br/>\n&gt; <br/>\n&gt; \t @Test public void infiniteLoop() throws Exception {<br/>\n&gt; \t\t JUnitCore core= new JUnitCore();<br/>\n&gt; \t\t Result result= core.run(InfiniteLoopTest.class);<br/>\n&gt; \t\t assertEquals(1, result.getRunCount());<br/>\n&gt; \t\t assertEquals(1, result.getFailureCount());<br/>\n&gt; \t\t Throwable exception=<br/>\n&gt; result.getFailures().get(0).getException();<br/>\n&gt; \t\t System.out.println(exception.getMessage());<br/>\n&gt; \t\t assertTrue(exception.toString().contains(&quot;dumb3141&quot;));<br/>\n&gt; \t }<br/>\n&gt; <br/>\n&gt; The way you could implement this is to call Thread.stop (new<br/>\n&gt; TimeoutException (&quot;test failed after XXXXX ms&quot;)). This exception would<br/>\n&gt; be be caught by the wrapper and displayed. The stack trace should have<br/>\n&gt; dumb3141. (nb: a timeout of 100ms is sometimes not enough. I actually<br/>\n&gt; got false timeouts on 5 or so student submissions out of 2000 with the<br/>\n&gt; exact same timeout).<br/>\n&gt; <br/>\n&gt; -- Ben<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 16023, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1139424487", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16022, 
+    "headers": {
+        "inReplyToHeader": "PGRzMHYwZyszZ2NhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEUxRjZ1TVItMDAwN2tXLTByQHNtdHBhdXRoMDQubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

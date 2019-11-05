@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 6104, 
+    "senderId": "RXS4XaBY4QQ_HflXC3oM3iLcZuCPKFqU-nsIQT2lG-2vmgXNtiCnKaBQ15LB8liQmn7qbmO8IyGYOHUIoYbWVNwh95ZqVJR2cbw", 
+    "systemMessage": false, 
+    "subject": "Junit Decorator", 
+    "from": "&quot;jenjerina&quot; &lt;jenjerina@...&gt;", 
+    "authorName": "jenjerina", 
+    "msgSnippet": "Hi, I have two junit classes. One is TestInterface.java and the other is TestInterfaceDecorator.java. In TestInterface.java, I have tests to test a file", 
+    "msgId": 6103, 
+    "rawEmail": "Return-Path: &lt;jenjerina@...&gt;\r\nReceived: (qmail 76912 invoked from network); 6 Nov 2002 02:47:50 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m9.grp.scd.yahoo.com with QMQP; 6 Nov 2002 02:47:50 -0000\r\nReceived: from unknown (HELO n16.grp.scd.yahoo.com) (66.218.66.71)\n  by mta1.grp.scd.yahoo.com with SMTP; 6 Nov 2002 02:47:53 -0000\r\nX-eGroups-Return: jenjerina@...\r\nReceived: from [66.218.67.161] by n16.grp.scd.yahoo.com with NNFMP; 06 Nov 2002 02:47:52 -0000\r\nX-Sender: jenjerina@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_1); 5 Nov 2002 03:40:34 -0000\r\nReceived: (qmail 54197 invoked from network); 5 Nov 2002 03:40:34 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m7.grp.scd.yahoo.com with QMQP; 5 Nov 2002 03:40:34 -0000\r\nReceived: from unknown (HELO n10.grp.scd.yahoo.com) (66.218.66.65)\n  by mta1.grp.scd.yahoo.com with SMTP; 5 Nov 2002 03:40:34 -0000\r\nReceived: from [66.218.67.152] by n10.grp.scd.yahoo.com with NNFMP; 05 Nov 2002 03:40:33 -0000\r\nDate: Tue, 05 Nov 2002 03:40:32 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Junit Decorator\r\nMessage-ID: &lt;aq7ejg+kfp3@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2314\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;jenjerina&quot; &lt;jenjerina@...&gt;\r\nX-Yahoo-Group-Post: member; u=129147956\r\nX-Yahoo-Profile: jenjerina\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 06 Nov 2002 02:47:49 -0000\r\n\r\nHi, \n\nI have two junit classes. One is TestInterface.java and the other is \nTestInterfaceDecorator.java. \n\nIn TestInterface.java, I have tests to test a file ServiceBureau.java \nwhich is supposed to respond correctly to the messages it is sent. \n\nIn TestInterface.java, I want to set up a log file and other \nvariables ONCE only for all my tests. For this I have discovered I \nneed another JUnit file, a decorator which I have called \nTestInterfaceDecorator.java \n\nSo my question is, in TestInterfaceDecorator.java, how do I access \nTestInterface.java &#39;s variables eg the log file? Where should the log \nfile and other variables be defined and how can TestInterface and \nTestInterfaceDecorator have access to them? \n\nI thought of something like this.. but it didn&#39;t work because of the \ncast from TestInterface to Test... \n\npackage testTool; \n\nimport java.io.*; import java.util.ResourceBundle; import \njunit.framework.*; import junit.extensions.*; \n\npublic class TestInterfaceDecorator extends TestSetup { \n\n  public TestInterface testInterface; \n\n  public TestInterfaceDecorator(Test test) { \n   super(test);\n   // This is the line that doesn&#39;t compile\n   testInterface = test;\n  }\n\n  public void setUp() {\n   //User values is a resource bundle\n   testInterface.userValues = ResourceBundle.getBundle\n(&quot;testTool.userInput&quot;);\n   testInterface.commandRate = (new Integer(userValues.getString\n(&quot;commandRate&quot;))).intValue();\n   testInterface.loggingRequired = (new Boolean(userValues.getString\n(&quot;loggingRequired&quot;))).booleanValue();\n   testInterface.logFileLocation = userValues.getString\n(&quot;logFileLocation&quot;);\n   testInterface.ipSDP = userValues.getString(&quot;ipSDP&quot;);\n   testInterface.portSDP = userValues.getString(&quot;portSDP&quot;);\n\n   if(testInterface.loggingRequired) { \n    try { \n     log = new PrintStream(new FileOutputStream\n(testInterface.logFileLocation));\n    } catch (Exception e) {} \n   }\n\n   try { \n    humanTest = new PrintStream(new FileOutputStream\n(testInterface.HumanTestFileLocation));\n   } catch(Exception e) {} \n  }\n\n  public static TestSuite suite() {\n   TestSuite suite = new TestSuite();\n   suite.addTest(new TestInterfaceDecorator(TestInterface.suite()));\n   return suite;\n  }\n\n  public static void main(String args[]) {\n   junit.textui.TestRunner.run(suite());\n  }\n\n} \n\nThanks for your help, \n\nJen\n\n\n\n\n", 
+    "profile": "jenjerina", 
+    "topicId": 6103, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 129147956, 
+    "prevInTime": 6102, 
+    "contentTrasformed": false, 
+    "postDate": "1036467632", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFxN2VqZytrZnAzQGVHcm91cHMuY29tPg=="
+    }
+}

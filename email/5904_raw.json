@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 5905, 
+    "senderId": "Ll25G49gDuL2mRziU9WDOjuIqQEf3UvhoCZ0WeVCc7M1mW6htS_P2tyqZuO9RpBb_nDLvY9SNYBadcrKo_kUcx0GE_V4M-T1ZOv_cA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Do JUnit internals suck?!?", 
+    "from": "Berin Loritsch &lt;bloritsch@...&gt;", 
+    "authorName": "Berin Loritsch", 
+    "msgSnippet": "... Part of this comes from my Component Based Design background.  An interface is a document of contracts.  Your contracts are always with the interface.  The", 
+    "msgId": 5904, 
+    "rawEmail": "Return-Path: &lt;bloritsch@...&gt;\r\nX-Sender: bloritsch@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_1_4); 2 Oct 2002 14:50:47 -0000\r\nReceived: (qmail 37295 invoked from network); 2 Oct 2002 14:50:45 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m10.grp.scd.yahoo.com with QMQP; 2 Oct 2002 14:50:45 -0000\r\nReceived: from unknown (HELO www1.kc.aoindustries.com) (209.15.201.70)\n  by mta2.grp.scd.yahoo.com with SMTP; 2 Oct 2002 14:50:45 -0000\r\nReceived: from apache.org ([65.105.132.131])\n\tby www1.kc.aoindustries.com (8.11.6/8.11.0) with ESMTP id g92Eoi302818\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 2 Oct 2002 09:50:44 -0500\r\nMessage-ID: &lt;3D9B094F.7040603@...&gt;\r\nDate: Wed, 02 Oct 2002 10:57:19 -0400\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.1) Gecko/20020826\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Do JUnit internals suck?!?\r\nReferences: &lt;OF1DFE04F4.47320355-ONC1256C46.004DCD8C@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Berin Loritsch &lt;bloritsch@...&gt;\r\nX-Yahoo-Group-Post: member; u=64910131\r\nX-Yahoo-Profile: bloritsch\r\n\r\njohannes.akinlaja@... wrote:\n&gt; Hi Berin,\n&gt; \n&gt; if I got you right, you want TestCase to be an interface. One of the\n&gt; reasons is:\n&gt; \n&gt; Berin Loritsch wrote:\n&gt; \n&gt;&gt;The reason being that sometimes the semantics and internals of the\n&gt;&gt;way TestCase is written gets in the way of how I want to make JUnit\n&gt;&gt;work in my environment.\n&gt; \n&gt; \n&gt; I never had such problems due to TestCase being a class. Could you give an\n&gt; example?\n\nPart of this comes from my Component Based Design background.  An\ninterface is a document of contracts.  Your contracts are always with\nthe interface.  The reason for it is so that the implementations can\nchange wildly without breaking the contracts.  Version 4 of JUnit would\nbe able to work with Version 1 code if the contracts remain the same.\nThat is not always the case with an object hierarchy.\n\nThe problem with altering behavior based on a class hierarchy in the\nway that JUnit does it is that it is neither polymorphic, nor interface\nbased.  It is somewhere in the middle--which is not clear.  Altering the\nbehavior of a TestCollector based on the TestCase/TestSuite\nimplementations means that if I had my own implementation of the Test\ninterface I don&#39;t know how it is going to be handled.  Interfaces do\nnot require you to have the same base class.  When used properly, that\nis a definite *strength*.  When used improperly, it causes problems\nin predictability.\n\nMy point is that the contracts with the Test interface are not defined\nclearly enough.  If I have to write a test harness (which I do BTW) that\nworks quite differently than the core JUnit TestCase, then I am SOL.  I\ncan&#39;t take advantage of any of the features that I would otherwise be\nable to expect with the relationship between TestCase and TestSuite.  I\nmight be able to have a bunch of individual Test objects--which in some\ncases might be even better, but my objects would not be treated the same\nas the TestCase/TestSuite.\n\nFor instance, I need to have a setup where I instantiate a component\ncontainer, and the tests.  I want the tests to automatically collect all\nthe testXXXX() methods and execute them.  However I can&#39;t do that unless\nI extend TestCase.  I can&#39;t extend TestCase because of other mitigating\ncircumstances.\n\nLastly, when your contracts are fixated with the *interface* and not the\nabstract class, you do not depend on the internals of the abstract\nclass.  There are some of those dependencies.  Logic for running a test\nshould not be included in the TestCase itself.  The only thing that\nshould be in a TestCase are the individual testXXX() methods and\npossibly the setUp()/tearDown() methods.\n\n-- \n\n&quot;They that give up essential liberty to obtain a little temporary safety\n  deserve neither liberty nor safety.&quot;\n                 - Benjamin Franklin\n\n\n", 
+    "profile": "bloritsch", 
+    "topicId": 5875, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64910131, 
+    "prevInTime": 5903, 
+    "contentTrasformed": false, 
+    "postDate": "1033570639", 
+    "canDelete": false, 
+    "nextInTopic": 5905, 
+    "prevInTopic": 5903, 
+    "headers": {
+        "messageIdInHeader": "PDNEOUIwOTRGLjcwNDA2MDNAYXBhY2hlLm9yZz4=", 
+        "referencesHeader": "PE9GMURGRTA0RjQuNDczMjAzNTUtT05DMTI1NkM0Ni4wMDREQ0Q4Q0BzdmMtYWcubmV0Pg=="
+    }
+}

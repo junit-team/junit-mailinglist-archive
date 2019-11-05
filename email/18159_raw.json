@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18160, 
+    "senderId": "oGXFlfoLe9RRvq7b8fc89dGBDWSQtDJPPfBwJi8Ni3XnPmUvyT5U_-dvDsZQj8d0IG4EatdD4BQLn-OXAs5XEuWyC2QoYw7fCvI1baMN", 
+    "systemMessage": false, 
+    "subject": "Re: Testing Static block, members, class with JUnit", 
+    "from": "&quot;isaachanstar&quot; &lt;isaachanstar@...&gt;", 
+    "authorName": "isaachanstar", 
+    "msgSnippet": "Great static block of code is always boring me, i think u should avoid writing static code, so u ll see writing tests is becoming more easy.", 
+    "msgId": 18159, 
+    "rawEmail": "Return-Path: &lt;isaachanstar@...&gt;\r\nX-Sender: isaachanstar@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 43756 invoked from network); 19 Oct 2006 00:09:37 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m24.grp.scd.yahoo.com with QMQP; 19 Oct 2006 00:09:37 -0000\r\nReceived: from unknown (HELO n30.bullet.scd.yahoo.com) (66.94.237.23)\n  by mta7.grp.scd.yahoo.com with SMTP; 19 Oct 2006 00:09:36 -0000\r\nReceived: from [66.218.69.6] by n30.bullet.scd.yahoo.com with NNFMP; 19 Oct 2006 00:09:26 -0000\r\nReceived: from [66.218.66.86] by t6.bullet.scd.yahoo.com with NNFMP; 19 Oct 2006 00:09:26 -0000\r\nDate: Thu, 19 Oct 2006 00:09:26 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;eh6fnm+m4rd@...&gt;\r\nIn-Reply-To: &lt;egm1v4+oos7@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0\r\nFrom: &quot;isaachanstar&quot; &lt;isaachanstar@...&gt;\r\nSubject: Re: Testing Static block, members, class with JUnit\r\nX-Yahoo-Group-Post: member; u=242241013; y=ufF8M19e_UV8kKe77GcknR7cYwsE1RcfmYhXadcnyMSCyYH7Isav\r\nX-Yahoo-Profile: isaachanstar\r\n\r\nGreat static block of code is always boring me, i think u should avoid\nwrit=\r\ning static code, so u&#39;ll see writing tests is becoming more easy.\n\n--- In j=\r\nunit@yahoogroups.com, &quot;mcdonald6692&quot; &lt;bill.mcdonald@...&gt; wrote:\n&gt;\n&gt; I don&#39;t=\r\n have a lot of experience with JUnit, so please keep this in \n&gt; mind when y=\r\nou respond.\n&gt; \n&gt; BACKGROUND:\n&gt; \n&gt; I have a class under test that uses a sta=\r\ntic block to initialize a \n&gt; static member.  It serves as a lookup table.\n&gt;=\r\n \n&gt; public class StateAbbrev {\n&gt;   // static list of all the abbreviations.=\r\n\n&gt;   private static List accronyms =3D new ArrayList();  \n&gt; \n&gt;   private St=\r\nring text =3D &quot;&quot;;\n&gt; \n&gt; /*\n&gt;  * HERE&#39;S MY STATIC BLOCK...\n&gt;  */\n&gt;   static {=\r\n\n&gt;     DataSource ds =3D DataSource.getInstance();\n&gt;     List strings =3D d=\r\ns.getAccronyms();\n&gt;     for (Iterator i =3D strings.iterator(); i.hasNext()=\r\n; )\n&gt;       accronyms.add(new StateAbbrev((String)i.next()) );\n&gt;   }\n&gt; \n&gt;  =\r\n public static StateAbbrev lookup(String letters)\n&gt;   {\n&gt;     for (Iterator=\r\n i =3D accronyms.iterator(); i.hasNext(); )\n&gt;     {\n&gt;       StateAbbrev abb=\r\nrev (StateAbbrev) i.next();\n&gt;       String accronym =3D abbrev.getText();\n&gt;=\r\n       if (accronym.equals(letters))\n&gt;         return abbrev;\n&gt;     }\n&gt;    =\r\n return null;\n&gt;   }\n&gt; \n&gt;   public String getText()\n&gt;   {\n&gt;     return this.=\r\ntext;\n&gt;   }\n&gt; }\n&gt; \n&gt; public class TestStateAbbrev extends TestClass\n&gt; {\n&gt; \n=\r\n&gt;   public void setUp() throws Exception\n&gt;   {\n&gt;     // Initialize DataSour=\r\nce to connect to database.\n&gt;     ctx.bind(&quot;datasourcepath&quot;, ds);\n&gt;   }\n&gt; \n&gt;=\r\n   //\n&gt;   // TESTS...\n&gt;   //\n&gt; \n&gt;   public testLookupAZ()\n&gt;   {\n&gt;     asser=\r\ntNotNull(StateAbbrev.lookup(&quot;AZ&quot;));\n&gt;   }\n&gt; \n&gt;   public testLookupXX()\n&gt;   =\r\n{\n&gt;     assertNull(StateAbbrev.lookup(&quot;XX&quot;));\n&gt;   }\n&gt; \n&gt;   public testLooku=\r\npFail()\n&gt;   {\n&gt;     // break ds connection to make it fail. \n&gt;     ctx.unbi=\r\nnd(&quot;datasourcepath&quot;);\n&gt; \n&gt;     assertNotNull(StateAbbrev.lookup(&quot;AZ));\n&gt; \n&gt;=\r\n     // reset ds so that other tests work correctly.\n&gt;     ctx.bind(&quot;dataso=\r\nurcepath&quot;, ds);\n&gt;   }\n&gt; }\n&gt; \n&gt; QUESTION:\n&gt; \n&gt; The problem is that if the te=\r\nstLookupFail() method is the first one \n&gt; to load class StateAbbrev, then S=\r\ntateAbbrev.accronyms.size() will \n&gt; equal 0.  When the other tests are run,=\r\n they will not work since \n&gt; StateAbbrev.accronyms is static and is already=\r\n loaded and initialized \n&gt; to an empty list.  This brings up the general qu=\r\nestion, &quot;How do you \n&gt; test static blocks, classes and data-members?&quot; (I kn=\r\now the example is \n&gt; rather simplistic, but hopefully it doesn&#39;t distract f=\r\nrom my \n&gt; question).\n&gt; \n&gt; Can I unload the class so that its loaded again a=\r\nnd the static block \n&gt; initializes the member correctly?  I didn&#39;t want to =\r\nhave to move the \n&gt; testLookupFail() test outside of TestStateAbbrev either=\r\n.\n&gt;\n\n\n\n\n", 
+    "profile": "isaachanstar", 
+    "topicId": 18131, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 242241013, 
+    "prevInTime": 18158, 
+    "contentTrasformed": false, 
+    "postDate": "1161216566", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18134, 
+    "headers": {
+        "inReplyToHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGVoNmZubSttNHJkQGVHcm91cHMuY29tPg=="
+    }
+}

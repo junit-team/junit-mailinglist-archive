@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 8763, 
+    "senderId": "p2Jcb2mVg9lZ_Rg1y69NaqbSZy9xSsGrBLSs6zNCXK013A4Yz72eUTAgYHol4eJNb0m_jldVxZqxvmZPPUVJUorWDouy-wSGJc6jjUwrNQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to run same testcase with 20 different  arg-values to test diff. results", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... This is unnecessary duplication. ... You certainly don t need THAT. ... If I run three tests, I want JUnit to report 3 runs, not 1. It will eventually", 
+    "msgId": 8762, 
+    "profile": "nails762", 
+    "topicId": 8724, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1709055051\"><blockquote><span title=\"ireply\">&gt;So said malvoisin on 2003-07-23 --------------------<br/>\n&gt;but but but...<br/>\n&gt;<br/>\n&gt;public void testMax() {<br/>\n&gt;  testTwoIntegers(Integer.maxValue, Integer.maxValue);<br/>\n&gt;}<br/>\n&gt;<br/>\n&gt;public void testMin() {<br/>\n&gt;  testTwoIntegers(Integer.minValue, Integer.minValue);<br/>\n&gt;} <br/>\n&gt;<br/>\n&gt;..<br/>\n&gt;..<br/>\n&gt;..<br/>\n<br/>\n </span></blockquote>This is unnecessary duplication.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;would still work, and is more concise than creating 200 new test<br/>\n&gt;classes with different setUp/tearDown methods.  <br/>\n<br/>\n </span></blockquote>You certainly don&#39;t need THAT.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;what&#39;s so hated about<br/>\n&gt;grouping them all in the same method, though?  <br/>\n<br/>\n </span></blockquote>If I run three tests, I want JUnit to report 3 runs, not 1. It will eventually confuse someone at a key moment. It always does. It&#39;s like trying to remember a lie: eventually it catches up with you -- it&#39;s easier to tell the truth from the beginning.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;sure you&#39;re running<br/>\n&gt;multiple tests in one test method, but it is still easy to track<br/>\n&gt;specific problems down since you get the stack trace.<br/>\n<br/>\n </span></blockquote>True enough, but it doesn&#39;t give me an accurate picture of the number of tests in the system.<br/>\n<br/>\nSimple solution:<br/>\n<br/>\npublic void testTwoIntegers() {<br/>\n    // use a and b from fixture<br/>\n}<br/>\n<br/>\npublic static Test suite() {<br/>\n    int[][] testData = new int[][] {<br/>\n        {Integer.minValue, Integer.minValue},<br/>\n        {Integer.maxValue, Integer.maxValue},<br/>\n        ...<br/>\n    };<br/>\n<br/>\n    TestSuite suite = new TestSuite();<br/>\n    for (int i = 0; i &lt; testData.length; i++) {<br/>\n        suite.addTest(new IntegerTest(testData[i][0], testData[i][1]);<br/>\n    }<br/>\n<br/>\n    return suite;<br/>\n}<br/>\n<br/>\npublic IntegerTest(int a, int b) {<br/>\n    super(&quot;testTwoIntegers&quot;);    // leverage TestCase reflection to run test method &#39;testTwoIntegers&#39;<br/>\n    // set fixture for test<br/>\n    this.a = a;<br/>\n    this.b = b;<br/>\n}<br/>\n<br/>\nAn alternative, with less magic, is to override runTest().<br/>\n<br/>\npublic void testTwoIntegers(int a, int b) {<br/>\n    // test implementation<br/>\n}<br/>\n<br/>\npublic static Test suite() {<br/>\n    int[][] testData = new int[][] {<br/>\n        {Integer.minValue, Integer.minValue},<br/>\n        {Integer.maxValue, Integer.maxValue},<br/>\n        ...<br/>\n    };<br/>\n<br/>\n    TestSuite suite = new TestSuite();<br/>\n    for (int i = 0; i &lt; testData.length; i++) {<br/>\n        suite.addTest(new IntegerTest() {<br/>\n            protected void runTest() {<br/>\n                testTwoIntegers(testData[i][0], testData[i][1]);<br/>\n            }<br/>\n        });<br/>\n    }<br/>\n<br/>\n    return suite;<br/>\n}<br/>\n<br/>\nI prefer the first because it avoids a bunch of anonymous subclasses.<br/>\n<br/>\nTake care.<br/>\n<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 8761, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1058977713", 
+    "canDelete": false, 
+    "nextInTopic": 8783, 
+    "prevInTopic": 8761, 
+    "headers": {
+        "inReplyToHeader": "PGJmbWMxNytqNWw5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwNzIzMTIyODMzMDQxNS4wMDg5NjAwN0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGJmbWMxNytqNWw5QGVHcm91cHMuY29tPg=="
+    }
+}

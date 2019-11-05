@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 13433, 
+    "senderId": "Di82w9et1goynMytm8VosCYgQEH6aNoWrkVpBvnUxcebTxv0MjEbcCF-GV_4CJRnbC4DfdoFEKheLKB4Ig4DmPoktVK4bIeyww", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Simulating multiple tests", 
+    "from": "&quot;Cedric Beust&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cedric Beust", 
+    "msgSnippet": "... Actually, I m surprised about the second issue.  Only test methods are reported, not asserts, so even in the case above, you should only get the report for", 
+    "msgId": 13432, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 10089 invoked from network); 8 May 2005 00:02:29 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m25.grp.scd.yahoo.com with QMQP; 8 May 2005 00:02:29 -0000\r\nReceived: from unknown (HELO 216-239-45-4.google.com) (216.239.45.4)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 May 2005 00:02:29 -0000\r\nReceived: from cbeustcorp (dhcp-172-24-73-139.corp.google.com [172.24.73.139])\n\tby stewie.corp.google.com (8.13.3/8.13.3) with ESMTP id j4802HBh015624\n\t(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO)\n\tfor &lt;junit@yahoogroups.com&gt;; Sat, 7 May 2005 17:02:17 -0700\r\nMessage-Id: &lt;200505080002.j4802HBh015624@...&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Sat, 7 May 2005 17:02:17 -0700\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441\r\nIn-Reply-To: &lt;d5h8op$9d$1@...&gt;\r\nThread-Index: AcVSyBppoRLBdbwFSHKWAc+D3KHUhwAmGQTg\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;Cedric Beust&quot; &lt;cbeust@...&gt;\r\nSubject: RE: [junit] Simulating multiple tests\r\nX-Yahoo-Group-Post: member; u=199443513\r\nX-Yahoo-Profile: cbeust\r\n\r\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n\n&gt; I have =\r\na pattern I use frequently when I want to test that a \n&gt; given input to a f=\r\nunction yields the expected result, over a \n&gt; number of inputs. I use somet=\r\nhing like:\n&gt; \n&gt; \tStirng[][] TESTS =3D new String[][] {\n&gt; \t\t{ &quot;input 1&quot;, &quot;ex=\r\npect 1&quot; },\n&gt; \t\t{ &quot;input 2&quot;, &quot;expect 2&quot; },\n&gt; \t\t{ &quot;input 3&quot;, &quot;expect 3&quot; },\n&gt; =\r\n\t\t...\n&gt; \t};\n&gt; \n&gt; \tpublic void testFoo() {\n&gt; \t\tfor (int i =3D 0; i &lt; TESTS.l=\r\nength; i++) {\n&gt; \t\t\tString in =3D TESTS[i][0];\n&gt; \t\t\tString out =3D TESTS[i][=\r\n1];\n&gt; \t\t\tString real =3D functionToTest(in);\n&gt; \t\t\tassertEquals(in, out, rea=\r\nl);\n&gt; \t\t}\n&gt; \t}\n&gt; \n&gt; This suffers from two problems: the first assertion fai=\r\nlure \n&gt; causes subsequent tests to be skipped; and the number of \n&gt; tests r=\r\nun is reported as 1 rather than TESTS.length. I can \n&gt; live with the second=\r\n issue :-) but the first is a bit of a pain.\n\nActually, I&#39;m surprised about=\r\n the second issue.  Only test methods are\nreported, not asserts, so even in=\r\n the case above, you should only get the\nreport for one test (testFoo()).\n\n=\r\nAs for the first problem, when I find myself in need of &quot;breaking down an\na=\r\nssert&quot;, I defer the results to booleans:\n\n \tpublic void testFoo() {\n\t\tboole=\r\nan succes[] =3D new boolean[TESTS.length];\n \t\tfor (int i =3D 0; i &lt; TESTS.l=\r\nength; i++) {\n \t\t\tString in =3D TESTS[i][0];\n \t\t\tString out =3D TESTS[i][1]=\r\n;\n \t\t\tString real =3D functionToTest(in);\n\t\t\tsuccess[i] =3D check(in, out, =\r\nreal);\n \t\t}\n\nAnd then you assert all the boolean in the array one by one or=\r\n with a big\n&&.\n\n&gt; I  don&#39;t want to write a seperate test method for each i=\r\nnput \n&gt; / expected output pair; listing them out this way makes it \n&gt; much =\r\nmore easy to scan the test cases and see where there are \n&gt; redundant cases=\r\n or omissions. So...\n&gt; \n&gt; How can I rewrite testFoo() such that, for each p=\r\nair in \n&gt; TESTS, a seperate test is created\n\nThat&#39;s a bit overkill, the ide=\r\nal way to do this would be to pass parameters\nto your test methods.  Which =\r\nJUnit doesn&#39;t support (but TestNG does :-)).\n\n\n-- \nC=E9dric\nhttp://beust.co=\r\nm/weblog\n \n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 13429, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 13431, 
+    "contentTrasformed": false, 
+    "postDate": "1115510537", 
+    "canDelete": false, 
+    "nextInTopic": 13433, 
+    "prevInTopic": 13431, 
+    "headers": {
+        "inReplyToHeader": "PGQ1aDhvcCQ5ZCQxQHNlYS5nbWFuZS5vcmc+", 
+        "messageIdInHeader": "PDIwMDUwNTA4MDAwMi5qNDgwMkhCaDAxNTYyNEAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

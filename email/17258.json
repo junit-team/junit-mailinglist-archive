@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 17259, 
+    "senderId": "iX-_LJgbUo4XYBksQCpMEKurAeO8G8Ew-v63SyzO-GOjYULpvy_e1eNTlCUFEeoxgHFCUVrCmMG-CXTM1Ah9Z1LlLhqlI6I05R9Y1eyK2KY", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] setUp versus constructors", 
+    "from": "&quot;Kevin Lawrence&quot; &lt;kev.lawrence@...&gt;", 
+    "authorName": "Kevin Lawrence", 
+    "msgSnippet": "... I am almost certain that we had this exact same discussion in this exact same forum with the exact same people about a year ago ;-)  I even posted the same", 
+    "msgId": 17258, 
+    "profile": "kevinwilliamlawrence", 
+    "topicId": 17141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 244691123, 
+    "messageBody": "<div id=\"ygrps-yiv-2006456538\">On 7/20/06, Cédric Beust ♔ &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cbeust@...\">cbeust@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi J.B.,<br/>\n&gt;<br/>\n&gt; On 7/18/06, J. B. Rainsberger &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; Andreas Guther wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt; The fact that setup() and the constructor are equivalent as Cedric<br/>\n&gt; &gt; &gt; pointed out is always confusing and something everyone should be aware<br/>\n&gt; &gt; &gt; of using JUnit.<br/>\n&gt; &gt;<br/>\n&gt; &gt; They are not equivalent! It is an accident of implementation that<br/>\n&gt; &gt; initializing fixture objects in the constructor behaves the same way as<br/>\n&gt; &gt; the setUp() method does.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Can you clarify this?  If they behave exactly the same way (in JUnit3 at<br/>\n&gt; least), how are they not equivalent?<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>I am almost certain that we had this exact same discussion in this<br/>\nexact same forum with the exact same people about a year ago ;-)  I<br/>\neven posted the same example - at least one that is very similar to<br/>\nthis ...<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\n<br/>\npublic class InterDependentTest extends TestCase {<br/>\n  private static int externalStateInitializedInConstructor;<br/>\n  private static int externalStateInitializedInSetup;<br/>\n<br/>\n  public InterDependentTest() {<br/>\n    externalStateInitializedInConstructor = 0;<br/>\n  }<br/>\n<br/>\n  protected void setUp() throws Exception {<br/>\n    externalStateInitializedInSetup = 0;<br/>\n  }<br/>\n<br/>\n  public void testConstructorOne() throws Exception {<br/>\n    assertEquals(0, externalStateInitializedInConstructor++);<br/>\n  }<br/>\n<br/>\n  public void testConstructorTwo() throws Exception {<br/>\n    assertEquals(0, externalStateInitializedInConstructor++);<br/>\n  }<br/>\n<br/>\n  public void testSetupOne() throws Exception {<br/>\n    assertEquals(0, externalStateInitializedInSetup++);<br/>\n  }<br/>\n<br/>\n  public void testSetupTwo() throws Exception {<br/>\n    assertEquals(0, externalStateInitializedInSetup++);<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\nIn my IDE, in JUnit 3.8, all the tests pass except testConstructorTwo.<br/>\nIf you have external static state that needs to reset between tests,<br/>\nit must be reset in setup() because setup() is called between every<br/>\ntest. Constructors are not.<br/>\n<br/>\nThe algorithm (in JUnit 3.8, in most runners) is approximately :<br/>\n<br/>\nfor each test<br/>\n  construct Test<br/>\nend<br/>\n<br/>\nfor each test<br/>\n  call setup<br/>\n  run test<br/>\n  call tear down<br/>\nend<br/>\n<br/>\nKevin</div>", 
+    "prevInTime": 17257, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1154446639", 
+    "canDelete": false, 
+    "nextInTopic": 17301, 
+    "prevInTopic": 17257, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYwNzIwMDg1OGsxNDkwM2Q4MHczNzFjZDYzNzhmNDUwMWNkQG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDUxZDFiMmRlMDYwODAxMDgzN3E3MDM4OGJkNmxiNDgzMzdmNDU5NzY2NTkxQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDNGQjA4RDZBMjFCM0VDNEQ4NzQ5RUY2RDlFNjI2Mjc4NDRBOTZGQFdEQ0NQTUFJTDAxLm1hcmtldHRvb2xzLmNvbT4JIDw0NEJEOTlFQy45MDgwMkByb2dlcnMuY29tPgkgPGI4NmI2YTljMDYwNzIwMDg1OGsxNDkwM2Q4MHczNzFjZDYzNzhmNDUwMWNkQG1haWwuZ29vZ2xlLmNvbT4="
+    }
+}

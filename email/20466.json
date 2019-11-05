@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20467, 
+    "senderId": "jOSAnShO7cRxNVI0E4NE-vLBBRLF5u_a4GtIxpKZqCLLZSBabKMTLh8IJDaiBPdWNEgjccTnuTVOZ91JibJYoGUhmlG6i-hl1oQv6g", 
+    "systemMessage": true, 
+    "subject": "Re: TextListener improvement", 
+    "from": "&quot;toalexsmail&quot; &lt;toalexsmail@...&gt;", 
+    "authorName": "toalexsmail", 
+    "msgSnippet": "PrintStreamListener has a bug. Here is correct version: public class PrintStreamListener extends RunListener{ //Definition of delimiters  is in Description ", 
+    "msgId": 20466, 
+    "profile": "toalexsmail", 
+    "topicId": 20361, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 340165037, 
+    "messageBody": "<div id=\"ygrps-yiv-1405336476\">PrintStreamListener has a bug. Here is correct version:<br/>\n<br/>\n<br/>\npublic class PrintStreamListener extends RunListener{<br/>\n\t//Definition of delimiters  is in Description<br/>\n\tprivate static final Pattern DISPAY_NAME_PATTERN =<br/>\nPattern.compile(&quot;[()]&quot;); <br/>\n\tprivate TextListener textListener;<br/>\n\tprivate PrintStream writer;<br/>\n\t<br/>\n\tpublic PrintStreamListener() {<br/>\n\t\tthis(System.out);<br/>\n\t}<br/>\n<br/>\n\tpublic PrintStreamListener(PrintStream writer) {<br/>\n\t\tsuper();<br/>\n\t\tthis.textListener = new TextListener(writer);<br/>\n\t\tthis.writer = writer;<br/>\n\t}<br/>\n\t<br/>\n\t/**<br/>\n\t * For sub-classes use.<br/>\n\t * <br/>\n\t * @return<br/>\n\t */<br/>\n\tprotected PrintStream getWriter(){<br/>\n\t\treturn writer;<br/>\n\t}<br/>\n\t<br/>\n\tprivate PrintStream getNotNullWriter(){<br/>\n\t\tPrintStream writer = getWriter();<br/>\n\t\tif(writer==null){<br/>\n\t\t\tthrow new IllegalStateException(&quot;writer should be not null&quot;);<br/>\n\t\t}<br/>\n\t\treturn writer;<br/>\n\t}<br/>\n\t<br/>\n\t<br/>\n\t/**<br/>\n\t * This method can be overriden in sub-classes.<br/>\n\t * <br/>\n\t * @param description<br/>\n\t * @throws IllegalArgumentException if description is null.<br/>\n\t */<br/>\n\tprotected void writeMethodName(Description description){<br/>\n\t\tif(description==null){<br/>\n\t\t\tthrow new IllegalArgumentException(&quot;description should be not null&quot;);<br/>\n\t\t}<br/>\n\t\tString displayName = description.getDisplayName();<br/>\n\t\t//third place is empty, workaround to avoid ) at the end of the String<br/>\n\t\tString[] complexNames = DISPAY_NAME_PATTERN.split(displayName, 3); <br/>\n\t\tString methodName = (complexNames==null ||<br/>\ncomplexNames.length==0)?null:complexNames[0];<br/>\n\t\tif(methodName == null || &quot;&quot;.equals(methodName)){<br/>\n\t\t\tmethodName = displayName;<br/>\n\t\t}<br/>\n\t\tPrintStream writer = getNotNullWriter();<br/>\n\t\t<br/>\n\t\twriter.print(methodName);<br/>\n\t\twriter.print(&#39; &#39;);<br/>\n\t}<br/>\n\t<br/>\n\t<br/>\n\t/**<br/>\n\t * Called when an atomic test is about to be started.<br/>\n\t * @param description the description of the test that is about to be<br/>\nrun <br/>\n\t * (generally a class and method name)<br/>\n\t */<br/>\n\t@Override<br/>\n\tpublic void testStarted(Description description)  {<br/>\n\t\ttextListener.testStarted(description);<br/>\n\t}<br/>\n<br/>\n<br/>\n\t/** <br/>\n\t * Called when an atomic test fails.<br/>\n\t * @param failure describes the test that failed and the exception<br/>\nthat was thrown<br/>\n\t */<br/>\n\t@Override<br/>\n\tpublic void testFailure(Failure failure)  {<br/>\n\t\tDescription description = failure.getDescription();<br/>\n\t\tPrintStream writer = getNotNullWriter();<br/>\n<br/>\n\t\twriteMethodName(description);<br/>\n\t\ttextListener.testFailure(failure);<br/>\n\t\twriter.println();<br/>\n\t}<br/>\n<br/>\n\t/**<br/>\n\t * Called when a test will not be run, generally because a test<br/>\nmethod is annotated <br/>\n\t * with {@link org.junit.Ignore}.<br/>\n\t * @param description describes the test that will not be run<br/>\n\t */<br/>\n\t@Override<br/>\n\tpublic void testIgnored(Description description)  {<br/>\n\t\twriteMethodName(description);<br/>\n\t\tPrintStream writer = getNotNullWriter();<br/>\n\t\ttextListener.testIgnored(description);<br/>\n\t\twriter.println();<br/>\n\t}<br/>\n\t<br/>\n\t<br/>\n\t@Override<br/>\n\tpublic void testRunFinished(Result result) {<br/>\n\t\ttextListener.testRunFinished(result);<br/>\n\t}<br/>\n\t<br/>\n\t/**<br/>\n\t * Called before any tests have been run.<br/>\n\t * @param description describes the tests to be run<br/>\n\t */<br/>\n\t@Override<br/>\n\tpublic void testRunStarted(Description description) throws Exception {<br/>\n\t\tPrintStream writer = getNotNullWriter();<br/>\n\t\tString displayName = description.getDisplayName();<br/>\n\t\t//third place is empty, workaround to avoid ) at the end of the String<br/>\n\t\tString[] complexNames = DISPAY_NAME_PATTERN.split(displayName, 3); <br/>\n\t\tString className = (complexNames==null ||<br/>\ncomplexNames.length&lt;2)?null:complexNames[1];<br/>\n\t\tif(className == null || &quot;&quot;.equals(className)){<br/>\n\t\t\tclassName = displayName;<br/>\n\t\t}<br/>\n\t\twriter.print(&quot;started to test &quot;+className);<br/>\n\t\twriter.println();\t\t<br/>\n\t}<br/>\n\t<br/>\n\t<br/>\n\t<br/>\n<br/>\n\t<br/>\n}</div>", 
+    "prevInTime": 20465, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1209425603", 
+    "canDelete": false, 
+    "nextInTopic": 20467, 
+    "prevInTopic": 20465, 
+    "headers": {
+        "inReplyToHeader": "PGZyOGV0cytkazJnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGZ2NW1zMyttbnRuQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 9107, 
+    "senderId": "vW0oBiPNgbpCw0OC6toBI5rx8oxqzhMFM_Y4s7nHlt7cPZkRA290UbJ0shhMUOSggwRQtFACW-eM57au3bhKX9ZJZT2L7Q3uL5iinOyDBw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Simple multithreaded test case", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "I believe you need to set haltonfailure for Ant to fail the build when the  task fails. Google JUnit Ant haltonfailure for details. ... J. B.", 
+    "msgId": 9106, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 87167 invoked from network); 14 Aug 2003 16:07:26 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m16.grp.scd.yahoo.com with QMQP; 14 Aug 2003 16:07:26 -0000\r\nReceived: from unknown (HELO b15.blacksun.ca) (139.142.202.48)\n  by mta1.grp.scd.yahoo.com with SMTP; 14 Aug 2003 16:07:25 -0000\r\nReceived: from barney (CPE000625bbb394-CM014090206824.cpe.net.cable.rogers.com [24.156.43.226])\n\tby b15.blacksun.ca (8.10.2/8.10.2) with SMTP id h7EG7LK26582\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 14 Aug 2003 10:07:21 -0600\r\nMessage-ID: &lt;200308141207020504.000DA10A@...&gt;\r\nIn-Reply-To: &lt;bhdqkb+df2n@...&gt;\r\nReferences: &lt;bhdqkb+df2n@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Thu, 14 Aug 2003 12:07:02 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Simple multithreaded test case\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-MailScanner: Found to be clean\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nI believe you need to set &quot;haltonfailure&quot; for Ant to fail the build when th=\r\ne &lt;junit&gt; task fails. Google &#39;JUnit Ant haltonfailure&#39; for details.\n\n&gt;So sa=\r\nid vocaro2000 on 2003-08-13 --------------------\n&gt;Hi everyone,\n&gt;\n&gt;This topi=\r\nc may have been discussed before, but I couldn&#39;t find it\n&gt;anywhere in the F=\r\nAQ, the forums, or the docs. (The GroboUtils package\n&gt;is related to this bu=\r\nt doesn&#39;t seem to specifically address my\n&gt;question.) The issue is this cod=\r\ne:\n&gt;\n&gt;import junit.framework.*;\n&gt;\n&gt;public class ThreadTest extends TestCase=\r\n\n&gt;{\n&gt;   class Server extends Thread\n&gt;   {\n&gt;      public void run()\n&gt;      {=\r\n\n&gt;         fail(&quot;The server failed its test case&quot;);\n&gt;\n&gt;         synchronize=\r\nd (this)\n&gt;         {\n&gt;            notifyAll();\n&gt;         }\n&gt;      }\n&gt;   }\n&gt;=\r\n\n&gt;   Server server;\n&gt;\n&gt;   public ThreadTest(String name)\n&gt;   {\n&gt;      super=\r\n(name);\n&gt;\n&gt;      server =3D new Server();\n&gt;   }\n&gt;\n&gt;   protected void setUp(=\r\n)\n&gt;   {\n&gt;      try\n&gt;      {\n&gt;         server.start();\n&gt;\n&gt;         synchroni=\r\nzed (server)\n&gt;         {\n&gt;            server.wait();\n&gt;         }\n&gt;      }\n&gt;=\r\n      catch (Exception e)\n&gt;      {\n&gt;         fail(e.toString());\n&gt;      }\n&gt;=\r\n   }\n&gt;   \n&gt;   public void testSomething() {}\n&gt;}\n&gt;\n&gt;And here&#39;s an Ant file f=\r\nor your convenience:\n&gt;\n&gt;&lt;project name=3D&quot;Thread Test&quot; default=3D&quot;compile&quot;&gt;\n=\r\n&gt;\n&gt;   &lt;target name=3D&quot;compile&quot;&gt;\n&gt;      &lt;javac srcdir=3D&quot;.&quot;/&gt;\n&gt;   &lt;/target&gt;\n=\r\n&gt;\n&gt;   &lt;target name=3D&quot;runtest&quot;&gt;\n&gt;      &lt;junit printsummary=3D&quot;true&quot;&gt;\n&gt;     =\r\n    &lt;test name=3D&quot;ThreadTest&quot;/&gt;\n&gt;      &lt;/junit&gt;\n&gt;   &lt;/target&gt;\n&gt;\n&gt;&lt;/project&gt;=\r\n\n&gt;\n&gt;When you look at the source code, it seems quite clear that the test\n&gt;c=\r\nase should always fail. This is not what happens, however. Although\n&gt;JUnit =\r\nprints the correct assertion failure to System.out, it doesn&#39;t\n&gt;report any =\r\nfailures. It thinks that the test succeeded. Is this a bug\n&gt;in JUnit, or am=\r\n I just not understanding how it works?\n&gt;\n&gt;Thanks for any pointers,\n&gt;\n&gt;Trev=\r\nor\n&gt;\n&gt;\n&gt;\n&gt;Yahoo! Groups Sponsor\n&gt;ADVERTISEMENT\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;To unsubscribe from=\r\n this group, send an email to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt;Your=\r\n use of Yahoo! Groups is subject to the Yahoo! Terms of Service.\nJ. B. Rain=\r\nsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that peo=\r\nple understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n=\r\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 9101, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 9105, 
+    "contentTrasformed": false, 
+    "postDate": "1060877222", 
+    "canDelete": false, 
+    "nextInTopic": 9110, 
+    "prevInTopic": 9103, 
+    "headers": {
+        "inReplyToHeader": "PGJoZHFrYitkZjJuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwODE0MTIwNzAyMDUwNC4wMDBEQTEwQUBkaWFzcGFyc29mdHdhcmUuY29tPg==", 
+        "referencesHeader": "PGJoZHFrYitkZjJuQGVHcm91cHMuY29tPg=="
+    }
+}

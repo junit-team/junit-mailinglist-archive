@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 8800, 
+    "senderId": "euaEXq89Lf8uAGbhDcFmMXV8QNy2uatWYFq2Q9hgaaF6ZjNgnGqzv0HoebAmHr8ATWZxHfCavmX8anAyCnx3D7s5et9jAYTcu_UN", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to test private member variables?", 
+    "from": "Peter Morgan &lt;pmorgan@...&gt;", 
+    "authorName": "Peter Morgan", 
+    "msgSnippet": "... For that kind behaviour we would use an InvocationHandler which is set on the Imposter. We have tended to build up a library of such handlers, and re-use", 
+    "msgId": 8799, 
+    "profile": "peter_james_morgan", 
+    "topicId": 8767, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 148954645, 
+    "messageBody": "<div id=\"ygrps-yiv-551950672\">On Fri, 2003-07-25 at 14:06, Dave Astels wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Then you have a specification of the interaction in your test... not<br/>\n&gt; just the postconditions.<br/>\n&gt; <br/>\n&gt; How do you test for correct call sequencing?<br/>\n<br/>\n </span></blockquote>For that kind behaviour we would use an InvocationHandler which is set<br/>\non the Imposter. We have tended to build up a library of such handlers,<br/>\nand re-use them in other tests. I guess that it is similar to the<br/>\n&#39;validate()&#39; method at the end of a test with a mock. For example, we<br/>\nwould have a FailingTransactionManagerInvocationHandler, in our<br/>\n&#39;library&#39; of behaviours, which we can use when we wanted such behaviour:<br/>\n<br/>\nImposter i=imposterFactory.newImposter(TransactionManager.class);<br/>\ni.setInvocationHandler(failingTrans...);<br/>\n<br/>\nor<br/>\n<br/>\ni.setInvocationHandler(goodBehaviour...);<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Both approaches have their place.  To me it depends on whether I want<br/>\n&gt; to test interaction or results.<br/>\n<br/>\n </span></blockquote>Sure. We tend to use an InvocationHandler where we require a complex<br/>\ninteraction, e.g., a transaction manager which &#39;works&#39; for a while, and<br/>\nthen &#39;disappears&#39; from the network.<br/>\n<br/>\nFor simpler cases, the Imposter automatically records parameter&#39;s<br/>\nsupplied, and whether a particular method has been called.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; We sell a dynamic mock object implementation that works for<br/>\n&gt; &gt; non-final classes and interfaces using byte code modification, that <br/>\n&gt; &gt; we call &#39;imposter&#39;.<br/>\n&gt; <br/>\n&gt; Interesting.  Why?  (i.e. why sell and why that approach)<br/>\n<br/>\n </span></blockquote>We use byte-code modification because it means that we can dynamically<br/>\ncreate an imposter from any Java interface or class. If the underlying<br/>\nclass changes, then the dynamic imposter automatically changes. We have<br/>\nwritten source-code based implementations previously, but didn&#39;t like<br/>\nthe maintenance overhead of the &#39;test artifacts&#39; (keeping them up to<br/>\ndate as the system changed, became an issue for us). So we developed a<br/>\nmechanism for creating imposters directly from the original byte-code of<br/>\nthe class.<br/>\n<br/>\nWe also have a substitution technology that can dynamically replace<br/>\ncomponents directly in the byte-code with an Imposter. This is<br/>\nparticularly useful in &#39;brown-field&#39; developments where it may not be<br/>\npossible to refactor (due to political or other such pressure).<br/>\n<br/>\nWe also have also developed technologies for testing in certain<br/>\nprogramming environments, e.g., J2EE, which are difficult to otherwise<br/>\nunit test. For example, using byte-code we create a concrete version of<br/>\na CMP2.0 abstract EJB, with the CMR and CMP fields being implemented as<br/>\nImposters. This means that you can unit-test an EJB without having to<br/>\ndeploy it into a container, or have to develop (and maintain) a concrete<br/>\nimplementation of the EJB. Using substitution, we can replace the calls<br/>\nto &#39;new InitialContext()&#39; directly with an Imposter, meaning that it is<br/>\npossible to replace any collaborations with further imposters, again<br/>\nwithout having to deploy into a container.<br/>\n<br/>\nRegards,<br/>\nPeter.<br/>\n<br/>\n-- <br/>\nPeter Morgan<br/>\njcoverage ltd<br/>\n+44 1423 526 426</div>", 
+    "prevInTime": 8798, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1059141630", 
+    "canDelete": false, 
+    "nextInTopic": 8800, 
+    "prevInTopic": 8797, 
+    "headers": {
+        "inReplyToHeader": "PGJmcmEwNis5Y3ZhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDEwNTkxNDE2MzAuNTc1NS44Mi5jYW1lbEBzcG9ydC5zdW5uaW5naGlsbC5vcmc+", 
+        "referencesHeader": "PGJmcmEwNis5Y3ZhQGVHcm91cHMuY29tPg=="
+    }
+}

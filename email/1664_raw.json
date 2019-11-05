@@ -1,0 +1,29 @@
+{
+    "topicId": 1633, 
+    "postDate": "993567172", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "dfw1@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "lrxoM1DQw-H08UQO5TBl4k5gR7UYBghHDDjQo2yFHdh_EgGGM-GkIVeAZLp7qKRRh1Hy1ab_1w", 
+    "nextInTime": 1665, 
+    "userId": 0, 
+    "prevInTime": 1663, 
+    "prevInTopic": 1657, 
+    "headers": {
+        "inReplyToHeader": "PDNCMzc5QTdELjY4QUYyRjJEQHNjcmEub3JnPg==", 
+        "messageIdInHeader": "PDloYTdrNCtuMzJzQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "dfw1@cornell.edu", 
+    "numMessagesInTopic": 12, 
+    "msgSnippet": "... method is ... ago ... to do ... extensions ... Grant, I do it this way: public class JDBCTests extends TestCase { public JDBCTests(String testName) { ", 
+    "contentTrasformed": false, 
+    "msgId": 1664, 
+    "nextInTopic": 1666, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;dfw1@...&gt;\r\nX-Sender: dfw1@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 26 Jun 2001 14:53:03 -0000\r\nReceived: (qmail 55008 invoked from network); 26 Jun 2001 14:53:02 -0000\r\nReceived: from unknown (10.1.10.26) by l7.egroups.com with QMQP; 26 Jun 2001 14:53:02 -0000\r\nReceived: from unknown (HELO hk.egroups.com) (10.1.10.43) by mta1 with SMTP; 26 Jun 2001 14:53:02 -0000\r\nX-eGroups-Return: dfw1@...\r\nReceived: from [10.1.10.97] by hk.egroups.com with NNFMP; 26 Jun 2001 14:52:55 -0000\r\nDate: Tue, 26 Jun 2001 14:52:52 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Running setUp once for all tests in a test suite\r\nMessage-ID: &lt;9ha7k4+n32s@...&gt;\r\nIn-Reply-To: &lt;3B379A7D.68AF2F2D@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1097\r\nX-Mailer: eGroups Message Poster\r\nFrom: dfw1@...\r\n\r\n--- In junit@y..., Grant Lewis &lt;lewis@s...&gt; wrote:\n&gt; Can somebody help explain how to setup a TestCase so the setUp\nmethod is\n&gt; executed once for all the tests. I posed this question a week or so\nago\n&gt; a and never received a reply with sufficient detail explaining how\nto do\n&gt; it. Somebody suggested I look at the TestSetup class in the\nextensions\n&gt; package, but I didn&#39;t get very far with that approach.\n&gt; \n&gt; Any help appreciated.\n\nGrant,\n\nI do it this way:\n\npublic class JDBCTests extends TestCase\n{\n    public JDBCTests(String testName)\n    {\n        super(testName);\n    }\n\n\n    public static Test suite()\n    {\n        TestSuite suite=new TestSuite();\n\n        suite.addTest(NestedSQLExceptionTest.suite());\n        suite.addTest(ResultSetWrongSizeExceptionTest.suite());\n        suite.addTest(ConnectionSourceTest.suite());\n        suite.addTest(DatabaseUtilsTest.suite());\n        suite.addTest(SQLStatementStringTest.suite());\n\n        return new JDBCTestSetup(suite);\n    }\n}\n\nJDBCTestSetup extends TestSetup, and sets up the jdbc connection\npools, etc. for the rest of the tests.\n\nDave\n\n\n\n", 
+    "subject": "Re: Running setUp once for all tests in a test suite"
+}

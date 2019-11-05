@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 9907, 
+    "senderId": "jWK9quSCnFcS1gMMGsGLHXTOTRW3dZltGJ90r4ncZg-zvbnROjB6vi19cdrak7IU9l3FJ-r5zYpPHyAmY_ser3HLblSzxnSONFlxqC4ehQ", 
+    "systemMessage": false, 
+    "subject": "Universal Parameterized Test Suite", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Well, folks... I was suitably motivated to write it, at last: a Universal Parameterized Test Suite. This is a suite that allows you to implement the", 
+    "msgId": 9906, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 88515 invoked from network); 15 Nov 2003 17:19:41 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m14.grp.scd.yahoo.com with QMQP; 15 Nov 2003 17:19:41 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta1.grp.scd.yahoo.com with SMTP; 15 Nov 2003 17:19:41 -0000\r\nReceived: from rogers.com ([24.156.43.226])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20031115171858.VQBQ320036.fep02-mail.bloor.is.net.cable.rogers.com@...&gt;;\n          Sat, 15 Nov 2003 12:18:58 -0500\r\nMessage-ID: &lt;3FB66014.3050301@...&gt;\r\nDate: Sat, 15 Nov 2003 12:19:16 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5b) Gecko/20030901 Thunderbird/0.2\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit-cookbook@yahoogroups.com,  junit@yahoogroups.com\r\nSubject: Universal Parameterized Test Suite\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Sat, 15 Nov 2003 12:18:58 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nWell, folks... I was suitably motivated to write it, at last: a \nUniversal Parameterized Test Suite. This is a suite that allows you to \nimplement the Parameterized Test Case without having to override \nrunTest(). It therefore takes a collection of fixture objects, collects \nall the test methods in your TestCase class and build the default test \nsuite with each fixture.\n\nSo if you have a TestCase with five tests and ten different fixtures, \nyou get a suite with 50 tests. Get it?\n\nThere are some refactorings the JUnit sorely needs to improve the \nparameterized test suite&#39;s design -- most notably, TestSuite has too \nmany responsiblities: it is both a test suite factory and the test suite \nitself. If we could extract the factory then ParameterizedTestSuite \nwould be easier to implement and use.\n\nHow do you use it?\n\n1. Add a constructor to your TestCase class to accept your fixture data \nfrom the outside. This replaces setUp().\n\n2. Add the method setFixture() taking an instance of your TestCase as \nthe parameter. Implement it to stash the parameter&#39;s fixture.\n\n3. Override getName() so that you can report the fixture name /and/ the \ntest name. (TestSuite&#39;s schizophrenic design makes this the lesser of \ntwo evil duplications.)\n\nNow you create a ParameterizedTestSuite like so:\n\n     public static Test suite() {\n         return new ParameterizedTestSuite(\n             Arrays.asList(\n                 new Object[] {\n                     new StringCompareToTest(&quot;Same length&quot;, &quot;abc&quot;, \n&quot;abd&quot;, &quot;abe&quot;),\n                     new StringCompareToTest(&quot;Empty string&quot;, &quot;&quot;, &quot;abd&quot;, \n&quot;abe&quot;),\n                     new StringCompareToTest(&quot;Different lengths&quot;, &quot;abc&quot;, \n&quot;abcd&quot;, &quot;abcde&quot;),\n                     new StringCompareToTest(&quot;Spaces&quot;, &quot;abc&quot;, &quot;abc &quot;, \n&quot;abc  &quot;),\n                     new StringCompareToTest(&quot;Failing on purpose&quot;, \n&quot;abc&quot;, &quot;abf&quot;, &quot;abe&quot;)}));\n     }\n\nThese are String comparability tests, extending JUnit-addons&#39; \nComparabilityTestCase. Each fixture has a name, then its data. Notice \nthat the last fixture is wrong: it expects &quot;abf&quot; to be less than &quot;abe&quot;, \nbut it is not. Here is the failure list.\n\nFailing on \npurpose/testReturnValues(junit.cookbook.addons.test.StringCompareToTest)\n\nNotice the fixture name is part of the test name. This is what you get \nfor overriding getName().\n\nI&#39;m about to write this up (in JUnit Cookbook) and I will post the \ncorresponding recipes (to the junit-cookbook group only) for review. I \nwill be releasing ParameterizedTestSuite as part of Diasparsoft Toolkit \n1.0, whenever /that/ finally happens. :)\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 9906, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 9905, 
+    "contentTrasformed": false, 
+    "postDate": "1068916756", 
+    "canDelete": false, 
+    "nextInTopic": 10220, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNGQjY2MDE0LjMwNTAzMDFAcm9nZXJzLmNvbT4="
+    }
+}

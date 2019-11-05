@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 6326, 
+    "senderId": "VWQQ3RnbnRiOnOLt9fe-S7rvd40Iebnm7U61cGRKbQCJB23dB3QFwJ1Pud41PIxqAEk79ufusTRVIH_Pr7rGZc-Pmbeny1iNnyHAcyYP", 
+    "systemMessage": false, 
+    "subject": "Re: using try catch in testXXX()", 
+    "from": "&quot;ericheikkila&quot; &lt;ericheikkila@...&gt;", 
+    "authorName": "ericheikkila", 
+    "msgSnippet": "I did this just yesterday doing a little spike test with LDAP. I grabbed some example code, threw in some asserts, and did some stack dumping (using Log4J,", 
+    "msgId": 6325, 
+    "rawEmail": "Return-Path: &lt;ericheikkila@...&gt;\r\nX-Sender: ericheikkila@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 30 Nov 2002 15:17:36 -0000\r\nReceived: (qmail 68689 invoked from network); 30 Nov 2002 15:17:36 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 30 Nov 2002 15:17:36 -0000\r\nReceived: from unknown (HELO n27.grp.scd.yahoo.com) (66.218.66.83)\n  by mta1.grp.scd.yahoo.com with SMTP; 30 Nov 2002 15:17:35 -0000\r\nReceived: from [66.218.67.146] by n27.grp.scd.yahoo.com with NNFMP; 30 Nov 2002 15:17:35 -0000\r\nDate: Sat, 30 Nov 2002 15:17:32 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: using try catch in testXXX()\r\nMessage-ID: &lt;asakqc+eo5j@...&gt;\r\nIn-Reply-To: &lt;20021130023936.46BFD128CC@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2740\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;ericheikkila&quot; &lt;ericheikkila@...&gt;\r\nX-Yahoo-Group-Post: member; u=68550261\r\nX-Yahoo-Profile: ericheikkila\r\n\r\nI did this just yesterday doing a little spike test with LDAP.\nI grabbed some example code, threw in some asserts, and did some \nstack dumping (using Log4J, though).  It started out something like \n(I forget the exact code so forgive psuedo-code comments):\n\npublic void testConnectionWithClearTextPassword() {\n   try {\n      // misc connection code here -\n      assertEquals(&quot;&quot;, ldapContext.getSomething());\n      // more code here\n      \n   }\n   catch (Exception e) {\n      log.error(&quot;Exception : &quot;, e);\n   }\n}\n\nOnce I saw what was happening, I discovered what exception was \nactually being thrown and turned it into something like:\n\npublic void testConnectionWithClearTextPassword() {\n   try {\n      // misc connection code here -\n      // more code here\n    \n      fail(&quot;Should have thrown an exception here&quot;);\n   }\n   catch (AuthenticationException ae) {\n      // Should come into here since clear text passwords are\n      //    not allowed.\n   }\n   catch (Exception e) {\n      log.error(&quot;Exception : &quot;, e);\n      fail(&quot;Should have thrown an AuthenticationException&quot;);\n   }\n}\n\nAnyway...I hope that demonstrates examples of both &#39;a sign of code \nthat we don&#39;t quite know what it does&#39; and why you&#39;d want to have a \ntry...catch block in a test.\n\n-Eric\n\n--- In junit@y..., &quot;Jason Rogers&quot; &lt;jacaetevha@f...&gt; wrote:\n&gt; If what you are hinting at here is -- Why write a dump to the \nconsole and\n&gt; not just fail() the test? -- the answer is, it&#39;s probably a sign of\n&gt; poorly written code, either in the test or in the tested class.  A \nstyle\n&gt; of catching exceptions like this generally tells me that someone \nrealizes\n&gt; an exceptional case can happen but hasn&#39;t figured out how to fix \nit...\n&gt; \n&gt; However, if what you are saying is -- Why have try{}catch{} at all \nin the\n&gt; tests? -- this is, of course, necessary for checked exceptions in \norder\n&gt; to compile.\n&gt; \n&gt; =jason\n&gt; \n&gt; On Fri, 29 Nov 2002 12:18:55 -0800 (PST), &quot;Peter Kleczka&quot;\n&gt; &lt;pkleczka@y...&gt; said:\n&gt; &gt; This message only has an HTML part -- this is a text generated\n&gt; &gt; representation\n&gt; &gt; \n&gt; &gt; \n&gt; &gt;    Hello\n&gt; &gt;    I&#39;ve seen some testXXX() methods written with:\n&gt; &gt;    //////////////////////////////////////////////\n&gt; &gt;      try {\n&gt; &gt;             assertTrue( doSomething() );\n&gt; &gt;          }\n&gt; &gt;      catch(Exception e)\n&gt; &gt;          {\n&gt; &gt;             e.printStackTrace();\n&gt; &gt;          }\n&gt; &gt;    //////////////////////////////////////////////\n&gt; &gt;    I&#39;m wondering if this is really necessary.\n&gt; &gt;    As I understand it, if you&#39;re not explicitly\n&gt; &gt;    testing for a specific exception or lack of\n&gt; &gt;    a thrown exception, that you don&#39;t need the\n&gt; &gt;    try/catch.\n&gt; &gt;    Can you help me understand when/why you&#39;d\n&gt; &gt;    want to use try/catch in test methods?\n&gt; \n&gt; -- \n&gt;   Jason Rogers\n\n\n", 
+    "profile": "ericheikkila", 
+    "topicId": 6318, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 68550261, 
+    "prevInTime": 6324, 
+    "contentTrasformed": false, 
+    "postDate": "1038669452", 
+    "canDelete": false, 
+    "nextInTopic": 6327, 
+    "prevInTopic": 6324, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMTMwMDIzOTM2LjQ2QkZEMTI4Q0NAd3d3LmZhc3RtYWlsLmZtPg==", 
+        "messageIdInHeader": "PGFzYWtxYytlbzVqQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 22309, 
+    "senderId": "Iwow1ADdRa-kOQ6_fg55smXjP2Y8ui0BrRRKODN6_OfwjTSDxpjtxtHbb2CGnS07R9IcMVJWdNz4RCw4EFnbJw6n", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] how to get test class from Runner?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Bill, Thanks for sticking with this.  It s only gotten more interesting. In the most general case, there s no guarantee that the children of a Suite must be", 
+    "msgId": 22308, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 14963 invoked from network); 21 Jan 2010 14:25:40 -0000\r\nX-Received: from unknown (66.196.94.107)\n  by m10.grp.re1.yahoo.com with QMQP; 21 Jan 2010 14:25:40 -0000\r\nX-Received: from unknown (HELO mail-px0-f193.google.com) (209.85.216.193)\n  by mta3.grp.re1.yahoo.com with SMTP; 21 Jan 2010 14:25:40 -0000\r\nX-Received: by pxi31 with SMTP id 31so6867pxi.6\n        for &lt;junit@yahoogroups.com&gt;; Thu, 21 Jan 2010 06:25:36 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.141.22.20 with SMTP id z20mr1102329rvi.23.1264083935810; Thu, \n\t21 Jan 2010 06:25:35 -0800 (PST)\r\nIn-Reply-To: &lt;4B576B13.1040308@...&gt;\r\nReferences: &lt;4B576B13.1040308@...&gt;\r\nDate: Thu, 21 Jan 2010 09:25:35 -0500\r\nX-Google-Sender-Auth: a4ff6c11b977ddf3\r\nMessage-ID: &lt;4f7da6b91001210625u1109953exc5207d8624129a80@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] how to get test class from Runner?\r\nX-Yahoo-Group-Post: member; u=341876227; y=ettbxOHuebp1AkWG9d4DFMC3rWIT4futMORC557n0H8\r\nX-Yahoo-Profile: dsaff\r\n\r\nBill,\n\nThanks for sticking with this.  It&#39;s only gotten more interesting.\n\n=\r\nIn the most general case, there&#39;s no guarantee that the children of a\nSuite=\r\n must be ParentRunners.  The most notable example would be a\nJUnit-3-style =\r\ntest case.\n\nYour best bet may indeed be a RunnerBuilder.  I&#39;m imagining som=\r\nething like this:\n\nClassLoaderSuite(Class&lt;?&gt; testClass, RunnerBuilder build=\r\ner) {\n   super(testClass, new ClassLoadingRunnerBuilder(builder));\n}\n\nclass=\r\n ClassLoadingRunnerBuilder extends RunnerBuilder {\n  public ClassLoadingRun=\r\nnerBuilder(RunnerBuilder delegate) {\n    this.delegate =3D delegate;\n  }\n\n =\r\n public Runner runnerForClass(Class&lt;?&gt; testClass) throws Throwable {\n    re=\r\nturn new ClassLoadingRunnerWrapper(delegate.runnerForClass(testClass),\ntest=\r\nClass);\n  }\n}\n\nclass ClassLoadingRunnerWrapper extends Runner {\n  public Cl=\r\nasssLoadingRunnerWrapper(Runner delegate, Class testClass) {\n    this.deleg=\r\nate =3D delegate;\n    this.testClass =3D testClass;\n  }\n\n  public Descripti=\r\non getDescription() {\n    return delegate.getDescription();\n  }\n\n  public v=\r\noid run(RunNotifier notifier) {\n    doStuffBeforeRunningClass(testClass);\n =\r\n   delegate.run(notifier);\n    doStuffAfterRunningClass(testClass);\n  }\n}\n\n=\r\n   David Saff\n\nOn Wed, Jan 20, 2010 at 3:44 PM, Bill Shannon &lt;Bill.Shannon@=\r\nsun.com&gt; wrote:\n&gt; I&#39;ve discovered that my ClassLoaderSuite that loads each =\r\ntest class in its\n&gt; own ClassLoader also needs to set the thread&#39;s context =\r\nclass loader before\n&gt; running the test, and restore it after running the te=\r\nst. =A0If I override the\n&gt; runChild method, how do I find the test class (s=\r\no I can find its ClassLoader)?\n&gt; The javadocs say that runChild runs &quot;the t=\r\nest corresponding to child&quot;, but\n&gt; &quot;child&quot; isn&#39;t a parameter. =A0I assume i=\r\nt means the test corresponding to\n&gt; &quot;runner&quot;, but I don&#39;t see how to get fr=\r\nom &quot;runner&quot; to the test class.\n&gt;\n&gt; Do I need to implement my own Runner, an=\r\nd thus my own RunnerBuilder?\n&gt; I&#39;m not sure how to connect all these pieces=\r\n together.\n&gt;\n&gt; I suppose I could create a delegating RunnerBuilder to wrap =\r\nthe one\n&gt; I&#39;m given, and have it replace the Runners with delegating Runner=\r\ns\n&gt; that can also remember the class that the Runner was created for,\n&gt; but=\r\n is there a better way?\n&gt;\n&gt; If I assume the runner is always going to be a =\r\nParentRunner, I can use\n&gt; parent.getTestClass().getJavaClass() to get what =\r\nI want. =A0But how safe\n&gt; is it to assume that the runner will always be a =\r\nParentRunner?\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups =\r\nLinks\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22303, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22307, 
+    "contentTrasformed": false, 
+    "postDate": "1264083935", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22303, 
+    "headers": {
+        "inReplyToHeader": "PDRCNTc2QjEzLjEwNDAzMDhAc3VuLmNvbT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MTAwMTIxMDYyNXUxMTA5OTUzZXhjNTIwN2Q4NjI0MTI5YTgwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRCNTc2QjEzLjEwNDAzMDhAc3VuLmNvbT4="
+    }
+}

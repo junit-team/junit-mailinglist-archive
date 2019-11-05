@@ -1,0 +1,28 @@
+{
+    "topicId": 2283, 
+    "postDate": "997216665", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Kelso, JP Phil (5502)&quot; &lt;kelsojp@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "2pkxJtASjRV1yy-v1QiG5KcXQBmS6dPIXzf7-aNRD9N2X2xAijF0oLsuc2XaXNvSz05d2QrswxrZK7adZJh1Y7DFu3jjiWaBtsUHOnXuxvRGNgkFkw", 
+    "nextInTime": 2287, 
+    "userId": 0, 
+    "prevInTime": 2285, 
+    "prevInTopic": 2285, 
+    "headers": {
+        "messageIdInHeader": "PDIxNjgxMUM2RDRFQkQzMTE4RjYyMDA1MDhCMEVBNTY4MDJDMTQ0ODFAZ3ZsZXhjaDMuZ3ZsLmVzeXMuY29tPg=="
+    }, 
+    "authorName": "Kelso, JP Phil (5502)", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "This should help.  This example performs a one-time setup of mock data files before all tests run and a one-time teardown after all tests are run.  This is in", 
+    "contentTrasformed": false, 
+    "msgId": 2286, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;KelsoJP@...&gt;\r\nX-Sender: KelsoJP@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 7 Aug 2001 20:38:36 -0000\r\nReceived: (qmail 41488 invoked from network); 7 Aug 2001 20:37:49 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 7 Aug 2001 20:37:49 -0000\r\nReceived: from unknown (HELO bos-gate3.raytheon.com) (199.46.198.232) by mta3 with SMTP; 7 Aug 2001 20:37:49 -0000\r\nReceived: from ds02e00.directory.ray.com (ds02e00.rsc.raytheon.com [147.25.130.245]) by bos-gate3.raytheon.com (8.11.0.Beta3/8.11.0.Beta3) with ESMTP id f77KbmS05630 for &lt;junit@yahoogroups.com&gt;; Tue, 7 Aug 2001 16:37:48 -0400 (EDT)\r\nReceived: from gvlexch3.gvl.esys.com (localhost [127.0.0.1]) by ds02e00.directory.ray.com (8.9.3/8.9.3) with ESMTP id QAA22431 for &lt;junit@yahoogroups.com&gt;; Tue, 7 Aug 2001 16:37:47 -0400 (EDT)\r\nReceived: by gvlexch3.gvl.esys.com with Internet Mail Service (5.5.2653.19) id &lt;Q1JZLB2A&gt;; Tue, 7 Aug 2001 15:37:45 -0500\r\nMessage-ID: &lt;216811C6D4EBD3118F6200508B0EA56802C14481@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] TestCase#setUp\r\nDate: Tue, 7 Aug 2001 15:37:45 -0500 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain\r\nFrom: &quot;Kelso, JP Phil (5502)&quot; &lt;kelsojp@...&gt;\r\n\r\nThis should help.  This example performs a one-time setup of mock data files\nbefore all tests run and a one-time teardown after all tests are run.  This\nis in my AllTests class.  Here&#39;s what I did (I don&#39;t remember where I found\nthis tip):\n\n/**\n * &#39;wrapper&#39; wraps the test suite into a TestSetup object which overrides\nthe\n * setUp() and tearDown() methods.  This is a technique for use with JUnit\nthat\n * wraps all of the tests with a one-time setup and teardown activity.\nJUnit\n * will run setUp() and tearDown() before and after each individual unit\ntest\n * which is what I DON&#39;T want to do here.  I just want to build the fake\ndata\n * files once to be used by any and all tests.\n */\npublic static Test suite ( ) {\n\tTestSuite suite= new TestSuite(&quot;All UnitTestDemo Application\nTests&quot;);\n\tsuite.addTest( new TestSuite(TestTeam.class) );\n/* add other testsuites to suite here */\n\tTestSetup wrapper = new TestSetup( suite ) {\n\t\tpublic String dirpath = &quot;&quot;;\n\t\tpublic void setUp() {\n\t\t\tdirpath = FileBroker.getDirPath();\n\t\t\tFileBroker.setDirectoryPath( &quot;C:&#92;&#92;temp&#92;&#92;&quot; );\n\t\t\tBuildDataFiles();\n\t\t}\n\t\tpublic void tearDown() {\n\t\t\tRemoveDataFiles();\n\t\t\tFileBroker.setDirectoryPath( dirpath );\n\t\t}\n\t}; \n\treturn wrapper;\n}\n\n&gt; ----------\n&gt; From: \tShane Duan[SMTP:sduan@...]\n&gt; Reply To: \tjunit@yahoogroups.com\n&gt; Sent: \tTuesday, August 07, 2001 3:15 PM\n&gt; To: \tjunit@yahoogroups.com\n&gt; Subject: \tRe: [junit] TestCase#setUp\n&gt; \n&gt; Oh...No...\n&gt; \n&gt; My setUp() method cleans up all the temporary directories so that the\n&gt; directories are clean during the test.  I cannot tell you how much I\n&gt; appreciate that it is called automatically before every test.\n&gt; \n&gt; If you want to do some one time setup, I think there were some posts\n&gt; regarding that.  Do a search in the archive and you should find what you\n&gt; need.\n&gt; \n&gt; Mike Duffy wrote:\n&gt; \n&gt; &gt; When a class is added to a test suite and that test suite is run, it\n&gt; &gt; seems strange to me that the method TestCase#setUp runs every time a\n&gt; &gt; test method runs.  So if you have twenty test methods in a class and\n&gt; &gt; you add that class to a test suite, the method setUp runs twenty\n&gt; &gt; times.\n&gt; &gt;\n&gt; &gt; Shouldn&#39;t the method setUp be run just once for all the methods in a\n&gt; &gt; class?  Is there some default setting that I missed?\n&gt; &gt;\n&gt; &gt; __________________________________________________\n&gt; &gt; Do You Yahoo!?\n&gt; &gt; Make international calls for as low as $.04/minute with Yahoo! Messenger\n&gt; &gt; http://phonecard.yahoo.com/\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; To unsubscribe from this group, send an email to:\n&gt; &gt; junit-unsubscribe@yahoogroups.com\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; Your use of Yahoo! Groups is subject to\n&gt; http://docs.yahoo.com/info/terms/\n&gt; \n&gt; \n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;  \n&gt; \n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n&gt; \n&gt; \n\n", 
+    "subject": "RE: [junit] TestCase#setUp"
+}

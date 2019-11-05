@@ -1,0 +1,29 @@
+{
+    "topicId": 2275, 
+    "postDate": "997204053", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Oliver Koenig&quot; &lt;okconnection@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "4I-U4eh8BpkhhuULuITtETZxWsttG2Q6AnYFlpZII8r6PYx5JwkP5dUiVXYapAbSEsbzeQNaRJyqsfERno-ABeAL1m3IY_qeWvaK6ko", 
+    "nextInTime": 2278, 
+    "userId": 0, 
+    "prevInTime": 2276, 
+    "prevInTopic": 2276, 
+    "headers": {
+        "messageIdInHeader": "PDAwMjcwMWMxMWY2MyQ3NTliZTk2MCQwMTAwYThjMEBhbmRyb21lZGE+", 
+        "referencesHeader": "PEM2RDFCRDQzMDRCMDdGNEU5NjQyMjNCQUU1RDQ1RTJCMDlFOTlCQGhlcm1lcy5ianNzLmNvLnVrPg=="
+    }, 
+    "authorName": "Oliver Koenig", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "Yep, thanx, junit.textui.TestRunner does it. Anyway, for the swingui and awtui TestRunners I m going to store my parameters in a .properties file (a bit dirty,", 
+    "contentTrasformed": false, 
+    "msgId": 2277, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;okconnection@...&gt;\r\nX-Sender: okconnection@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 7 Aug 2001 17:05:30 -0000\r\nReceived: (qmail 54958 invoked from network); 7 Aug 2001 17:04:55 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 7 Aug 2001 17:04:55 -0000\r\nReceived: from unknown (HELO mail.gmx.net) (194.221.183.20) by mta3 with SMTP; 7 Aug 2001 17:04:55 -0000\r\nReceived: (qmail 19331 invoked by uid 0); 7 Aug 2001 17:04:53 -0000\r\nReceived: from unknown (HELO andromeda) (62.46.25.182) by mail.gmx.net (mp007-rz3) with SMTP; 7 Aug 2001 17:04:53 -0000\r\nMessage-ID: &lt;002701c11f63$759be960$0100a8c0@andromeda&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;C6D1BD4304B07F4E964223BAE5D45E2B09E99B@...&gt;\r\nSubject: Re: [junit] How to pass parameters to TestSuite-TestCase?\r\nDate: Tue, 7 Aug 2001 19:07:33 +0200\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.50.4133.2400\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nFrom: &quot;Oliver Koenig&quot; &lt;okconnection@...&gt;\r\n\r\nYep, thanx, junit.textui.TestRunner does it.\nAnyway, for the swingui and awtui TestRunners I&#39;m going to store my\nparameters in a .properties file (a bit dirty, but should do it).\n\nThanx & regards,\nOliver\n\n----- Original Message -----\nFrom: &quot;David Roussel&quot; &lt;dir@...&gt;\nTo: &lt;junit@yahoogroups.com&gt;\nSent: Tuesday, August 07, 2001 6:56 PM\nSubject: RE: [junit] How to pass parameters to TestSuite-TestCase?\n\n\nProbably a class loader problem.  See previous posts about how to\ndisable junit&#39;s classloader.\n\nOr more simply just use junit.textui.TestRunner in your main method.\n\n-----Original Message-----\nFrom: Oliver K�nig [mailto:okconnection@...]\nSent: 07 August 2001 17:44\nTo: junit@yahoogroups.com\nSubject: [junit] How to pass parameters to TestSuite-TestCase?\n\n\nHi everyone!\n\nI&#39;m trying to pass dynamic parameters from my own TestCase&#39;s\nmain(args[]) -\nwhich calls the junit-TestRunner - over to my TestCase, and I just\ncannot\nfind any way to get it to work. It seems to be because of the RMI.\n(sorry, maybe I&#39;m just missing something important here...)\n\nScenario:\n\nclass Example extends TestCase {\n    static String sFilename=&quot;&quot;;\n\n    public static void main (String[] args) {\n        sFilename=args[0];\n        junit.swingui.TestRunner.run (Example.class);\n    }\n\n    public static Test suite() {\n        System.out.println (&quot;sFilename = &quot; + sFilename); // here now\nsFilename from args[] has disappeared!\n        TestSuite suite=new TestSuite();\n        suite.addTest (new MyTestClass (sFilename));\n        return suite;\n    }\n}\n\nclass MyTestClass extends TestCase {\n    public MyTestClass (String sFilename) {\n        super (sFilename);\n    }\n}\n\nWhat happens:\n    sFilename from args[] never arrives at MyTestClass constructor.\nInstead,\nthe default value of sFilename (&quot;&quot;) gets there.\n\nI&#39;m really desparated about that because I&#39;m trying to write a flexible\ntestsuite which shall be completely controlled by textfiles and command\nline\narguments.\nI need to implement a large amount of similar testcases (for website\ntesting) that are processing all similar code but with different sets of\ndata and different sets of web page transitions, and I don&#39;t want to\nwrite\nzillions of java classes to cover all testcases.\n\nRegards,\n\nOliver\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n\n\n\n\n", 
+    "subject": "Re: [junit] How to pass parameters to TestSuite-TestCase?"
+}

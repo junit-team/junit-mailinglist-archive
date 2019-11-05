@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 24067, 
+    "senderId": "IOXZl_DeCDxcHM-zlYH7IhdFcLopdWqGA7e9O115lNy_uXZUMI8iwDEBv-3dBcsFBttmVClYkOnIxTAxbMOPyArCbQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Custom failed test handling", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "J, Here s how I d approach it.  I ll assume you already have some kind of class Screenshotter extends TestWatcher { ... } You ll need to take the logic from", 
+    "msgId": 24066, 
+    "profile": "saffatgoogle", 
+    "topicId": 24065, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 525765722, 
+    "messageBody": "<div id=\"ygrps-yiv-1856132032\">J,<br/>\n<br/>\nHere&#39;s how I&#39;d approach it.  I&#39;ll assume you already have some kind of<br/>\n<br/>\nclass Screenshotter extends TestWatcher { ... }<br/>\n<br/>\nYou&#39;ll need to take the logic from your after method, and put it into an<br/>\nExternalResource:<br/>\n<br/>\npublic class BrowserCloser extends ExternalResource {<br/>\n   @Override protected void after() {<br/>\n     // close the browser<br/>\n   }<br/>\n}<br/>\n<br/>\nAnd then, in your test class, you can include both with a RuleChain:<br/>\n<br/>\n@Rule public TestRule chain = TestRule.outerRule(new<br/>\nBrowserCloser()).around(new Screenshotter());<br/>\n<br/>\nHope that helps,<br/>\n<br/>\n   David<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Tue, Oct 23, 2012 at 3:11 PM, j.kieley &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:j.kieley@...\">j.kieley@...</a>&gt; wrote:<br/>\n<br/>\n&gt; **<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; I am Selenium Developer. I was trying to override the class: TestWatcher<br/>\n&gt; method: failed. To add some custom test failure handling (take a screenshot<br/>\n&gt; on test failure). However I noticed that the failed() method is invoked<br/>\n&gt; after the @after method is executed. Currently we are using the @after<br/>\n&gt; method to close the browser. So we need to execute takeAScreenShot() after<br/>\n&gt; a test has failed, and before the @after method is exeuted. Any<br/>\n&gt; suggestions? I didn&#39;t see a way to do this, without making some major<br/>\n&gt; changes to TestWatcher.<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 24065, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1351021707", 
+    "canDelete": false, 
+    "nextInTopic": 24067, 
+    "prevInTopic": 24065, 
+    "headers": {
+        "inReplyToHeader": "PGs2NnE0ZCt1OWY1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBTHJ3LVB3WnVkUXROQlRPYTE3UEtzOU1laW1ROVk3a3ZpNVJGRHlkbjZ4cy1QdW9VZ0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGs2NnE0ZCt1OWY1QGVHcm91cHMuY29tPg=="
+    }
+}

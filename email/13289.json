@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 13290, 
+    "senderId": "DawqZuqRqXAEki8PuTLBotS2LcX653a0ap3CAjnt3K4AYvznsRhOUuwE3t_Xe2X41FantXDU_8583uuXaWALcCo6pjgVL6sMsESyfw", 
+    "systemMessage": false, 
+    "subject": "Re: Using real data or test data?", 
+    "from": "&quot;haefeleuser&quot; &lt;haefeleuser@...&gt;", 
+    "authorName": "haefeleuser", 
+    "msgSnippet": "... I had the same experience, although not so much as you. It was more a theoretical thought of me that one dataset for all tests can t be good. ... Let me", 
+    "msgId": 13289, 
+    "profile": "haefeleuser", 
+    "topicId": 13284, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 174752849, 
+    "messageBody": "<div id=\"ygrps-yiv-2018215223\">J. B. (Joe) Rainsberger wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; When I have used &quot;one dataset for all tests&quot;, it has made incremental<br/>\n&gt; design difficult. The primary problem is relationships between entities<br/>\n&gt; in the data set. I might have to add a few Contracts to test the next<br/>\n&gt; feature, but then I need a new Agent or Department or something, and<br/>\n&gt; that affects the expected results in tests related to those entities.<br/>\n<br/>\n&gt; When I&#39;ve done it -- three times was enough to learn for good -- the<br/>\n&gt; cost ended up being higher than expected and rose as the project went<br/>\n&gt; on, which is rarely a good sign.<br/>\n<br/>\n </span></blockquote>I had the same experience, although not so much as you. It was more a <br/>\ntheoretical thought of me that &quot;one dataset for all tests&quot; can&#39;t be good.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I think real data is good, because real data is often stranger than<br/>\n&gt; made-up test data. I think one dataset for all tests is a mistake -- a<br/>\n&gt; big mistake.<br/>\n<br/>\n </span></blockquote>Let me explain my fictive data in contrast to real data.<br/>\n<br/>\nFor example I calculate ABC analysis in a batch program.<br/>\n<br/>\nI will simplify the model:<br/>\n<br/>\nArticle<br/>\n- id<br/>\n- salesHistoryWeekCollection<br/>\n- abcIndicator<br/>\n<br/>\nSalesHistoryWeek<br/>\n- week<br/>\n- year<br/>\n- soldQuantity<br/>\n- price<br/>\n- category {warehouse, commission or direct}<br/>\n<br/>\nFor every Article I calculate its soldQuantityPrice (soldQuantity *<br/>\nprice).<br/>\n<br/>\nThen I rank them in a list according to their soldQuantityPrice.<br/>\n<br/>\nThe first 10% in the ranking list will be A articles. The next 20%<br/>\nwill be B articles. The rest are C articles.<br/>\n<br/>\nThen I persist the ABC indicator on the article entities.<br/>\n<br/>\nWith real data I would have 65.000 articles.<br/>\n<br/>\nSo I make some fake data for my JUnit tests. I simply create 10<br/>\narticles. Each one has 6 salesHistoryWeeks: 2 for each category.<br/>\n<br/>\nFor the first article (id 1) I set the highest soldQuantities and<br/>\nprices. For the last article, I set the lowest soldQuantities and prices.<br/>\n<br/>\nAfter the calculation I expect the articles with id 1, 2, and 3 to be<br/>\nA articles and the articles wtih ids 6 - 9 to be C articles.<br/>\n<br/>\nIts all in my hand. I even create invalid data, because I know that my<br/>\ncalculation doesn&#39;t need all the data which my validation rules would<br/>\nrequire normally.<br/>\n<br/>\nI even create and change the parameters in the database for my<br/>\ncalculation. For example in my first test case I set the params to<br/>\nconsider only article salesHistoryWeeks with category &#39;warehouse&#39;.<br/>\nAfter the calculation I check the result. It must be different than if<br/>\nI had chosen all categories to be considered.<br/>\n<br/>\nThe dataset for my ABC analysis is as small as possible, just 10<br/>\narticles. I only test the business logic, not performance or something<br/>\nelse.<br/>\n<br/>\nOf course some errors still can be undetected. They are often detected<br/>\nwhen run against real data. Then such things as NullPointerExceptions<br/>\ncan happen. I fix the bug and extend my test and test data if<br/>\nnecessary. Still I use invented data for my test.<br/>\n<br/>\nI try to make my JUnit test automatic and independent, creating its<br/>\ndata for each test case or even test method and deleting them after<br/>\nthe test.<br/>\n<br/>\nI consider testing with real data to be an integration test while<br/>\ntesting with invented data would be more of a unit test.</div>", 
+    "prevInTime": 13288, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1113423175", 
+    "canDelete": false, 
+    "nextInTopic": 13290, 
+    "prevInTopic": 13287, 
+    "headers": {
+        "inReplyToHeader": "PDQyNUQ2MEEzLjYwNzAzMDNAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGQzanVnNytydDdpQGVHcm91cHMuY29tPg=="
+    }
+}

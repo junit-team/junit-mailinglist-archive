@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 22743, 
+    "senderId": "6MoJfR2b2Zzqamq8bcF0VTS8iWzu_3nzX7mqxm38nP7rJk4p6a17Glg-aUpzGgWL_j7bI-odiXQysFBIzZ6qJs5r", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Large, hierarchical, randomized test suites: how to not \trun out of memory?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Have you looked at theory support in JUnit 4?  You could have a @DataPoints method that returned 1000 random datapoints, and would only be called right before", 
+    "msgId": 22742, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 85973 invoked from network); 10 Jun 2010 13:59:22 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m1.grp.sp2.yahoo.com with QMQP; 10 Jun 2010 13:59:22 -0000\r\nX-Received: from unknown (HELO mail-vw0-f46.google.com) (209.85.212.46)\n  by mta1.grp.sp2.yahoo.com with SMTP; 10 Jun 2010 13:59:21 -0000\r\nX-Received: by vws17 with SMTP id 17so5149820vws.33\n        for &lt;junit@yahoogroups.com&gt;; Thu, 10 Jun 2010 06:59:21 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.224.71.70 with SMTP id g6mr173881qaj.339.1276178358767; Thu, \n\t10 Jun 2010 06:59:18 -0700 (PDT)\r\nX-Received: by 10.220.183.76 with HTTP; Thu, 10 Jun 2010 06:59:18 -0700 (PDT)\r\nIn-Reply-To: &lt;0C197EC4-37C8-4375-9235-93C54229DC98@...&gt;\r\nReferences: &lt;0C197EC4-37C8-4375-9235-93C54229DC98@...&gt;\r\nDate: Thu, 10 Jun 2010 09:59:18 -0400\r\nX-Google-Sender-Auth: gw8rMWYY19wJEXc9oK8EQiTr71U\r\nMessage-ID: &lt;AANLkTikG8DeuKkTg1n0ihvIMxlpdGkJPV34BQHV03XCM@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Large, hierarchical, randomized test suites: how to not \n\trun out of memory?\r\nX-Yahoo-Group-Post: member; u=341876227; y=hN3Cv-xtPL_YKFtqBcY73tC3ZIOf-eS5-MGa9cpgX8o\r\nX-Yahoo-Profile: dsaff\r\n\r\nHave you looked at theory support in JUnit 4?  You could have a\n@DataPoints=\r\n method that returned 1000 random datapoints, and would\nonly be called righ=\r\nt before you needed it.\n\n   David Saff\n\nOn Thu, Jun 10, 2010 at 4:19 AM,  &lt;=\r\nallamistakeo18@...&gt; wrote:\n&gt; Hello,\n&gt;\n&gt; I have randomized JUnit 3 tests=\r\n that look like the following:\n&gt;\n&gt; public class Test1 extends TestCase {\n&gt;\n=\r\n&gt; =A0 =A0public static TestSuite suite() {\n&gt; =A0 =A0 =A0 =A0TestSuite suite=\r\n =3D new TestSuite (&quot;name of the test suite&quot;);\n&gt; =A0 =A0 =A0 =A0for (int i =\r\n=3D 0; i &lt; 1000; i++)\n&gt; =A0 =A0 =A0 =A0 =A0 =A0suite.addTest(new Test1());\n=\r\n&gt; =A0 =A0 =A0 =A0return suite;\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0public Test1() {\n&gt; =A0=\r\n =A0 =A0 =A0super(&quot;testMethod&quot;);\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0protected void setUp=\r\n() {\n&gt; =A0 =A0 =A0 =A0// create random (meaningful) inputs to the functiona=\r\nlity under test\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0protected void tearDown() {\n&gt; =A0 =A0=\r\n =A0 =A0// set everything to null\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0public void testMet=\r\nhod() {\n&gt; =A0 =A0 =A0 =A0// run the test\n&gt; =A0 =A0}\n&gt; }\n&gt;\n&gt; Then I organize=\r\n my test suites into a LARGE hierarchy (of depth possibly larger than 8; on=\r\nly 3 in this simple example):\n&gt;\n&gt; public class AllTests {\n&gt;\n&gt; =A0 =A0public=\r\n static Test suite() {\n&gt; =A0 =A0 =A0 =A0TestSuite suite =3D new TestSuite (=\r\n&quot;name of the test suite&quot;);\n&gt; =A0 =A0 =A0 =A0suite.addTest(Test1.suite());\n&gt;=\r\n =A0 =A0 =A0 =A0suite.addTest(Test2.suite());\n&gt; =A0 =A0 =A0 =A0// etc.\n&gt; =\r\n=A0 =A0}\n&gt; }\n&gt;\n&gt; In fact, it ends up being so large (over 150,000 tests) th=\r\nat JUnit cannot cope with it and runs out of memory (even though you will n=\r\notice I have taken care of systematically nulling everything in tearDown())=\r\n.\n&gt;\n&gt; How can I get this done without running out of memory? I have looked =\r\na bit at JUnit 4&#39;s new paradigm using annotations, but haven&#39;t been able to=\r\n figure out how to set up such tests.\n&gt;\n&gt; Thanks in advance for your sugges=\r\ntions.\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links=\r\n\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22741, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22741, 
+    "contentTrasformed": false, 
+    "postDate": "1276178358", 
+    "canDelete": false, 
+    "nextInTopic": 22746, 
+    "prevInTopic": 22741, 
+    "headers": {
+        "inReplyToHeader": "PDBDMTk3RUM0LTM3QzgtNDM3NS05MjM1LTkzQzU0MjI5REM5OEBtYWMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGlrRzhEZXVLa1RnMW4waWh2SU14bHBkR2tKUFYzNEJRSFYwM1hDTUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PDBDMTk3RUM0LTM3QzgtNDM3NS05MjM1LTkzQzU0MjI5REM5OEBtYWMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 6952, 
+    "senderId": "ccCU1PXkOdYwCLNN-rLM0KjXmF85ibDY4vcTa969n0VapSJaLo2tO1kQm_uwgJ8errNlNEKez1Y2E1RSqlKToZbviiFp6jTnzTNpILHofs3rYfKFegMqiVlZR4CPq1J4QmBzlOXJEJ3eNOgl6YQsfHsa3oKz", 
+    "systemMessage": false, 
+    "subject": "Re: if setUp fails, then is setUp doing too much?", 
+    "from": "&quot;martijn_dashorst &lt;yahoogroups@...&gt;&quot; &lt;yahoogroups@...&gt;", 
+    "authorName": "martijn_dashorst &lt;yahoogroups@dashorst.d", 
+    "msgSnippet": "... I agree that it gives a bad smell, but let me expand a bit. In short: if you use the setUp()/tearDown() to write XML start/close tags, then it is very", 
+    "msgId": 6951, 
+    "rawEmail": "Return-Path: &lt;yahoogroups@...&gt;\r\nReceived: (qmail 40714 invoked by uid 7800); 13 Feb 2003 15:59:52 -0000\r\nX-Sender: yahoogroups@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 13 Feb 2003 15:50:27 -0000\r\nReceived: (qmail 4909 invoked from network); 13 Feb 2003 15:50:27 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m15.grp.scd.yahoo.com with QMQP; 13 Feb 2003 15:50:27 -0000\r\nReceived: from unknown (HELO n19.grp.scd.yahoo.com) (66.218.66.74)\n  by mta3.grp.scd.yahoo.com with SMTP; 13 Feb 2003 15:50:27 -0000\r\nReceived: from [66.218.67.131] by n19.grp.scd.yahoo.com with NNFMP; 13 Feb 2003 15:50:25 -0000\r\nDate: Thu, 13 Feb 2003 15:50:25 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: if setUp fails, then is setUp doing too much? \r\nMessage-ID: &lt;b2ges1+umuu@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2493\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;martijn_dashorst &lt;yahoogroups@...&gt;&quot; &lt;yahoogroups@...&gt;\r\nX-Yahoo-Group-Post: member; u=130778978\r\nX-Yahoo-Profile: martijn_dashorst\r\nX-eGroups-Approved-By: nails762 &lt;jbr@...&gt; via email; 13 Feb 2003 15:59:52 -0000\r\n\r\nJ.B. Rainsberger wrote:\n&gt; if setUp fails, then is setUp doing too much? \n\nI agree that it gives a bad smell, but let me expand a bit. \n\nIn short: if you use the setUp()/tearDown() to write XML start/close \ntags, then it is very cumbersome that tearDown() isn&#39;t called. This \nwill break your continuous integration cycle.\n\nThe long version:\n\nI created a TestCase subclass so that we could write more readable \nfunctional tests. It is for an Interactive Voice Response system. The \nfunctional tests assert that the correct voice segments are played in \nthe in the right order at the right time.\n\nIn my subclass, a XML start tag is written in the setUp(), and it&#39;s \nclosing tag in the tearDown(). Note that the functional tests should \nbe read and written by business people, that&#39;s why I finalized setUp \nand tearDown. Example code:\n\npublic abstract class CallFlowTestCase extends TestCase{\n    final void setUp() {\n        phone.hangUp();\n        log.write( &quot;&lt;test name=&#92;&quot;&quot; + getName() + &quot;&#92;&quot;&gt;&quot; );\n        beforeTest();\n    }\n    final void tearDown(){\n        afterTest();\n        log.write( &quot;&lt;/test&gt;&quot; );\n        phone.hangUp();\n    }\n    public void beforeTest(){\n    }\n    public void afterTest(){\n    }\n    // etc.\n}\n\npublic class TestHelloWorldLine extends CallFlowTestCase {\n    public void beforeTest(){\n        dial( &quot;12345678&quot; );\n        assertPhoneStatus( CONNECTED );\n    }\n    public void testHelloWorld(){\n        assertVoiceSegment( &quot;HELLOWORLD.wav&quot; );\n    }\n}\n\nShared callflow navigation, setting opening hours, or other \nparameters should typically be done in the setUp() method. This \navoids much duplication of testcode and it is its purpose. \n\nOf course this can be done with methods, but that also leeds to \nduplication of code, noticable in large test classes (connect\n();navigateMenu1();navigateMenu2();navigateMenu3(); in each test \nmethod for class TestMenu4 clouds the test scenario to my taste).\n\nThe client code in beforeTest() can fail, for example: \n * The application at number 12345678 might not be running), \n * some default navigation (always dial 1 at the start)\n   doesn&#39;t give the expected result due to a different \n   parameter setting the testwriter didn&#39;t account for.\nIt is very inconvenient if the closing tag isn&#39;t written after each \ntest. The application logs several messages (which voice segments \nwere written, etc) to this log between the opening/end tags. This \nhelps debugging the IVR application (or, quite often, the test).\n\nMartijn Dashorst\n\n\n", 
+    "profile": "martijn_dashorst", 
+    "topicId": 6951, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 130778978, 
+    "prevInTime": 6950, 
+    "contentTrasformed": false, 
+    "postDate": "1045151425", 
+    "canDelete": false, 
+    "nextInTopic": 6959, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGIyZ2VzMSt1bXV1QGVHcm91cHMuY29tPg=="
+    }
+}

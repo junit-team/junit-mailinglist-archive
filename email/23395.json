@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 23396, 
+    "senderId": "gniHAqD3oJ_qdkhN8MX0SywWVq6E2XoJ9loaiHL8iP5NZmFFk8Rpz-cToEh9ah-OwgGqzNlvZcNqk0iwifiVmsHMm0-SzO3x4Uxo7kquCsy8iA", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Re: Report &quot;to implement&quot; tests.", 
+    "from": "Neale Upstone &lt;neale.upstone@...&gt;", 
+    "authorName": "Neale Upstone", 
+    "msgSnippet": "I ll add another scenario into this mix:  assumptions. Tools currently don t have the ability to report failed assumptions separately either. Given the tooling", 
+    "msgId": 23395, 
+    "profile": "nealeu", 
+    "topicId": 23389, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 477022967, 
+    "messageBody": "<div id=\"ygrps-yiv-918793380\">I&#39;ll add another scenario into this mix:  assumptions.<br/>\n<br/>\nTools currently don&#39;t have the ability to report failed assumptions <br/>\nseparately either.<br/>\n<br/>\nGiven the tooling support required, perhaps there is scope to outline <br/>\nsomething called JUnit 5, and to collect up all the features that are <br/>\nclearly popular, but would require tooling support..?<br/>\n<br/>\nCheers,<br/>\n<br/>\nNeale<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 19/04/2011 02:39, lars.vonk wrote:<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; Thanks for the pointers everyone. I will look into it. I like Bill&#39;s suggestion.<br/>\n&gt; Since this concept is becoming more popular imho it would be nice if it is supported by junit.<br/>\n&gt;<br/>\n&gt; Lars<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Bill Venners&lt;bill@...&gt;  wrote:<br/>\n&gt;&gt; Hi David,<br/>\n&gt;&gt;<br/>\n&gt;&gt; I usually see this concept called &quot;pending&quot; in other test frameworks. It is<br/>\n&gt;&gt; a useful concept, especially when testing in a BDD style. People like to<br/>\n&gt;&gt; sometimes &quot;flesh out their ideas&quot; by writing descriptive test names for<br/>\n&gt;&gt; which neither the test code nor the code under test as yet exists. I do<br/>\n&gt;&gt; support pending tests in ScalaTest, and when running through JUnit call them<br/>\n&gt;&gt; ignored tests. That&#39;s the closest thing to pending already understood by<br/>\n&gt;&gt; tools that integrate with JUnit. So if you add something called pending, you<br/>\n&gt;&gt; could still possibly report it as an ignored test. To see an example, look<br/>\n&gt;&gt; on line 80 of RunNotifierReporter:<br/>\n&gt;&gt;<br/>\n&gt;&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://code.google.com/p/scalatest/source/browse/trunk/src/main/scala/org/scalatest/junit/RunNotifierReporter.scala\">http://code.google.com/p/scalatest/source/browse/trunk/src/main/scala/org/scalatest/junit/RunNotifierReporter.scala</a><br/>\n&gt;&gt;<br/>\n&gt;&gt; Basically I do this:<br/>\n&gt;&gt;<br/>\n&gt;&gt; // Closest thing we can do with pending is report an ignored test<br/>\n&gt;&gt;        case TestPending(ordinal, suiteName, suiteClassName, testName,<br/>\n&gt;&gt; formatter, payload, threadName, timeStamp) =&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; runNotifier.fireTestIgnored(Description.createSuiteDescription(testDescriptionName(suiteName,<br/>\n&gt;&gt; suiteClassName, testName)))<br/>\n&gt;&gt;<br/>\n&gt;&gt; So what you could do as a JUnit enhancement is for a pending test call<br/>\n&gt;&gt; fireTestIgnored with perhaps a subclass of Description called<br/>\n&gt;&gt; PendingDescription. So existing tools would still understand it is a<br/>\n&gt;&gt; Description, but newer versions could detect it is a PendingDescription and<br/>\n&gt;&gt; act accordingly. Or just add some state to Description that old tools would<br/>\n&gt;&gt; ignore and new ones could use to differentiate pending tests from ignored<br/>\n&gt;&gt; ones. Something like that would allow you to add the new functionality in a<br/>\n&gt;&gt; backwards compatible way.<br/>\n&gt;&gt;<br/>\n&gt;&gt; In ScalaTest, for example, I could later change the code above so it sends<br/>\n&gt;&gt; such a PendingDescription notification (though it would be a good long time<br/>\n&gt;&gt; before I did that because I wouldn&#39;t want to force people to upgrade their<br/>\n&gt;&gt; JUnit for a good while.)<br/>\n&gt;&gt;<br/>\n&gt;&gt; Bill<br/>\n&gt;&gt;<br/>\n&gt;&gt; On Sat, Apr 16, 2011 at 1:13 PM, David Saff&lt;david@...&gt;  wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; My current feeling is that the best thing to do is to somehow allow<br/>\n&gt;&gt;&gt; custom categories of test results. I&#39;m very reluctant to increase the<br/>\n&gt;&gt;&gt; number of built-in result categories, since such a change is one of<br/>\n&gt;&gt;&gt; the most likely to break, or at least be under-implemented, in IDEs<br/>\n&gt;&gt;&gt; and build frameworks.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; I&#39;m open to ideas about the best way to do this.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; David<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; On Thu, Apr 14, 2011 at 3:26 PM, lars.vonk&lt;lars.vonk@...&gt;  wrote:<br/>\n&gt;&gt;&gt;&gt; Hi,<br/>\n&gt;&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;&gt; I would like to see progress in (acceptance) tests not yet implemented. I<br/>\n&gt;&gt;&gt; want these reported differently than normal failures. Is there a way in<br/>\n&gt;&gt;&gt; JUnit to distinct between expected failing tests and &quot;normal&quot; failing tests?<br/>\n&gt;&gt;&gt;&gt; So in a report I would like to see something like:<br/>\n&gt;&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;&gt; Tests: 42<br/>\n&gt;&gt;&gt;&gt; Failures:0<br/>\n&gt;&gt;&gt;&gt; Errors: 0<br/>\n&gt;&gt;&gt;&gt; Ignored: 0<br/>\n&gt;&gt;&gt;&gt; To implement: 12<br/>\n&gt;&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;&gt; Regards, Lars<br/>\n&gt;&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23394, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1303201794", 
+    "canDelete": false, 
+    "nextInTopic": 23411, 
+    "prevInTopic": 23394, 
+    "headers": {
+        "inReplyToHeader": "PGlvamFucStlNjI5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDREQUQ0ODAyLjEwMzA2MDFAb3BlbmNyZWRvLmNvbT4=", 
+        "referencesHeader": "PGlvamFucStlNjI5QGVHcm91cHMuY29tPg=="
+    }
+}

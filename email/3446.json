@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 3447, 
+    "senderId": "1yRm07Wooep8qo_2ZwRDfuMULS3rKxOjw7bgx-yJqrS-h9N0uVaOzk5ewBYCn2V8rlYFkRSqg797y1q77PAJWPw8fQ1XSbM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit Tests and Business Rules", 
+    "from": "Mark Derricutt &lt;mark@...&gt;", 
+    "authorName": "Mark Derricutt", 
+    "msgSnippet": "--On Sunday, 2 December 2001 1:05 p.m. -0700 Mike Clark  wrote: Apologies to all for a long post :) ... Well, in this checking if a field", 
+    "msgId": 3446, 
+    "profile": "talios2k", 
+    "topicId": 3406, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 53945542, 
+    "messageBody": "<div id=\"ygrps-yiv-1652722628\">--On Sunday, 2 December 2001 1:05 p.m. -0700 Mike Clark <br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mike@...\">mike@...</a>&gt; wrote:<br/>\n<br/>\nApologies to all for a long post :)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; This is probably more than is necessary for checking whether a field is<br/>\n&gt; editable or not, but it does address the &#39;if&#39; statement for generic<br/>\n&gt; rule-based systems.  The simplest approach is to simply refactor each test<br/>\n&gt; into its own method, as you&#39;ve already pointed out.<br/>\n<br/>\n </span></blockquote>Well, in this checking if a field is editable or not (more cell editable in <br/>\na large grid), is based upon a set of rules that differ for each cell, <br/>\nthings like &quot;editable if transaction for cell is billable, but not billed, <br/>\nand settings.autobill is on&quot;, and numerous other rules.  And I imagine <br/>\nthere will lots of other places in the code that will use it.<br/>\n<br/>\nLooking at your Ruleset snippet, I got to thinking, what I want is <br/>\nsomething that looks somewhat like a JUnit test, and something, that could <br/>\nbe easily tested with JUnit.<br/>\n<br/>\nI was also looking at what my code does, looking at objects from the <br/>\ncurrent HttpSession, obviously, I won&#39;t have this at testing time, so I was <br/>\nthinking, if I construct a Hashtable, and put in the objects from the <br/>\nsession (or at least, the object I use) and pass the hashtable to my rule <br/>\nto test against, things could work.<br/>\n<br/>\nI wrote up the following sample/psudo code as well, any thoughts, comments, <br/>\nor pointers to blatently bad code here?:<br/>\n<br/>\n// Sample ruleset class, one rule that checks if autoBill is on.<br/>\npublic class WTRecBeanEditable extends RuleSet<br/>\n{<br/>\n\tStaff currentStaff = null;<br/>\n\tControl companyProp = null;<br/>\n<br/>\n\tpublic void setUp() {<br/>\n\t\tcurrentStaff = (Staff) ruleInfo.get(&quot;currentStaff&quot;);<br/>\n\t\tcompanyProp = (Control) ruleInfo.get(&quot;companyProp&quot;);<br/>\n\t}\t\t<br/>\n<br/>\n\tpublic void tearDown() {<br/>\n\t\tcurrentStaff = null;<br/>\n\t\tcompanyProp = null;<br/>\n\t}<br/>\n<br/>\n\tpublic boolean ruleAutoBill()<br/>\n\t{<br/>\n\t\treturn companyProp.autoBill;<br/>\n\t}<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\n// The actual class the rule is used in, create a static instance of<br/>\n// the rule (this might be a bad idea, not sure)<br/>\n<br/>\npublic class WTRecBean {<br/>\n<br/>\n\tprivate static RuleSet ruleEditable = new WTRecBeanEditable();<br/>\n<br/>\n         // insert objects from httpsession into hash, and check rule<br/>\n         // .checkRule could be overloaded to accept an HttpSession<br/>\n         // which just copies all attributes everything over to the<br/>\n         // HashTable for you...<br/>\n<br/>\n\tpublic boolean isEditable() {<br/>\n\t\tHashTable hash = new HashTable();<br/>\n\t\thash.set(&quot;currentStaff&quot;, session.get(&quot;currentStaff&quot;));<br/>\n\t\thash.set(&quot;companyProp&quot;, session.get(&quot;companyProp&quot;));<br/>\n\t\treturn ruleEditable.checkRule(hash);<br/>\n\t}<br/>\n}<br/>\n<br/>\nAnd finally...<br/>\n<br/>\n<br/>\n// The JUnit testcase to test it all.<br/>\n<br/>\npublic class WTRecTest extends TestCase {<br/>\n<br/>\n\tHashtable hash = null;<br/>\n\tStaff currentStaff = null;<br/>\n\tControl companyProp = null;<br/>\n<br/>\n\tpublic void setup() {<br/>\n\t\tStaff currentStaff = new Staff();<br/>\n\t\tcurrentStaff.set(..); // setup staff to known state<br/>\n\t\t<br/>\n\t\tControl companyProp = new Control();<br/>\n\t\tcompanyProp.set(..);  // setup control to known state<br/>\n<br/>\n\t\tHashTable hash = new HashTable();<br/>\n\t\thash.set(&quot;currentStaff&quot;, currentStaff);<br/>\n\t\thash.set(&quot;companyProp&quot;, companyProp);<br/>\n\t}<br/>\n<br/>\n\tpublic void tearDown() {<br/>\n\t\tcurrentStaff = null;<br/>\n\t\tcompanyProp = null;<br/>\n\t\thash = null;<br/>\n\t}<br/>\n<br/>\n<br/>\n\tpublic void testEditable() {<br/>\n<br/>\n\t\t// Set test specific alterations to staff and control<br/>\n\t\tcompanyProp.setBill(false);<br/>\n<br/>\n\t\tRuleSet WTRecBean.ruleEditable = new WTRecBeanEditable();<br/>\n<br/>\n\t\tassertTrue(ruleEditable.checkRule(hash));<br/>\n\t}<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\nMark Derricutt                                E-Mail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:markd@...\">markd@...</a><br/>\nSenior Delphi Developer                                        ICQ: 19348533<br/>\nTime Disciple Ltd                                <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.timedisciple.com\">http://www.timedisciple.com</a><br/>\n<br/>\n            Limitations only serve to give direction to your goals<br/>\n         Vi de udødelige inviterer dere til å slå dere sammen med oss</div>", 
+    "prevInTime": 3445, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1007517273", 
+    "canDelete": false, 
+    "nextInTopic": 3448, 
+    "prevInTopic": 3444, 
+    "headers": {
+        "inReplyToHeader": "PDNDMEE4OTc3LkI4REI0MDM5QGNsYXJrd2FyZS5jb20+", 
+        "messageIdInHeader": "PDE5MzMxOTc4OS4xMDA3NTY0MDczQFsxMC4yLjI5LjU5XT4=", 
+        "referencesHeader": "IDwzQzBBODk3Ny5COERCNDAzOUBjbGFya3dhcmUuY29tPg=="
+    }
+}

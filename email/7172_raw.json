@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 7173, 
+    "senderId": "VCc7DAMPbDmLHQeHuML6aEJo4kbQ24NPe48AQiBapTc8ql7SX9Lsr28Ynqmej0V_UiZHiQ7blxxrAjKR8dR0epWrZbq5bQ", 
+    "systemMessage": false, 
+    "subject": "Re: Methods with random numbers", 
+    "from": "&quot;Dave Astels&quot; &lt;dave@...&gt;", 
+    "authorName": "Dave Astels", 
+    "msgSnippet": "... interface that provides a method like getNextNumber() . In your tests, substitute an implementation that answers an expected sequence of numbers. Give", 
+    "msgId": 7172, 
+    "rawEmail": "Return-Path: &lt;dave@...&gt;\r\nX-Sender: dave@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_1); 11 Mar 2003 13:22:33 -0000\r\nReceived: (qmail 27289 invoked from network); 11 Mar 2003 13:22:33 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m10.grp.scd.yahoo.com with QMQP; 11 Mar 2003 13:22:33 -0000\r\nReceived: from unknown (HELO n30.grp.scd.yahoo.com) (66.218.66.87)\n  by mta1.grp.scd.yahoo.com with SMTP; 11 Mar 2003 13:22:33 -0000\r\nReceived: from [66.218.67.146] by n30.grp.scd.yahoo.com with NNFMP; 11 Mar 2003 13:22:32 -0000\r\nDate: Tue, 11 Mar 2003 13:22:30 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Methods with random numbers\r\nMessage-ID: &lt;b4knum+i2h9@...&gt;\r\nIn-Reply-To: &lt;200303102249310838.007C230E@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1246\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;Dave Astels&quot; &lt;dave@...&gt;\r\nX-Yahoo-Group-Post: member; u=116713278\r\nX-Yahoo-Profile: astelsd\r\n\r\n--- In junit@yahoogroups.com, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; wrote:\n&gt; Do not use Math.random() directly. Instead, hide it behind an\ninterface that provides a method like &quot;getNextNumber()&quot;. In your\ntests, substitute an implementation that answers an expected sequence\nof numbers. Give this method as good a name as you can think of, given\nyour problem domain.\n\nI tend to use java.util.Random.  Either pass in an instance of Random,\nor use a factory method to generate one.  If you pass it it you can\nmake a specialization of Random that returns a deterministic/canned\nsequence.  If you use a factory method, you&#39;ll have to also specialize\nthe class being tested to override teh factory method so as to return\na specialized Random.  Here&#39;s an example (I replaced indentation\nspaces with periods as yahoo seems not to handle leading spaces well\nin my experience):\n\nfinal int [] randomValues = {3, 5, 1, 2, 4, 0 };\nRandom fakeRandom = new Random() {\n....int index = 0;\n....public int nextInt(int n) {\n........int result = randomValues[index];\n........index = (index + 1) % randomValues.length;\n........return result;\n....}\n};\naGame.orderPlayers(fakeRandom);\n\nI could have done this as an anonymous class as well.. directly as the\nargument.\n\nDave\n\n\n", 
+    "profile": "astelsd", 
+    "topicId": 7155, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 116713278, 
+    "prevInTime": 7171, 
+    "contentTrasformed": false, 
+    "postDate": "1047388950", 
+    "canDelete": false, 
+    "nextInTopic": 7175, 
+    "prevInTopic": 7167, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwMzEwMjI0OTMxMDgzOC4wMDdDMjMwRUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGI0a251bStpMmg5QGVHcm91cHMuY29tPg=="
+    }
+}

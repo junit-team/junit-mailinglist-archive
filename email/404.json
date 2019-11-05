@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 405, 
+    "senderId": "kxYaU6IOm6EsPpYO1yKsKi3qhspq6a_rqWBaiM2vMVICAXjBJ5wZSR7ZwFuMgFIg4eX6Agys5lj0o3O0Mg3zojrLdzildaqlKWDPaocYOw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Help on testing EJBs", 
+    "from": "&quot;Jim Jackl-Mochel&quot; &lt;jmochel@...&gt;", 
+    "authorName": "Jim Jackl-Mochel", 
+    "msgSnippet": "If it is an external client (i.e. not being run in the AppServer or WebServer JVM then you need the following: Properties \t\tproperties =", 
+    "msgId": 404, 
+    "topicId": 401, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1479326298\">If it is an external client (i.e. not being run in the AppServer or<br/>\nWebServer JVM then you need the following:<br/>\n<br/>\n<br/>\n\t\tProperties \t\tproperties = System.getProperties();<br/>\n\t\tInitialContext\tcontext = null;<br/>\n<br/>\n\t\t//<br/>\n\t\t// Set the system properties<br/>\n\t\t//<br/>\n<br/>\n\t\tproperties.put(Context.INITIAL_CONTEXT_FACTORY,<br/>\n&quot;weblogic.jndi.WLInitialContextFactory&quot;);<br/>\n\t\tproperties.put(Context.PROVIDER_URL, &quot;t3://localhost:7001&quot;);\t// Enter<br/>\nappropriate URL<br/>\n\t\tproperties.put(Context.SECURITY_PRINCIPAL, &quot;system&quot;); \t\t// Login<br/>\n\t\tproperties.put(Context.SECURITY_CREDENTIALS, &quot;paranoia&quot;);\t\t// Password<br/>\n<br/>\n\t\t//<br/>\n\t\t// Create the initial context<br/>\n\t\t//<br/>\n<br/>\n\t\tcontext = new InitialContext(properties);<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:lrb3000@...\">lrb3000@...</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:lrb3000@...\">lrb3000@...</a>]<br/>\nSent: Wednesday, February 07, 2001 10:33 AM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] Help on testing EJBs<br/>\n<br/>\n<br/>\nHello All,<br/>\n<br/>\nHow do I access my EJB from a jUnit test.  I am getting an error in<br/>\nmy setup method.  More specifically, in the line:<br/>\n&quot; Object objref = initial.lookup(&quot;ViewFinder&quot;); &quot;<br/>\nViewFinder is the JNDI name for my EJB.<br/>\n<br/>\nThe exception returned in the line print is:<br/>\n&quot;.Need to specify class name in environment or system property:<br/>\njava.naming.factory.initial&quot;<br/>\n<br/>\nI think I am incorrectly specifing where the ViewFinder EJB is, but I<br/>\ndon&#39;t know how else to specify it.<br/>\n<br/>\nI am pretty new to using EJBs and this is my first test using jUnit.<br/>\nI am running my EJB on a Weblogic 5.1 app/web server.<br/>\n<br/>\nThanks for anyhelp,<br/>\nLuis<br/>\n<br/>\n-------BEGIN CODE-----------<br/>\n<br/>\npackage com.reta.af.viewfinder.test;<br/>\n<br/>\nimport junit.framework.*;<br/>\nimport com.reta.af.eventhandler.*;<br/>\nimport com.reta.af.viewfinder.*;<br/>\nimport com.reta.af.common.viewfinder.*;<br/>\n<br/>\nimport javax.naming.Context;<br/>\nimport javax.naming.InitialContext;<br/>\nimport javax.rmi.PortableRemoteObject;<br/>\n<br/>\npublic class ViewFinderTest extends TestCase<br/>\n{<br/>\n    protected ViewFinderRemote vfr;<br/>\n<br/>\n    public ViewFinderTest(String name)<br/>\n    {<br/>\n    \tsuper(name);<br/>\n    }<br/>\n<br/>\n    public static void main (String[] args)<br/>\n    {<br/>\n    \tjunit.textui.TestRunner.run (suite());<br/>\n    }<br/>\n<br/>\n    protected void setUp() throws Exception<br/>\n    {<br/>\n\ttry<br/>\n\t{<br/>\n\t\tObject objref = initial.lookup(&quot;ViewFinder&quot;);<br/>\n\t\tViewFinderHome home = (ViewFinderHome)<br/>\nPortableRemoteObject.narrow(objref, ViewFinderHome.class);<br/>\n\t        this.vfr = home.create();<br/>\n\t}<br/>\n\tcatch (Exception ex2 )<br/>\n        {<br/>\n        \tSystem.out.println(ex2.getMessage());<br/>\n        }<br/>\n<br/>\n    }<br/>\n<br/>\n<br/>\n    public static Test suite()<br/>\n    {<br/>\n\treturn new TestSuite(ViewFinderTest.class);<br/>\n    }<br/>\n<br/>\n    public void testGetView() throws Exception<br/>\n    {<br/>\n<br/>\n        try<br/>\n        {<br/>\n<br/>\n            //Set the test attributes<br/>\n            ViewFinder viewFinderObj = new ViewFinder();<br/>\n            viewFinderObj.setTaskname(&quot;com.reta.pmwb.start.TLogin&quot;);<br/>\n            viewFinderObj.setAudience(new Integer(1));<br/>\n\t    viewFinderObj.setChannel(&quot;H&quot;);<br/>\n<br/>\n\t    //Instantiate Return Value<br/>\n\t    View retView = new View();<br/>\n<br/>\n\t    //Instantiate Expected Value and Set Attributes<br/>\n\t    View expView = new View();<br/>\n\t    expView.setUrl(&quot;/loginSuccess.jsp&quot;);<br/>\n\t    expView.setStylesheet(&quot;style.css&quot;);<br/>\n<br/>\n\t    try<br/>\n    \t    {<br/>\n                retView = this.vfr.getView(viewFinderObj);<br/>\n            }<br/>\n<br/>\n            catch (java.rmi.RemoteException x)<br/>\n            {<br/>\n                // do something here<br/>\n            }<br/>\n<br/>\n            //Compare expected and return values<br/>\n           //** good code: assertEquals(expView, retView);<br/>\n              fail(&quot;This is a manual fail&quot;);<br/>\n<br/>\n\t}<br/>\n<br/>\n\tcatch (Exception ex)<br/>\n\t{<br/>\n\t}<br/>\n<br/>\n    }<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@egroups.com\">junit-unsubscribe@egroups.com</a></div>", 
+    "prevInTime": 403, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "981562202", 
+    "canDelete": false, 
+    "nextInTopic": 408, 
+    "prevInTopic": 403, 
+    "headers": {
+        "inReplyToHeader": "PDk1cnBxZitjcnRwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEJBRVBKSUxMRE1PSEZHRUpNTE5LQ0VEQkRCQUEuam1vY2hlbEBmb2xpYWdlLmNvbT4="
+    }
+}

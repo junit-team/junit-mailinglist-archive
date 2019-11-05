@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 8184, 
+    "senderId": "y3CERebd3Ox1taa-Xo5OTe_4qvePj-Gw_FqsdKzL0Dah1gLLVs9XdBiw7qj19DsC-1tBnfM38H9gAaIRnQ30FoM0YJBEsiTn1tpFbHOBzQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] LinkageError", 
+    "from": "&quot;Scott Stirling&quot; &lt;scottstirling@...&gt;", 
+    "authorName": "Scott Stirling", 
+    "msgSnippet": "Ant s JUnit tasks are unaffected by excluded.properties. You need to set fork= true on the junit tasks to avoid problems like this. Scott Stirling", 
+    "msgId": 8183, 
+    "profile": "jrun5", 
+    "topicId": 8168, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112036634, 
+    "messageBody": "<div id=\"ygrps-yiv-259813262\">Ant&#39;s JUnit tasks are unaffected by excluded.properties.<br/>\n<br/>\nYou need to set fork=&quot;true&quot; on the junit tasks to avoid problems like this.<br/>\n<br/>\nScott Stirling<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: chriskrn1 [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:chriskrn1@...\">chriskrn1@...</a>]<br/>\n&gt; Sent: Friday, May 23, 2003 6:19 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] LinkageError<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Hi<br/>\n&gt; <br/>\n&gt; I know this has appeared on the list before, but I am struggling to <br/>\n&gt; get it resolved. I am getting the ff exception when I run any ant <br/>\n&gt; junit task:<br/>\n&gt; <br/>\n&gt; BUILD FAILED<br/>\n&gt; java.lang.LinkageError: loader constraints violated when linking <br/>\n&gt; org/w3c/dom/Document class<br/>\n&gt;         at <br/>\n&gt; org.apache.xerces.jaxp.DocumentBuilderFactoryImpl.newDocumentBuilder(<br/>\n&gt; DocumentBuilderFactoryImpl.java:88)<br/>\n&gt;         at <br/>\n&gt; org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter.<br/>\n&gt; getDocumentBuilder(XMLJUnitResultFormatter.java:93)<br/>\n&gt;         at <br/>\n&gt; org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter.<br/>\n&gt; startTestSuite(XMLJUnitResultFormatter.java:138)<br/>\n&gt;         at <br/>\n&gt; org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.fireStar<br/>\n&gt; tTestSuite(JUnitTestRunner.java:433)<br/>\n&gt;         at <br/>\n&gt; org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUni<br/>\n&gt; tTestRunner.java:279)<br/>\n&gt;         at <br/>\n&gt; org.apache.tools.ant.taskdefs.optional.junit.JUnitTask.executeInVM(JU<br/>\n&gt; nitTask.java:804)<br/>\n&gt; <br/>\n&gt; .... etc<br/>\n&gt; <br/>\n&gt; My ant lib directory has the ff jars in it:<br/>\n&gt; ant.jar, junit.jar (v3.7), optional.jar, xercesImpl.jar and xml-<br/>\n&gt; apis.jar.<br/>\n&gt; <br/>\n&gt; I am running ant v1.5.<br/>\n&gt; <br/>\n&gt; I have edited the excluded.properties file in my junit.jar, and it <br/>\n&gt; now looks as follows:<br/>\n&gt; <br/>\n&gt; excluded.0=sun.*<br/>\n&gt; excluded.1=com.sun.*<br/>\n&gt; excluded.2=org.omg.*<br/>\n&gt; excluded.3=javax.*<br/>\n&gt; excluded.4=sunw.*<br/>\n&gt; excluded.5=java.*<br/>\n&gt; excluded.6=org.w3c.dom.*<br/>\n&gt; excluded.7=org.xml.sax.*<br/>\n&gt; <br/>\n&gt; However, I still get the same error. I have also tried junit3.8.1, <br/>\n&gt; with no luck.<br/>\n&gt; <br/>\n&gt; My ant task looks as follows:<br/>\n&gt; <br/>\n&gt;   &lt;target name=&quot;testdoowner&quot; depends=&quot;env.is.set&quot;&gt;<br/>\n&gt;     &lt;junit printsummary=&quot;withOutAndErr&quot; haltonfailure=&quot;yes&quot;&gt;<br/>\n&gt;       &lt;classpath refid=&quot;classpathtest&quot;/&gt;<br/>\n&gt;       &lt;formatter type=&quot;xml&quot;/&gt;<br/>\n&gt;       &lt;sysproperty key=&quot;test&quot; value=&quot;testdoowner*&quot;/&gt;<br/>\n&gt;       &lt;sysproperty key=&quot;runtestsetup&quot; value=&quot;${runtestsetup}&quot;/&gt;<br/>\n&gt;       &lt;sysproperty key=&quot;runlm&quot; value=&quot;${runlm}&quot;/&gt;<br/>\n&gt;       &lt;sysproperty key=&quot;loadmodule&quot; value=&quot;doowner&quot;/&gt;<br/>\n&gt;       &lt;sysproperty key=&quot;${security.auth.property}&quot; <br/>\n&gt; value=&quot;${security.auth.property.value}&quot;/&gt;<br/>\n&gt;       &lt;test name=&quot;com.tebabank.bp.test.client.TestClient&quot;<br/>\n&gt;             haltonfailure=&quot;no&quot; outfile=&quot;testdoowner&quot;/&gt;<br/>\n&gt;     &lt;/junit&gt;<br/>\n&gt;   &lt;/target&gt;<br/>\n&gt; <br/>\n&gt; I have struggling with this now for two days, so any help in this <br/>\n&gt; regard would be highly appreciated.<br/>\n&gt; <br/>\n&gt; Regards<br/>\n&gt; Chris </span></blockquote></div>", 
+    "prevInTime": 8182, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1053731269", 
+    "canDelete": false, 
+    "nextInTopic": 8185, 
+    "prevInTopic": 8180, 
+    "headers": {
+        "inReplyToHeader": "PGJha3NpcCs0MGtoQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEtJRUhJQklPQkFFTEpBSElQTkhET0VERUREQUEuc2NvdHRzdGlybGluZ0ByY24uY29tPg=="
+    }
+}

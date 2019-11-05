@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 10184, 
+    "senderId": "yUl0Ane8RSM3blKxyqeOy0G_W5hYwKsqP3j_a4qwF3oMGlrVMpPUsc6R88v0e6wCT7274KodPkCH17xJvLrvoKzqk8ovr8VM90Rv6yPVzNidoxbgrXZy2XQ9_dfKzThT", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Can i do a assertion inside the setUp() method.", 
+    "from": "=?iso-8859-1?q?Karthikeyan=20D?= &lt;karthikeyand@...&gt;", 
+    "authorName": "Karthikeyan D", 
+    "msgSnippet": "Hi , Instead i tried with a simple sample as below, //------------------------ package junit.samples; import junit.framework.*; import java.util.*; public", 
+    "msgId": 10183, 
+    "profile": "karthikeyand", 
+    "topicId": 10178, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 128736679, 
+    "messageBody": "<div id=\"ygrps-yiv-446257820\">Hi ,<br/>\n  Instead i tried with a simple sample as below,<br/>\n<br/>\n//------------------------<br/>\npackage junit.samples;<br/>\nimport junit.framework.*;<br/>\nimport java.util.*;<br/>\n<br/>\npublic class modelTest extends TestCase{<br/>\n<br/>\n<br/>\n    private Collection _collection;<br/>\n<br/>\n    public modelTest(String name) {<br/>\n        super(name);<br/>\n    }<br/>\n<br/>\n    protected void setUp() {<br/>\n        _collection = new ArrayList();<br/>\n        _collection = null;<br/>\n        assertNotNull(&quot;Collection null in my setupmethod<br/>\n&quot;,_collection);<br/>\n    }<br/>\n<br/>\n    protected void tearDown() {<br/>\n        _collection.clear();<br/>\n    }<br/>\n<br/>\n    public void testEmptyCollection() {<br/>\n//        assertTrue(_collection.isEmpty());<br/>\n    }<br/>\n<br/>\n    public void testOneItemCollection() {<br/>\n        _collection.add(&quot;itemA&quot;);<br/>\n//        assertEquals(1, _collection.size());<br/>\n    }<br/>\n<br/>\n<br/>\n}<br/>\n//----------------<br/>\n  Note in the above i commented the assertions inside my test methods<br/>\nare commented. When i run the test , i get the below resut,<br/>\n<br/>\n.F.F<br/>\nTime: 0<br/>\nThere were 2 failures:<br/>\n1)<br/>\ntestEmptyCollection(junit.samples.modelTest)junit.framework.AssertionFailedEr<br/>\nror: Collection null in my setupmethod<br/>\n        at junit.samples.modelTest.setUp(modelTest.java:17)<br/>\n2)<br/>\ntestOneItemCollection(junit.samples.modelTest)junit.framework.AssertionFailed<br/>\nError: Collection null in my setupmethod<br/>\n        at junit.samples.modelTest.setUp(modelTest.java:17)<br/>\n<br/>\nFAILURES!!!<br/>\nTests run: 2,  Failures: 2,  Errors: 0<br/>\n<br/>\n Does the above mean that , the assertion in setUp() method is not<br/>\nconsidered as a test ? And also the test methods which does not have<br/>\nany code is also considered as failed . Any explanation for this. Or<br/>\nits not a advised practise to use assertion inside setup ?<br/>\n<br/>\n<br/>\n --- Shinobu Kawai &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:shinobu@...\">shinobu@...</a>&gt; wrote: &gt; <br/>\n<blockquote><span title=\"ireply\"> &gt; Hi karthikeyand,<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; &gt;    When i do a ejb lookup inside the setUp() method of my testcase<br/>\n&gt; , <br/>\n&gt; &gt; can i add a assertion to verify whether the lookup returns a not<br/>\n&gt; null <br/>\n&gt; &gt; value. And also can i add a fail in the catch block of the lookup <br/>\n&gt; &gt; code . For eg., can i have it like in the code below..<br/>\n&gt; Just try it! JUnit will give you the answer. ;-)<br/>\n&gt; <br/>\n&gt; protected void setUp throws Exception {<br/>\n&gt; &gt; try{<br/>\n&gt; &gt;    nctx = new InitialContext();<br/>\n&gt; &gt;    hrHome = (HrRemoteHome)PortableRemoteObject.narrow(nctx.lookup<br/>\n&gt; &gt;       (hrBean), HrRemoteHome.class);<br/>\n&gt; &gt;    assertNotNull(&quot;CostCntProjectClient:setup() -&gt; Hr home lookup<br/>\n&gt; returned null&quot;, hrHome);<br/>\n&gt; &gt;    <br/>\n&gt; &gt;    hrRemote =<br/>\n&gt; (HrRemote)PortableRemoteObject.narrow(hrHome.create(),<br/>\n&gt; HrRemote.class);<br/>\n&gt; &gt;    assertNotNull(&quot;CostCntProjectClient:setup() -&gt; Hr remote lookup <br/>\n&gt; &gt;       returned null&quot;,hrRemote);<br/>\n&gt; &gt; } catch(CreateException e){<br/>\n&gt; &gt;    fail(&quot;CostCntProjectClient:setup() -&gt; CreateExceotion<br/>\n&gt; &quot;+e.getMessage());<br/>\n&gt; &gt; }catch(NamingException e) {<br/>\n&gt; &gt;    fail(&quot;CostCntProjectClient:setup() -&gt; NamingExceotion<br/>\n&gt; &quot;+e.getMessage());<br/>\n&gt; &gt; }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; # Or are you asking if it is good practice?<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Good luck!<br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt; Shinobu Kawai &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:shinobu@...\">shinobu@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:shinobu@...\">shinobu@...</a>&gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n<br/>\n </span></blockquote>=====<br/>\nRegards,<br/>\nKarthikeyan D<br/>\n<br/>\n________________________________________________________________________<br/>\nYahoo! Messenger - Communicate instantly...&quot;Ping&quot; <br/>\nyour friends today! Download Messenger Now <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://uk.messenger.yahoo.com/download/index.html\">http://uk.messenger.yahoo.com/download/index.html</a></div>", 
+    "prevInTime": 10182, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1073887820", 
+    "canDelete": false, 
+    "nextInTopic": 10185, 
+    "prevInTopic": 10182, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwMTEyMTQxNTMxLjhGQjcuU0hJTk9CVUBpZWVlLm9yZz4=", 
+        "messageIdInHeader": "PDIwMDQwMTEyMDYxMDIwLjU5MDk0LnFtYWlsQHdlYjExNzA0Lm1haWwueWFob28uY29tPg=="
+    }
+}

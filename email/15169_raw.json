@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 15170, 
+    "senderId": "GlbUxTEAUfrPfZul4F_WtmM1qG7TB0mCWOVEzGpPa4jLDl2mJVsOo0FOkEbJoHIoLGGlHn1eJWdGUQPBtcnTUeXAAVE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Counting assertions", 
+    "from": "Eugene Kuleshov &lt;eu@...&gt;", 
+    "authorName": "Eugene Kuleshov", 
+    "msgSnippet": "... Cedric, I actually thought you d suggest aspect for this. :-) Anyways, here is my version for JUnit3. It should only need user s testcases to be", 
+    "msgId": 15169, 
+    "rawEmail": "Return-Path: &lt;eu@...&gt;\r\nX-Sender: eu@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 62654 invoked from network); 17 Oct 2005 03:33:39 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m23.grp.scd.yahoo.com with QMQP; 17 Oct 2005 03:33:39 -0000\r\nReceived: from unknown (HELO god.md.pp.ru) (64.56.237.27)\n  by mta6.grp.scd.yahoo.com with SMTP; 17 Oct 2005 03:33:39 -0000\r\nReceived: from d141-208-169.home.cgocable.net ([24.141.208.169] helo=[192.168.1.101])\n\tby god.md.pp.ru with esmtpsa (TLSv1:AES256-SHA:256)\n\t (Exim 4.50 #1)\n\tid 1ERLkl-0004Kd-RO\n\tfor junit@yahoogroups.com; Sun, 16 Oct 2005 23:33:38 -0400\r\nMessage-ID: &lt;43531B77.30501@...&gt;\r\nDate: Sun, 16 Oct 2005 23:33:11 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0+ (Windows/20050531)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;23fce8e60510160655k1c38667fl@...&gt;\t &lt;20051016144916.58296.qmail@...&gt; &lt;b86b6a9c0510161810g7c5c5114odcc467ac2b94de53@...&gt;\r\nIn-Reply-To: &lt;b86b6a9c0510161810g7c5c5114odcc467ac2b94de53@...&gt;\r\nX-Spam-Score: 0.0 (/)\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Eugene Kuleshov &lt;eu@...&gt;\r\nSubject: Re: [junit] Counting assertions\r\nX-Yahoo-Group-Post: member; u=150395705; y=kGSK02acN7UEJZYidWCJ2lPtChrEwQhXtCBg4BaOWoEXNt9P\r\nX-Yahoo-Profile: ekuleshov\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nC=E9dric Beust ? wrote:\n\n&gt;&gt;Ooh look, I figured it out:\n&gt;&gt;\n&gt;&gt;find /c/project=\r\n/ -name &#92;*.java | xargs grep assert |\n&gt;&gt;wc\n&gt;&gt;    \n&gt;&gt;\n&gt;This won&#39;t tell you h=\r\now many asserts have been invoked at runtime.\n&gt;  \n&gt;\n  Cedric, I actually th=\r\nought you&#39;d suggest aspect for this. :-)\n\n  Anyways, here is my version for=\r\n JUnit3. It should only need user&#39;s \ntestcases to be instrumented and not j=\r\nunit framework. Though things like \njMock doing their own assertions and ne=\r\ned to be instrumented too. \nAnyway, in Eclipse you just need to add AJDT na=\r\nture to the project and \nwhen running junit from Ant ajdt adapter for javac=\r\n should be used to \ncompile project.\n\npublic aspect AssertionCounter {\n  pr=\r\nivate ThreadLocal counts =3D new ThreadLocal();\n\n  public pointcut testMeth=\r\nodExecution() :\n    execution(void Test+.test*());\n\n  public pointcut asser=\r\ntCall() :\n    cflow(testMethodExecution()) && call(void Assert+.assert*(..)=\r\n);\n \n  void around() : testMethodExecution() {\n    counts.set( new Counter(=\r\n));\n    proceed();\n    if(((Counter) counts.get()).getCount()=3D=3D0) {\n   =\r\n   throw new AssertionFailedError(&quot;No assertions had been called&quot;);\n    }\n =\r\n }\n\n  before() : assertCall() {\n    ((Counter) counts.get()).inc();\n  }\n \n}=\r\n\n\n  It is easy to add support for anotation-driven JUnit4 or TestNG to the =\r\n\ntestMethodExecution pointcut definition...\n\n  regards,\n  Eugene\n\n\n\n\n[Non-t=\r\next portions of this message have been removed]\n\n\n", 
+    "profile": "ekuleshov", 
+    "topicId": 2160, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150395705, 
+    "prevInTime": 15168, 
+    "contentTrasformed": false, 
+    "postDate": "1129519991", 
+    "canDelete": false, 
+    "nextInTopic": 15170, 
+    "prevInTopic": 15168, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDUxMDE2MTgxMGc3YzVjNTExNG9kY2M0NjdhYzJiOTRkZTUzQG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQzNTMxQjc3LjMwNTAxQG1kLnBwLnJ1Pg==", 
+        "referencesHeader": "PDIzZmNlOGU2MDUxMDE2MDY1NWsxYzM4NjY3ZmxAbWFpbC5nbWFpbC5jb20+CSA8MjAwNTEwMTYxNDQ5MTYuNTgyOTYucW1haWxAd2ViMzU2MTAubWFpbC5tdWQueWFob28uY29tPiA8Yjg2YjZhOWMwNTEwMTYxODEwZzdjNWM1MTE0b2RjYzQ2N2FjMmI5NGRlNTNAbWFpbC5nb29nbGUuY29tPg=="
+    }
+}

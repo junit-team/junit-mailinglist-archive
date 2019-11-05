@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 64, 
+    "nextInTime": 15822, 
+    "senderId": "qIKFWvSWzOF1cMtGh5-FdQ8cAkKow_Rx7oH11bYbnltRG0opiO_162fUPqNdhhy0KNnp6WnJJIPCQgCRoY-wlQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] running out of memory", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... Let s assume that the problem here is this: JUnit 3, by requiring test cases to all be in memory before any running happens, could be used fairly memory", 
+    "msgId": 15821, 
+    "rawEmail": "Return-Path: &lt;saff@...&gt;\r\nX-Sender: saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 35210 invoked from network); 20 Jan 2006 18:54:38 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m31.grp.scd.yahoo.com with QMQP; 20 Jan 2006 18:54:38 -0000\r\nReceived: from unknown (HELO rozz.csail.mit.edu) (128.30.2.16)\n  by mta5.grp.scd.yahoo.com with SMTP; 20 Jan 2006 18:54:37 -0000\r\nReceived: from 30-5-84.wireless.csail.mit.edu ([128.30.5.84])\n\tby rozz.csail.mit.edu with esmtpsa (TLSv1:AES256-SHA:256)\n\t(Exim 4.50)\n\tid 1F01Bi-0006Bj-9D\n\tfor junit@yahoogroups.com; Fri, 20 Jan 2006 13:40:42 -0500\r\nMessage-ID: &lt;43D12EA8.3050503@...&gt;\r\nDate: Fri, 20 Jan 2006 13:40:40 -0500\r\nUser-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;43D04713.6030006@...&gt;\t &lt;GNEFLLCCFDJFIOHBJKCEGEBEDOAA.rlucente@...&gt; &lt;b86b6a9c0601200605i79ea899cqb37acc056b046167@...&gt;\r\nIn-Reply-To: &lt;b86b6a9c0601200605i79ea899cqb37acc056b046167@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: David Saff &lt;saff@...&gt;\r\nSubject: Re: [junit] running out of memory\r\nX-Yahoo-Group-Post: member; u=139771899; y=T6sz11Regr1ydqEZNKibB8d2UJCndq9lhY98QVmaf9I\r\nX-Yahoo-Profile: dsaff\r\n\r\nCédric Beust ♔ wrote:\n\n&gt; On 1/19/06, Robert Lucente &lt;rlucente@...&gt; wrote:\n&gt; &gt;\n&gt; &gt; Googled and found http://www.w3.org/DOM/Test/Documents/DOMTSBuild.html.\n&gt; &gt;\n&gt; &gt; The above states, &quot;If you get a out of memory error (very likely if you\n&gt; &gt; build the DOM Level 3 Core tests)&quot;. It then recommends &quot;set\n&gt; &gt; ANT_OPTS=-Xmx512M&quot;. Request that people share how they solved their &quot;out\n&gt; &gt; of\n&gt; &gt; memory&quot; issue.\n&gt;\n&gt;\n&gt; FYI, we did this in TestNG by allowing @Factories to return either test\n&gt; classes or iterators. In the latter case, the iterators are walked one\n&gt; element at a time, the yielded elements are considered as test classes (or\n&gt; further iterators) and run, and then we move on to the next element.\n\nLet&#39;s assume that the problem here is this: JUnit 3, by requiring test \ncases to all be in memory before any running happens, could be used \nfairly memory effectively, but only if:\n\n1) All large TestCase fields were only initialized in setUp\n2) All large TestCase fields were set back to null in tearDown\n\nOtherwise, no test cases or fields could be garbage collected, and \nmemory usage climbs steadily up as tests are executed.\n\n&gt;\n&gt; Some of our users are creating thousands of tests and they were \n&gt; running out\n&gt; of memory without this feature. It&#39;s marginal, but when you need it, you\n&gt; really need it.\n\nIn JUnit 4, test fixture objects are created right before execution, and \nno references to test fixture objects are maintained by the framework, \nso that only the currently running test needs to be on the heap. I have \nreason to believe that this will solve the problem you describe above, \nand I&#39;m anxious for people who have had that problem to confirm or \nrefute this hope.\n\nI&#39;m a little confused by the TestNG description above. Are you saying \nthat you saved memory by lazily classloading? Loading lots of classes \ncan be a memory drain--all Java programs have this issue--but I had \nassumed that the goal was reducing the amount of data, not classes, in \nmemory.\n\nThanks,\n\nDavid Saff\n\n", 
+    "profile": "dsaff", 
+    "topicId": 15770, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 15820, 
+    "contentTrasformed": false, 
+    "postDate": "1137782440", 
+    "canDelete": false, 
+    "nextInTopic": 15822, 
+    "prevInTopic": 15820, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYwMTIwMDYwNWk3OWVhODk5Y3FiMzdhY2MwNTZiMDQ2MTY3QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQzRDEyRUE4LjMwNTA1MDNAbWl0LmVkdT4=", 
+        "referencesHeader": "PDQzRDA0NzEzLjYwMzAwMDZAcm9nZXJzLmNvbT4JIDxHTkVGTExDQ0ZESkZJT0hCSktDRUdFQkVET0FBLnJsdWNlbnRlQHBpcGVsaW5lLmNvbT4gPGI4NmI2YTljMDYwMTIwMDYwNWk3OWVhODk5Y3FiMzdhY2MwNTZiMDQ2MTY3QG1haWwuZ29vZ2xlLmNvbT4="
+    }
+}

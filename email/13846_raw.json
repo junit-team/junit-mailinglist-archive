@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13847, 
+    "senderId": "9gV2SIee4TUMJQkohGXGxXGIFtUfQ8TqqdhV8r2G2pIfqsP8cUGv1BaCU6LKDVXFB5X3dzMmxJUlnhyS6jfT7oqoqHC2a0Ea2L9R", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing multiple interfaces?", 
+    "from": "Robert Wenner &lt;robert.wenner@...&gt;", 
+    "authorName": "Robert Wenner", 
+    "msgSnippet": "... I faced the same problem a few days ago. It maybe was a little worse, because the interfaces are interfaces in a framework and I wanted to provide an", 
+    "msgId": 13846, 
+    "rawEmail": "Return-Path: &lt;robert.wenner@...&gt;\r\nX-Sender: robert.wenner@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 34669 invoked from network); 3 Jun 2005 21:22:35 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m23.grp.scd.yahoo.com with QMQP; 3 Jun 2005 21:22:35 -0000\r\nReceived: from unknown (HELO mail.gmx.net) (213.165.64.20)\n  by mta5.grp.scd.yahoo.com with SMTP; 3 Jun 2005 21:22:34 -0000\r\nReceived: (qmail invoked by alias); 03 Jun 2005 00:48:43 -0000\r\nReceived: from cpe-70-112-212-104.austin.res.rr.com (EHLO tiamat.robsnetz.de) [70.112.212.104]\n  by mail.gmx.net (mp004) with SMTP; 03 Jun 2005 02:48:43 +0200\r\nX-Authenticated: #1286805\r\nTo: junit@yahoogroups.com\r\nDate: Thu, 2 Jun 2005 19:48:14 -0500\r\nUser-Agent: KMail/1.7.1\r\nReferences: &lt;429F10DE.8060202@...&gt;\r\nIn-Reply-To: &lt;429F10DE.8060202@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200506021948.15044.robert.wenner@...&gt;\r\nX-Y-GMX-Trusted: 0\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Robert Wenner &lt;robert.wenner@...&gt;\r\nSubject: Re: [junit] Testing multiple interfaces?\r\nX-Yahoo-Group-Post: member; u=115089258; y=5sq4BlvB0DjTIY_DddllGJBEvOtbRygo-GTyOJ-WQBKr470yte4Q\r\nX-Yahoo-Profile: robertwenner\r\n\r\nOn Thursday 02 June 2005 08:59, jason r tibbetts wrote:\n&gt; So far, so good. But what&#39;s a good way to handle this when the CUT\n&gt; implements multiple interfaces, each of which has an abstract base\n&gt; test? \n\nI faced the same problem a few days ago.\n\nIt maybe was a little worse, because the interfaces are interfaces in a \nframework and I wanted to provide an abstract test from which users of \nthe framework could derive and have their objects tested against basic \nassumptions the framework has. \n\nI wanted just one test case, because I could not even be sure that future \nusers will write any tests at all and I didn&#39;t want to scare them by \npushing two or three tests on them.\n\nI came up with a solution like this:\n\nHave the tests as static public members that take the object under test as \nan argument. \n\npublic class FooCheck extends TestCase {\n\tpublic static void doTestXyz(ObjectUnderTest o) {\n\t\t...\n\t}\n}\n\nThese tests were sometimes more complex than I wanted them to be, so I had \ntests for these tests.\n\npublic class FooCheckTest extends TestCase {\n\tpublic void testDoesFooXyzCorrectly() {\n\t\tObject o = new ...;\n\t\tFooCheck.doTestXzy(o);\n\t}\n}\n\nThe actual abstract test case then has one liners that call the static \nmethods in the real checking class:\n\npublic abstract class AbstractFrameworkObjectTest extends TestCase {\n\tpublic abstract Object getObjectUnderTest();\n\n\tpublic void testXyz() {\n\t\tFooCheck.doTestXyz(getObjectUnderTest());\n\t}\n}\n\nSeems to work pretty well.\n\nHowever, I like your inner classes idea as well.\n\nRobert\n\n", 
+    "profile": "robertwenner", 
+    "topicId": 13795, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 115089258, 
+    "prevInTime": 13845, 
+    "contentTrasformed": false, 
+    "postDate": "1117759694", 
+    "canDelete": false, 
+    "nextInTopic": 13848, 
+    "prevInTopic": 13838, 
+    "headers": {
+        "inReplyToHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDIwMDUwNjAyMTk0OC4xNTA0NC5yb2JlcnQud2VubmVyQGdteC5kZT4=", 
+        "referencesHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

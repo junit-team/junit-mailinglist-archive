@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3017, 
+    "senderId": "bhWf5Lnt-lPnT5fOIwOuKKwMJnn2Tqu3Yectd6AqAzt2CVbaVx6kftlyO7n_rVpOh7lPRMSNGwaWy_vaaRRN4HVzvUjXstykUS_k2EnUgR5KeEU", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Problems with WL transactions and JUnit", 
+    "from": "Laurent Duperval &lt;lduperval@...&gt;", 
+    "authorName": "Laurent Duperval", 
+    "msgSnippet": "... /** * Insert the method s description here. * Creation date: (9/19/2001 12:04:44 PM) */ synchronized private void rollbackTransaction() { if (this.userTX", 
+    "msgId": 3016, 
+    "rawEmail": "Return-Path: &lt;lduperval@...&gt;\r\nX-Sender: lduperval@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 19 Oct 2001 18:53:46 -0000\r\nReceived: (qmail 74051 invoked from network); 19 Oct 2001 18:53:45 -0000\r\nReceived: from unknown (10.1.10.27)\n  by l8.egroups.com with QMQP; 19 Oct 2001 18:53:45 -0000\r\nReceived: from unknown (HELO lancelot.microcelli5.com) (207.96.224.28)\n  by mta2 with SMTP; 19 Oct 2001 18:53:45 -0000\r\nReceived: from lenard.microcelli5.com (dns2i.microcelli5.com [10.0.1.51])\n\tby lancelot.microcelli5.com (SMTP_Gateway) with ESMTP id 2541A4B908\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 19 Oct 2001 14:53:45 -0400 (EDT)\r\nReceived: from fendi.ad.microcelli5.com (fendi.ad.microcelli5.com [10.0.10.5])\n\tby lenard.microcelli5.com (SMTP_Gateway) with SMTP id E5B2E4688A\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 19 Oct 2001 14:53:44 -0400 (EDT)\r\nReceived: FROM dci5exch.ad.microcelli5.com BY fendi.ad.microcelli5.com ; Fri Oct 19 15:03:51 2001 -0400\r\nReceived: from kiskeya.microcelli5.com (10.0.11.16 [10.0.11.16]) by dci5exch.ad.microcelli5.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)\n\tid 4FZP24SD; Fri, 19 Oct 2001 14:53:43 -0400\r\nDate: Fri, 19 Oct 2001 14:49:24 -0400 (EDT)\r\nSubject: Re: [junit] Problems with WL transactions and JUnit\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;3BD070B8.BB96109B@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: QUOTED-PRINTABLE\r\nMessage-Id: &lt;20011019185344.E5B2E4688A@...&gt;\r\nFrom: Laurent Duperval &lt;lduperval@...&gt;\r\nX-Yahoo-Profile: lduperval\r\n\r\nOn 19 Oct, Mike Clark wrote:\n&gt; Perhaps a look at the TransactionTestCase.se=\r\ntUp() would help, as this\n&gt; seems to be the differentiator.\n&gt; \n\n/**\n * Inse=\r\nrt the method&#39;s description here.\n * Creation date: (9/19/2001 12:04:44 PM)=\r\n\n */\n synchronized private void rollbackTransaction() {\n    if (this.userTX=\r\n !=3D null) {\n\t    LOG.debug(&quot;About to rollback transaction&quot;);\n        try =\r\n{\n            this.userTX.rollback();\n        } catch (javax.transaction.Sy=\r\nstemException e) {\n            LOG.error(&quot;Can not rollback transaction&quot;, e)=\r\n;\n        } catch (IllegalStateException e) {\n\t        // It probably was a=\r\nlready rolled back\n\t        LOG.info(&quot;Can not rollback transaction&quot;, e);\n  =\r\n      } finally {\n            this.userTX =3D null;\n        }\n    } else {\n=\r\n\t    LOG.error(&quot;Can not rollback transaction as it is null&quot;);\n    }\n\n}\n/**\n=\r\n * Insert the method&#39;s description here.\n * Creation date: (9/19/2001 11:58=\r\n:42 AM)\n * @return javax.transaction.UserTransaction\n */\n protected void se=\r\ntUp() {\n\t// We may have to rollback a pre-existing Transaction\n\tif (this.us=\r\nerTX !=3D null) {\n\t\trollbackTransaction();\n\t}\n\n\t// Get a new transaction\n\tt=\r\nry {\n\t\tthis.userTX =3D common.util.EjbUtil.getUserTransaction();\n\t} catch (=\r\njavax.naming.NamingException e) {\n\t\tLOG.error(&quot;Can not get UserTransaction =\r\nfor UnitTests&quot;, e);\n\t}\n\n\t// Start it\n\tif (this.userTX !=3D null) {\n\t\ttry {\n=\r\n\t\t\tthis.userTX.begin();\n\t\t} catch (javax.transaction.NotSupportedException =\r\nex) {\n\t\t\tLOG.error(&quot;Can not start UserTransaction&quot;, ex);\n\t\t} catch (javax.t=\r\nransaction.SystemException ex) {\n\t\t\tLOG.error(&quot;Can not start UserTransactio=\r\nn&quot;, ex);\n\t\t}\n\t} else {\n\t\tLOG.error(&quot;Can not start UserTransaction as it is =\r\nnull&quot;);\n\t}\n}\n/**\n * Insert the method&#39;s description here.\n * Creation date:=\r\n (9/19/2001 12:38:47 PM)\n */\nprotected void tearDown() {\n\tthis.rollbackTran=\r\nsaction();\n}\n\nand this creates the transaction:\n\npublic static UserTransact=\r\nion getUserTransaction() throws NamingException {\n    UserTransaction tx =\r\n=3D null;\n\n    try {\n        Context ctx =3D getInitialContext();\n        t=\r\nx =3D (UserTransaction) ctx.lookup(&quot;javax.transaction.UserTransaction&quot;);\n  =\r\n  } catch (NamingException ex) {\n        LOG.error(&quot;Naming Exception while =\r\nobtaining User Transaction&quot;, ex);\n        throw ex;\n    }\n    \n    return t=\r\nx;\n}\n\n\nL\n\n-- \nLaurent Duperval &lt;mailto:lduperval@...&gt;\n\nL&#39;affair=\r\ne est dans le sac qui est lui-m=EAme dans la poche.\n                       =\r\n                      -Achille Talon\n\n\n\n", 
+    "profile": "lduperval", 
+    "topicId": 3014, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3015, 
+    "contentTrasformed": false, 
+    "postDate": "1003517364", 
+    "canDelete": false, 
+    "nextInTopic": 3019, 
+    "prevInTopic": 3015, 
+    "headers": {
+        "inReplyToHeader": "PDNCRDA3MEI4LkJCOTYxMDlCQGNsYXJrd2FyZS5jb20+", 
+        "messageIdInHeader": "PDIwMDExMDE5MTg1MzQ0LkU1QjJFNDY4OEFAbGVuYXJkLm1pY3JvY2VsbGk1LmNvbT4="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 24659, 
+    "senderId": "5pUUQNDfM8v-FbI0m7Smv3Fylfiu_rkHtSM0-uPlGp7mtGc2hbXQP47uNzVTbMkTBNUQPSdtWBzEIo1_reTyINfk8FS4DThcgg", 
+    "systemMessage": false, 
+    "subject": "Proposal for Assert.assertException", 
+    "from": "Johannes &lt;johanneswahle@...&gt;", 
+    "authorName": "Johannes", 
+    "msgSnippet": "Hello, I always found testing thrown exceptions tedious, since it required a new test method for every exception that shall be thrown. Since the introduction", 
+    "msgId": 24658, 
+    "rawEmail": "Return-Path: &lt;johanneswahle@...&gt;\r\nReceived: (qmail 3213 invoked by uid 7800); 19 May 2015 12:34:06 -0000\r\nX-Sender: johanneswahle@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 27581 invoked by uid 102); 19 May 2015 05:09:05 -0000\r\nX-Received: from unknown (HELO mtaq6.grp.bf1.yahoo.com) (10.193.84.37)\n  by m9.grp.bf1.yahoo.com with SMTP; 19 May 2015 05:09:05 -0000\r\nX-Received: (qmail 20519 invoked from network); 19 May 2015 05:09:05 -0000\r\nX-Received: from unknown (HELO nm35-vm3.bullet.mail.ne1.yahoo.com) (98.138.100.120)\n  by mtaq6.grp.bf1.yahoo.com with SMTP; 19 May 2015 05:09:05 -0000\r\nX-Received: from [127.0.0.1] by nm35.bullet.mail.ne1.yahoo.com with NNFMP; 19 May 2015 05:09:04 -0000\r\nX-Received: from [98.138.101.129] by nm35.bullet.mail.ne1.yahoo.com with NNFMP; 19 May 2015 05:06:11 -0000\r\nX-Received: from [66.196.81.170] by tm17.bullet.mail.ne1.yahoo.com with NNFMP; 19 May 2015 05:06:11 -0000\r\nX-Received: from [68.142.230.76] by tm16.bullet.mail.bf1.yahoo.com with NNFMP; 19 May 2015 05:06:11 -0000\r\nX-Received: from [127.0.0.1] by smtp233.mail.bf1.yahoo.com with NNFMP; 19 May 2015 05:06:11 -0000\r\nX-Yahoo-Newman-Id: 196668.39046.bm@...\r\nX-Yahoo-Newman-Property: ymail-4\r\nX-YMail-OSG: .UAPhw8VM1kl0vEu_YY81Zc4ppvOmtbQhsSN4DxMvk3z4Xo\n hcJfNvELoJPwonKt5Hj6PuSd.o8TCZ.EIUfGxEFUcW7hul0X1I7EisENnVFL\n KkGIzs9UF.yjOYBEXlcaAdH5rGD09wZuqWTu.fnMiDBGew4oEelmbg92x8d9\n gWmP6Z_ZCYEe7SGVTACpmNnDJJgMUNjjEbwHj8fXAL2THGfUW7y3OSPqlwwf\n Z2vKAvAQsHzZlPZJ1FTzOlAyX2TJLB1T1l5pmKSzHy1D1qKzIUapGC8eh9Sd\n rVKB2Ps.x1ijzAm65m_Jy52Cq6Di6peqjzZFNhFnU2mT8ZFfDcw3aq_GGdIs\n _er5fZGHyfVJlZAzRDYUmHTrd5rfynTcYv5tqiwZtoy8QPEin73z_T8rB0dy\n pcOqah1grP9oXNxrv6i71_qAkN4oMQqNIGuLqjHZoXh5h3gehRJ4UyYGJVym\n A7tvc8d3QJ89xC.nUzDAhWK6NCc4evBVTwPQmJTinhBLkkpCMVUfs9cQobcN\n OyeRP1oholc_js38NwOU-\r\nX-Yahoo-SMTP: iuoNzSGswBB3G9SegEeAwxUBQiO4oy3EY.4-\r\nMessage-ID: &lt;555AC4C0.6070604@...&gt;\r\nDate: Tue, 19 May 2015 07:06:08 +0200\r\nUser-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Thunderbird/31.6.0\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=utf-8; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nSubject: Proposal for Assert.assertException\r\nX-Yahoo-Group-Post: member; u=574949602; y=FiwTgF7Y6BMK-lBqiHnVjBNtZNktLvBZUarvBFiy9PY8Pgbn_cxPyw\r\nX-Yahoo-Profile: johanneswahle\r\nX-Original-From: Johannes &lt;johanneswahle@...&gt;\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 19 May 2015 12:34:06 -0000\r\nFrom: Johannes &lt;johanneswahle@...&gt;\r\n\r\nHello,\n\nI always found testing thrown exceptions tedious, since it required a \nnew test method for every exception that shall be thrown.\nSince the introduction of Java 8 lambda expressions I found this new \nidiom to be quite useful:\n\n     @Test\n     public void testIndexOutOfBoundsIsThrown() {\n         List&lt;Object&gt; l = new ArrayList&lt;&gt;();\n         assertException(() -&gt; l.add(-1, new Object()));\n         assertException(() -&gt; l.add(1, new Object()), \nIndexOutOfBoundsException.class);\n     }\n\nHere is the code for the assertions:\n\n     public static void assertException(Runnable r) {\n         assertException(r, Exception.class);\n     }\n\n     public static void assertException(Runnable r, Class&lt;? extends \nException&gt; exceptionClass) {\n         try {\n             r.run();\n             fail(&quot;expected &quot; + exceptionClass.getName());\n         } catch (Exception e) {\n             Assert.assertTrue(&quot;expected &quot; + exceptionClass + &quot; but was \n&quot; + e,\n                     exceptionClass.isAssignableFrom(e.getClass()));\n         }\n     }\n\nWhat do you think?\nIf you like the idea, I can create a pull request on github.\n\nJohannes\n\n", 
+    "profile": "johanneswahle", 
+    "topicId": 24658, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 574949602, 
+    "prevInTime": 24657, 
+    "contentTrasformed": false, 
+    "postDate": "1432011968", 
+    "canDelete": false, 
+    "nextInTopic": 24659, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDU1NUFDNEMwLjYwNzA2MDRAeWFob28uY29tPg=="
+    }
+}

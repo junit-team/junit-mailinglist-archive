@@ -1,0 +1,28 @@
+{
+    "topicId": 2070, 
+    "postDate": "996152328", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Jeff Langr &lt;JLangr@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "eCkA8VVOGtgzzSZztPT5rTh1dfaXZJAocl2fH-LIn0ZequEZg3kB1RHHOQzhnH3ew7qqmrhLIYiixZPru7rji5FppO6qucCgpeYI", 
+    "nextInTime": 2120, 
+    "userId": 0, 
+    "prevInTime": 2118, 
+    "prevInTopic": 2115, 
+    "headers": {
+        "messageIdInHeader": "PEFGMDc3NzZEQjVEMUQyMTFCQzA3MDBBMEM5RTkyMzdGNUMwMTc4QG9iamVjbWVudG9yLmNvbT4="
+    }, 
+    "authorName": "Jeff Langr", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "Thanks for the suggestion re: the best practices link. ... Probably not, but I find implicit idiomatic stuff always takes me a bit longer to recognize.  If I", 
+    "contentTrasformed": false, 
+    "msgId": 2119, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;jlangr@...&gt;\r\nX-Sender: jlangr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 26 Jul 2001 12:55:24 -0000\r\nReceived: (qmail 42153 invoked from network); 26 Jul 2001 12:55:07 -0000\r\nReceived: from unknown (10.1.10.26) by l8.egroups.com with QMQP; 26 Jul 2001 12:55:07 -0000\r\nReceived: from unknown (HELO objectmentor.objectmentor.com) (65.194.52.68) by mta1 with SMTP; 26 Jul 2001 12:55:07 -0000\r\nReceived: by objecmentor.com with Internet Mail Service (5.5.2653.19) id &lt;P3FW12V6&gt;; Thu, 26 Jul 2001 07:58:58 -0500\r\nMessage-ID: &lt;AF07776DB5D1D211BC0700A0C9E9237F5C0178@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com &#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Re: Errors and Exceptions\r\nDate: Thu, 26 Jul 2001 07:58:48 -0500\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nList-Unsubscribe: &lt;mailto:junit-unsubscribe@yahoogroups.com&gt;\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: Jeff Langr &lt;JLangr@...&gt;\r\n\r\nThanks for the suggestion re: the best practices link.\n\n&gt;I don&#39;t think it is necessary to put an &quot;assertTrue(true);&quot; in the\n&gt;catch block.\n\nProbably not, but I find implicit idiomatic stuff always takes me a bit\nlonger to recognize.  If I see the method call &quot;pass()&quot; (or the uglier\nassertTrue(true)) in the catch block, it&#39;s much clearer what the intent is.\n\n-Jeff\n\n-----Original Message-----\nFrom: Mike Duffy\nTo: junit@yahoogroups.com\nSent: 7/26/2001 1:58 AM\nSubject: RE: [junit] Re: Errors and Exceptions\n\nJeff,\n\nYou should enter your comments into the Best Practices link created\nby J. B. Rainsberger:\n\nhttp://c2.com/cgi/wiki?JavaUnitBestPractices\n\nI do almost exactly as you suggest.  When writing test methods, I\nfirst write a test method for each exception in the throws cluase of\nthe method.  The only exception I create a catch block for is the\nexception I am expecting for the specific test.  I use a trows\nExcpetion in the test method and let the JUnit framework handle\nanything unexpected that comes up.\n\nI don&#39;t think it is necessary to put an &quot;assertTrue(true);&quot; in the\ncatch block.\n\nAlso, I use a unique naming convention for my test methods:\n\n   test_##_nameofMethodBeingTested\n\n// Test IllegalArgumentException is thrown when account number is\nnull.\npublic void test_00_isAccountAssigned() throws Exception {\n\n    try {\n       boolean assignedStatus =\naccountWorker.isAccountAssigned(null);\n       fail(&quot;IllegalArgumentException should have been thrown&quot;)\n\n    } catch (IllegalArgumentException iae) {\n\n        // Test Succeeds.\n    } \n}\n\n--- Jeff Langr &lt;JLangr@...&gt; wrote:\n&gt; I agree with Mr. Duffy and would like to add my thoughts.\n&gt; \n&gt; Your test cases represent controlled contexts that you create.  You\n&gt; need to\n&gt; not only test all the &quot;happy path&quot; scenarios -- the ones where you\n&gt; expect no\n&gt; exceptions should be thrown -- but as well test the scenarios where\n&gt; you\n&gt; *expect* exceptions to be thrown. For example:\n&gt; \n&gt; public void testTooManyPlayersOnField() {\n&gt; \tField field = new Field();\n&gt; \tfor (int i = 0; i &lt; 11; i++)\n&gt; \t\tfield.addPlayer();\n&gt; \ttry {\n&gt; \t\tfield.addPlayer();\n&gt; \t\tfail(&quot;should have thrown exception...&quot;);\n&gt; \t}\n&gt; \tcatch (TooManyPlayersException e) {\n&gt; \t\tassertTrue(true);  // ugh.  &quot;pass()&quot; would be nice\n&gt; \t}\n&gt; }\n&gt; \n&gt; For the happy path tests, I don&#39;t care what exception is thrown --\n&gt; it should\n&gt; never happen under normal circumstances. (If it does, something&#39;s\n&gt; seriously\n&gt; wrong anyway, and JUnit will still catch it.)  So I just declare\n&gt; that my\n&gt; test &quot;throws Exception&quot; where I have to (and use finally clauses\n&gt; when I need\n&gt; to).  That&#39;s the simplest thing that&#39;ll work in the light of Java&#39;s\n&gt; insistence that you deal with the potential for an exception.  \n&gt; \n&gt; Using throws on test methods is fine as long as you document how to\n&gt; deal\n&gt; with all possible inappropriate things that *can* happen.  This\n&gt; documentation is through other tests that force and demonstrate\n&gt; these\n&gt; inappropriate things.  The nice part about this approach is that it\n&gt; pushes\n&gt; developers to learn how to treat exceptions early on.  Kind of like\n&gt; ensuring\n&gt; that you can actually restore from your backup tapes before you\n&gt; actually\n&gt; have to.  Most non-XP code I&#39;ve seen does a poor job of organizing\n&gt; exceptions.  \n&gt; \n&gt; Jeff L.\n&gt; Object Mentor, Inc.\n\n", 
+    "subject": "RE: [junit] Re: Errors and Exceptions"
+}

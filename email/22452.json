@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 22453, 
+    "senderId": "YiVfhol-aoowjw46rd4JRcIWo-MFR8oCW-9LN_IvsVUEVHfGQKjp0_nwh3fZLXLuHrsc1EaJHas308gxLVhaH0OLIA8kYsJUrWs", 
+    "systemMessage": false, 
+    "subject": "Re: @DataPoints called several times for Theories", 
+    "from": "&quot;Berin&quot; &lt;berin.loritsch@...&gt;", 
+    "authorName": "Berin", 
+    "msgSnippet": "I agree with your prognosis, about fresh data points for testing the theories.  That is precisely why I proposed reading them once, and cloning them (making a", 
+    "msgId": 22452, 
+    "profile": "bloritsch", 
+    "topicId": 22425, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 428096731, 
+    "messageBody": "<div id=\"ygrps-yiv-1429725869\">I agree with your prognosis, about fresh data points for testing the theories.  That is precisely why I proposed reading them once, and cloning them (making a copy) as needed for each theory.  With that approach we even get the protection from mutated data points when you use the @DataPoint to mark a static field.<br/>\n<br/>\nCloning is a much quicker operation, does not execute any constructors.  It merely copies the contents of the object memory verbatim.<br/>\n<br/>\nWith the current implementation, if you are not prepared for the combinatorial affect of 60 data points combined with 60 data points for each theory there is a major disconnect.  The majority of the overhead in this particular scenario has to do with creating objects (with the additional overhead of doing it by reflection).<br/>\n<br/>\nWhen I created only one instance of each class instead of two, the performance was twice as fast (i.e. 37 seconds down to about 16 seconds).<br/>\n<br/>\nEssentially the number of times your @DataPoints method is called depends on the number of parameters in your @Theory and how many theories you have.  Essentially the formula for my theory (ha, ha) of the execution is like this:<br/>\n<br/>\nN^(p-1) + 1<br/>\n<br/>\nwhere:<br/>\n<br/>\nN is the number of data points returned by the method<br/>\np is the number of parameters<br/>\nand the + 1 represents the run where the data point is read the first time<br/>\n<br/>\nSo for 60 data points it is run 61 times for two parameters.  With three parameters it would be called 3601 times.  I have to verify with three parameters.  The theory is called N^p times for sure and that is expected.<br/>\n<br/>\nWith the above formula, the mapping of number of calls to parameters for 60 data points would be:<br/>\n<br/>\n1 -&gt; 2 (I know this is wrong which gives me doubts on the formula)<br/>\n2 -&gt; 61<br/>\n3 -&gt; 3601<br/>\n3 -&gt; 216001<br/>\n<br/>\nEssentially when the Assignments class needs to make the combinations, it will collect the data points initially for each theory.  It then calls the data points again for each existing data point it collected from the first read.  With a third parameter it would take all those combinations again, to add all the permutations for the next round.<br/>\n<br/>\nI might be wrong and the real formula would be like this:<br/>\n<br/>\nN^0 + N^1 ... + N^(p-1)<br/>\n<br/>\nIf this is the correct formula, then if you have 60 data points the number of times the method is called would map to the number of parameters like this:<br/>\n<br/>\n1 -&gt; 1<br/>\n2 -&gt; 61<br/>\n3 -&gt; 3661<br/>\n4 -&gt; 219661<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Brett Daniel &lt;brettdaniel@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Berin,<br/>\n&gt; <br/>\n&gt; When a theory mutates data points, it might be beneficial to recreate<br/>\n&gt; the data point for every theory invocation. Doing so prevents one<br/>\n&gt; theory execution from affecting others. I wrote about this issue in<br/>\n&gt; the following weblog post:<br/>\n&gt; <br/>\n&gt;   <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.brettdaniel.com/archives/2009/09/24/200845/\">http://www.brettdaniel.com/archives/2009/09/24/200845/</a><br/>\n&gt; <br/>\n&gt; You are correct, though, that copying would avoid some of the overhead<br/>\n&gt; in calling datapoint methods. It is interesting you mention this idea,<br/>\n&gt; because I am currently overseeing two students who for their senior<br/>\n&gt; thesis project are implementing framework for copying datapoints. I<br/>\n&gt; will post more information to the mailing list as the project<br/>\n&gt; continues.<br/>\n&gt; <br/>\n&gt; Brett<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22451, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1266535714", 
+    "canDelete": false, 
+    "nextInTopic": 22540, 
+    "prevInTopic": 22449, 
+    "headers": {
+        "inReplyToHeader": "PDU4ZGJhMjI1MTAwMjE4MDk0M3EyMzhkZDhkdjExYWI0ODczNjMyMWUxNzhAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PGhsa2lmMiszbXRlQGVHcm91cHMuY29tPg=="
+    }
+}

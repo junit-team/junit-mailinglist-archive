@@ -1,0 +1,30 @@
+{
+    "topicId": 5875, 
+    "postDate": "1033707026", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "zvlG0oICbhW5bRPxm_n1nccRSSWDhrK9tjDlZeMSoY7lC0u2GlOxsteVFu5hycdosrEBdvvAqAJNrBxowsrGDNRr879HbAGJVtQAwn6xUfo", 
+    "nextInTime": 5940, 
+    "userId": 114327599, 
+    "prevInTime": 5938, 
+    "prevInTopic": 5936, 
+    "headers": {
+        "inReplyToHeader": "PDNEOUM5OTRGLjMwNjA4QGFwYWNoZS5vcmc+OyBmcm9tIGJsb3JpdHNjaEBhcGFjaGUub3JnIG9uIFRodSwgT2N0IDAzLCAyMDAyIGF0IDAzOjIzOjU5UE0gLTA0MDA=", 
+        "messageIdInHeader": "PDIwMDIxMDAzMjI1MDI2LkE2MTg3QHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "referencesHeader": "PGFuaTNsditxMmNxQGVHcm91cHMuY29tPiA8M0Q5Qzk5NEYuMzA2MDhAYXBhY2hlLm9yZz4="
+    }, 
+    "authorName": "Steven Taschuk", 
+    "numMessagesInTopic": 38, 
+    "msgSnippet": "Quoth Berin Loritsch: [...] ... Um.  Perhaps I m missing the point, but I d prefer to have the Test-creation logic outside of the TestRunner.  For example: ", 
+    "contentTrasformed": false, 
+    "msgId": 5939, 
+    "nextInTopic": 5951, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;staschuk@...&gt;\r\nReceived: (qmail 32837 invoked from network); 4 Oct 2002 05:20:44 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m10.grp.scd.yahoo.com with QMQP; 4 Oct 2002 05:20:44 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta2.grp.scd.yahoo.com with SMTP; 4 Oct 2002 05:20:44 -0000\r\nX-eGroups-Return: staschuk@...\r\nReceived: from [66.218.66.142] by n3.grp.scd.yahoo.com with NNFMP; 04 Oct 2002 05:20:43 -0000\r\nX-Sender: staschuk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_0); 4 Oct 2002 04:47:38 -0000\r\nReceived: (qmail 38015 invoked from network); 4 Oct 2002 04:47:38 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m7.grp.scd.yahoo.com with QMQP; 4 Oct 2002 04:47:38 -0000\r\nReceived: from unknown (HELO tibia.amotlpaa.bogus) (161.184.198.20)\n  by mta2.grp.scd.yahoo.com with SMTP; 4 Oct 2002 04:47:37 -0000\r\nReceived: (qmail 6201 invoked by uid 100); 4 Oct 2002 04:50:26 -0000\r\nDate: Thu, 3 Oct 2002 22:50:26 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: Do JUnit internals suck?!?\r\nMessage-ID: &lt;20021003225026.A6187@...&gt;\r\nReferences: &lt;ani3lv+q2cq@...&gt; &lt;3D9C994F.30608@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.2.5i\r\nIn-Reply-To: &lt;3D9C994F.30608@...&gt;; from bloritsch@... on Thu, Oct 03, 2002 at 03:23:59PM -0400\r\nFrom: Steven Taschuk &lt;staschuk@...&gt;\r\nX-Yahoo-Group-Post: member; u=114327599\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 04 Oct 2002 05:20:43 -0000\r\n\r\nQuoth Berin Loritsch:\n  [...]\n&gt; The whole Name thing is irrelevant at this point.  If a Test\n&gt; implements the TestFixture interface, then it will use reflection\n&gt; to pull all the interfaces.  So the interface should be something\n&gt; like this:\n&gt; \n&gt; interface TestFixture\n&gt; {}\n&gt; \n&gt; When the Test Collector/Test Runner runs across any Class\n&gt; implementing TestFixture, it is converted into a group of\n&gt; Test objects.  [...]\n\nUm.  Perhaps I&#39;m missing the point, but I&#39;d prefer to have the\nTest-creation logic outside of the TestRunner.  For example:\n\n\tinterface TestFactory {\n\t\tTest makeTest();\n\t}\n\n\tclass OneMethodTest implements Test {\n\t\tOneMethodTest( Class c, Method m ) {\n\t\t\t// ...\n\t\t}\n\t\tvoid run( TestResult result ) {\n\t\t\t// instantiate c\n\t\t\t// execute instance.setUp()\n\t\t\t// execute instance.m\n\t\t\t// execute instance.tearDown()\n\t\t}\n\t\t// ...\n\t}\n\n\tclass ReflectiveTestFactory implements TestFactory {\n\t\tReflectiveTestFactory() {\n\t\t\t// factory based on self\n\t\t}\n\t\tReflectiveTestFactory( Class c ) {\n\t\t\t// factory based on class c\n\t\t}\n\t\tTest makeTest() {\n\t\t\t// scan c (or self) for test* methods\n\t\t\t// make a OneMethodTest for each\n\t\t\t// return a TestSuite containing those\n\t\t}\n\t}\n\nFor backwards compatibility, a TestRunner encountering a TestCase\ncan make a ReflectiveFactory for it.  In general it expects to\nencounter TestFactory implementations and let them make the Tests.\n\nFor new test implementations, it is sufficient to put test*\nmethods in a subclass of ReflectiveFactory.  This is just like\nsubclassing TestCase now, but there&#39;s no need for the String\nconstructor (which might, as Meyers implied elsewhere in the\nthread, encourage novice users to put setup in setUp() instead of\nin the constructor).\n\nIf it is inconvenient to subclass ReflectiveFactory (as when the\ntests rely on partaking of some other inheritance hierarchy), it\nis convenient enough to write\n\n\tclass MyTests implements TestFactory {\n\t\tTest makeTest() {\n\t\t\treturn new ReflectiveTestFactory(\n\t\t\t\tthis.getClass() ).makeTest();\n\t\t}\n\t\t// ...\n\t}\n\nAs with the static suite() method, the advantage of this approach\nis that tests can be generated however is desired.  Unlike\nsuite(), makeTest() above is an instance method, which as\nSilverstein points out elsewhere in the thread makes it easier to\nmake tests from other frameworks work as JUnit tests.\n\n\n", 
+    "subject": "Re: [junit] Re: Do JUnit internals suck?!?"
+}

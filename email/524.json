@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 525, 
+    "senderId": "HfZ07mxutxKBWZIj6B-YdljS0Rw3TxeRrevH4XhHL2DK3IGrlHkLjLvLosMxhb8Z1AhULzs1PaMlP32QOn408Ds", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] question regarding setup()", 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "authorName": "Joi Ellis", 
+    "msgSnippet": "... By default, the setup() and teardown() methods are called before and after each individual test method within the class. If you want a setup() to run once", 
+    "msgId": 524, 
+    "topicId": 521, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-748064343\">On Wed, 21 Feb 2001, Ryan Ankarberg wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I was noticing that each time a particular test method within my test cases<br/>\n&gt; is called, it in turn calls setup(), each time... How can I go about having<br/>\n&gt; it only call setup() once, when the test case is initialized?<br/>\n<br/>\n </span></blockquote>By default, the setup() and teardown() methods are called before and after<br/>\neach individual test method within the class.  <br/>\n<br/>\nIf you want a setup() to run once before any of the class test methods,<br/>\nand a teardown() to run once after all of the class test methods, then<br/>\nlook at junit.extensions.TestSetup.java.<br/>\n<br/>\nI&#39;ve included an example of how I used it.  An &#39;MP&#39; in this context<br/>\nis a native process which must be running for some of the tests.<br/>\nIt must contain a predefined, known set of user accounts which<br/>\nthe test case will be manipulating.<br/>\n<br/>\nThe TestSetup decorator calls a script in its setup() method<br/>\nwhich creates the expected accounts, and the teardown() method<br/>\ncalls another script which removes the accounts and returns the<br/>\nnative process to a known state.<br/>\n<br/>\npackage com.aravox.nsapi;<br/>\n<br/>\nimport junit.extensions.TestSetup;<br/>\nimport junit.framework.Test;<br/>\nimport java.io.IOException;<br/>\n<br/>\n/**<br/>\n * Title:        Test NSApi<br/>\n * Description:  Unit tests for NSApi<br/>\n * Copyright:    Copyright (c) 2000Joi Ellis<br/>\n * Company:      Aravox Technologies, Inc.<br/>\n * @author Joi Ellis<br/>\n * @version 1.0<br/>\n */<br/>\n<br/>\npublic class MPSetup extends TestSetup {<br/>\n<br/>\n  public MPSetup( Test t) {<br/>\n    super(t);<br/>\n  }<br/>\n  protected void setUp() {<br/>\n    try {<br/>\n    Runtime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/setupTestUsers&quot;);<br/>\n    } catch (IOException ioex) {<br/>\n      ioex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n  protected void tearDown() {<br/>\n    try {<br/>\n      Runtime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/removeTestUsers&quot;);<br/>\n    } catch (IOException ioex) {<br/>\n      ioex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\nTo use MPSetup, I wrap my existing suite object inside a new<br/>\nMPSetup suite like this:<br/>\n<br/>\npublic class AllTests extends TestCase {<br/>\n ....<br/>\n  public static Test suite() {<br/>\n    TestSuite suite = new TestSuite();<br/>\n    suite.addTest(com.aravox.nsapi.TestConnectionInfo.suite());<br/>\n    suite.addTest(TestUdpConnect.suite());<br/>\n    suite.addTest(TestFirewall.suite());<br/>\n    suite.addTest(TestJNsApiSubsystemInterfaces.suite());<br/>\n    suite.addTest(TestNsConvertStringToMD5Secret.suite());<br/>\n    suite.addTest(TestNsConvertStringToSHA1Secret.suite());<br/>\n    suite.addTest(TestLocales.suite());<br/>\n    suite.addTest(TestResBundle.suite());<br/>\n    // now wrap my suite inside a MPSetup suite and return it.<br/>\n    MPSetup mps = new MPSetup( suite );<br/>\n    return mps;<br/>\n  }<br/>\n....<br/>\n}<br/>\n<br/>\n<br/>\n-- <br/>\nJoi Ellis                    Software Engineer<br/>\nAravox Technologies          <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gyles19@...\">gyles19@...</a><br/>\n<br/>\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I<br/>\nreally like about Linux is that it has Microsoft worried.  Anything<br/>\nthat kicks a monopoly in the pants has got to be good for something.<br/>\n           - Chris Johnson</div>", 
+    "prevInTime": 523, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "982803372", 
+    "canDelete": false, 
+    "nextInTopic": 525, 
+    "prevInTopic": 523, 
+    "headers": {
+        "inReplyToHeader": "PDREOUVFMEE0QkZFQ0QzMTFCMjQyMDA5MDI3NjE1MDdDMDEwRUY5RUJAc3J2X3dlYi5jb3JwLnh5bG8uY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwMjIxMTg0MzE3MC4yNDg0MS0xMDAwMDBAam9pLmFyYXZveC5jb20+"
+    }
+}

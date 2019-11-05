@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 10929, 
+    "senderId": "0ttSzi84oSxPfq_WRWkhSIjZIogP3SVWJ2xCIM_7N44JEJnvKVYu2h7GJu59PpSs0q6QNNuV3SWT4A1QSbVlvH7sUA", 
+    "systemMessage": false, 
+    "subject": "Junit - One time setup with TestSetup", 
+    "from": "&quot;macsharksg&quot; &lt;kimkc@...&gt;", 
+    "authorName": "macsharksg", 
+    "msgSnippet": "I have a problem in setting up a TestSuite that runs the setUp function only once because all the test cases use the same data from a file. The global objects", 
+    "msgId": 10928, 
+    "profile": "macsharksg", 
+    "topicId": 10928, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 73268574, 
+    "messageBody": "<div id=\"ygrps-yiv-2022673421\">I have a problem in setting up a TestSuite that runs the setUp<br/>\nfunction only once because all the test cases use the same data from a<br/>\nfile. The global objects are map, tmpIPAddress and destIPAddress, when<br/>\na testcase runs and accesses these objects, it returns a<br/>\nNullPointerException. It seems that setUp() (in suite()) was not<br/>\ncalled, any idea why? <br/>\n<br/>\nThanks.<br/>\n<br/>\nHere is the implementation:<br/>\n<br/>\npublic class TestCommunicationFileParser extends TestCase {<br/>\n    private static final int numValidIPs = 2;<br/>\n    private static Hashtable map;<br/>\n    private static InetAddress[] tmpIPAddress = new<br/>\nInetAddress[numValidIPs];<br/>\n    private static InetAddress[] destIPAddress = new<br/>\nInetAddress[numValidIPs];<br/>\n    private int numControllers = 2;    <br/>\n<br/>\n    public void testControllerProtocols() {<br/>\n    \tIPRelation tmp;<br/>\n    \t<br/>\n    \ttmp = (IPRelation) map.get(tmpIPAddress[0]);<br/>\n    \t// protocol supported<br/>\n    \tassertTrue(tmp.isProtocolSupported(&quot;HTTPS&quot;));<br/>\n    \tassertTrue(tmp.isProtocolSupported(&quot;MMSoverSSL&quot;));<br/>\n        // protocol not supported<br/>\n        assertFalse(tmp.isProtocolSupported(&quot;HTTP&quot;));<br/>\n    \t<br/>\n    \ttmp = (IPRelation) map.get(tmpIPAddress[1]);<br/>\n    \t// protocol supported<br/>\n    \tassertTrue(tmp.isProtocolSupported(&quot;HTTPS&quot;));<br/>\n    \t// protocol not supported<br/>\n        assertFalse(tmp.isProtocolSupported(&quot;HTTP&quot;));<br/>\n        assertFalse(tmp.isProtocolSupported(&quot;MMS&quot;));<br/>\n<br/>\n    }// end of testControllerInstances()<br/>\n   <br/>\n    public void testDestAddressPort() {<br/>\n    \t// test 192.168.1.1<br/>\n    \tIPRelation tmp = (IPRelation) map.get(tmpIPAddress[0]);<br/>\n        assertEquals(destIPAddress[0], tmp.getDestIP());<br/>\n        assertEquals(tmpIPAddress[0], tmp.getServerIP());<br/>\n        assertEquals(102, tmp.getDestPort(&quot;MMSoverSSL&quot;));<br/>\n        assertEquals(80, tmp.getDestPort(&quot;HTTPS&quot;));<br/>\n        assertEquals(102, tmp.getServerPort(&quot;MMSoverSSL&quot;));<br/>\n        assertEquals(443, tmp.getServerPort(&quot;HTTPS&quot;));<br/>\n        <br/>\n        // test 192.168.1.2<br/>\n        tmp = (IPRelation) map.get(tmpIPAddress[1]);<br/>\n        assertEquals(destIPAddress[1], tmp.getDestIP());<br/>\n        assertEquals(tmpIPAddress[1], tmp.getServerIP());<br/>\n        assertEquals(80, tmp.getDestPort(&quot;HTTPS&quot;));<br/>\n        assertEquals(443, tmp.getServerPort(&quot;HTTPS&quot;));<br/>\n    }// end of testDestAddressPort()<br/>\n    <br/>\n    <br/>\n    private static Test suite() {<br/>\n        TestSuite suite = new<br/>\nTestSuite(TestCommunicationFileParser.class);<br/>\n        TestSetup setup = new TestSetup(suite) {<br/>\n    \t\tprotected void setUp( ) throws Exception {<br/>\n    \t\t\t<br/>\n    \t    \tCommunicationFileParser parser = new Com<br/>\nmunicationFileParser();<br/>\n    \t    \tparser.execute(&quot;CommunicationConfig.xml&quot;);<br/>\n    \t        map = parser.getIPMap();<br/>\n    \t        <br/>\n    \t        tmpIPAddress[0] = (new InetSocketAddress(&quot;192.168.1.1&quot;,<br/>\n80)).getAddress();<br/>\n    \t        tmpIPAddress[1] = (new InetSocketAddress(&quot;192.168.1.2&quot;,<br/>\n80)).getAddress();<br/>\n    \t        <br/>\n    \t        destIPAddress[0] = (new InetSocketAddress(&quot;172.16.15.35&quot;,<br/>\n80)).getAddress();<br/>\n    \t        destIPAddress[1] = (new InetSocketAddress(&quot;172.16.15.5&quot;,<br/>\n80)).getAddress();<br/>\n    \t\t}<br/>\n    \t};<br/>\n    \treturn setup;<br/>\n    }<br/>\n    <br/>\n    public static void main(String[] args) {<br/>\n        junit.textui.TestRunner.run(suite());<br/>\n    }<br/>\n}// end of TestCommunicationFileParser</div>", 
+    "prevInTime": 10927, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1083146399", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGM2bnZhdityYnFiQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 7374, 
+    "postDate": "1049754282", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "skss2002@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "LV9ZkEGP5aeLpplm-QBpPKtWnNWsx5-j7DW5_uQ0PGMGEIMikFbRdd-uhEiXjbnch1yE8AI2DQ", 
+    "nextInTime": 7591, 
+    "userId": 107426134, 
+    "prevInTime": 7589, 
+    "prevInTopic": 7558, 
+    "headers": {
+        "messageIdInHeader": "PDFkYS42ZmUyYTljLjJiYzM1NGFhQGFvbC5jb20+"
+    }, 
+    "authorName": "skss2002@aol.com", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "Bernd, ... I tried to prove it for the last few days but quite embarrassingly, I couldn t.  The test that I claimed *seemed to work*, I couldn t reproduce it ", 
+    "contentTrasformed": false, 
+    "msgId": 7590, 
+    "nextInTopic": 7592, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;Skss2002@...&gt;\r\nReceived: (qmail 1128 invoked from network); 7 Apr 2003 23:04:04 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m13.grp.scd.yahoo.com with QMQP; 7 Apr 2003 23:04:04 -0000\r\nReceived: from unknown (HELO n9.grp.scd.yahoo.com) (66.218.66.93)\n  by mta2.grp.scd.yahoo.com with SMTP; 7 Apr 2003 23:04:03 -0000\r\nX-eGroups-Return: Skss2002@...\r\nReceived: from [66.218.67.142] by n9.grp.scd.yahoo.com with NNFMP; 07 Apr 2003 23:04:03 -0000\r\nX-Sender: Skss2002@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 7 Apr 2003 22:24:52 -0000\r\nReceived: (qmail 64997 invoked from network); 7 Apr 2003 22:24:52 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m3.grp.scd.yahoo.com with QMQP; 7 Apr 2003 22:24:52 -0000\r\nReceived: from unknown (HELO imo-m04.mx.aol.com) (64.12.136.7)\n  by mta3.grp.scd.yahoo.com with SMTP; 7 Apr 2003 22:24:51 -0000\r\nReceived: from Skss2002@...\n\tby imo-m04.mx.aol.com (mail_out_v34.21.) id r.1da.6fe2a9c (4446)\n\t for &lt;junit@yahoogroups.com&gt;; Mon, 7 Apr 2003 18:24:42 -0400 (EDT)\r\nMessage-ID: &lt;1da.6fe2a9c.2bc354aa@...&gt;\r\nDate: Mon, 7 Apr 2003 18:24:42 EDT\r\nSubject: Re: [junit] Junit and RMI, please help ...\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nX-Mailer: 7.0 for Windows sub 537\r\nFrom: skss2002@...\r\nX-Yahoo-Group-Post: member; u=107426134\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 07 Apr 2003 23:04:02 -0000\r\n\r\nBernd,\n\n&gt;&gt; if (clientObject != null && clientObject.equals(null)) { \n&gt;the result of this expression is always false.\n&gt;question: how is clientObject set to null if client disconnects?\n&gt;Is this an RMI feature?\n\nI tried to prove it for the last few days but quite embarrassingly, I \ncouldn&#39;t.  The test that I claimed *seemed to work*, I couldn&#39;t reproduce it \neither (the original test had been deleted long ago).  So, the if-statement \nabove is quite ridiculous.\n\n&gt;In your other mail I saw that the client passes a this to the server. But \nclient and &gt;server do not run in the same VM. What happens if the client gets \ngarbage &gt;collected (will this happen?)\n\nThe client does get garbage\n collected but the result is not as I previously thought; the unreferenced() \nmethod in the server (implementing unreferenced interface) will be called \ninstead.  However, I tried to test this behaviour without success:  I started \nthe server with &quot;java -Djava.rmi.dgc.leaseValue=30000 DatabaseServer&quot; (30 \nseconds).  In the client, I set the remote object to null, called System.gc() \nand System.runFinalization() but the unreferenced() still wasn&#39;t called after \na few minutes.\n  Anybody knows why?\n\n&gt;Will the server have an invalid reference?\n\nIt doesn&#39;t seem so, excerpt from Java 1.3 docs:\n\n&quot;A non-remote object, that is passed as a parameter of a remote method \ninvocation or returned as a result of a remote method invocation, is passed \nby copy; that is, the object is serialized using the object serialization \nmechanism of the Java platform.&quot;\n\n&gt;Does it make sence to pass this client VM specific refernece to the server \nVM?\n\nIt \ndoesn&#39;t, thanks for helping me to realize that now.\n\n&gt;Maybe the easiest solution is to have a timestamp in your locklist when the \nlock &gt;was aquired. let the server thread search for timed out locks.\n\nYes, I think so too.  Originally, I tried not to rely on the server&#39;s system \nclock and based on my sloppy test results, I thought I had found a better way \nto do this ...  Actually, the answer is right in front of me had I study the \ndocs more carefully, excerpt from RMI-FAQ:\n\n&quot;D.1 Is there a way to get automatic notification as soon as a remote Java VM \nfails? \nThis is very desirable and is on our RFE list. A notification facility should \nbe available in a future release.&quot;\n\nIf I knew this, then I could almost be certain that the obscure \n&quot;clientObj.equals(null)&quot; statement would not do the job.\n\nThanks for the code example, I heard the term &quot;call-back&quot; before but not \nquite sure how to implement it, your example helps a lot.\n\nSam\n\n\n\n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n\n", 
+    "subject": "Re: [junit] Junit and RMI, please help ..."
+}

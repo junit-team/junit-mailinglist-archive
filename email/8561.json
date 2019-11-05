@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 8562, 
+    "senderId": "wH_T0SiqR3BDEkUHfu2s2MGWKf_H18pprqVm336drbxmov6gcpTNF-O5YA2B2Qje-ShiuYGdevahgxK05MOHQDTmrl-p1zLDYHQKO_XA4l2lIbej2olw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] textui.TestRunner not printing to given PrintStream", 
+    "from": "&quot;Stirling, Scott&quot; &lt;scott.stirling@...&gt;", 
+    "authorName": "Stirling, Scott", 
+    "msgSnippet": "Hmm -- I hope this email comes through in ascii.  I am sending this from Outlook Web Access. ... From: Kevin Baynes [mailto:kbaynes@yahoo.com] [KB] I m", 
+    "msgId": 8561, 
+    "profile": "stirlingdev", 
+    "topicId": 8558, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150177187, 
+    "messageBody": "<div id=\"ygrps-yiv-1805906725\">Hmm -- I hope this email comes through in ascii.  I am sending this from Outlook Web Access.\r<br/>\n \r<br/>\n-----Original Message----- \r<br/>\nFrom: Kevin Baynes [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:kbaynes@...\">kbaynes@...</a>] \r<br/>\n\r<br/>\n[KB]\r<br/>\nI&#39;m creating a textui.TestRunner with a PrintStream that writes to\r<br/>\nfile. I can write to the PrintStream, but TestRunner keeps printing to\r<br/>\nthe stdOut. Any ideas why it&#39;s not printing anything to the file?\r<br/>\n\r<br/>\n[SS]\r<br/>\nI&#39;d call it a bug in JUnit.\r<br/>\n \r<br/>\nWhen you call TestRunner.run(suite()) a new TestRunner is created with the default constructor.:\r<br/>\n\r<br/>\nstatic public TestResult run(Test test) {\r<br/>\n    TestRunner runner= new TestRunner();\r<br/>\n    return runner.doRun(test);\r<br/>\n}\r<br/>\n \r<br/>\nThis is the guy who actually runs your test, and he writes to System.out because  TestRunner&#39;s default constructor calls another constructor like so:\r<br/>\n\r<br/>\npublic TestRunner() {\r<br/>\n    this(System.out);\r<br/>\n}\r<br/>\n\r<br/>\n  \r<br/>\n[KB&#39;s code] \r<br/>\n// construct TestRunner to output all results to our log file\r<br/>\njunit.textui.ResultPrinter printer = new junit.textui.ResultPrinter(out);\r<br/>\njunit.textui.TestRunner    runner  = new junit.textui.TestRunner(printer);\r<br/>\nrunner.run(suite());\r<br/>\n\r<br/>\n[SS]\r<br/>\nSo, if you run TestRunner like that, you&#39;ll always get a set of results printed to System.out. Doh!\r<br/>\n \r<br/>\nYou need to call the ahh, heh, creatively named TestRunner.doRun(Test suite, boolean wait) or TestRunner.doRun(Test suite) method instead.\r<br/>\n \r<br/>\nA different, clunky workaround would be to do System.setOut(out) before you call run(suite()), where &#39;out&#39; is your own PrintStream and make the PrintStream write to the bit bucket.\r<br/>\n \r<br/>\nHope this helps,\r<br/>\n \r<br/>\nScott Stirling\r<br/>\nFramingham, MA\r<br/>\n \r<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 8560, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1057217658", 
+    "canDelete": false, 
+    "nextInTopic": 8577, 
+    "prevInTopic": 8558, 
+    "headers": {
+        "messageIdInHeader": "PEU4NDZFMTQ5N0JDOUU3NDdBODgwMTExNjdDNzk3RDBBMDIyQTIzOTFAcGFudGVyYS5jb3JwLndvcmtzY2FwZS5uZXQ+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 23025, 
+    "senderId": "Zs-Uo0tBEgyNAcXQL47xoAxp33dtOTR4hoXla_AIX0I2T2_lU7S7HD2i15E0Vj87UDCTEYhiGE8acIgSPnoDcYP_", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] assumeTrue(false) only causes test ignore if called from @BeforeClass method", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Vince, We need to do a better job with this.  Failing assumptions changed the interface for JUnit to include tests that could be ignored halfway through", 
+    "msgId": 23024, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 69996 invoked from network); 22 Oct 2010 12:57:55 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m7.grp.sp2.yahoo.com with QMQP; 22 Oct 2010 12:57:55 -0000\r\nX-Received: from unknown (HELO mail-gw0-f51.google.com) (74.125.83.51)\n  by mta2.grp.sp2.yahoo.com with SMTP; 22 Oct 2010 12:57:55 -0000\r\nX-Received: by gwaa20 with SMTP id a20so1223603gwa.38\n        for &lt;junit@yahoogroups.com&gt;; Fri, 22 Oct 2010 05:57:54 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.90.82.5 with SMTP id f5mr92058agb.14.1287752274657; Fri, 22\n Oct 2010 05:57:54 -0700 (PDT)\r\nX-Received: by 10.90.130.13 with HTTP; Fri, 22 Oct 2010 05:57:54 -0700 (PDT)\r\nIn-Reply-To: &lt;i9qgit+387f@...&gt;\r\nReferences: &lt;i9qgit+387f@...&gt;\r\nDate: Fri, 22 Oct 2010 08:57:54 -0400\r\nX-Google-Sender-Auth: NDG-LjevitK2IK50DZRBDyqlnFs\r\nMessage-ID: &lt;AANLkTi=RmCwuC-2_GfsMKK5LC27iWXn34_ZfR1G2sZp8@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] assumeTrue(false) only causes test ignore if called from\n @BeforeClass method\r\nX-Yahoo-Group-Post: member; u=341876227; y=UAwQqJm5286oXP_EEYC6FraSg5wufjT6SEisV3RJ9ns\r\nX-Yahoo-Profile: dsaff\r\n\r\nVince,\n\nWe need to do a better job with this.  Failing assumptions changed =\r\nthe\ninterface for JUnit to include tests that could be &quot;ignored&quot; halfway\nth=\r\nrough their execution, and we need to work with the maven and\nEclipse runne=\r\nr implementors to make sure that we output something they\ncan ingest.  Than=\r\nk you for the reminder.\n\n   David Saff\n\nOn Thu, Oct 21, 2010 at 6:58 PM, vi=\r\nnceharron &lt;vince@...&gt; wrote:\n&gt; I&#39;ve tried this on JUnit 4.7 and 4=\r\n.8.2. =A0I hope one of you can point out something I&#39;m doing wrong.\n&gt;\n&gt; ass=\r\numeTrue(false) only causes ignore if called from @BeforeClass method. =A0I =\r\nwas hoping that assumeTrue(false) called at any point would cause an Ignore=\r\n result.\n&gt;\n&gt; http://kentbeck.github.com/junit/javadoc/latest/\n&gt; &quot;The defaul=\r\nt JUnit runner treats tests with failing assumptions as ignored.&quot;\n&gt;\n&gt; I&#39;m r=\r\nunning my tests with both Maven and Eclipse&#39;s JUnit 4 UI. =A0Both have the =\r\nsame results.\n&gt;\n&gt; As I understand the JUnit docs, all three of these tests =\r\nshould be ignored/skipped.\n&gt;\n&gt; Running com.mycompany.app.AssumeTest\n&gt; Tests=\r\n run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 sec\n&gt; Runn=\r\ning com.mycompany.app.AssumeBeforeTest\n&gt; Tests run: 1, Failures: 0, Errors:=\r\n 0, Skipped: 0, Time elapsed: 0.006 sec\n&gt; Running com.mycompany.app.AssumeB=\r\neforeClassTest\n&gt; Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time ela=\r\npsed: 0.006 sec\n&gt;\n&gt; public class AssumeTest\n&gt; {\n&gt; =A0 =A0@Test\n&gt; =A0 =A0pub=\r\nlic void test()\n&gt; =A0 =A0{\n&gt; =A0 =A0 =A0 =A0assumeTrue(false);\n&gt; =A0 =A0 =\r\n=A0 =A0assertTrue(false);\n&gt; =A0 =A0}\n&gt; }\n&gt;\n&gt; public class AssumeBeforeTest\n=\r\n&gt; {\n&gt; =A0 =A0@Before\n&gt; =A0 =A0public void before()\n&gt; =A0 =A0{\n&gt; =A0 =A0 =A0=\r\n =A0assumeTrue(false);\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0@Test\n&gt; =A0 =A0public void tes=\r\nt()\n&gt; =A0 =A0{\n&gt; =A0 =A0 =A0 =A0assertTrue(false);\n&gt; =A0 =A0}\n&gt; }\n&gt;\n&gt; publi=\r\nc class AssumeBeforeClassTest\n&gt; {\n&gt; =A0 =A0@BeforeClass\n&gt; =A0 =A0public sta=\r\ntic void before() {\n&gt; =A0 =A0 =A0 =A0assumeTrue(false);\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =\r\n=A0@Test\n&gt; =A0 =A0public void test()\n&gt; =A0 =A0{\n&gt; =A0 =A0 =A0 =A0assertTrue=\r\n(false);\n&gt; =A0 =A0}\n&gt; }\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; -----------------------------------=\r\n-\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23023, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23023, 
+    "contentTrasformed": false, 
+    "postDate": "1287752274", 
+    "canDelete": false, 
+    "nextInTopic": 23025, 
+    "prevInTopic": 23023, 
+    "headers": {
+        "inReplyToHeader": "PGk5cWdpdCszODdmQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGk9Um1Dd3VDLTJfR2ZzTUtLNUxDMjdpV1huMzRfWmZSMUcyc1pwOEBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGk5cWdpdCszODdmQGVHcm91cHMuY29tPg=="
+    }
+}

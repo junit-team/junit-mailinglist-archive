@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 2375, 
+    "senderId": "IrkemB7m4orCQ2VpDl_tVPZUnKCSQh0vwBxaD5svWS2Ms_uCEwOjj9vVk_z0_wzRdSE1SWzNJt8xjIto4R3dbxk0GqmLhYYO", 
+    "systemMessage": false, 
+    "subject": "Shared data between test methods in a testcase", 
+    "from": "&quot;Peter McEvoy&quot; &lt;pmcevoy@...&gt;", 
+    "authorName": "Peter McEvoy", 
+    "msgSnippet": "Folks, In my test case, I have a set of testXXX methods that are order dependant.  I have been using the Junit best practices doc on ", 
+    "msgId": 2374, 
+    "topicId": 2374, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1171881012\">Folks,<br/>\n\tIn my test case, I have a set of testXXX methods that are order dependant.  I have been using the<br/>\n&quot;Junit best practices&quot; doc on<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit_p.html\">http://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit_p.html</a><br/>\nin particular the paragraph on how to preserve order of the test methods.<br/>\n<br/>\nI am doing this because I wnat to share data between each test method (for example my first method<br/>\ntests that I can create an EJB object, the next is that I can read it, the third that I can update<br/>\nit and the last that I can delete it).<br/>\n<br/>\nI have discovered, tho that when I call testRunner on the Suite, that, whereas each method IS called<br/>\nin order, there is no way for me to share data between the method calls (by using private scope<br/>\nclass variables).  I was also surprised to see that setUp was called before each test method.<br/>\n<br/>\nI am sharing a primary key (which is generated at run time from a database sequence) which I have no<br/>\nway of knowing the value of between one test run and the next.<br/>\n<br/>\nCode snippets are:<br/>\n------------------------------------------------------------------------<br/>\npublic class CustomerEJBTest extends TestCase {<br/>\n    private Context ctx;<br/>\n    private int ionaid;<br/>\n    private Properties custInfo;<br/>\n<br/>\n    public CustomerEJBTest(String name) {<br/>\n        super(name);<br/>\n    }<br/>\n    public static Test suite(){<br/>\n        TestSuite suite = new TestSuite();<br/>\n<br/>\n        //Since testing CRUD of the EJB, order of tests is important,<br/>\n        //see the best practices doc<br/>\n        //<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit_p.html\">http://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit_p.html</a><br/>\n        //and the section on ordering tests<br/>\n        suite.addTest( new CustomerEJBTest(&quot;testLookup&quot;) );<br/>\n        suite.addTest( new CustomerEJBTest(&quot;testCreate&quot;) );<br/>\n        suite.addTest( new CustomerEJBTest(&quot;testFindByPrimaryKey&quot;) );<br/>\n        suite.addTest( new CustomerEJBTest(&quot;testFindByEmailAddress&quot;) );<br/>\n        suite.addTest( new CustomerEJBTest(&quot;testUpdate&quot;) );<br/>\n        suite.addTest( new CustomerEJBTest(&quot;testRemove&quot;) );<br/>\n        return suite;<br/>\n    }<br/>\n    protected void setUp() throws Exception {<br/>\n...<br/>\n\t}<br/>\n<br/>\n...<br/>\n   public void testCreate() throws Exception {<br/>\n        CustomerHome home =<br/>\n(CustomerHome)PortableRemoteObject.narrow(ctx.lookup(&quot;minerva/registration/Cus<br/>\n<br/>\n        custInfo.setProperty(&quot;firstname&quot;, &quot;Peter&quot;);<br/>\n        custInfo.setProperty(&quot;emailaddress&quot;, &quot;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:pmcevoy@...\">pmcevoy@...</a>&quot;);<br/>\n<br/>\n        Customer c = home.create( custInfo );<br/>\n        ionaid = c.getIonaid();<br/>\n<br/>\n        assertTrue(ionaid &gt; 0);<br/>\n    }<br/>\n<br/>\n(NOTE: some lines above deliberately truncated...)<br/>\n---------------------------------------------------<br/>\netc...<br/>\nNotice above that class variable ionaid gets set in the testCreate, and then is SUPPOSED to be<br/>\nre-used in the lookup/update and delete test methods....<br/>\n<br/>\n<br/>\nAny tips appreciated..<br/>\n<br/>\nC Ya,<br/>\n<br/>\nPeter McEvoy<br/>\nSenior Technical Analyst<br/>\nIONA Technologies</div>", 
+    "prevInTime": 2373, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "997886134", 
+    "canDelete": false, 
+    "nextInTopic": 2375, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDAwMTIwMWMxMjU5NyQ4YmFjZWRhMCQ2MTA2MDIwYUBaRVJPPg=="
+    }
+}

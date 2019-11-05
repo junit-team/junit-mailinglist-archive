@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19246, 
+    "senderId": "rG5L24L7pos7GHdnwTBrBHGEcSYbc44acEi_cJllvZ7jDi1YLVMrQYlkXldCVzInurxW3xNlf1OE4tvthfP-0vUKBHRvXFW0GIUsOI1auNg", 
+    "systemMessage": false, 
+    "subject": "Re: Parameterized test setup", 
+    "from": "&quot;Mike Norman&quot; &lt;michael.norman@...&gt;", 
+    "authorName": "Mike Norman", 
+    "msgSnippet": "... I have created a custom JUnit4 Runner: @RunWith(junit.extensions.pb4.ParameterizedBeforeRunner.class) Supports an optional parameter to be passed into", 
+    "msgId": 19245, 
+    "profile": "mwnorman_toplink", 
+    "topicId": 19218, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 125479262, 
+    "messageBody": "<div id=\"ygrps-yiv-417539992\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;cliveborrageiro&quot; &lt;cliveborrageiro@...&gt;<br/>\nwrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hi,<br/>\n&gt; <br/>\n&gt; I&#39;m using a Parameterized test and would like to perform a single<br/>\n&gt; setup state (like @BeforeClass) for all test methods to use. This<br/>\n&gt; setup method needs to use the parameter passed into the constructor.<br/>\n&gt; <br/>\n&gt; The problem is that @BeforeClass needs to be static and is called<br/>\n&gt; before the constructor, there I&#39;m unable to get the parameter for the<br/>\n&gt; setup.<br/>\n&gt; <br/>\n&gt; Any suggestions...<br/>\n&gt; Thank you,<br/>\n&gt; Clive<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>I have created a custom JUnit4 Runner:<br/>\n<br/>\n@RunWith(junit.extensions.pb4.ParameterizedBeforeRunner.class)<br/>\n<br/>\nSupports an optional parameter to be passed into static @BeforeClass<br/>\nmethods:<br/>\n<br/>\n  @BeforeClass<br/>\n  public static void setUpBefore(Properties p) ...<br/>\n<br/>\nThe rules are:<br/>\n<br/>\nIf your test class is in a package com.foo.bar, then in your<br/>\nclasspath the directory com/foo/bar one can place a standard Java<br/>\n .properties file. If your test class is called &#39;ASimpleTestSuite&#39;<br/>\nthen the file MUST be called &#39;asimpletestsuite.properties&#39;<br/>\n(all-lower).<br/>\n<br/>\nThe same Properties is passed to any @AfterClass with the<br/>\nappropriate method signature. Regular JUnit4 @BeforeClass/@AfterClass<br/>\nmethods without the Properties argument still work.<br/>\n<br/>\nAdditionally there is a System Property that is a global<br/>\nmerge/override:<br/>\n<br/>\n-Djunit.extensions.parameterizedB4.properties={path_to}/override.properties<br/>\n<br/>\nany keys in override.properties will (obviously) override those same<br/>\nkeys from the testclass&#39; local &#39;XXX.properties&#39;; otherwise, the<br/>\noperation is a merge of the 2 sets of Properties.<br/>\n<br/>\nI have made this runner work with the suite runner:<br/>\n<br/>\n@RunWith(ParameterizedBeforeRunner.class)<br/>\n@SuiteClasses({<br/>\n    ASimpleTestSuite.class,<br/>\n    AnotherSimpleTestSuite.class<br/>\n})<br/>\n<br/>\nAdditional changes:<br/>\n - added a state machine to standard test listeners so that the<br/>\n   run report displayed at the end shows ACTUAL passed/ignored/failed<br/>\n   counts<br/>\n - added a &#39;-quiet&#39; flag: does the obvious, causes the run report<br/>\n   to be suppressed<br/>\n - added a &#39;-verbose&#39; flag: shows additional information as to<br/>\n   exactly WHICH test passed/failed/or was ignored<br/>\n - added a &#39;-stopTestsOnFailure&#39;: stop all testing upon detecting<br/>\n   first failure<br/>\n - in addition to the design-time @Ignore annotation, added a<br/>\n   runtime COMPUTED ignore(String, boolean) method<br/>\n - an Ant task &lt;ParameterizedBeforeJUnit4&gt; compiled against 1.6.5<br/>\n   (ToDo - 1.7.0 version)<br/>\n<br/>\nWith respect to licensing, it is likely that it will be released<br/>\nunder the EPL, perhaps as soon as the end of the month.</div>", 
+    "prevInTime": 19244, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1175778185", 
+    "canDelete": false, 
+    "nextInTopic": 19247, 
+    "prevInTopic": 19241, 
+    "headers": {
+        "inReplyToHeader": "PGV1cWc2bCtvdDZ1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGV2MnMyOStwNDM1QGVHcm91cHMuY29tPg=="
+    }
+}

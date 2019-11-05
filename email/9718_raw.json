@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 9719, 
+    "senderId": "jA79SHXEBY__TQNJWrP4uPtqBWDwRiXRNbIWRBNbE-xeHHbkb9iEGHIY9NuFzK5HA3hcUGvX9_towjEtoMI5cgbXnRmOcvfLF3fuYOg0YWzj", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] How to test private methods, its urgent", 
+    "from": "&quot;Kris Henderson&quot; &lt;khenderson@...&gt;", 
+    "authorName": "Kris Henderson", 
+    "msgSnippet": "... This doesn t really answer your question, but when I find I have a class with a bunch of private methods I want to test then I usually extract those", 
+    "msgId": 9718, 
+    "rawEmail": "Return-Path: &lt;khenderson@...&gt;\r\nX-Sender: khenderson@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 977 invoked from network); 16 Oct 2003 20:28:22 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m12.grp.scd.yahoo.com with QMQP; 16 Oct 2003 20:28:22 -0000\r\nReceived: from unknown (HELO out002.iad.hostedmail.net) (209.225.56.24)\n  by mta1.grp.scd.yahoo.com with SMTP; 16 Oct 2003 20:28:22 -0000\r\nReceived: from 10.158.10.20 by out002.iad.hostedmail.net (InterScan E-Mail VirusWall NT); Thu, 16 Oct 2003 16:28:16 -0400\r\nReceived: from ATL1VEXC005.usdom004.tco.tc ([10.158.7.208]) by atl1simr002.tco.tc with Microsoft SMTPSVC(5.0.2195.5329);\n\t Thu, 16 Oct 2003 16:28:16 -0400\r\nX-MimeOLE: Produced By Microsoft Exchange V6.0.6375.0\r\ncontent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nSubject: RE: [junit] How to test private methods, its urgent\r\nDate: Thu, 16 Oct 2003 16:28:15 -0400\r\nMessage-ID: &lt;F7B16EB8984B14409ACB015F1326BB66881882@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] How to test private methods, its urgent\r\nThread-Index: AcOTLjw5zzdWBcX/Sny1WvDiFvGWcQA9HchQ\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReturn-Path: khenderson@...\r\nX-OriginalArrivalTime: 16 Oct 2003 20:28:16.0112 (UTC) FILETIME=[07718700:01C39424]\r\nFrom: &quot;Kris Henderson&quot; &lt;khenderson@...&gt;\r\nX-Yahoo-Group-Post: member; u=90305179\r\nX-Yahoo-Profile: kris_556\r\n\r\n&gt; -----Original Message-----\n&gt; From: bhanu sistla [mailto:sistla_prakash@ya=\r\nhoo.co.uk] \n&gt; Sent: Wednesday, October 15, 2003 4:09 AM\n&gt; To: junit@yahoogr=\r\noups.com\n&gt; \n&gt; i am having some private methods in a class. how to test \n&gt; t=\r\nhem. can any body send a sample code how to test private \n&gt; method.... or c=\r\nan any body send the url \n&gt;  \n\n\nThis doesn&#39;t really answer your question, b=\r\nut when I find I have a class\nwith a bunch of private methods I want to tes=\r\nt then I usually extract\nthose methods out into another class and make them=\r\n public.\n\nA contrived example, the before picture looks kind of like this:\n=\r\n\tpublic class SomeClass\n\t{\n\t\tpublic boolean method1()\n\t\t{\n\t\t\tif (method3())=\r\n\n\t\t\t\treturn method4();\n\t\t\treturn true;\n\t\t}\n\t\tpublic boolean method2()\n\t\t{\n\t=\r\n\t\treturn method5();\n\t\t}\n\t\tprivate boolean method3()\n\t\t{\n\t\t\treturn true;\n\t\t}=\r\n\n\t\tprivate boolean method4()\n\t\t{\n\t\t\treturn false;\n\t\t}\n\t\tprivate boolean met=\r\nhod5()\n\t\t{\n\t\t\treturn true;\n\t\t}\n\t}\n\n\nThe after picture looks something like =\r\nthis:\n\tpublic class SomeClass\n\t{\n\t\tprivate final OtherClass m_otherClass;\n\n=\r\n\t\tpublic SomeClass()\n\t\t{\n\t\t\tm_otherClass =3D new SomeOtherClass();\n\t\t}\n\n\t\tp=\r\nublic boolean method1()\n\t\t{\n\t\t\tif (m_otherClass.method3())\n\t\t\t\treturn m_oth=\r\nerClass.method4();\n\t\t\treturn true;\n\t\t}\n\t\tpublic boolean method2()\n\t\t{\n\t\t\tre=\r\nturn m_otherClass.method5();\n\t\t}\n\t}\n\n\tpublic class OtherClass()\n\t{\n\t\tpublic=\r\n boolean method3()\n\t\t{\n\t\t\treturn true;\n\t\t}\n\t\tpublic boolean method4()\n\t\t{\n\t=\r\n\t\treturn false;\n\t\t}\n\t\tpublic boolean method5()\n\t\t{\n\t\t\treturn true;\n\t\t}\t\n\t}\n=\r\n\nThe private methods are now public in their own class and easy to test.\nI =\r\ndon&#39;t do this all the time, but if the private methods can be\nlogically gro=\r\nuped together and can provide functionality outside of the\nclass they were =\r\noriginally defined in then I think it makes sense to do\nthis.\n\nHope this he=\r\nlps,\n\nKris\n\t\t\n\n", 
+    "profile": "kris_556", 
+    "topicId": 9699, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90305179, 
+    "prevInTime": 9717, 
+    "contentTrasformed": false, 
+    "postDate": "1066336095", 
+    "canDelete": false, 
+    "nextInTopic": 9719, 
+    "prevInTopic": 9717, 
+    "headers": {
+        "messageIdInHeader": "PEY3QjE2RUI4OTg0QjE0NDA5QUNCMDE1RjEzMjZCQjY2ODgxODgyQEFUTDFWRVhDMDA1LnVzZG9tMDA0LnRjby50Yz4="
+    }
+}

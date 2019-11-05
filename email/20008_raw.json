@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 20009, 
+    "senderId": "iT0oJhmRVewOK3EsQAjq_x0IGTGZwtsJ7PZSfyyxL0VZQWfBcD08lYVHD-Vy0BJUlNbS-AiQMgBQZprwErRbAIuXnVNDEOv4E4gBIrtg", 
+    "systemMessage": false, 
+    "subject": "AssertionFailedError: No tests found in (snipped)....env.db.MyValidation", 
+    "from": "&quot;Thomas  SMETS&quot; &lt;smetsthomas@...&gt;", 
+    "authorName": "Thomas  SMETS", 
+    "msgSnippet": "Problem is simple... I use unit test to validate my environments dev / test / uat / ... I created a DB validator that alllows me to quickly audit if a DB has ", 
+    "msgId": 20008, 
+    "rawEmail": "Return-Path: &lt;smetsthomas@...&gt;\r\nX-Sender: smetsthomas@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 17883 invoked from network); 22 Oct 2007 17:50:34 -0000\r\nX-Received: from unknown (66.218.67.95)\n  by m42.grp.scd.yahoo.com with QMQP; 22 Oct 2007 17:50:34 -0000\r\nX-Received: from unknown (HELO n13a.bullet.sp1.yahoo.com) (69.147.64.112)\n  by mta16.grp.scd.yahoo.com with SMTP; 22 Oct 2007 17:50:34 -0000\r\nX-Received: from [216.252.122.216] by n13.bullet.sp1.yahoo.com with NNFMP; 22 Oct 2007 17:50:34 -0000\r\nX-Received: from [209.73.164.86] by t1.bullet.sp1.yahoo.com with NNFMP; 22 Oct 2007 17:50:34 -0000\r\nX-Received: from [66.218.66.74] by t8.bullet.scd.yahoo.com with NNFMP; 22 Oct 2007 17:50:34 -0000\r\nDate: Mon, 22 Oct 2007 17:50:33 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;ffint9+3u7o@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Thomas  SMETS&quot; &lt;smetsthomas@...&gt;\r\nSubject: AssertionFailedError: No tests found in (snipped)....env.db.MyValidation\r\nX-Yahoo-Group-Post: member; u=62227950; y=m27A76ddOEN8z9_fzsFc3kJx9phntY8Bnw55U3vWmw9arUZWrkI\r\nX-Yahoo-Profile: smetsthomas\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nProblem is simple...\nI use unit test to validate my environments dev / test / uat / ...\nI created a DB validator that alllows me to quickly audit if a DB has\nbeen correctly created & some generic informations are there, if the DB\nis accessible, ....\n\nThen for each DB I make custom tests :\n\n    *  Are reference tables filled with +/- the right values ?\n    *  Are all synonyms there ... ?\n\n\nThe  DB validator contains thus among other methods  :\n&lt;pre&gt;\n...\n     @Test public void accessDBSuccessfull ()\n     { // SQLHelper is a little toolbox that allows to process query\n        // & simply connect to the DB\n         assertTrue(sqlHlpr.test());  // Just throws to the db a &quot;select\n1+1 from dual&quot;\n     }\n...\n&lt;/pre&gt;\n\nMy specific class relies on its parent to execute most of the hard work\n:\n&lt;pre&gt;\npublic class DB1Validation extends DBValidation {\n\n     public String ds = &quot;jdbc/DB1&quot;;\n\n     public static final TestSuite suite()\n     {\n         TestSuite suite = new TestSuite(DB1Validation.class);\n         String[] tables = new String[]\n                 {&quot;ERRORS&quot;, &quot;ERROR_CODES&quot;, &quot;EVENTS&quot;, &quot;MASKS&quot; };\n\n\n         suite.addTest(validateAllTables(tables));\n\n         return suite;\n     }\n}\n&lt;/pre&gt;\n\nIf I don&#39;t create a suite-method, the code DB1Validation invokes the\nparent test (accessDBSuccessfull) successfully. If I do create a suite\nmethod as indicated, I get the following error :\n&lt;pre&gt;\njunit.framework.AssertionFailedError: No tests found in (snipped)\n.env.db.DB1Validation\n     at junit.framework.Assert.fail(Assert.java:47)\n     at junit.framework.TestSuite$1.runTest(TestSuite.java:97)\n     at junit.framework.TestCase.runBare(TestCase.java:134)\n     at junit.framework.TestResult$1.protect(TestResult.java:110)\n     at junit.framework.TestResult.runProtected(TestResult.java:128)\n     at junit.framework.TestResult.run(TestResult.java:113)\n     at junit.framework.TestCase.run(TestCase.java:124)\n     at junit.framework.TestSuite.runTest(TestSuite.java:232)\n     at junit.framework.TestSuite.run(TestSuite.java:227)\n     at\norg.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.jav&#92;\na:81)\n     at\norg.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4Tes&#92;\ntReference.java:38)\n     at\norg.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.ja&#92;\nva:38)\n     at\norg.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTe&#92;\nstRunner.java:460)\n     at\norg.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTe&#92;\nstRunner.java:673)\n     at\norg.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRun&#92;\nner.java:386)\n     at\norg.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRu&#92;\nnner.java:196)\n\n&lt;/pre&gt;\n\n\nI don&#39;t see the difference between the 2 ... (and why the second one\ndoes not run) ?\n\nTx,\n\n&#92;T,\n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "smetsthomas", 
+    "topicId": 20008, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 62227950, 
+    "prevInTime": 20007, 
+    "contentTrasformed": false, 
+    "postDate": "1193075433", 
+    "canDelete": false, 
+    "nextInTopic": 20009, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGZmaW50OSszdTdvQGVHcm91cHMuY29tPg=="
+    }
+}

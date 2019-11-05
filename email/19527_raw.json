@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19528, 
+    "senderId": "qdO6lpfKaJY3q9hoI1L0wt246ZvaEExmWmXXJFV3GqNbG6w_PgLv0DNA7CWlbGyppogHUjBEQ1PRQ67xiwTpSY3-", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Hamcrest Type mismatch", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Kevin, Yep, that can be a pain.  I ve only gotten bit by it once every couple weeks, which is about half as often as I appreciate the fact that quick-fix on ", 
+    "msgId": 19527, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 30600 invoked from network); 6 Jul 2007 02:04:02 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m56.grp.scd.yahoo.com with QMQP; 6 Jul 2007 02:04:02 -0000\r\nReceived: from unknown (HELO wa-out-1112.google.com) (209.85.146.179)\n  by mta9.grp.scd.yahoo.com with SMTP; 6 Jul 2007 02:04:02 -0000\r\nReceived: by wa-out-1112.google.com with SMTP id m38so88737waf\n        for &lt;junit@yahoogroups.com&gt;; Thu, 05 Jul 2007 19:04:01 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;\n        b=eWskChbHL+VfCHp+gw8N/xGX7KF5d6LUKR0IGTEwrFg+5VqQjEAo1ht1W522ueKgC2hf5N96hhRqP64YBE1/WRmrauqsy0jENkUJda5QrhBxu9pop+ABsETzSVbpaOuTPXGm0F53JnokMH7HlqZxIMzIcg6FZCoH3Sa8Kabti7U=\r\nReceived: by 10.114.56.1 with SMTP id e1mr166637waa.1183686839474;\n        Thu, 05 Jul 2007 18:53:59 -0700 (PDT)\r\nReceived: by 10.114.135.17 with HTTP; Thu, 5 Jul 2007 18:53:59 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90707051853g6cb7429dk6f01cf7921383d56@...&gt;\r\nDate: Thu, 5 Jul 2007 21:53:59 -0400\r\nTo: junit@yahoogroups.com\r\nCc: hamcrest-dev@...\r\nIn-Reply-To: &lt;51d1b2de0707051316x372805cnfc7721ea3fee9cc4@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;51d1b2de0707051316x372805cnfc7721ea3fee9cc4@...&gt;\r\nX-Google-Sender-Auth: cd1ed001d49935f5\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Hamcrest Type mismatch\r\nX-Yahoo-Group-Post: member; u=139771899; y=oy9G1Px5O8aCDJ8x6trR13oIwsnOXm6entstZAD94lg\r\nX-Yahoo-Profile: dsaff\r\n\r\nKevin,\n\nYep, that can be a pain.  I&#39;ve only gotten bit by it once every couple\nweeks, which is about half as often as I appreciate the fact that\nquick-fix on\n\nassertThat(myNewMethod(), is(&quot;abc&quot;));\n\ncreates\n\nString myNewMethod() {\n}\n\nso for me, hamcrest does optimize for the common case.\n\nThat said, you could pretty easily write your own matcher, if this\ncame up a lot.  I tried once to figure out how to automatically get\nthe stricter typing when I wanted it, and the looser when I didn&#39;t,\nbut there&#39;s always trade-offs to be made.  If you do end up writing\nyour own, (1) consider submitting it to hamcrest, and (2) let me know\nwhat the name is (I can&#39;t think of a good one).\n\nOn the meta-question, the developers hang around\nhamcrest-dev@... (which I&#39;ve CC&#39;ed), so they can pipe in\nwith further ideas.  There&#39;s also hamcrest-java@..., but\nI don&#39;t know if anyone listens there.  Hamcrest will soon be shipping\nalong with JUnit, so I figure ours won&#39;t be the last hamcrest\nquestion.  Thanks,\n\n   David Saff\n\nOn 7/5/07, Kevin Lawrence &lt;kev.lawrence@...&gt; wrote:\n&gt; I have been playing with Hamcrest a little and I keep running across a\n&gt; problem with generic type being mismatched in assertThat().\n&gt;\n&gt; Example:\n&gt;\n&gt;  Object actual = &quot;a string&quot;;\n&gt;  assertThat(actual, is(&quot;a string&quot;));\n&gt;\n&gt; The compiler says:\n&gt;\n&gt; &lt;T&gt;assertThat(T, Matcher&lt;T&gt;) cannot be applied to (Object, Matcher&lt;String&gt;)\n&gt;\n&gt; I can work around it by casting the expected value to object, or the actual\n&gt; value to String...\n&gt;\n&gt;  assertThat(actual, is((object) &quot;a string&quot;));\n&gt;\n&gt; Am I doing something wrong? Is there a better approach? A better workaround?\n&gt; Should I just suck it up?\n&gt;\n&gt; Another list where I should be asking questions about Hamcrest?\n&gt;\n&gt; --\n&gt; Kevin\n&gt;\n&gt; http://www.junitfactory.com\n&gt; You send us code. We send you tests. For free.\n&gt;\n&gt;\n&gt; [Non-text portions of this message have been removed]\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19524, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19526, 
+    "contentTrasformed": false, 
+    "postDate": "1183686839", 
+    "canDelete": false, 
+    "nextInTopic": 19531, 
+    "prevInTopic": 19526, 
+    "headers": {
+        "inReplyToHeader": "PDUxZDFiMmRlMDcwNzA1MTMxNngzNzI4MDVjbmZjNzcyMWVhM2ZlZTljYzRAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwNzA1MTg1M2c2Y2I3NDI5ZGs2ZjAxY2Y3OTIxMzgzZDU2QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDUxZDFiMmRlMDcwNzA1MTMxNngzNzI4MDVjbmZjNzcyMWVhM2ZlZTljYzRAbWFpbC5nbWFpbC5jb20+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 19712, 
+    "senderId": "wJgloM1yiizRIBm2TN0_3YLmXYUx4OPq2Lojm1EASD3FlsRBXw--BvtVKX8xegt67lFzrQI_ZMNqjZZnfLLsQUj0svFySJ8MHLuo6A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing several classes with the same test case", 
+    "from": "&quot;C?dric Beust ? &quot; &lt;cbeust@...&gt;", 
+    "authorName": "C?dric Beust ?", 
+    "msgSnippet": "FYI, here is how you could do this with TestNG: @DataProvider public Object[][] algorithms() { return new Object[][] { new Object[] { new Algorithm1(),", 
+    "msgId": 19711, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 57557 invoked from network); 7 Aug 2007 02:04:04 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m43.grp.scd.yahoo.com with QMQP; 7 Aug 2007 02:04:04 -0000\r\nReceived: from unknown (HELO smtp-out.google.com) (216.239.45.13)\n  by mta7.grp.scd.yahoo.com with SMTP; 7 Aug 2007 02:04:04 -0000\r\nReceived: from zps38.corp.google.com (zps38.corp.google.com [172.25.146.38])\n\tby smtp-out.google.com with ESMTP id l7723mEO018955\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 6 Aug 2007 19:03:48 -0700\r\nReceived: from py-out-1112.google.com (pyia25.prod.google.com [10.34.253.25])\n\tby zps38.corp.google.com with ESMTP id l77239nm021148\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 6 Aug 2007 19:03:35 -0700\r\nReceived: by py-out-1112.google.com with SMTP id a25so2880552pyi\n        for &lt;junit@yahoogroups.com&gt;; Mon, 06 Aug 2007 19:03:35 -0700 (PDT)\r\nReceived: by 10.65.59.11 with SMTP id m11mr9819760qbk.1186452214961;\n        Mon, 06 Aug 2007 19:03:34 -0700 (PDT)\r\nReceived: by 10.64.7.18 with HTTP; Mon, 6 Aug 2007 19:03:34 -0700 (PDT)\r\nMessage-ID: &lt;b86b6a9c0708061903x39b68e64m7c213ada481c064c@...&gt;\r\nDate: Mon, 6 Aug 2007 19:03:34 -0700\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;f95jhh+4e7s@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;f95jhh+4e7s@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;C?dric Beust ? &quot; &lt;cbeust@...&gt;\r\nSubject: Re: [junit] Testing several classes with the same test case\r\nX-Yahoo-Group-Post: member; u=199443513; y=fWw2y1yYg09iIFfUVBThvJt2dDqaFP50ljlxMNs_3MVH\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nFYI, here is how you could do this with TestNG:\n\n@DataProvider\npublic Objec=\r\nt[][] algorithms() {\n  return new Object[][] {\n    new Object[] { new Algor=\r\nithm1(), &quot;input1&quot;, &quot;expectedresult1&quot; },\n    new Object[] { new Algorithm2()=\r\n, &quot;input2&quot;, &quot;expectedresult2&quot; },\n    new Object[] { new Algorithm3(), &quot;inpu=\r\nt3&quot;, &quot;expectedresult3&quot; },\n  }\n}\n\n@Test(dataProvider =3D &quot;algorithms&quot;)\npubli=\r\nc void verifyAlgorithm(Algorithm a, String input, String result) {\n  assert=\r\nEquals(result, a.calculate(input));\n}\n\nIsn&#39;t it possible to do something si=\r\nmilar with JUnit 4?\n\n-- \nC=E9dric\n\nOn 8/5/07, dmugtasimov &lt;dimasoft2001@mai=\r\nl.ru&gt; wrote:\n&gt;\n&gt;   Imagine that there is a class Algorithm and its subclass=\r\ned Algorithm1,\n&gt; Algorithm2, .. Algorithm9. All AlgorithmN classes have the=\r\n same\n&gt; contract (thus they have same methods and these method should suppl=\r\ny\n&gt; the same output for the same input).\n&gt;\n&gt; public abstract Algorithm {\n&gt; =\r\npublic abstract String calculate(String in);\n&gt; }\n&gt;\n&gt; public Algorithm1 {\n&gt; =\r\npublic String calculate(String in) {\n&gt; ... method body 1...\n&gt; }\n&gt; }\n&gt;\n&gt; pub=\r\nlic Algorithm2 {\n&gt; public String calculate(String in) {\n&gt; ... method body 2=\r\n...\n&gt; }\n&gt; }\n&gt;\n&gt; and so on up to 9.\n&gt;\n&gt; There is test case AlgorithmTestCase=\r\n extends TestCase.\n&gt; public AlgorithmTestCase extends TestCase {\n&gt; public v=\r\noid testAlgorithm() {\n&gt; Algorithm algorithm =3D ... Algorithm1..Algorithm9 =\r\ninstance creation\n&gt; code ...;\n&gt; assertEquals(&quot;RESULT1&quot;, algorithm.calculate=\r\n(&quot;INPUT1&quot;));\n&gt; }\n&gt; }\n&gt;\n&gt; Is it possible using JUnit and how to run Algorith=\r\nmTestCase meeting\n&gt; the following conditions?\n&gt; 1. Each instance of Algorit=\r\nhmTestCase does test only one Algorithm\n&gt; subclass.\n&gt; 2. AlgorithmTestCase =\r\nis run against each Algorithm subclass.\n&gt; 3. GUI runner is started only onc=\r\ne.\n&gt;\n&gt; I tried to do that by passing subclass name in system properties, bu=\r\nt\n&gt; failed. It happens because when I add test case by\n&gt; suite.addTestSuite=\r\n(Class ...) the actual of TestCase is created after\n&gt; the last test case is=\r\n added, so system properties contain the last\n&gt; supplied value.\n&gt;\n&gt;  \n&gt;\n\n\n[=\r\nNon-text portions of this message have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 19708, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 19710, 
+    "contentTrasformed": false, 
+    "postDate": "1186452214", 
+    "canDelete": false, 
+    "nextInTopic": 19712, 
+    "prevInTopic": 19710, 
+    "headers": {
+        "inReplyToHeader": "PGY5NWpoaCs0ZTdzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDcwODA2MTkwM3gzOWI2OGU2NG03YzIxM2FkYTQ4MWMwNjRjQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGY5NWpoaCs0ZTdzQGVHcm91cHMuY29tPg=="
+    }
+}

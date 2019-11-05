@@ -1,0 +1,29 @@
+{
+    "topicId": 2825, 
+    "postDate": "1002144106", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Duan &lt;sduan@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Gbdkf3tBstqi4BExVlcSfY4BtgpBWw1dSiKs9hrHFZZJE4JvUTHQWHJpGc1p0I7JeLOZFso3Eq79AXbdMpfSG_76RhM7", 
+    "nextInTime": 2834, 
+    "userId": 0, 
+    "prevInTime": 2832, 
+    "prevInTopic": 2832, 
+    "headers": {
+        "messageIdInHeader": "PDNCQkI4MTZBLkI1MzA4QTA3QGJvcmxhbmQuY29tPg==", 
+        "referencesHeader": "PEZENkIwMjQ0NzY2REQ1MTE4QUMwMDAzMDZFMDBCMEIxMkYwQ0I2QG1zZ2F0bDA3Lmlzcy5uZXQ+"
+    }, 
+    "authorName": "Shane Duan", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "Just to share an experience of mine. I tried to do a class loader that will try to load all the none abstract classes that extending the TestCase in the run", 
+    "contentTrasformed": false, 
+    "msgId": 2833, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;sduan@...&gt;\r\nX-Sender: sduan@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_4_1); 3 Oct 2001 21:14:11 -0000\r\nReceived: (qmail 62259 invoked from network); 3 Oct 2001 21:14:10 -0000\r\nReceived: from unknown (10.1.10.26)\n  by 10.1.1.220 with QMQP; 3 Oct 2001 21:14:10 -0000\r\nReceived: from unknown (HELO sv-mta1.inprise.com) (207.105.72.219)\n  by mta1 with SMTP; 3 Oct 2001 21:16:25 -0000\r\nReceived: from borland.com (SHANEPC2.inprise.com [10.143.14.239])\n by sv-mta1.inprise.com (iPlanet Messaging Server 5.1 (built May  7 2001))\n with ESMTP id &lt;0GKN002LUF39CU@...&gt; for junit@yahoogroups.com;\n Wed, 03 Oct 2001 14:16:21 -0700 (PDT)\r\nDate: Wed, 03 Oct 2001 14:21:46 -0700\r\nSubject: Re: [junit] ClassPathTestCollector\r\nTo: junit@yahoogroups.com\r\nMessage-id: &lt;3BBB816A.B5308A07@...&gt;\r\nOrganization: Borland Software Corporation\r\nMIME-version: 1.0\r\nX-Mailer: Mozilla 4.7 [en] (WinNT; U)\r\nContent-type: text/plain; charset=us-ascii\r\nContent-transfer-encoding: 7BIT\r\nX-Accept-Language: en\r\nReferences: &lt;FD6B0244766DD5118AC000306E00B0B12F0CB6@...&gt;\r\nFrom: Shane Duan &lt;sduan@...&gt;\r\n\r\nJust to share an experience of mine.\n\nI tried to do a class loader that will try to load all the none abstract classes that extending the TestCase in the run time but the code became too much to\nwrite.\n\nThen I figured out another simple way of sweeping all the testcases by following these steps.\n\n1. Put all the test classes (mock object, test utilities, whatever other than the real code) into a separate folder (I called it &#39;test&#39; and it is in the same\nfolder as &#39;src&#39;).\n\n2. Follow a naming convention.  I named all my test cases and ONLY my test cases with &#39;Test&#39; followed by the class to be tested.\n\n3. I wrote a class that will go through the &#39;test&#39; folder (recursively by option) and find all the java files start with a Test, construct the full name of\nthe class, create a TestSuite for it and add it to the main TestSuite.\n\nStep one will free me in naming the classes for the application, step two will make the testcase sweeping easy.\n\nPotential risks:\n1. Test class is not in &#39;test&#39; directory.\n2. Test class doesn&#39;t start with &#39;Test&#39; or some non-testing class starts with &#39;Test&#39;.\n3. The source file in test directory doesn&#39;t match the ones in classes path.  (This is not a big problem as along as you compile the project before you run\nthe test, which is the case).\n\nIt sounds a little cheap and un-safe at the first sight.  But it has never caused me problems.  I would think that this is the &#39;simplest possible that\nworks&#39;.\n\nAnd yes, I do have a test case for this. :)\n\n\n&quot;Di Iorio, Matthew (ISS Atlanta)&quot; wrote:\n\n&gt; TestFinderSuite is a TestSuite that does the same thing:\n&gt;\n&gt; http://sourceforge.net/tracker/index.php?func=detail&aid=420299&group_id=152\n&gt; 78&atid=315278\n&gt;\n&gt; Source code:\n&gt;\n&gt; http://sourceforge.net/tracker/download.php?group_id=15278&atid=315278&file_\n&gt; id=8476&aid=420299\n&gt;\n&gt; ClassFinder is the class that compiles a list of classes on the classpath.\n&gt;\n&gt; Matt\n&gt;\n&gt; -----Original Message-----\n&gt; From: Matt Munz [mailto:mattmunz@...]\n&gt; Sent: Wednesday, October 03, 2001 4:06 PM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] ClassPathTestCollector\n&gt;\n&gt; Hi all.\n&gt;\n&gt;   I&#39;m working on a TestRunner that sweeps up all of the TestCases on the\n&gt; class path into one TestSuite and then runs it, dumping the results\n&gt; optionally to a file, System.out, or a gui.  This TestRunner could then be\n&gt; used in automation and during development with a minimum of setup.\n&gt;   ClassPathTestCollector does a great job of grabbing up the .class files on\n&gt; the class path, but it doesn&#39;t dip into the jars to grab those classes also.\n&gt; I&#39;m about to write some code to add this functionality.  Has anyone already\n&gt; done this?  If so, could you share code, ideas, or suggestions?\n&gt;   Thanks.\n&gt;\n&gt;   - Matt Munz\n&gt;     mmunz@... (please cc: responses to this address)\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n--\nDisclaimer:  I join all the news groups out of my own interest.  All opinions expressed here are my own and not necessarily those of my employer.\n\n\n\n", 
+    "subject": "Re: [junit] ClassPathTestCollector"
+}

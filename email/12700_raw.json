@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12701, 
+    "senderId": "MWTRamGyEr4LQKqp5dughL9-rlYW3Dk-7OIOzEzeOUqCeserBlGzqEX3QdVBifTXlcoUtXVl5hsKfoZ8HsXH7_NKUw9vcBIa3q0KO9lS4w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Junit Test Selections for testfunc()", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Each test is a different object, but you added the same object (test) three times. Only the last test executes because you did this: create test change its", 
+    "msgId": 12700, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 14064 invoked from network); 17 Jan 2005 20:34:17 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m23.grp.scd.yahoo.com with QMQP; 17 Jan 2005 20:34:17 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta1.grp.scd.yahoo.com with SMTP; 17 Jan 2005 20:34:17 -0000\r\nReceived: from unknown (HELO ?192.168.1.117?) (srainsberger5790@24.156.43.226 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 17 Jan 2005 20:34:16 -0000\r\nMessage-ID: &lt;41EC2145.9030509@...&gt;\r\nDate: Mon, 17 Jan 2005 15:34:13 -0500\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;csg2gh+d81r@...&gt;\r\nIn-Reply-To: &lt;csg2gh+d81r@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.81\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Re: Junit Test Selections for testfunc()\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nlove wrote:\n&gt; \n&gt; I tried doing this, but it executed only the last one.:myruntests\n&gt; [1]); 4 times::\n&gt; Why is it so???\n\nEach test is a different object, but you added the same object (test) \nthree times. Only the last test executes because you did this:\n\ncreate test\nchange its name to A, then add it to the list\nchange its name to B, then add it to the list again\nchange its name to C, then add it to the list a third time\n\nAt the end, you have /the same test/ in the list three times, and \nthey&#39;re all named C (in your case, &quot;test1&quot;).\n\nSo each test has to be a separate object.\n\nsuite.addTest(createMyTest(&quot;test7&quot;));\nsuite.addTest(createMyTest(&quot;test3&quot;));\nsuite.addTest(createMyTest(&quot;test1&quot;));\n\npublic Test createMyTest(String name) {\n     MyTest test = new MyTest();\n     test.setName(name);\n     return test;\n}\n\nOr add this constructor to MyTest:\n\npublic MyTest(String name) {\n     setName(name);\n}\n\nNow:\n\nsuite.addTest(new MyTest(&quot;test7&quot;));\n...\n\nEither way, the three tests are different objects, so they can execute \ndifferent test methods.\n\nI hope this helps.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 12687, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12699, 
+    "contentTrasformed": false, 
+    "postDate": "1105994053", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12699, 
+    "headers": {
+        "inReplyToHeader": "PGNzZzJnaCtkODFyQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxRUMyMTQ1LjkwMzA1MDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNzZzJnaCtkODFyQGVHcm91cHMuY29tPg=="
+    }
+}

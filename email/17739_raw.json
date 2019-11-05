@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 287, 
+    "nextInTime": 17740, 
+    "senderId": "UM456O9ZgSiZkZsmqqZw8a0yhAR_znSOksFafCCuF2572-S2qa1SNy7W663PQLsTkoiefY5cdXIlDE_2yLM3NglLVdIfjEHVhLHxlS2J6tc-GPL5wwM5OYrWpW9bIE73Zz6w0mw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Test-friendly, but not caller-friendly?", 
+    "from": "&quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "Hi Elliotte, ... Fair points. Interfaces do add some complexity, but they also buy you flexibility and extensibility, so I d be sure to always weigh these", 
+    "msgId": 17739, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 46164 invoked from network); 1 Sep 2006 16:07:39 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m25.grp.scd.yahoo.com with QMQP; 1 Sep 2006 16:07:39 -0000\r\nReceived: from unknown (HELO smtp-out.google.com) (216.239.45.12)\n  by mta5.grp.scd.yahoo.com with SMTP; 1 Sep 2006 16:07:39 -0000\r\nReceived: from zps76.corp.google.com (zps76.corp.google.com [172.25.146.76])\n\tby smtp-out.google.com with ESMTP id k81G5eST010000\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 1 Sep 2006 09:05:40 -0700\r\nReceived: from smtp-out2.google.com (fpr7.prod.google.com [10.253.18.7])\n\tby zps76.corp.google.com with ESMTP id k81FVpIU001579\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 1 Sep 2006 09:05:33 -0700\r\nReceived: by smtp-out2.google.com with SMTP id 7so289426fpr\n        for &lt;junit@yahoogroups.com&gt;; Fri, 01 Sep 2006 09:05:33 -0700 (PDT)\r\nReceived: by 10.253.31.16 with SMTP id e16mr592972fpe;\n        Fri, 01 Sep 2006 09:05:33 -0700 (PDT)\r\nReceived: by 10.253.29.2 with HTTP; Fri, 1 Sep 2006 09:05:32 -0700 (PDT)\r\nMessage-ID: &lt;b86b6a9c0609010905g3cacd898ucf694a95310b37b2@...&gt;\r\nDate: Fri, 1 Sep 2006 09:05:32 -0700\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;44F803FA.70204@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;3FB08D6A21B3EC4D8749EF6D9E62627856F7EF@...&gt;\n\t &lt;44F3475D.3010907@...&gt; &lt;44F43115.3070900@...&gt;\n\t &lt;44F437F2.4080605@...&gt; &lt;44F43B33.8020403@...&gt;\n\t &lt;44F457E7.7060807@...&gt; &lt;44F74E63.6050605@...&gt;\n\t &lt;44F75CFF.20908@...&gt; &lt;44F77BF0.4070400@...&gt;\n\t &lt;44F803FA.70204@...&gt;\r\nX-eGroups-Msg-Info: 1:6:0:0\r\nFrom: &quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;\r\nSubject: Re: [junit] Test-friendly, but not caller-friendly?\r\nX-Yahoo-Group-Post: member; u=199443513; y=t9eMQA8qhHZEjLUtNvPMQj_BDN0a2g_-ah-EkNscsgWf\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nHi Elliotte,\n\nOn 9/1/06, Elliotte Harold &lt;elharo@...&gt; wrote:\n&gt;\n=\r\n&gt; Michael Feathers wrote:\n&gt;\n&gt; &gt; Elliotte, what are the downsides of interfa=\r\nces, in your opinion?  I know\n&gt; &gt; you don&#39;t like to use them as much as man=\r\ny other people do, but I don&#39;t\n&gt; &gt; know why.\n&gt;\n&gt; 1. Excess complexity\n&gt;\n&gt; 2=\r\n. No precondition, postcondition, or class invariant validation\n&gt;\n&gt; 3. Cann=\r\not add new methods to an existing interface in a later version\n&gt; without br=\r\neaking all existing code\n\n\nFair points.\n\nInterfaces do add some complexity,=\r\n but they also buy you flexibility and\nextensibility, so I&#39;d be sure to alw=\r\nays weigh these different aspects before\nchoosing (or not) to introduce an =\r\ninterface.\n\nI would argue that concrete classes suffer from 2) as well, and=\r\n the only way\nyou can guarantee that the orchestration of your classes/inte=\r\nrfaces is\nrespected is...  with tests.\n\nIndeed, interfaces should become im=\r\nmutable once they are published, but\nthere are ways to support interfaces w=\r\nith added methods without breaking\nbackward compatibility.  Here is how.\n\nS=\r\nuppose you publish an interface:\n\npublic interface IAccount {\n  public void=\r\n processCash();\n}\n\nIn v2, you decide your account needs to support credit c=\r\nards as well, so you\ncreate the following interface:\n\npublic interface IAcc=\r\nount2 extends IAccount {\n  public void processCreditCard();\n}\n\nNow, your bu=\r\nsiness code needs to use the following trick:\n\nIAccount a =3D ...;\n\nif (a i=\r\nnstanceof IAccount2) {\n  IAccount2 a2 =3D (IAccount2) a;\n  a2.processCredit=\r\nCard();\n}\n\nThis code is guaranteed to be fully backward compatible and yet =\r\nallow for\nyour interfaces to grow with your needs.  This trick is used exte=\r\nnsively in\nCOM and Eclipse, so while the instanceof is still a bit annoying=\r\n, it&#39;s still\nimportant to be aware of such a possibility.\n\n-- \nC=E9dric\nhtt=\r\np://testng.org\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 17266, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 17738, 
+    "contentTrasformed": false, 
+    "postDate": "1157126732", 
+    "canDelete": false, 
+    "nextInTopic": 17740, 
+    "prevInTopic": 17733, 
+    "headers": {
+        "inReplyToHeader": "PDQ0RjgwM0ZBLjcwMjA0QG1ldGFsYWIudW5jLmVkdT4=", 
+        "messageIdInHeader": "PGI4NmI2YTljMDYwOTAxMDkwNWczY2FjZDg5OHVjZjY5NGE5NTMxMGIzN2IyQG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PDNGQjA4RDZBMjFCM0VDNEQ4NzQ5RUY2RDlFNjI2Mjc4NTZGN0VGQFdEQ0NQTUFJTDAxLm1hcmtldHRvb2xzLmNvbT4JIDw0NEYzNDc1RC4zMDEwOTA3QG1ldGFsYWIudW5jLmVkdT4gPDQ0RjQzMTE1LjMwNzA5MDBAbWluZHNwcmluZy5jb20+CSA8NDRGNDM3RjIuNDA4MDYwNUBtZXRhbGFiLnVuYy5lZHU+IDw0NEY0M0IzMy44MDIwNDAzQG1pbmRzcHJpbmcuY29tPgkgPDQ0RjQ1N0U3LjcwNjA4MDdAbWV0YWxhYi51bmMuZWR1PiA8NDRGNzRFNjMuNjA1MDYwNUByb2dlcnMuY29tPgkgPDQ0Rjc1Q0ZGLjIwOTA4QG1ldGFsYWIudW5jLmVkdT4gPDQ0Rjc3QkYwLjQwNzA0MDBAbWluZHNwcmluZy5jb20+CSA8NDRGODAzRkEuNzAyMDRAbWV0YWxhYi51bmMuZWR1Pg=="
+    }
+}

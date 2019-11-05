@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 581, 
+    "senderId": "g38t11y3K2mkhGjH8i9ZF0qHXR-GEBBI0UwKTxE4JRQKGDhjU1LdHsISeUA4yF_MLfuQMN5G0hQ", 
+    "systemMessage": false, 
+    "subject": "Re: Linkage exception .... with XML DOM", 
+    "from": "tsmets@...", 
+    "authorName": "tsmets@altern.org", 
+    "msgSnippet": "OK, this is what I ve come to with the problem. My command line is now %runner% -cp %cp%;%classes_root%ejb;%classes_root%kernel junit.swingui.TestRunner", 
+    "msgId": 580, 
+    "topicId": 578, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1449392901\">OK,<br/>\nthis is what I&#39;ve come to with the problem.<br/>\nMy command line is now <br/>\n%runner% -cp %cp%;%classes_root%ejb;%classes_root%kernel <br/>\njunit.swingui.TestRunner -noloading org.xml.* &lt;customer_url&gt;.cafe.%1<br/>\n<br/>\nThis didn&#39;t work but the Exception ended-up with a <br/>\nNullPointerException instead of a LinkageException.<br/>\n<br/>\n  What is weird is the fact that the <br/>\n  -noloading flag is made availble <br/>\n  via the excluded.properties file <br/>\n  but that option didn&#39;t have any effect ?<br/>\n<br/>\nWhat I then did is migrate the faulty statement to another method <br/>\n(see source code herebelow) ?<br/>\n<br/>\nThings seems to work now. <br/>\nI however don&#39;t get a decent explaination for the second type of call <br/>\nto work while the first is not...<br/>\nCan someone help ?<br/>\nOr, could someone give me a hint over the matter&#39;s possible origins ?<br/>\n<br/>\nTx,<br/>\n<br/>\nThomas,<br/>\n<br/>\n<br/>\n<br/>\n&lt;code&gt;<br/>\n<br/>\n void init() <br/>\n    throws Exception<br/>\n  {<br/>\n    try <br/>\n    {<br/>\n      factory = DocumentBuilderFactory.newInstance();<br/>\n      input = new InputSource(new FileReader(FileName));<br/>\n      builder = factory.newDocumentBuilder();<br/>\n      doc = builder.parse(input);<br/>\n     // ER = ExitRule.parseDocument(doc, null);<br/>\n<br/>\n    } catch (IOException ioe) {<br/>\n      ioe.printStackTrace();<br/>\n      System.exit(EXCEPTION_IN_CONTRUCTOR);<br/>\n    } catch (SAXException SAXe) {<br/>\n      SAXe.printStackTrace();<br/>\n      System.exit(EXCEPTION_IN_CONTRUCTOR);<br/>\n    } catch (ParserConfigurationException pce) {<br/>\n      pce.printStackTrace();<br/>\n      System.exit(EXCEPTION_IN_CONTRUCTOR);<br/>\n    } catch (Exception e) {<br/>\n      e.printStackTrace();      <br/>\n      System.exit(EXCEPTION_IN_CONTRUCTOR);<br/>\n    }<br/>\n    return;<br/>\n  }<br/>\n  <br/>\n/**<br/>\n  *<br/>\n  */  <br/>\n  void createExitRule()<br/>\n  {<br/>\n    ER = ExitRule.parseDocument(doc, null);<br/>\n    return;<br/>\n  }<br/>\n    <br/>\n&lt;/code&gt;<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In junit@y..., &lt;tsmets@a...&gt; wrote:<br/>\n&gt; <br/>\n&gt; I&#39;ve done an program that uses some infos defined in XML files. As <br/>\nI&#39;m Trying NOW to make the code bug - free I&#39;m writting the Junit <br/>\ntest cases for that class. My very first test being to always <br/>\nvalidate the construction of an instance of the object, After setUp <br/>\ndoing simply a super.setUp(), I created a first test that simply <br/>\ncreates an instance of the targetted class, doing :<br/>\n&gt; &lt;pre&gt;<br/>\n&gt;   MyInstance = new ReadXMLwithDOM();<br/>\n&gt;   asssert(&quot;Could not instanciate class&quot;, MyInstance);<br/>\n&gt; &lt;/pre&gt;<br/>\n&gt;  <br/>\n&gt; the problem is finally that it seems that there&#39;s a linkage <br/>\nException being thrown rather stupidly with the DOM parser does <br/>\neffectively the PARSING.<br/>\n&gt; &lt;pre&gt;<br/>\n&gt;       factory = DocumentBuilderFactory.newInstance();<br/>\n&gt;       input = new InputSource(new FileReader(aFileName));<br/>\n&gt;       builder = factory.newDocumentBuilder();<br/>\n&gt;       doc = builder.parse(input);<br/>\n&gt;       ER = ExitRule.parseDocument(doc, Log); &lt;--- Line giving the <br/>\nproblem<br/>\n&gt; &lt;/pre&gt;<br/>\n&gt; <br/>\n&gt; The ExitRule class has a static method to automatically do the <br/>\nparsing. I&#39;ve added to my excluded/properties file the following :<br/>\n&gt; <br/>\n&gt;    excluded.6=org.xml.*<br/>\n&gt;    excluded.7=org.xml.sax.*<br/>\n&gt;    excluded.8=be.telenet.sacramento.cafe.*<br/>\n&gt;    excluded.9=com.sun.xml.parser.*<br/>\n&gt; <br/>\n&gt; I gess exclusion is recursive (?).<br/>\n&gt; <br/>\n&gt; Still the method fails miserably with a rather long trace that <br/>\nstarts with <br/>\n&gt; java.lang.LinkageError Class org.xml.sax.InputSource violates <br/>\nloader constraints at ...<br/>\n&gt; ...<br/>\n&gt; ...<br/>\n&gt; ...<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Thomas,<br/>\n&gt; <br/>\n&gt; p.s. : Here below the reference found on the current ML<br/>\n&gt; <br/>\n&gt; &lt;pre&gt;<br/>\n&gt; &lt;snip&gt;<br/>\n&gt; Subject  Author  Date  <br/>\n&gt; 424  Re: ClassLoader constraints violation  Rupert  Fri 2/9/2001  <br/>\n&gt; 420  Re: ClassLoader constraints violation  john prince  Fri <br/>\n2/9/2001  <br/>\n&gt; 419  Re: ClassLoader constraints violation  Erik Hanson  Thu <br/>\n2/8/2001  <br/>\n&gt; 400  ClassLoader constraints violation  Rupert  Wed 2/7/2001  <br/>\n&gt; &lt;/snip&gt;<br/>\n&gt; &lt;/pre&gt;<br/>\n&gt; ---<br/>\n&gt; <br/>\n&gt; Thomas SMETS - Application Engineer<br/>\n&gt; Sydney-Tristar Devlopment Cpy </span></blockquote></div>", 
+    "prevInTime": 579, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "983461588", 
+    "canDelete": false, 
+    "nextInTopic": 663, 
+    "prevInTopic": 579, 
+    "headers": {
+        "messageIdInHeader": "PDk3bHFzayt2NWVlQGVHcm91cHMuY29tPg=="
+    }
+}

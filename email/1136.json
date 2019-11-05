@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 1137, 
+    "senderId": "cqEtwqVo_SjoylLg_qpxjK-6YetJKqalhMbxdyc-7jZ5ZDbVMv4oxlq5GToIQvqdV3Jbit3kV4Pd9Q_-VCWRP8dh1_XZ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Same tests with varying initialization?", 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "authorName": "Robert Sartin", 
+    "msgSnippet": "... 1. This leads to some possibly solutions for the OP s problem: public abstract class CommonTests extends TestCase { public void testOne() { // test that", 
+    "msgId": 1136, 
+    "topicId": 1015, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-415102493\">--- Brian Button &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bbutton01@...\">bbutton01@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Tests that share the same setUp and tearDown logic should be in the<br/>\n&gt; same TestCase. Those that do not should be in other TestCase-derived<br/>\n&gt; classes.<br/>\n<br/>\n </span></blockquote>1. This leads to some possibly solutions for the OP&#39;s problem:<br/>\n<br/>\npublic abstract class CommonTests extends TestCase {<br/>\n  public void testOne() {<br/>\n    // test that uses configurable<br/>\n  }<br/>\n  protected Object configurable = null;<br/>\n}<br/>\n<br/>\npublic class ConfigurationOneTest extends CommonTests {<br/>\n  public void setUp() throws Exception {<br/>\n    super.setUp();<br/>\n    configurable = // create for configuration 1....<br/>\n  }<br/>\n}<br/>\n<br/>\npublic class ConfigurationTwoTest extends CommonTests {<br/>\n  public void setUp() throws Exception {<br/>\n    super.setUp();<br/>\n    configurable = // create for configuration 2....<br/>\n  }<br/>\n}<br/>\n<br/>\n2. Here is another solution:<br/>\n<br/>\n<br/>\npublic abstract class CommonTests extends TestCase {<br/>\n  protected abstract Object getConfigurable();<br/>\n<br/>\n  public void testOne() {<br/>\n    Object configurable = getConfigurable();<br/>\n    // test that uses configurable<br/>\n  }<br/>\n}<br/>\n<br/>\npublic class ConfigurationOneTest extends CommonTests {<br/>\n  protected abstract Object getConfigurable() {<br/>\n    Object currentConfig = // create for configuration 1....<br/>\n  }<br/>\n}<br/>\n<br/>\npublic class ConfigurationTwoTest extends CommonTests {<br/>\n  protected abstract Object getConfigurable() {<br/>\n    Object currentConfig = // create for configuration 1....<br/>\n  }<br/>\n}<br/>\n<br/>\n3. Or combine 1 and 2, by having setUp defined in CommonTests call<br/>\ngetConfigurable() which is overridden by the subclasses:<br/>\n<br/>\npublic abstract class CommonTests extends TestCase {<br/>\n  protected abstract Object getConfigurable();<br/>\n<br/>\n  public void setUp() throws Exception {<br/>\n    super.setUp();<br/>\n    configurable = getConfigurable();<br/>\n  }<br/>\n<br/>\n  public void testOne() {<br/>\n    // test that uses configurable<br/>\n  }<br/>\n  private Object configurable;<br/>\n}<br/>\n<br/>\n4. Then there&#39;s the variation that allows for changing configuration to<br/>\nvary with common test bodies from test to test only running appropriate<br/>\ntests for each configuration:<br/>\n<br/>\npublic class TheTests extends TestCase {<br/>\n  protected doConfigurableTestOne(Object thing) {<br/>\n    // Do tests on thing<br/>\n  }<br/>\n  protected doConfigurableTestTwo(Object thing) {<br/>\n    // Do tests on thing<br/>\n  }<br/>\n  public Object getConfigurationOne() {<br/>\n    return // Object in configuration one<br/>\n  }<br/>\n  public Object getConfigurationTwo() {<br/>\n    return // Object in configuration one<br/>\n  }<br/>\n<br/>\n  public testOneWithConfigurationOne() {<br/>\n    Object testedThing = getConfigurationOne();<br/>\n    doConfigurableTestOne(testedThing);<br/>\n  }<br/>\n  public testOneWithConfigurationTwo() {<br/>\n    Object testedThing = getConfigurationTwo();<br/>\n    doConfigurableTestOne(testedThing);<br/>\n  }<br/>\n  public testTwoWithConfigurationOne() {<br/>\n    Object testedThing = getConfigurationOne();<br/>\n    doConfigurableTestTwo(testedThing);<br/>\n  }<br/>\n  // Omit testTwoWithConfigurationTwo as it doesn&#39;t make sense<br/>\n}<br/>\n<br/>\nand so on.....<br/>\n<br/>\nAll depends on the circumstances and personal preference. Be careful<br/>\nnot to abuse #4, it&#39;s a tad brittle.<br/>\n<br/>\nRegards,<br/>\n<br/>\nRob<br/>\n<br/>\n<br/>\n__________________________________________________<br/>\nDo You Yahoo!?<br/>\nYahoo! Auctions - buy the things you want at great prices<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://auctions.yahoo.com/\">http://auctions.yahoo.com/</a></div>", 
+    "prevInTime": 1135, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "989334550", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 1134, 
+    "headers": {
+        "inReplyToHeader": "PG0zbjE4b295cGcuZnNmQGVhcnRobGluay5uZXQ+", 
+        "messageIdInHeader": "PDIwMDEwNTA4MTUwOTEwLjMxOTIucW1haWxAd2ViMTE2MDYubWFpbC55YWhvby5jb20+"
+    }
+}

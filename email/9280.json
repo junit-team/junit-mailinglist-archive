@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 9281, 
+    "senderId": "t-XlH5s7C5pxxo1A-F7XnlBnIDktlgrdw5Pp_TMTydFJMgB80nY1kQNPZ8cr9NRxipxjrsvkScV8YFf4rUPXOHul95SiPNFg2p2v", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Domain specific question", 
+    "from": "Curt Sampson &lt;yahoo_sucks@...&gt;", 
+    "authorName": "Curt Sampson", 
+    "msgSnippet": "... I m essentially going to say the same thing as J. B. Rainsberger, but I m going to say it slightly differently, so perhaps this will be helpful. Don t do", 
+    "msgId": 9280, 
+    "profile": "cjstokyo", 
+    "topicId": 9274, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 110189933, 
+    "messageBody": "<div id=\"ygrps-yiv-1986000278\">On Thu, 4 Sep 2003, Venkatesh Prasad Ranganath wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; No, the question is when you have many phases that setup the data<br/>\n&gt; on which an analysis works, how do you unit test the analysis<br/>\n&gt; efficiently?<br/>\n<br/>\n </span></blockquote>I&#39;m essentially going to say the same thing as J. B. Rainsberger, but<br/>\nI&#39;m going to say it slightly differently, so perhaps this will be<br/>\nhelpful.<br/>\n<br/>\nDon&#39;t do the phases that set up the data. Instead, create chunks of<br/>\n&quot;already-set-up&quot; data, and test against those. This is, basically, layer<br/>\ndecoupling.<br/>\n<br/>\nFor example, I unit test a lot of servlets that make database calls.<br/>\nThey&#39;ll invoke a method in the Repository that will perform some sort of<br/>\ndatabase action and return a result: say, &quot;get me an object representing<br/>\nthe user logged in at such-and-such an IP address.&quot;<br/>\n<br/>\nMaking this User object &quot;for real&quot; involves a lot of work, including<br/>\naccessing two different databases. However, when unit testing, my<br/>\nservlet, unbeknownst to it, is not using the Repository that digs around<br/>\nin various databases and performs processing and whanot, but is using a<br/>\ndifferent Repository (with the same interface, of course) that simply<br/>\nreturns a fixed, mock object based on the IP address.<br/>\n<br/>\nSo when testing, I know that the repository will return an<br/>\n&quot;unregistered&quot; user when asked who is logged in on 10.0.0.1, and a<br/>\n&quot;registered&quot; user when asked who is logged in on 10.0.0.2. I put those<br/>\nparameters into a servlet that is making decisions based on whether the<br/>\nuser is &quot;registered&quot; or &quot;unregistered,&quot; and check that that the servlet<br/>\nis doing the correct thing in each case.<br/>\n<br/>\nThis allows me to do the bare minimum of setup to get this working.<br/>\nThere&#39;s no database access at all. The Repository that&#39;s being invoked<br/>\nfor this is nowhere near fully functional, many of the methods just<br/>\nthrow an &quot;I am not implemented&quot; exception. The User object that&#39;s<br/>\nreturned is not even fully functional; a lot of its methods also return<br/>\nan &quot;I am not implemented&quot; exception. The mock objects that I&#39;m using do<br/>\njust barely enough to let me test, and that&#39;s it.<br/>\n<br/>\nThis is the real power of object oriented programming: the ability<br/>\neasily to substitute one object for another.<br/>\n<br/>\nNote that this does require changes to your non-test code to work. In my<br/>\nsystem, originally I could just call a static method to do the database<br/>\nwork. I now have an object (the Repository) with a couple of different<br/>\nsubclasses (the one that actually does the database stuff, and the test<br/>\nversion), and a mechanism for setting up a servlet or group of servlets<br/>\nwith the correct Repository depending on whether they&#39;re being tested or<br/>\nare in production. This is a lot of extra code which contributes nothing<br/>\nto my program in a production environment.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; It may take a long time to setup the data, hence, the<br/>\n&gt; code-test-refactor cycle will prove rather costly.<br/>\n<br/>\n </span></blockquote>Right. Here&#39;s an example of reduction of data-setup time. It takes a lot<br/>\nof steps to decide whether or not a user is really registered. But for<br/>\ntesting:<br/>\n<br/>\n    class TestRepository<br/>\n\timplements Repository<br/>\n    {<br/>\n\tUser getUserOnIPAddress(IPAddress address)<br/>\n\t{<br/>\n\t    if (IPAddress.valueOf(&quot;10.0.0.1&quot;).equals(address)) {<br/>\n\t\treturn new TestUser() {<br/>\n\t\t\tboolean isRegistered() {<br/>\n\t\t\t    return false;<br/>\n\t\t\t}<br/>\n\t\t    };<br/>\n\t    } else if (IPAddress.valueOf(&quot;10.0.0.2&quot;).equals(address)) {<br/>\n\t\treturn new TestUser() {<br/>\n\t\t\tboolean isRegistered() {<br/>\n\t\t\t    return false;<br/>\n\t\t\t}<br/>\n\t\t    };<br/>\n\t    }<br/>\n\t    return null;<br/>\n\t}<br/>\n    }<br/>\n<br/>\ncjs<br/>\n-- <br/>\nCurt Sampson  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cjs@...\">cjs@...</a>&gt;   +81 90 7737 2974   <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.NetBSD.org\">http://www.NetBSD.org</a><br/>\n    Don&#39;t you know, in this new Dark Age, we&#39;re all light.  --XTC</div>", 
+    "prevInTime": 9279, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1062769747", 
+    "canDelete": false, 
+    "nextInTopic": 9281, 
+    "prevInTopic": 9279, 
+    "headers": {
+        "inReplyToHeader": "PGJqOGNqNCRiNTMkMUBzZWEuZ21hbmUub3JnPg==", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNTEuMDMwOTA1MjIyNTM2MC4zNTA1QGFuZ2VsaWMtdnRmdy5jdnBuLmN5bmljLm5ldD4=", 
+        "referencesHeader": "PGJqODAzZSRuMTkkMUBzZWEuZ21hbmUub3JnPiA8M0Y1N0FFRjMuOTA2MDIwNkByb2dlcnMuY29tPiA8Ymo4Y2o0JGI1MyQxQHNlYS5nbWFuZS5vcmc+"
+    }
+}

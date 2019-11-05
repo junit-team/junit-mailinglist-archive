@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21488, 
+    "senderId": "yIJgmxlzv8zJ-g7DOaACLALLFf50k3CQFLQNjwxFhsHFsCT2n-C0AFm06MI5sNCbpihTrmvGqhdK3rJWMIxCjTpxlP8", 
+    "systemMessage": false, 
+    "subject": "Race condition with timeouts", 
+    "from": "&quot;kentb&quot; &lt;kentb@...&gt;", 
+    "authorName": "kentb", 
+    "msgSnippet": "All, This is a test of the with enough eyeballs, all bugs are shallow hypothesis. I am experiencing a race condition with timeouts. Say I have a test like ", 
+    "msgId": 21487, 
+    "profile": "kentlbeck", 
+    "topicId": 21487, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-633233656\">All,<br/>\n<br/>\nThis is a test of the &quot;with enough eyeballs, all bugs are shallow&quot;<br/>\nhypothesis.<br/>\n<br/>\nI am experiencing a race condition with timeouts. Say I have a test like<br/>\nthis:<br/>\n<br/>\n\tpublic class WaitTooLong {<br/>\n\t\t@Test(timeout=10) public void ripVanWinkle() throws<br/>\nInterruptedException {<br/>\n\t\t\tThread.sleep(100);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nWhen I run this I get one of two errors, non-deterministically:<br/>\n<br/>\njava.lang.InterruptedException: sleep interrupted<br/>\n\tat java.lang.Thread.sleep(Native Method)<br/>\n\tat UnpredictableTest.takeTen(UnpredictableTest.java:5)<br/>\n\t...<br/>\n<br/>\nor<br/>\n<br/>\njava.lang.Exception: test timed out after 10 milliseconds<br/>\n\tat<br/>\norg.junit.internal.runners.statements.FailOnTimeout.evaluate(FailOnTimeout.j<br/>\nava:48)<br/>\n\t...<br/>\n<br/>\nHere&#39;s the relevant code in JUnit (FailOnTimeout):<br/>\n<br/>\n\tpublic void evaluate() throws Throwable {<br/>\n\t\tExecutorService service=<br/>\nExecutors.newSingleThreadExecutor();<br/>\n\t\tCallable&lt;Object&gt; callable= new Callable&lt;Object&gt;() {<br/>\n\t\t\tpublic Object call() throws Exception {<br/>\n\t\t\t\ttry {<br/>\n\t\t\t\t\tfNext.evaluate();<br/>\n\t\t\t\t} catch (Throwable e) {<br/>\n\t\t\t\t\tthrow new ExecutionException(e);<br/>\n\t\t\t\t}<br/>\n\t\t\t\treturn null;<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n\t\tFuture&lt;Object&gt; result= service.submit(callable);<br/>\n\t\tservice.shutdown();<br/>\n\t\ttry {<br/>\n\t\t\tboolean terminated=<br/>\nservice.awaitTermination(fTimeout, TimeUnit.MILLISECONDS);<br/>\n\t\t\tif (!terminated)<br/>\n\t\t\t\tservice.shutdownNow();<br/>\n\t\t\tresult.get(0, TimeUnit.MILLISECONDS); // throws the<br/>\nexception if one occurred during the invocation<br/>\n\t\t} catch (TimeoutException e) {<br/>\n\t\t\tthrow new Exception(String.format(&quot;test timed out<br/>\nafter %d milliseconds&quot;, fTimeout));<br/>\n\t\t} catch (ExecutionException e) {<br/>\n\t\t\tthrow unwrap(e);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nIt seems that sometimes the TimeoutException gets thrown and caught and the<br/>\nException thrown. Sometimes, though, the InterruptedException that is<br/>\nterminating the test-running thread gets thrown/caught first. I&#39;ve stared at<br/>\nthis enough minutes to be ready for help.<br/>\n<br/>\nOne strangeness is that if I run the test programmatically<br/>\n(&quot;JUnitCore.runClass(WaitTooLong.class)&quot;) the Exception is always thrown. If<br/>\nI run the test with the Eclipse JUnit runner or with JUnit Max, the results<br/>\nare non-deterministic.<br/>\n<br/>\nAny ideas for making this deterministic? I would prefer the second result<br/>\nabove, if I can get it.<br/>\n<br/>\nRegards,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute</div>", 
+    "prevInTime": 21486, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1239310360", 
+    "canDelete": false, 
+    "nextInTopic": 21488, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10780, 
+    "senderId": "o4kfJosYSoNjBnVzLYb8Qdn-zEEDtfW3B-VcwKHZwvtKMoWEyr2oIZ7DNNaC86bvhLGvh6NaAxIZ8WubsJmdvLq5LvxvhQ", 
+    "systemMessage": false, 
+    "subject": "Re: junit cant find class", 
+    "from": "&quot;nathan&quot; &lt;nsullins@...&gt;", 
+    "authorName": "nathan", 
+    "msgSnippet": "First of all thanks for helping me. I have scoured the net searching for a fix, and it seems that there are a lot of similar problems but I cant seem to find", 
+    "msgId": 10779, 
+    "rawEmail": "Return-Path: &lt;nsullins@...&gt;\r\nReceived: (qmail 7237 invoked from network); 6 Apr 2004 04:20:49 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m6.grp.scd.yahoo.com with QMQP; 6 Apr 2004 04:20:49 -0000\r\nReceived: from unknown (HELO n9.grp.scd.yahoo.com) (66.218.66.93)\n  by mta5.grp.scd.yahoo.com with SMTP; 6 Apr 2004 04:20:48 -0000\r\nX-eGroups-Return: nsullins@...\r\nReceived: from [66.218.67.133] by n9.grp.scd.yahoo.com with NNFMP; 06 Apr 2004 04:19:53 -0000\r\nX-Sender: nsullins@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 35661 invoked from network); 5 Apr 2004 20:02:04 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m9.grp.scd.yahoo.com with QMQP; 5 Apr 2004 20:02:04 -0000\r\nReceived: from unknown (HELO n16.grp.scd.yahoo.com) (66.218.66.71)\n  by mta2.grp.scd.yahoo.com with SMTP; 5 Apr 2004 20:02:07 -0000\r\nReceived: from [66.218.67.158] by n16.grp.scd.yahoo.com with NNFMP; 05 Apr 2004 20:02:05 -0000\r\nDate: Mon, 05 Apr 2004 20:02:04 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;c4sdvs+u9o8@...&gt;\r\nIn-Reply-To: &lt;4071B6F2.6090005@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2462\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.71\r\nFrom: &quot;nathan&quot; &lt;nsullins@...&gt;\r\nSubject: Re: junit cant find class\r\nX-Yahoo-Group-Post: member; u=122818143\r\nX-Yahoo-Profile: nsullins\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 06 Apr 2004 04:19:53 -0000\r\nX-eGroups-Remote-IP: 66.218.66.93\r\n\r\nFirst of all thanks for helping me. I have scoured the net searching \nfor a fix, and it seems that there are a lot of similar problems but \nI cant seem to find any answers. I have since changed the build.xml \naround, creating a seperate dir for testing, emulating the dir \nstructure found at \n\nhttp://www-106.ibm.com/developerworks/java/library/j-ant/\n\nTherefore I am going to add the new targets and the &quot;classpath&quot;\nHere it is.\n\n&lt;!--Project Classpath --&gt;\n  &lt;path id=&quot;classpath&quot;&gt;\n    &lt;pathelement location=&quot;build/test&quot;/&gt;\n    &lt;pathelement \nlocation=&quot;${dir.build}/edu/ggu/cis330/webclient/config&quot;/&gt;\n    &lt;pathelement location=&quot;${dir.lib}/log4j-1.2.8.jar&quot;/&gt;\n    &lt;pathelement location=&quot;${dir.lib}/xercesImpl.jar&quot;/&gt;\n    &lt;pathelement location=&quot;${dir.lib}/xmlParserAPIs.jar&quot;/&gt;\n    &lt;pathelement location=&quot;${dir.lib}/junit3.8.1.jar&quot;/&gt;\n    &lt;pathelement path=&quot;${dir.base}&quot;/&gt;\n    &lt;pathelement path=&quot;${dir.dist}/${file.jar}&quot;/&gt;\n  &lt;/path&gt;\n\n  &lt;target name=&quot;compile-tests&quot; description=&quot;Test with JUnit&quot; \ndepends=&quot;compile&quot;&gt;\n  &lt;mkdir dir=&quot;build/test&quot;/&gt;\n  &lt;javac srcdir=&quot;src/test&quot; destdir=&quot;build/test&quot;&gt;\n      &lt;classpath refid=&quot;classpath&quot;/&gt;\n      &lt;include name=&quot;**/*.java&quot;/&gt;\n  &lt;/javac&gt;\n  &lt;/target&gt;\n\n  &lt;target name=&quot;run-tests&quot; description=&quot;Test with Junit&quot; \ndepends=&quot;compile-tests&quot;&gt;\n  &lt;java\n    classname=&quot;junit.textui.TestRunner&quot;\n    taskname=&quot;junit&quot;\n    fork=&quot;true&quot;&gt;\n    &lt;arg value=&quot;test.TestMain&quot;/&gt;\n    &lt;classpath refid=&quot;classpath&quot;/&gt;\n  &lt;/java&gt;\n  &lt;/target&gt;\n\n\n\n\n--- In junit@yahoogroups.com, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; \nwrote:\n&gt; nathan wrote:\n&gt; \n&gt; &gt; Hello,\n&gt; &gt; \n&gt; &gt; I have installed junit and am using ant to run it. I am new to \njunit\n&gt; &gt; and ant and have the following target declared in the buildfile.\n&gt; &gt; \n&gt; &gt; &lt;target name=&quot;test&quot; description=&quot;Test with Junit&quot; \ndepends=&quot;compile&quot;&gt;\n&gt; &gt; &lt;java\n&gt; &gt;    classname=&quot;junit.testui.TestRunner&quot;\n&gt; &gt;    taskname=&quot;junit&quot;\n&gt; &gt;    fork=&quot;true&quot;&gt;\n&gt; &gt;    &lt;arg value=&quot;edu.ggu.cis330.webclient.config.TestMain&quot;/&gt;\n&gt; &gt;    &lt;classpath refid=&quot;classpath&quot;/&gt;\n&gt; &gt; &lt;/java&gt;\n&gt; &gt; &lt;/target&gt;\n&gt; &gt; \n&gt; &gt; but everytime i use &quot;ant test&quot; and run the test i get the \nfollowing\n&gt; &gt; error:\n&gt; &gt; \n&gt; &gt; [junit] Class not found &quot;edu.ggu.cis330.webclient.config.TestMain&quot;\n&gt; &gt; \n&gt; &gt; i dont understand how this could be the case. can anyone help?\n&gt; \n&gt; Yes. Show us the content of your &lt;classpath&gt; entry with \nid &quot;classpath&quot;.\n&gt; -- \n&gt; J. B. Rainsberger,\n&gt; Diaspar Software Services\n&gt; http://www.diasparsoftware.com :: +1 416 791-8603\n&gt; Let&#39;s write software that people understand\n\n\n\n", 
+    "profile": "nsullins", 
+    "topicId": 10761, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 122818143, 
+    "prevInTime": 10778, 
+    "contentTrasformed": false, 
+    "postDate": "1081195324", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10769, 
+    "headers": {
+        "inReplyToHeader": "PDQwNzFCNkYyLjYwOTAwMDVAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGM0c2R2cyt1OW84QGVHcm91cHMuY29tPg=="
+    }
+}

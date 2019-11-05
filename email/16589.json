@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 16590, 
+    "senderId": "emH82OrupAVBOBQ-7M8-8dtH7hs4DUhGpxGp2Pf0FcbvOVbfccHXad7vixKO2ymdNttwvY0FPK_I09EK0FWQV9-uhC-K3GRc", 
+    "systemMessage": true, 
+    "subject": "multiple inheritance design pattern with junit 4", 
+    "from": "&quot;eetadic69&quot; &lt;eetadic69@...&gt;", 
+    "authorName": "eetadic69", 
+    "msgSnippet": "OK, this may seem like it will be a long post, and a apologize prematurely, however I ve stripped the code down to the minimum needed to illustrate a major", 
+    "msgId": 16589, 
+    "profile": "eetadic69", 
+    "topicId": 16589, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 267405105, 
+    "messageBody": "<div id=\"ygrps-yiv-16200929\">OK, this may seem like it will be a long post, and a apologize prematurely, however I&#39;ve <br/>\nstripped the code down to the minimum needed to illustrate a major headache I&#39;ve been <br/>\nhaving the past few days, and I&#39;m hoping someone here with a little more testing <br/>\nbackground can share some ideas with me!<br/>\n<br/>\nTo start, let me simply illustrate a scenario in some library:<br/>\n<br/>\ninterface A<br/>\ninterface B<br/>\ninterface C extends A, B<br/>\nclass D implements C<br/>\n<br/>\nNow, given the above situation, I&#39;d like to create abstract tests for A, B, and C.  Each does <br/>\ntheir own thing and has at least one unique functional test required.<br/>\n<br/>\nLet&#39;s start with A&#39;s tester:<br/>\n<br/>\npublic abstract class A_Test{<br/>\n  public abstract Object getObjectA();<br/>\n<br/>\n  @Test public final void testA(){<br/>\n    System.out.println(this.getObjectA().toString());<br/>\n  }<br/>\n}<br/>\n<br/>\nand now B&#39;s tester:<br/>\n<br/>\npublic abstract class B_Test{<br/>\n  public abstract Object getObjectB();<br/>\n<br/>\n  @Test public final void testB(){<br/>\n    System.out.println(this.getObjectB().toString());<br/>\n  }<br/>\n}<br/>\n<br/>\nOK, simple enough so far.  Now comes the tricky stuff, with testing interface C.  The code <br/>\nas I have it below is what I *would* like to see.  I&#39;ll explain some choices after the listing:<br/>\n<br/>\npublic abstract class C_Test{<br/>\n  public abstract Object getObjectC(String param);<br/>\n<br/>\n  @Test public final void interfaceTest(){<br/>\n    JUnitCore.runClasses(C_Test.C_Test_A_Test.class, C_Test.C_Test_B_Test.class);<br/>\n  }<br/>\n  @Test public final void testC(){<br/>\n    System.out.println(this.getObjectC(&quot;C&quot;).toString());<br/>\n  }<br/>\n<br/>\n  public final class C_Test_A_Test extends A_Test{<br/>\n    public Object getObjectA(){<br/>\n      return C_Test.this.getObjectC(&quot;A&quot;);<br/>\n    }<br/>\n  }<br/>\n<br/>\n  public final class C_Test_B_Test extends B_Test{<br/>\n    public Object getObjectB(){<br/>\n      return C_Test.this.getObjectC(&quot;B&quot;);<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\nWhy did I choose to write C_Test with (non-static) inner classes?  Well, ultimately, I&#39;d like <br/>\nto write a concrete (non-abstract) test for a class (in this case it will be D).  I need to <br/>\nensure that D is actually being functionally tested for A, B, and C.  D_Test will inherit <br/>\ndirectly from C_Test, as seen below:<br/>\n<br/>\npublic class D_Test extends C_Test{<br/>\n  public Object getObjectC(String param){<br/>\n    return new String(param);<br/>\n  }<br/>\n}<br/>\n<br/>\nNow, to functionally test D for A and B compliance, C_Test_A_Test and C_Test_B_Test both <br/>\nneed access to D&#39;s implementation of getObjectC(String).  If I were to make C_Test_A_Test <br/>\nor C_Test_B_Test static nested classes, they would not be able to reference D&#39;s getObjectC<br/>\n(String) method.<br/>\n<br/>\nIn fact, non-static inner classes are exactly what I want here because I want C_Test_A_Test <br/>\nand C_Test_B_Test to differ for each extension of C_Test (e.g. if I make another class <br/>\ncalled E that also extends C, when testing E I want E&#39;s getObjectC(String) method to be <br/>\nused for functional testing of A, B, and C).<br/>\n<br/>\nJUnit doesn&#39;t seem to allow this, however.  I have to specify classes only to be run.  In my <br/>\ncase above, I want to specify two classes to be run (C_Test_A_Test and C_Test_B_Test) that <br/>\nare associated with an *instance* of C_Test.<br/>\n<br/>\nI&#39;ve really looked into making C_Test_A_Test and C_Test_B_Test static nested classes, but I <br/>\ncannot then provide them with a reference to an actual implementing test without <br/>\nbreaking a strong rule of transparency (the testing of A and B should not need to depend <br/>\non knowledge of the existence of a particular implementor... e.g. if I make them acquire a <br/>\nreference to D_Test, and then in the future I get rid of D_Test in favor of E_Test, it will <br/>\nbreak my existing tests).<br/>\n<br/>\nI cannot be the only person to have encountered this problem, but I also cannot find any <br/>\ngood design patterns to solve this online.  Only simpler cases are illustrated (for example <br/>\ncases where I can acquire an instance of C directly, which is not the case here because C is <br/>\nalso an interface).<br/>\n<br/>\nCan anyone help?<br/>\n<br/>\n(P.S. to anyone who has made it this far, thanks already for sticking with my abnoxiously <br/>\nlong post!)<br/>\n<br/>\n(P.P.S. I&#39;ve also already seen that JUnit 4.1 will have EnclosedRunner, which will execute <br/>\nstatic nested classes automatically (thus getting rid of the need to call <br/>\nJUnitCore.runClasses(...) as I&#39;ve done above, but my impression is that non-static inner <br/>\nclasses will still be ignored as before).</div>", 
+    "prevInTime": 16588, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1146435979", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGUzM2RpYit2bDRoQGVHcm91cHMuY29tPg=="
+    }
+}

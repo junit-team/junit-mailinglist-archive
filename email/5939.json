@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 5940, 
+    "senderId": "axYZAUnUMl0bHPbU9MPAr7ND_EQJgdjrRIBHUAMyDGMC9xnBW_HXZeMbYaiMYQcOHcLNYDlUjs0XAUh3gDgHl8NTS65O9LZG4C7FpdYfcUA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Do JUnit internals suck?!?", 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "authorName": "Steven Taschuk", 
+    "msgSnippet": "Quoth Berin Loritsch: [...] ... Um.  Perhaps I m missing the point, but I d prefer to have the Test-creation logic outside of the TestRunner.  For example: ", 
+    "msgId": 5939, 
+    "topicId": 5875, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 114327599, 
+    "messageBody": "<div id=\"ygrps-yiv-545443132\">Quoth Berin Loritsch:<br/>\n  [...]<br/>\n<blockquote><span title=\"ireply\"> &gt; The whole Name thing is irrelevant at this point.  If a Test<br/>\n&gt; implements the TestFixture interface, then it will use reflection<br/>\n&gt; to pull all the interfaces.  So the interface should be something<br/>\n&gt; like this:<br/>\n&gt; <br/>\n&gt; interface TestFixture<br/>\n&gt; {}<br/>\n&gt; <br/>\n&gt; When the Test Collector/Test Runner runs across any Class<br/>\n&gt; implementing TestFixture, it is converted into a group of<br/>\n&gt; Test objects.  [...]<br/>\n<br/>\n </span></blockquote>Um.  Perhaps I&#39;m missing the point, but I&#39;d prefer to have the<br/>\nTest-creation logic outside of the TestRunner.  For example:<br/>\n<br/>\n\tinterface TestFactory {<br/>\n\t\tTest makeTest();<br/>\n\t}<br/>\n<br/>\n\tclass OneMethodTest implements Test {<br/>\n\t\tOneMethodTest( Class c, Method m ) {<br/>\n\t\t\t// ...<br/>\n\t\t}<br/>\n\t\tvoid run( TestResult result ) {<br/>\n\t\t\t// instantiate c<br/>\n\t\t\t// execute instance.setUp()<br/>\n\t\t\t// execute instance.m<br/>\n\t\t\t// execute instance.tearDown()<br/>\n\t\t}<br/>\n\t\t// ...<br/>\n\t}<br/>\n<br/>\n\tclass ReflectiveTestFactory implements TestFactory {<br/>\n\t\tReflectiveTestFactory() {<br/>\n\t\t\t// factory based on self<br/>\n\t\t}<br/>\n\t\tReflectiveTestFactory( Class c ) {<br/>\n\t\t\t// factory based on class c<br/>\n\t\t}<br/>\n\t\tTest makeTest() {<br/>\n\t\t\t// scan c (or self) for test* methods<br/>\n\t\t\t// make a OneMethodTest for each<br/>\n\t\t\t// return a TestSuite containing those<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nFor backwards compatibility, a TestRunner encountering a TestCase<br/>\ncan make a ReflectiveFactory for it.  In general it expects to<br/>\nencounter TestFactory implementations and let them make the Tests.<br/>\n<br/>\nFor new test implementations, it is sufficient to put test*<br/>\nmethods in a subclass of ReflectiveFactory.  This is just like<br/>\nsubclassing TestCase now, but there&#39;s no need for the String<br/>\nconstructor (which might, as Meyers implied elsewhere in the<br/>\nthread, encourage novice users to put setup in setUp() instead of<br/>\nin the constructor).<br/>\n<br/>\nIf it is inconvenient to subclass ReflectiveFactory (as when the<br/>\ntests rely on partaking of some other inheritance hierarchy), it<br/>\nis convenient enough to write<br/>\n<br/>\n\tclass MyTests implements TestFactory {<br/>\n\t\tTest makeTest() {<br/>\n\t\t\treturn new ReflectiveTestFactory(<br/>\n\t\t\t\tthis.getClass() ).makeTest();<br/>\n\t\t}<br/>\n\t\t// ...<br/>\n\t}<br/>\n<br/>\nAs with the static suite() method, the advantage of this approach<br/>\nis that tests can be generated however is desired.  Unlike<br/>\nsuite(), makeTest() above is an instance method, which as<br/>\nSilverstein points out elsewhere in the thread makes it easier to<br/>\nmake tests from other frameworks work as JUnit tests.</div>", 
+    "prevInTime": 5938, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1033707026", 
+    "canDelete": false, 
+    "nextInTopic": 5951, 
+    "prevInTopic": 5936, 
+    "headers": {
+        "inReplyToHeader": "PDNEOUM5OTRGLjMwNjA4QGFwYWNoZS5vcmc+OyBmcm9tIGJsb3JpdHNjaEBhcGFjaGUub3JnIG9uIFRodSwgT2N0IDAzLCAyMDAyIGF0IDAzOjIzOjU5UE0gLTA0MDA=", 
+        "messageIdInHeader": "PDIwMDIxMDAzMjI1MDI2LkE2MTg3QHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "referencesHeader": "PGFuaTNsditxMmNxQGVHcm91cHMuY29tPiA8M0Q5Qzk5NEYuMzA2MDhAYXBhY2hlLm9yZz4="
+    }
+}

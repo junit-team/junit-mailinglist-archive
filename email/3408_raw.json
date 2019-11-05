@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 3409, 
+    "senderId": "oIRzw4pxrea1r-Twp6krPNAH9RaznXhyGVT_qEYY9pE9H920Lkc7SJwp-AvBe0_hKkLOWsUSO39cNR0W_JLm01fUx2dojEmL6p2zn6MZG6JzKg3X", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit Tests and Business Rules", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "This is an excellent suggestion. Business rule processing is slowly making its way into Java proper under javax.rules. Until then, this is a good approach;", 
+    "msgId": 3408, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 2 Dec 2001 20:19:22 -0000\r\nReceived: (qmail 38575 invoked from network); 2 Dec 2001 20:19:22 -0000\r\nReceived: from unknown (216.115.97.171)\n  by m9.grp.snv.yahoo.com with QMQP; 2 Dec 2001 20:19:22 -0000\r\nReceived: from unknown (HELO tomts9-srv.bellnexxia.net) (209.226.175.53)\n  by mta3.grp.snv.yahoo.com with SMTP; 2 Dec 2001 20:19:23 -0000\r\nReceived: from diasparsoftware.com ([64.228.112.109])\n          by tomts9-srv.bellnexxia.net\n          (InterMail vM.4.01.03.16 201-229-121-116-20010115) with ESMTP\n          id &lt;20011202201922.TYCX20714.tomts9-srv.bellnexxia.net@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Sun, 2 Dec 2001 15:19:22 -0500\r\nMessage-ID: &lt;3C0A8D16.1080301@...&gt;\r\nDate: Sun, 02 Dec 2001 15:20:38 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.2) Gecko/20010726 Netscape6/6.1\r\nX-Accept-Language: en-us\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] JUnit Tests and Business Rules\r\nReferences: &lt;6720000.1007321888@...&gt; &lt;3C0A8977.B8DB4039@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nX-Yahoo-Profile: nails762\r\n\r\nThis is an excellent suggestion. Business rule processing is slowly \nmaking its way into Java proper under javax.rules. Until then, this is a \ngood approach; however...\n\nif you do not plan to externalize the business rules, but rather expect \nthat they continue to be hardcoded in Java, then there&#39;s little point \nabstracting now. You could simply have an object that can evaluate the \nconjuction of all the conditions and each condition on its own.\n\nclass MyRule {\n    boolean isCondition1();\n    boolean isCondition2();\n    ....\n    boolean shouldFire();\n}\n\nNow you can easily mock:\n\nclass MockMyRule {\n    // all the stuff above, plus...\n    void forceCondition1(boolean howShouldIAnswer);\n    ...\n}\n\nNow you can create a number of MockMyRule objects to test whether the \nrule&#39;s collaborator act properly, depending whether the rule should fire \nor any individual condition of the rule is true.\n\n\nOf course, as soon as you have two rules, you should factor out into...\n\nclass BusinessRule {\n    boolean isCondition(String name);\n    boolean shouldFire();\n }\n\nfor named conditions (a Map of conditions, for example), and so on...\n\nJBR.\n\nMike Clark wrote:\n\n&gt; Mark Derricutt wrote:\n&gt;\n&gt; &gt;\n&gt; &gt; Are there any existing patterns/frameworks for implementing rule based\n&gt; &gt; logic cleanly?\n&gt; &gt;\n&gt;\n&gt; Another approach might be to define a common Rule interface, and then \n&gt; compose\n&gt; Rules into a RuleSet:\n&gt;\n&gt;     public interface Rule {\n&gt;         public boolean fire();\n&gt;     }\n&gt;\n&gt;     public class RuleSet implements Rule {\n&gt;\n&gt;         public void addRule(Rule rule) {\n&gt;             _rules.add(rule);\n&gt;         }\n&gt;\n&gt;         public boolean fire() {\n&gt;\n&gt;             Iterator rules = _rules.iterator();\n&gt;             while (rules.hasNext()) {\n&gt;                 Rule rule = (Rule)rules.next();\n&gt;                 boolean pass = rule.fire();\n&gt;                 if  (!pass) {\n&gt;                     return false;\n&gt;                 }\n&gt;             }\n&gt;             return true;\n&gt;         }\n&gt;\n&gt; Concrete Rule instances can be constructed with the data necessary to fire\n&gt; the rule as prescribed by their fire() method.  The RuleSet is \n&gt; assembled with\n&gt; a collection of Rule instances, with which a single call to fire() will\n&gt; effectively accomplish the &#39;if&#39; logic.  Combining AND and OR operators \n&gt; takes\n&gt; a bit more work.\n&gt;\n&gt; This is probably more than is necessary for checking whether a field is\n&gt; editable or not, but it does address the &#39;if&#39; statement for generic\n&gt; rule-based systems.  The simplest approach is to simply refactor each test\n&gt; into its own method, as you&#39;ve already pointed out.\n&gt;\n&gt; Hope this helps.\n&gt;\n&gt; Mike\n&gt;\n&gt; --\n&gt; Mike Clark\n&gt; Clarkware Consulting, Inc.\n&gt; http://www.clarkware.com\n&gt; 720.851.2014\n\n\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 3406, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3407, 
+    "contentTrasformed": false, 
+    "postDate": "1007324438", 
+    "canDelete": false, 
+    "nextInTopic": 3409, 
+    "prevInTopic": 3407, 
+    "headers": {
+        "messageIdInHeader": "PDNDMEE4RDE2LjEwODAzMDFAZGlhc3BhcnNvZnR3YXJlLmNvbT4=", 
+        "referencesHeader": "PDY3MjAwMDAuMTAwNzMyMTg4OEBzcGF3bi5zZTdlbi5vcmc+IDwzQzBBODk3Ny5COERCNDAzOUBjbGFya3dhcmUuY29tPg=="
+    }
+}

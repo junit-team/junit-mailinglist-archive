@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 16633, 
+    "senderId": "WmmpFKio6aLzVKGsq_43O9Tccly5p7msnar50gCY7ufWjTU9UBAt8K8Ii5ZSph4lXLjstR0P-CYKSXSDziUXBcack1BCEEv_nJMTASjRqIwYeo3z", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running unit tests (without testsuites) with ant and eclipse", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Hi Mark, This is what I have used before using DynamicSuites:   ", 
+    "msgId": 16632, 
+    "profile": "j0hlrogge", 
+    "topicId": 16631, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-140542739\">Hi Mark,<br/>\n<br/>\nThis is what I have used before using DynamicSuites:<br/>\n<br/>\n&lt;junit printsummary=&quot;yes&quot; haltonfailure=&quot;yes&quot;&gt;<br/>\n    &lt;classpath&gt;<br/>\n    \t&lt;pathelement location=&quot;${build.tests}&quot;/&gt;<br/>\n    \t&lt;pathelement path=&quot;${java.class.path}&quot;/&gt;<br/>\n    &lt;/classpath&gt;<br/>\n<br/>\n    &lt;formatter type=&quot;plain&quot;/&gt;<br/>\n<br/>\n    &lt;batchtest fork=&quot;yes&quot; todir=&quot;${reports.tests}&quot;&gt;<br/>\n    \t&lt;fileset dir=&quot;${src.tests}&quot;&gt;<br/>\n    \t\t&lt;include name=&quot;**/*Test*.java&quot;/&gt;<br/>\n    \t\t&lt;exclude name=&quot;**/AllTests.java&quot;/&gt;<br/>\n    \t&lt;/fileset&gt;<br/>\n    &lt;/batchtest&gt;<br/>\n&lt;/junit&gt;<br/>\n\t\t<br/>\nThis is a bit slow though due to fork=&quot;yes&quot; but that gives you a clean<br/>\nJVM for your tests.<br/>\nThere are a few solutions for suite maintainance, one of them is<br/>\nhaving eclipse update them for you. That should look something like<br/>\nthis:<br/>\n<br/>\npublic class AllTests {<br/>\n<br/>\n\tpublic static Test suite() {<br/>\n\t\tTestSuite suite = new TestSuite(&quot;Test for com.ohlrogge.uciti.word&quot;);<br/>\n\t\t//$JUnit-BEGIN$<br/>\n\t\tsuite.addTestSuite(TestVerbAgati.class);<br/>\n\t\tsuite.addTestSuite(TestVerbIti.class);<br/>\n\t\tsuite.addTestSuite(TestVerbEti.class);<br/>\n\t\tsuite.addTestSuite(TestVerbAti.class);<br/>\n\t\tsuite.addTestSuite(TestVerbAkati.class);<br/>\n\t\tsuite.addTestSuite(TestVerbAhati.class);<br/>\n\t\tsuite.addTestSuite(TestVerbUnknownEnding.class);<br/>\n\t\tsuite.addTestSuite(TestVerbSati.class);<br/>\n\t\t//$JUnit-END$<br/>\n\t\treturn suite;<br/>\n\t}<br/>\n<br/>\n}<br/>\n<br/>\nI generated it with new | other | junit | testsuite, i think that I<br/>\nhave seen some &quot;update suite&quot; option somewhere but I can&#39;t find it<br/>\nagain. Anyone else on the list that knows?<br/>\n<br/>\nThe option I am using now is DynamicSuites:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://rmock.sourceforge.net/dynamicsuites.html\">http://rmock.sourceforge.net/dynamicsuites.html</a><br/>\n<br/>\nThis resolves the suite dynamically in runtime. This is way faster<br/>\nthan batch-test in forked mode and allows for some creativity in<br/>\ntest-selection and data-driven tests.<br/>\n<br/>\nThere is also something similar in jUnitt add ons if you prefer that.<br/>\n<br/>\nFrom my experience with dynamic suites i can warmly recomend that<br/>\nsolution and I think that I can recomend the junit add on solution<br/>\naswell although I have not tried it myself.<br/>\n<br/>\n<br/>\nAbout plugin tests (I am assuming that you mean testing eclipse<br/>\nplugins) I think that you need to run ant within eclipse headless (but<br/>\nI guess you already know that). If you don&#39;t then maybe this article<br/>\ncan point you in the right direction:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.eclipse.org/articles/Article-PDE-Automation/automation.html\">http://www.eclipse.org/articles/Article-PDE-Automation/automation.html</a><br/>\n<br/>\nHope this helps.<br/>\n<br/>\n/J<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 5/9/06, Mark Levison &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mlevison@...\">mlevison@...</a>&gt; wrote:<br/>\n&gt; I realize that this question realy belongs in an Eclipse newsgroup - but<br/>\n&gt; I&#39;ve not received any response so far so I thought I would try here as well.<br/>\n&gt; BTW I know that JUnit 4.0 makes this entire problem go away - but it will be<br/>\n&gt; a few months before we can switch over.<br/>\n&gt;<br/>\n&gt; Eclipse 3.1 provides us with the facility to run all the unit tests in a<br/>\n&gt; plug-in without test suites. This is a wonderful feature given how hard it<br/>\n&gt; is to maintain test suites. However I&#39;m struggling to find documentation<br/>\n&gt; that explains how to run these same tests from ant. So I have two questions<br/>\n&gt;<br/>\n&gt; 1)       How do I run plain JUnit tests (without test suites) from Ant?<br/>\n&gt;<br/>\n&gt; 2)       How do I run &quot;JUnit plug-in tests&quot; (without test suites) from Ant?<br/>\n&gt;<br/>\n&gt; Confused and feeling under documented<br/>\n&gt; Mark in Ottawa<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 16631, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1147209420", 
+    "canDelete": false, 
+    "nextInTopic": 16635, 
+    "prevInTopic": 16631, 
+    "headers": {
+        "inReplyToHeader": "PGY1Y2M0MWNhMDYwNTA5MTEyMnY0NzlhMjY0NnYzNTJlZjU3NzVmNzU5OTc5QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwNTA5MTQxN2wzNzZhZGI1N2dlYjg3OTYxNTlhM2MxYmQzQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGY1Y2M0MWNhMDYwNTA5MTEyMnY0NzlhMjY0NnYzNTJlZjU3NzVmNzU5OTc5QG1haWwuZ21haWwuY29tPg=="
+    }
+}

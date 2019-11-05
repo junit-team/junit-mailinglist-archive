@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 10527, 
+    "senderId": "SFwTl1hOgmrvlmYGmFVHZc5sa6ouAteFf7QYGP7tjBMywhQrbADUIsU1o5H4SBKSZTNSt_Gzkd3NOxZbWs5Z22llvJPhJBunQ2lf", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Platform dependent JUnit testcases", 
+    "from": "Curt Sampson &lt;yahoo_sucks@...&gt;", 
+    "authorName": "Curt Sampson", 
+    "msgSnippet": "... If it s on the class level, I ve used marker interfaces in the past to indicate what can be used where. For example, for some customer tests executed via", 
+    "msgId": 10526, 
+    "rawEmail": "Return-Path: &lt;yahoo_sucks@...&gt;\r\nX-Sender: yahoo_sucks@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 49024 invoked from network); 24 Feb 2004 08:51:12 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m1.grp.scd.yahoo.com with QMQP; 24 Feb 2004 08:51:12 -0000\r\nReceived: from unknown (HELO platonic.cynic.net) (204.80.150.245)\n  by mta2.grp.scd.yahoo.com with SMTP; 24 Feb 2004 08:51:11 -0000\r\nReceived: from angelic.cynic.net (angelic-platonic.cvpn.cynic.net [198.73.220.226])\n\tby platonic.cynic.net (Postfix) with ESMTP id 104D2C146\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 24 Feb 2004 08:51:08 +0000 (UTC)\r\nReceived: from localhost (localhost [127.0.0.1])\n\tby angelic.cynic.net (Postfix) with ESMTP id 5005A8736\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 24 Feb 2004 17:51:07 +0900 (JST)\r\nDate: Tue, 24 Feb 2004 17:51:07 +0900 (JST)\r\nX-X-Sender: cjs@...\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;c1d7sh+8drl@...&gt;\r\nMessage-ID: &lt;Pine.NEB.4.58.0402241743560.12607@...&gt;\r\nReferences: &lt;c1d7sh+8drl@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nX-eGroups-Remote-IP: 204.80.150.245\r\nFrom: Curt Sampson &lt;yahoo_sucks@...&gt;\r\nSubject: Re: [junit] Re: Platform dependent JUnit testcases\r\nX-Yahoo-Group-Post: member; u=110189933\r\nX-Yahoo-Profile: cjstokyo\r\n\r\nOn Mon, 23 Feb 2004, humbugzilla wrote:\n\n&gt; I was thinking that someone else might take the single testclass\n&gt; (potentially one of many) intended only for Windows and try to run it\n&gt; standalone on another platform, but I guess this boils down to a\n&gt; question of documenting the testcases properly including valid runtime\n&gt; environments.\n\nIf it&#39;s on the class level, I&#39;ve used marker interfaces in the past to\nindicate what can be used where. For example, for some customer tests\nexecuted via junit I wanted to mark some as failing for the moment:\n\n    public interface FailingTestCase {\n    }\n\n    public class SomeTests extends TestCase implements FailingTestCase {\n\t...\n    }\n\nI one suite() method that would run all of the tests, and another that\nwould exclude the ones implementing FailingTestCase:\n\n    public class KnownWorking extends TestSuite {\n\tpublic static Test suite() {\n\t    TestSuite suite = new TestSuite();\n\t    for (int i = 0; i &lt; All.ALL_TEST_CLASSES.length; i++) {\n\t\tClass testCase = All.ALL_TEST_CLASSES[i];\n\t\tif (!NotKnownWorking.class.isAssignableFrom(testCase))\n\t\t    suite.addTestSuite(All.ALL_TEST_CLASSES[i]);\n\t    }\n\t    return suite;\n\t}\n    }\n\nThat didn&#39;t work so well because I wanted to do things on a test method\nby test method basis, so I switched to naming some methods with a\nspecial prefix:\n\n    public class SomeTests extends TestCase {\n\tpublic void testFoo() {\n\t    ...\n\t}\n\tpublic void FAILINGtestBar() {\n\t    ...\n\t}\n    }\n\nAnd then you can write your own little suite() method to deal with selecting\nout the failing methods as well as the standard methods.\n\nMaybe it would be simpler to just put an if statement at the beginning of\nsome tests:\n\n\tpublic void testFoo() {\n\t    if (!platformIs(WINDOWS))\n\t\treturn;\n\t    ...\n\t}\n\ncjs\n-- \nCurt Sampson  &lt;cjs@...&gt;   +81 90 7737 2974   http://www.NetBSD.org\n    Don&#39;t you know, in this new Dark Age, we&#39;re all light.  --XTC\n\n", 
+    "profile": "cjstokyo", 
+    "topicId": 10512, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 110189933, 
+    "prevInTime": 10525, 
+    "contentTrasformed": false, 
+    "postDate": "1077612667", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10524, 
+    "headers": {
+        "inReplyToHeader": "PGMxZDdzaCs4ZHJsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNTguMDQwMjI0MTc0MzU2MC4xMjYwN0BhbmdlbGljLXZ0ZncuY3Zwbi5jeW5pYy5uZXQ+", 
+        "referencesHeader": "PGMxZDdzaCs4ZHJsQGVHcm91cHMuY29tPg=="
+    }
+}

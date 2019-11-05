@@ -1,0 +1,29 @@
+{
+    "topicId": 2153, 
+    "postDate": "996261763", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "gjfdh@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "J-AE0T9fdtOpH9wOivNfKmBC49xvwu6gHKOdX4jbaPeINMTT4X0vT0t5DSvZ7_nsXCiRWng6", 
+    "nextInTime": 2166, 
+    "userId": 0, 
+    "prevInTime": 2164, 
+    "prevInTopic": 2153, 
+    "headers": {
+        "inReplyToHeader": "PEY2WHU5OHNNRDl4VDNsRW1GV3EwMDAwYzk2MEBob3RtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PDlqc2YyMytpMDVuQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "gjfdh@yahoo.com", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "Another tip.  Sometimes you might want to purposefully throw an exception.  (Compared to the recent try{}catch and throws Exception discussions). Suppose you", 
+    "contentTrasformed": false, 
+    "msgId": 2165, 
+    "nextInTopic": 2168, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;gjfdh@...&gt;\r\nX-Sender: gjfdh@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 27 Jul 2001 19:22:48 -0000\r\nReceived: (qmail 64586 invoked from network); 27 Jul 2001 19:22:48 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 27 Jul 2001 19:22:48 -0000\r\nReceived: from unknown (HELO n34.groups.yahoo.com) (216.115.96.84) by mta3 with SMTP; 27 Jul 2001 19:22:47 -0000\r\nX-eGroups-Return: gjfdh@...\r\nReceived: from [10.1.10.109] by mk.egroups.com with NNFMP; 27 Jul 2001 19:22:47 -0000\r\nDate: Fri, 27 Jul 2001 19:22:43 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Throwing exceptions on purpose\r\nMessage-ID: &lt;9jsf23+i05n@...&gt;\r\nIn-Reply-To: &lt;F6Xu98sMD9xT3lEmFWq0000c960@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1409\r\nX-Mailer: eGroups Message Poster\r\nFrom: gjfdh@...\r\n\r\nAnother tip.  Sometimes you might want to purposefully throw an \nexception.  (Compared to the recent try{}catch and &quot;throws Exception&quot; \ndiscussions).\n\nSuppose you are implementing a static suite() method.  The method \nconstructs a test suite using repeated calls to Suite.addTest().  \nMaybe it fills the Suite by reading test cases out of a text file or \nwalking through an XML DOM.  The suite() code could throw an \nexception during this addTest() loop.  What should you do?  Rather \nthan bailing out, skipping the test, or printing a stack trace to the \nconsole, add a custom exception test to the suite.  This will let the \nother tests run fine and cause the bad test to be logged and counted \nas a failure.\n\nHere&#39;s an example:\n\nstatic class RecordFailedException extends TestCase {\n   Exception e;\n\n   RecordFailedException(String name) {\n      super(name);\n   }\n\n   RecordFailedException(String fakeName, Exception e) {\n      super(fakeName);\n      this.e = e;\n   }\n\n   public void runTest() throws Exception {\n      throw e;\n   }\n}\n\npublic static Test suite() {\n  TestSuite suite = new TestSuite();\n\n  ...\n  for (int i = 0; i &lt; arrayOfTests.length; ++i) {\n     try {\n        Object test = ... something that might throw MyException ...;\n        suite.addTest(test);\n     } catch (MyException e) {\n       suite.addTest(new RecordFailedException(arrayOfTests[i].name, \ne));\n     }\n   }\n   return suite;\n}\n\n\n", 
+    "subject": "Throwing exceptions on purpose"
+}

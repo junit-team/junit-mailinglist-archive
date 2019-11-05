@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 11230, 
+    "senderId": "GjE-ghxIu1-L3JuVDkUIjTREAYQ9SJelErmA-HX0fvpKCvoTdJcw5ROjOlDPOpydltszKrB2MNZQi0FBgx1qE6HXyoJauvhpwWAXQJ7dzA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit tests and common resources", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Not quite. Instead, it instantiates the test case class, invokes setUp(), a test method, then tearDown(). There is no need to subclass anonymously since", 
+    "msgId": 11229, 
+    "profile": "nails762", 
+    "topicId": 11214, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1311085890\">youlian wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi,<br/>\n&gt; <br/>\n&gt; I hope this has a simple answer...<br/>\n&gt; <br/>\n&gt; My issue is when I write test cases that exercise code that depends<br/>\n&gt; on a common resource. There is couple of things, but the simplest<br/>\n&gt; case is a serial port.<br/>\n&gt; <br/>\n&gt; Lets say that I have a class that implements a protocol with a<br/>\n&gt; hardware device over serial port connection. I would like to develop<br/>\n&gt; a test to verify that the class implements the protocol correctly.<br/>\n&gt; This means, that I will have to have the device connected and<br/>\n&gt; operational when running the test, and that is o.k.<br/>\n&gt; <br/>\n&gt; I could mock the serial connection - I understand this, but this is<br/>\n&gt; not my intention. I see little value in this for many reasons. I<br/>\n&gt; want to test the real thing.<br/>\n&gt; <br/>\n&gt; So, I write a simple test suite and test case. The test case invokes<br/>\n&gt; different methods - lets say total of three. To simplify, lets say,<br/>\n&gt; that those methods each send different command to the device. In<br/>\n&gt; order to do that each test method will open the comm port, write a<br/>\n&gt; string and close it.<br/>\n&gt; <br/>\n&gt; Sounds simple enough. However, when using JUnit, all these tests<br/>\n&gt; execute in parallel and since the resource is shared, all but one<br/>\n&gt; fail with SerialPortInUseException.<br/>\n&gt; <br/>\n<br/>\n<br/>\n&gt; I have read the JUnit Cookbook and undesrstand the reason - JUnit<br/>\n&gt; via reflection generates dynamically child classes. <br/>\n<br/>\n </span></blockquote>Not quite. Instead, it instantiates the test case class, invokes <br/>\nsetUp(), a test method, then tearDown(). There is no need to subclass <br/>\nanonymously since JUnit 2.0 first appeared.<br/>\n<br/>\n<blockquote><span title=\"ireply\">  &gt; For each test<br/>\n&gt; method setUp and tearDown is invoked. The log would look something<br/>\n&gt; like this:<br/>\n&gt; <br/>\n&gt; setUp()<br/>\n&gt; setUp()<br/>\n&gt; setUp()<br/>\n&gt; ...<br/>\n&gt; test1()<br/>\n&gt; test2()<br/>\n&gt; testx()<br/>\n&gt; ...<br/>\n&gt; tearDown()<br/>\n&gt; tearDown()<br/>\n&gt; tearDown()<br/>\n<br/>\n </span></blockquote>No.<br/>\n<br/>\nsetUp(), test1(), tearDown();<br/>\nsetUp(), test2(), tearDown();<br/>\n...<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; If I use setUp() or even testX() to open the connection, I always<br/>\n&gt; end up in conflict.<br/>\n<br/>\n </span></blockquote>You want to open the connection /once/. The easiest thing you can do <br/>\n(for now) is create a Singleton that contains a global connection that <br/>\nonly allows itself to be opened once. Let your tests use that connection.<br/>\n<br/>\nUltimately, what you&#39;d /like/ to do is Extract an Interface representing <br/>\nthe API for your resource, then use a mock objects approach to test how <br/>\nwell your code interacts with that API. The majority of your tests will <br/>\nbe like this. Eventually, you will have a small number of tests that <br/>\nactually verify that the /production/ implementation of your new <br/>\ninterface uses the serial port API correctly. This does not make your <br/>\nproblem go away, but it lessens the problem&#39;s impact, isolating it to a <br/>\nsingle class (a well-known part of the code). This is the point of OOP.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; My questions are:<br/>\n&gt; Is there a way to explicitly control the order of execution of test<br/>\n&gt; methods within a test case, so to control the access to commonly<br/>\n&gt; used resources and account for their state? (system ports, JDBC<br/>\n&gt; connections, etc.)<br/>\n&gt; <br/>\n&gt; Is JUnit the tool for such a job?<br/>\n<br/>\n </span></blockquote>No, it isn&#39;t. Still, whenenver I want to do something in my design that <br/>\nJUnit makes difficult, it is /usually/ a sign that my design needs <br/>\nimprovement.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 11228, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1087677214", 
+    "canDelete": false, 
+    "nextInTopic": 11230, 
+    "prevInTopic": 11216, 
+    "headers": {
+        "inReplyToHeader": "PGNhdDUwciszc25yQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwRDRBMzFFLjIwMTA2MDhAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNhdDUwciszc25yQGVHcm91cHMuY29tPg=="
+    }
+}

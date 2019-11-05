@@ -1,0 +1,29 @@
+{
+    "topicId": 4741, 
+    "postDate": "1020215195", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Celis &lt;shane@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "4qunsSaT2Sch7AVSOY2jFpU28QfGy9Csu3hFQo9mCUAVVtADY0uIiIka-gBIgCkenfeF5Rqofvw_CXZ8auRqgpVL_2mDBiQeU3o", 
+    "nextInTime": 4788, 
+    "userId": 76541257, 
+    "prevInTime": 4786, 
+    "prevInTopic": 4782, 
+    "headers": {
+        "inReplyToHeader": "PGFha2htZCtwZmtwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFFRTEyOUM2LTVDOUYtMTFENi1COUNGLTAwMzA2NUY5QTgwRUB0ZXJyYXNwcmluZy5jb20+"
+    }, 
+    "authorName": "Shane Celis", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "David, In your prior email you stated that your tests lean more towards being functional tests.  So I m curious as to why you don t think the following is", 
+    "contentTrasformed": false, 
+    "msgId": 4787, 
+    "nextInTopic": 4842, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;Shane@...&gt;\r\nX-Sender: Shane@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_1); 1 May 2002 01:06:34 -0000\r\nReceived: (qmail 68097 invoked from network); 1 May 2002 01:06:34 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m7.grp.scd.yahoo.com with QMQP; 1 May 2002 01:06:34 -0000\r\nReceived: from unknown (HELO MAIL.fremont.corp.terraspring.com) (64.124.70.190)\n  by mta1.grp.scd.yahoo.com with SMTP; 1 May 2002 01:06:34 -0000\r\nReceived: from metric ([10.0.0.122]) by MAIL.fremont.corp.terraspring.com with Microsoft SMTPSVC(5.0.2195.2966);\n\t Tue, 30 Apr 2002 18:06:34 -0700\r\nDate: Tue, 30 Apr 2002 18:06:35 -0700\r\nSubject: Re: [junit] Re: Changing junit.framework.Assert to instance methods\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nMime-Version: 1.0 (Apple Message framework v481)\r\nTo: junit@yahoogroups.com\r\nContent-Transfer-Encoding: 7bit\r\nIn-Reply-To: &lt;aakhmd+pfkp@...&gt;\r\nMessage-Id: &lt;AEE129C6-5C9F-11D6-B9CF-003065F9A80E@...&gt;\r\nX-Mailer: Apple Mail (2.481)\r\nReturn-Path: shane@...\r\nX-OriginalArrivalTime: 01 May 2002 01:06:34.0587 (UTC) FILETIME=[6FEC1AB0:01C1F0AC]\r\nFrom: Shane Celis &lt;shane@...&gt;\r\nX-Yahoo-Group-Post: member; u=76541257\r\n\r\nDavid,\n\nIn your prior email you stated that your tests &quot;lean more towards being \nfunctional tests.&quot;  So I&#39;m curious as to why you don&#39;t think the \nfollowing is adequately addressed by JFunc?\n\nimport junit.framework.*;\nimport junit.extensions.jfunc.*;\n\npublic class MultiFailureTest extends TestCase {\n\n\tpublic MultiFailureTest(String name) {\n\t\tsuper(name);\n\t}\n\tpublic void testMultipleFailures() {\n\t// use JFuncTestCase, which looks just like JUnit&#39;s TestCase, except it\n\t// uses it&#39;s own assert class that is non-static\n\tJFuncTestCase test = new JFuncTestCase(&quot;multi failure&quot;) {\n\t\tprotected void runTest() {\n\t\t\tfail(&quot;one&quot;);\n\t\t\tfail(&quot;two&quot;);\n\t\t}\n\t};\n\tTestResult result = new TestResult();\n\ttest.setFatal(false);  // make assertions non-fatal, hence allow \nfor multiple failures\n\ttest.run(result);\n\tassertEquals(&quot;number of failures&quot;,2,result.failureCount());\n\t}\n}\n\nIf this feature is useful for unit testing, then by all means put it in \nJUnit.  If it&#39;s not or questionable, put it in JFunc.\n\n-shane\n\nhttp://jfunc.sourceforge.net\n\nOn Monday, April 29, 2002, at 03:32  PM, dvydra2 wrote:\n\n&gt; Kent,\n&gt;\n&gt; We added a TestResult field to TestCase, overrode fail() and made\n&gt; methods in Assert non-static.\n&gt;\n&gt; --- from TestCase ---\n&gt; private TestResult fResult;\n&gt; public void fail(String message) {\n&gt; fResult.addFailure(this,new AssertionFailedError(message));\n&gt; }\n&gt;\n&gt; ---- Test---------------\n&gt; package junit.framework.test;\n&gt;\n&gt; import junit.framework.*;\n&gt;\n&gt; public class MultiFailureTest extends TestCase {\n&gt;\n&gt; \tpublic MultiFailureTest(String name) {\n&gt; \t\tsuper(name);\n&gt; \t}\n&gt; \tpublic void testMultipleFailures() {\n&gt; \tTestCase test = new TestCase(&quot;multi failure&quot;) {\n&gt; \t\tprotected void runTest() {\n&gt; \t\t\tfail(&quot;one&quot;);\n&gt; \t\t\tfail(&quot;two&quot;);\n&gt; \t\t}\n&gt; \t};\n&gt; \tTestResult result = new TestResult();\n&gt; \ttest.run(result);\n&gt; \tassertEquals(&quot;number of failures&quot;,2,result.failureCount());\n&gt; \t}\n&gt; }\n&gt;\n&gt; Regards,\n&gt;\n&gt; David\n&gt;\n&gt;\n&gt; --- In junit@y..., &quot;kentlbeck&quot; &lt;kentbeck@c...&gt; wrote:\n&gt;&gt; Can you write up the behavior you&#39;d like to see as a test case?\n&gt;&gt; Perhaps it is possible to satisfy all constraints.\n&gt;&gt;\n&gt;&gt; Kent\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to \n&gt; http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "subject": "Re: [junit] Re: Changing junit.framework.Assert to instance methods"
+}

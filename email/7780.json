@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7781, 
+    "senderId": "rMCHVOwck6T61z7qtSfs1p1Degf8LwRMg26hklnc_FdJFsc1jb_QDlFSBnvA4DQQsJ65O5WxNLk0fXhuKX8G7F6WStlkfg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] A test to verify that an event is generated", 
+    "from": "Steve Freeman &lt;steve@...&gt;", 
+    "authorName": "Steve Freeman", 
+    "msgSnippet": "Almost right. Try the following: class MockListener implements DeviceListListener { public ExpectationCounter additions = new ExpectationCounter( additions ); ", 
+    "msgId": 7780, 
+    "profile": "smg_freeman", 
+    "topicId": 7751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30618548, 
+    "messageBody": "<div id=\"ygrps-yiv-2003441076\">Almost right. Try the following:<br/>\n<br/>\nclass MockListener implements DeviceListListener<br/>\n{<br/>\n   public ExpectationCounter additions =<br/>\n       new ExpectationCounter(&quot;additions&quot;);<br/>\n   public ExpectationCounter removals =<br/>\n       new ExpectationCounter(&quot;removals&quot;);<br/>\n<br/>\n   public void deviceAdded(DeviceListEvent event)  {<br/>\n     additions.inc();<br/>\n     assertEquals(event.getDevice(), device);<br/>\n   }<br/>\n<br/>\n   public void deviceRemoved(DeviceListEvent event) {<br/>\n     removals.inc();<br/>\n     assertEquals(event.getDevice(), device);<br/>\n   }<br/>\n}<br/>\n<br/>\n   RealService service = new RealService();<br/>\n   MockListener listener = new MockListener();<br/>\n<br/>\n   service.addDeviceListListener(listener);<br/>\n<br/>\n   listener.additions.setExpected(1);<br/>\n   listener.removals.setExpectNothing();<br/>\n<br/>\n   service.addDevice(device);<br/>\n<br/>\n   Verifier.verify(listener);<br/>\n<br/>\n   // repeat for removal.<br/>\n<br/>\n<br/>\nPoints of interest:<br/>\n- you need a real, not a mock, service. That&#39;s the object under test.<br/>\n- if you add the assertions to the listener, the code will explode in <br/>\nthe right place, when the mistake occurs, not after the fact at the end <br/>\nof the test.<br/>\n- ExpectationCounter is a utility class from the mockobjects library. <br/>\nThe inc() will fail if it&#39;s called too many times. You can do something <br/>\nsimilar with EasyMock or with the mockobjects dynamic library.<br/>\n- Verifier is a helper class that checks all the expectations set in an <br/>\nobject. In this case it will fail if inc() is called too few times.<br/>\n<br/>\nS.<br/>\n<br/>\n-- <br/>\n&quot;A LISP programmer knows the value of everything but the cost of nothing.<br/>\n  A C programmer knows the cost of everything but the value of nothing.&quot;<br/>\n(Todd Proebsting)</div>", 
+    "prevInTime": 7779, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1050691298", 
+    "canDelete": false, 
+    "nextInTopic": 7782, 
+    "prevInTopic": 7779, 
+    "headers": {
+        "inReplyToHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJBQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4=", 
+        "messageIdInHeader": "PDNFQTA0NkUyLjgwNTA4MDlAbTNwLmNvLnVrPg==", 
+        "referencesHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJBQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4="
+    }
+}

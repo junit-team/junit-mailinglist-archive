@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5223, 
+    "senderId": "PFaj1MSmV83-Qa8jkw8n07jAQAHbr_CNRp74zXLfVmih2gizN9y8o94bX5EpkNRNT1TwMdddJpT1W0waIdqzBCA2tT4y-Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: distinguishing between failures and errors", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... Good feedback!  Indeed, it wasn t as clear as I intended. Here s another attempt at that FAQ.  I ve chosen to test some IO classes that can possibly throw", 
+    "msgId": 5222, 
+    "profile": "clarkware", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "messageBody": "<div id=\"ygrps-yiv-1871469627\">pholser wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;--- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:<br/>\n&gt;<br/>\n&gt;&gt;In the following example, the IndexOutOfBoundsException is expected<br/>\n&gt;&gt;and checked with an assertion.  If the expected exception is not<br/>\n&gt;&gt;raised, then a failure is produced.  <br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;simplifying (the ctor that takes an int kind of misdirects):<br/>\n&gt;<br/>\n&gt;public void testExceptionExpected() {<br/>\n&gt;  try {<br/>\n&gt;    new ArrayList().get( 23 );<br/>\n&gt;    fail( &quot;Should have thrown IndexOutOfBoundsException&quot; );<br/>\n&gt;  }<br/>\n&gt;  catch ( IndexOutOfBoundsException success ) {<br/>\n&gt;  }<br/>\n&gt;}<br/>\n&gt;<br/>\n&gt;how about changing the example so that IndexOutOfBoundsException<br/>\n&gt;shouldn&#39;t be thrown.  plus, IndexOutOfBoundsException is an unchecked<br/>\n&gt;exception, so don&#39;t bother with adding it to the throws clause:<br/>\n&gt;<br/>\n&gt;  public void testExceptionUnexpected() {<br/>\n&gt;    List list = new ArrayList();<br/>\n&gt;    list.add( &quot;blah&quot; );<br/>\n&gt;    assertEquals( &quot;0th element&quot;, &quot;blah&quot;, list.get( 0 ) );<br/>\n&gt;  }<br/>\n&gt;[snip<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>Good feedback!  Indeed, it wasn&#39;t as clear as I intended.<br/>\n<br/>\nHere&#39;s another attempt at that FAQ.  I&#39;ve chosen to test some IO classes <br/>\nthat can possibly throw checked exceptions.  This demonstrates that <br/>\nunexpected checked exceptions are declared in the &#39;throws&#39; clause of the <br/>\ntest method.  It also tries to clarify what happens when unchecked <br/>\nexceptions are raised.<br/>\n<br/>\nIs this clearer?<br/>\n<br/>\n----<br/>\n<br/>\nQ: What&#39;s the difference between a failure and an error?<br/>\n<br/>\nA:<br/>\n<br/>\nAssertions are used to check for the possibility of failures, therefore failures are anticipated.  Errors are unanticipated problems resulting in uncaught exceptions being propagated from a JUnit test method. <br/>\n<br/>\nIn the following example, the FileNotFoundException is expected and checked with an assertion.  If the expected exception is not raised, then a failure is produced.  If any other unexpected IOException or unchecked exception (e.g. NullPointerException) is raised, the JUnit framework catches the exception and signals an error. \t<br/>\n<br/>\n    public void testNonexistentFileRead() throws IOException {<br/>\n        try {<br/>\n<br/>\n            File file = new File(&quot;doesNotExist.txt&quot;);<br/>\n            FileReader reader = new FileReader(file);<br/>\n            assertEquals(&#39;a&#39;, (char)reader.read());<br/>\n\t\t\t<br/>\n            fail(&quot;Should have thrown FileNotFoundException&quot;);<br/>\n\t<br/>\n        } catch (FileNotFoundException success) {}<br/>\n    }   <br/>\n<br/>\nIn the following example, an IOException is not expected.  The JUnit framework will signal an error if an IOException (e.g. FileNotFoundException) or any unchecked exception (e.g. NullPointerException) is raised. \t<br/>\n<br/>\n    public void testExistingFileRead() throws IOException {<br/>\n<br/>\n        File file = new File(&quot;exists.txt&quot;);<br/>\n        FileReader reader = new FileReader(file);<br/>\n\t\t\t<br/>\n        assertEquals(&#39;a&#39;, (char)reader.read());<br/>\n    }<br/>\n<br/>\nBoth failures and errors will cause the test to fail.  However, it is useful to differentiate between failures and errors because the debugging process is slightly different.  <br/>\n<br/>\nIn the first example, the use of fail() will not generate a complete stack trace including the method that raised the exception.  In this case that&#39;s sufficient since we anticipate that the exception will be raised.  If it&#39;s not raised, then it&#39;s a problem with the test itself.  <br/>\n<br/>\nIn the second example,  the JUnit framework catches the exception and generates an error with a complete stack trace for the exception.  Since we don&#39;t expect this exception to be raised, a complete stack trace is useful in debugging why it was raised.<br/>\n<br/>\n----<br/>\n<br/>\nMike<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 5221, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1024586905", 
+    "canDelete": false, 
+    "nextInTopic": 5223, 
+    "prevInTopic": 5217, 
+    "headers": {
+        "messageIdInHeader": "PDNEMTFGNDk5LjEwNDAzMDBAY2xhcmt3YXJlLmNvbT4=", 
+        "referencesHeader": "PGFlcTdjNytwODd2QGVHcm91cHMuY29tPg=="
+    }
+}

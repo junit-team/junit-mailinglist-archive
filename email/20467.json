@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20468, 
+    "senderId": "Bp_cvFQk3Q85OAenebtCGd1d2bI5je8EUU2grXD8j5OWXiXilEGBw4gZNv-XBKhspeLNCazOeJCQThfGFuxOHddNg_Zyz8YN", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: TextListener improvement", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Alex, It would help me if you provided test cases that break with the current code and pass with the changes below. Regards, Kent Beck Three Rivers Institute ", 
+    "msgId": 20467, 
+    "profile": "kentlbeck", 
+    "topicId": 20361, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-1261848927\">Alex,<br/>\n <br/>\nIt would help me if you provided test cases that break with the current code<br/>\nand pass with the changes below.<br/>\n <br/>\nRegards,<br/>\n <br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n  _____  <br/>\n<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\ntoalexsmail<br/>\nSent: Monday, April 28, 2008 4:33 PM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] Re: TextListener improvement<br/>\n<br/>\n<br/>\n<br/>\nPrintStreamListener has a bug. Here is correct version:<br/>\n<br/>\npublic class PrintStreamListener extends RunListener{<br/>\n//Definition of delimiters is in Description<br/>\nprivate static final Pattern DISPAY_NAME_PATTERN =<br/>\nPattern.compile(&quot;[()]&quot;); <br/>\nprivate TextListener textListener;<br/>\nprivate PrintStream writer;<br/>\n<br/>\npublic PrintStreamListener() {<br/>\nthis(System.out);<br/>\n}<br/>\n<br/>\npublic PrintStreamListener(PrintStream writer) {<br/>\nsuper();<br/>\nthis.textListener = new TextListener(writer);<br/>\nthis.writer = writer;<br/>\n}<br/>\n<br/>\n/**<br/>\n* For sub-classes use.<br/>\n* <br/>\n* @return<br/>\n*/<br/>\nprotected PrintStream getWriter(){<br/>\nreturn writer;<br/>\n}<br/>\n<br/>\nprivate PrintStream getNotNullWriter(){<br/>\nPrintStream writer = getWriter();<br/>\nif(writer==null){<br/>\nthrow new IllegalStateException(&quot;writer should be not null&quot;);<br/>\n}<br/>\nreturn writer;<br/>\n}<br/>\n<br/>\n<br/>\n/**<br/>\n* This method can be overriden in sub-classes.<br/>\n* <br/>\n* @param description<br/>\n* @throws IllegalArgumentException if description is null.<br/>\n*/<br/>\nprotected void writeMethodName(Description description){<br/>\nif(description==null){<br/>\nthrow new IllegalArgumentException(&quot;description should be not null&quot;);<br/>\n}<br/>\nString displayName = description.getDisplayName();<br/>\n//third place is empty, workaround to avoid ) at the end of the String<br/>\nString[] complexNames = DISPAY_NAME_PATTERN.split(displayName, 3); <br/>\nString methodName = (complexNames==null ||<br/>\ncomplexNames.length==0)?null:complexNames[0];<br/>\nif(methodName == null || &quot;&quot;.equals(methodName)){<br/>\nmethodName = displayName;<br/>\n}<br/>\nPrintStream writer = getNotNullWriter();<br/>\n<br/>\nwriter.print(methodName);<br/>\nwriter.print(&#39; &#39;);<br/>\n}<br/>\n<br/>\n<br/>\n/**<br/>\n* Called when an atomic test is about to be started.<br/>\n* @param description the description of the test that is about to be<br/>\nrun <br/>\n* (generally a class and method name)<br/>\n*/<br/>\n@Override<br/>\npublic void testStarted(Description description) {<br/>\ntextListener.testStarted(description);<br/>\n}<br/>\n<br/>\n/** <br/>\n* Called when an atomic test fails.<br/>\n* @param failure describes the test that failed and the exception<br/>\nthat was thrown<br/>\n*/<br/>\n@Override<br/>\npublic void testFailure(Failure failure) {<br/>\nDescription description = failure.getDescription();<br/>\nPrintStream writer = getNotNullWriter();<br/>\n<br/>\nwriteMethodName(description);<br/>\ntextListener.testFailure(failure);<br/>\nwriter.println();<br/>\n}<br/>\n<br/>\n/**<br/>\n* Called when a test will not be run, generally because a test<br/>\nmethod is annotated <br/>\n* with {@link org.junit.Ignore}.<br/>\n* @param description describes the test that will not be run<br/>\n*/<br/>\n@Override<br/>\npublic void testIgnored(Description description) {<br/>\nwriteMethodName(description);<br/>\nPrintStream writer = getNotNullWriter();<br/>\ntextListener.testIgnored(description);<br/>\nwriter.println();<br/>\n}<br/>\n<br/>\n<br/>\n@Override<br/>\npublic void testRunFinished(Result result) {<br/>\ntextListener.testRunFinished(result);<br/>\n}<br/>\n<br/>\n/**<br/>\n* Called before any tests have been run.<br/>\n* @param description describes the tests to be run<br/>\n*/<br/>\n@Override<br/>\npublic void testRunStarted(Description description) throws Exception {<br/>\nPrintStream writer = getNotNullWriter();<br/>\nString displayName = description.getDisplayName();<br/>\n//third place is empty, workaround to avoid ) at the end of the String<br/>\nString[] complexNames = DISPAY_NAME_PATTERN.split(displayName, 3); <br/>\nString className = (complexNames==null ||<br/>\ncomplexNames.length&lt;2)?null:complexNames[1];<br/>\nif(className == null || &quot;&quot;.equals(className)){<br/>\nclassName = displayName;<br/>\n}<br/>\nwriter.print(&quot;started to test &quot;+className);<br/>\nwriter.println(); <br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n <br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 20466, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1209437154", 
+    "canDelete": false, 
+    "nextInTopic": 20469, 
+    "prevInTopic": 20466, 
+    "headers": {
+        "inReplyToHeader": "PGZ2NW1zMyttbnRuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAxODcwMWM4YTlhMyQyN2M0YzczMCQwMjAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PGZyOGV0cytkazJnQGVHcm91cHMuY29tPiA8ZnY1bXMzK21udG5AZUdyb3Vwcy5jb20+"
+    }
+}

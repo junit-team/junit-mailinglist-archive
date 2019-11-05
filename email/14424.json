@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 14425, 
+    "senderId": "jacGPQHiHZTZMREa-qaGfq66sMHtEsL5kH8o18sOw7HnbjD4ukm8sLHFj9tvsry-p74GBJRtOpojF3qzUsjfDOUS56Dp5c8J6wJFPRWV", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Preventing JUnit from stopping on failures.", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "I d like to chime in on this discussion just to throw a wrench in the works. ;) First, I am of the notion that I don t generally want multiple failures per", 
+    "msgId": 14424, 
+    "profile": "jacaetev", 
+    "topicId": 14398, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "messageBody": "<div id=\"ygrps-yiv-603722748\">I&#39;d like to chime in on this discussion just to throw a wrench in the <br/>\nworks. ;)<br/>\n<br/>\nFirst, I am of the notion that I don&#39;t generally want multiple failures <br/>\nper test.   However, there *seems* to be an assumption in this thread <br/>\nthat multilpe asserts per test are somehow related to each other, such <br/>\nthat if one fails and I fix it then the other possibly failing asserts <br/>\nwould be fixed at the same time.  That is not always, and perhaps <br/>\ngenerally, not the case.<br/>\n<br/>\nFollowing is a simple, very contrived, example of applying a CreditMemo <br/>\nto a Sale and its associated RecurringSale.  This is merely an example <br/>\nto show that multiple asserts within a test are not related to each <br/>\nother such that fixing one would fix others, but the asserts are related <br/>\nto the general action of applying a CreditMemo to an Sale.<br/>\n<br/>\npublic class SaleTest extends TestCase {<br/>\n    ...<br/>\n    public void testApplyCreditMemo_whenRecurringSalesExist() {<br/>\n        CreditMemo cm = new <br/>\nCreditMemo().newSaleAmount(-10).renewalAmount(-10);<br/>\n        RecurringSale renewal = RecurringSale.from(opty);<br/>\n        Sale opty = new <br/>\nSale().newSaleAmount(10).renewalAmount(20).addRenewal(renewal);<br/>\n<br/>\n        assertEquals(30, renewal.renewalAmount());<br/>\n        assertSame(Stage.NEGOTIATION, renewal.stage());<br/>\n<br/>\n        opty.applyCreditMemo(cm);<br/>\n<br/>\n        // if this fails should I assume that fixing it would also fix <br/>\nthe assert<br/>\n        // that follows concerning the renewal&#39;s CloseDate or Stage?<br/>\n        assertEquals(10, opty.renewalAmount());<br/>\n<br/>\n        // whether or not this fails does not guarantee that following <br/>\nasserts<br/>\n        // would fail or pass<br/>\n        assertEquals(0, opty.newSaleAmount());<br/>\n<br/>\n        assertEquals(10, renewal.renewalAmount());<br/>\n        assertEquals(cm.invoiceDate(), renewal.closeDate());<br/>\n        assertSame(Stage.NOT_PURCHASED, renewal.stage());<br/>\n    }<br/>\n    ...<br/>\n}<br/>\n<br/>\npublic class Sale {<br/>\n    ...<br/>\n    public Sale applyCreditMemo(CreditMemo aCreditMemo) {<br/>\n        creditMemos().add(aCreditMemo);<br/>\n        offsetNewSaleAmountBy(aCreditMemo.newSaleAmount());<br/>\n        offsetRenewalAmountBy(aCreditMemo.renewalAmount());<br/>\n        for(RecurringSale renewal : this.recurringSale()) {<br/>\n            renewal.applyCreditMemo(aCreditMemo);<br/>\n        }<br/>\n        return this;<br/>\n    }<br/>\n    ...<br/>\n}<br/>\n<br/>\npublic class RecurringSale extends Sale {<br/>\n    ...<br/>\n    public Sale applyCreditMemo(CreditMemo aCreditMemo) {<br/>\n        if (parent().isFullyCancelled()) {<br/>\n            return close();<br/>\n        }<br/>\n        return super.applyCreditMemo(aCreditMemo);<br/>\n    }<br/>\n<br/>\n    private RecurringSale close() {<br/>\n        this.closeDate(parent().closeDate());<br/>\n        this.stage(Stage.NOT_PURCHASED);<br/>\n        return this;<br/>\n    }<br/>\n    ...<br/>\n}<br/>\n<br/>\n-- <br/>\nJason Rogers<br/>\n<br/>\n&quot;I am crucified with Christ: nevertheless I live; yet not I,<br/>\nbut Christ liveth in me: and the life which I now live in <br/>\nthe flesh I live by the faith of the Son of God, who loved <br/>\nme, and gave himself for me.&quot;<br/>\n    Galatians 2:20</div>", 
+    "prevInTime": 14423, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1124829772", 
+    "canDelete": false, 
+    "nextInTopic": 14425, 
+    "prevInTopic": 14423, 
+    "headers": {
+        "inReplyToHeader": "PDQzMEI2QkJELjEwNTAxMDBAYW5kcmV3bWNkb25hZ2guZjJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzMEI4QTRDLjIwNjA2MDdAZmFzdC1tYWlsLm9yZz4=", 
+        "referencesHeader": "PEUxRTdiazctMDAwNGo1LUVMQHNtdHBhdXRoMDUubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4gPDQzMEI2QkJELjEwNTAxMDBAYW5kcmV3bWNkb25hZ2guZjJzLmNvbT4="
+    }
+}

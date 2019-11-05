@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 22224, 
+    "senderId": "TWHX4GpG38Ub_BV-BssOYFC_sYTXNy5JeaiOxqUuk9I-9Bb9IPa3993PA3V50CKE-CV9M_OojuFyX7FDcmpEoErx", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: BeforeClass and inheritance", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... Yes, if you extend TestCase, you get the same behavior that JUnit 3 would have given you.  To override that, you can annotate the subclass or baseclass", 
+    "msgId": 22223, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 43831 invoked from network); 23 Dec 2009 16:45:36 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m5.grp.sp2.yahoo.com with QMQP; 23 Dec 2009 16:45:36 -0000\r\nX-Received: from unknown (HELO mail-bw0-f212.google.com) (209.85.218.212)\n  by mta1.grp.sp2.yahoo.com with SMTP; 23 Dec 2009 16:45:36 -0000\r\nX-Received: by bwz4 with SMTP id 4so5249247bwz.22\n        for &lt;junit@yahoogroups.com&gt;; Wed, 23 Dec 2009 08:45:35 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.204.34.209 with SMTP id m17mr6221678bkd.34.1261586731997; Wed, \n\t23 Dec 2009 08:45:31 -0800 (PST)\r\nIn-Reply-To: &lt;hgjebv+m11b@...&gt;\r\nReferences: &lt;4f7da6b90912191149u5e50a08bh747fe94d91ddeba7@...&gt;\n\t &lt;hgjebv+m11b@...&gt;\r\nDate: Wed, 23 Dec 2009 11:45:31 -0500\r\nX-Google-Sender-Auth: e67ab5362cf72145\r\nMessage-ID: &lt;4f7da6b90912230845m6e06d0b3o45ca5d64b20f6c82@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Re: BeforeClass and inheritance\r\nX-Yahoo-Group-Post: member; u=341876227; y=fpPVdO_Rn81wfc781E1xGbNNyWk6jGtPhGI5gPU5bcA\r\nX-Yahoo-Profile: dsaff\r\n\r\nOn Sat, Dec 19, 2009 at 3:51 PM, cretz@... &lt;chad.retz@...&gt; wrot=\r\ne:\n&gt;\n&gt;\n&gt;\n&gt; I don&#39;t even have a @BeforeClass method in the subclass. Only in=\r\n the superclass. I figured it out, I was extending from TestCase also (whic=\r\nh I know isn&#39;t JUnit 4 style). If I don&#39;t extend TestCase, it works. Exampl=\r\ne base class:\n&gt;\n&gt; public abstract class MyTestBase extends TestCase {\n&gt;\n&gt; =\r\n=A0 =A0protected static boolean setUpExecuted =3D false;\n&gt;\n&gt; =A0 =A0@Before=\r\nClass\n&gt; =A0 =A0public static void oneTimeSetUp() {\n&gt; =A0 =A0 =A0 =A0setUpEx=\r\necuted =3D true;\n&gt; =A0 =A0}\n&gt; }\n&gt;\n&gt; and example extension:\n&gt;\n&gt; public class=\r\n MyTest extends MyTestBase {\n&gt;\n&gt; =A0 =A0@Test\n&gt; =A0 =A0public void testWhet=\r\nherOneTimeSetUpExecuted() {\n&gt; =A0 =A0 =A0 =A0Assert.assertTrue(&quot;One time se=\r\ntUp not executed&quot;,\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0setUpExecuted);\n&gt; =A0 =\r\n=A0}\n&gt; }\n&gt;\n&gt; I didn&#39;t check the JUnit source to see if it uses an instanceo=\r\nf to determine whether to use JUnit 3 style or JUnit 4 style. My problem is=\r\n I need to extend from a third party lib (SeleniumTestCase) and use protect=\r\ned stuff in there. What I&#39;m gonna do is just have another delegating class =\r\nextending it and expose the protected object I need.\n&gt;\n&gt; So, I have solved =\r\nit in a workaround fashion. Other people have too (ref: http://rockhopperte=\r\nch.com/blogs/archives/45). I was just wondering if this is by intention?\n\nY=\r\nes, if you extend TestCase, you get the same behavior that JUnit 3\nwould ha=\r\nve given you.  To override that, you can annotate the subclass\nor baseclass=\r\n with @RunWith(JUnit4.class)\n\n   David Saff\n\n&gt;\n&gt; --- In junit@yahoogroups.c=\r\nom, David Saff &lt;david@...&gt; wrote:\n&gt;&gt;\n&gt;&gt; Chad,\n&gt;&gt;\n&gt;&gt; Do the superclass and s=\r\nubclass @BeforeClass methods have the same name?\n&gt;&gt;\n&gt;&gt; =A0 =A0David Saff\n&gt;&gt;=\r\n\n&gt;&gt; On Sat, Dec 19, 2009 at 6:13 AM, cretz@... &lt;chad.retz@...&gt; wrote:\n&gt;&gt; &gt; =\r\nI have an abstract base class that defines a static @BeforeClass setUp meth=\r\nod. When this class is extended, the static setUp method is not called. The=\r\n javadoc says it will call a super class&#39;s @BeforeClass before the current =\r\nclass&#39;s. Am I missing something?\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt; ----------------------=\r\n--------------\n&gt;&gt; &gt;\n&gt;&gt; &gt; Yahoo! Groups Links\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt;\n&gt;\n&gt;\n&gt;\n&gt;=\r\n\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22212, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22222, 
+    "contentTrasformed": false, 
+    "postDate": "1261586731", 
+    "canDelete": false, 
+    "nextInTopic": 22224, 
+    "prevInTopic": 22216, 
+    "headers": {
+        "inReplyToHeader": "PGhnamVidittMTFiQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkxMjIzMDg0NW02ZTA2ZDBiM280NWNhNWQ2NGIyMGY2YzgyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRmN2RhNmI5MDkxMjE5MTE0OXU1ZTUwYTA4Ymg3NDdmZTk0ZDkxZGRlYmE3QG1haWwuZ21haWwuY29tPgkgPGhnamVidittMTFiQGVHcm91cHMuY29tPg=="
+    }
+}

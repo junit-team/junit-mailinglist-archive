@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 19494, 
+    "senderId": "5ck4vXLQxlCqnhDZZtcj8l4Jw7LNbb2X9BJFt1Z-D9PdreedLwfBkjO2Q9ZQb23ETD9MzTb2l_yQJASspZ1V4ZRYXWCDmyYG", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit tests and System.in", 
+    "from": "Monika Krug &lt;monika.uni@...&gt;", 
+    "authorName": "Monika Krug", 
+    "msgSnippet": "Hello Björn and the others who replied, Using System.setIn() solved the problem. Your sample code was very helpful. Thank you, Monika.", 
+    "msgId": 19493, 
+    "rawEmail": "Return-Path: &lt;monika.uni@...&gt;\r\nReceived: (qmail 60076 invoked by uid 7800); 21 Jun 2007 20:55:16 -0000\r\nX-Sender: monika.uni@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 99375 invoked from network); 21 Jun 2007 17:44:41 -0000\r\nReceived: from unknown (66.218.66.70)\n  by m37.grp.scd.yahoo.com with QMQP; 21 Jun 2007 17:44:41 -0000\r\nReceived: from unknown (HELO mail-in-13.arcor-online.net) (151.189.21.53)\n  by mta12.grp.scd.yahoo.com with SMTP; 21 Jun 2007 17:44:40 -0000\r\nReceived: from mail-in-04-z2.arcor-online.net (mail-in-04-z2.arcor-online.net [151.189.8.16])\n\tby mail-in-13.arcor-online.net (Postfix) with ESMTP id 597561E558E\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 21 Jun 2007 19:42:17 +0200 (CEST)\r\nReceived: from mail-in-03.arcor-online.net (mail-in-03.arcor-online.net [151.189.21.43])\n\tby mail-in-04-z2.arcor-online.net (Postfix) with ESMTP id 4958FAC1B6\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 21 Jun 2007 19:42:17 +0200 (CEST)\r\nReceived: from [192.168.1.2] (dslb-084-057-242-169.pools.arcor-ip.net [84.57.242.169])\n\tby mail-in-03.arcor-online.net (Postfix) with ESMTP id E1A233226E5\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 21 Jun 2007 19:42:16 +0200 (CEST)\r\nMessage-ID: &lt;467AB878.9010400@...&gt;\r\nDate: Thu, 21 Jun 2007 19:42:16 +0200\r\nUser-Agent: Thunderbird 1.5.0.12 (X11/20070604)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;f5do4v+5ue8@...&gt; &lt;a3c3e8150706210731q5b456276qbd3c43284f25a74b@...&gt;\r\nIn-Reply-To: &lt;a3c3e8150706210731q5b456276qbd3c43284f25a74b@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-15; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-Virus-Scanned: ClamAV 0.90.3/3486/Thu Jun 21 07:56:11 2007 on mail-in-03.arcor-online.net\r\nX-Virus-Status: Clean\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Monika Krug &lt;monika.uni@...&gt;\r\nSubject: Re: [junit] JUnit tests and System.in\r\nX-Yahoo-Group-Post: member; u=185677529; y=z3OoPwY9uc4t8i5lcD9AphkgfQf71aWpi49qa1mTvy9U_PbnANU\r\nX-Yahoo-Profile: monika_krug\r\nX-eGroups-Approved-By: ddoss_2006 &lt;didoss@...&gt; via email; 21 Jun 2007 20:55:16 -0000\r\n\r\nHello Bj�rn and the others who replied,\n\nUsing System.setIn() solved the problem. Your sample code was very helpful.\n\nThank you,\nMonika.\n\nBj�rn Gustafsson schrieb:\n&gt; Hi Monika,\n&gt;\n&gt; Try to call System.in.close() to throw an exception, or you can use\n&gt; System.setIn() to change the InputStream.  See the attached JUnit test\n&gt; case for simple examples.\n&gt;\n&gt; On 6/21/07, Monika &lt;monika.uni@...&gt; wrote:\n&gt;&gt; I write JUnit tests for classes that were not written by me. If one of\n&gt;&gt; these classes happens to include reading from System.in, Eclipse will\n&gt;&gt; just hang up and I have to kill it.\n&gt;&gt;\n&gt;&gt; How can I simulate input on System.in in my test case so that the test\n&gt;&gt; could succeed?\n&gt;&gt;\n&gt;&gt; If this is not possible, how can I make it throw an exception instead\n&gt;&gt; of hanging up, so that the test case will just fail?\n&gt;&gt;\n&gt;&gt; TIA,\n&gt;&gt; Monika.\n&gt;\n&gt; ------------------------------------------------------------------------\n&gt;\n&gt; package net.bjorng;\n&gt;\n&gt; import java.io.BufferedInputStream;\n&gt; import java.io.ByteArrayInputStream;\n&gt; import java.io.IOException;\n&gt; import java.io.InputStream;\n&gt; import junit.framework.TestCase;\n&gt;\n&gt; public class TestSystemIn extends TestCase {\n&gt;\n&gt; \tpublic void testSystemIn_Class() {\n&gt; \t\tassertTrue(System.in instanceof BufferedInputStream);\n&gt; \t}\n&gt;\n&gt; \tpublic void testSystemIn_setStdIn_GetsDefinedBytes() throws Exception {\n&gt; \t\tbyte[] bytes = { &#39;a&#39;, &#39;b&#39;, &#39;x&#39; };\n&gt; \t\tInputStream originalInputStream = System.in;\n&gt; \t\ttry {\n&gt; \t\t\tSystem.setIn(new ByteArrayInputStream(bytes));\n&gt;\n&gt; \t\t\tbyte[] bytesToRead = new byte[3];\n&gt; \t\t\tint numRead = System.in.read(bytesToRead);\n&gt; \t\t\tassertEquals(3, numRead);\n&gt; \t\t\tassertEquals(bytes[0], bytesToRead[0]);\n&gt; \t\t\tassertEquals(bytes[1], bytesToRead[1]);\n&gt; \t\t\tassertEquals(bytes[2], bytesToRead[2]);\n&gt; \t\t} finally {\n&gt; \t\t\tSystem.setIn(originalInputStream);\n&gt; \t\t}\n&gt; \t}\n&gt;\n&gt; \tpublic void testSystemIn_Close_ActuallyCloses() throws Exception {\n&gt; \t\tSystem.in.close();\n&gt; \t\ttry {\n&gt; \t\t\tint nextByte = System.in.read();\n&gt; \t\t\tassertEquals(-1, nextByte);\n&gt; \t\t} catch (IOException e) {\n&gt; \t\t\tassertNotNull(e);\n&gt; \t\t\t// e.printStackTrace();\n&gt; \t\t}\n&gt; \t}\n&gt; }\n&gt;   \n\n\n", 
+    "profile": "monika_krug", 
+    "topicId": 19487, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 185677529, 
+    "prevInTime": 19492, 
+    "contentTrasformed": false, 
+    "postDate": "1182447736", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19489, 
+    "headers": {
+        "inReplyToHeader": "PGEzYzNlODE1MDcwNjIxMDczMXE1YjQ1NjI3NnFiZDNjNDMyODRmMjVhNzRiQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQ2N0FCODc4LjkwMTA0MDBAYXJjb3IuZGU+", 
+        "referencesHeader": "PGY1ZG80dis1dWU4QGVHcm91cHMuY29tPiA8YTNjM2U4MTUwNzA2MjEwNzMxcTViNDU2Mjc2cWJkM2M0MzI4NGYyNWE3NGJAbWFpbC5nbWFpbC5jb20+"
+    }
+}

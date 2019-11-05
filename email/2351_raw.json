@@ -1,0 +1,28 @@
+{
+    "topicId": 2340, 
+    "postDate": "997798079", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "iSYlMdiKhsQ0JGN9GYQIPRDWAGdV_-eni8ZnEnvImfYejM2x0yi1ziDDwrDbCPQhiZ5V1N3lNuJkVsFFsUSfliN-hf5OPiPLDK7ekLidP5uJwUE", 
+    "nextInTime": 2352, 
+    "userId": 0, 
+    "prevInTime": 2350, 
+    "prevInTopic": 2345, 
+    "headers": {
+        "messageIdInHeader": "PEY5M1d0eWk2N0VLUnVZRGxyamIwMDAwOGVkNEBob3RtYWlsLmNvbT4="
+    }, 
+    "authorName": "J. B. Rainsberger", 
+    "numMessagesInTopic": 5, 
+    "msgSnippet": "... Yes to both. My guess is that there is a core set of features that belong to Document and DocumentPool whose behavior you want to guarantee is consistent", 
+    "contentTrasformed": false, 
+    "msgId": 2351, 
+    "nextInTopic": 2369, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_1); 14 Aug 2001 14:08:00 -0000\r\nReceived: (qmail 37101 invoked from network); 14 Aug 2001 14:07:59 -0000\r\nReceived: from unknown (10.1.10.142)\n  by l8.egroups.com with QMQP; 14 Aug 2001 14:07:59 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.149.93)\n  by mta3 with SMTP; 14 Aug 2001 14:07:59 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Tue, 14 Aug 2001 07:07:59 -0700\r\nReceived: from 199.246.40.54 by lw4fd.law4.hotmail.msn.com with HTTP;\tTue, 14 Aug 2001 14:07:59 GMT\r\nTo: junit@yahoogroups.com\r\nBcc: \r\nSubject: testing interfaces\r\nDate: Tue, 14 Aug 2001 14:07:59 +0000\r\nMime-Version: 1.0\r\nContent-Type: text/plain; format=flowed\r\nMessage-ID: &lt;F93Wtyi67EKRuYDlrjb00008ed4@...&gt;\r\nX-OriginalArrivalTime: 14 Aug 2001 14:07:59.0621 (UTC) FILETIME=[862D8B50:01C124CA]\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\n\r\n&gt;I have 2 interfaces &quot;DocumentPool&quot; and &quot;Document&quot; and multiple\n&gt;implementions of these (like HTMLPool, WordDocPool). The target is to\n&gt;link these (about 50.000) docs using different &quot;rules&quot;.\n&gt;\n&gt;should i write my unit tests for each implementation or could i save\n&gt;time by writing one testcase to test the interface?\n\nYes to both.\n\nMy guess is that there is a core set of features that belong to Document and \nDocumentPool whose behavior you want to guarantee is consistent across all \nimplementations. For that, you can use this strategy:\n\nabstract DocumentTestCase\n    abstract Document getDocument()\n    void testX()\n    void testY()\n    ...\n\nDocumentImpl1TestCase extends DocumentTestCase\n    Document getDocument() { return someDocumentImpl1; }\n\nDocumentImpl2TestCase extends DocumentTestCase\n    Document getDocument() { return someDocumentImpl2; }\n\nand so on.\n\nHere you run one test suite per implementation of Document, but the suites \nhave a common set of tests.\n\nYou may also have some behavior that is specific to a particular \nimplementation of Document. In this case, add tests for that behavior to the \ntest suite for that particular Document implementation. *Now* that test \nsuite covers both sets of features.\n\nRemember: test behavior, not methods. Maybe you expose a method that you \ndon&#39;t need to expose...\n\nGood luck.\n\nJBR.\n\n_________________________________________________________________\nGet your FREE download of MSN Explorer at http://explorer.msn.com/intl.asp\n\n\n", 
+    "subject": "testing interfaces"
+}

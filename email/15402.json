@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 15403, 
+    "senderId": "cNGcCdxNcUU6JpmxhjU0X7XHcz_j4B6Qy9QBNG3glVbyXyEa0wmg7Cqr74UjfjiqVPfy8s0TrhTE0h61tVyXKBpfI2y7TAK2OszC_SRrnyAGVfc_zwO1", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterized test case pattern (+ a note on JUnit 4)", 
+    "from": "&quot;Elliotte Rusty Harold&quot; &lt;elharo@...&gt;", 
+    "authorName": "Elliotte Rusty Harold", 
+    "msgSnippet": "I finally figured out the magic piece I was missing. One also has to pass the name of the test method (not the class but the method) to the superclass", 
+    "msgId": 15402, 
+    "topicId": 15399, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 12653864, 
+    "messageBody": "<div id=\"ygrps-yiv-1407980962\">I finally figured out the magic piece I was missing. One also has to pass<br/>\nthe name of the test method (not the class but the method) to the<br/>\nsuperclass constructor like so:<br/>\n<br/>\n    public DataDrivenTest(int i) {<br/>\n        super(&quot;testFoo&quot;);<br/>\n        this.i = i;<br/>\n    }<br/>\n<br/>\nI had to dig into the JUnit source code to debug this.<br/>\n<br/>\nThis taught me something about the code base that may be worth addressing<br/>\nfor JUnit 4. JUnit appears to use regular JUnit assert and fail methods to<br/>\ncheck preconditions on its own methods. For example,<br/>\n<br/>\n\tprotected void runTest() throws Throwable {<br/>\n\t\tassertNotNull(fName);<br/>\n\t\tMethod runMethod= null;<br/>\n\t\ttry {<br/>\n\t\t\t// use getMethod to get all public inherited<br/>\n\t\t\t// methods. getDeclaredMethods returns all<br/>\n\t\t\t// methods of this class but excludes the<br/>\n\t\t\t// inherited ones.<br/>\n\t\t\trunMethod= getClass().getMethod(fName, null);<br/>\n\t\t} catch (NoSuchMethodException e) {<br/>\n\t\t\tfail(&quot;Method &#92;&quot;&quot;+fName+&quot;&#92;&quot; not found&quot;);<br/>\n\t\t}<br/>\n\t\tif (!Modifier.isPublic(runMethod.getModifiers())) {<br/>\n\t\t\tfail(&quot;Method &#92;&quot;&quot;+fName+&quot;&#92;&quot; should be public&quot;);<br/>\n\t\t}<br/>\n<br/>\n<br/>\nThe problem with this is that when the precondition does fail, it looks a<br/>\nlot like a regular test failure. I think JUnit should be refactored not to<br/>\ndo this. assertFOO and fail should be reserved for test cases alone. For<br/>\nexample this code could easily be written as<br/>\n<br/>\n\tprotected void runTest() throws Throwable {<br/>\n\t\tif (fName == null) {<br/>\n                   throw new NullPointerException(&quot;Method name was null&quot;);<br/>\n                }<br/>\n\t\tMethod runMethod= null;<br/>\n\t\ttry {<br/>\n\t\t\t// use getMethod to get all public inherited<br/>\n\t\t\t// methods. getDeclaredMethods returns all<br/>\n\t\t\t// methods of this class but excludes the<br/>\n\t\t\t// inherited ones.<br/>\n\t\t\trunMethod= getClass().getMethod(fName, null);<br/>\n\t\t} catch (NoSuchMethodException e) {<br/>\n\t\t\tthrow e;<br/>\n\t\t}<br/>\n\t\tif (!Modifier.isPublic(runMethod.getModifiers())) {<br/>\n\t\t\tfail(&quot;Method &#92;&quot;&quot;+fName+&quot;&#92;&quot; should be public&quot;);<br/>\n\t\t}<br/>\n<br/>\nI think if I&#39;d gotten NullPointerExceptions and NoSuchMethodExceptions<br/>\ninstead of the AssertionFailedErrors I did get, then I would have figured<br/>\nthis problem out days ago.</div>", 
+    "prevInTime": 15401, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1131898368", 
+    "canDelete": false, 
+    "nextInTopic": 15407, 
+    "prevInTopic": 15401, 
+    "headers": {
+        "inReplyToHeader": "PDM4MzE4LjIwNy4xOTAuMC4xMS4xMTMxODk3NTE4LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4=", 
+        "messageIdInHeader": "PDEyNjExLjIwNy4xOTAuMC4xMS4xMTMxODk4MzY4LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4=", 
+        "referencesHeader": "PDMzMzE2LjIwNy4xOTAuMC4xMS4xMTMxODkxMzc5LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4gICAgICAgPFBpbmUuTE5YLjQuNTguMDUxMTEzMTczODA1MC40ODMzQHNiei0zMC5jcy5IZWxzaW5raS5GST4gICAgPDM4MzE4LjIwNy4xOTAuMC4xMS4xMTMxODk3NTE4LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4="
+    }
+}

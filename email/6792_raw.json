@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 6793, 
+    "senderId": "-sUu7xPQMCstGl5GJ82Ldbf1c_EXgNlr2y9sNSnAZXn0LQsLnMN7Fhia1bOn6kN-u-_bK7WyoKu4gDTXPAnaIstlC7dXIRGPprBSdoFkUPfSQ7zXD2oLtrnxk4fZolGRFqoojY76", 
+    "systemMessage": false, 
+    "subject": "Re: ** How to test objects that depend on other objects with mock objects **", 
+    "from": "&quot;tobemligado &lt;jasbell@...&gt;&quot; &lt;jasbell@...&gt;", 
+    "authorName": "tobemligado &lt;jasbell@consultant.com&gt;", 
+    "msgSnippet": "Because its IN THE CONSTRUCTOR, and my constructor does not take this as a parameter because other several classes use it and access it like this:", 
+    "msgId": 6792, 
+    "rawEmail": "Return-Path: &lt;jasbell@...&gt;\r\nReceived: (qmail 47092 invoked from network); 30 Jan 2003 22:28:32 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m10.grp.scd.yahoo.com with QMQP; 30 Jan 2003 22:28:32 -0000\r\nReceived: from unknown (HELO n28.grp.scd.yahoo.com) (66.218.66.84)\n  by mta2.grp.scd.yahoo.com with SMTP; 30 Jan 2003 22:28:32 -0000\r\nX-eGroups-Return: jasbell@...\r\nReceived: from [66.218.67.248] by n28.grp.scd.yahoo.com with NNFMP; 30 Jan 2003 22:28:27 -0000\r\nX-Sender: jasbell@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 27 Jan 2003 00:19:43 -0000\r\nReceived: (qmail 67686 invoked from network); 27 Jan 2003 00:19:43 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m1.grp.scd.yahoo.com with QMQP; 27 Jan 2003 00:19:43 -0000\r\nReceived: from unknown (HELO n16.grp.scd.yahoo.com) (66.218.66.71)\n  by mta3.grp.scd.yahoo.com with SMTP; 27 Jan 2003 00:19:43 -0000\r\nReceived: from [66.218.67.150] by n16.grp.scd.yahoo.com with NNFMP; 27 Jan 2003 00:19:43 -0000\r\nDate: Mon, 27 Jan 2003 00:19:40 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: ** How to test objects that depend on other objects with mock objects **\r\nMessage-ID: &lt;b11tus+pd58@...&gt;\r\nIn-Reply-To: &lt;KIEHIBIOBAELJAHIPNHDOEHBCOAA.scottstirling@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2225\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;tobemligado &lt;jasbell@...&gt;&quot; &lt;jasbell@...&gt;\r\nX-Yahoo-Group-Post: member; u=48242015\r\nX-Yahoo-Profile: tobemligado\r\nX-eGroups-Approved-By: nails762 &lt;jbr@...&gt; via web; 30 Jan 2003 22:28:26 -0000\r\n\r\nBecause its IN THE CONSTRUCTOR, and my constructor does not take this \nas a parameter because other several classes use it and access it \nlike this: ConfigManager.getInstance().  &quot;ConfigManager&quot; is a \nsingleton because many classes in the system refer to it, it needs to \nkeep some state, and when used I must guarantee that it already has \nthis state.\n\n--- In junit@yahoogroups.com, &quot;Scott Stirling&quot; &lt;scottstirling@r...&gt; \nwrote:\n&gt; &gt; -----Original Message-----\n&gt; &gt; From: tobemligado &lt;jasbell@c...&gt;\n&gt; &gt;\n&gt; &gt; I have a singleton called &quot;ConfigManager&quot;, where in its \nconstructor\n&gt; &gt; it reads in a bunch of files from a directory and creates \nobjectsfrom\n&gt; &gt; the files.  I am doing this because I want to say &quot;ConfigManager \nis\n&gt; &gt; not valid until these other objects have also been successfully\n&gt; &gt; created&quot;.\n&gt; &gt;\n&gt; &gt; I want the &quot;ConfigManager&quot; to be able to read a directory full\n&gt; &gt; of &quot;bad files&quot; in some test scenarios, a directory full of &quot;good\n&gt; &gt; files&quot; in other test scenarios, and a directory full of &quot;good and \nbad\n&gt; &gt; files&quot; in yet other test scenarios.  Ultimately, the program will\n&gt; &gt; have to handle &quot;good and bad files&quot;,\n&gt; &gt;\n&gt; &gt; My problem is that I need to &quot;trick&quot; the &quot;ConfigManager&quot; into \nusing\n&gt; &gt; the three directories in different test scenarios, but I dont \nwant to\n&gt; &gt; alter the fact that all objects are created in &quot;ConfigManager&#39;s&quot;\n&gt; &gt; constructor.  Here is what is in the constructor for the\n&gt; &gt; singleton &quot;ConfigManager&quot;:\n&gt; &gt; ----------------------------------------------------\n&gt; &gt; String basePath = ServiceResources.CONFIG_FILE_DIRECTORY;\n&gt; &gt; setBaseDirectory(basePath);\n&gt; &gt; loadAllFilesFound(getBaseDirectory());\n&gt; &gt; loadConfigFilesFound(getAllFilesFoundList());\n&gt; &gt; ArrayList configList = createConfigurations(getConfigFilesFound\n());\n&gt; &gt; TriggerManager tm = TriggerManager.getInstance();\n&gt; &gt; ArrayList triggerList = tm.createTriggers(configList);\n&gt; &gt; tm.registerTriggers(triggerList);\n&gt; &gt; ----------------------------------------------------\n&gt; &gt;\n&gt; &gt; How can I switch the CONFIG_FILE_DIRECTORY value for testing when \nits\n&gt; &gt; in the constructor?\n&gt; \n&gt; Why can&#39;t you just change the value of\n&gt; ServiceResources.CONFIG_FILE_DIRECTORY before you call \nConfigManager&#39;s\n&gt; constructor?\n&gt; \n&gt; Scott Stirling\n\n\n\n", 
+    "profile": "tobemligado", 
+    "topicId": 6743, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 48242015, 
+    "prevInTime": 6791, 
+    "contentTrasformed": false, 
+    "postDate": "1043626780", 
+    "canDelete": false, 
+    "nextInTopic": 6793, 
+    "prevInTopic": 6791, 
+    "headers": {
+        "inReplyToHeader": "PEtJRUhJQklPQkFFTEpBSElQTkhET0VIQkNPQUEuc2NvdHRzdGlybGluZ0ByY24uY29tPg==", 
+        "messageIdInHeader": "PGIxMXR1cytwZDU4QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 13429, 
+    "postDate": "1115432949", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Laurie Harper &lt;laurie@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "N3m6D5QQA3yfqHLfCg2PnzTEupmjMUqKMf2bxNrfR16QR1niPualv2o7vvCWxU2SSFmX_JMVsH9dH5O6lmJKGn0yY9pZaW3dFg", 
+    "nextInTime": 13430, 
+    "userId": 223228928, 
+    "prevInTime": 13428, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGQ1aDhvcCQ5ZCQxQHNlYS5nbWFuZS5vcmc+"
+    }, 
+    "authorName": "Laurie Harper", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "I have a pattern I use frequently when I want to test that a given input to a function yields the expected result, over a number of inputs. I use something", 
+    "contentTrasformed": false, 
+    "msgId": 13429, 
+    "nextInTopic": 13431, 
+    "systemMessage": true, 
+    "rawEmail": "Return-Path: &lt;laurie@...&gt;\r\nReceived: (qmail 95290 invoked from network); 7 May 2005 05:40:39 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m23.grp.scd.yahoo.com with QMQP; 7 May 2005 05:40:39 -0000\r\nReceived: from unknown (HELO n5a.bulk.scd.yahoo.com) (66.94.237.39)\n  by mta2.grp.scd.yahoo.com with SMTP; 7 May 2005 05:40:37 -0000\r\nReceived: from [66.218.69.1] by n5.bulk.scd.yahoo.com with NNFMP; 07 May 2005 05:39:23 -0000\r\nReceived: from [66.218.66.74] by mailer1.bulk.scd.yahoo.com with NNFMP; 07 May 2005 05:39:22 -0000\r\nX-Sender: laurie@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 74673 invoked from network); 7 May 2005 02:29:28 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m25.grp.scd.yahoo.com with QMQP; 7 May 2005 02:29:28 -0000\r\nReceived: from unknown (HELO ciao.gmane.org) (80.91.229.2)\n  by mta5.grp.scd.yahoo.com with SMTP; 7 May 2005 02:29:28 -0000\r\nReceived: from list by ciao.gmane.org with local (Exim 4.43)\n\tid 1DUExS-0006CW-Mw\n\tfor junit@yahoogroups.com; Sat, 07 May 2005 04:22:22 +0200\r\nReceived: from cpe00045ad20d9e-cm014480118460.cpe.net.cable.rogers.com ([65.49.43.75])\n        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))\n        id 1AlnuQ-0007hv-00\n        for &lt;junit@yahoogroups.com&gt;; Sat, 07 May 2005 04:22:22 +0200\r\nReceived: from laurie by cpe00045ad20d9e-cm014480118460.cpe.net.cable.rogers.com with local (Gmexim 0.1 (Debian))\n        id 1AlnuQ-0007hv-00\n        for &lt;junit@yahoogroups.com&gt;; Sat, 07 May 2005 04:22:22 +0200\r\nX-Injected-Via-Gmane: http://gmane.org/\r\nTo: junit@yahoogroups.com\r\nDate:  Fri, 06 May 2005 22:29:09 -0400\r\nLines: 43\r\nMessage-ID: &lt;d5h8op$9d$1@...&gt;\r\nMime-Version:  1.0\r\nContent-Type:  text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding:  7bit\r\nX-Complaints-To: usenet@...\r\nX-Gmane-NNTP-Posting-Host: cpe00045ad20d9e-cm014480118460.cpe.net.cable.rogers.com\r\nUser-Agent: Mozilla Thunderbird 0.5 (Macintosh/20040208)\r\nX-Accept-Language: en-us, en\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Laurie Harper &lt;laurie@...&gt;\r\nSubject: Simulating multiple tests\r\nX-Yahoo-Group-Post: member; u=223228928\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 07 May 2005 05:39:20 -0000\r\n\r\nI have a pattern I use frequently when I want to test that a given input\nto a function yields the expected result, over a number of inputs. I use\nsomething like:\n\n\tStirng[][] TESTS = new String[][] {\n\t\t{ &quot;input 1&quot;, &quot;expect 1&quot; },\n\t\t{ &quot;input 2&quot;, &quot;expect 2&quot; },\n\t\t{ &quot;input 3&quot;, &quot;expect 3&quot; },\n\t\t...\n\t};\n\n\tpublic void testFoo() {\n\t\tfor (int i = 0; i &lt; TESTS.length; i++) {\n\t\t\tString in = TESTS[i][0];\n\t\t\tString out = TESTS[i][1];\n\t\t\tString real = functionToTest(in);\n\t\t\tassertEquals(in, out, real);\n\t\t}\n\t}\n\nThis suffers from two problems: the first assertion failure causes\nsubsequent tests to be skipped; and the number of tests run is reported\nas 1 rather than TESTS.length. I can live with the second issue :-) but\nthe first is a bit of a pain.\n\nI  don&#39;t want to write a seperate test method for each input / expected\noutput pair; listing them out this way makes it much more easy to scan\nthe test cases and see where there are redundant cases or omissions. So...\n\nHow can I rewrite testFoo() such that, for each pair in TESTS, a\nseperate test is created, run and reported and all tests are run\nregardless of errors? Or, alternatively, is there another way do this\nthat lets me keep my input / expected output pairs grouped together like\nthis?\n\nI haven&#39;t seen anything covering this in the FAQ or elsewhere; if\nthere&#39;s an example somewhere I haven&#39;t seen, please just point me to it!\n\nThanks,\n\nL.\n\n\n\n\n\n\n", 
+    "subject": "Simulating multiple tests"
+}

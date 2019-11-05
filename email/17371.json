@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 17372, 
+    "senderId": "hhw5_3h9N8rTDnlYyhAA3wqCelpyxT3_dgLLvMf_o19hqxF5w3WHPUritFIDjw4p9ffVMJLH47K8jPS97xxsdVj8Gi6JxYonXqpAVMU2HQ", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Re: Are you really using JUnit during your developmen t?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I m not sure what you mean here, but I ll provide another perspective, based on my experience. There are two ways to write this kind of test: * Know the", 
+    "msgId": 17371, 
+    "profile": "nails762", 
+    "topicId": 17279, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1026814078\">thehasko wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  &gt; 1. I need to know the correct result from the other way around and<br/>\n&gt; sometimes it&#39;s hard to find another way.<br/>\n&gt; <br/>\n&gt; I am not quite sure if I fully understand what you mean. Are you<br/>\n&gt; saying, to write good test, you need two different &quot;approaches&quot; to<br/>\n&gt; solve the problem under test? Like in the following, trivial<br/>\n&gt; example:<br/>\n&gt; <br/>\n&gt; public int multiply(int a, int b) {<br/>\n&gt; return a * b;<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public void testMultiply() {<br/>\n&gt; // test the expected result, &quot;the other way round&quot;<br/>\n&gt; assertEquals(5 + 5, x.multiply(5, 2);<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; I can see that this can get quite hard for non-trivial problems.<br/>\n&gt; <br/>\n&gt; If this is what you meant, I think I have good news: In believe this<br/>\n&gt; rigorous approach to unit testing is not necessary. It&#39;s perferctly<br/>\n&gt; accaptable to just write the test as:<br/>\n&gt; <br/>\n&gt; assertEquals(5 * 2, x.multiply(5, 2);<br/>\n&gt; <br/>\n&gt; The point of automated unit testing is not to prove algorithmic<br/>\n&gt; correctness but just to check real behavior against expected<br/>\n&gt; behavior. In my opinion, the main benefit of _automated_ unit<br/>\n&gt; testing is to be able to re-run the tests after implementation<br/>\n&gt; changes. And, after implementation changes, you cannot be sure<br/>\n&gt; if &quot;the other way round&quot; is still another way or if it has actually<br/>\n&gt; become &quot;the way&quot;. So don&#39;t bother in the first place, and save a lot<br/>\n&gt; of time and pain.<br/>\n&gt; <br/>\n&gt; Again: For me, automated unit tests are primarily like an insurance<br/>\n&gt; against quality degradation when I change code. They are less<br/>\n&gt; important to prove correctness of the initial version of the code I<br/>\n&gt; write. I tend to spend more time changeing existing code than<br/>\n&gt; writing new code, so that&#39;s fine for me.<br/>\n&gt; <br/>\n&gt; Bottom line is, forget about the &quot;other way round&quot; issue. ;-)<br/>\n<br/>\n </span></blockquote>I&#39;m not sure what you mean here, but I&#39;ll provide another perspective, <br/>\nbased on my experience.<br/>\n<br/>\nThere are two ways to write this kind of test:<br/>\n<br/>\n  * Know the correct answer in advance and expect it<br/>\n  * Do not know the correct answer in advance, discover it, then expect <br/>\nit the next time<br/>\n<br/>\nTo use Hasko&#39;s example, I would simply write the test this way, since I <br/>\nknow the correct answer in advance:<br/>\n<br/>\nassertEquals(10, multiply(5, 2));<br/>\n<br/>\nSuppose I didn&#39;t know the correct answer in advance. This could be <br/>\nbecause someone has already written multiply() and now I am adding tests <br/>\nto it. In this case, I would use the Gold Master approach. (Google: <br/>\nkeith stobie test patterns) First, I write this:<br/>\n<br/>\nassertEquals(0, multiply(5, 2));<br/>\n<br/>\nWhen I run the test, it fails, expecting 0, but was 10. Now I look at <br/>\nthe 10 and confirm with someone that it is the correct answer. (In this <br/>\ncase, I know it&#39;s correct, but if multiply() were more complex, I might <br/>\nhave to ask someone. It&#39;s better to ask a /business user/ than the <br/>\nprogrammer, because you want to know if the answer is correct, and not <br/>\nmerely what the programmer thought was correct.) Now in the test, I <br/>\npaste the actual result (10) into the test.<br/>\n<br/>\nassertEquals(10, multiply(5, 2));<br/>\n<br/>\nThis test passes and I move on to the next case.<br/>\n<br/>\nAs Hasko points out, do /not/ use the algorithm to test itself, so don&#39;t <br/>\ndo this:<br/>\n<br/>\nassertEquals(5 * 2, multiply(5, 2));<br/>\n<br/>\nTo see why that test is silly, inline the call to multiply, and you get <br/>\nthis:<br/>\n<br/>\nassertEquals(5 * 2, 5 * 2);<br/>\n<br/>\nClearly that test does nothing useful.<br/>\n<br/>\nAlso, don&#39;t use algorithm 1 to test algorithm 2, so don&#39;t do this:<br/>\n<br/>\nassertEquals(5 + 5, multiply(5, 2));<br/>\n<br/>\nIt&#39;s possible to get the &quot;5 + 5&quot; wrong, especially when it comes time to <br/>\ntest mutiply(12, 26) or in case you want to do &quot;2 + 2 + 2 + 2 + 2&quot;. (Are <br/>\nyou sure there are 5 2s there?)<br/>\n<br/>\nIf the expected result is easily determined outside the program, compute <br/>\nit by hand and put the answer in the test.<br/>\n<br/>\nIf the expected result is not easily determined outside the program, use <br/>\nthe Gold Master approach. Be careful that that does not become &quot;Guru <br/>\nChecks Output&quot;.<br/>\n<br/>\nI hope that helps.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 17370, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1155066639", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 17339, 
+    "headers": {
+        "inReplyToHeader": "PGViOWttZSs4N3VnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ0RDhFQjBGLjkwMzAwMDFAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGViOWttZSs4N3VnQGVHcm91cHMuY29tPg=="
+    }
+}

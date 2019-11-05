@@ -1,0 +1,29 @@
+{
+    "topicId": 6359, 
+    "postDate": "1039078830", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Denis Labaye &lt;d.labaye@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "RL96crhWYSJvXrp-IT9m9APqn4Z10yh4RP7Pig9bt-CzVKwI9D5AsvmbUQtigefLiDJSYaFh0ZAuvvRj_Vkn8hpQ-2kIC3ZVLPU", 
+    "nextInTime": 6364, 
+    "userId": 131579870, 
+    "prevInTime": 6362, 
+    "prevInTopic": 6362, 
+    "headers": {
+        "messageIdInHeader": "PDNERUYxNUFFLkFCQzU4NTFEQGxhcG9zdGUubmV0Pg==", 
+        "referencesHeader": "PGFzbDZnZys1MW1AZUdyb3Vwcy5jb20+"
+    }, 
+    "authorName": "Denis Labaye", 
+    "numMessagesInTopic": 18, 
+    "msgSnippet": "import junit.extensions.ActiveTestSuite; import junit.framework.Test; import junit.framework.TestCase; import junit.framework.TestSuite; /** * Running tests in", 
+    "contentTrasformed": false, 
+    "msgId": 6363, 
+    "nextInTopic": 6365, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;d.labaye@...&gt;\r\nReceived: (qmail 64670 invoked by uid 7800); 5 Dec 2002 13:35:07 -0000\r\nX-Sender: d.labaye@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 5 Dec 2002 08:59:37 -0000\r\nReceived: (qmail 78063 invoked from network); 5 Dec 2002 08:59:37 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m4.grp.scd.yahoo.com with QMQP; 5 Dec 2002 08:59:37 -0000\r\nReceived: from unknown (HELO smtp.laposte.net) (213.30.181.11)\n  by mta1.grp.scd.yahoo.com with SMTP; 5 Dec 2002 08:59:36 -0000\r\nReceived: from laposte.net (194.206.1.241) by smtp.laposte.net (6.0.053) (authenticated as d.labaye@...)\n        id 3DDAB94B001F4AD3 for junit@yahoogroups.com; Thu, 5 Dec 2002 09:59:36 +0100\r\nMessage-ID: &lt;3DEF15AE.ABC5851D@...&gt;\r\nDate: Thu, 05 Dec 2002 10:00:30 +0100\r\nX-Mailer: Mozilla 4.75 [fr] (Windows NT 5.0; U)\r\nX-Accept-Language: fr\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: Running time consuming JUnit Tests\r\nReferences: &lt;asl6gg+51m@...&gt;\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nFrom: Denis Labaye &lt;d.labaye@...&gt;\r\nX-Yahoo-Group-Post: member; u=131579870\r\nX-eGroups-Approved-By: nails762 &lt;jbr@...&gt; via email; 5 Dec 2002 13:35:07 -0000\r\n\r\nimport junit.extensions.ActiveTestSuite;\nimport junit.framework.Test;\nimport junit.framework.TestCase;\nimport junit.framework.TestSuite;\n\n/**\n * Running tests in parallel demo\n */\npublic class FooTest extends TestCase {\n\tpublic FooTest(String name) {\n\t\tsuper(name);\n\t}\n\tpublic void test1() throws InterruptedException {\n\t\tThread.sleep(10*1000);\n\t}\n\tpublic void test2() throws InterruptedException {\n\t\tThread.sleep(10*1000);\n\t}\n\n\t// this suite will run in 20 seconds\n\tpublic static Test sequentialSuite() {\n\t\tTestSuite suite =\n\t\t\tnew TestSuite();\n\t\tsuite.addTest(new FooTest(&quot;test1&quot;));\n\t\tsuite.addTest(new FooTest(&quot;test2&quot;));\n\t\treturn suite;\n\t}\n\n\t// this one in only 10 seconds\n\tpublic static Test parallelSuite() {\n\t\tTestSuite suite =\n\t\t\tnew ActiveTestSuite();\n\t\t\t//====================\n\t\tsuite.addTest(new FooTest(&quot;test1&quot;));\n\t\tsuite.addTest(new FooTest(&quot;test2&quot;));\n\t\treturn suite;\n\t}\n\t\n\tpublic static Test suite() {\n\t\t// return sequentialSuite();\n\t\treturn parallelSuite();\n\t}\n}\n\n\nh3vj a �crit :\n&gt; \n&gt; Thanks Denis, I looked into this but really could not get much\n&gt; information on it. The java docs are not of much help. Also I tried a\n&gt; to run this with two tests but invain..\n&gt; \n&gt; Can you provide with some quick example as to how can it be\n&gt; implemented.\n&gt; \n&gt; Harpal\n&gt; \n&gt; --- In junit@y..., Denis Labaye &lt;d.labaye@l...&gt; wrote:\n&gt; &gt; You should use an ActiveTestSuite instead of a TestSuite.\n&gt; &gt; A TestSuite run tests sequentially, an ActiveTestSuite run tests in\n&gt; &gt; parallel.\n&gt; &gt;\n&gt; &gt; Hope this help\n&gt; &gt;\n&gt; &gt; Denis\n&gt; &gt;\n&gt; &gt; h3vj a �crit :\n&gt; &gt; &gt;\n&gt; &gt; &gt; Hi Friends,\n&gt; &gt; &gt;\n&gt; &gt; &gt; I have JUnit tests suite out of which some suites take about 10 -\n&gt; 15\n&gt; &gt; &gt; minutes to run and some take 1 -2 minutes to run.\n&gt; &gt; &gt;\n&gt; &gt; &gt; My doubt is that because the tests run one after another and not\n&gt; &gt; &gt; simultaneously they have to wait for the longer tests to finish\n&gt; first\n&gt; &gt; &gt; before they can start next less time consuming tests.\n&gt; &gt; &gt;\n&gt; &gt; &gt; Is there any way that I can run these tests simultaneously for eg.\n&gt; &gt; &gt; Test 1 takes 10 minutes and Test 2 takes 5 minutes, presently this\n&gt; &gt; &gt; will take about 15 minutes total. Is there a way that I can finish\n&gt; &gt; &gt; both these tests in 10 minutes (max time taken by Test 1)?\n&gt; &gt; &gt;\n&gt; &gt; &gt; I hope I made sense if not please let me know I will try to be\n&gt; more\n&gt; &gt; &gt; specific.\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt; To unsubscribe from this group, send an email to:\n&gt; &gt; &gt; junit-unsubscribe@y...\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt; Your use of Yahoo! Groups is subject to\n&gt; http://docs.yahoo.com/info/terms/\n&gt; \n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt; \n&gt; \n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n", 
+    "subject": "Re: [junit] Re: Running time consuming JUnit Tests"
+}

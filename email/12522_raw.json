@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12523, 
+    "senderId": "qaww9zwsynIMkv4KBB86uzD4Cm8cZ3dCBNmGwHoSlaO462atIgTBJkroIcuS7zbgdzpU1zH-zuv2eTmt5eGcVyGqTtNM4p13QjFodntI5eA", 
+    "systemMessage": false, 
+    "subject": "Re: Multithreading: Testing scheduled method invocation?!", 
+    "from": "&quot;Neil Swingler&quot; &lt;neil@...&gt;", 
+    "authorName": "Neil Swingler", 
+    "msgSnippet": "Michael, sounds like a variation on what I have done. Check out the Channel and FutureResult classes if you want to pass something back to the main thread", 
+    "msgId": 12522, 
+    "rawEmail": "Return-Path: &lt;neil@...&gt;\r\nX-Sender: neil@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 63924 invoked from network); 22 Dec 2004 09:01:51 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m24.grp.scd.yahoo.com with QMQP; 22 Dec 2004 09:01:51 -0000\r\nReceived: from unknown (HELO n18a.bulk.scd.yahoo.com) (66.94.237.47)\n  by mta2.grp.scd.yahoo.com with SMTP; 22 Dec 2004 09:01:51 -0000\r\nReceived: from [66.218.69.3] by n18.bulk.scd.yahoo.com with NNFMP; 22 Dec 2004 09:00:45 -0000\r\nReceived: from [66.218.66.114] by mailer3.bulk.scd.yahoo.com with NNFMP; 22 Dec 2004 09:00:45 -0000\r\nDate: Wed, 22 Dec 2004 09:00:45 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cqbd3t+lnqq@...&gt;\r\nIn-Reply-To: &lt;200412220131.05639.michael@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2370\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Remote-IP: 66.94.237.47\r\nFrom: &quot;Neil Swingler&quot; &lt;neil@...&gt;\r\nSubject: Re: Multithreading: Testing scheduled method invocation?!\r\nX-Yahoo-Group-Post: member; u=117993331\r\nX-Yahoo-Profile: neil_swingler\r\n\r\n\nMichael,\n\nsounds like a variation on what I have done. Check out the Channel and\nFutureResult classes if you want to pass something back to the main\nthread (e.g. an event object) in order to assert something.\n\nNevertheless, multithreaded testing is a pain in the neck and I have\nsince converted these tests to be single threaded.\n\n- Neil Swingler\n\n\n--- In junit@yahoogroups.com, Michael Schuerig &lt;michael@s...&gt; wrote:\n&gt; \n&gt; I&#39;m working on a class that interacts with the Spring framework&#39;s \n&gt; application context and the Quartz scheduler. I&#39;m pretty new to the \n&gt; latter, thus I&#39;m testing my understanding of Quartz just as much as I&#39;m \n&gt; testing my code. In effect, I can&#39;t (yet) build the fixture for my code \n&gt; completely with mocks as I have to ascertain what these mocks are \n&gt; supposed to do first.\n&gt; \n&gt; The complication here is that Quartz uses its own &quot;hidden&quot; thread(s) to \n&gt; fulfill its duties. It is such a thread that effects the change that I \n&gt; need to check for. As I don&#39;t want to test Quartz, of course, I&#39;m \n&gt; content with checking that my scheduled job is executed at all. Thus I \n&gt; schedule it for immediate execution, wait for 2 secs to give Quartz \n&gt; some time before the fixture is torn down again.\n&gt; \n&gt; Now, all this works surprisingly well. Still, I don&#39;t like the part of \n&gt; waiting some arbitrary time.\n&gt; \n&gt; (Thinking break)\n&gt; \n&gt; After getting this far, I remembered that Doug Lea&#39;s concurrency utils \n&gt; have made their way into J2SE 5.0 and there I found just what I needed: \n&gt; java.util.concurrent.CountDownLatch\n&gt; \n&gt; Now I have a TestCase that looks in outline like this\n&gt; \n&gt; \n&gt; public class MultiThreadedTest extends TestCase {\n&gt;     private static CountDownLatch latch;\n&gt;     private MyMock mock;\n&gt; \n&gt;     protected void setUp() {\n&gt;         latch = new CountDownLatch(1);\n&gt;         mock = new MyMock();\n&gt;     }\n&gt; \n&gt;     public void testMe() throws Exception {\n&gt;         startSomeWorkInAnotherThread(mock);\n&gt;         latch.await(); // some timeout might be prudent\n&gt;         mock.verify();\n&gt;     }\n&gt; \n&gt; \n&gt;     private static class MyMock implements Whatever {\n&gt;         private boolean wasCalled = false;\n&gt; \n&gt;         public void methodCalledFromOtherThread() {\n&gt;             wasCalled = true;\n&gt;             latch.countDown();\n&gt;         }\n&gt; \n&gt;         public void verify() {\n&gt;             assertTrue(wasCalled);\n&gt;         }\n&gt;     }\n&gt; }\n&gt; \n\n\n\n\n\n", 
+    "profile": "neil_swingler", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 117993331, 
+    "prevInTime": 12521, 
+    "contentTrasformed": false, 
+    "postDate": "1103706045", 
+    "canDelete": false, 
+    "nextInTopic": 12553, 
+    "prevInTopic": 12521, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg==", 
+        "messageIdInHeader": "PGNxYmQzdCtsbnFxQGVHcm91cHMuY29tPg=="
+    }
+}

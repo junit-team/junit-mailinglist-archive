@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20428, 
+    "senderId": "C4XJYzx1l_TD7a3GBi5wgHCK3d550tygLkGuuEtcEoJqaBX1jGRx4r7VRKqDrrzlE_udQMi0PiRoAquElu_sw7dl2j0vBsC-zFJ8CRyeczqJ", 
+    "systemMessage": false, 
+    "subject": "Running parallel tests in JUnit4.4+", 
+    "from": "Daniel Brolund &lt;daniel.brolund@...&gt;", 
+    "authorName": "Daniel Brolund", 
+    "msgSnippet": "Hi all, I ve been looking around a bit for some sort of parallel execution of JUnit 4.4+ tests, but I didn t find much. So, I tried a few things myself and", 
+    "msgId": 20427, 
+    "rawEmail": "Return-Path: &lt;daniel.brolund@...&gt;\r\nX-Sender: daniel.brolund@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 87584 invoked from network); 3 Apr 2008 14:54:41 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m50.grp.scd.yahoo.com with QMQP; 3 Apr 2008 14:54:41 -0000\r\nX-Received: from unknown (HELO mailgw01.cybercomhosting.in) (193.108.42.46)\n  by mta17.grp.scd.yahoo.com with SMTP; 3 Apr 2008 14:54:41 -0000\r\nX-Received: from [10.200.18.198] (void1.ausys.se [62.20.78.253])\n\tby mailgw01.cybercomhosting.in (Postfix) with ESMTP id D37B7681104\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  3 Apr 2008 16:54:29 +0200 (CEST)\r\nTo: JUnit group &lt;junit@yahoogroups.com&gt;\r\nContent-Type: text/plain\r\nOrganization: Agical\r\nDate: Thu, 03 Apr 2008 16:54:19 +0200\r\nMessage-Id: &lt;1207234461.18347.40.camel@daniel-kubuntu&gt;\r\nMime-Version: 1.0\r\nX-Mailer: Evolution 2.12.1 \r\nContent-Transfer-Encoding: 7bit\r\nX-CybercomGroup-MailScanner-Information: Please contact the ISP for more information\r\nX-CybercomGroup-MailScanner: Found to be clean\r\nX-CybercomGroup-MailScanner-SpamCheck: not spam, SpamAssassin (not cached,\n\tscore=0.101, required 6, AWL 0.10)\r\nX-CybercomGroup-MailScanner-From: daniel.brolund@...\r\nX-Spam-Status: No\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Daniel Brolund &lt;daniel.brolund@...&gt;\r\nReply-To: daniel.brolund@...\r\nSubject: Running parallel tests in JUnit4.4+\r\nX-Yahoo-Group-Post: member; u=331284687; y=0xURQ6Nn6I7SPjNKa_MGGHbYg6Sszw7OdVTiGqbvkLTUawwdeA-Iquc\r\nX-Yahoo-Profile: daniel.brolund\r\n\r\nHi all,\n\nI&#39;ve been looking around a bit for some sort of parallel execution of\nJUnit 4.4+ tests, but I didn&#39;t find much.\n\nSo, I tried a few things myself and came up with the two examples below;\none is a parallel suite, and the other is for running parameterized test\ninstances in parallel. It is almost too simple for me to really believe\nin it. ;-)\n\nI would really like some feedback on it; things I&#39;ve missed, cases where\nit won&#39;t work etc.\n\n===========================================\n\npackage com.agical.junit;\n\nimport java.util.List;\n\nimport org.junit.internal.runners.InitializationError;\nimport org.junit.runner.Runner;\nimport org.junit.runner.notification.RunNotifier;\nimport org.junit.runners.Suite;\n\npublic class ParallelSuite extends Suite {\n\n    public ParallelSuite(Class&lt;?&gt; klass) throws InitializationError {\n        super(klass);\n    }\n\n    public ParallelSuite(Class&lt;?&gt; klass, Class&lt;?&gt;[] annotatedClasses) \n            throws InitializationError {\n        super(klass, annotatedClasses);\n    }\n\n    @Override\n    protected void runChildren(final RunNotifier runNotifier) {\n        final List&lt;Runner&gt; runners = getRunners();\n        runRunnersInParallel(runNotifier, runners);\n    }\n\n    public static void runRunnersInParallel(final RunNotifier\nrunNotifier, \n            final List&lt;Runner&gt; runners) {\n        Thread[] threads = new Thread[runners.size()];\n        for (int i = 0; i &lt; threads.length; i++) {\n            final int index = i;\n            threads[i] = new Thread(new Runnable() {\n                public void run() {\n                    runners.get(index).run(runNotifier);\n                }});\n            threads[i].start();\n        }\n        for (int i = 0; i &lt; threads.length; i++) {\n            try {\n                threads[i].join();\n            } catch (InterruptedException e) {\n                throw new RuntimeException(&quot;Couldn&#39;t join thread\nnicely&quot;, e);\n            }\n        }\n    }\n}\n\n===========================================\n\npackage com.agical.junit;\n\nimport java.util.List;\n\nimport org.junit.runner.Runner;\nimport org.junit.runner.notification.RunNotifier;\nimport org.junit.runners.Parameterized;\n\npublic class ParallelAndParameterized extends Parameterized {\n\n    public ParallelAndParameterized(Class&lt;?&gt; klass) throws Exception {\n        super(klass);\n    }\n\n    @Override\n    protected void runChildren(final RunNotifier runNotifier) {\n        final List&lt;Runner&gt; runners = getRunners();\n        ParallelSuite.runRunnersInParallel(runNotifier, runners);\n    }\n}\n\n\n===========================================\n\nThere is still some work needed to be done, but I would like to hear if\nI&#39;m totally on the wrong path.\n\nCheers\nDaniel\n\n\n", 
+    "profile": "daniel.brolund", 
+    "topicId": 20427, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 331284687, 
+    "prevInTime": 20426, 
+    "contentTrasformed": false, 
+    "postDate": "1207234459", 
+    "canDelete": false, 
+    "nextInTopic": 20428, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDEyMDcyMzQ0NjEuMTgzNDcuNDAuY2FtZWxAZGFuaWVsLWt1YnVudHU+"
+    }
+}

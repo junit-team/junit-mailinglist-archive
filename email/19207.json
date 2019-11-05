@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 19208, 
+    "senderId": "ftv3cb6IeIHc18EVPb7FjXmeHcJZPr2EUnIKxsF7CqsFbM3f_JKRZI_tpRaKGgibEkGAzF9VlxxOG3S_ffNcD2RRZGTScWl6fpbedw", 
+    "systemMessage": false, 
+    "subject": "Re: Can you use junit to monitor stock?", 
+    "from": "&quot;albsavoia&quot; &lt;albsavoia@...&gt;", 
+    "authorName": "albsavoia", 
+    "msgSnippet": "... OK, even though it makes no sense at all to use JUnit, I ll play along - just for fun. Below is a quick n dirty JUnit test I put together in 5min (and", 
+    "msgId": 19207, 
+    "profile": "albsavoia", 
+    "topicId": 19200, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 174158319, 
+    "messageBody": "<div id=\"ygrps-yiv-55716977\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Cheng&quot; &lt;wjcheng@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Can you use junit to monitor stock? Someone told me that he used <br/>\n&gt; Junit to monitor a stock called BVSN and that alert him on the price <br/>\n&gt; up. Is it possible? Or is it just a joke? Any comment are <br/>\n&gt; appreciated, and if you know how to technically, I would like to hear.<br/>\n&gt; <br/>\n&gt; Cheng<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>OK, even though it makes no sense at all to use JUnit, I&#39;ll play along - just for fun.<br/>\n<br/>\nBelow is a quick&#39;n&#39;dirty JUnit test I put together in 5min (and during a meeting) to do what <br/>\nyou asked for.  You can use it to &quot;play along&quot; with your friend&#39;s joke (as Cedric suggested).  <br/>\nIt uses Google quotes to check on the price of BVSN every minute and fails with the <br/>\nmessage &quot;Stock has gone up.  BUY! BUY!&quot; if BVSN gets above $3.00.<br/>\n<br/>\nAll I ask is that any profit you make from the use of this program are shared 50/50 with <br/>\nme.   All losses are your responsibility. Reading of this message implies acceptance of <br/>\nthis agreement. :-)<br/>\n<br/>\nAlberto<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.junitfactory.com\">http://www.junitfactory.com</a><br/>\nFree characterization tests<br/>\nin JUnit.<br/>\n<br/>\n---------<br/>\n<br/>\n<br/>\n<br/>\nimport java.io.BufferedReader;<br/>\nimport java.io.IOException;<br/>\nimport java.io.InputStreamReader;<br/>\nimport java.net.URL;<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\n<br/>\npublic class TestStockMon extends TestCase {<br/>\n\t<br/>\n\tpublic void testAlertMeIfStockDropsTooMuch() throws Exception {<br/>\n\t\twhile (true) {<br/>\n\t\t\tdouble quote = getStockQuoteFromGoogleFinance(&quot;BVSN&quot;);<br/>\n\t\t\tassertTrue(&quot;Stock has gone up.  BUY! BUY!&quot;, quote &lt;= 3.00);<br/>\n\t\t\tThread.sleep(60000);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic static double getStockQuoteFromGoogleFinance(String symbol) throws <br/>\nIOException {<br/>\n\t\tURL quotePage = new URL(&quot;<a rel=\"nofollow\" target=\"_blank\" href=\"http://finance.google.com/finance?q=&quot;\">http://finance.google.com/finance?q=&quot;</a> + symbol);<br/>\n\t\tBufferedReader in = new BufferedReader(new InputStreamReader<br/>\n(quotePage.openStream()));<br/>\n\t\tString str;<br/>\n\t\twhile ((str = in.readLine().trim()) != null) {<br/>\n\t\t\tif (isSourceLineWithQuote(symbol, str)) {<br/>\n\t\t\t\treturn extractQuote(str);<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t\tthrow new RuntimeException(&quot;Quote not found for symbol &quot; + symbol);<br/>\n\t}<br/>\n<br/>\n\tprivate static boolean isSourceLineWithQuote(String symbol, String str) {<br/>\n\t\treturn str.startsWith(&quot;new_title = &quot;) && str.indexOf(symbol) &gt;= 0;<br/>\n\t}<br/>\n\t<br/>\n\tprivate static double extractQuote(String str) {<br/>\n\t\tstr = str.substring(str.indexOf(&#39;:&#39;) + 1, str.length() - 1).trim();<br/>\n\t\tstr = str.substring(0, str.indexOf(&#39; &#39;));<br/>\n\t\treturn Double.valueOf(str);<br/>\n\t}<br/>\n}</div>", 
+    "prevInTime": 19206, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1175198263", 
+    "canDelete": false, 
+    "nextInTopic": 19208, 
+    "prevInTopic": 19205, 
+    "headers": {
+        "inReplyToHeader": "PGV1ZzF0bys2anExQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGV1aDVubitwbDFiQGVHcm91cHMuY29tPg=="
+    }
+}

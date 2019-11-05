@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 7451, 
+    "senderId": "IbSu0goYFTVvIBv__odVkALrh5fHemU8gIsT--7a_rLkY33lBjVKERv15d0uT7Cvl9KbJ65rL-Ngi7_UMp0LUAN2XDnty5vg7tpdiUS0dmv-J6DeQQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Factory adaptor approach", 
+    "from": "&quot;Jeff Nielsen&quot; &lt;jeff.nielsen@...&gt;", 
+    "authorName": "Jeff Nielsen", 
+    "msgSnippet": "See below . . . ... From: Kevin Klinemeier  To:  Sent: Wednesday, April 02, 2003 12:19 PM Subject: Re: [junit]", 
+    "msgId": 7450, 
+    "profile": "jeffreymads", 
+    "topicId": 7358, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 65487161, 
+    "messageBody": "<div id=\"ygrps-yiv-1094472405\">See below . . .<br/>\n<br/>\n<blockquote><span title=\"qreply\"> ----- Original Message -----<br/>\nFrom: &quot;Kevin Klinemeier&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:zipwow@...\">zipwow@...</a>&gt;<br/>\nTo: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\nSent: Wednesday, April 02, 2003 12:19 PM<br/>\nSubject: Re: [junit] Factory adaptor approach<br/>\n<br/>\n<br/>\n&gt; I&#39;m apparently mis-stating the problem.  There isn&#39;t any difference<br/>\n&gt; between &#39;production code&#39; and &#39;testing code&#39;.  The same code runs in<br/>\n&gt; tow environments: production and test.  Consider the following method:<br/>\n&gt;<br/>\n&gt; public User lookupUser(String name) {<br/>\n&gt;     ConnectionFactory conFactory = new ConnectionFactory();<br/>\n&gt;     User foundUser = conFactory.getConnection().doUserLookup(name);<br/>\n&gt; }<br/>\n&gt;<br/>\n<br/>\n&gt; But how can you test it without relying on the database?  Without the<br/>\n&gt; approach I described, I don&#39;t think you can.  Your test code&#39;s new<br/>\n&gt; instances with different params don&#39;t have any effect on the instances<br/>\n&gt; created in the method.  So, the approach I&#39;m leaning towards is<br/>\n&gt; changing the factory creation from above to:<br/>\n&gt;<br/>\n&gt;     ConnectionFactory conFactory = ConnectionFactory.getInstance();<br/>\n<br/>\nInstead, how about this.<br/>\n<br/>\nclass ToTest {<br/>\n    public User lookupUser(String name) {<br/>\n        ConnectionFactory conFactory = createConnectionFactory();<br/>\n        User foundUser = conFactory.createConnection().doUserLookup(name);<br/>\n    }<br/>\n<br/>\n    protected ConnectionFactory createConnectionFactory() {<br/>\n        return new ConnectionFactory();<br/>\n    }<br/>\n}<br/>\n<br/>\nclass ToTestTest extends TestCase {<br/>\n<br/>\n    ToTest tt;<br/>\n<br/>\n    public void setUp() {<br/>\n        tt = new ToTest() {<br/>\n            protected ConnectionFactory createConnectionFactory() {<br/>\n                return new MockConnectionFactory();<br/>\n            }<br/>\n        };<br/>\n    }<br/>\n<br/>\n    public void testSomething() {<br/>\n        tt.lookupUser(&quot;Kevin&quot;);<br/>\n        . . .<br/>\n    }<br/>\n}<br/>\n<br/>\nIt&#39;s in the same spirit as what you are proposing.  Some people might like<br/>\nit a little better because there is no &quot;factory factory&quot;.  You can use this<br/>\n&quot;anonymous subclass&quot; pattern in other situations, too.<br/>\n<br/>\nJeff Nielsen<br/>\nDigital Focus<br/>\nwww.digitalfocus.com </span></blockquote></div>", 
+    "prevInTime": 7449, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049314299", 
+    "canDelete": false, 
+    "nextInTopic": 7481, 
+    "prevInTopic": 7442, 
+    "headers": {
+        "messageIdInHeader": "PDA2NzAwMWMyZjk1NCQxMmJhNjYxMCRlNzA1MDAwYUBqbmllbHNlbjI+", 
+        "referencesHeader": "PDIwMDMwNDAyMTcxOTA0LjQ3MzExLnFtYWlsQHdlYjgwNDAzLm1haWwueWFob28uY29tPg=="
+    }
+}

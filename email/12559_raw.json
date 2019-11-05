@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 12560, 
+    "senderId": "wEscOZLGj5ef9qcZ_5ve1zDIs4sr8ZMq_0XlAj_rUEINsCu6Bn-rIDlG794M5vdWh0n4XA-vu0H4Zhfdya3sSQZJSex8yDQ2", 
+    "systemMessage": true, 
+    "subject": "Testing WebService using ant", 
+    "from": "&quot;rc_vemuri&quot; &lt;rc_vemuri@...&gt;", 
+    "authorName": "rc_vemuri", 
+    "msgSnippet": "Dear All, I am new to junit. Can anyone suggest me what s wrong with this code to test a web service using ant? My Web Service is as follows:(I am using", 
+    "msgId": 12559, 
+    "rawEmail": "Return-Path: &lt;rc_vemuri@...&gt;\r\nReceived: (qmail 17788 invoked from network); 30 Dec 2004 13:48:16 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m21.grp.scd.yahoo.com with QMQP; 30 Dec 2004 13:48:16 -0000\r\nReceived: from unknown (HELO n1a.bulk.scd.yahoo.com) (66.94.237.35)\n  by mta2.grp.scd.yahoo.com with SMTP; 30 Dec 2004 13:48:16 -0000\r\nReceived: from [66.218.66.58] by n1.bulk.scd.yahoo.com with NNFMP; 30 Dec 2004 13:48:09 -0000\r\nReceived: from [66.218.67.188] by mailer7.bulk.scd.yahoo.com with NNFMP; 30 Dec 2004 13:48:09 -0000\r\nX-Sender: rc_vemuri@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 50090 invoked from network); 30 Dec 2004 13:34:59 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m22.grp.scd.yahoo.com with QMQP; 30 Dec 2004 13:34:59 -0000\r\nReceived: from unknown (HELO n5a.bulk.scd.yahoo.com) (66.94.237.39)\n  by mta3.grp.scd.yahoo.com with SMTP; 30 Dec 2004 13:34:59 -0000\r\nReceived: from [66.218.69.5] by n5.bulk.scd.yahoo.com with NNFMP; 30 Dec 2004 13:34:38 -0000\r\nReceived: from [66.218.66.119] by mailer5.bulk.scd.yahoo.com with NNFMP; 30 Dec 2004 13:34:38 -0000\r\nDate: Thu, 30 Dec 2004 13:34:35 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cr105b+t2fq@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2060\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Remote-IP: 66.94.237.39\r\nFrom: &quot;rc_vemuri&quot; &lt;rc_vemuri@...&gt;\r\nSubject: Testing WebService using ant\r\nX-Yahoo-Group-Post: member; u=165750939\r\nX-Yahoo-Profile: rc_vemuri\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 30 Dec 2004 13:47:56 -0000\r\nX-eGroups-Remote-IP: 66.94.237.35\r\n\r\n\n\nDear All,\n\nI&#39;am new to junit. Can anyone suggest me what&#39;s wrong with this code \nto test a web service using ant?\n\nMy Web Service is as follows:(I&#39;am using Weblogic to build WebService)\n\npublic class SampleWs implements com.bea.jws.WebService\n{ \n    static final long serialVersionUID = 1L;\n    \n\n    /**\n     * @common:operation\n     */\n    public String hello()\n    {\n        return &quot;V&quot;;\n    }\n} \n\nThis is the file to test Web Service:\n\nimport java.io.IOException;\nimport junit.framework.TestCase;\nimport weblogic.jws.proxies.SampleWs;\nimport weblogic.jws.proxies.SampleWs_Impl;\n\npublic class TestSampleWs extends TestCase\n{\n    private SampleWs proxy;\n\n    protected void setUp() throws Exception  {\n        proxy =  new SampleWs_Impl();\n\n    }\n\n    public void test() throws Exception   {\n        String temp = proxy.getSampleWsSoap().hello();\n        assertEquals(temp, &quot;V&quot;);\n    }\n}\n\nand build.xml is as follows:\n\n&lt;project default=&quot;all&quot;&gt;\n\n  &lt;property name=&quot;tst-dir&quot; location=&quot;test&quot; /&gt;\n  &lt;property name=&quot;TALK&quot; value=&quot;true&quot; /&gt;  \n  \n  &lt;path id=&quot;classpath.base&quot;&gt;\n  &lt;/path&gt;\n  \n  &lt;path id=&quot;classpath.test&quot;&gt;\n    &lt;pathelement location=&quot;C:/users/junit/junit.jar&quot; /&gt;\n    &lt;pathelement location=&quot;C:/AntFiles/SampleWs/&quot;/&gt;\n    &lt;path refid=&quot;classpath.base&quot; /&gt;\n  \n  &lt;/path&gt;\n  \n  &lt;target name=&quot;compile-test&quot;&gt;\n    \n    &lt;javac srcdir=&quot;C:/AntFiles/SampleWs/&quot;\n           verbose=&quot;${TALK}&quot;\n           &gt;\n      &lt;classpath refid=&quot;classpath.test&quot;/&gt;\n      \n    &lt;/javac&gt;\n    \n  &lt;/target&gt;\n  \n  &lt;target name=&quot;clean-compile-test&quot;&gt;\n    &lt;delete verbose=&quot;${TALK}&quot;&gt;\n      &lt;fileset dir=&quot;C:/AntFiles/SampleWs/&quot; includes=&quot;**/*.class&quot; /&gt;\n    &lt;/delete&gt;\n  &lt;/target&gt;\n  \n  &lt;target name=&quot;test&quot; depends=&quot;compile-test&quot;&gt;\n   &lt;junit&gt;\n      &lt;classpath refid=&quot;classpath.test&quot; /&gt;\n      &lt;formatter type=&quot;brief&quot; usefile=&quot;false&quot; /&gt;\n      &lt;test name=&quot;TestExample&quot; /&gt;\n    &lt;/junit&gt;\n  &lt;/target&gt;\n  \n  &lt;target name=&quot;all&quot; depends=&quot;test&quot; /&gt;\n  &lt;target name=&quot;clean&quot; depends=&quot;clean-compile-test&quot; /&gt;\n&lt;/project&gt;\n\nwhen i say &quot;ant test&quot; from the directory it is showing error\n\nKindly help me.\n\nThanks & Regards,\nRC Vemuri.\n\n\n\n\n\n\n\n\n", 
+    "profile": "rc_vemuri", 
+    "topicId": 12559, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 165750939, 
+    "prevInTime": 12558, 
+    "contentTrasformed": false, 
+    "postDate": "1104413675", 
+    "canDelete": false, 
+    "nextInTopic": 12584, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGNyMTA1Yit0MmZxQGVHcm91cHMuY29tPg=="
+    }
+}

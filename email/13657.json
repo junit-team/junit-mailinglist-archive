@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 81, 
+    "nextInTime": 13658, 
+    "senderId": "e_zaxBB-xsf5uhoTvwee08XZS4lsUtLB2Zfv9b0iDIr61OyleJ1KLsbQ80TR_a5zAfhl-54FgAsOqQHeVRAf2-zmvdTzYmCxeg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] use of setUp and tearDown", 
+    "from": "&quot;Cedric Beust&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cedric Beust", 
+    "msgSnippet": "... Oh it will become one, trust me :-) Tests (not just unit tests, all tests) should go as fast as possible.  The faster they go, the more inclined developers", 
+    "msgId": 13657, 
+    "profile": "cbeust", 
+    "topicId": 13634, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-2074100583\"><blockquote><span title=\"ireply\">&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n<br/>\n&gt; For what it&#39;s worth I do almost exactly this. However I do <br/>\n&gt; reparse on every test method, and it&#39;s not that big a deal. <br/>\n<br/>\n </span></blockquote>Oh it will become one, trust me :-)<br/>\n<br/>\nTests (not just unit tests, all tests) should go as fast as possible.  The<br/>\nfaster they go, the more inclined developers will be to run them on a<br/>\nregular basis or, ideally, every time before they commit something.<br/>\n<br/>\nWhen your tests start taking a long time, they only get run at night and the<br/>\n&quot;failure report/fix/retest&quot; cycle takes increasingly longer, making it<br/>\nharder to identify new breakages.<br/>\n<br/>\nWhen I try to optimize the speed of my tests, the first thing I do is appy<br/>\nthe principle &quot;Don&#39;t Repeat Yourself&quot;.  Not in terms of code, but of<br/>\nruntime.  If something only needs to be run once, I make sure it only gets<br/>\nrun once.  Having as much control as possible on this was of paramount<br/>\nimportance to me, which is why TestNG extends JUnit&#39;s setUp/tearDown<br/>\nprinciple to work around test classes, test suites and even test groups.<br/>\nThis gives you maximal control on the granularity of your setUp/tearDown<br/>\ncycle.<br/>\n<br/>\nSo my question to you is:  why do you reparse this file on every test method<br/>\nwhen it&#39;s not necessary?  Because JUnit doesn&#39;t give you any<br/>\n&quot;setUp/tearDown&quot; method around classes?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; The key is that I do the reparse for large files in each test <br/>\n&gt; method rather than in setUp or the constructor so that those <br/>\n&gt; methods that don&#39;t need to parse the file don&#39;t do it.<br/>\n<br/>\n </span></blockquote>In this case, I would recommend breaking down your test class in a parent<br/>\nclass for all the test methods that don&#39;t need this file and a subclass for<br/>\nall the test methods that do need this file.  Then you can put the reparse<br/>\nof your file in setUp(), which -- as someone said earlier -- makes the<br/>\nintent obvious.<br/>\n<br/>\nLet me stress this point further.<br/>\n<br/>\nIn JUnit, you have four ways to initialize / tear down your test, and they<br/>\nare *all* equivalent:<br/>\n<br/>\n- At the beginning and end of each test method<br/>\n- In setUp()/tearDown()<br/>\n- In the constructor<br/>\n- At the field declaration level<br/>\n<br/>\nI find that confusing as hell, so I *strongly* recommend to use<br/>\nsetUp/tearDown at the exclusion of everything else.  Again, the idea is to<br/>\nmake the intent obvious.<br/>\n<br/>\n-- <br/>\nCédric<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://beust.com/weblog\">http://beust.com/weblog</a></div>", 
+    "prevInTime": 13656, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1117209218", 
+    "canDelete": false, 
+    "nextInTopic": 13658, 
+    "prevInTopic": 13655, 
+    "headers": {
+        "inReplyToHeader": "PDQyOTcxNTc5LjUwMDAyMDhAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "messageIdInHeader": "PDIwMDUwNTI3MTU1My5qNFJGcmNxWTAwMzU0N0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

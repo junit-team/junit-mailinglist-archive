@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 5079, 
+    "senderId": "lkF2AhwT4AlWdZDwKfwe1R2ZaH83V6lv8DHmVUdTwGFOtkIfZ4HE_dHbyYYaGZOYCd_ISMRPKtMMQOsZ_3C7yQHAU-faStLrvIB3t-_5", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Asserting Equality Of Collection Elements", 
+    "from": "&quot;Berin Loritsch&quot; &lt;bloritsch@...&gt;", 
+    "authorName": "Berin Loritsch", 
+    "msgSnippet": "... Are you trying to implement a new Map type?  I have some experience doing just that (I implemented the BucketMap in Avalon collections-- a Map that", 
+    "msgId": 5078, 
+    "profile": "bloritsch", 
+    "topicId": 5046, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64910131, 
+    "messageBody": "<div id=\"ygrps-yiv-199447320\"><blockquote><span title=\"ireply\">&gt; From: J. B. Rainsberger [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbr@...\">jbr@...</a>] <br/>\n&gt; &gt; If multiple elements hash to the same<br/>\n&gt; &gt; value is there a way to tell that their are multiple elements for <br/>\n&gt; &gt; that hashvalue? The size() method will only tell me how many hash <br/>\n&gt; &gt; values there are.<br/>\n&gt; <br/>\n&gt; It shouldn&#39;t. If it does, you&#39;re doing something else wrong. <br/>\n&gt; Post sample code <br/>\n&gt; if you&#39;re unsure. size() answers the number of distinct <br/>\n&gt; (according to equals<br/>\n&gt; ()) keys in the Map.<br/>\n&gt; <br/>\n&gt; Remember, hashing is only used to get a &quot;good first guess&quot; of <br/>\n&gt; where an <br/>\n&gt; element is located in a collection; other than that, hashing <br/>\n&gt; means nothing.<br/>\n<br/>\n </span></blockquote>Are you trying to implement a new Map type?  I have some experience<br/>\ndoing just that (I implemented the BucketMap in Avalon collections--<br/>\na Map that internally synchronizes on the unique hash values in the<br/>\nmap).<br/>\n<br/>\nHashing is generally most useful on the keys used in the Map.  I<br/>\nhaven&#39;t found a place where the are genuinely useful outside of that<br/>\ncontext.<br/>\n<br/>\nThe Java Map interface does not expose anything about the internal<br/>\nstructure of the map, except as the entry set.  You can get it here:<br/>\n<br/>\nMap myMap = new HashMap(); // or BucketMap, etc.<br/>\nSet entries = myMap.entrySet();<br/>\n<br/>\n// entries have Map.Entry interface<br/>\n<br/>\nIterator I = entries.iterator();<br/>\nwhile( I.hasNext() )<br/>\n{<br/>\n    Map.Entry e = (Map.Entry) I.next();<br/>\n<br/>\n    long hash = e.hashCode(); // reflects the hashcode for the entry,<br/>\n                              // typically the key&#39;s hashCode mod # of<br/>\nbuckets<br/>\n<br/>\n    Object key = e.getKey();<br/>\n    Object value = e.getValue();<br/>\n    e.setValue(new Object()); // you can change the value, but not the<br/>\nkey.<br/>\n}<br/>\n<br/>\n<br/>\nNow, when I refer to buckets, I am referring to the internal array<br/>\nof hash entries that the map tracks.  In the BucketMap in Avalon, I<br/>\nset it up so that the initial size of the BucketMap array was 31, but<br/>\nit could be changed to any odd number.  Why an odd number?  Because<br/>\nthe default algorithm for Object.hashCode() is the memory address<br/>\nwhere the Object is located.  Memory objects are always even, and<br/>\nvery regular (aligned every four to eight bytes).  If the number of<br/>\nbuckets was even, the objects were stored in one of two buckets--<br/>\nleaving the rest of them untouched.<br/>\n<br/>\nThe internal structure was like this:<br/>\n<br/>\nEntry[] m_buckets; // constructor set the entries--for our example<br/>\n<br/>\nlong storeHash = key.hashCode() % m_buckets.length;<br/>\nm_buckets[storeHash] //.add entry....<br/>\n<br/>\n// storeHash ~ Bucket<br/>\n<br/>\nThis is just enough to show what I mean.<br/>\n<br/>\nThe storeHash (or Map hash entry) is a smaller number than the<br/>\nkey&#39;s hashCode.  Knowing the algorithm for the storeHash (rather<br/>\nsimplistic, I know) allowed me to run some tests on real data.<br/>\n<br/>\nI created a couple of test classes (not in the JUnit sense, I<br/>\nwas interested in output series, not pass/fail testing) to see<br/>\nwhy my BucketMap wasn&#39;t performing as well as I had expected.<br/>\nI found that if I had an even number (esp. one that was a power<br/>\nof 2), two of my 32 buckets ware used--and 30 were not!  I then<br/>\nchanged the number by one.  Presto!  The hash entries were dispersed<br/>\nfar more equally.  It is even better when you have an odd prime<br/>\nnumber (not 2).<br/>\n<br/>\nFor the BucketMap, it was important to spread the entries across<br/>\nthe different buckets because synchronization was provided at that<br/>\nlevel.  I could have two threads using and modifying the BucketMap<br/>\nwith fewer opportunities for thread contention--the whole purpose<br/>\nof the BucketMap.<br/>\n<br/>\nIf you want to see the source code, you can get it at<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://cvs.apache.org/viewcvs/jakarta-avalon-excalibur/collections/src/j\">http://cvs.apache.org/viewcvs/jakarta-avalon-excalibur/collections/src/j</a><br/>\nava/org/apache/avalon/excalibur/collections/BucketMap.java?rev=1.15&cont<br/>\nent-type=text/vnd.viewcvs-markup<br/>\n<br/>\nI&#39;m not sure what you are testing, but hopefully my experience<br/>\nwill help you out.</div>", 
+    "prevInTime": 5077, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1022859312", 
+    "canDelete": false, 
+    "nextInTopic": 5095, 
+    "prevInTopic": 5072, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwNTI5MTIxMzI0Lk01Njg3M0BkaWFzcGFyc29mdHdhcmUuY29tPg==", 
+        "messageIdInHeader": "PDAwMmYwMWMyMDhiOCRjMTU1ZGUzMCRhYzAwYThjMEBHYWJyaWVsPg=="
+    }
+}

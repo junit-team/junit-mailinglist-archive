@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 13288, 
+    "senderId": "3RJ83y7oohmP3BC_-7Q8sP8X1CtOTyYcLzrv_4BD9pj-RuNwTwzVeTu0E99e0196v30i-CTtnXaYt4ltOvHmKvdreoDnrlQzDzMUjUxDAkg6eVNx", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Using real data or test data?", 
+    "from": "&quot;James P. Gunderson&quot; &lt;jgunders@...&gt;", 
+    "authorName": "James P. Gunderson", 
+    "msgSnippet": "I ll throw in our $0.02 worth.  One of our projects runs daily against the stock markets, so the data changes daily. In addition to new data from the daily", 
+    "msgId": 13287, 
+    "rawEmail": "Return-Path: &lt;jgunders@...&gt;\r\nReceived: (qmail 59977 invoked from network); 13 Apr 2005 19:58:53 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 13 Apr 2005 19:58:53 -0000\r\nReceived: from unknown (HELO n2a.bulk.scd.yahoo.com) (66.94.237.36)\n  by mta2.grp.scd.yahoo.com with SMTP; 13 Apr 2005 19:58:53 -0000\r\nDomainKey-Signature: \r\nReceived: from [66.218.69.5] by n2.bulk.scd.yahoo.com with NNFMP; 13 Apr 2005 19:58:37 -0000\r\nReceived: from [66.218.66.68] by mailer5.bulk.scd.yahoo.com with NNFMP; 13 Apr 2005 19:58:37 -0000\r\nX-Sender: jgunders@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 64547 invoked from network); 13 Apr 2005 19:41:47 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m30.grp.scd.yahoo.com with QMQP; 13 Apr 2005 19:41:47 -0000\r\nReceived: from unknown (HELO mpls-qmqp-02.inet.qwest.net) (63.231.195.113)\n  by mta2.grp.scd.yahoo.com with SMTP; 13 Apr 2005 19:41:47 -0000\r\nReceived: (qmail 31265 invoked by uid 0); 13 Apr 2005 19:41:43 -0000\r\nReceived: from mpls-pop-10.inet.qwest.net (63.231.195.10)\n  by mpls-qmqp-02.inet.qwest.net with QMQP; 13 Apr 2005 19:41:43 -0000\r\nReceived: from 70-57-63-105.dnvr.qwest.net (HELO ?127.0.0.1?) (70.57.63.105)\n  by mpls-pop-10.inet.qwest.net with SMTP; 13 Apr 2005 19:41:42 -0000\r\nDate: Wed, 13 Apr 2005 13:41:36 -0600\r\nMessage-ID: &lt;425D75F0.2010400@...&gt;\r\nTo: junit@yahoogroups.com\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.2) Gecko/20040804 Netscape/7.2 (ax)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nReferences: &lt;d3igq7+qki3@...&gt;\r\nIn-Reply-To: &lt;d3igq7+qki3@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;James P. Gunderson&quot; &lt;jgunders@...&gt;\r\nSubject: Re: [junit] Using real data or test data?\r\nX-Yahoo-Group-Post: member; u=193138280\r\nX-Yahoo-Profile: jpg3u\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 13 Apr 2005 19:58:34 -0000\r\n\r\n\nI&#39;ll throw in our $0.02 worth.  One of our projects runs daily against \nthe stock markets, so the data changes daily. In addition to new data \nfrom the daily trading, stock symbols change, and change back again \nweekly. So using the live data would result in constant breakage of test \ncases.\n   However, I agree that real data has exactly the kind of real-world \nanomalies that one needs to test against, and I know of no way to fake \nthose kinds of data.\n\n  So, we use several test databases, which are snapshots of the \nreal-world data from the live sites. This way we have static datasets to \ntest against, but we have all the kinds of data anomalies that our \nsoftware encounters in the real runs.  It requires a bit of storage, but \nonce we have a set of test cases to run against, we never have to touch \nthem again.  As the project has grown, and we have discovered new tests \n(to handle anomalies that we had not seen previously) we add a new test \nsuite that references a new snapshot of the real-world environment, \nwhile the older test cases continue to refer to their own snapshots.\n\nThis seems to work for us, in a fairly dynamic real world domain,\n\nJim\n\n\n-- \nJames P. Gunderson, Ph.D.                Intelligent Systems Architect\njgunders@...                   Gamma Two, Inc.\nwww.gamma-two.com             \t\t 303.778.7400\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nBe comforted that in the face of all aridity and disillusionment\nand despite the changing fortunes of time, there is always a big \nfuture in computer maintenance...\n-- Tony Hendra (National Lampoon&#39;s Deteriorata)\n\nhaefeleuser wrote:\n\n\n&gt;We test various ERP programs, like purchasing demand calculation \n&gt;(complex business logic).\n&gt;\n&gt;I think it is a better approach to use test data which cover the \n&gt;various use cases or boundaries instead of real data. With &quot;test data&quot; \n&gt;I mean data which I create in my test program and which I persist in \n&gt;the database. After the test finished, I delete the test data (with an \n&gt;EntityGarbageCollector).\n&gt;\n&gt;But our new project leader thinks we should use only real data (&quot;one \n&gt;dataset for all tests&quot;). I don&#39;t think that this would work. We need \n&gt;both strategies I think, even if one solution seems to be redundant.\n&gt;\n&gt;To only use real test data has big disadvantages in my opinion:\n&gt;- if data changes (real data does), then tests break\n&gt;- you need much more real data than test data to cover all the \n&gt;boundaries and use cases\n&gt;- if you add real data or remove real data from the dataset, tests \n&gt;might break\n&gt;\n&gt;What do you think about it?\n&gt;\n&gt;\n&gt;  \n&gt;\n\n\n\n\n\n", 
+    "profile": "jpg3u", 
+    "topicId": 13284, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 193138280, 
+    "prevInTime": 13286, 
+    "contentTrasformed": false, 
+    "postDate": "1113421296", 
+    "canDelete": false, 
+    "nextInTopic": 13289, 
+    "prevInTopic": 13286, 
+    "headers": {
+        "inReplyToHeader": "PGQzaWdxNytxa2kzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyNUQ3NUYwLjIwMTA0MDBAZ2FtbWEtdHdvLmNvbT4=", 
+        "referencesHeader": "PGQzaWdxNytxa2kzQGVHcm91cHMuY29tPg=="
+    }
+}

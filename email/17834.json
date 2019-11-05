@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 17835, 
+    "senderId": "zQ860JNj2mIuOB9gA78bMWHwv4onLFMlIaHsZOK6_Gz7CrM7Shn7hzNGjq1-IdDJB0NtOp7qbA", 
+    "systemMessage": false, 
+    "subject": "@Ignore with date", 
+    "from": "it@...", 
+    "authorName": "it@iljapreuss.de", 
+    "msgSnippet": "Hello, from time to time, we feel the need to temporarily ignore a test case. In Junit 3.x, our team introduced a failAfter(Date) method to remind us from time", 
+    "msgId": 17834, 
+    "profile": "ipreussde", 
+    "topicId": 17834, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 182451331, 
+    "messageBody": "<div id=\"ygrps-yiv-1147196969\">Hello,<br/>\n<br/>\nfrom time to time, we feel the need to temporarily ignore a test case. In Junit 3.x, our team introduced a failAfter(Date) method to remind us from time to time that there was a testcase ignored.<br/>\n<br/>\nNow that we are switching to JUnit 4, we&#39;d like to use the Ignore annotation, so I patched it to allow an additional until-Parameter. Below are the additional unit tests for the TestMethodTest:<br/>\n<br/>\n\tstatic public class IgnoredUntilTest {<br/>\n\t\t@Ignore(until=&quot;1/1/3000&quot;) @Test public void withUntilLater() {}<br/>\n\t}<br/>\n\t<br/>\n\t@Test public void ignoreRunnerUntil() {<br/>\n\t\tJUnitCore runner= new JUnitCore();<br/>\n\t\tResult result= runner.run(IgnoredUntilTest.class);<br/>\n\t\tassertEquals(1, result.getIgnoreCount());<br/>\n\t}<br/>\n\t<br/>\n\tstatic public class IgnoredUntilWithTimeTest {<br/>\n\t\t@Ignore(until=&quot;1/1/3000 1:00 PM&quot;) @Test public void withUntilLater() {}<br/>\n\t}<br/>\n\t<br/>\n\t@Test public void ignoreRunnerUntilWithTime() {<br/>\n\t\tJUnitCore runner= new JUnitCore();<br/>\n\t\tResult result= runner.run(IgnoredUntilWithTimeTest.class);<br/>\n\t\tassertEquals(1, result.getIgnoreCount());<br/>\n\t}<br/>\n\t<br/>\n\tstatic public class IgnoredUntilBeforeTest {<br/>\n\t\t@Ignore(until=&quot;1/1/1900&quot;) @Test public void withUntilBefore() {}<br/>\n\t}<br/>\n\t<br/>\n\t@Test public void doNotIgnoreUntilBefore() {<br/>\n\t\tJUnitCore runner= new JUnitCore();<br/>\n\t\tResult result= runner.run(IgnoredUntilBeforeTest.class);<br/>\n\t\tassertEquals(0, result.getIgnoreCount());<br/>\n\t}<br/>\n<br/>\n<br/>\nThe Ignore annotation needs the additional method:<br/>\n<br/>\npublic @interface Ignore {<br/>\n\tString value() default &quot;&quot;; <br/>\n\tString until() default &quot;&quot;;<br/>\n}<br/>\n<br/>\nAnd the implementation of the behaviour is in TestIntrospector:<br/>\n<br/>\n\tpublic boolean isIgnored(Method eachMethod) {<br/>\n\t\tIgnore ignoredAnnotation= eachMethod.getAnnotation(Ignore.class);<br/>\n\t\tif (ignoredAnnotation == null) {<br/>\n\t\t\treturn false;<br/>\n\t\t}<br/>\n\t\tString until= ignoredAnnotation.until();<br/>\n\t\tif (until.length() == 0) {<br/>\n\t\t\treturn true;<br/>\n\t\t}<br/>\n\t\ttry {<br/>\n\t\t\treturn DateFormat.getDateTimeInstance(DateFormat.SHORT,<br/>\n\t\t\t\t\tDateFormat.SHORT, Locale.ENGLISH).parse(until).after(<br/>\n\t\t\t\t\tnew Date());<br/>\n\t\t} catch (ParseException e) {<br/>\n\t\t\ttry {<br/>\n\t\t\t\treturn DateFormat.getDateInstance(DateFormat.SHORT,<br/>\n\t\t\t\t\t\tLocale.ENGLISH).parse(until).after(new Date());<br/>\n\t\t\t} catch (ParseException e2) {<br/>\n\t\t\t\treturn false;<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n(I guess this could be in need of a little refactoring, sorry... :o )<br/>\n<br/>\nIf you think it&#39;s a good idea, don&#39;t hesitate to add it to JUnit 4.2... :)<br/>\n<br/>\nAny other comments would be welcome, too, of course.<br/>\n<br/>\nCheers, Ilja</div>", 
+    "prevInTime": 17833, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1157553379", 
+    "canDelete": false, 
+    "nextInTopic": 18128, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQ1Mzc2NzkuODkxMTExNTc1NTMzNzkzOTAuSmF2YU1haWwuc2VydmxldEBrdW5kZW5zZXJ2ZXI+"
+    }
+}

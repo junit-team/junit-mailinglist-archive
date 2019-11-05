@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 3197, 
+    "senderId": "Zt3YhGD83CVbaEv0RBzToZKswzGQN9ueXpEMcAXJ7SQ61McKA5PcgrQv0nVNfgTneFB5oBMk2BI", 
+    "systemMessage": false, 
+    "subject": "Re: Setup", 
+    "from": "pholser@...", 
+    "authorName": "pholser@yahoo.com", 
+    "msgSnippet": "... enough ... find ... if i m not mistaken, you should never depend on test methods in a class being executed in any particular order.  so you could never ", 
+    "msgId": 3196, 
+    "profile": "pholser", 
+    "topicId": 3180, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-417199400\">--- In junit@y..., &quot;Paolo Perrotta&quot; &lt;pperrotta@i...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; setUp and tear down are used for each testcase, but it would be <br/>\n </span></blockquote>enough<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; to run them once. There is an example in the FAQ but I couldn&#39;t <br/>\n </span></blockquote>find<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; out, how to get it running.<br/>\n&gt; <br/>\n&gt; The rationale of the system is that each test must be independent<br/>\n&gt; of others.  That&#39;s why setUp() and tearDown() are called for each<br/>\n&gt; single test case. Why do you want to setUp and tearDown your text<br/>\n&gt; fixture only once?<br/>\n&gt; <br/>\n&gt; Anyway, if you really want to do this you can do either of these<br/>\n&gt; two ugly things:<br/>\n&gt; <br/>\n&gt; - Write your own testSetUp() method as the first test method in the<br/>\n&gt; class and testTearDown() as the last test method in the class.<br/>\n&gt; Pretty ugly, but it should work. I didn&#39;t try it myself, so I&#39;m not<br/>\n&gt; 100% sure it will.<br/>\n<br/>\n </span></blockquote>if i&#39;m not mistaken, you should never depend on test methods in a<br/>\nclass being executed in any particular order.  so you could never<br/>\nguarantee that a testSetUp() method would be called first, nor a<br/>\ntestTearDown() method called last (short of altering the framework).<br/>\n<br/>\ntry writing a subclass of TestSetup, whose setUp() and tearDown()<br/>\nperform setup/teardown of test fixture once for the Test object the<br/>\nTestSetup decorates.  e.g.:<br/>\n<br/>\npublic class DatabaseSetup extends TestSetup<br/>\n{<br/>\n  public DatabaseSetup(Test test)<br/>\n  {<br/>\n    super(test);<br/>\n  }<br/>\n<br/>\n  protected void setUp() throws Exception<br/>\n  {<br/>\n    // create tables, add rows, etc.<br/>\n  }<br/>\n<br/>\n  protected void tearDown() throws Exception<br/>\n  {<br/>\n    // drop tables<br/>\n  }<br/>\n}<br/>\n<br/>\nthen use your TestSetup in a test class&#39;s suite() method:<br/>\n<br/>\npublic class MyTest extends TestCase<br/>\n{<br/>\n  public static Test suite()<br/>\n  {<br/>\n    return new DatabaseSetup(new TestSuite(MyTest.class));<br/>\n  }<br/>\n}<br/>\n<br/>\nor, if it&#39;s test fixture like objects that your test class need to<br/>\naccess directly, make them attributes of the test class, and<br/>\ninitialize them in the test class&#39;s constructor rather than in<br/>\nsetUp().<br/>\n<br/>\n--p</div>", 
+    "prevInTime": 3195, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1005138776", 
+    "canDelete": false, 
+    "nextInTopic": 3206, 
+    "prevInTopic": 3195, 
+    "headers": {
+        "inReplyToHeader": "PDAwMTMwMWMxNjc3OSQ3ODZlYjZmMCQxMDJhNjIzZUBOdXNjbz4=", 
+        "messageIdInHeader": "PDlzYmMwbyt2MHFrQGVHcm91cHMuY29tPg=="
+    }
+}

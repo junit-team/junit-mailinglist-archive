@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 17139, 
+    "senderId": "mLy4aHN54CtTMMw8YIqtNhwtuIgiDLUD7j9OEgnbZyqooFRkDio8FoUgDY3O-feaZAamScuvmkKEhLS_h9AcjCEGxToRcaYRUAtFtkurX1cS", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Not able to run junit test case", 
+    "from": "&quot;Brett L. Schuchert&quot; &lt;schuchert@...&gt;", 
+    "authorName": "Brett L. Schuchert", 
+    "msgSnippet": "Pradeep , How are you running the tests? I d guess you are using a test runner from JUnit 3.8.1 and not 4.x. As a quick test, add the following method to your", 
+    "msgId": 17138, 
+    "profile": "schuchert", 
+    "topicId": 17137, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 162568887, 
+    "messageBody": "<div id=\"ygrps-yiv-132791574\">Pradeep ,<br/>\n<br/>\nHow are you running the tests? I&#39;d guess you are using a test runner from JUnit 3.8.1 and not 4.x.<br/>\n <br/>\nAs a quick test, add the following method to your class and if it runs, then that&#39;s your problem:<br/>\n <br/>\npublic static junit.framework.Test suite() {<br/>\n      return new JUnit4TestAdapter(Employee.class);<br/>\n}<br/>\n<br/>\nIt might also be the case that JUnit is confused because you&#39;ve inherited from TestCase and not followed the naming conventions (testX, testY, etc.). Not sure about that.<br/>\n <br/>\nIf you use the annotations, you do not need to inherit from TestCase. Of course by doing so you get all of the Assert methods. You can either use static imports for those or inherit from Assert (ugly but given the tool support, a reasonable alternative in my opinion).<br/>\n <br/>\n <br/>\nBrett<br/>\n <br/>\nTutorials and Articles<br/>\n     <a rel=\"nofollow\" target=\"_blank\" href=\"http://schuchert.wikispaces.com/\">http://schuchert.wikispaces.com/</a><br/>\n<br/>\n<br/>\n<br/>\n----- Original Message ----<br/>\nFrom: pradeep_3diitr &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:pradeep_3diitr@...\">pradeep_3diitr@...</a>&gt;<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSent: Monday, July 17, 2006 6:54:12 AM<br/>\nSubject: [junit] Not able to run junit test case<br/>\n<br/>\n<br/>\nHi,<br/>\n<br/>\nI am getting following error while running a Junit TestCase whose <br/>\nformat conforms to new style (@Test, etc):<br/>\n<br/>\nNo tests found in org.MyCompany. EmployeeTest <br/>\n<br/>\njunit.framework. AssertionFailedE rror: No tests found in <br/>\norg.MyCompany. EmployeeTest at <br/>\norg.junit.internal. runners.OldTestC lassRunner. run<br/>\n(OldTestClassRunner .java:35) at junit.framework. JUnit4TestAdapte r.run<br/>\n(JUnit4TestAdapter. java:32)<br/>\n<br/>\nI know this is happening because of annotations being used.<br/>\n<br/>\nCould you please resolve this ASAP.<br/>\n<br/>\nFollowing is the TestCase --&gt;<br/>\n<br/>\npackage org.MyCompany;<br/>\n<br/>\nimport org.MyCompany. Employee;<br/>\n<br/>\nimport org.junit.Test;<br/>\nimport org.junit.runner. RunWith;<br/>\nimport org.junit.runners. Parameterized;<br/>\nimport org.junit.runners. Parameterized. Parameters;<br/>\nimport org.junit.Assert;<br/>\nimport org.junit.Before;<br/>\nimport org.junit.After;<br/>\nimport org.junit.Ignore;<br/>\n<br/>\nimport org.junit.runner. Result;<br/>\n<br/>\nimport java.util.LinkedLis t;<br/>\nimport java.util.Iterator;<br/>\n<br/>\nimport junit.framework. JUnit4TestAdapte r;<br/>\nimport junit.framework. TestCase;<br/>\n<br/>\npublic class EmployeeTest extends TestCase<br/>\n{<br/>\nprivate Employee satendra;<br/>\nprivate Employee pradeep;<br/>\nprivate Employee sriram;<br/>\n<br/>\n@Before<br/>\npublic void setUp()<br/>\n{<br/>\nsatendra = new Employee(&quot;Satendra <br/>\nDiwedi&quot;,30,50000, null);<br/>\npradeep = new Employee(&quot;Pradeep <br/>\nYadav&quot;,26,30000, satendra) ;<br/>\nsriram = new Employee(&quot;Sriram <br/>\nSethumadhavan&quot; ,26,35000, satendra) ;<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void GetName()<br/>\n{<br/>\nAssert.assertEquals (&quot;Satendra <br/>\nDiwedi&quot;,satendra. getName() );<br/>\nAssert.assertEquals (&quot;Pradeep Yadav&quot;,pradeep. getName<br/>\n());<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void getAge()<br/>\n{<br/>\nAssert.assertEquals (26,sriram. getAge()) ;<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void getSalary()<br/>\n{<br/>\nAssert.assertEquals (30000.0, pradeep.getSalar y(),0);<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void raiseSalary( )<br/>\n{<br/>\npradeep.raiseSalary (10);<br/>\nAssert.assertEquals (33000.0, pradeep.getSalar y(),0);<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void getManager()<br/>\n{<br/>\nAssert.assertSame( satendra, pradeep.getManag er());<br/>\n}<br/>\n<br/>\n//@Ignore<br/>\n@Test<br/>\npublic void getSubordinateList( )<br/>\n{<br/>\nLinkedList&lt;Employee &gt; l = satendra.getSubordi nateList<br/>\n();<br/>\n<br/>\nIterator listIter = l.listIterator( );<br/>\n<br/>\nEmployee e;<br/>\n<br/>\ne = (Employee)listIter. next();<br/>\n<br/>\nAssert.assertSame( pradeep,e) ;<br/>\n<br/>\ne = (Employee)listIter. next();<br/>\n<br/>\nAssert.assertSame( sriram,e) ;<br/>\n}<br/>\n<br/>\n@After<br/>\npublic void tearDown()<br/>\n{<br/>\nsatendra = null;<br/>\nsriram = null;<br/>\npradeep = null;<br/>\n}<br/>\n<br/>\npublic static junit.framework. Test suite() {<br/>\nreturn new JUnit4TestAdapter( EmployeeTest. class);<br/>\n}<br/>\n<br/>\n}<br/>\n<br/>\nRegards,<br/>\n<br/>\nPradeep <br/>\n<br/>\n<br/>\n <br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 17137, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1153144389", 
+    "canDelete": false, 
+    "nextInTopic": 17140, 
+    "prevInTopic": 17137, 
+    "headers": {
+        "inReplyToHeader": "PGU5ZnRwNCtyc2piQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDYwNzE3MTM1MzA5LjMyMS5xbWFpbEB3ZWI1NDExNS5tYWlsLnlhaG9vLmNvbT4="
+    }
+}

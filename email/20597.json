@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 20598, 
+    "senderId": "RqiHE0im53vNp5wV5CFq_cIOBAjbgjAHVghxspfsjrQyZJMTbNz1NRxAoC824jzQwfFinyQbZwrsvLDkoiLvsSz_FG_Pb_wDXYZfIMshlSQ", 
+    "systemMessage": true, 
+    "subject": "[junit] JUnit 4.5 - Problems with Filter in conjunction with parameterized tests", 
+    "from": "jayasinghe &lt;robin.desilva@...&gt;", 
+    "authorName": "jayasinghe", 
+    "msgSnippet": "Hi List! I am currently working on a JUnit project that enables us to run tests in a well-defined order and with the ability to skip tests in a flexible manner", 
+    "msgId": 20597, 
+    "profile": "robinjay33", 
+    "topicId": 20597, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 348617342, 
+    "messageBody": "<div id=\"ygrps-yiv-784774228\">Hi List!<br/>\n<br/>\nI am currently working on a JUnit project that enables us to run tests in a<br/>\nwell-defined order and with the ability to skip tests in a flexible manner<br/>\n(by annotations and property files). Additionally we do need to pass certain<br/>\nenviroment-parameters to the tests.<br/>\nThe problem is that I somehow did not manage to combine the filters with the<br/>\nparameterized runners. My approach is to extend Parameterized.class and add<br/>\na custom filter. The point is that the filter does not seem to have any<br/>\neffect on the set of executed tests. <br/>\n<br/>\nI tried my example with JUnit 4.3.4 that is packaged with Eclipse and it<br/>\nworks as expected. With JUnit 4.5 checked out from SOurceForge it does not<br/>\nwork.<br/>\n<br/>\nHere is my source-code. It is a little extension to a Filter-example that<br/>\nKent posted ealier:<br/>\n<br/>\nimport java.util.Arrays;<br/>\nimport java.util.Collection;<br/>\n<br/>\nimport org.junit.Test;<br/>\nimport org.junit.runner.Description;<br/>\nimport org.junit.runner.RunWith;<br/>\nimport org.junit.runner.Runner;<br/>\nimport org.junit.runner.manipulation.Filter;<br/>\nimport org.junit.runners.Parameterized;<br/>\nimport org.junit.runners.Parameterized.Parameters;<br/>\n<br/>\npublic class TestExample {<br/>\n<br/>\n\t@RunWith(FilteredParameterizedRunner.class)<br/>\n\tpublic static class Tests {<br/>\n\t\tprivate int value1;<br/>\n\t\tprivate int value2;<br/>\n\t\t<br/>\n\t\t@Parameters<br/>\n\t\tpublic static Collection data() {<br/>\n\t        return Arrays.asList(new Object[][] { { 2, 2 }, { 1, 1 }});<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tpublic Tests(int value1, int value2) {<br/>\n\t\t\tthis.value1 = value1;<br/>\n\t\t\tthis.value2 = value2;<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\t@Test<br/>\n\t\tpublic void a() {<br/>\n\t\t\tSystem.out.println(&quot;Run test A &quot; + value1);<br/>\n\t\t}<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void b() {<br/>\n\t\t\tSystem.out.println(&quot;Run test B &quot; + value1);<br/>\n\t\t}<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void c() {<br/>\n\t\t\tSystem.out.println(&quot;Run test C &quot; + value1);<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n\tpublic static class NamedTestsFilter extends Filter {<br/>\n\t\tfinal String[] tests = new String[] { &quot;a&quot;, &quot;b&quot; };<br/>\n\t\t<br/>\n\t\t@Override<br/>\n\t\tpublic String describe() {<br/>\n\t\t\treturn &quot;only tests starting with &#39;a&#39;&quot;;<br/>\n\t\t}<br/>\n<br/>\n\t\t@Override<br/>\n\t\tpublic boolean shouldRun(Description description) {<br/>\n\t\t\tif(description.isTest()) {<br/>\n\t\t\t\tfor (String each : tests) {<br/>\n\t\t\t\t\tif (description.getDisplayName().startsWith(each)) {<br/>\n\t\t\t\t\t\tSystem.out.println(&quot;Test with name &quot; + description.getDisplayName() +<br/>\n&quot; starts with &quot; + each);<br/>\n\t\t\t\t\t\treturn true;<br/>\n\t\t\t\t\t}<br/>\n\t\t\t\t}<br/>\n\t\t\t\treturn false;<br/>\n\t\t\t}<br/>\n\t\t\telse if(description.isSuite()) {<br/>\n\t\t\t\tSystem.out.println(&quot;suite&quot;);<br/>\n\t\t\t\treturn true;<br/>\n\t\t\t}<br/>\n\t\t\telse {<br/>\n\t\t\t\tSystem.out.println(&quot;else&quot;);<br/>\n\t\t\t\treturn false;<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n\tpublic static class FilteredParameterizedRunner extends Parameterized {<br/>\n<br/>\n\t\tpublic FilteredParameterizedRunner(Class&lt;?&gt; klass) throws Throwable {<br/>\n\t\t\tsuper(klass);<br/>\n\t\t\t<br/>\n\t\t\tfor(Runner rnr : this.getChildren()) {<br/>\n\t\t\t\tsuper.filter(new NamedTestsFilter());<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t\t<br/>\n\t}<br/>\n}<br/>\n<br/>\nIs this a bug of 4.5 or is it intended behavior?<br/>\n<br/>\nThanks in advance !<br/>\n<br/>\nRobin<br/>\n-- <br/>\nView this message in context: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/JUnit-4.5---Problems-with-Filter-in-conjunction-with-parameterized-tests-tp17983968p17983968.html\">http://www.nabble.com/JUnit-4.5---Problems-with-Filter-in-conjunction-with-parameterized-tests-tp17983968p17983968.html</a><br/>\nSent from the JUnit - User mailing list archive at Nabble.com.</div>", 
+    "prevInTime": 20596, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1213799437", 
+    "canDelete": false, 
+    "nextInTopic": 20603, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDE3OTgzOTY4LnBvc3RAdGFsay5uYWJibGUuY29tPg=="
+    }
+}

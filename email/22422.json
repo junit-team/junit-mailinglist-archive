@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 22423, 
+    "senderId": "dSN3O8B-fyXRrCGAusHt2JpXCSztUTXjnzrjuo9o3ov8aP2xV-e04BEma3JtCaIB2cwhS1-VQJiBKoiT__bfcCcEj73-ouIwcOMkcg", 
+    "systemMessage": false, 
+    "subject": "Re: SureFire Plugin: &quot;parallel&quot; attribute", 
+    "from": "&quot;krosenvold&quot; &lt;kristian@...&gt;", 
+    "authorName": "krosenvold", 
+    "msgSnippet": "... Well I ll be 100% correct here, it does not fire one thread per test. It  makes one CachedThreadPool per test class, and schedules runnables on it.", 
+    "msgId": 22422, 
+    "profile": "krosenvold", 
+    "topicId": 22403, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 403861045, 
+    "messageBody": "<div id=\"ygrps-yiv-426507381\"><blockquote><span title=\"ireply\">&gt;&gt; Also, Just out of curiosity, what happens thread count wise when you aren&#39;t using ConfigurableParallelComputer, does it literally fire up a thread per test?<br/>\n&gt; Yes, in &quot;methods&quot; mode it&#39;s one thread per test method. Classes mode is one per class. Both is, well, both. In my 10+ years as test-infected, I have really never ever had a use-case where this kind of solution would be appropriate (maybe some kind of really slow database with unlimited cheap connections). With thousands of test classes you come to a grinding halt with any of these options.<br/>\n<br/>\n </span></blockquote>Well I&#39;ll be 100% correct here, it does not fire one thread per test. It  makes one CachedThreadPool per test class, and schedules runnables on it. Unfortunately the CachedThreadPool is not designed to be used this way, and it needs to be shut down properly or each instance will stay around for 60 seconds consuming more resources. So if you have 500 tests with 5 methods each in one module you&#39;ll have a maximum of 2500 threads running in 500 instances of CachedThreadPool; and currently those 2500 threads will stay around for a minute.<br/>\n<br/>\nThis is actually a lot less efficient than just doing new Thread(runnable).start(), which is also a bit crazy. <br/>\n<br/>\nBut there&#39;s no point in bashing the default implementation; it&#39;s extensible and user-modifyable - which is really the important thing. Actually, I suppose at some point in time Kent/David make up their mind about how to solve issue 18. I&#39;ve spent quite a lot of time refining the CPC and they&#39;re more than welcome to supplement/replace ParallelComputer with my implementation. Just remember to vote for issue 18 ;)<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; [DF] When you add boxes, each one runs a separate selenium rc server? How do you distribute the tests to them?<br/>\n<br/>\n </span></blockquote>Yes, 1 rc instance per box.  We just use maven properties in pom.xml like this;<br/>\n<br/>\n    &lt;properties&gt;<br/>\n        &lt;selenium.rc.server&gt;localhost&lt;/selenium.rc.server&gt;<br/>\n        &lt;selenium.rc.serverPort&gt;4444&lt;/selenium.rc.serverPort&gt;<br/>\n        &lt;selenium.browser&gt;*firefox&lt;/selenium.browser&gt;<br/>\n    &lt;/properties&gt;<br/>\n<br/>\nThese are &quot;sensible default values&quot; in our environment and we just invoke maven with overriding values on our build box:<br/>\n<br/>\nmvn -Dselenium.rc.server=firstrcbox.com -Dselenium.browser=*opera install<br/>\n<br/>\nThe we just have a number of automatic builds that are triggered by commit hooks. <br/>\n<br/>\nI know it&#39;s not very glorious, but it works really well in the trenches. <br/>\n<br/>\nKristian</div>", 
+    "prevInTime": 22421, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1266222138", 
+    "canDelete": false, 
+    "nextInTopic": 22424, 
+    "prevInTopic": 22421, 
+    "headers": {
+        "inReplyToHeader": "PDVGQkIzMzRDLTBCMTMtNDNDMi1BOTE4LTcyRDMyNUY5NUQyMEBkb3VnbGFzZmVyZ3Vzb24udXM+", 
+        "messageIdInHeader": "PGhsYjA3cStnbHBzQGVHcm91cHMuY29tPg=="
+    }
+}

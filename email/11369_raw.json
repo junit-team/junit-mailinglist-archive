@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 11370, 
+    "senderId": "qjEiUJNdtoEJOvDU1fHUbf3xiVVtTjW4BHIMe1BzvllcgkU7JpuQHDX8nXAwwyFeYtJ8akBnl4cXTfmuIMaoybL5HhhfpFtE-c9n", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Problem with simple test case", 
+    "from": "Curt Sampson &lt;yahoo_sucks@...&gt;", 
+    "authorName": "Curt Sampson", 
+    "msgSnippet": "... As well as mockrunner, you might have a look at servtest on SourceForge: http://sourceforge.net/projects/servtest/ This is basically a code dump of the", 
+    "msgId": 11369, 
+    "rawEmail": "Return-Path: &lt;yahoo_sucks@...&gt;\r\nX-Sender: yahoo_sucks@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 94057 invoked from network); 7 Jul 2004 23:27:57 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m6.grp.scd.yahoo.com with QMQP; 7 Jul 2004 23:27:57 -0000\r\nReceived: from unknown (HELO platonic.cynic.net) (204.80.150.245)\n  by mta6.grp.scd.yahoo.com with SMTP; 7 Jul 2004 23:27:57 -0000\r\nReceived: from angelic.cynic.net (angelic-platonic.cvpn.cynic.net [198.73.220.226])\n\tby platonic.cynic.net (Postfix) with ESMTP id 92349C181\n\tfor &lt;junit@yahoogroups.com&gt;; Wed,  7 Jul 2004 23:27:55 +0000 (UTC)\r\nReceived: from localhost (localhost [127.0.0.1])\n\tby angelic.cynic.net (Postfix) with ESMTP id 292A38736\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  8 Jul 2004 08:27:54 +0900 (JST)\r\nDate: Thu, 8 Jul 2004 08:27:54 +0900 (JST)\r\nX-X-Sender: cjs@...\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;cbdsfc+4d9r@...&gt;\r\nMessage-ID: &lt;Pine.NEB.4.58.0407080749480.518@...&gt;\r\nReferences: &lt;cbdsfc+4d9r@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nX-eGroups-Remote-IP: 204.80.150.245\r\nFrom: Curt Sampson &lt;yahoo_sucks@...&gt;\r\nSubject: Re: [junit] Re: Problem with simple test case\r\nX-Yahoo-Group-Post: member; u=110189933\r\nX-Yahoo-Profile: cjstokyo\r\n\r\nOn Thu, 24 Jun 2004, bartvdcammen wrote:\n\n&gt; If you&#39;re going to test lots of servlets, consider writing fake\n&gt; HttpServletRequest and HttpServletResponse.\n&gt; The response could f.i. provide a fake Printwriter that records\n&gt; what&#39;s printed on him.\n\nAs well as mockrunner, you might have a look at servtest on SourceForge:\n\n    http://sourceforge.net/projects/servtest/\n\nThis is basically a code dump of the servlet container that I use for\nunit-testing servlets. I&#39;ve since implemented a bit more stuff in it; if\nanybody&#39;s interested, I&#39;ll commit the changes.\n\nHowever, what&#39;s really missing here are some tutorials on how to use\nthis, since in my experience it&#39;s not obvious how to use this framework.\n(It often requires changing the way you write servlets; it really works\nbest with a split controller/view style of servlet design.)\n\nSince I&#39;m moving away from Java (toward Ruby) these days, I&#39;m not going\nto be doing huge amounts of work on this. If anybody else is interested\nin working on this, let me know privately, and perhaps we can get some\ndevelopment going again. If someone else is interested in learning how\nto use this, I&#39;d be willing to do a rough draft of a tutorial or two,\nand proofread and comment on the final version.\n\n&gt; Test the doGet() method as any other method. Make a new HelloWorld()\n&gt; and call its doGet() with your fake request and response. After\n&gt; execution you can inspect the changes in request and response. In\n&gt; your case : get the fake writer and check the printed lines.\n\nAs I mentioned above, I would typically test the controller with this\nframework, and leave the view to some other form of testing. Generally,\nI have my controller servlets generate data objects that it adds as\nattributes to the request, and the view servlets (often JSPs) then just\nextract these and display them.\n\nYou can make this more reliable, especially if you compile your JSPs\nduring your compile/test phase, by making the servlet responsible for\ngetting the objects out of the request so you can take advantage of the\ncompiler&#39;s static checking of calls and types:\n\n    class MyServlet extends BaseServlet {\n\tprivate static final USERINFO_KEY\n\t    = &quot;com.example..someapp.servlet.MyServlet.USERINFO&quot;;\n\tpublic void doGet(Request reqest, Response response) {\n\t    // do controller work\n\t    request.setAttribute(USERINFO_KEY, userInfo);\n\t    // chain to view servlet\n\t}\n\tpublic static UserInfo getUserInfo(Request request) {\n\t    return (UserInfo) request.getAttribute(USERINFO_KEY);\n\t}\n    }\n\nAnd then the JSP can invoke:\n\n    MyServlet.getUserInfo(request)\n\nand be guaranteed that it will get the correct object from the request\nattributes.\n\ncjs\n-- \nCurt Sampson  &lt;cjs@...&gt;   +81 90 7737 2974   http://www.NetBSD.org\n    Don&#39;t you know, in this new Dark Age, we&#39;re all light.  --XTC\n\n", 
+    "profile": "cjstokyo", 
+    "topicId": 11257, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 110189933, 
+    "prevInTime": 11368, 
+    "contentTrasformed": false, 
+    "postDate": "1089242874", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 11268, 
+    "headers": {
+        "inReplyToHeader": "PGNiZHNmYys0ZDlyQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNTguMDQwNzA4MDc0OTQ4MC41MThAYW5nZWxpYy12dGZ3LmN2cG4uY3luaWMubmV0Pg==", 
+        "referencesHeader": "PGNiZHNmYys0ZDlyQGVHcm91cHMuY29tPg=="
+    }
+}

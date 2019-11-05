@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 2214, 
+    "senderId": "-jt6nKTMQntoTkFQN8Zg3rSxx0jO3lGAyctU85XnfqLXwxrrcHzEFtdqwQO5fU30dzPqyK73j3K23Yz0cqzviRcboNTXGe5PcTzPQK8bnUNKYKM", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: New to JUnit", 
+    "from": "&quot;Jason Rogers&quot; &lt;jason.rogers@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "If you know what node is changing (which you should) and what the new value is supposed to be (which you should), you can just very simply do the calculation,", 
+    "msgId": 2213, 
+    "topicId": 2199, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-640905848\">If you know what node is changing (which you should) and what the new value<br/>\nis supposed to be (which you should), you can just very simply do the<br/>\ncalculation, create a MockNode in your test that contains this new value and<br/>\nassert that the two are equal.  This presumes that the calculate method is<br/>\nalready tested and working properly.<br/>\n<br/>\nBut that begs the question, if the only functionality of the state change<br/>\nmethod is to forward a call to some other objects calculation method, is it<br/>\nnecessary to test the method in the TreeHolder class?<br/>\n<br/>\n-Jason<br/>\n<blockquote><span title=\"ireply\">     &gt; -----Original Message-----<br/>\n    &gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:reply_das@...\">reply_das@...</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:reply_das@...\">reply_das@...</a>]<br/>\n    &gt; Sent: Monday, July 30, 2001 8:40 PM<br/>\n    &gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n    &gt; Subject: [junit] Re: New to JUnit<br/>\n    &gt; <br/>\n    &gt; <br/>\n    &gt; --- In junit@y..., Johannes Link &lt;john.link@g...&gt; wrote:<br/>\n    &gt; &gt; With which part of your TreeHolder functionality have <br/>\n    &gt; you testing<br/>\n    &gt; &gt; problems? The build up or the state changes? <br/>\n    &gt; &gt; Can you share (at least part of) your code base, so <br/>\n    &gt; that we can more<br/>\n    &gt; &gt; easily grasp the exact semantics?<br/>\n    &gt; &gt; <br/>\n    &gt; &gt; Johannes<br/>\n    &gt; &gt; <br/>\n    &gt; <br/>\n    &gt; Hi Johannes,<br/>\n    &gt; Thanks for your reply. My TreeHolder class is something like this:<br/>\n    &gt; <br/>\n    &gt; // Note: MyNode implements MutableTreeNode interface <br/>\n    &gt; // and holds a UserDefinedObject<br/>\n    &gt; <br/>\n    &gt; public class TreeHolder {<br/>\n    &gt; <br/>\n    &gt;     MyNode rootNode; //the root node for the whole tree<br/>\n    &gt; <br/>\n    &gt;     public TreeHolder(Collection items) {<br/>\n    &gt;         //constructor logic to build MyNodes out of the input<br/>\n    &gt;         //items and set rootNode as the root of the generated<br/>\n    &gt;         //tree of MyNodes.<br/>\n    &gt; <br/>\n    &gt;         rootNode = ... //build a MyNode Tree From &quot;items&quot;<br/>\n    &gt;     }<br/>\n    &gt; <br/>\n    &gt;     public void calculateSomething(int contextValue) {<br/>\n    &gt; <br/>\n    &gt;          //This changes the state of some MyNodes in the tree<br/>\n    &gt;          rootNode.calculateSomething(contextValue);<br/>\n    &gt;     }<br/>\n    &gt; <br/>\n    &gt;     //.... several such calculate methods<br/>\n    &gt; <br/>\n    &gt;     public void summarizeAll() {<br/>\n    &gt; <br/>\n    &gt;         //This again changes the state in some other way.<br/>\n    &gt;         rootNode.summarizeAll();<br/>\n    &gt;     }<br/>\n    &gt; <br/>\n    &gt;     public MyPackagedObject getAsNewPacakgedObject() {<br/>\n    &gt; <br/>\n    &gt;         //This packages the MyNode tree into a flattened<br/>\n    &gt;         //object and returns it.<br/>\n    &gt; <br/>\n    &gt;         return rootNode.newPackagedObject();<br/>\n    &gt;     }<br/>\n    &gt; }<br/>\n    &gt; <br/>\n    &gt; I have written TestCases for the MyNode object already. Every <br/>\n    &gt; calculate method on TreeHolder changes the state of the <br/>\n    &gt; rootNode (or <br/>\n    &gt; one/many subnodes.) So, how do I go about testing if the state <br/>\n    &gt; changes are correct? Or rather, should I even be writing <br/>\n    &gt; them (since <br/>\n    &gt; TestMyNode may already covers those cases?)<br/>\n    &gt; <br/>\n    &gt; Thanks in advance for your help.<br/>\n    &gt; --Das<br/>\n    &gt; <br/>\n    &gt; <br/>\n    &gt; <br/>\n    &gt; ------------------------ Yahoo! Groups Sponsor <br/>\n    &gt; ---------------------~--&gt;<br/>\n    &gt; Small business owners...<br/>\n    &gt; Tell us what you think!<br/>\n    &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/vO1FAB/txzCAA/ySSFAA/NhFolB/TM\">http://us.click.yahoo.com/vO1FAB/txzCAA/ySSFAA/NhFolB/TM</a><br/>\n    &gt; ----------------------------------------------------------<br/>\n    &gt; -----------~-&gt;<br/>\n    &gt; <br/>\n    &gt; To unsubscribe from this group, send an email to:<br/>\n    &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n    &gt;  <br/>\n    &gt; <br/>\n    &gt; Your use of Yahoo! Groups is subject to <br/>\n </span></blockquote><a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 2212, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "996585248", 
+    "canDelete": false, 
+    "nextInTopic": 2216, 
+    "prevInTopic": 2206, 
+    "headers": {
+        "messageIdInHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2MUZFQGV4Y2g+"
+    }
+}

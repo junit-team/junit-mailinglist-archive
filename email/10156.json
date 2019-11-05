@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 10157, 
+    "senderId": "U8uHrMgHC3x0CAxydRlV57Z2HByb9T0yqKQ-Q_0aKfKDH-YS319Un1hIvb-6PIXz-4lPNBYSKi1EEEYLg1WwhXKycA", 
+    "systemMessage": false, 
+    "subject": "Security provider problems w/ Junit Swing runner", 
+    "from": "&quot;john w&quot; &lt;john@...&gt;", 
+    "authorName": "john w", 
+    "msgSnippet": "We just ran into something here that I wanted to document for future people who might run into this. Where I work we have our own implementation of", 
+    "msgId": 10156, 
+    "profile": "jmufreebase", 
+    "topicId": 10156, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126816200, 
+    "messageBody": "<div id=\"ygrps-yiv-692314911\">We just ran into something here that I wanted to document for future<br/>\npeople who might run into this.<br/>\n<br/>\nWhere I work we have our own implementation of java.security.Provider.<br/>\nThis implementation lives in a jar file that&#39;s signed by us and with<br/>\nthe JCE Code Signing thing. (I don&#39;t remember the details, I&#39;m not the<br/>\ncryppie guy, but jarsigner -verify -certs -verbose shows that all the<br/>\nfiles are signed by both certs)<br/>\n<br/>\nI had a test that called a method that takes in a string and encrypts<br/>\nit with a password using a substitution algorithm. The snippet:<br/>\n<br/>\n        try<br/>\n        {<br/>\n            String provider = &quot;name.of.our.crypto.provider.class&quot;;<br/>\n            Class providerClass = Class.forName(provider);<br/>\n           <br/>\njava.security.Security.addProvider((java.security.Provider)<br/>\nproviderClass.newInstance());<br/>\n        }<br/>\n        catch (Throwable t)<br/>\n        {<br/>\n            t.printStackTrace();<br/>\n        }<br/>\n<br/>\n        SecretKeySpec s = new SecretKeySpec(cipher, &quot;SUBSTITUTION&quot;);<br/>\n        SubstAlgorithmParameters p = new SubstAlgorithmParameters();<br/>\n        // we set some parameters for this algorithm<br/>\n<br/>\n        try<br/>\n        {<br/>\n            Cipher c =<br/>\nCipher.getInstance(&quot;SUBSTITUTION&quot;,&quot;name.of.our.crypto.provider&quot;);<br/>\n<br/>\n<br/>\nAnd it was puking on Cipher.getInstance saying that the file might not<br/>\nhave been signed. So we put in some simple debugging code:<br/>\n<br/>\n            String provider = &quot;name.of.our.crypto.provider&quot;;<br/>\n            Class providerClass = Class.forName(provider);<br/>\n            Object[] signers = providerClass.getSigners();<br/>\n            if (signers == null) {<br/>\n                System.err.println(&quot;No signers!&quot;);<br/>\n                signers = new Object[0];<br/>\n            }<br/>\n            System.err.println(&quot;Signer count for &quot;+provider+&quot;:<br/>\n&quot;+signers.length);<br/>\n<br/>\nAnd sure enough, signers was null and &quot;No signers!&quot; would appear.<br/>\n<br/>\nThe same block of code, and all of our tests, run fine both naturally<br/>\nand in the textui runner.<br/>\n<br/>\nSo... there is some funky classloader thing going on here that I don&#39;t<br/>\nunderstand. I just wanted to see if this was known (I haven&#39;t found<br/>\nanything anywhere else about signed jar files yet) and what people<br/>\nthought.<br/>\n<br/>\nThanks for your time!<br/>\n<br/>\njohn</div>", 
+    "prevInTime": 10155, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1073518099", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJ0aTRtaitvc3VuQGVHcm91cHMuY29tPg=="
+    }
+}

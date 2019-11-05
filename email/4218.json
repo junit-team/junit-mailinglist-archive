@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4219, 
+    "senderId": "lrP3VBpnSkbB3Z0YBUCKvu7p5NQpF09NH8ZkxWERnQSWwwdmtLU32BL2vJUkWEFJr5X7OvBMUEANGf4IEo51F9yaXXq4Og", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] non-assertable test: output to console?", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... Design the Logger to be composed of an output stream of some sort, then define a mock output stream that captures the output.  You can then assert that the", 
+    "msgId": 4218, 
+    "profile": "clarkware", 
+    "topicId": 4217, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "messageBody": "<div id=\"ygrps-yiv-148762386\">epahelper wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; hello,<br/>\n&gt;<br/>\n&gt; just wondering if there&#39;s a way to use junit to test whether a Logger<br/>\n&gt; is spitting out the expected output to console.<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>Design the Logger to be composed of an output stream of some sort, then<br/>\ndefine a mock output stream that captures the output.  You can then assert<br/>\nthat the mock output stream captured the expected output.<br/>\n<br/>\n    public MockWriter implements Writer {<br/>\n        private String _output;<br/>\n<br/>\n        public void write(String s) {<br/>\n            _output = s;<br/>\n        }<br/>\n<br/>\n        public String getWhatWasWritten() {<br/>\n            return _output;<br/>\n        }<br/>\n<br/>\n        ...<br/>\n    }<br/>\n<br/>\n    public class Logger {<br/>\n<br/>\n        private Writer _writer;<br/>\n<br/>\n        public Logger(Writer writer) {<br/>\n            _writer = writer;<br/>\n        }<br/>\n<br/>\n        public void log(String message) {<br/>\n            _writer.write(message);<br/>\n    }<br/>\n<br/>\n    public void testWriter() {<br/>\n<br/>\n        MockWriter writer = new MockWriter();<br/>\n        Logger logger = new Logger(writer);<br/>\n<br/>\n        logger.log(&quot;test&quot;);<br/>\n<br/>\n        assertEquals(&quot;test&quot;, writer.getWhatWasWritten());<br/>\n    }<br/>\n<br/>\nMike<br/>\n<br/>\n--<br/>\nMike Clark<br/>\nClarkware Consulting, Inc.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com\">http://www.clarkware.com</a><br/>\n720.851.2014</div>", 
+    "prevInTime": 4217, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1014833465", 
+    "canDelete": false, 
+    "nextInTopic": 4219, 
+    "prevInTopic": 4217, 
+    "headers": {
+        "messageIdInHeader": "PDNDN0QyMTM5LjIxOUM5NUVEQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PGE1ajczaSs1YWZyQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19985, 
+    "senderId": "TShCa0vIQN7vtF1eZlRDlNK_lBpSAehsf2eYS9wIkV70uLStYwAV_HeShsqfj2poiBkAawqTVZ0-MBpspuDQiQUbHnwOPZ8-HcA", 
+    "systemMessage": true, 
+    "subject": "problem with providing Method Exec time for Junit 3.8 test case", 
+    "from": "Shubha B S &lt;mailtoshubha@...&gt;", 
+    "authorName": "Shubha B S", 
+    "msgSnippet": "Hi, I am using Junit 3.8, my objective is To  get the exact time taken by a test method which should not include setup and teardown time. To achieve this, I", 
+    "msgId": 19984, 
+    "rawEmail": "Return-Path: &lt;mailtoshubha@...&gt;\r\nReceived: (qmail 60100 invoked from network); 15 Oct 2007 13:12:23 -0000\r\nReceived: from unknown (66.218.67.96)\n  by m53.grp.scd.yahoo.com with QMQP; 15 Oct 2007 13:12:23 -0000\r\nReceived: from unknown (HELO n14a.bullet.sp1.yahoo.com) (69.147.64.115)\n  by mta17.grp.scd.yahoo.com with SMTP; 15 Oct 2007 13:12:23 -0000\r\nReceived: from [216.252.122.217] by n14.bullet.sp1.yahoo.com with NNFMP; 15 Oct 2007 13:12:23 -0000\r\nReceived: from [209.73.164.86] by t2.bullet.sp1.yahoo.com with NNFMP; 15 Oct 2007 13:12:23 -0000\r\nReceived: from [66.218.66.75] by t8.bullet.scd.yahoo.com with NNFMP; 15 Oct 2007 13:12:23 -0000\r\nX-Sender: mailtoshubha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 34878 invoked from network); 15 Oct 2007 09:04:39 -0000\r\nReceived: from unknown (66.218.67.94)\n  by m53.grp.scd.yahoo.com with QMQP; 15 Oct 2007 09:04:39 -0000\r\nReceived: from unknown (HELO web54409.mail.yahoo.com) (206.190.49.139)\n  by mta15.grp.scd.yahoo.com with SMTP; 15 Oct 2007 09:04:39 -0000\r\nReceived: (qmail 4478 invoked by uid 60001); 15 Oct 2007 09:04:38 -0000\r\nX-YMail-OSG: HRrHTbQVM1k6MtRvxE2J_nFy1sAO5OsZ9wBLtQXjqhQuzyRhqeqfxbtW1gmCLwLXit6MrrzqHaD.UOQHTkzx1awallHCy95kaQ0iFPSH.KBTfNXwtRvfA3zH6PaFTg--\r\nReceived: from [196.15.16.20] by web54409.mail.yahoo.com via HTTP; Mon, 15 Oct 2007 02:04:37 PDT\r\nX-Mailer: YahooMailRC/651.50 YahooMailWebService/0.7.134.12\r\nDate: Mon, 15 Oct 2007 02:04:37 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nMessage-ID: &lt;465709.3976.qm@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Shubha B S &lt;mailtoshubha@...&gt;\r\nSubject: problem with providing Method Exec time for Junit 3.8 test case\r\nX-Yahoo-Group-Post: member; u=154704993; y=lNiMiBw0bwHBAt7M6Mq4cj2ULk5bvjAvGmIpFxM2YXdSoPMoDs8j\r\nX-Yahoo-Profile: mailtoshubha\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: dsaff &lt;saff@...&gt; via web; 15 Oct 2007 13:12:22 -0000\r\n\r\nHi,\n\nI am using Junit 3.8, \nmy objective is &quot;To  get the exact time taken by a test method which should not include setup and teardown time.&quot;\nTo achieve this, I have modified junit.framework.TestCase and junit.framework.TestSuite.\n\nin TestCase, I have modified runBare() method\n   \n public void runBare() throws Throwable {\n                \n           \n                setUp();\n            try {\n                //Warm up the test\n    long startTime = System.currentTimeMillis();\n\n                runTest();\n            } catch (AssertionFailedError e) {\n                _failure = true;\n                // to store the records for functional failure\n                throw e;\n            }catch (Throwable e) {\n                _failure = true;\n                throw e;\n            }finally {\n       System.out.println(&quot;Method Execution taken:&quot; + (System.currentTimeMillis() - startTime))          ;\n                tearDown();\n            }\n    \n    }\n\nthis works fine for a testcase like this:\nclass validTest extends TestCase{ \npublic void testValid(){\ncalculator.add(10);\ncalculator.multiply(10);\nassertEquals(calculator.getResult(), 100);\n}\n}\n\nBut it will not work for a testcase like this\n\nclass notWorkingTest extends TestCase{\npublic void testNotWorking()\n{\nTestCase success= new TestCase(&quot;success&quot;) {\nprotected void runTest() {\n}\n};\nverifySuccess(success);\n} \n \nvoid verifySuccess(TestCase test) {\njunit.framework.TestResult result = test.run();\nassertTrue(result.runCount() == 1);\n}\n}\n\nReason being, runBare() method of TestCase is reinvoked. I will end up providing wrong &quot;Method Execution Time&quot;. \nwith this logic, for testNotWorking() method,  I will be providing the Execution Time of  &quot;success&quot;.  If have 10 such test.run() invoked from the\ntest method, I will be providing time taken for last test.run().\n\nCan anybody provide inputs to solve this problem..\n\nthanks\nShubha\n\n\n       \n____________________________________________________________________________________\nBe a better Heartthrob. Get better relationship answers from someone who knows. Yahoo! Answers - Check it out. \nhttp://answers.yahoo.com/dir/?link=list&sid=396545433\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "mailtoshubha", 
+    "topicId": 19984, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 154704993, 
+    "prevInTime": 19983, 
+    "contentTrasformed": false, 
+    "postDate": "1192439077", 
+    "canDelete": false, 
+    "nextInTopic": 19987, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQ2NTcwOS4zOTc2LnFtQHdlYjU0NDA5Lm1haWwueWFob28uY29tPg=="
+    }
+}

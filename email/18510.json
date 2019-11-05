@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18511, 
+    "senderId": "MuysWmMlsRnum8gevWP5z9ZtqTzQGcuEVq2rlobPTxymsAU7r48q5iUI0g5ormQP8_RU8H5swYr0gZW47yihziS0j_ZNvw", 
+    "systemMessage": false, 
+    "subject": "Really Strange Behavior", 
+    "from": "Ole Ersoy &lt;ole_ersoy@...&gt;", 
+    "authorName": "Ole Ersoy", 
+    "msgSnippet": "Hey Guys, I m testing a method. When I have the method by itself it tests fine. When I put another test in front of it like this: public void", 
+    "msgId": 18510, 
+    "profile": "ole_ersoy", 
+    "topicId": 18510, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 98908154, 
+    "messageBody": "<div id=\"ygrps-yiv-1126672446\">Hey Guys,<br/>\n<br/>\nI&#39;m testing a method.<br/>\n<br/>\nWhen I have the method by itself it tests fine.<br/>\n<br/>\nWhen I put another test in front of it like this:<br/>\n\tpublic void testCreateResourceSet() <br/>\n\t{<br/>\n\t\t//Stub<br/>\n\t\tassertTrue(true);<br/>\n\t}<br/>\n<br/>\nI get an exception like this:<br/>\njava.lang.ExceptionInInitializerError<br/>\n\tat<br/>\norg.eclipse.emf.ecore.xml.type.impl.AnyTypeImpl.eStaticClass(AnyTypeImpl.java:83)<br/>\n\tat<br/>\norg.eclipse.emf.ecore.impl.EObjectImpl.eClass(EObjectImpl.java:210)<br/>\n<br/>\n....<br/>\n<br/>\nI also get the same exception when testing with Maven,<br/>\nso I know it is localized to JUnit.<br/>\n<br/>\nHas anyone else seen behavior like this?<br/>\n<br/>\nI&#39;ll paste the full test case below, in case anyone<br/>\nwants to look at it further.<br/>\n<br/>\nCheers,<br/>\n- Ole<br/>\n<br/>\n<br/>\npackage org.jpackage.test;<br/>\n<br/>\nimport java.io.File;<br/>\nimport java.io.IOException;<br/>\n<br/>\nimport org.apache.maven.artifact.Artifact;<br/>\nimport<br/>\norg.apache.maven.artifact.factory.ArtifactFactory;<br/>\nimport<br/>\norg.apache.maven.artifact.repository.ArtifactRepository;<br/>\nimport<br/>\norg.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;<br/>\nimport<br/>\norg.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;<br/>\nimport org.apache.maven.plugin.MojoExecutionException;<br/>\nimport<br/>\norg.apache.maven.plugin.testing.AbstractMojoTestCase;<br/>\nimport org.eclipse.emf.common.util.URI;<br/>\nimport org.eclipse.emf.ecore.resource.Resource;<br/>\nimport org.eclipse.emf.ecore.resource.ResourceSet;<br/>\nimport org.jpackage.impl.JPackageMojoHelperBufferImpl;<br/>\nimport org.jpackage.impl.JPackageMojoImpl;<br/>\nimport org.jpackage.JPackageMojoConstants;<br/>\nimport org.jpackage.impl.JPackageMojoHelperImpl;<br/>\n<br/>\nimport<br/>\ncom.pyramidetechnologies.emf.utils.EMFUtilities;<br/>\n<br/>\npublic class JPackageMojoHelperTest extends<br/>\nAbstractMojoTestCase implements JPackageMojoConstants<br/>\n{<br/>\n\t<br/>\n\tprivate JPackageMojoImpl mojo = null;<br/>\n\tprivate ArtifactRepository artifactRepository = null;<br/>\n\tprivate ResourceSet resourceSet = null; <br/>\n\t<br/>\n\tprotected void setUp() throws Exception {<br/>\n<br/>\n\t\t// required for mojo lookups to work<br/>\n\t\tsuper.setUp();<br/>\n\t\t<br/>\n\t\tFile pluginXml = new File(getBasedir(),<br/>\n\t\t\t\t&quot;src/test/resources/plugin-config.xml&quot;);<br/>\n\t\tmojo = (JPackageMojoImpl) lookupMojo(<br/>\n\t\t\t\t&quot;xml2spec.mojo&quot;, <br/>\n\t\t\t\t&quot;org.jpackage&quot;, <br/>\n\t\t\t\t&quot;1.0-SNAPSHOT&quot;, <br/>\n\t\t\t\t&quot;generate&quot;, <br/>\n\t\t\t\tpluginXml, <br/>\n\t\t\t\tfalse);<br/>\n\t\t<br/>\n\t\tresourceSet =<br/>\nJPackageMojoHelperImpl.createResourceSet();<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testCreateResourceSet() <br/>\n\t{<br/>\n\t\t//Stub<br/>\n\t\tassertTrue(true);<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testLoadPomResource() throws<br/>\nMojoExecutionException<br/>\n\t{<br/>\n\t\tString artifactId = &quot;apacheds-server-main&quot;;<br/>\n\t\tString groupId = &quot;org.apache.directory.server&quot;;<br/>\n\t\tString version = &quot;1.5.0-SNAPSHOT&quot;;<br/>\n\t\t<br/>\n\t\tArtifactFactory artifactFactory =<br/>\nmojo.getArtifactFactory();<br/>\n\t\tassertNotNull(artifactFactory);<br/>\n\t\t<br/>\n\t\tArtifact pomArtifact =<br/>\nartifactFactory.createArtifact(groupId, artifactId,<br/>\n\t\t\t\tversion, null, &quot;pom&quot;);<br/>\n\t\tassertNotNull(pomArtifact);<br/>\n\t\t<br/>\n\t\tString path = pathOf(pomArtifact);<br/>\n\t\tFile file = new File(path);<br/>\n\t\tassertTrue(file.exists());<br/>\n\t\t<br/>\n\t\tpomArtifact.setFile(file);<br/>\n\t\t<br/>\n\t\tResource resource = null;<br/>\n\t\tresource =<br/>\nJPackageMojoHelperImpl.loadPomResource(pomArtifact,<br/>\nresourceSet);<br/>\n\t\t<br/>\n\t\tassertNotNull(resource);<br/>\n\t}<br/>\n\t\t<br/>\n\tprivate static String pathOf(Artifact artifact)<br/>\n\t{<br/>\n\t\tArtifactRepositoryLayout artifactRepositoryLayout =<br/>\nnew DefaultRepositoryLayout();<br/>\n\t\tString artifactPath =<br/>\nartifactRepositoryLayout.pathOf(artifact);<br/>\n\t\treturn REPOSITORY_BASE_DIRECTORY + artifactPath;<br/>\n\t}<br/>\n<br/>\n\tprivate static String REPOSITORY_BASE_DIRECTORY =<br/>\n&quot;/home/ole/.m2/repository/&quot;;\t<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\n <br/>\n____________________________________________________________________________________<br/>\nCheap talk?<br/>\nCheck out Yahoo! Messenger&#39;s low PC-to-Phone call rates.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://voice.yahoo.com\">http://voice.yahoo.com</a></div>", 
+    "prevInTime": 18509, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1165435056", 
+    "canDelete": false, 
+    "nextInTopic": 18515, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDYxMjA2MTk1NzM2LjM1NzgzLnFtYWlsQHdlYjYwNzE2Lm1haWwueWFob28uY29tPg=="
+    }
+}

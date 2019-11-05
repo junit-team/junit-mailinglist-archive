@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 14326, 
+    "senderId": "RJI_aRdHbDyyvTr6H4eAEJoAZfvEkJsflHi4cSy6GWuZh9R4Qs24kz_-wUaGfRoA8WDV8k0UqzqHLZvbnawnY4FD3pQlpV0Srg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] organizing tests using annotations", 
+    "from": "&quot;Cedric Beust&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cedric Beust", 
+    "msgSnippet": "... B. Rainsberger ... Uh?  Who s calling my name?  Oh.  Hi. Well, since you asked... It doesn t take a lot of tests to realize that using package and class", 
+    "msgId": 14325, 
+    "profile": "cbeust", 
+    "topicId": 14308, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-1099190976\"><blockquote><span title=\"ireply\">&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of J.<br/>\n </span></blockquote>B. Rainsberger<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Bradley, Todd wrote:<br/>\n&gt; &gt; Hi, the unit test suite on a particular project of mine has grown to <br/>\n&gt; &gt; the point where I need to organize it some.  I&#39;d like to do something <br/>\n&gt; &gt; like Rainsberger&#39;s JUnit recipe 4.6 &quot;Separate the different kinds of <br/>\n&gt; &gt; test suites&quot;***.  But for some reason I can&#39;t verbalize I don&#39;t like <br/>\n&gt; &gt; the approach of classifying tests using a tag interface.<br/>\n&gt; <br/>\n&gt; I literally move the source code: I have one source tree for <br/>\n&gt; fast tests, one for slow tests, and so on. I&#39;ve never wanted <br/>\n&gt; to have a single test case class be in two categories at <br/>\n&gt; once. (Go ahead, Cedric... tell him about TestNG. :) )<br/>\n<br/>\n </span></blockquote>Uh?  Who&#39;s calling my name?  Oh.  Hi.<br/>\n<br/>\nWell, since you asked...<br/>\n<br/>\nIt doesn&#39;t take a lot of tests to realize that using package and class names<br/>\nto categorize your tests doesn&#39;t scale and quickly leads to very complicated<br/>\ncode bases.<br/>\n<br/>\nThere is also the fact that some categories transcend (or should I say<br/>\ncross-cut?) packages and class names, and you give a pretty good example<br/>\nyourself:  slow and fast tests.  Let&#39;s say I have a database and a gui<br/>\npackage, and on top of that, each of these categories has slow and fast<br/>\ntests.  How do you solve this problem?<br/>\n<br/>\nThis is precisely why we have annotations:  to attach additional meaning to<br/>\nJava elements (packages, classes and methods) that cannot easily be conveyed<br/>\notherwise.<br/>\n<br/>\nAs you pointed out, TestNG has the notion of groups (I believe JUnit 4 will<br/>\nsupport this under the name &quot;category&quot;).  Each test methods (or test<br/>\nclasses) can specify that it belongs to one or more groups, and you can<br/>\nspecify at runtime which groups to run (or not to run).  For example:<br/>\n<br/>\npackage com.foo.tests.database;<br/>\n<br/>\npublic class TestDB1 {<br/>\n  @Test(groups = { &quot;slow&quot;, &quot;database&quot; })<br/>\n  public void verifyEntireDataBase() {<br/>\n  }<br/>\n}<br/>\n<br/>\npackage com.foo.tests.database;<br/>\n<br/>\npublic class TestDB2 {<br/>\n  @Test(groups = { &quot;fast&quot;, &quot;database&quot; })<br/>\n  public void insertOneRecord() {<br/>\n  }<br/>\n}<br/>\n<br/>\npackage com.foo.tests.web;<br/>\n<br/>\npublic class TestServlet {<br/>\n  @Test(groups = { &quot;fast&quot;, &quot;gui&quot; })<br/>\n  public void testLoginPage() {<br/>\n  }<br/>\n}<br/>\n<br/>\nWith this example, running TestNG on the group &quot;fast&quot; will invoke<br/>\n&quot;testLoginPage&quot; and &quot;insertOneRecord&quot;.  Of course, you can also specify more<br/>\ncomplicated patterns:<br/>\n<br/>\n- run &quot;fast&quot; and &quot;database&quot;<br/>\n- run &quot;fast&quot; but &quot;not&quot; &quot;gui&quot;<br/>\n- run &quot;all tests&quot; except &quot;gui&quot;<br/>\n- etc...<br/>\n<br/>\nYou get the idea.<br/>\n<br/>\nI&#39;m happy to see that this feature is being considered for inclusion in<br/>\nJUnit 4, it is by far the one TestNG users like the most.<br/>\n<br/>\n-- <br/>\nCédric<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://beust.com/weblog\">http://beust.com/weblog</a></div>", 
+    "prevInTime": 14324, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1123190911", 
+    "canDelete": false, 
+    "nextInTopic": 14326, 
+    "prevInTopic": 14324, 
+    "headers": {
+        "inReplyToHeader": "PDQyRjI4NjFCLjQwODA2MDZAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDUwODA0MjEyOC5qNzRMU3VVczAxMzU2M0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

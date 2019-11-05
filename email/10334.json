@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 10335, 
+    "senderId": "zDKPwrF_VPoZIlWU4oX5T5H0gus2JT7cHNMe8dW1YsFWkC25Z_N5MbDORYuvtmiD6mXqhy_7FNf4RZKSGoiZHfkMkuzdx1hOg0pMHpJz7FTNDs-J2dFJ", 
+    "systemMessage": false, 
+    "subject": "database migration: tests organisation", 
+    "from": "Bauduin Raphael &lt;raphael.bauduin@...&gt;", 
+    "authorName": "Bauduin Raphael", 
+    "msgSnippet": "Hi, I am now developing the tests to validate a database migration. My main class is this one : class TestDatabaseMigration { public static Test suite() { ", 
+    "msgId": 10334, 
+    "topicId": 10334, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109309043, 
+    "messageBody": "<div id=\"ygrps-yiv-818584498\">Hi,<br/>\n<br/>\nI am now developing the tests to validate a database migration.<br/>\n<br/>\nMy main class is this one :<br/>\n<br/>\nclass TestDatabaseMigration {<br/>\n<br/>\n    public static Test suite() {<br/>\n        TestSuite suite= new TestSuite();<br/>\n        suite.addTest(CustomersTest.suite());<br/>\n        return suite;<br/>\n        <br/>\n    }<br/>\n    public static void main (String[] arg){<br/>\n<br/>\n        junit.textui.TestRunner.run(suite());<br/>\n<br/>\n    } <br/>\n}<br/>\n<br/>\nIn the CustomersTest class, I add several tests for each customer, so<br/>\nthe number of tests added is growing enormously, all in the same suite.<br/>\nI&#39;m afraid I won&#39;t be able to add test indefinitively like that (I juste<br/>\nhad a Exception in thread &quot;main&quot; java.lang.OutOfMemoryError, and<br/>\nwondered if any of you had any suggestions on how to organise tests.<br/>\n<br/>\nI&#39;m working with Hibernate. For the last test (with CustomerOrdersQuantity)<br/>\nI need to get the orders of the customer that is tested, meaning even<br/>\nmore memory consumption.<br/>\n<br/>\nAnd here is the interesting par of the class CustomersTest.suite():<br/>\n    <br/>\n<br/>\n            //Iterate on source database <br/>\n            Iterator iterator = session.iterate(&quot;from Customer&quot;);<br/>\n            custdb.hibernate.Customer customerPg;<br/>\n            while (iterator.hasNext())<br/>\n            {<br/>\n                customer=(Customer) iterator.next();<br/>\n                //get corresponding customer in destination database<br/>\n                customerPg=( custdb.hibernate.Customer) sessionPg.load(custdb.hibernate.Customer.class, customer.getCustomerId());<br/>\n                <br/>\n                //Test customer name<br/>\n                customerSuite.addTest(new CustomerCompanyName(&quot;customer_name_&quot;+customer.getCustomerId(),customer, customerPg));<br/>\n                //Test customer VAT<br/>\n                customerSuite.addTest(new CustomerVat(&quot;customer_vat_&quot;+customer.getCustomerId(),customer, customerPg));<br/>\n                //Test customer description<br/>\n                customerSuite.addTest(new CustomerDescription(&quot;customer_description_&quot;+customer.getCustomerId(),customer, customerPg));<br/>\n                //Test that both customers have the same amount of orders defined<br/>\n                customerSuite.addTest(new CustomerOrdersQuantity(&quot;customer_orders_quantity&quot;+customer.getCustomerId(),customer, customerPg));<br/>\n                //i++;<br/>\n            }                       <br/>\n<br/>\n<br/>\nThanks for your help!<br/>\n<br/>\nraph</div>", 
+    "prevInTime": 10333, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1075376355", 
+    "canDelete": false, 
+    "nextInTopic": 10337, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDQwMTI5MTEzOTE1LkdBNTI3MEByYXBoYWVsPg=="
+    }
+}

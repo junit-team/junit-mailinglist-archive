@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 22781, 
+    "senderId": "fAU2dF2WFLTEf0DyHLKqQxf2gb25-PuCoT9xFss16ytmV0EPWs9eOtymZ7eN5xSslUMhXgFb1sQ7cUTzTUV1fQqfW18NehXpyrz02uRwvIM3", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] @BeforeClass method for DBUnit Dataset creation", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Let me tell you a story. In 2001 I worked on my first XP project at Toyota Canada in Toronto. We ran into exactly the same problem you describe here: we", 
+    "msgId": 22780, 
+    "profile": "nails762", 
+    "topicId": 22776, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "messageBody": "<div id=\"ygrps-yiv-1563379109\">hdave321321 wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; My DAO integration tests are taking a long time to run.  I am using<br/>\n&gt; Spring Test which automatically does a transaction rollback after<br/>\n&gt; each test method.  However, I am also using DBUnit to load the exact<br/>\n&gt; same dataset before each test method via the @BeforeTransaction<br/>\n&gt; annotation.<br/>\n&gt;<br/>\n&gt; It has occured to me that I could save a lot of time if I load the<br/>\n&gt; DBUnit test data once per test class instead of once per test<br/>\n&gt; method.<br/>\n&gt;<br/>\n&gt; I&#39;ve not used the @BeforeClass and @AfterClass methods before, but<br/>\n&gt; apparently they require the annotated method to be static and this is<br/>\n&gt; interfering with my normal use of Spring dependency injection that<br/>\n&gt; provides an application context, data source, and other things I need<br/>\n&gt; to load the correct data set.<br/>\n&gt;<br/>\n&gt; Anyone experience this before?  What&#39;s a good way to address this<br/>\n&gt; problem?<br/>\n<br/>\n </span></blockquote>Let me tell you a story.<br/>\n<br/>\nIn 2001 I worked on my first XP project at Toyota Canada in Toronto. We <br/>\nran into exactly the same problem you describe here: we had several <br/>\ndozen tests, most of which inserted data in setUp() and rolled <br/>\ntransactions back in tearDown(). Back then, of course, computers ran <br/>\nmore slowly, so we were running at around 5-10 tests per second when we <br/>\nwere lucky. We could see how when we added another 300 tests our test <br/>\nsuite would take several minutes to run, and that just wasn&#39;t going to <br/>\nwork. We decided to create a single test data set for the entire test <br/>\nsuite, then used the tools of the time--DBUnit, in fact--to insert the <br/>\ndata set at the start of the test run. For a few weeks, it worked great. <br/>\nOur test suite execution time dropped from minutes to tens of seconds <br/>\nwhich, back then, we could live with.<br/>\n<br/>\nThen something annoying happened.<br/>\n<br/>\nWe added a new feature, which required putting data in a new table, <br/>\nwhich itself required adding a row to an old table to set up a foreign <br/>\nkey relationship. We got the six new tests to run, but when we ran the <br/>\nentire suite just before checkin, 3 tests failed. We discovered that by <br/>\nadding a row to the parent table, we changed the expected result for <br/>\nthree of our tests: they used to expect 6 rows, and now they needed to <br/>\nexpect 7. We considered two options: split the test data into two sets, <br/>\nor change the expected results in the tests. We figured that the first <br/>\noption would slowly lead us back to loading test data for each test, so <br/>\nwe chose the second option and changed the expected results.<br/>\n<br/>\nA couple of weeks later, it happened again. We added a feature that <br/>\nrequired putting data in a new table, which itself required adding rows <br/>\nto a few different existing tables to set up foreign key relationships. <br/>\nWe got the eight new tests run, but when we ran the whole suite, 10 <br/>\ntests failed. We sighed, we checked what happened, and we updated the <br/>\nexpected results on the old tests.<br/>\n<br/>\nA week later, it happened again. This time we had to change 26 tests. It <br/>\ntook a day to do it accurately, because each &quot;fix&quot; required running an <br/>\n8-minute test suite, and 26 times 8 is already over three hours.<br/>\n<br/>\nA week later, it happened again. This time we had to change 61 tests. It <br/>\ntook three days. We saw where this was going.<br/>\n<br/>\nWe split the test data back into sensible datasets, with each test <br/>\nloading the data it needed. Execution time increased, but maintenance <br/>\ntime went to almost zero. We also figured out how to test more of the <br/>\nsystem without touching the database at all. Nowadays, when I work on <br/>\nsuch a project, only about 20-50 tests touch the database, and the rest <br/>\nrun in memory. At today&#39;s machine speeds, I usually get 250-500 tests <br/>\nper second. In the ten seconds it takes for my mind to wander, I can run <br/>\n15,000-30,000 tests. I can build a pretty good system for 15,000 tests.<br/>\n-- <br/>\nJ. B. Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.ca\">http://www.jbrains.ca</a> ::<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.thecodewhisperer.com\">http://www.thecodewhisperer.com</a></div>", 
+    "prevInTime": 22779, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1278018463", 
+    "canDelete": false, 
+    "nextInTopic": 22783, 
+    "prevInTopic": 22779, 
+    "headers": {
+        "inReplyToHeader": "PGkwZ3I3ZCtodHZpQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRDMkQwMzlGLjQwMTA2MDVAZ21haWwuY29tPg==", 
+        "referencesHeader": "PGkwZ3I3ZCtodHZpQGVHcm91cHMuY29tPg=="
+    }
+}

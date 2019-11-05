@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 13416, 
+    "senderId": "DrLroE8Mm76fKeXVDoZ3DigNb7eHiZMCYQ5MUP5KwvGUo2he17ppbG60mPq0pggAAH6OCmQ2zGeCJAcKN7V61_kQU7SHyOygi_dIxxU4fQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] mechanism to maintain session information across testcases?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I suggest you create a Singleton class only for testing that contains a single connection to your messaging server. Each test can then simply do this: ", 
+    "msgId": 13415, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 61796 invoked from network); 5 May 2005 20:05:04 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m28.grp.scd.yahoo.com with QMQP; 5 May 2005 20:05:04 -0000\r\nReceived: from unknown (HELO smtp100.rog.mail.re2.yahoo.com) (206.190.36.78)\n  by mta2.grp.scd.yahoo.com with SMTP; 5 May 2005 20:05:03 -0000\r\nReceived: from unknown (HELO ?192.168.1.112?) (srainsberger5790@69.197.252.38 with plain)\n  by smtp100.rog.mail.re2.yahoo.com with SMTP; 5 May 2005 20:04:52 -0000\r\nMessage-ID: &lt;427A7C6C.70807@...&gt;\r\nDate: Thu, 05 May 2005 16:05:00 -0400\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;d55f82+2olp@...&gt;\r\nIn-Reply-To: &lt;d55f82+2olp@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] mechanism to maintain session information across testcases?\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nAkhil Srinivasan wrote:\n&gt; HI,\n&gt; I have a situation where junit testcases will act a as a client\n&gt; sending messages to the server. Based on the message returned my\n&gt; testcase will pass or fail.\n&gt; Additionally I have to have multiple testcases that will send messages\n&gt; using the same connection. Note that the server maintains a session\n&gt; information on the client connection.\n&gt; How do i share this session information(connection + related crap)\n&gt; across testcases, so that i can execute a sequence of testcases which\n&gt; will all use the same connection. One mechanism i thought of was\n&gt; extending a testcase that will contain the connection and use it as a\n&gt; fixture, all testcases will call that as a fixture but how do i shared\n&gt; the connection from the fixture to other testcases which them selves\n&gt; need to send messages?\n\nI suggest you create a Singleton class only for testing that contains a \nsingle connection to your messaging server. Each test can then simply do \nthis:\n\nclass MyMessagingTestCase extends TestCase ... {\n     setUp(){\n         connection = TestFixture.getInstance().getMessagingConnection();\n     }\n     ...\n}\n\nNormally I would not recommend using Singleton, but in this case, I \nthink the resulting code is cleaner. Only in one place does your test \ncase class know it&#39;s using a Singleton.\n\nGood luck.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 13381, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 13414, 
+    "contentTrasformed": false, 
+    "postDate": "1115323500", 
+    "canDelete": false, 
+    "nextInTopic": 13419, 
+    "prevInTopic": 13399, 
+    "headers": {
+        "inReplyToHeader": "PGQ1NWY4Misyb2xwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyN0E3QzZDLjcwODA3QHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PGQ1NWY4Misyb2xwQGVHcm91cHMuY29tPg=="
+    }
+}

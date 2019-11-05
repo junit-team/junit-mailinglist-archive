@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 22617, 
+    "senderId": "CmYDnqujNlffMMcSp9BziikDryc8dClZDduVk2wzso8W1Xf3WkoK1RJsKZm913bJXRUQzcAM7q8yXz0wquhGmBQxJY-m1w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Chain tests, and share information accross several tests", 
+    "from": "Kent Beck &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Yves, Tests are intended to be isolated and self-sufficient in JUnit. This enables the tests to become more valuable by executing in parallel, sorting by", 
+    "msgId": 22616, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 87280 invoked from network); 15 Apr 2010 15:36:59 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m3.grp.sp2.yahoo.com with QMQP; 15 Apr 2010 15:36:59 -0000\r\nX-Received: from unknown (HELO elasmtp-scoter.atl.sa.earthlink.net) (209.86.89.67)\n  by mta3.grp.sp2.yahoo.com with SMTP; 15 Apr 2010 15:36:59 -0000\r\nX-Received: from [168.103.51.4] (helo=[192.168.0.79])\n\tby elasmtp-scoter.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1O2R7i-0002od-D8\n\tfor junit@yahoogroups.com; Thu, 15 Apr 2010 11:36:59 -0400\r\nMime-Version: 1.0 (Apple Message framework v1078)\r\nDate: Thu, 15 Apr 2010 08:36:57 -0700\r\nIn-Reply-To: &lt;hq72ul+mbn7@...&gt;\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;hq72ul+mbn7@...&gt;\r\nMessage-Id: &lt;31791E94-A6E9-4E5C-9259-BB8C4461060E@...&gt;\r\nX-Mailer: Apple Mail (2.1078)\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d4782f85c9ca2f9be8be0aad7af4d2791f9cbdfd96c31ab81cf7350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nFrom: Kent Beck &lt;kentb@...&gt;\r\nSubject: Re: [junit] Chain tests, and share information accross several tests\r\nX-Yahoo-Group-Post: member; u=173198504; y=rPy8YHbP83331rQglOh-qaGFkUeElHYi-cG8xxlx9K-oSrn7\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nYves,\n\nTests are intended to be isolated and self-sufficient in JUnit. This=\r\n enables the tests to become more valuable by executing in parallel, sortin=\r\ng by likelihood of failure, and creating false negative results less often =\r\njust because someone changed the order of declaration in a file. So the sho=\r\nrt answer is that no, JUnit doesn&#39;t support the kind of ordering you are ta=\r\nlking about. I&#39;m sure you could make it work, but you&#39;d be going against th=\r\ne grain of the design.\n\nIn my experience the best way to express sequence i=\r\ns with adjacent lines of code:\n\ncreateOrder();\nsubmitOrder();\n\nUnderneath I=\r\n could implement these with Command objects or whatever was most appropriat=\r\ne.\n\nRegards,\n\nKent\n\n\nOn Apr 15, 2010, at 6:05 AM, yvesd.public wrote:\n\n&gt; He=\r\nllo dear JUnit community.\n&gt; \n&gt; My name is Yves Dessertine and I am new to J=\r\nUnit. I have a question about good practises in JUnit.\n&gt; \n&gt; First of all, w=\r\ne plan to use JUnit to do integration testing (in our case, to test complet=\r\ne test scenarios). So JUnit tests are not &quot;unit&quot; test, but are all tied tog=\r\nether to test a complete use case. Here, we test a complete workflow.\n&gt; \n&gt; =\r\nHere&#39;s a simple example :\n&gt; \n&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n&gt; /**\n&gt; * Test the crea=\r\ntion, then the submission of an hypothetical order\n&gt; */\n&gt; public class Orde=\r\nrTestSuite extends TestSuite {\n&gt; \n&gt; protected static Test suite(String clie=\r\nntName) throws Exception {\n&gt; \n&gt; /**\n&gt; * This object will hold information t=\r\no share across several tests\n&gt; */\n&gt; OrderTestInfoHolder holder =3D new Orde=\r\nrTestInfoHolder();\n&gt; \n&gt; TestSuite testsToRun =3D new TestSuite(nomTest);\n&gt; =\r\n\n&gt; testsToRun.addTest(new OrderCreationTest(holder));\n&gt; testsToRun.addTest(=\r\nnew OrderSubmissionTest(holder));\n&gt; \n&gt; return testsToRun;\n&gt; }\n&gt; \n&gt; }\n&gt; =3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D\n&gt; \n&gt; The holder looks like this:\n&gt; =3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n&gt; pub=\r\nlic class OrderTestInfoHolder {\n&gt; public static String clientName;\n&gt; public=\r\n static String productRef;\n&gt; }\n&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n&gt; \n&gt; Can you tell me if=\r\n this way of chaining test, and pass infos between test is a completly crap=\r\npy antipattern, or if it&#39;s OK ?\n&gt; \n&gt; Thank you.\n&gt; \n&gt; Yves DESSERTINE\n&gt; \n&gt; \n=\r\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 22612, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 22615, 
+    "contentTrasformed": false, 
+    "postDate": "1271345817", 
+    "canDelete": false, 
+    "nextInTopic": 22617, 
+    "prevInTopic": 22615, 
+    "headers": {
+        "inReplyToHeader": "PGhxNzJ1bCttYm43QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDMxNzkxRTk0LUE2RTktNEU1Qy05MjU5LUJCOEM0NDYxMDYwRUBlYXJ0aGxpbmsubmV0Pg==", 
+        "referencesHeader": "PGhxNzJ1bCttYm43QGVHcm91cHMuY29tPg=="
+    }
+}

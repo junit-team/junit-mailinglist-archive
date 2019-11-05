@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 11018, 
+    "senderId": "k9ce5tvNELgmRctbasfo7oCKmvxc6n0m8Ctsu4SITzCyAtCnVbYKr7pkB51cPBuLtFusT9NATblwGYnQD08O0xPdTIq8mIud0nzuFgRiYrvcpkAL8xG0", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Making a large set of tests as efficient as possible", 
+    "from": "&quot;Andrew McDonagh&quot; &lt;andrew.mcdonagh@...&gt;", 
+    "authorName": "Andrew McDonagh", 
+    "msgSnippet": "We currently run JUnit with 1000 unittests with no outofMemory exceptions being thrown. There s no limit within JUnit that could cause your problem. I suspect", 
+    "msgId": 11017, 
+    "rawEmail": "Return-Path: &lt;andrew.mcdonagh@...&gt;\r\nReceived: (qmail 86584 invoked from network); 14 May 2004 15:43:48 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m6.grp.scd.yahoo.com with QMQP; 14 May 2004 15:43:48 -0000\r\nReceived: from unknown (HELO n32.grp.scd.yahoo.com) (66.218.66.100)\n  by mta6.grp.scd.yahoo.com with SMTP; 14 May 2004 15:43:48 -0000\r\nX-eGroups-Return: andrew.mcdonagh@...\r\nReceived: from [66.218.66.119] by n32.grp.scd.yahoo.com with NNFMP; 14 May 2004 15:42:49 -0000\r\nX-Sender: andrew.mcdonagh@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 18969 invoked from network); 14 May 2004 08:21:29 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m22.grp.scd.yahoo.com with QMQP; 14 May 2004 08:21:29 -0000\r\nReceived: from unknown (HELO relay.ipaccess.com) (217.204.123.74)\n  by mta3.grp.scd.yahoo.com with SMTP; 14 May 2004 08:21:29 -0000\r\nReceived: from magrat.ipaccess.com ([172.28.0.6])\n\tby relay.ipaccess.com with esmtp (Exim 3.35 #1 (Debian))\n\tid 1BOXwd-0003Cf-00\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 14 May 2004 08:21:27 +0000\r\nReceived: from ipa-srv3.ipaccess.com ([172.28.0.71] helo=ipa-srv3)\n\tby magrat.ipaccess.com with smtp (Exim 3.35 #1 (Debian))\n\tid 1BOXwc-0005o9-00\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 14 May 2004 08:21:26 +0000\r\nReceived: FROM aragorn BY ipa-srv3 ; Fri May 14 09:21:26 2004 +0100\r\nReceived: from am1-pc.ipaccess.com ([172.28.2.68] helo=am1pc)\n\tby aragorn with smtp (Exim 3.35 #1 (Debian))\n\tid 1BOXwc-0006M4-00\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 14 May 2004 08:21:26 +0000\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Fri, 14 May 2004 09:21:26 +0100\r\nMessage-ID: &lt;PJEDIIDPNEJMLACODABDOENJDGAA.andrew.mcdonagh@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.6604 (9.0.2911.0)\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106\r\nImportance: Normal\r\nIn-reply-to: &lt;c80naj+i445@...&gt;\r\nX-eGroups-Remote-IP: 217.204.123.74\r\nFrom: &quot;Andrew McDonagh&quot; &lt;andrew.mcdonagh@...&gt;\r\nSubject: RE: [junit] Making a large set of tests as efficient as possible\r\nX-Yahoo-Group-Post: member; u=73998260\r\nX-Yahoo-Profile: andy_ipaccess\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 14 May 2004 15:42:47 -0000\r\nX-eGroups-Remote-IP: 66.218.66.100\r\n\r\n\n\nWe currently run JUnit with 1000 unittests with no outofMemory exceptions\nbeing thrown.\n\nThere&#39;s no limit within JUnit that could cause your problem. I suspect that\nthere is some form of resource hogging occurring within your code (either\ntest code, production code, or both) that is the real cause of the problem.\n\nThe setUp() & tearDown() methods that JUnit calls before & after each\ntestcase (method) is called, should be used where necessary to release\nresources. This will allow the GarbageCollector to free memory as needed,\nwithout you having to change the JVM&#39;s heap size.\n\nHTH\n\nAndrew\n\n&gt; -----Original Message-----\n&gt; From: claudioillanes [mailto:claudioillanes@...]\n&gt; Sent: 13 May 2004 21:55\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] Making a large set of tests as efficient as possible\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Hi there!\n&gt;\n&gt; Just a quick question. I have  a suite that lines up about 25 test\n&gt; classes ( each containing say 10 test methods ) and I iterate for 300\n&gt; objects to add these tests to a suite. I would like to know any best\n&gt; practices to ensure I don&#39;t get any OutOfMemoryErrors. I changed the\n&gt; jvm tag to increase virtual memory to say 512 but, if I keep adding\n&gt; many tests to this suite, what would be the next item to ensure I&#39;m\n&gt; doing. I am also setting TestCase member variables to null where\n&gt; possible. What would be the next step? The reason I ask is because I\n&gt; would like to push JUnit to the limit and have it test all day and\n&gt; night for a large application. Any help or comments would be\n&gt; appreciated. Even different design techniques are welcome.\n&gt;\n&gt; Cheers!\n&gt; Claudio\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n\n", 
+    "profile": "andy_ipaccess", 
+    "topicId": 11016, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 73998260, 
+    "prevInTime": 11016, 
+    "contentTrasformed": false, 
+    "postDate": "1084522886", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 11016, 
+    "headers": {
+        "inReplyToHeader": "PGM4MG5haitpNDQ1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBKRURJSURQTkVKTUxBQ09EQUJET0VOSkRHQUEuYW5kcmV3Lm1jZG9uYWdoQGlwYWNjZXNzLmNvbT4="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 1266, 
+    "senderId": "7wPkz95RKMU7fzLH44BIc28p00VoI7DDqMyz3Y1mVT75rovU2q3na1NSf1OAjr3uiL1ZaA6-PTLgDBCJIy2UbBcstLK1M9b3KUxyYIW8uW4jRB66-J_CQw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Testing all", 
+    "from": "Ghielli Patrick &lt;Patrick.Ghielli@...&gt;", 
+    "authorName": "Ghielli Patrick", 
+    "msgSnippet": "Hi, I m back with my AllTests class. I made the suggested changes and I did some extensive testing. First, I tried to do the test with", 
+    "msgId": 1265, 
+    "topicId": 1258, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-2088041737\">Hi,<br/>\n<br/>\nI&#39;m back with my AllTests class. I made the suggested changes and I did some<br/>\nextensive testing.<br/>\nFirst, I tried to do the test with junit.servletui.TestRunner and I get the<br/>\nsame errors as before, even with the sample I got those errors.<br/>\nExecuting it from the commandline with junit.ui.TestRunner works fine.<br/>\nHowever using the same with the sample creates the following errors:<br/>\nExceptions in the junit.samples.AllTests:<br/>\nexecuting java junit.samples.AllTests<br/>\nException in thread &quot;main&quot; java.lang.NoSuchMethodError<br/>\n\tat junit.tests.AllTests.suite(AllTests.java:18)<br/>\n\tat junit.samples.AllTests.suite(AllTests.java:18)<br/>\n\tat junit.samples.AllTests.main(AllTests.java:12)<br/>\njava junit.textui.TestRunner junit.samples.AllTests<br/>\nCould not invoke the suite() method<br/>\n<br/>\nIt is essential for us to make it work from a servlet. Does the servletui<br/>\nwork different from the others and if so, how can we make this work or is<br/>\nthere an example that can point us to the right direction?<br/>\n<br/>\nthanx,<br/>\nPatrick.<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: Mike Clark [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mike@...\">mike@...</a>]<br/>\nSent: dinsdag 22 mei 2001 16:36<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: Re: [junit] Testing all<br/>\n<br/>\n<br/>\n--- Ghielli Patrick &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:Patrick.Ghielli@...\">Patrick.Ghielli@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi all,<br/>\n&gt; <br/>\n&gt; I have written the following class to execute all my tests (only a<br/>\n&gt; few since<br/>\n&gt; we&#39;re just starting). I copied most of it from some example. It does<br/>\n&gt; not<br/>\n&gt; really work, however. If I include the constructor I get the error<br/>\n&gt; that<br/>\n&gt; there are no tests in AllTest. When I exclude the constructor I get<br/>\n&gt; the<br/>\n&gt; error that the class has no public constructor. Is there anyone that<br/>\n&gt; can<br/>\n&gt; shed a light on this problem.<br/>\n&gt; <br/>\n&gt; thanx and greetz,<br/>\n&gt; Patrick.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; import junit.framework.*;<br/>\n&gt; <br/>\n&gt; public class AllTests {<br/>\n&gt; <br/>\n&gt;     public AllTests(String testname){<br/>\n&gt; \t//super(testname);<br/>\n&gt;     }<br/>\n&gt;     <br/>\n&gt;     public static void main(String args[]){<br/>\n&gt; \tjunit.textui.TestRunner.run(suite());<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public static Test suite(){<br/>\n&gt;     \tTestSuite t_suite= new TestSuite(&quot;All User tests&quot;);<br/>\n&gt; \tt_suite.addTest( UserServletTests.suite());<br/>\n&gt; \tt_suite.addTest( new TestSuite(UserServletTests.class));<br/>\n&gt; \tt_suite.addTest( UserTests.suite());<br/>\n&gt; \tt_suite.addTest( TestUserLogon.suite());<br/>\n&gt; \tt_suite.addTest( RegisterTest.suite());<br/>\n&gt; \tt_suite.addTest( junit.tests.AllTests.suite());<br/>\n&gt; \treturn t_suite;<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>In the sample AllTests.java, the intent of the line<br/>\n<br/>\n    suite.addTest(junit.tests.AllTests.suite());<br/>\n<br/>\nis to add the AllTests class in a *different* package.  Notice that the<br/>\nsample is in the junit.samples packages, rather than the junit.tests<br/>\npackage.<br/>\n<br/>\nIn your case, you&#39;ll either want to remove this line or redefine it to<br/>\nadd an AllTests class from another package.<br/>\n<br/>\nMike<br/>\n<br/>\n<br/>\n=====<br/>\nMike Clark<br/>\nClarkware Consulting, Inc.<br/>\nCustom Software Architecture, Design, <br/>\nDevelopment, and Performance Consulting<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com\">http://www.clarkware.com</a><br/>\n<br/>\n__________________________________________________<br/>\nDo You Yahoo!?<br/>\nYahoo! Auctions - buy the things you want at great prices<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://auctions.yahoo.com/\">http://auctions.yahoo.com/</a><br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n <br/>\n<br/>\nYour use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 1264, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "990606872", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 1259, 
+    "headers": {
+        "messageIdInHeader": "PEU3NkY3MTVDMDQyOUQ1MTE4RjIxMDA1MDhCQjlFREVFMTE4RUFGQGhydGFkZXM3LmF0ZWEuYmU+"
+    }
+}

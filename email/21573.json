@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 21574, 
+    "senderId": "jZDChaaRiG7RdkY6UrQp5aqLiN5K10ZQIzsV13GVwywxPhsCnqZUwFFDywIGwHWNOz-2MrPFZabxuwJ5XDg1cGLQGGi3uw", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] ClassNotFoundException, sometimes", 
+    "from": "David Rush &lt;david@...&gt;", 
+    "authorName": "David Rush", 
+    "msgSnippet": "David: I created Foo.java, which simply has a main method that creates an exception object from the 3rd-party library and prints it out: import", 
+    "msgId": 21573, 
+    "profile": "ky7dr", 
+    "topicId": 21571, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 230574984, 
+    "messageBody": "<div id=\"ygrps-yiv-1424290815\">David:<br/>\n<br/>\nI created Foo.java, which simply has a main method that creates an exception object from the 3rd-party library and prints it out:<br/>\n<br/>\nimport com.esri.sde.sdk.client.*;<br/>\npublic class Foo { <br/>\n  public static void main(String[] args) { <br/>\n    System.out.println(&quot;Foo&quot;); <br/>\n    SeException ex = new SeWarningException(&quot;Testing&quot;);<br/>\n    System.out.println(&quot;ex = &quot;+ex);<br/>\n  } <br/>\n}<br/>\n<br/>\nand a foo task in my build.xml<br/>\n<br/>\n  &lt;target name=&quot;foo&quot; depends=&quot;compile&quot;&gt;<br/>\n    &lt;java classname=&quot;Foo&quot; classpathref=&quot;test.classpath&quot; /&gt;<br/>\n  &lt;/target&gt;<br/>\n<br/>\nIt does not exhibit the puzzling behavior.  I can run &quot;ant foo&quot; multiple times in succession without problems.  I added &quot;compile.tests&quot; to &quot;depends&quot; in the foo task, and it makes no difference (I can still run foo multiple times in a row without problems).<br/>\n<br/>\nIf I do this from the command line:<br/>\nant clean<br/>\nant test<br/>\nant test<br/>\n<br/>\nI get a failure on the 2nd &quot;ant test&quot;.<br/>\nIf I do this:<br/>\nant clean<br/>\nant foo<br/>\nant test<br/>\nant foo<br/>\n<br/>\nI get a failure on the &quot;ant test&quot; (ant compile and both runs of ant foo work fine).<br/>\n<br/>\ncompile.tests is this:<br/>\n<br/>\n  &lt;target name=&quot;compile.tests&quot; depends=&quot;compile&quot;&gt;<br/>\n    &lt;mkdir dir=&quot;build/classes&quot; /&gt;<br/>\n    &lt;javac <br/>\n        srcdir=&quot;src_tests&quot; <br/>\n        destdir=&quot;build/classes&quot; <br/>\n        classpathref=&quot;test.classpath&quot; <br/>\n        debug=&quot;on&quot; debuglevel=&quot;lines,vars,source&quot;<br/>\n        deprecation=&quot;yes&quot;<br/>\n<blockquote><span title=\"ireply\">       &gt;<br/>\n </span></blockquote>      &lt;!--<br/>\n      &lt;compilerarg value=&quot;-Xlint:all&quot;/&gt;<br/>\n      --&gt;<br/>\n      &lt;compilerarg value=&quot;-Xmaxerrs&quot;/&gt; &lt;compilerarg value=&quot;${error_count.max}&quot;/&gt;<br/>\n      &lt;compilerarg value=&quot;-Xmaxwarns&quot;/&gt; &lt;compilerarg value=&quot;${warning_count.max}&quot;/&gt;<br/>\n      &lt;compilerarg value=&quot;-version&quot;/&gt;<br/>\n    &lt;/javac&gt;<br/>\n  &lt;/target&gt;<br/>\n<br/>\nDavid<br/>\n<br/>\nDavid Saff wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I&#39;d be suspicious of what &quot;compile.tests&quot; is doing. If you create a<br/>\n&gt; short main() class that depends on the class in question, and an ant<br/>\n&gt; target that runs it, do you see the same behavior?<br/>\n&gt; <br/>\n&gt; David Saff<br/>\n&gt; <br/>\n&gt; On Tue, May 5, 2009 at 4:27 PM, David Rush &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:david@...\">david@...</a><br/>\n&gt; &lt;mailto:david%40rushtone.com&gt;&gt; wrote:<br/>\n&gt;&gt; I&#39;m working on setting up some junit test cases for an application<br/>\n&gt; that&#39;s been around a while.  I have some tests running via ant, but I<br/>\n&gt; have a strange situation.<br/>\n&gt;&gt;<br/>\n&gt;&gt; When use &quot;ant clean&quot; to delete all the compiled classes, then &quot;ant<br/>\n&gt; test&quot; (which depends on the compile task, so it&#39;ll compile before it<br/>\n&gt; runs the tests) to run the junit tests (via the junit ant task), it<br/>\n&gt; works fine.  The code compiles and the junit tests work.<br/>\n&gt;&gt;<br/>\n&gt;&gt; However, if I immediately run &quot;ant test&quot; to re-run the junit tests, it<br/>\n&gt; fails with a NoClassDefFoundError, complaining about not being able to<br/>\n&gt; find a particular class in a 3rd-party library I&#39;m using.  The correct<br/>\n&gt; .jar file for the library is in the classpath.<br/>\n&gt;&gt;<br/>\n&gt;&gt; If I do &quot;ant clean&quot;, then &quot;ant test&quot; it works.<br/>\n&gt;&gt;<br/>\n&gt;&gt; Any ideas?<br/>\n&gt;&gt;<br/>\n&gt;&gt; Here&#39;s the &quot;test&quot; snippet from my ant script:<br/>\n&gt;&gt;<br/>\n&gt;&gt;  &lt;target name=&quot;test&quot; depends=&quot;compile.tests&quot; description=&quot;Runs JUnit<br/>\n&gt; tests&quot;&gt;<br/>\n&gt;&gt;    &lt;junit printsummary=&quot;false&quot; haltonfailure=&quot;true&quot; showoutput=&quot;true&quot;&gt;<br/>\n&gt;&gt;      &lt;classpath refid=&quot;test.classpath&quot;/&gt;<br/>\n&gt;&gt;        &lt;formatter type=&quot;brief&quot; usefile=&quot;false&quot;/&gt;<br/>\n&gt;&gt;        &lt;batchtest&gt;<br/>\n&gt;&gt;          &lt;fileset dir=&quot;build/classes&quot; includes=&quot;**/*.class&quot;/&gt;<br/>\n&gt;&gt;        &lt;/batchtest&gt;<br/>\n&gt;&gt;      &lt;/junit&gt;<br/>\n&gt;&gt;  &lt;/target&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; David<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; ------------------------------------<br/>\n&gt;&gt;<br/>\n&gt;&gt; Yahoo! Groups Links<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21572, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1241633571", 
+    "canDelete": false, 
+    "nextInTopic": 21574, 
+    "prevInTopic": 21572, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDkwNTA2MDYyMGs1OWQ0MWRjNXAxZWIyOWMyMjlkZTc0ZGEzQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRBMDFEMzIzLjUwNDAyMDVAcnVzaHRvbmUuY29tPg==", 
+        "referencesHeader": "PDRBMDBBMTRDLjUwNjAzMDZAcnVzaHRvbmUuY29tPiA8NGY3ZGE2YjkwOTA1MDYwNjIwazU5ZDQxZGM1cDFlYjI5YzIyOWRlNzRkYTNAbWFpbC5nbWFpbC5jb20+"
+    }
+}

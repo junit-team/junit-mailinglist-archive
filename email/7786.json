@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7787, 
+    "senderId": "t2GEUDvYbZYJRiF8d6Xj3XOn4_e_37phV-MglrPIyz5ZjUodVEo6vaAW8eoHJG0GRTaUR5Oro9BufN10P6psgWS81oFVLCQIgqB-Y_600W1W", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] A test to verify that an event is generated", 
+    "from": "&quot;Kris Henderson&quot; &lt;khenderson@...&gt;", 
+    "authorName": "Kris Henderson", 
+    "msgSnippet": "Hi Bernd, Thank you for suggesting the self shunt pattern.  For anyone that is unfamiliar with the shelf shunt pattern here is a short article I found that", 
+    "msgId": 7786, 
+    "profile": "kris_556", 
+    "topicId": 7751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90305179, 
+    "messageBody": "<div id=\"ygrps-yiv-619478437\">Hi Bernd,<br/>\n<br/>\nThank you for suggesting the self shunt pattern.  For anyone that is<br/>\nunfamiliar with the shelf shunt pattern here is a short article I found<br/>\nthat explains it:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://scom.hud.ac.uk/scomdjd/public/XP/UT/SelfShuntTestingPattern.pdf\">http://scom.hud.ac.uk/scomdjd/public/XP/UT/SelfShuntTestingPattern.pdf</a><br/>\n<br/>\n<br/>\nWhat advantage does the self shunt pattern:<br/>\n<br/>\npublic TestSomething extends TestCase implements MyEventListener<br/>\n{<br/>\n\tpublic void somethingHappened(MyEvent event)<br/>\n\t{<br/>\n\t\t//some asserts<br/>\n\t}<br/>\n<br/>\n\tpublic void testEvent()<br/>\n\t{<br/>\n\t\tMyService service = new MyService();<br/>\n\t\tservice.addMyEventListener(this);<br/>\n\t\tservice.callMethodThatFiresEvent();<br/>\n<br/>\n\t\t//more asserts<br/>\n\t}<br/>\n}<br/>\n<br/>\nHave over doing it like this:<br/>\n<br/>\npublic TestSomething extends TestCase<br/>\n{<br/>\n\tpublic void testEvent()<br/>\n\t{<br/>\n\t\tMyService service = new MyService();<br/>\n\t\tservice.addMyEventListener(this);<br/>\n\t\tservice.callMethodThatGeneratesEvent();<br/>\n\t}<br/>\n<br/>\n\tpublic void testEvent()<br/>\n\t{<br/>\n\t\tclass MockListener implements MyEventListener<br/>\n\t\t{            <br/>\n\t\t\tpublic void somethingHappened(MyEvent event)<br/>\n\t\t\t{<br/>\n\t\t\t\t//some asserts<br/>\n\t\t\t}\t\t<br/>\n\t\t}<br/>\n<br/>\n\t\tMyService service = new MyService();<br/>\n\t\tMockListener listener = new MockListener();<br/>\n\t\tservice.callMethodThatFiresEvent();<br/>\n<br/>\n\t\t//more asserts<br/>\n\t}<br/>\n}<br/>\n<br/>\nOne advantage I see is that the test methods are smaller and would<br/>\nperhaps be easier to maintain.  Is there anything else or is it mainly<br/>\npersonal preference?  Any disadvantages?<br/>\n<br/>\nThanks,<br/>\n<br/>\nKris</div>", 
+    "prevInTime": 7785, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1050697490", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 7785, 
+    "headers": {
+        "messageIdInHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJDQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4="
+    }
+}

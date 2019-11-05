@@ -1,0 +1,29 @@
+{
+    "topicId": 1, 
+    "postDate": "974881090", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Vera Peeters&quot; &lt;vera.peeters@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "MAfzW8uQyf6XbwgoF1hOI19hWhTTMRi5V7Bnc_7vgGDZ3oM3Tvxd6fE8bw2IX1NYCwZmcgh34EqCo9ddNVcrE0pfdLiKJ8MMjBmA8qQ", 
+    "nextInTime": 51, 
+    "userId": 0, 
+    "prevInTime": 49, 
+    "prevInTopic": 47, 
+    "headers": {
+        "inReplyToHeader": "PDh2YnUyaytuNXBtQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PE5EQkJJQU1BRE1ISU1PQUxMQ0hEQ0VDSENIQUEudnBAdHJ5eC5jb20+"
+    }, 
+    "authorName": "Vera Peeters", 
+    "numMessagesInTopic": 19, 
+    "msgSnippet": "... Yes, the declarations of the functions in MyEJBIF do mention RemoteExceptions. I like it this way because the declaration of the RemoteMyEJB simply ", 
+    "contentTrasformed": false, 
+    "msgId": 50, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;vp@...&gt;\r\nX-Sender: vp@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_3_1_2); 22 Nov 2000 08:17:55 -0000\r\nReceived: (qmail 43992 invoked from network); 22 Nov 2000 08:17:55 -0000\r\nReceived: from unknown (10.1.10.142) by l7.egroups.com with QMQP; 22 Nov 2000 08:17:55 -0000\r\nReceived: from unknown (HELO lesire.be) (194.7.65.51) by mta3 with SMTP; 22 Nov 2000 09:18:59 -0000\r\nReceived: by lesire.be from localhost (router,QMProSrv V2.7); Wed, 22 Nov 2000 09:24:43 +0100\r\nReceived: by lesire.be from unknown.compex.be (193.74.141.108::mail daemon,QMProSrv V2.7); Wed, 22 Nov 2000 09:24:42 +0100\r\nTo: &lt;junit@egroups.com&gt;\r\nSubject: RE: [junit] Re: J2EEUnit\r\nDate: Wed, 22 Nov 2000 09:18:10 +0100\r\nMessage-ID: &lt;NDBBIAMADMHIMOALLCHDCECHCHAA.vp@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\nIn-Reply-To: &lt;8vbu2k+n5pm@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nImportance: Normal\r\nX-eGroups-From: &quot;Vera Peeters&quot; &lt;vp@...&gt;\r\nFrom: &quot;Vera Peeters&quot; &lt;vera.peeters@...&gt;\r\n\r\n&gt; -----Original Message-----\n&gt; From: Jonathan Rasmusson [mailto:jr@...]\n&gt; Sent: maandag 20 november 2000 20:29\n&gt; To: junit@egroups.com\n&gt; Subject: [junit] Re: J2EEUnit\n&gt;\n\n\n&gt; a) Does your &lt;&lt; MyEJBIF &gt;&gt; throw remote exceptions in the local case?\n\n\nYes, the declarations of the functions in MyEJBIF do mention\nRemoteExceptions.\nI like it this way because the declaration of the RemoteMyEJB simply\nbecomes:\n\n\tpublic interface MyEJBRemote extends EJBObject, MyEJBIF {\n\t}\n\n\n(and I never need to change it anymore)\n\n\n&gt;\n&gt; i.e. if I am the client and I want to run locally, I wouldn&#39;t expect\n&gt; any remote exceptions.  I have seen this handled both ways where the\n&gt; RemoteException are caught and where they are thrown to the client\n&gt; (regardless of local or distributed).\n\nIn reality, I never *throw* a RemoteException myself in the MyEJBImpl. The\nRemoteExceptions are thrown by the container. If something goes wrong in\n*my* code, I normally throw a MyEJBException.\nSo, if I run myEJBImpl locally, we will never really get a remote exception.\nIf we run remote, the container will take care that a remote exception is\nthrown if something goes wrong in the container.\n\nAlthough RemoteExceptions are never really thrown, the clients still have to\ncatch them, that&#39;s true. But I don&#39;t care about that, because I want to\nreuse my clients for the local and the remote EJBs. The client simply uses\nthe theMyEJBCreator. The theMyEJBCreator decides wether a local or remote\nEJB is created. In my case, it looks in a properties file.\n\nI don&#39;t have to change 1 line of code to run the tests on local or on remote\nEJBs.\n\n\n&gt;\n&gt; b) Would it be possible to use the EJB&#39;s Remote Interface as your &lt;&lt;\n&gt; MyEJBIF &gt;&gt;?\n\nWell, we chose not too, because now our clients are independent of the\nEJBObject interface. The only thing they need to know about EJBs are these\nexceptions. The clients don&#39;t import any other EJB stuff.\n\n\n&gt;\n&gt; What is the difference between &lt;&lt; MyEJBIF &gt;&gt; and the EJB&#39;s Remote\n&gt; Interface?\n\n\nOnly difference is the extension of EJBObject.\n\n&gt;\n&gt; The first time I approached this problem I made a special business\n&gt; interface for my objects and then realized I could just use the EJB\n&gt; Remote interface itself.  The only draw back is my client must catch\n&gt; Remote, Create, Finder EJB Exceptions (even though they may not be\n&gt; thrown) in the local case.\n&gt;\n&gt; PS I like you choice of names i.e. biPolar...  I have an Electrical\n&gt; Engineering background and it brings back memories of Bipolar Junction\n&gt; Transistors (BJT&#39;s).  I understood exactly what you meant.\n\n\nComes from a JavaReport some time ago. Ronald Mak described Bipolar Corba\nObjects in Java. We figured it was exactly the same thing we were doing (and\nrenamed them).\n\n\nbye,\nvp\n\n\n", 
+    "subject": "RE: [junit] Re: J2EEUnit"
+}

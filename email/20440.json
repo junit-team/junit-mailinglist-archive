@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20441, 
+    "senderId": "vjRc4iaGpNw08PfVGECvp69CEIQ4uXggvMtSNtd_48ysMK1lrSqDE5rLJSYMl18wG59sUuyCjfOeor2NaAcnao-WBh6yVjsRmV9aQ-YzO0TH2E9qoAxkNY35zIX5Co0", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Parameterized test with default value", 
+    "from": "=?UTF-8?B?Q8OpZHJpYyBCZXVzdCDimZQ=?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "FYI, here is how we do it with TestNG, maybe something similar could be considered for inclusion in JUnit? @Parameters( port-number ) @Test public void", 
+    "msgId": 20440, 
+    "profile": "cbeust", 
+    "topicId": 20436, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-1405735011\">FYI, here is how we do it with TestNG, maybe something similar could be<br/>\nconsidered for inclusion in JUnit?<br/>\n<br/>\n@Parameters(&quot;port-number&quot;)<br/>\n@Test<br/>\npublic void connect(@Optional(1024) int port) { ... }<br/>\n<br/>\nIf &quot;port-number&quot; is supplied in the XML file, it&#39;s used, otherwise the test<br/>\nmethod will be passed 1024.<br/>\n<br/>\n-- <br/>\nCédric<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thu, Apr 10, 2008 at 3:37 PM, toalexsmail &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:toalexsmail@...\">toalexsmail@...</a>&gt; wrote:<br/>\n<br/>\n&gt;   I thought again and I found some other solutions.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> &lt;junit%40yahoogroups.com&gt;, &quot;kelvsyc&quot;<br/>\n&gt; &lt;kelvsyc@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; I&#39;ve just gotten into parameterized testing and customized JUnit4<br/>\n&gt; &gt; Runners, but I have a few questions:<br/>\n&gt; &gt;<br/>\n&gt; &gt; How do I go about making a parameterized test for which a single<br/>\n&gt; &gt; default parameter value is provided if a list of parameter values is<br/>\n&gt; &gt; not given? (It appears to me that you may need to have a custom<br/>\n&gt; &gt; runner that&#39;s similar to Parameterized)<br/>\n&gt; &gt;<br/>\n&gt; &gt; Furthermore, suppose I have a subclass of this test, which defines a<br/>\n&gt; &gt; second parameter, which, unlike the first, is a required parameter<br/>\n&gt; &gt; (ie. I can choose to have my list of parameters as either two values<br/>\n&gt; &gt; or a single, which would assume the usage of a default value). How<br/>\n&gt; &gt; would I go about doing that? (Would I need to use a different runner?)<br/>\n&gt; &gt;<br/>\n&gt; &gt; How would I generalize this to any number of parameters (required and<br/>\n&gt; &gt; optional)?<br/>\n&gt; As I stated in my previous answer in Java the only way to supply<br/>\n&gt; default parameters to function (and to constructor as I explained) is<br/>\n&gt; to overload it when one constructor call another. But what you could<br/>\n&gt; do is to move this calculation of default values from the only<br/>\n&gt; constructor to @Parametrized static method. Because you can&#39;t declare<br/>\n&gt; more than one constructor you should define helper class for this purpose.<br/>\n&gt; For example, you want to use 2 parameters one is boolean with default<br/>\n&gt; value false and second is required.<br/>\n&gt;<br/>\n&gt; @RunWith(Parameterized.class)<br/>\n&gt; public class YourTest {<br/>\n&gt; @Parameters<br/>\n&gt; public static Collection&lt;?&gt; testFindLastOrder(){<br/>\n&gt; return Arrays.&lt;Object[]&gt;asList(new Object[][]{<br/>\n&gt; YourTestHelper helper = new YourTestHelper();<br/>\n&gt; {helper.getDefaultFlagValue(), OrderType.SIGN_UP, 1}, // 0<br/>\n&gt; {helper.getDefaultFlagValue(), OrderType.SIGN_UP, 15}, // 1<br/>\n&gt; {true, -7}, // 1<br/>\n&gt;<br/>\n&gt; };<br/>\n&gt; private boolean flag;<br/>\n&gt; private int i;<br/>\n&gt;<br/>\n&gt; public YourTest(boolean flag, int i){<br/>\n&gt; this.flag = flag;<br/>\n&gt; this.i = i;<br/>\n&gt; }<br/>\n&gt; ...<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; public class YourTestHelper {<br/>\n&gt; public boolean getDefaultFlagValue(){<br/>\n&gt; return false;<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; You can optimize this code, but the idea is clear. If you subclass<br/>\n&gt; YourTest class and want to change parameters that are passed to the<br/>\n&gt; test class, you should simply define @Parameters method in your<br/>\n&gt; subclass. You will use, perhaps, different helper class, which in is<br/>\n&gt; case, perhaps subclasses YourTestHelper.<br/>\n&gt;<br/>\n&gt; &gt; Finally, what if I wanted my parameterized tests to be named via some<br/>\n&gt; &gt; naming function (instead of serially numbered like Parameterized)?<br/>\n&gt; &gt;<br/>\n&gt; You can consider to use Theories instead of Parameterized. Their you<br/>\n&gt; have support for this. Note, that Theories run all permutations of<br/>\n&gt; your parametrizes, so it can be not exactly what you want. I have no<br/>\n&gt; experience by using this though, so I can&#39;t help you more.<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 20439, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1207887912", 
+    "canDelete": false, 
+    "nextInTopic": 21005, 
+    "prevInTopic": 20439, 
+    "headers": {
+        "inReplyToHeader": "PGZ0bTRxZCtuMWNuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDgwNDEwMjEyNXI2MGFmOWIzMWthN2EyNjE1ZjM0NzMzMWE4QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZ0a2lzaitydHB0QGVHcm91cHMuY29tPiA8ZnRtNHFkK24xY25AZUdyb3Vwcy5jb20+"
+    }
+}

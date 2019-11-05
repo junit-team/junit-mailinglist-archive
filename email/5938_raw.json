@@ -1,0 +1,30 @@
+{
+    "topicId": 5932, 
+    "postDate": "1033702696", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "egPTfacXE6A1aWKh30xw7X9ir4buI0H5okpNaFwy4WgF5kx8mBa9YUg1VHlBg0ebcqQvXFmQxONlpDNoD0sCqrSO3wRyFGrzHitW8E3rK2c", 
+    "nextInTime": 5939, 
+    "userId": 114327599, 
+    "prevInTime": 5937, 
+    "prevInTopic": 5933, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMDAzMDQ1MzAzLjIzNzgxLnFtYWlsQHdlYjk2MDQubWFpbC55YWhvby5jb20+OyBmcm9tIGFuYW50aGFsYWtzaG1pX21jYUB5YWhvby5jb20gb24gV2VkLCBPY3QgMDIsIDIwMDIgYXQgMDk6NTM6MDNQTSAtMDcwMA==", 
+        "messageIdInHeader": "PDIwMDIxMDAzMjEzODE2LkE2MDgzQHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "referencesHeader": "PDIwMDIxMDAzMDQ1MzAzLjIzNzgxLnFtYWlsQHdlYjk2MDQubWFpbC55YWhvby5jb20+"
+    }, 
+    "authorName": "Steven Taschuk", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "... Ant s  task does this, with . If you don t want to use Ant, it seems to me you can write the functionality yourself with", 
+    "contentTrasformed": false, 
+    "msgId": 5938, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;staschuk@...&gt;\r\nReceived: (qmail 70029 invoked from network); 4 Oct 2002 05:20:33 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m7.grp.scd.yahoo.com with QMQP; 4 Oct 2002 05:20:33 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta1.grp.scd.yahoo.com with SMTP; 4 Oct 2002 05:20:33 -0000\r\nX-eGroups-Return: staschuk@...\r\nReceived: from [66.218.66.142] by n3.grp.scd.yahoo.com with NNFMP; 04 Oct 2002 05:20:33 -0000\r\nX-Sender: staschuk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_0); 4 Oct 2002 03:45:47 -0000\r\nReceived: (qmail 85153 invoked from network); 4 Oct 2002 03:45:47 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m6.grp.scd.yahoo.com with QMQP; 4 Oct 2002 03:45:47 -0000\r\nReceived: from unknown (HELO tibia.amotlpaa.bogus) (209.162.160.100)\n  by mta2.grp.scd.yahoo.com with SMTP; 4 Oct 2002 03:45:46 -0000\r\nReceived: (qmail 6096 invoked by uid 100); 4 Oct 2002 03:38:16 -0000\r\nDate: Thu, 3 Oct 2002 21:38:16 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Reg: Finding Time taken for every Test case in Test suite.\r\nMessage-ID: &lt;20021003213816.A6083@...&gt;\r\nReferences: &lt;20021003045303.23781.qmail@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.2.5i\r\nIn-Reply-To: &lt;20021003045303.23781.qmail@...&gt;; from ananthalakshmi_mca@... on Wed, Oct 02, 2002 at 09:53:03PM -0700\r\nFrom: Steven Taschuk &lt;staschuk@...&gt;\r\nX-Yahoo-Group-Post: member; u=114327599\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 04 Oct 2002 05:20:33 -0000\r\n\r\nQuoth Anantha Lakshmi:\n&gt; [...] I&#39;ve created a TestSuite, which contains\n&gt; sequence of Tests. I want to find out the &quot;Time Taken\n&gt; for each Test case in a Test suite&quot; while running the\n&gt; Test Suite. [...]\n\nAnt&#39;s &lt;junit&gt; task does this, with &lt;formatter type=&#39;plain&#39;/&gt;.\n\nIf you don&#39;t want to use Ant, it seems to me you can write the\nfunctionality yourself with not so much work.  Something like this:\n\n  1. If you&#39;re writing your own implementations of Test\n     (instead of, say, using TestCases), then make sure\n     they call TestResult.startTest() and .endTest()\n     in their run() methods.\n\n  2. Subclass java.textui.TestRunner, overriding the\n     protected method createTestResult(); something like\n\n           protected TestResult createTestResult() {\n                   TestResult result = super.createTestResult();\n                   result.addTestListener( new TimingTestListener() );\n                   return result;\n           }\n\n  3. Write the TimingTestListener; a trivial version:\n\n           public class TimingTestListener implements TestListener {\n                   private long start;\n                   public void startTest( Test test ) {\n                           start = new Date().getTime();\n                   }\n                   public void endTest( Test test ) {\n                           System.out.println( test.toString() + &quot;: &quot;\n                                   + (new Date().getTime() - start)\n                                   + &quot;ms&quot; );\n                   }\n                   // ... the rest of the TestListener interface ...\n           }\n\nAnd that would be it.  I haven&#39;t tested this, it&#39;s just off the\ntop of my head, and I don&#39;t actually know what I&#39;m talking about,\nso I invite comments and corrections.\n\n(One obvious point: what TimingTestListener should actually do is\naccumulate the results and provide methods for retrieving the\ninformation later.  Also you might want to think about the\npossibility that your tests might someday be run concurrently in\nmultiple threads, with one TestResult -- and hence one\nTimingTestListener -- shared among all those threads.  The\nimplementation suggested above would fail miserably in such a\nscenario.)\n\n\n", 
+    "subject": "Re: [junit] Reg: Finding Time taken for every Test case in Test suite."
+}

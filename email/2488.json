@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 2489, 
+    "senderId": "YcF7CWzfb5XZBsfFUa4gVPz2k4_cLrqXOTZ9K5MCFv20Cz-e2Ushpl1pHgDRlTDHIw5wShsCLw", 
+    "systemMessage": false, 
+    "subject": "Re: tearDown still get called even one of my test throws exception .", 
+    "from": "dfw1@...", 
+    "authorName": "dfw1@cornell.edu", 
+    "msgSnippet": "Ellen, Pete, The patch I sent in, https://sourceforge.net/tracker/?func=detail&aid=436182&group_id=15278&atid=315278 , contains a unit test to demonstrate the", 
+    "msgId": 2488, 
+    "topicId": 2478, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-582790087\">Ellen, Pete,<br/>\n<br/>\nThe patch I sent in,<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"https://sourceforge.net/tracker/?func=detail&aid=436182&group_id=15278&atid=315278\">https://sourceforge.net/tracker/?func=detail&aid=436182&group_id=15278&atid=315278</a><br/>\n, contains a unit test to demonstrate the problem.<br/>\n<br/>\nTo see it, change the line in CleaningTestSetupTest.java from <br/>\n<br/>\n    static class SomeCleaningTestSetup extends CleaningTestSetup {<br/>\n<br/>\nto<br/>\n<br/>\n    static class SomeCleaningTestSetup extends TestSetup {<br/>\n<br/>\n, which will run the same test with a TestSetup implementation. The<br/>\ntest will fail for test cases when the setUp method throws an<br/>\nexception because setUp, the tests, and tearDown are called inside the<br/>\nsame Protectable bubble.<br/>\n<br/>\nDave<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In junit@y..., &quot;Peter McEvoy&quot; &lt;pmcevoy@i...&gt; wrote:<br/>\n&gt; Shen<br/>\n&gt; <br/>\n&gt; Yes, I did a test similar to yours and saw that tearDown was getting<br/>\ncalled when I threw an<br/>\n&gt; exception.  However I have observed some situations where tearDown<br/>\nis not called when one of my<br/>\n&gt; tests barfs - I haven&#39;t had a chance to spend time trying to<br/>\nreplicate this problem or to come up<br/>\n&gt; with a simple test case - I&#39;ll see what I can do once the pressure<br/>\nis off me next week...<br/>\n&gt; <br/>\n&gt; Pete<br/>\n&gt;   -----Original Message-----<br/>\n&gt;   From: shen lichen [mailto:schenchen@h...]<br/>\n&gt;   Sent: 23 August 2001 17:34<br/>\n&gt;   To: pmcevoy@i...<br/>\n&gt;   Subject: tearDown still get called even one of my test throws<br/>\nexception .<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;   hi,Peter:<br/>\n&gt; <br/>\n&gt;   I notice that tearDown still get called even one of my test throws<br/>\nexception .<br/>\n&gt; <br/>\n&gt;   here is my sample test code:<br/>\n&gt; <br/>\n&gt;   public class TestOne extends TestCase<br/>\n&gt;   {<br/>\n&gt;       Bean bean = null;<br/>\n&gt; <br/>\n&gt;       public TestOne(String name)<br/>\n&gt;       {<br/>\n&gt;           super(name);<br/>\n&gt;       }<br/>\n&gt; <br/>\n&gt;       public static void oneTimeSetUp()<br/>\n&gt;       {<br/>\n&gt;           System.out.println(&quot;test set up &quot;);<br/>\n&gt;       }<br/>\n&gt;        public static void oneTimeTearDown()<br/>\n&gt;       {<br/>\n&gt;           System.out.println(&quot;test tear down &quot;);<br/>\n&gt;       }<br/>\n&gt;       public void tearDown()<br/>\n&gt;       {<br/>\n&gt;        System.out.println(&quot;every time tear down &quot;);<br/>\n&gt;       }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;       public void test1()<br/>\n&gt;       {<br/>\n&gt;           System.out.println(&quot;test1&quot;);<br/>\n&gt;       }<br/>\n&gt; <br/>\n&gt;       public void test2()<br/>\n&gt;       {<br/>\n&gt;           System.out.println(&quot;test2&quot;);<br/>\n&gt;       }<br/>\n&gt; <br/>\n&gt;       public void test3()<br/>\n&gt;       {<br/>\n&gt;        System.out.println(&quot;test3&quot;);<br/>\n&gt;        int[] a = {1,2};<br/>\n&gt;        System.out.println(a[3]);<br/>\n&gt;       }<br/>\n&gt; <br/>\n&gt;       public static Test suite()<br/>\n&gt;       {<br/>\n&gt;           TestSuite suite= new TestSuite(TestOne.class);<br/>\n&gt; <br/>\n&gt;           TestSetup wrapper= new TestSetup(suite)<br/>\n&gt;           {<br/>\n&gt;               public void setUp()<br/>\n&gt;               {<br/>\n&gt;                   oneTimeSetUp();<br/>\n&gt;               }<br/>\n&gt;               public void tearDown()<br/>\n&gt;               {<br/>\n&gt;                   oneTimeTearDown();<br/>\n&gt;               }<br/>\n&gt;           };<br/>\n&gt;           return wrapper;<br/>\n&gt; <br/>\n&gt;        }<br/>\n&gt;         public static void main( String[] args )<br/>\n&gt;       {<br/>\n&gt;           junit.textui.TestRunner.run( suite() );<br/>\n&gt;       }<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   Do I talk about the same thing you point?<br/>\n&gt; <br/>\n&gt;   Thanks<br/>\n&gt; <br/>\n&gt;   Ellen<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;<br/>\n------------------------------------------------------------------------------<br/>\n&gt;   Get your FREE download of MSN Explorer at <a rel=\"nofollow\" target=\"_blank\" href=\"http://explorer.msn.com\">http://explorer.msn.com</a> </span></blockquote></div>", 
+    "prevInTime": 2487, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "998657706", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 2478, 
+    "headers": {
+        "inReplyToHeader": "PDAwMGQwMWMxMmJmMSRmODBjOGY5MCQ2MTA2MDIwYUBaRVJPPg==", 
+        "messageIdInHeader": "PDltNWlyYStpNXA1QGVHcm91cHMuY29tPg=="
+    }
+}

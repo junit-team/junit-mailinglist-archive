@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 6102, 
+    "senderId": "aQUArC93XgFK2rSPxZec4DxgLtINLTdR743CyaI_YAVaboMpQJvplkwxsWC0bo_uwdVeujwo8JihPBjzK0ryXbWjVX4hbrE8qsEgFsfmpg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] loader constraints violated", 
+    "from": "&quot;Scott Stirling&quot; &lt;scottstirling@...&gt;", 
+    "authorName": "Scott Stirling", 
+    "msgSnippet": "This is indeed the solution.  I ve yet to see any other working solution for a dynamically reloading classloader.  Every J2EE app server and Servlet container", 
+    "msgId": 6101, 
+    "rawEmail": "Return-Path: &lt;scottstirling@...&gt;\r\nX-Sender: scottstirling@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 6 Nov 2002 01:00:34 -0000\r\nReceived: (qmail 90909 invoked from network); 6 Nov 2002 01:00:34 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m7.grp.scd.yahoo.com with QMQP; 6 Nov 2002 01:00:34 -0000\r\nReceived: from unknown (HELO smtp-hub.mrf.mail.rcn.net) (207.172.4.107)\n  by mta1.grp.scd.yahoo.com with SMTP; 6 Nov 2002 01:00:34 -0000\r\nReceived: from smtp01.mrf.mail.rcn.net ([207.172.4.60])\n\tby smtp-hub.mrf.mail.rcn.net with esmtp (Exim 3.35 #4)\n\tid 189EYc-0005GN-00\n\tfor junit@yahoogroups.com; Tue, 05 Nov 2002 20:00:34 -0500\r\nReceived: from 207-172-67-6.c3-0.frm-ubr1.sbo-frm.ma.cable.rcn.com ([207.172.67.6] helo=javalaptop)\n\tby smtp01.mrf.mail.rcn.net with esmtp (Exim 3.35 #4)\n\tid 189EYb-0002oh-00\n\tfor junit@yahoogroups.com; Tue, 05 Nov 2002 20:00:33 -0500\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] loader constraints violated\r\nDate: Tue, 5 Nov 2002 20:00:15 -0500\r\nMessage-ID: &lt;000001c2852f$e12a2d30$0501a8c0@javalaptop&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.3416\r\nImportance: Normal\r\nIn-Reply-To: &lt;288527BA-F0BC-11D6-BDCC-003065BF83DA@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106\r\nFrom: &quot;Scott Stirling&quot; &lt;scottstirling@...&gt;\r\nReply-To: &lt;scottstirling@...&gt;\r\nX-Yahoo-Group-Post: member; u=112036634\r\nX-Yahoo-Profile: jrun5\r\n\r\nThis is indeed the solution.  I&#39;ve yet to see any other working solution\nfor a dynamically reloading classloader.  Every J2EE app server and\nServlet container has had to deal with this same problem to make rapid\ndev/deploy cycles possible (ditto for Ant).\n\nI think Erich Gamma took a stab at fixing this, but I&#39;m not sure why he\nnever followed through on it.  Busy, probably.\n\nHow can it be made as easy as possible for people to set up their\n&quot;test-case classpath?&quot;  Some thought should go into how to implement\nthis.  Most app server have deploy dirs or component packaging contracts\nthat ensure things get loaded by the appropriate custom classloader(s).\nWhat should JUnit do?\n\nScott Stirling\n\n&gt; -----Original Message-----\n&gt; From: Timothy Wall [mailto:twall@...] \n&gt; Sent: Tuesday, November 05, 2002 7:43 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: Re: [junit] loader constraints violated\n&gt; \n&gt; \n&gt; I think the real solution to the (broken) class loader is to \n&gt; fix it so  \n&gt; that it only searches a more narrowly specified classpath \n&gt; when loading  \n&gt; test classes, delegating loading of all other classes to the \n&gt; app class  \n&gt; loader (or some other suitably defined parent).\n&gt; \n&gt; The custom class loader doesn&#39;t even have to &quot;preload&quot; the test  \n&gt; classes, since its parent will not find the test classes in \n&gt; question.   \n&gt; As long as a new instance is used for each test case, you \n&gt; will have a  \n&gt; fresh load of the class under test on each run.\n&gt; \n&gt; A URLClassLoader might even be sufficient for this purpose.\n&gt; \n&gt; If I get some time I&#39;ll submit a patch, since I&#39;m using a similar  \n&gt; solution for the abbot junit extension...\n&gt; \n&gt; On Monday, November 4, 2002, at 01:57 AM, Chris wrote:\n&gt; \n&gt; &gt; Here&#39;s a weird error and the solution, so that the next poor shmuck \n&gt; &gt; can find it:\n&gt; &gt;\n&gt; &gt; When running a junit test suite via Ant, I got this error: [junit] \n&gt; &gt; loader constraints violated when linking \n&gt; org/xml/sax/InputSource class\n&gt; &gt;\n&gt; &gt; This appeas to be the same problem with junit&#39;s custom class loader \n&gt; &gt; that is widely documented, and solved by adding\n&gt; &gt; excluded.6=org.w3c.dom.* and excluded.7=org.xml.sax.* to the file \n&gt; &gt; excluded.properties. Only problem is, I already have those lines.\n&gt; &gt;\n&gt; &gt; The root of the problem for me was that I had jrun.jar in my \n&gt; &gt; classpath. jrun.jar is an 8 meg monster that comes with JRun4 and \n&gt; &gt; includes its own copy of the sax classes. Taking jrun.jar out of my \n&gt; &gt; classpath solved the problem and the tests ran fine.\n&gt; &gt;\n&gt; &gt; If anyone happens to know why, I&#39;d like to hear it.\n\n\n\n", 
+    "profile": "jrun5", 
+    "topicId": 6097, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112036634, 
+    "prevInTime": 6100, 
+    "contentTrasformed": false, 
+    "postDate": "1036544415", 
+    "canDelete": false, 
+    "nextInTopic": 6107, 
+    "prevInTopic": 6100, 
+    "headers": {
+        "inReplyToHeader": "PDI4ODUyN0JBLUYwQkMtMTFENi1CRENDLTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4=", 
+        "messageIdInHeader": "PDAwMDAwMWMyODUyZiRlMTJhMmQzMCQwNTAxYThjMEBqYXZhbGFwdG9wPg=="
+    }
+}

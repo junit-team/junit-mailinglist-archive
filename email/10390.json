@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 10391, 
+    "senderId": "UeZbeaR9HiQbMQ84EuCZ5WK8nxlt9y5gnkKupF_OsAaQ5m1URtoMn-oUdFcA9wxkUS6J-46ZYeJZZtgkbdGmP_-0ZqRcNAAWiORc4jH6hNU", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Exception is swallowed inside tearDown", 
+    "from": "Christian Pekeler &lt;christian@...&gt;", 
+    "authorName": "Christian Pekeler", 
+    "msgSnippet": "... No. And it doesn t seem to. Do you have a failing testcase that shows how this runBare() variation invokes tearDown() twice? Here s my test: public class", 
+    "msgId": 10390, 
+    "profile": "pekeler", 
+    "topicId": 10379, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 63615397, 
+    "messageBody": "<div id=\"ygrps-yiv-374534966\"><blockquote><span title=\"ireply\">&gt;&gt;      /**<br/>\n&gt;&gt;      * Runs the bare test sequence.<br/>\n&gt;&gt;      * This overwrites &lt;code&gt;runBare()&lt;/code&gt; in <br/>\n&gt;&gt; &lt;code&gt;TestCase&lt;/code&gt; such that exceptions in &lt;code&gt;tearDown()&lt;/code&gt;<br/>\n&gt;&gt;      * are only shown if the test itself didn&#39;t throw.<br/>\n&gt;&gt;      */<br/>\n&gt;&gt;      public void runBare() throws Throwable {<br/>\n&gt;&gt;          setUp();<br/>\n&gt;&gt;          try {<br/>\n&gt;&gt;              runTest();<br/>\n&gt;&gt;          } catch (Throwable e) {<br/>\n&gt;&gt;              try {<br/>\n&gt;&gt;                  tearDown();<br/>\n&gt;&gt;              } finally {<br/>\n&gt;&gt;                  throw e;<br/>\n&gt;&gt;              }<br/>\n&gt;&gt;          }<br/>\n&gt;&gt;          tearDown();<br/>\n&gt;&gt;      }<br/>\n&gt;<br/>\n&gt; Do you /really/ want to invoke tearDown() twice?<br/>\n<br/>\n </span></blockquote>No. And it doesn&#39;t seem to. Do you have a failing testcase that shows <br/>\nhow this runBare() variation invokes tearDown() twice? Here&#39;s my test:<br/>\n<br/>\n<br/>\npublic class RunBareTest extends TestCase {<br/>\n     public int tearDownCounter;<br/>\n<br/>\n     public void testRunBare() throws Throwable {<br/>\n         InnerTestWithRunBare testCase = new <br/>\nInnerTestWithRunBare(&quot;successfulTest&quot;);<br/>\n         testCase.runBare();<br/>\n         assertEquals(1, tearDownCounter);<br/>\n<br/>\n         testCase = new InnerTestWithRunBare(&quot;successfulTest&quot;);<br/>\n         testCase.throwInTearDown = true;<br/>\n         try {<br/>\n             testCase.runBare();<br/>\n             fail();<br/>\n         } catch (TearDownException e) {}<br/>\n         assertEquals(1, tearDownCounter);<br/>\n<br/>\n         testCase = new InnerTestWithRunBare(&quot;failingTest&quot;);<br/>\n         try {<br/>\n             testCase.runBare();<br/>\n             fail();<br/>\n         } catch (AssertionFailedError e) {}<br/>\n         assertEquals(1, tearDownCounter);<br/>\n<br/>\n         testCase = new InnerTestWithRunBare(&quot;failingTest&quot;);<br/>\n         testCase.throwInTearDown = true;<br/>\n         try {<br/>\n             testCase.runBare();<br/>\n             fail();<br/>\n         } catch (AssertionFailedError e) {}<br/>\n         assertEquals(1, tearDownCounter);<br/>\n     }<br/>\n<br/>\n     public class TearDownException extends Exception {<br/>\n         public TearDownException(String aName) {<br/>\n             super(aName);<br/>\n         }<br/>\n     }<br/>\n<br/>\n     public class InnerTestWithRunBare extends TestCase {<br/>\n         public boolean throwInTearDown = false;<br/>\n<br/>\n         public InnerTestWithRunBare(String aTestName) {<br/>\n             super(aTestName);<br/>\n         }<br/>\n<br/>\n         public void runBare() throws Throwable {<br/>\n             setUp();<br/>\n             try {<br/>\n                 runTest();<br/>\n             } catch (Throwable e) {<br/>\n                 try {<br/>\n                     tearDown();<br/>\n                 } finally {<br/>\n                     throw e;<br/>\n                 }<br/>\n             }<br/>\n             tearDown();<br/>\n         }<br/>\n<br/>\n         public void successfulTest() {<br/>\n             assertTrue(true);<br/>\n         }<br/>\n<br/>\n         public void failingTest() {<br/>\n             assertTrue(false);<br/>\n         }<br/>\n<br/>\n         public void setUp() throws Exception {<br/>\n             super.setUp();<br/>\n             tearDownCounter = 0;<br/>\n         }<br/>\n<br/>\n         public void tearDown() throws Exception {<br/>\n             tearDownCounter++;<br/>\n             if (throwInTearDown)<br/>\n                 throw new TearDownException(&quot;tearDown Exception&quot;);<br/>\n             super.tearDown();<br/>\n         }<br/>\n     }<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\nChristian</div>", 
+    "prevInTime": 10389, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1075828401", 
+    "canDelete": false, 
+    "nextInTopic": 10393, 
+    "prevInTopic": 10389, 
+    "headers": {
+        "inReplyToHeader": "PDQwMUZDNUFBLjgwODAzMDJAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQ0NzlFODdFLTU2NkMtMTFEOC05MUMxLTAwMEE5NThEMzUwRUBwZWtlbGVyLm9yZz4=", 
+        "referencesHeader": "PGJ2bnExNCtvamVoQGVHcm91cHMuY29tPiA8RUQ4MzhCNEYtNTY2MC0xMUQ4LTkxMDEtMDAzMDY1NjREREUyQHBla2VsZXIub3JnPiA8NDAxRkM1QUEuODA4MDMwMkByb2dlcnMuY29tPg=="
+    }
+}

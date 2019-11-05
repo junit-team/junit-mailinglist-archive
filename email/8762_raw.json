@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 8763, 
+    "senderId": "MLWdiwG3005oidLv3n1v4VgqhJwoWuEuXuEAUh3LGztAJwJq0_Ls7XTif0KoGbioDXVGEdu51YOHdGXP3cQS1d3rSv96KF6CrCJvG5ZA0A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to run same testcase with 20 different  arg-values to test diff. results", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... This is unnecessary duplication. ... You certainly don t need THAT. ... If I run three tests, I want JUnit to report 3 runs, not 1. It will eventually", 
+    "msgId": 8762, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 31827 invoked from network); 23 Jul 2003 16:28:36 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m20.grp.scd.yahoo.com with QMQP; 23 Jul 2003 16:28:36 -0000\r\nReceived: from unknown (HELO fep01-mail.bloor.is.net.cable.rogers.com) (66.185.86.71)\n  by mta1.grp.scd.yahoo.com with SMTP; 23 Jul 2003 16:28:36 -0000\r\nReceived: from quincy ([199.243.252.154])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030723162806.SAAA427382.fep01-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Wed, 23 Jul 2003 12:28:06 -0400\r\nMessage-ID: &lt;200307231228330415.00896007@...&gt;\r\nIn-Reply-To: &lt;bfmc17+j5l9@...&gt;\r\nReferences: &lt;bfmc17+j5l9@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Wed, 23 Jul 2003 12:28:33 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: How to run same testcase with 20 different\n  arg-values to test diff. results\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep01-mail.bloor.is.net.cable.rogers.com from [199.243.252.154] using ID &lt;jbrains@...&gt; at Wed, 23 Jul 2003 12:28:05 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt;So said malvoisin on 2003-07-23 --------------------\n&gt;but but but...\n&gt;\n&gt;pu=\r\nblic void testMax() {\n&gt;  testTwoIntegers(Integer.maxValue, Integer.maxValue=\r\n);\n&gt;}\n&gt;\n&gt;public void testMin() {\n&gt;  testTwoIntegers(Integer.minValue, Integ=\r\ner.minValue);\n&gt;} \n&gt;\n&gt;..\n&gt;..\n&gt;..\n\nThis is unnecessary duplication.\n\n&gt;would s=\r\ntill work, and is more concise than creating 200 new test\n&gt;classes with dif=\r\nferent setUp/tearDown methods.  \n\nYou certainly don&#39;t need THAT.\n\n&gt;what&#39;s s=\r\no hated about\n&gt;grouping them all in the same method, though?  \n\nIf I run th=\r\nree tests, I want JUnit to report 3 runs, not 1. It will eventually confuse=\r\n someone at a key moment. It always does. It&#39;s like trying to remember a li=\r\ne: eventually it catches up with you -- it&#39;s easier to tell the truth from =\r\nthe beginning.\n\n&gt;sure you&#39;re running\n&gt;multiple tests in one test method, bu=\r\nt it is still easy to track\n&gt;specific problems down since you get the stack=\r\n trace.\n\nTrue enough, but it doesn&#39;t give me an accurate picture of the num=\r\nber of tests in the system.\n\nSimple solution:\n\npublic void testTwoIntegers(=\r\n) {\n    // use a and b from fixture\n}\n\npublic static Test suite() {\n    int=\r\n[][] testData =3D new int[][] {\n        {Integer.minValue, Integer.minValue=\r\n},\n        {Integer.maxValue, Integer.maxValue},\n        ...\n    };\n\n    Te=\r\nstSuite suite =3D new TestSuite();\n    for (int i =3D 0; i &lt; testData.lengt=\r\nh; i++) {\n        suite.addTest(new IntegerTest(testData[i][0], testData[i]=\r\n[1]);\n    }\n\n    return suite;\n}\n\npublic IntegerTest(int a, int b) {\n    su=\r\nper(&quot;testTwoIntegers&quot;);    // leverage TestCase reflection to run test meth=\r\nod &#39;testTwoIntegers&#39;\n    // set fixture for test\n    this.a =3D a;\n    this=\r\n.b =3D b;\n}\n\nAn alternative, with less magic, is to override runTest().\n\npu=\r\nblic void testTwoIntegers(int a, int b) {\n    // test implementation\n}\n\npub=\r\nlic static Test suite() {\n    int[][] testData =3D new int[][] {\n        {I=\r\nnteger.minValue, Integer.minValue},\n        {Integer.maxValue, Integer.maxV=\r\nalue},\n        ...\n    };\n\n    TestSuite suite =3D new TestSuite();\n    for=\r\n (int i =3D 0; i &lt; testData.length; i++) {\n        suite.addTest(new Intege=\r\nrTest() {\n            protected void runTest() {\n                testTwoInt=\r\negers(testData[i][0], testData[i][1]);\n            }\n        });\n    }\n\n   =\r\n return suite;\n}\n\nI prefer the first because it avoids a bunch of anonymous=\r\n subclasses.\n\nTake care.\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Software S=\r\nervices\nLet&#39;s write software that people understand.\nhttp://www.diasparsoft=\r\nware.com/\ntelephone: +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 8724, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 8761, 
+    "contentTrasformed": false, 
+    "postDate": "1058977713", 
+    "canDelete": false, 
+    "nextInTopic": 8783, 
+    "prevInTopic": 8761, 
+    "headers": {
+        "inReplyToHeader": "PGJmbWMxNytqNWw5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwNzIzMTIyODMzMDQxNS4wMDg5NjAwN0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGJmbWMxNytqNWw5QGVHcm91cHMuY29tPg=="
+    }
+}

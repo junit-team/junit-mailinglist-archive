@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 74, 
+    "nextInTime": 15963, 
+    "senderId": "yiTBrtWgNob4e5oc2mjQAeT2symHSbehAzA6_SbxRNTz2zxnWurTwwCqptNLCKxBc2Skxdx8-prmJEzBMmeXyxJQYbsZbCQlrmNRyw", 
+    "systemMessage": false, 
+    "subject": "Re: Observations from a production use of JUnit4", 
+    "from": "&quot;Ben Maurer&quot; &lt;bmaurer@...&gt;", 
+    "authorName": "Ben Maurer", 
+    "msgSnippet": "... Exception ... test ... Yes, I think this does. ... I *think* this captures the meaning of what I want. I ve got quite a few other tasks tonight, so I m", 
+    "msgId": 15962, 
+    "profile": "benjamindavidmaurer", 
+    "topicId": 15891, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 256083789, 
+    "messageBody": "<div id=\"ygrps-yiv-498063525\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Kent Beck&quot; &lt;kentb@...&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Does the following test capture what you mean? In other words, an<br/>\n </span></blockquote>Exception<br/>\n<blockquote><span title=\"ireply\"> &gt; is thrown in JUnit the cause of which is the exception thrown by the<br/>\n </span></blockquote>test<br/>\n<blockquote><span title=\"ireply\"> &gt; case. Once again, UIs can format this however they want to.<br/>\n&gt; <br/>\n&gt; \tpublic static class Unexpected {<br/>\n&gt; \t\t@Test(expected= Exception.class) public void expected()<br/>\n&gt; throws Exception {<br/>\n&gt; \t\t\tthrow new Error();<br/>\n&gt; \t\t}<br/>\n&gt; \t}<br/>\n&gt; \t@Test public void unexpected() {<br/>\n&gt; \t\tResult result= JUnitCore.runClasses(Unexpected.class);<br/>\n&gt; \t\tFailure failure= result.getFailures().get(0);<br/>\n&gt; \t\tString message= failure.getMessage();<br/>\n&gt; \t\tassertTrue(message.contains(&quot;expected&lt;java.lang.Exception&gt;<br/>\n&gt; but was&lt;java.lang.Error&gt;&quot;));<br/>\n&gt; \t\tassertEquals(Error.class,<br/>\n&gt; failure.getException().getCause().getClass());<br/>\n&gt; \t}<br/>\n<br/>\n </span></blockquote>Yes, I think this does.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; <br/>\n&gt; &gt; Thanks. This also comes up with timeouts. It&#39;d be really cool to have<br/>\n&gt; &gt; a stacktrace from where the thread was hung.<br/>\n&gt; <br/>\n&gt; Can you turn this into a test case? That would help me with the<br/>\n&gt; implementation.<br/>\n<br/>\n </span></blockquote>I *think* this captures the meaning of what I want. I&#39;ve got quite a<br/>\nfew other tasks tonight, so I&#39;m just writing this off the top of my head:<br/>\n<br/>\n\t static public class InfiniteLoopTest {<br/>\n<br/>\n                 private void dumb3141(){ for (;;); }<br/>\n\t\t @Test(timeout= 100) public void failure() {<br/>\n\t\t\t dumb3141 ();<br/>\n\t\t }<br/>\n\t }<br/>\n<br/>\n\t @Test public void infiniteLoop() throws Exception {<br/>\n\t\t JUnitCore core= new JUnitCore();<br/>\n\t\t Result result= core.run(InfiniteLoopTest.class);<br/>\n\t\t assertEquals(1, result.getRunCount());<br/>\n\t\t assertEquals(1, result.getFailureCount());<br/>\n\t\t Throwable exception=<br/>\nresult.getFailures().get(0).getException();<br/>\n\t\t System.out.println(exception.getMessage());<br/>\n\t\t assertTrue(exception.toString().contains(&quot;dumb3141&quot;));<br/>\n\t }<br/>\n<br/>\nThe way you could implement this is to call Thread.stop (new<br/>\nTimeoutException (&quot;test failed after XXXXX ms&quot;)). This exception would<br/>\nbe be caught by the wrapper and displayed. The stack trace should have<br/>\ndumb3141. (nb: a timeout of 100ms is sometimes not enough. I actually<br/>\ngot false timeouts on 5 or so student submissions out of 2000 with the<br/>\nexact same timeout).<br/>\n<br/>\n-- Ben</div>", 
+    "prevInTime": 15961, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1139015504", 
+    "canDelete": false, 
+    "nextInTopic": 15963, 
+    "prevInTopic": 15961, 
+    "headers": {
+        "inReplyToHeader": "PEUxRjR1NW8tMDAwMHl4LVJRQHNtdHBhdXRoMDcubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4=", 
+        "messageIdInHeader": "PGRzMHYwZyszZ2NhQGVHcm91cHMuY29tPg=="
+    }
+}

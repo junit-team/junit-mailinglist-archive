@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 21266, 
+    "senderId": "USRJeAVHZ2RKVFKFKu2ruhfJjTfj-ombzccDvTAYnuAjgMp3eGi-S2AQgG0e1MZqzUncdRDt65DrqiRjhkZYksYNQu8", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Runner for non static inner class in JUnit 4.x", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Do you think the overall ease of use to people who need this feature will be worth a 20% increase in complexity for everyone who needs to understand the ", 
+    "msgId": 21265, 
+    "profile": "dsaff", 
+    "topicId": 21238, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-562715159\">Do you think the overall ease of use to people who need this feature will be<br/>\nworth a 20% increase in complexity for everyone who needs to understand the<br/>\ndefault running rules?<br/>\n<br/>\n   David Saff<br/>\n<br/>\nOn Wed, Dec 31, 2008 at 3:08 AM, tuomaskarkkainenri &lt;<br/>\ntuomaskarkkainenri@...&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; hey David,<br/>\n&gt;<br/>\n&gt; i uploaded the patch as a file,<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; http://f1.grp.yahoofs.com/v1/cBhbSQYycXqWtmfu6mA5iis6I67Qo0Itb3lfEH-tMTD2PqfQBWFNQwiqbje7jxu7yGSHFHijEoZPnMvQpZtq0gohmbE9pzSYXRseJ5ewyt0/nonstaticinnerclasses.patch<br/>\n&gt;<br/>\n&gt; or if that link is relative to my session it&#39;s<br/>\n&gt; nonstaticinnerclasses.patch under files here in Yahoo Groups.<br/>\n&gt;<br/>\n&gt; in JUnit4 speak:<br/>\n&gt;<br/>\n&gt; public class RegularJunit4 {<br/>\n&gt;  public class NonStaticInnerClass {<br/>\n&gt;    @Test<br/>\n&gt;    public void testMethod() {<br/>\n&gt;    }<br/>\n&gt;  }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; running testMethod() is not possible since NonStaticInnerClass cannot<br/>\n&gt; be instantiated from the outside.<br/>\n&gt;<br/>\n&gt; in JDave:<br/>\n&gt;<br/>\n&gt;  @RunWith(JDaveRunner.class)<br/>\n&gt;  public static class ASpec extends Specification&lt;Void&gt; {<br/>\n&gt;    public class AContext {<br/>\n&gt;      public void aBehavior() {}<br/>\n&gt;    }<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt; AContext is instantiated by SpecRunner which JDaveRunner delegates to.<br/>\n&gt;<br/>\n&gt; When I run this with current JUnit,<br/>\n&gt; AllDefaultPossibilitiesBuilder#runnerForClass(final Class&lt;?&gt;<br/>\n&gt; testClass) picks out the @RunWith annotation and uses that to run my<br/>\n&gt; spec(test class).<br/>\n&gt;<br/>\n&gt; However if I want to run just a single behavior (test method) from<br/>\n&gt; this spec for example from Eclipse.  Eclipse tells JUnit to run class<br/>\n&gt; ASpec.AContext and method aBehavior JUnit then sees what builder it<br/>\n&gt; should use for AContext, and doesn&#39;t find the annotation there and<br/>\n&gt; tries to use the regular JUnit4 builder and since it&#39;s a JDave spec it<br/>\n&gt; fails to run.<br/>\n&gt;<br/>\n&gt; What I want to do is: in case AllDefaultPossibilitiesBuilder notices<br/>\n&gt; that the TestClass is a non-static member class, which it has no<br/>\n&gt; chance of being able run anyway, it checks whether the declaring class<br/>\n&gt; of the testclass would be able to run it instead.<br/>\n&gt;<br/>\n&gt; In the case of JDave, the declaring class would have the @RunWith<br/>\n&gt; annotation, and with the Filter created by FilterRequest, JDave can<br/>\n&gt; then choose which Context and Spec it should actually allow to run.<br/>\n&gt;<br/>\n&gt; br,<br/>\n&gt; Tuomas<br/>\n&gt;<br/>\n&gt; --- In junit@yahoogroups.com, &quot;David Saff&quot; &lt;david@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; JDave is cool.  I&#39;m not 100% clear what you want to do, and I don&#39;t<br/>\n&gt; see the<br/>\n&gt; &gt; patch.  Could you perhaps include a small test case as inline text?<br/>\n&gt; &gt;<br/>\n&gt; &gt;    David Saff<br/>\n&gt; &gt;<br/>\n&gt; &gt; On Tue, Dec 30, 2008 at 10:27 AM, tuomaskarkkainenri &lt;<br/>\n&gt; &gt; tuomaskarkkainenri@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt;   I participate in JDave (http://jdave.org). A BDD framework for Java<br/>\n&gt; &gt; &gt; that takes advantage of JUnit for example for Eclipse integration.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; We have tests in non-static inner classes of our test classes. These<br/>\n&gt; &gt; &gt; run wonderfully using the @RunWith annotation and our own runner.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; however, for individual tests, this doesn&#39;t work. What I would like<br/>\n&gt; &gt; &gt; to do is that AllDefaultPossibilitiesBuilder would check whether or<br/>\n&gt; &gt; &gt; not the test class is a non static member class. if it is, then I<br/>\n&gt; &gt; &gt; would grab the runner of the declaring class instead.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I made a patch implementing this. I will try to attach it.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; [Non-text portions of this message have been removed]<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 21264, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1231191220", 
+    "canDelete": false, 
+    "nextInTopic": 21266, 
+    "prevInTopic": 21244, 
+    "headers": {
+        "inReplyToHeader": "PGdqZjk5aCt0ZWp1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwMTA1MTMzM3g2ZTU4ZDVmM3NiY2YwMWVmM2E3MTZiNGQyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRmN2RhNmI5MDgxMjMwMTkzNGo0YzU3MDQwNnFhNmNjZDk1MmViMThlZmNmQG1haWwuZ21haWwuY29tPgkgPGdqZjk5aCt0ZWp1QGVHcm91cHMuY29tPg=="
+    }
+}

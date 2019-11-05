@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 11794, 
+    "senderId": "PEp_MYdxPNH3JMIJwVusGTuEsDkK2mj1VLEnzcgmQ6tPMkNkaC9JdDsz7Smm95ukVE0UOz7Xgcee6n0C70ieWIEavNZ1M_uBeMecbps", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test XML file processing?", 
+    "from": "Kevin Lawrence &lt;kevin@...&gt;", 
+    "authorName": "Kevin Lawrence", 
+    "msgSnippet": "... Split the file processing from the XML processing : public void processConfigFile( String fileNameArg ) { XmlDocument xml = new XmlDocument((new", 
+    "msgId": 11793, 
+    "profile": "kevinwilliamlawrence", 
+    "topicId": 11782, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 81949451, 
+    "messageBody": "<div id=\"ygrps-yiv-684856401\"><blockquote><span title=\"ireply\">&gt; I have a method to read an XML file and then use DOM to extract the <br/>\n&gt; data. Can anyone recommend a good way to unit test this method? The <br/>\n&gt; code snippet is blow:<br/>\n&gt; <br/>\n&gt; \tpublic void processConfigFile( String fileNameArg )<br/>\n&gt; \t\tthrows IllegalArgumentException<br/>\n&gt; \t{<br/>\n&gt; \t\tFile configFile = new File( fileNameArg );<br/>\n&gt; \t\tif( configFile.exists() == false )<br/>\n&gt; \t\t{<br/>\n&gt; \t\t\tString msg = &quot;Failed to locate the specified <br/>\n&gt; configuration file &#92;&quot;&quot; +<br/>\n&gt; \t\t\t\t\t\tfileNameArg + &quot;&#92;&quot;&quot;;<br/>\n&gt; \t\t\tthrow new IllegalArgumentException( msg );<br/>\n&gt; \t\t}<br/>\n&gt; \t\t<br/>\n&gt; \t\tDocumentBuilderFactory factory =<br/>\n&gt; \t\t\tDocumentBuilderFactory.newInstance();<br/>\n&gt; \t\t<br/>\n&gt; \t\ttry <br/>\n&gt; \t\t{<br/>\n&gt; \t\t   DocumentBuilder builder = <br/>\n&gt; factory.newDocumentBuilder();<br/>\n&gt; \t\t   configDoc = builder.parse( configFile );<br/>\n&gt; \t\t}<br/>\n&gt;                 ....<br/>\n<br/>\n </span></blockquote>Split the file processing from the XML processing :<br/>\n<br/>\n<br/>\npublic void processConfigFile( String fileNameArg ) {<br/>\n   XmlDocument xml = new XmlDocument((new File(filenameArg));<br/>\n   processConfig(xml);<br/>\n}<br/>\n<br/>\nvoid processConfig(XmlDocument doc){<br/>\n   Element root = doc.getDocumentElement();<br/>\n   //.....process ......<br/>\n}<br/>\n<br/>\npublic class TestConfig extends TestCase {<br/>\n  public void testProcessConfig(){<br/>\n    String xml = &quot;&lt;config&gt;&lt;property name=&#39;xxx&#39;&gt;yyy&lt;/property&gt;&lt;/config&gt;&quot;;<br/>\n<br/>\n    XmlDocument doc = new XmlDocument(new StringReader(xml))<br/>\n<br/>\n    config.processConfig(doc);<br/>\n    assertEquals(&quot;yyy&quot;, doc.getXXX());<br/>\n  }<br/>\n}<br/>\n<br/>\nwhere XmlDocument is a library class that you have written and tested <br/>\nseparately that has a constructor that takes a file and a constructor <br/>\nthat takes a Reader :<br/>\n<br/>\npublic class XmlDocument {<br/>\n   public XmlDocument(File file){<br/>\n     this(new FileReader(file));<br/>\n   }<br/>\n<br/>\n   public XmlDocument(Reader in){<br/>\n     try {<br/>\n        document build stuff<br/>\n        etc<br/>\n     }<br/>\n     ....<br/>\n   }<br/>\n}<br/>\n<br/>\nYou might find, once you have extracted an XmlDocument class, that you <br/>\ncan expose lots of useful methods to access the document using XPath <br/>\nrather than walking the DOM manually.<br/>\n<br/>\n<br/>\n(glossing over error/stream handling and encoding issues for brevity)<br/>\n<br/>\nKevin</div>", 
+    "prevInTime": 11792, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1092762010", 
+    "canDelete": false, 
+    "nextInTopic": 11803, 
+    "prevInTopic": 11791, 
+    "headers": {
+        "inReplyToHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxMjIzOTlBLjcwMjA2MDVAZGlhbW9uZC1za3kuY29tPg==", 
+        "referencesHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg=="
+    }
+}

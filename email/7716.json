@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 7717, 
+    "senderId": "gxtujxRWyHUzO6czw8TsaNnIv-rCQJS_ffuS7eI5zQSK6J80E5yi-HQ4lIzeA_pm3_dhYAD0l_WERxE7YwplNOO8Xj9uQRwCxmj4Rxqszxi06Q", 
+    "systemMessage": false, 
+    "subject": "Inheritance", 
+    "from": "balakrishnan sengodan &lt;bsengodan@...&gt;", 
+    "authorName": "balakrishnan sengodan", 
+    "msgSnippet": "Did any one test inheritance successfully, will you please send me the classes under the test and the associated testing classes. We have strictly followed all", 
+    "msgId": 7716, 
+    "topicId": 7693, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 60990409, 
+    "messageBody": "<div id=\"ygrps-yiv-994197115\">Did any one test inheritance successfully, will you<br/>\nplease send me the classes under the test and the<br/>\nassociated testing classes. <br/>\n<br/>\nWe have strictly followed all the steps necessary to<br/>\nwrite the testing classes. While running the testing<br/>\nthe subclass picks up the test menthods from the super<br/>\nclass. But failed to run.<br/>\n<br/>\nWe have used Account class and its subclass interest<br/>\nclass as classes under test.<br/>\nWe have created AccoutJU class to test Account class<br/>\nand InterestJU class to test interest. InterestJU is<br/>\nthe subclass of AccountJU.<br/>\nThanks<br/>\n==============<br/>\nAccount Class<br/>\n==============<br/>\npublic class Account {<br/>\n     <br/>\n     // This member variable will hold account balance<br/>\n     public int balance;<br/>\n<br/>\n     // constructor<br/>\n     public Account(int amount) {<br/>\n       balance = amount;<br/>\n     }<br/>\n<br/>\n     // this mehtod gets the balance <br/>\n     public int getBalance() {<br/>\n       return balance;<br/>\n      }<br/>\n<br/>\n     // this method deposits the money<br/>\n     public int deposit(int amount) {<br/>\n       balance += amount;<br/>\n       return balance;<br/>\n     }<br/>\n<br/>\n     // this mthod withdraw the money<br/>\n     public int  withdraw(int amount) {<br/>\n         if (amount &lt;= balance )<br/>\n            {<br/>\n             balance -= amount;<br/>\n             return amount;<br/>\n            }<br/>\n         else<br/>\n           {<br/>\n            return 0;<br/>\n           }<br/>\n     }<br/>\n     <br/>\n}<br/>\n=================================<br/>\nTesting class to test Account<br/>\n============================<br/>\nimport junit.framework.*;<br/>\n<br/>\npublic class AccountJU extends TestCase {<br/>\n<br/>\n\tprivate Account MyAccount;<br/>\n<br/>\n\t// Constructor<br/>\n\tpublic AccountJU(String name) {<br/>\n\t\tsuper(name);<br/>\n\t} // End of constuctor<br/>\n<br/>\n\tpublic static void main(String args[]) {<br/>\n\t\tjunit.textui.TestRunner.run(new<br/>\nTestSuite(AccountJU.class));<br/>\n\t} // End of main<br/>\n<br/>\n\tpublic void setUp() {<br/>\n\t\tMyAccount = new Account(10000);<br/>\n\t}<br/>\n\tpublic void testgetBalance() {<br/>\n//getBalance<br/>\n\t} // End of method<br/>\n<br/>\n\tpublic void testdeposit() {<br/>\n\t\tassertEquals(MyAccount.deposit(3000), 13000);<br/>\n\t} // End of method<br/>\n<br/>\n\tpublic void testwithdraw() {<br/>\n\t\tassertEquals(MyAccount.withdraw(15000), 0);<br/>\n\t} // End of method<br/>\n<br/>\n<br/>\n\tpublic void testwithdraw2() {<br/>\n\t\tassertEquals(MyAccount.withdraw(4000), 4000);<br/>\n\t}//End of method<br/>\n//End<br/>\n} // End of class<br/>\n===========================<br/>\nInterest Class<br/>\n======================<br/>\npublic class Interest extends Account {<br/>\n     <br/>\n     // This member variable will hold account balance<br/>\n     private int interest_rate;<br/>\n     private int acumulated_interest;<br/>\n<br/>\n     public Interest(int a) {<br/>\n       super(a);<br/>\n     }<br/>\n<br/>\n     // this mehtod sets the interest rate  <br/>\n     public int setInterestRate(int ir) {<br/>\n      acumulated_interest = 0;<br/>\n      interest_rate = ir;<br/>\n      return interest_rate;<br/>\n      }<br/>\n<br/>\n     // this method calculates interest<br/>\n     public int calcInterest(int amount, int rate) {<br/>\n       acumulated_interest = amount * rate;<br/>\n       return acumulated_interest;<br/>\n     }<br/>\n<br/>\n}<br/>\n===============================<br/>\nTesting class for Interest class<br/>\n============================<br/>\nimport junit.framework.*;<br/>\n<br/>\npublic class InterestJU extends AccountJU {<br/>\n<br/>\n   private Interest  testOBJ;<br/>\n<br/>\n\t<br/>\n   public InterestJU(String name) {<br/>\n     super(name);<br/>\n   }<br/>\n<br/>\n   public static void main(String args[]) {<br/>\n     junit.textui.TestRunner.run(new<br/>\nTestSuite(InterestJU.class));<br/>\n   }<br/>\n<br/>\n   public void setUp() {<br/>\n        super.setUp();<br/>\n\ttestOBJ = new Interest(10000);<br/>\n    }<br/>\n<br/>\n    protected void tearDown() throws Exception {<br/>\n\tsuper.tearDown();<br/>\n\t}<br/>\n   // The next method tests the set interest rate<br/>\nmethod<br/>\n   public void testsetInterestRate() {<br/>\n      assertEquals(&quot;Test Case1&quot;, 6,<br/>\ntestOBJ.setInterestRate(6));<br/>\n   }<br/>\n<br/>\n   // the next method tests the calculate interest<br/>\nmethod<br/>\n   public void testcalcInterest() {<br/>\n        assertEquals(testOBJ.calcInterest(500, 6),<br/>\n3000);<br/>\n    }<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\n__________________________________________________<br/>\nDo you Yahoo!?<br/>\nYahoo! Tax Center - File online, calculators, forms, and more<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://tax.yahoo.com\">http://tax.yahoo.com</a></div>", 
+    "prevInTime": 7715, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1050282606", 
+    "canDelete": false, 
+    "nextInTopic": 7728, 
+    "prevInTopic": 7713, 
+    "headers": {
+        "inReplyToHeader": "PDNFOThEMTgwLjkwNDAwMDJAYm9zc2ljYXJkLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNDE0MDExMDA2LjI0ODIucW1haWxAd2ViNDAzMDUubWFpbC55YWhvby5jb20+"
+    }
+}

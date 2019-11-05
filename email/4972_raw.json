@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 4973, 
+    "senderId": "paEpz7L2X9F4bT4Ksb130lJMqLoEeAWnzPBn0uJJnL5rzQ_yB61vDrHM9ZAxYb_RG8j_ylvn4B9K1pMuFIS2vD1EAERJgSm01ONmokSu2r_VWFIj", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] (unknown)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... to Test ... OK. So you want the same tests for each implementation, but you want to write them once. You want the Abstract Test Case pattern. Start", 
+    "msgId": 4972, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 14 May 2002 12:33:41 -0000\r\nReceived: (qmail 95605 invoked from network); 14 May 2002 12:33:40 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 14 May 2002 12:33:40 -0000\r\nReceived: from unknown (HELO bx2.blacksun.ca) (139.142.202.214)\n  by mta2.grp.scd.yahoo.com with SMTP; 14 May 2002 12:33:40 -0000\r\nReceived: from www.diasparsoftware.com (localhost [127.0.0.1])\n\tby localhost (8.10.2/8.10.2) with ESMTP id g4ECXeb02677\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 14 May 2002 06:33:40 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] (unknown)\r\nDate: Tue, 14 May 2002 06:33:40 -0600\r\nMessage-Id: &lt;20020514063340.M64399@...&gt;\r\nIn-Reply-To: &lt;E177aDu-000BG0-00@...&gt;\r\nReferences: &lt;E177aDu-000BG0-00@...&gt;\r\nX-Mailer: Open WebMail 1.63 20020409\r\nX-OriginatingIP: 207.61.57.100 (diasparsoft@...)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt; &gt; &gt; Hi everybody,\n&gt; &gt; &gt; I&#39;ve written a TestCase for one class.\n&gt; &gt; &gt; Is there a way to test another class with this test?\n&gt; &gt; &gt; The problem is: it is impossible to pass second one as parameter \nto &quot;Test\n&gt; &gt; &gt; suite()&quot; method (as it is static and passing will give one result:\n&gt; &gt; &gt; last class will be tested twice). Changing test is not really good\n&gt; &gt; &gt; (as there will be some more classes that I would like to test with\n&gt; &gt; &gt; TestCase).\n&gt; &gt;\n&gt; &gt; I assume you want to run many tests at one time. The normal way is to\n&gt; &gt; create a class that collects the TestCase  classes together:\n&gt; [...]\n&gt; \n&gt; No. There idea is:\n&gt; public interface IF{\n&gt;   public static Object calculate(String str,int i);\n&gt; }\n&gt; \n&gt; public class A implements IF{\n&gt;   //implementation\n&gt; }\n&gt; \n&gt; public class B implements IF{\n&gt;   //implementation\n&gt; }\n&gt; //Strategy pattern is used\n&gt; \n&gt; I know that result will be the same running class A and B. I&#39;ve made \n&gt; test for class A, eg TestA, now I want to test B with this test. The \n&gt; problem is: to pass class B to that test and test A and B at one time.\n\nOK. So you want the same tests for each implementation, but you want to write \nthem once. You want the &quot;Abstract Test Case&quot; pattern. Start here:\n\nhttp://c2.com/cgi/wiki?AbstractTestCases\n\nThe basic pattern is this: \n\nabstract class IFTest extends TestCase {\n    test1() {\n        IF theIf = createIF();\n        // Call methods\n        // Make assertions\n    }\n    ...\n    abstract IF createIF();\n}\n\nclass ATest extends IFTest {\n    IF createIF() {\n         return new A();\n    }\n}\n\nclass BTest extends IFTest {\n    IF createIF() {\n         return new B();\n    }\n}\n\nNow run tests ATest and BTest in your test suite. Each inherits its test \nmethods from IFTest, so they run the same tests. ATest tests with A objects \nand BTest tests with B objects. Do *not* add IFTest to your test suite.\n\n--\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n", 
+    "profile": "nails762", 
+    "topicId": 4970, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 4971, 
+    "contentTrasformed": false, 
+    "postDate": "1021379620", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4970, 
+    "headers": {
+        "inReplyToHeader": "PEUxNzdhRHUtMDAwQkcwLTAwQGYxMy5tYWlsLnJ1Pg==", 
+        "messageIdInHeader": "PDIwMDIwNTE0MDYzMzQwLk02NDM5OUBkaWFzcGFyc29mdHdhcmUuY29tPg==", 
+        "referencesHeader": "PEUxNzdhRHUtMDAwQkcwLTAwQGYxMy5tYWlsLnJ1Pg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 17152, 
+    "senderId": "A4rRAtvE4-tXqwnzjmnWwYjvtZNOugcq5angq8QuZsCD3Qb0BjP6o3LJYMaGFwUgPpxWg2OkJSyPX9gb_3DY0Rw9Uvwhy66TGZqpjQ", 
+    "systemMessage": false, 
+    "subject": "please anyone help me", 
+    "from": "Moses Phinehas &lt;m_phinehas@...&gt;", 
+    "authorName": "Moses Phinehas", 
+    "msgSnippet": "hi all, I am new to this group. I would like to know how to use Junit. I really dont know any thing abt Junit. all i knew is it is a white box testing tool. ", 
+    "msgId": 17151, 
+    "profile": "m_phinehas", 
+    "topicId": 17141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 274959654, 
+    "messageBody": "<div id=\"ygrps-yiv-1750611341\">hi all,<br/>\n  I am new to this group.<br/>\n  I would like to know how to use Junit. <br/>\n  I really dont know any thing abt Junit. all i knew is it is a white box testing tool.<br/>\n  please anyone guide me so i can learn JUNIT.<br/>\n  thanks<br/>\n  Moses<br/>\n<br/>\nBipin Jethwani &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bipin.jethwani@...\">bipin.jethwani@...</a>&gt; wrote:<br/>\n          Hi<br/>\n<br/>\nI was just wondering if there is some way through which I can subclass the<br/>\nfollowing<br/>\nclass, with some mopre test methods (probably overridingthe setUp() and<br/>\ntearDown().But with no<br/>\nstatic suite method and when I run the child class all the tests in parent<br/>\nand child may run.<br/>\n<br/>\nIt would have been very easy to do in case there was no restriction for<br/>\nsuite() method to be static.<br/>\n<br/>\nI would request you all to pass on any ideas over this.<br/>\n<br/>\nBecause I don&#39;t want code duplication by duplicating the public static void<br/>\nsuite() method in<br/>\neach child class. Where the only thing conflicting is the Class object<br/>\nitself, which in case<br/>\nof child should be ChildClass.class.<br/>\n<br/>\nimport junit.extensions.TestSetup;<br/>\nimport junit.framework.*;<br/>\npublic class LargestTest extends TestCase{<br/>\n<br/>\npublic LargestTest(String name){<br/>\nsuper(name);<br/>\n}<br/>\n<br/>\nprotected void setUp() throws Exception {<br/>\nsuper.setUp();<br/>\nSystem.out.println(&quot;---&gt;SetUp()&quot;);<br/>\n}<br/>\n<br/>\nprotected void tearDown() throws Exception {<br/>\nsuper.tearDown();<br/>\nSystem.out.println(&quot;---&gt;tearDown()&quot;);<br/>\n}<br/>\n<br/>\npublic void testLargest()<br/>\n{<br/>\nSystem.out.println(&quot;testLargest()&quot;);<br/>\n<br/>\n}<br/>\npublic void testSmallest(){<br/>\nSystem.out.println(&quot;testSmallest()&quot;);<br/>\n}<br/>\npublic void testVariousAsserts(){<br/>\nSystem.out.println(&quot;testVariousAsserts()&quot;);<br/>\n<br/>\n}<br/>\n<br/>\npublic void testCollectionAdd() {<br/>\nSystem.out.println(&quot;testCollectionAdd()&quot;);<br/>\n}<br/>\npublic static Test suite(){<br/>\nTestSuite retTest = new TestSuite();<br/>\nretTest.addTestSuite(getChildClass());<br/>\n<br/>\nTestSetup wrapper = new TestSetup(retTest){<br/>\nprotected void setUp(){<br/>\noneTimeSetUp();<br/>\n}<br/>\nprotected void tearDown(){<br/>\noneTimeTearDown();<br/>\n}<br/>\n};<br/>\nreturn wrapper;<br/>\n}<br/>\n<br/>\npublic static void oneTimeSetUp()<br/>\n{<br/>\nSystem.out.println(&quot;-------------&gt;oneTimeSetUp()&quot;);<br/>\n}<br/>\n<br/>\npublic static void oneTimeTearDown()<br/>\n{<br/>\nSystem.out.println(&quot;--------------&gt;oneTimeTearDown()&quot;);<br/>\n}<br/>\n<br/>\n}<br/>\n<br/>\n*OUTPUT*<br/>\n<br/>\n-------------&gt;oneTimeSetUp()<br/>\n<br/>\n---&gt;SetUp()<br/>\n<br/>\ntestLargest()<br/>\n<br/>\n---&gt;tearDown()<br/>\n<br/>\n---&gt;SetUp()<br/>\n<br/>\ntestSmallest()<br/>\n<br/>\n---&gt;tearDown()<br/>\n<br/>\n---&gt;SetUp()<br/>\n<br/>\ntestVariousAsserts()<br/>\n<br/>\n---&gt;tearDown()<br/>\n<br/>\n---&gt;SetUp()<br/>\n<br/>\ntestCollectionAdd()<br/>\n<br/>\n---&gt;tearDown()<br/>\n<br/>\n--------------&gt;oneTimeTearDown()<br/>\n<br/>\nThanks & Regards<br/>\nBipin Jethwani<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 7/18/06, clgonsal &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:clgonsal@...\">clgonsal@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt; I&#39;ve been using JUnit for a few years now, and one thing that&#39;s always<br/>\n&gt; bothered me is the &quot;setUp&quot; method.<br/>\n&gt;<br/>\n&gt; I always do my initialization in my constructor (if I&#39;m not just doing<br/>\n&gt; it at the field definition) as constructors allow me to initialize<br/>\n&gt; final fields. The semantics of using a constructor also seem far more<br/>\n&gt; obvious to me as everyone reading my code knows Java, while not<br/>\n&gt; everyone is a JUnit guru.<br/>\n&gt;<br/>\n&gt; The additional complexity of having the (as far as I can tell)<br/>\n&gt; redundant setUp method seems counterproductive, so why does setUp exist?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n[Non-text portions of this message have been removed]<br/>\n<br/>\n<br/>\n<br/>\n         <br/>\n<br/>\n \t\t<br/>\n---------------------------------<br/>\nGroups are talking. Were listening. Check out the handy changes to Yahoo! Groups. <br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 17150, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1153228259", 
+    "canDelete": false, 
+    "nextInTopic": 17152, 
+    "prevInTopic": 17150, 
+    "headers": {
+        "inReplyToHeader": "PGNlMTViYTY1MDYwNzE4MDA0OWc1ZTIxYmFlMWphN2M2YmVjOWQ1ZmIxYTRkQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDIwMDYwNzE4MTMxMDU5LjY0NDA5LnFtYWlsQHdlYjU1NzAzLm1haWwucmUzLnlhaG9vLmNvbT4="
+    }
+}

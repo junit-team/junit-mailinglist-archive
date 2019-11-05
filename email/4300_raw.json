@@ -1,0 +1,29 @@
+{
+    "topicId": 4273, 
+    "postDate": "1015624565", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Ryan P Ripley&quot; &lt;ryan.ripley@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "EDIA9nFmB3FLOqkOVz8fnBlE3QlVH7wB4PZ7u9YxZDMyMXo1xzMXiayP2G6K-lFGwMDh1hvo2B8gwlERIQfubdbR6Qszi0Ub5n5d2zBmYQ", 
+    "nextInTime": 4301, 
+    "userId": 99502882, 
+    "prevInTime": 4299, 
+    "prevInTopic": 4299, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwMzA4MjEzNjAyLjI3ODExLnFtYWlsQHdlYjE0MzAxLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDAwNDQwMWMxYzZlYyQwYmUyMGQ3MCQ5OTJjNTlhNUBhMDU1MjAxPg=="
+    }, 
+    "authorName": "Ryan P Ripley", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "If you re overriding setUp(), it s a good idea to call super.setUp(). However, lately I ve not been doing that, simply because we haven t made any nested", 
+    "contentTrasformed": false, 
+    "msgId": 4300, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;ryan.ripley@...&gt;\r\nX-Sender: ryan.ripley@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 8 Mar 2002 21:52:27 -0000\r\nReceived: (qmail 81970 invoked from network); 8 Mar 2002 21:52:27 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m4.grp.snv.yahoo.com with QMQP; 8 Mar 2002 21:52:27 -0000\r\nReceived: from unknown (HELO usext02.zimmer.com) (12.40.148.15)\n  by mta1.grp.snv.yahoo.com with SMTP; 8 Mar 2002 21:52:27 -0000\r\nReceived: from usmsg01.zimmer.com ([127.0.0.1]) by\n          usext02.zimmer.com (Netscape Messaging Server 4.15) with ESMTP\n          id GSOCRE00.049 for &lt;junit@yahoogroups.com&gt;; Fri, 8 Mar 2002\n          21:52:26 +0000 \r\nReceived: from a055201 ([165.89.44.153]) by usmsg01.zimmer.com\n          (Netscape Messaging Server 4.15) with ESMTP id GSOCRD00.98N for\n          &lt;junit@yahoogroups.com&gt;; Fri, 8 Mar 2002 21:52:25 +0000 \r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Re: about teardown\r\nDate: Fri, 8 Mar 2002 16:56:05 -0500\r\nMessage-ID: &lt;004401c1c6ec$0be20d70$992c59a5@a055201&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.2627\r\nIn-Reply-To: &lt;20020308213602.27811.qmail@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nImportance: Normal\r\nFrom: &quot;Ryan P Ripley&quot; &lt;ryan.ripley@...&gt;\r\nX-Yahoo-Group-Post: member; u=99502882\r\n\r\n\nIf you&#39;re overriding setUp(), it&#39;s a good idea to call super.setUp().\nHowever, lately I&#39;ve not been doing that, simply because we haven&#39;t made\nany &#39;nested&#39; TestCase classes.  This will come back to haunt us when we\ndo start simplifying tests by making base classes, for example, like a\nDatabaseTestCase which does some sort of population and depopulation in\nsetUp() and tearDown().\n\nI agree, however, if you don&#39;t really need it... Perhaps refactor it in\nlater...  Don&#39;t really know, it is tough call.\n\nIf you do it right from the\nstart, then you will have no problems.  Calling the\nTestCase.setUp() and tearDown() methods will result in\na call that effectively does nothing, but is good for\nlaying groundwork for later on.  YAGNI?  Could\nbe...your call.\n\nGuess it is matter of taste... \n\nAs far as overriding setUp() to avoid the base classes call...that is\nuntrue.  You override it because it WILL be called before each test is\nrun, guaranteed. \nSame goes for tearDown().  \n\nWhich is why you want to override it yes??  If you don&#39;t, you get\ndefault action which I believe is nothing...  Perhaps, I wasn&#39;t clear in\nthe 1st post... Sorry.\n\nThanks,\n\n\t--Ryan\n\n--- Ryan P Ripley &lt;ryan.ripley@...&gt; wrote:\n&gt; Hello,\n&gt; \n&gt; Correct me if I&#39;m wrong, but you really only want to\n&gt; call  [\n&gt; super.setUp() ]\n&gt; If you have extended a testcase the you have\n&gt; written?\n&gt; \n&gt; Example:\n&gt; \n&gt; public class testCaseB extends testCaseA {\n&gt; \n&gt; void setUp() { super.setup(); /** the rest of setup\n&gt; */}\n&gt; }\n&gt; \n&gt; As opposed to:\n&gt; In this case, I believe that the whole point of\n&gt; overriding setup() is to\n&gt; avoid the base class&#39;s [TestCase] implementation.\n&gt; \n&gt; public class testCaseA extends TestCase {\n&gt; \n&gt; void setup() { /** whatever you want to setup, no\n&gt; call to super */\n&gt; }\n&gt; \n&gt; This is how I understood this anyways, but then\n&gt; again, I am but a simple\n&gt; caveman. =))\n&gt; \n&gt; \t--Ryan\n&gt; \n&gt; - reset global state to the state before the test:\n&gt;   Example: \n&gt;   Object oldTool;\n&gt;   protected void setUp() throws Exception {\n&gt;     super.setUp();\n&gt;     oldTool = Toolbox.getTool(&quot;ThreadFactory&quot;);\n&gt;     Toolbox.registerTool(&quot;ThreadFactory&quot;,new\n&gt; TestThreadFactory());\n&gt;   }\n&gt; \n&gt;   protected void tearDown() throws Exception {\n&gt;     Toolbox.registerTool(&quot;ThreadFactory&quot;,oldTool);\n&gt;  \n&gt;   }\n&gt; \n&gt; \n&gt; What are others doing in their tearDowns?\n&gt; \n&gt; Cheers,\n&gt; \n&gt; Arnd.\n&gt; \n&gt; BTW: Never forget to call the super setUp and\n&gt; tearDown!\n&gt; \n&gt; \n&gt; \n&gt; \n\n\n__________________________________________________\nDo You Yahoo!?\nTry FREE Yahoo! Mail - the world&#39;s greatest free email!\nhttp://mail.yahoo.com/\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n\n\n", 
+    "subject": "RE: [junit] Re: about teardown"
+}

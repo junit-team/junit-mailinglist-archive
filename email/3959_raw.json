@@ -1,0 +1,28 @@
+{
+    "topicId": 3909, 
+    "postDate": "1012865780", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Celis &lt;shane@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "gh_SvWc-LcaPS7vSw00CmbwxhQ7t9AaWR6wnwdP-zzMqwrPpZh-26-YYI8rbijjUtWbVVSHyTjY7QQ5bRjR3MJnhuPzoaPUT41g", 
+    "nextInTime": 3960, 
+    "userId": 76541257, 
+    "prevInTime": 3958, 
+    "prevInTopic": 3958, 
+    "headers": {
+        "messageIdInHeader": "PEZERTkxRjM4LTE5QzctMTFENi05MDlELTAwMzA2NUY5QTgwRUB0ZXJyYXNwcmluZy5jb20+"
+    }, 
+    "authorName": "Shane Celis", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "It sounds like what you want is to run your tests on one instance of the TestCase, rather than a different instance for every test as JUnit s standard behavior", 
+    "contentTrasformed": false, 
+    "msgId": 3959, 
+    "nextInTopic": 3977, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;Shane@...&gt;\r\nX-Sender: Shane@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_1_3); 4 Feb 2002 23:36:29 -0000\r\nReceived: (qmail 53523 invoked from network); 4 Feb 2002 23:36:28 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m12.grp.snv.yahoo.com with QMQP; 4 Feb 2002 23:36:28 -0000\r\nReceived: from unknown (HELO exchange.corp.ts.csn.dc.terraspring.com) (64.124.70.163)\n  by mta2.grp.snv.yahoo.com with SMTP; 4 Feb 2002 23:36:28 -0000\r\nReceived: by xcftech.com with Internet Mail Service (5.5.2653.19)\n\tid &lt;DM81NV9W&gt;; Mon, 4 Feb 2002 15:33:48 -0800\r\nMessage-ID: &lt;FDE91F38-19C7-11D6-909D-003065F9A80E@...&gt;\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: How to get fixture from TestSetup\r\nDate: Mon, 4 Feb 2002 15:36:20 -0800 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: Shane Celis &lt;shane@...&gt;\r\nX-Yahoo-Group-Post: member; u=76541257\r\n\r\nIt sounds like what you want is to run your tests on one instance of the \nT=\r\nestCase, rather than a different instance for every test as JUnit&#39;s \nstanda=\r\nrd behavior dictates.  This would relieve you from any reliance on \nstatic/=\r\nglobals.  I found this to be necessary for my own functional \ntesting.  Tak=\r\ne a look at this page and see if it gives you the kind of \nflexibility you =\r\nneed in your testing.  (Note: I&#39;ve never relied much on \nthe setUp and tear=\r\nDown methods so I can&#39;t say if they&#39;ll behave as \nexpected.)\n\nhttp://gnufoo=\r\n.org/junit/\n\nMany times over JUnit seems to be employed for \nfunctional/acc=\r\neptance/integration testing (usually somewhat awkwardly).  \nAre there any t=\r\nesting approaches or frameworks that can be suggested for \nthis sort of tes=\r\nting?  Because many of the methodologies suggested for \nunit testing aren&#39;t=\r\n applicable to this sort of testing.  Have the xUnit \npeople, or anyone els=\r\ne for that matter, addressed this problem space?\n\n-shane\n\n&gt;&gt; You could have=\r\n class-level attributes on the TestCase class and let the\n&gt;&gt; setUp() and te=\r\narDown() methods of the TestSetup assign values to those\n&gt;&gt; class-level att=\r\nributes. For example, suppose you want to establish a\n&gt;&gt; single database co=\r\nnnection and use it for all tests. You have two\n&gt;&gt; choices:\n&gt;\n&gt; Well, yeah.=\r\n.. But!  Forgive me, but that=B9s an extremely smelly solution.\n&gt; I find it=\r\n hard to believe the otherwise-brilliant creators of JUnit \n&gt; would\n&gt; give =\r\nus a design that forces the use of global variables!\n&gt;\n&gt;&gt; public class MyDa=\r\ntabaseTestCase extends TestCase {\n&gt;&gt;   private static Connection connection=\r\n;\n&gt;&gt;\n&gt;&gt;   public static Test suite() {\n&gt;&gt;       return new TestSetup(new Te=\r\nstSuite(MyDatabaseTestCase.class)) {\n&gt;&gt;           protected void setUp() th=\r\nrows Exception {\n&gt;&gt;               connection =3D DriverManager.getConnectio=\r\nn(...);\n&gt;&gt;           }\n&gt;&gt;\n&gt;&gt;           protected void tearDown() throws Exc=\r\neption {\n&gt;&gt;               connection.close();\n&gt;&gt;               connection =\r\n=3D null;\n&gt;&gt;           }\n&gt;&gt;       };\n&gt;&gt;   }\n&gt;&gt; }\n&gt;\n&gt; Ahh... You&#39;re using an=\r\n inner class for the TestSetup.  This is close,\n&gt; but it still makes me ver=\r\ny uncomfortable.\n&gt;\n&gt;&gt; or, perhaps...\n&gt;&gt;\n&gt;&gt; // Danger -- connection not clos=\r\ned! Shutdown hook, perhaps?\n&gt;&gt; public class MyDatabaseTestCase extends Test=\r\nCase {\n&gt;&gt;   private static Connection connection;\n&gt;&gt;\n&gt;&gt;   protected void se=\r\ntUp() throws Exception {\n&gt;&gt;       if (connection =3D=3D null) {\n&gt;&gt;         =\r\n  connection =3D DriverManager.getConnection(...);\n&gt;&gt;       }\n&gt;&gt;   }\n&gt;&gt; }\n&gt;=\r\n\n&gt; As you note, this doesn&#39;t properly tearDown after the tests are run,\n&gt; w=\r\nhich\n&gt; is where TestSetup.tearDown would come into play.\n&gt;\n&gt;&gt; Does that hel=\r\np?\n&gt;\n&gt; Well, it&#39;s a workable solution, but there&#39;s *got* to be a clean way =\r\nthat\n&gt; doesn&#39;t involve static variables.  Anybody else have ideas?\n&gt;\n&gt;\n&gt; .T=\r\n.\n&gt;\n&gt; Todd V. Jonker\n&gt; Inpath Solutions, LLC\n&gt; www.inpathsol.com\n\n\n", 
+    "subject": "Re: [junit] Re: How to get fixture from TestSetup"
+}

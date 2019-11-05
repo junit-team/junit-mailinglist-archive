@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 14556, 
+    "senderId": "ysUJsMeOZt7UOQYJUma5xsitItmWrSXNELcgc-OUcFteY9hFQ4QtZN3GONpiqYr21T3diA2a0RXTIMdYkPAzSN1RMVuOEb57yA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Passing parameters to methods", 
+    "from": "Robert Watkins &lt;yahoo@...&gt;", 
+    "authorName": "Robert Watkins", 
+    "msgSnippet": "... Correction: you don t have to maintain state across methods. Because each test is in its instance, there is no possibility of having the state modified. ", 
+    "msgId": 14555, 
+    "rawEmail": "Return-Path: &lt;robertdw@...&gt;\r\nX-Sender: robertdw@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 78044 invoked from network); 1 Sep 2005 07:47:13 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m23.grp.scd.yahoo.com with QMQP; 1 Sep 2005 07:47:13 -0000\r\nReceived: from unknown (HELO zproxy.gmail.com) (64.233.162.197)\n  by mta4.grp.scd.yahoo.com with SMTP; 1 Sep 2005 07:47:13 -0000\r\nReceived: by zproxy.gmail.com with SMTP id 14so85956nzn\n        for &lt;junit@yahoogroups.com&gt;; Thu, 01 Sep 2005 00:47:12 -0700 (PDT)\r\nReceived: by 10.36.36.2 with SMTP id j2mr944628nzj;\n        Thu, 01 Sep 2005 00:47:11 -0700 (PDT)\r\nReceived: by 10.36.104.2 with HTTP; Thu, 1 Sep 2005 00:47:11 -0700 (PDT)\r\nMessage-ID: &lt;e912e94605090100472ba3f169@...&gt;\r\nDate: Thu, 1 Sep 2005 17:47:11 +1000\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;1125557346.1725.30647.m21@yahoogroups.com&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;1125557346.1725.30647.m21@yahoogroups.com&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nX-eGroups-From: Robert Watkins &lt;robertdw@...&gt;\r\nFrom: Robert Watkins &lt;yahoo@...&gt;\r\nSubject: Re: [junit] Passing parameters to methods\r\nX-Yahoo-Group-Post: member; u=189784721; y=uqf9V2vrtnTtFiaYXZv2hU8ivFvOPXnJtCODMA3M7g9j9QzyQA\r\nX-Yahoo-Profile: robertdw26\r\n\r\nCedric Beust wrote:\n&gt; Still, it&#39;s far from perfect since you have to create=\r\n one field on your\n&gt; class per parameter, make sure this state is maintaine=\r\nd across methods and\n&gt; then read this state in the method.\n\nCorrection: you=\r\n don&#39;t have to maintain state across methods. Because\neach test is in its i=\r\nnstance, there is no possibility of having the\nstate modified.\n\n&gt; public cl=\r\nass A extends TestCase {\n&gt;  private String m_name;\n&gt;  private String m_xmlF=\r\nileName;\n&gt; \n&gt;  public A(String name, String xmlFileName) {\n&gt;    m_name =3D =\r\nname;\n&gt;    m_xmlFileName =3D xmlFileName;\n&gt;  }\n&gt; \n&gt;  public void testName()=\r\n {\n&gt;    // do something with m_name\n&gt;  }\n&gt; \n&gt;  public void testXmlFileName)=\r\n {\n&gt;    // do something with m_xmlFileName\n&gt;  }\n&gt; }\n\nTry again. Parameteriz=\r\ned Test Cases in JUnit are best done with only\none type of test per class. =\r\nLike so:\n\npublic class NameTest extends TestCase {\n  private String m_name;=\r\n\n  private NameTest(String name) {\n      m_name =3D name;\n      super.setNa=\r\nme(&quot;NameTest&quot; - name);  // give the test a meaningful\nname for reports.\n  }=\r\n\n  public static Test suite() {\n    TestSuite testSuite =3D new TestSuite()=\r\n;\n    testSuite.add(new NameTest(&quot;name&quot;);\n    // create instances for other=\r\n types of names here. Maybe read them\nfrom a file?\n  }\n\n  protected void ru=\r\nnTest() {\n    // test the name.\n  }\n}\n\n\npublic class ValidNameTest extends =\r\nTestCase {\n  private String m_name;\n  private NameTest(String name) {\n     =\r\n m_validName =3D name;\n      super.setName(&quot;ValidNameTest&quot; - name);  // giv=\r\ne the test a\nmeaningful name for reports.\n  }\n  public static Test suite() =\r\n{\n    TestSuite testSuite =3D new TestSuite();\n    testSuite.add(new ValidN=\r\nameTest(&quot;validName&quot;);\n    // create instances for other types of names here=\r\n. Maybe read them\nfrom a file?\n  }\n\n  protected void runTest() {\n    // tes=\r\nt the vallid name\n  }\n}\n\nThe major advantage of this technique is that I ca=\r\nn easily create\ntests for lots of valid names. If I&#39;m reading it from a fil=\r\ne, the list\ncould be quite extensive _and_ you&#39;ll know which names passed t=\r\nhe test\nand which names didn&#39;t.\n\nOut of curiousity: any easy way to do this=\r\n in TestNG?\n(&quot;Parameterising&quot; a list or a file name doesn&#39;t count; you woul=\r\ndn&#39;t\nget the easy reporting of the bad values vs the good values).\n\nRobert.=\r\n\n\n", 
+    "profile": "robertdw26", 
+    "topicId": 14555, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "prevInTime": 14554, 
+    "contentTrasformed": false, 
+    "postDate": "1125560831", 
+    "canDelete": false, 
+    "nextInTopic": 14580, 
+    "prevInTopic": 0, 
+    "headers": {
+        "inReplyToHeader": "PDExMjU1NTczNDYuMTcyNS4zMDY0Ny5tMjFAeWFob29ncm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGU5MTJlOTQ2MDUwOTAxMDA0NzJiYTNmMTY5QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDExMjU1NTczNDYuMTcyNS4zMDY0Ny5tMjFAeWFob29ncm91cHMuY29tPg=="
+    }
+}

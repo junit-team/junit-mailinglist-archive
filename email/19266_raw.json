@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19267, 
+    "senderId": "4swNc5N4w4TSW6khbI-5pbOVuAjhaqFv3HL3Acg-lsJ1vzKE5UGw9a4MQRQCzjZSIewL8Md-NdfMat_FMadHj-yi42z14bjcd7DuNgRhgTrJ7G08-q9DM2807OlBS4cMmjCerO4gQLfEbzbjTkGVQiQH-WWdUg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit behaviour", 
+    "from": "&quot;=?UTF-8?Q?Alexandru_Popescu_=E2=98=80?=&quot; &lt;the.mindstorm.mailinglist@...&gt;", 
+    "authorName": "Alexandru Popescu ☀", 
+    "msgSnippet": "... If so, then I would say that this is a possible problem. The invocation order should follow the one of initialization and TestNG is trying to guarantee", 
+    "msgId": 19266, 
+    "rawEmail": "Return-Path: &lt;the.mindstorm.mailinglist@...&gt;\r\nX-Sender: the.mindstorm.mailinglist@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 76148 invoked from network); 9 Apr 2007 12:39:30 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m42.grp.scd.yahoo.com with QMQP; 9 Apr 2007 12:39:30 -0000\r\nReceived: from unknown (HELO wr-out-0506.google.com) (64.233.184.236)\n  by mta9.grp.scd.yahoo.com with SMTP; 9 Apr 2007 12:39:29 -0000\r\nReceived: by wr-out-0506.google.com with SMTP id 41so848496wry\n        for &lt;junit@yahoogroups.com&gt;; Mon, 09 Apr 2007 05:31:27 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;\n        b=lxfCukdK2iDKOsXX1iRgVg4VpigV9mkXoOwQRzJibvCs98mfrUHYDY/znFNQQh4RO6UfdeDoPZdVHh9KB4JWkAf5H/S8BLKk2P+5okdD6LI213bAH32Ff33wOZSKtRPRrelSiTxr8S6YgavApHWmRH5y2CREmuoEr+ebcuZ0zyI=\r\nReceived: by 10.114.103.1 with SMTP id a1mr2293942wac.1176121887739;\n        Mon, 09 Apr 2007 05:31:27 -0700 (PDT)\r\nReceived: by 10.115.48.16 with HTTP; Mon, 9 Apr 2007 05:31:27 -0700 (PDT)\r\nMessage-ID: &lt;c6f400460704090531i17f8528dg844cac181114d6c0@...&gt;\r\nDate: Mon, 9 Apr 2007 15:31:27 +0300\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;461A2B90.4040500@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;ev2jmr+jroi@...&gt; &lt;461A2B90.4040500@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;=?UTF-8?Q?Alexandru_Popescu_=E2=98=80?=&quot; &lt;the.mindstorm.mailinglist@...&gt;\r\nSubject: Re: [junit] JUnit behaviour\r\nX-Yahoo-Group-Post: member; u=233049053; y=GzleRxZ45VnSIZj3kFoOgH6TUhaSmJyIK9UfztI0oLJ2Qnr5q4jAvOHQNg\r\nX-Yahoo-Profile: alexpopescu70000\r\n\r\nOn 09 Apr 2007 05:09:30 -0700, Ilja Preuss &lt;it@...&gt; wrote:\n&gt;\n&gt; My first guess without a closer look at the code would be that it&#39;s done\n&gt;  so that @Before(Class) methods in subclasses are run before those in\n&gt;  superclasses.\n&gt;\n&gt;  I don&#39;t think there is any guarantee on the order of methods inside one\n&gt;  class. I could be wrong, though.\n&gt;\n\nIf so, then I would say that this is a possible problem. The\ninvocation order should follow the one of initialization and TestNG is\ntrying to guarantee this rule (where the superclass is firstly\ninitialized), otherwise this is quite a limitation (imagine a scenario\nwhere the parent class initializes some test data, and the child will\nneed to customize it - this will never work).\n\nbests,\n\n./alex\n--\n.w( the_mindstorm )p.\n  TestNG co-founder\nEclipseTestNG Creator\n&gt;  Cheers, Ilja\n&gt;\n&gt;  jonhnnyweslley schrieb:\n&gt;  &gt; I was creating tests, when in any test I dont understand a behaviour\n&gt;  &gt; of the framework. The Junit framework executes Before and BeforeClass\n&gt;  &gt; test methods in reverse order. Why?\n&gt;  &gt;\n&gt;  &gt; In TestIntrospector I find the below code, but I dont understand the\n&gt;  &gt; cause.\n&gt;  &gt;\n&gt;  &gt; public List&lt;Method&gt; getTestMethods(\n&gt;  &gt;      Class&lt;? extends Annotation&gt; annotationClass) {\n&gt;  &gt;     ...\n&gt;  &gt;     if (runsTopToBottom(annotationClass))\n&gt;  &gt;         Collections.reverse(results);\n&gt;  &gt;     return results;\n&gt;  &gt; }\n&gt;  &gt;\n&gt;  &gt; private boolean runsTopToBottom(\n&gt;  &gt;         Class&lt; ? extends Annotation&gt; annotation) {\n&gt;  &gt;     return annotation.equals(Before.class) ||\n&gt;  &gt;          annotation.equals(BeforeClass.class);\n&gt;  &gt; }\n&gt;  &gt;\n&gt;  &gt;\n&gt;  &gt;\n&gt;  &gt;\n&gt;  &gt; Yahoo! Groups Links\n&gt;  &gt;\n&gt;  &gt;\n&gt;  &gt;\n&gt;  &gt;\n&gt;\n&gt;                    \n\n", 
+    "profile": "alexpopescu70000", 
+    "topicId": 19243, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 233049053, 
+    "prevInTime": 19265, 
+    "contentTrasformed": false, 
+    "postDate": "1176121887", 
+    "canDelete": false, 
+    "nextInTopic": 19267, 
+    "prevInTopic": 19265, 
+    "headers": {
+        "inReplyToHeader": "PDQ2MUEyQjkwLjQwNDA1MDBAaWxqYXByZXVzcy5kZT4=", 
+        "messageIdInHeader": "PGM2ZjQwMDQ2MDcwNDA5MDUzMWkxN2Y4NTI4ZGc4NDRjYWMxODExMTRkNmMwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGV2Mmptcitqcm9pQGVHcm91cHMuY29tPiA8NDYxQTJCOTAuNDA0MDUwMEBpbGphcHJldXNzLmRlPg=="
+    }
+}

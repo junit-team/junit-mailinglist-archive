@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21604, 
+    "senderId": "r_BlTJyeIcTAmnfjhacKnyK8jiAT6T4-KqVaGDoCwXX4kRLSC2001ohCTacitet3TddmNLfvVdIETD0tBw-HVFSkeJsEG7AyRj9vVFFP", 
+    "systemMessage": true, 
+    "subject": "InjectingRunner", 
+    "from": "&quot;dafrito@...&quot; &lt;dafrito@...&gt;", 
+    "authorName": "dafrito@ymail.com", 
+    "msgSnippet": "ABSTRACT: InjectingRunner allows a test-suite to be injectable. An arbitrary number of implementations may inject into the suite, and the full suite is", 
+    "msgId": 21603, 
+    "profile": "dafrito@ymail.com", 
+    "topicId": 21603, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 399881945, 
+    "messageBody": "<div id=\"ygrps-yiv-1370737664\">ABSTRACT:<br/>\n<br/>\nInjectingRunner allows a test-suite to be injectable. An arbitrary number of implementations may inject into the suite, and the full suite is independently run for each implementation.<br/>\n<br/>\nUSE-CASE:<br/>\n<br/>\nI recently wrote an interface that mimics a Table, a 2-dimensional array. I anticipated having a couple implementations of this table, and wanted each to be compliant with the tests written for my interface.<br/>\nCurrently, I have to write tests for each implementation. Instead, I wanted to be able to write one test-suite that fully defines the interface, and simply say &quot;Test using these Table implementations.&quot;<br/>\nFurthermore, I imagine that if I ever distribute my interface, third-parties may choose to implement their own Tables. They would either have to write their own tests, or simply trust that they didn&#39;t make any mistakes. Instead, they can simply inject their implementations into my test suite, in the exact same way I&#39;m doing now.<br/>\n<br/>\nEXAMPLE:<br/>\n<br/>\nAs a quick example, you could have the following test suite:<br/>\n<br/>\n// ListTest.java (imports omitted for brevity)<br/>\n<br/>\n// NoopRunner does nothing. This was the easiest way to use familiar syntax while not having to explicitly omit this class every time I want to test.<br/>\n@RunWith(NoopRunner.class)<br/>\npublic class ListTest {<br/>\n  @Injected<br/>\n  public List&lt;String&gt; list;<br/>\n<br/>\n  @Test<br/>\n  public testList() {<br/>\n    list.add(&quot;A&quot;);<br/>\n    assertThat(list.size(), is(1));<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\n// ArrayListTest.java (imports omitted for brevity)<br/>\n<br/>\n@RunWith(InjectingRunner.class)<br/>\n@InjectTest(injectedValue=ArrayList.class, testClass= ListTest.class)<br/>\npublic class ArrayListTest {<br/>\n    // Do nothing; this is sufficient to create our test.<br/>\n}<br/>\n<br/>\n<br/>\n// LinkedListTest.java (imports omitted for brevity)<br/>\n<br/>\n@RunWith(InjectingRunner.class)<br/>\n@InjectTest(injectedValue=LinkedList.class, testClass=ListTest.class)<br/>\npublic class LinkedListTest {<br/>\n    // Do nothing; this is sufficient to create our test.<br/>\n}<br/>\n<br/>\nAnd that&#39;s it. It&#39;s pretty experimental right now, and only does rudimentary validation, but it works, and generates sensible output -- in Eclipse, ArrayListTest appears to own the methods actually in ListTest.<br/>\n<br/>\nHOW TO USE:<br/>\n<br/>\nIt&#39;s very easy to retrofit an existing test suite to use this new injection runner; it boils down to removing the line in the @Before method and adding the annotations. Once that&#39;s complete, your test framework can be generic to any subclass of that variable.<br/>\n<br/>\nDETAILS:<br/>\n<br/>\nInternally, InjectingRunner is rather simple. It extends Runner and creates a BlockJUnit4Runner for the referenced test-suite. That underlying class handles finding the tests in the class, and running them.<br/>\nInjection is done by override withBefores, and just adding another Statement before any @Before&#39;s run. Since it&#39;s just using the standard stuff in the standard Runner, everything works as normal (You can use @Before, @BeforeClass, and everything else you&#39;d use in a normal test-suite).<br/>\n<br/>\nFINAL THOUGHTS:<br/>\n<br/>\nI was wondering if there was any interest in the source for this, or if I&#39;ve foolishly reimplemented something already in JUnit. This has some similiarities to the Theories runner, but that was too different to work well with this.<br/>\n<br/>\n- Aaron Faanes</div>", 
+    "prevInTime": 21602, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1242268041", 
+    "canDelete": false, 
+    "nextInTopic": 21604, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGd1ZnZpOStiYzhjQGVHcm91cHMuY29tPg=="
+    }
+}

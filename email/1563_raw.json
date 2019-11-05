@@ -1,0 +1,28 @@
+{
+    "topicId": 1563, 
+    "postDate": "992975346", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&lt;mcmi0037@...&gt; (Colin McMillen)", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "w0trpFp2kGQ2HCDam1dkCzGb60HsuUgDR9riTebd4RHbfFpnSZrbxV8N-lNJcKwHzIqWTdF0KPjANb_opEAVdbZpIU--99Bk88L108s", 
+    "nextInTime": 1564, 
+    "userId": 0, 
+    "prevInTime": 1562, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDEwNjE5MTgyOS5OQUEwMDY0MkB3d3cyLnNvZnR3YXJlLnVtbi5lZHU+"
+    }, 
+    "authorName": "Colin McMillen", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "My apologies if this has already been covered, but Yahoo s search functionality for this list is giving me some sort of Python error, and I don t much feel", 
+    "contentTrasformed": false, 
+    "msgId": 1563, 
+    "nextInTopic": 1564, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;mcmi0037@...&gt;\r\nX-Sender: mcmi0037@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 19 Jun 2001 18:45:09 -0000\r\nReceived: (qmail 91417 invoked from network); 19 Jun 2001 18:45:09 -0000\r\nReceived: from unknown (10.1.10.27) by l9.egroups.com with QMQP; 19 Jun 2001 18:45:09 -0000\r\nReceived: from unknown (HELO mhub6.tc.umn.edu) (160.94.218.243) by mta2 with SMTP; 19 Jun 2001 18:45:08 -0000\r\nReturn-Path: &lt;mcmi0037@...&gt;\r\nReceived: from www2.software.umn.edu by mhub6.tc.umn.edu with ESMTP for junit@yahoogroups.com; Tue, 19 Jun 2001 13:44:05 -0500\r\nReceived: by www2.software.umn.edu (8.9.3/8.9.3) id NAA00642; Tue, 19 Jun 2001 13:29:06 -0500 (CDT)\r\nDate: Tue, 19 Jun 2001 13:29:06 -0500 (CDT)\r\nMessage-Id: &lt;200106191829.NAA00642@...&gt;\r\nTo: junit@yahoogroups.com\r\nX-Mailer: UM-WebMail 1.0b21 134.84.168.182\r\nSubject: Using JUnit with inner classes?\r\nFrom: &lt;mcmi0037@...&gt; (Colin McMillen)\r\n\r\nMy apologies if this has already been covered, but Yahoo&#39;s search\nfunctionality for this list is giving me some sort of Python error,\nand I don&#39;t much feel like clicking &quot;Back&quot; through 1500 messages and\nlooking for relevant messages. :)\n\nBefore I came across JUnit, I typically did unit testing with\nthe main() method of a class. I expect that&#39;s a fairly common idiom\naround here, but I added a small twist to make my life easier. Suppose\nI have some class Foo which I want to add a relatively comprehensive\ntesting suite to. Instead of adding a main() to Foo, and the\nappropriate helper methods to set up, run, and tear down tests, I&#39;d\ncreate a static inner class, called Test, and put all the testing\nmaterial in there.\n\nI figure this idea has several advantages over other possible\napproaches:\n1. One can package up the code for public release by removing all\nfiles that end in *Test.class.\n2. Code for the test suite is in the same file as the code it\ntests. This makes it easy to add new tests.\n3. There&#39;s a clear distinction between what methods are part of the\ntesting suite and what methods are part of the actual implementation\nof the class.\n\nOf course, I&#39;d rather switch over to JUnit, for many reasons, but have\nfound so far that this idea doesn&#39;t cross over very well. Here&#39;s what\nI&#39;ve tried, and the errors I&#39;ve gotten; if anyone has any insight on\nwhat I can do, please let me know.\n\npublic class SomeClass {\n    // actual code goes here...\n\n    public class Test extends TestCase {\n        public Test(String name) {      \n            super(name);\n        }\n\n        public void testSomething {\n            assertEquals(true, true);\n        }\n   }\n}\n\npublic class ComprehensiveTestSuite {\n    public static void main (String[] args) {\n        junit.textui.TestRunner.run(suite());\n    }\n\n    public static Test suite() {  \n        TestSuite result = new TestSuite();\n        result.addTestSuite(SomeClass$Test.class);\n        return result;\n    }                 \n}\n\nThis compiles fine, but I get the following error if I run, say,\njava ComprehensiveTestSuite:\n                            \n.F\nTime: 0.096\nThere was 1 failure:\n1)  \nwarning(junit.framework.TestSuite$1)junit.framework.AssertionFailedError:\nClass SomeClass$Test has no public constructor TestCase(String name)\n    at\nComprehensiveTestSuite.main(ComprehensiveTestSuite.java:7)\n\nFAILURES!!!\nTests run: 1,  Failures: 1,  Errors: 0\n\nAny ideas? Thanks a lot. (I&#39;m using JDK1.3 and JUnit 3.7, by the way.)\n\n- Colin McMillen\n\n\n", 
+    "subject": "Using JUnit with inner classes?"
+}

@@ -1,0 +1,30 @@
+{
+    "topicId": 13227, 
+    "postDate": "1113130777", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Paul King &lt;paulk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "U0EM9eoMu5Y2jBgdv4emBIaJaxrDkgTmCni1jT_uVk9jGAOucqi37Bps2v6zecfpxZYpzDCfzB3HUYrHv6jzMm3nLFqo", 
+    "nextInTime": 13263, 
+    "userId": 215576703, 
+    "prevInTime": 13261, 
+    "prevInTopic": 13260, 
+    "headers": {
+        "inReplyToHeader": "PGQzYW05YitsMGV2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyNTkwNzE5LjMwMDA3MDlAYXNlcnQuY29tLmF1Pg==", 
+        "referencesHeader": "PGQzYW05YitsMGV2QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Paul King", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "You have two basic approaches: perform an integration test or a unit test with stubs/mocks . With an integration test you walk your application through all", 
+    "contentTrasformed": false, 
+    "msgId": 13262, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;paulk@...&gt;\r\nX-Sender: paulk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 44015 invoked from network); 10 Apr 2005 10:59:39 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m23.grp.scd.yahoo.com with QMQP; 10 Apr 2005 10:59:39 -0000\r\nReceived: from unknown (HELO gizmo08ps.bigpond.com) (144.140.71.18)\n  by mta2.grp.scd.yahoo.com with SMTP; 10 Apr 2005 10:59:39 -0000\r\nReceived: (qmail 6604 invoked from network); 10 Apr 2005 10:59:38 -0000\r\nReceived: from unknown (HELO PSMAM16.bigpond.com) (144.135.25.114)\n  by gizmo08ps.bigpond.com with SMTP; 10 Apr 2005 10:59:38 -0000\r\nReceived: from cpe-61-9-213-87.qld.bigpond.net.au ([61.9.213.87]) by PSMAM16.bigpond.com(MAM REL_3_4_2a 273/29592542) with SMTP id 29592542; Sun, 10 Apr 2005 20:59:38 +1000\r\nMessage-ID: &lt;42590719.3000709@...&gt;\r\nDate: Sun, 10 Apr 2005 20:59:37 +1000\r\nUser-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;d3am9b+l0ev@...&gt;\r\nIn-Reply-To: &lt;d3am9b+l0ev@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Paul King &lt;paulk@...&gt;\r\nSubject: Re: [junit] Re: &quot;state&quot; for cheking a scenario/path of servelets\r\nX-Yahoo-Group-Post: member; u=215576703\r\n\r\n\nYou have two basic approaches: perform an &quot;integration\ntest&quot; or a &quot;unit test with stubs/mocks&quot;.\n\nWith an integration test you walk your application through\nall of the previous steps. If you do it frequently enough\nyou can refactor those bits out into some common fixtures\nor utility libraries. E.g. in your example below you could\nput the code for steps 1 and 2 in a setUp method. This can\nusually be done without changing the application under test\nbut can sometimes be slow and may make your tests more fragile,\ne.g. if the application changes for steps 1 and 2, you might\nhave to change your test even though you are testing step 3.\n\nWith the unit test approach, you set up mock or stub classes.\nIn your case, you could (as an example) set up a session stub\nwhich had hard-coded inside it all of the required data as\nit would be after steps 1 and 2. This may require a little\nbit of refactoring initially if the original application\nwasn&#39;t designed with mock/stub objects in mind but the\ntests will run faster and in general be less fragile.\nYou can write your own stubs or use jmock, easymock,\nmockrunner or other equivalent packages.\n\nPaul.\n\nnoam_eitan wrote:\n&gt; \n&gt; hi.\n&gt; \n&gt; thanks for your reply.\n&gt; \n&gt; let me tell u what I mean by the word &quot;scenario&quot;.\n&gt; \n&gt; the user is doing the following steps, and I want to check the whole \n&gt; process :\n&gt; 1. the user is logging in. the servlet is then check the user/pass, \n&gt; and save the user profile info in the session.\n&gt; 2. the user is locating some data, lets say &quot;workers&quot;. he types a \n&gt; worker name. the servlet is getting the data from the DB, but before \n&gt; the selecting, it checks that the user, (as saved in the session) has \n&gt; the authorization to do so. after selecting the &quot;worker/workers&quot;, the \n&gt; servlet is saving them in the session.\n&gt; 3. the user is asking to display some data of the &quot;workers&quot;. the \n&gt; servlet is again checking the authorization to do the action, and the \n&gt; authorization  to check about those &quot;workers&quot; (all the info is coming \n&gt; from the session).\n&gt; \n&gt; now, if I want to check this scenario, by checking only the last \n&gt; step, I have to init the user data and the &quot;workers&quot; data in the \n&gt; session, and then to invoke the last step. what I want to do is to \n&gt; invoke steps 1,2 and when invoking the last one, all the data will be \n&gt; in the session.\n&gt; \n&gt; how can I do so ?\n&gt; \n&gt; thanks.\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n\n\n", 
+    "subject": "Re: [junit] Re: &quot;state&quot; for cheking a scenario/path of servelets"
+}

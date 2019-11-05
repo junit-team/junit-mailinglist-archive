@@ -1,0 +1,128 @@
+(1) the test case is like this
+ 
+ public void testCreateTableCluster() {
+  mapper2.createTableCluster();
+  assertNotNull(mapper.getClassMap().getTableCluster());
+ }
+
+(2) the createTableCluster() source code is like this
+
+ public void createTableCluster() {
+  tableCluster.createMasterTable(tableName, classmap);
+ }
+ 
+(3) the createMasterTable() source code is like this
+
+ public MasterTableMap createMasterTable(String aTablename, ClassMap aClassmap) 
+ {
+  return (MasterTableMap)createTable(aTablename,aClassmap,'masterTable');
+ }
+
+(4) createTable() source code
+ 
+ public TableMap createTable(String aTablename, ClassMap aClassmap, String aTabletype) 
+ {
+  pf.ColumnMap colummap=null;
+  TableMap result =null; 
+  if (aTabletype.equals('masterTable'))
+  {
+   result= new MasterTableMap(aTablename);
+   this.set_masterTableMap(result);
+  }
+  else if (aTabletype.equals('independentTable'))
+   result= new IndependentTableMap(aTablename);
+  else if (aTabletype.equals('dependentTable'))
+   result= new DependentTableMap(aTablename);
+  setCurrentTableMap(result);
+  aClassmap.setMasterTable(result); 
+  
+  java.util.List tempList =aClassmap.getColumnMaps();
+  
+  Iterator tmpIter = tempList.iterator();
+  while (tmpIter.hasNext()) 
+  {
+   colummap = (pf.ColumnMap)tmpIter.next();
+   colummap.getAttributeMapper().createTableSqlProcess(this, colummap, aClassmap);
+  }
+  addTableMaps(result);
+  return result;
+ }
+(5) one of createTableSqlProcess() is like this. [many classes which inherit from the same parent have createTableSqlProcess]
+ 
+ public void createTableSqlProcess(TableCluster aTablecluster, pf.ColumnMap aColumnmap, pf.ClassMap aMasterClass) {
+  ArrayColumnMap arrayColumnmap = (ArrayColumnMap)aColumnmap;
+  ClassMap classmap=null;
+  pf.PersistenceClass persisClass=null;
+  String tableName =null;
+  configfiend.RelationshipItem relation=null;
+  DependentTableMap depentable=null; 
+  
+  String elementCategory=arrayColumnmap.getElementCategory();
+  if (elementCategory.equals('Complex'))
+  {
+   classmap =arrayColumnmap.getClassMap();
+   if (classmap==null)
+   {
+    logger.debug('The array attribute '+arrayColumnmap.getColumnName()+''s related class was not there, the system will load it at once!');
+    persisClass=PersistentClassManager.loadPersistenceClass(arrayColumnmap.getFieldType());
+    if (persisClass!=null)
+    {
+     classmap=persisClass.getMapper().getClassMap();
+    }
+    else
+    {
+     logger.debug('couldn't get the persistence class from peristence class lib. the process will be terminated');
+     return;
+    } 
+   }
+   tableName=classmap.getTableName();
+   relation=arrayColumnmap.getRelationship();
+   if (arrayColumnmap.isReflectRelation())
+   {
+    if (relation!=null)
+    {
+     if ((relation.getRelationshipType().equals('Composition'))||(relation.getRelationshipType().equals('Strong Aggregation')))
+     {
+      depentable=aTablecluster.createDependentTable(tableName, classmap);
+      depentable.setReferenceTable(aMasterClass.getMasterTable());
+     }
+     else
+      aTablecluster.createIndependentTable(tableName, classmap);
+    }
+   }
+   else
+    aTablecluster.createIndependentTable(tableName, classmap);
+  }
+  else
+  {
+   String fieldname=arrayColumnmap.getFieldName();
+   String fieldtype=arrayColumnmap.getFieldType();
+   TableField tablefield=new TableField(fieldname,fieldtype,aMasterClass.getDomainClass());
+   aTablecluster.getCurrentTableMap().addField(tablefield);
+   
+      String tempstr =aMasterClass.getDomainClass().getName().substring(aMasterClass.getDomainClass().getName().lastIndexOf('.')+1)+'oid';
+   if (fieldname.toUpperCase().indexOf(tempstr.toUpperCase())!=-1)
+    aTablecluster.getCurrentTableMap().setPrimaryKey(tablefield);
+  }
+ }
+
+as you can see the createTable method is invoked recursively in createTableSqlProcess() [the bold statement]
+ 
+the sourse code of createDependentTable() likes this
+ 
+ public DependentTableMap createDependentTable(String aTablename, ClassMap aClassmap) {
+  return (DependentTableMap)createTable(aTablename,aClassmap,'dependentTable');
+ }
+
+the sourse code of createIndependentTable() likes this
+ 
+ public IndependentTableMap createIndependentTable(String aTablename, ClassMap aClassmap) {
+  return (IndependentTableMap)createTable(aTablename,aClassmap,'independentTable');
+ }
+
+
+
+the two methods are like the createMasterTable() at the beginning of the source code I listed here.
+ 
+the createTable() is invoked recursively, as you can see. I guess that's the point why JUnit wrong.
+the Junit errow message screen was captured in the attachement.

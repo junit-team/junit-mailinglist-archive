@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 28, 
+    "nextInTime": 11584, 
+    "senderId": "MyJg6LLpFOaaoSaluslNRH6x8lcaOi8cL92XZO4J4_iiXmC2lGryWYLSPo4ZcAwtkTM-cYQeHtwqabFrcP6aZuBVOxw5maKfL44", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] a test framework to codify levelizaton?", 
+    "from": "Chris Dollin &lt;kers@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... Re: the Jena figures I quoted earlier, the 50 seconds reported time (now down at 45 after I shifted set implementations) is for 3729 tests, where test", 
+    "msgId": 11583, 
+    "rawEmail": "Return-Path: &lt;kers@...&gt;\r\nX-Sender: kers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 11804 invoked from network); 19 Jul 2004 14:20:02 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m22.grp.scd.yahoo.com with QMQP; 19 Jul 2004 14:20:02 -0000\r\nReceived: from unknown (HELO colossus.hpl.hp.com) (192.6.10.2)\n  by mta5.grp.scd.yahoo.com with SMTP; 19 Jul 2004 14:20:01 -0000\r\nReceived: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [15.144.90.22])\n\tby colossus.hpl.hp.com (8.12.10/8.12.10) with ESMTP id i6JEJche017517\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 19 Jul 2004 15:19:38 +0100 (BST)\r\nOrganization: HPLB\r\nTo: junit@yahoogroups.com\r\nDate: Mon, 19 Jul 2004 15:15:32 +0100\r\nUser-Agent: KMail/1.5\r\nReferences: &lt;20040719140131.96103.qmail@...&gt;\r\nIn-Reply-To: &lt;20040719140131.96103.qmail@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200407191515.32986.kers@...&gt;\r\nX-HPL-MailScanner-Information: Please contact the helpdesk for more information\r\nX-HPL-MailScanner: Found to be clean\r\nX-HPL-MailScanner-SpamCheck: not spam (whitelisted),\n\tSpamAssassin (score=-4.111, required 5, BAYES_00 -4.90,\n\tREMOVE_REMOVAL_NEAR 0.79)\r\nX-eGroups-Remote-IP: 192.6.10.2\r\nFrom: Chris Dollin &lt;kers@...&gt;\r\nSubject: Re: [junit] a test framework to codify levelizaton?\r\nX-Yahoo-Group-Post: member; u=88056088\r\nX-Yahoo-Profile: anover_alias\r\n\r\nOn Monday 19 July 2004 15:01, Vlad Roubtsov wrote:\n&gt; I&#39;ve waited to get some data from others before\n&gt; replying. It appears that what I had in mind were\n&gt; testcases more functional in nature. In my experience\n&gt; on a ~1GHz desktop a testsuite with 100-200 testcases\n&gt; will take from 2 to 5 minutes. This translates into\n&gt; 1-2 seconds per testcase.\n\nRe: the Jena figures I quoted earlier, the 50 seconds reported time\n(now down at 45 after I shifted set implementations) is for \n3729 tests, where &quot;test&quot; means &quot;invocations of a JUnit testZZZ()\nmethod&quot;. By running outside Eclipse I appear to be able to shave\nanother 5s off the reported time.\n\nSome of the tests are more multi-facteted than I&#39;d really like, such as:\n\n    public void testRemove()\n        { \n        testRemove( &quot;S ?? ??&quot;, &quot;S ?? ??&quot; );\n        testRemove( &quot;S ?? ??&quot;, &quot;?? P ??&quot; );\n        testRemove( &quot;S ?? ??&quot;, &quot;?? ?? O&quot; );\n        testRemove( &quot;?? P ??&quot;, &quot;S ?? ??&quot; );\n        testRemove( &quot;?? P ??&quot;, &quot;?? P ??&quot; );\n        testRemove( &quot;?? P ??&quot;, &quot;?? ?? O&quot; );\n        testRemove( &quot;?? ?? O&quot;, &quot;S ?? ??&quot; );\n        testRemove( &quot;?? ?? O&quot;, &quot;?? P ??&quot; );\n        testRemove( &quot;?? ?? O&quot;, &quot;?? ?? O&quot; );\n        }\n\nwhich is really nine tests, but the tedium of writing a separate test\nmethod for each overwhelmed me, and they are linked. Hmm.\nPerhaps I should write some Javadoc for the otherwise slightly\nimpenetrable:\n    \n    public void testRemove( String findRemove, String findCheck )\n        {\n        Graph g = getGraphWith( &quot;S P O&quot; );\n        ExtendedIterator it = g.find( Triple.create( findRemove ) );\n        try \n            {\n            it.next(); it.remove();\n            ExtendedIterator ut = g.find( Triple.create( findCheck ) );\n            assertFalse( ut.hasNext() );\n            }\n        catch (UnsupportedOperationException e)\n            { assertFalse( g.getCapabilities().iteratorRemoveAllowed() ); }\n        }\n\nAnd why didn&#39;t I use .contains() rather than the .find() / .next() idiom,\neh?\n\nAlways worth revisiting code ...\n\n-- \nChris &quot;electric hedgehog&quot; Dollin\nC FAQs at: http://www.faqs.org/faqs/by-newsgroup/comp/comp.lang.c.html\nC welcome: http://www.angelfire.com/ms3/bchambless0/welcome_to_clc.html\n\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 11558, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88056088, 
+    "prevInTime": 11582, 
+    "contentTrasformed": false, 
+    "postDate": "1090246532", 
+    "canDelete": false, 
+    "nextInTopic": 11584, 
+    "prevInTopic": 11581, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwNzE5MTQwMTMxLjk2MTAzLnFtYWlsQHdlYjUwMzA0Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDIwMDQwNzE5MTUxNS4zMjk4Ni5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "referencesHeader": "PDIwMDQwNzE5MTQwMTMxLjk2MTAzLnFtYWlsQHdlYjUwMzA0Lm1haWwueWFob28uY29tPg=="
+    }
+}

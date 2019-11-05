@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 48, 
+    "nextInTime": 19728, 
+    "senderId": "KZClfp3hZk0VsY5FeYsNVKcF9Gjmu0swGrkPFXpAx-NnZINPpjTZ4zXLwKuem1FDmfEy90y9TYc3IB3MZ04wqfvUSkmefPnoKiWGclFQ3ec", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] RE: Assurance/CPU cycle ratio [branching from Re: Test Grouping/Partitioning]", 
+    "from": "&quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt;", 
+    "authorName": "Lasse Koskela", 
+    "msgSnippet": "Hi Kent, ... I spent a week refactoring a slow test suite with a client the other week. The build took a total of 73 minutes when we started and we got it down", 
+    "msgId": 19727, 
+    "rawEmail": "Return-Path: &lt;lasse.koskela@...&gt;\r\nX-Sender: lasse.koskela@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 80108 invoked from network); 9 Aug 2007 06:35:22 -0000\r\nReceived: from unknown (66.218.66.70)\n  by m36.grp.scd.yahoo.com with QMQP; 9 Aug 2007 06:35:22 -0000\r\nReceived: from unknown (HELO fk-out-0910.google.com) (209.85.128.186)\n  by mta12.grp.scd.yahoo.com with SMTP; 9 Aug 2007 06:35:22 -0000\r\nReceived: by fk-out-0910.google.com with SMTP id 18so354798fkq\n        for &lt;junit@yahoogroups.com&gt;; Wed, 08 Aug 2007 23:35:22 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;\n        b=ekTjYp+OC+sM5X2A6ImvihVFl2AszMMqYVtm1nXxvAJfcin/qBLC/AvMmA5W2gh0l1mvvxxlKREzzDbCUJwfXqsUmkeSjydtcj9BdoH+mh+M2Nqct2ep8yVYGiOLfDji29LQkID6F+beidmHPT2eKSjT/1u6qQG1fZsSnA5bauQ=\r\nReceived: by 10.82.108.9 with SMTP id g9mr2767607buc.1186640719953;\n        Wed, 08 Aug 2007 23:25:19 -0700 (PDT)\r\nReceived: by 10.82.113.16 with HTTP; Wed, 8 Aug 2007 23:25:19 -0700 (PDT)\r\nMessage-ID: &lt;3975e2d10708082325o18b519des886cfccfc8638277@...&gt;\r\nDate: Thu, 9 Aug 2007 09:25:19 +0300\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;018e01c7da20$3bcae5f0$6701a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;003101c7cfd5$aff5e560$6701a8c0@kentspavilion&gt;\n\t &lt;5CD37B6E090454489C5FC15B9B4B5B19189935@...&gt;\n\t &lt;018e01c7da20$3bcae5f0$6701a8c0@kentspavilion&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt;\r\nSubject: Re: [junit] RE: Assurance/CPU cycle ratio [branching from Re: Test Grouping/Partitioning]\r\nX-Yahoo-Group-Post: member; u=190530936; y=W6pLWupD9x8pFZeatlp65MNY9yAH3HihDDei9JI-InaCZcsfZ_LV\r\nX-Yahoo-Profile: lassekoskela\r\n\r\nHi Kent,\n\nOn 8/9/07, Kent Beck &lt;kentb@...&gt; wrote:\n&gt;  I&#39;d love to help optimize a long-running industrial test suite. I suspect\n&gt;  that much of the effort would be spent trying refactorings that might lead\n&gt;  to separately testable dimensions. I would want to be sure that each step\n&gt;  didn&#39;t reduce the assurance provided by the whole suite. Only when tests\n&gt;  were clearly redundant would I remove the slower running version.\n&gt;\n&gt;  Has anyone here done any profiling of long-running test suites? I&#39;m curious\n&gt;  what percentage of time is spent in setup/teardown versus actually running\n&gt;  the tests.\n\nI spent a week refactoring a slow test suite with a client the other\nweek. The build took a total of 73 minutes when we started and we got\nit down to 40 minutes by the end of the week. The refactoring is still\nan ongoing activity but I haven&#39;t heard whether they&#39;ve managed to\nsqueeze out more stuff.\n\nOne of the first things we did, after the other guy giving me an quick\ntour around the (test) codebase, was to profile the test suite. And,\nyes, most of the big numbers pointed at long-lasting setups. Simple\nutilities had proper unit tests but the majority of code had Too Big\nTests that basically initialized the whole system (some 4 seconds per\ntest) even if none of that would&#39;ve been necessary.\n\nWe started improving the situation by refactoring the system&#39;s service\nlocator architecture to perform lazy initialization of all of those\ndozens of services. Why? Because the build was slow and we needed a\nBig Win to start with. Refactoring towards lazy initialization was a\nsolution that seemed to have a lot of potential (service\ninitialization was the single biggest CPU consumer) and was\nstraightforward to implement.\n\nAlong the way we did a number of micro optimizations and I don&#39;t have\nthe numbers, but my gut feeling was that most of the ~30% improvement\nin build time was from short-circuiting unnecessary setup.\n\n\nLasse\n\n-- \nLasse Koskela\n* Author of &quot;Test Driven&quot; (Manning Publications, 2007) *\n* Reaktor Innovations * http://www.ri.fi/en *\n\n", 
+    "profile": "lassekoskela", 
+    "topicId": 19521, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190530936, 
+    "prevInTime": 19726, 
+    "contentTrasformed": false, 
+    "postDate": "1186640719", 
+    "canDelete": false, 
+    "nextInTopic": 19732, 
+    "prevInTopic": 19726, 
+    "headers": {
+        "inReplyToHeader": "PDAxOGUwMWM3ZGEyMCQzYmNhZTVmMCQ2NzAxYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "messageIdInHeader": "PDM5NzVlMmQxMDcwODA4MjMyNW8xOGI1MTlkZXM4ODZjZmNjZmM4NjM4Mjc3QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDAwMzEwMWM3Y2ZkNSRhZmY1ZTU2MCQ2NzAxYThjMEBrZW50c3BhdmlsaW9uPgkgPDVDRDM3QjZFMDkwNDU0NDg5QzVGQzE1QjlCNEI1QjE5MTg5OTM1QHNsY2VzMDIuYWQuZmFzdC5ubz4JIDwwMThlMDFjN2RhMjAkM2JjYWU1ZjAkNjcwMWE4YzBAa2VudHNwYXZpbGlvbj4="
+    }
+}

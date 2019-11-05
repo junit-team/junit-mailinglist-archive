@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 1382, 
+    "senderId": "o3zsPhNA2uYMcX5BaXnEMEULuE5UxyOqWp-YhI9dTF2VL8fQERUuzuxYHZRqrwc5ktR3ly7SFMuTokTh3qIt6QjJg6ZoQg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Off-topic: How is ArrayIndexOutOfBounds possible?", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "Just to rule out the possibility that another thread is removing the last element from the vector in between the isEmpty() and remove() statements, you could", 
+    "msgId": 1381, 
+    "topicId": 1378, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-59525884\">Just to rule out the possibility that another thread is removing the <br/>\nlast element from the vector in between the isEmpty() and remove() <br/>\nstatements, you could explicitly synchronize the steps, as in<br/>\n<br/>\n     synchronized(inMsgQueue) {<br/>\n         if(!inMsgQueue.isEmpty()) {<br/>\n             msg = (SimpleMsg) inMsgQueue.remove(0);<br/>\n         }<br/>\n     }<br/>\n<br/>\nJust something to try...<br/>\n<br/>\nMike<br/>\n<br/>\n-- <br/>\nMike Clark<br/>\nClarkware Consulting, Inc.<br/>\nCustom Software Architecture, Design,<br/>\nDevelopment, and Performance Consulting<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com\">http://www.clarkware.com</a><br/>\n<br/>\nPeter Spitz wrote:<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; The only thing I can think of is that the isEmpty() function is returning a<br/>\n&gt; value of &quot;false&quot; even if the array is empty. I&#39;d put in a test for that.<br/>\n&gt; This sounds silly to me even as I&#39;m typing it, but it&#39;s the best I can do<br/>\n&gt; and maybe it will trigger some other helpful thoughts.  <br/>\n&gt; <br/>\n&gt; Peter<br/>\n&gt; <br/>\n&gt; -----Original Message-----<br/>\n&gt; From: James Sinnamon<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Sent: 6/2/2001 6:13 AM<br/>\n&gt; Subject: [junit] Off-topic: How is ArrayIndexOutOfBounds possible?<br/>\n&gt; <br/>\n&gt; Dear Junit Users,<br/>\n&gt; <br/>\n&gt; Sorry for this off-topic message, but it is posible tah someone may be<br/>\n&gt; able<br/>\n&gt; to offer<br/>\n&gt; some useful advice:<br/>\n&gt; <br/>\n&gt; When I tested a program recently,  I got the error:<br/>\n&gt; <br/>\n&gt; java.lang.ArrayIndexOutOfBoundsException: Array index out of range: 0<br/>\n&gt;         at java.util.Vector.remove(Vector.java:806)<br/>\n&gt;         at org.multipi.ActorMailSorter.run(ActorMailSorter.java:33)<br/>\n&gt;         at java.lang.Thread.run(Thread.java:484)<br/>\n&gt; <br/>\n&gt; ... it seems to be telling me that an attempt to remove element 0<br/>\n&gt; of a vector, is causing a fatal error.  The code which triggered this<br/>\n&gt; error<br/>\n&gt; is:<br/>\n&gt; <br/>\n&gt;       if(!inMsgQueue.isEmpty()) {<br/>\n&gt;         msg = (SimpleMsg) inMsgQueue.remove(0);<br/>\n&gt;         ...<br/>\n&gt; <br/>\n&gt; .... where inMsgQueue is a Vector.  Now assuming that there are no other<br/>\n&gt; Thread<br/>\n&gt; processes trying to remove elements from the vector (and I believe this<br/>\n&gt; to<br/>\n&gt; be the<br/>\n&gt; case), should it be possible for this error to occur?  From my<br/>\n&gt; understanding<br/>\n&gt; of  Vector<br/>\n&gt; objects, this should not be possible.<br/>\n&gt; <br/>\n&gt; TIA.<br/>\n&gt; <br/>\n&gt; regards,<br/>\n&gt; <br/>\n&gt; James<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; --<br/>\n&gt; James Sinnamon  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:sinnamon@...\">sinnamon@...</a><br/>\n&gt; <br/>\n&gt; ph 07 46315566,  0412 319669<br/>\n&gt; PO Box 517 Darling Heights QLD 4350<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Yahoo! Groups Sponsor\t <br/>\n&gt;  <br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://rd.yahoo.com/M=202225.1433492.3029752.1269402/D=egroupmail/S=170\">http://rd.yahoo.com/M=202225.1433492.3029752.1269402/D=egroupmail/S=170</a><br/>\n&gt; 0007181:N/A=675622/*<a rel=\"nofollow\" target=\"_blank\" href=\"http://altfarm.mediaplex.com/ad/ck/1177-3936-1039-2?\">http://altfarm.mediaplex.com/ad/ck/1177-3936-1039-2?</a><br/>\n&gt; mpt=991476798&gt; []\t <br/>\n&gt;  <br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://us.adserver.yahoo.com/l?M=202225.1433492.3029752.1269402/D=egrou\">http://us.adserver.yahoo.com/l?M=202225.1433492.3029752.1269402/D=egrou</a><br/>\n&gt; pmail/S=1700007181:N/A=675622/rand=592905096&gt; \t<br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service<br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a>&gt; . <br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> </span></blockquote></div>", 
+    "prevInTime": 1380, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "991507637", 
+    "canDelete": false, 
+    "nextInTopic": 1384, 
+    "prevInTopic": 1380, 
+    "headers": {
+        "messageIdInHeader": "PDNCMTkzNEI1LjYwNjA4MDBAY2xhcmt3YXJlLmNvbT4=", 
+        "referencesHeader": "PDQxNjBFNkZDMDhBQkQyMTE5MUYwMDA4MDVGODU3RTkzMDFCN0NEOThAbWFpbC5pbnN5c3RlbXMuY2E+"
+    }
+}

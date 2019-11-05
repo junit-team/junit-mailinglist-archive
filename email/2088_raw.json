@@ -1,0 +1,28 @@
+{
+    "topicId": 2072, 
+    "postDate": "996015748", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Robert Watkins &lt;robertw@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "R-9bGcOYLsAJvzhz_17OTQ02rJxv9YwbG6ZRqIE8kIMGl29xb_x2r9cpl0PJoi5ZgZksDyZRQZ4WpNIYm-7AV1Mi7mQNZb_RNe5Hl-9lFQ", 
+    "nextInTime": 2089, 
+    "userId": 0, 
+    "prevInTime": 2087, 
+    "prevInTopic": 2087, 
+    "headers": {
+        "messageIdInHeader": "PENGMkJDMTM1RkIzN0Q1MTE5N0Q0MDA1MDhCQUY1MjE3MDlCQjVDQGF1Ym5tc3gwMS5xc2kuY29tLmF1Pg=="
+    }, 
+    "authorName": "Robert Watkins", 
+    "numMessagesInTopic": 48, 
+    "msgSnippet": "... You can not do this easily within JUnit. The reason is simple: the various assertXYZ() methods throw Errors when they fail, and Java does not permit ", 
+    "contentTrasformed": false, 
+    "msgId": 2088, 
+    "nextInTopic": 2090, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;robert.watkins@...&gt;\r\nX-Sender: robert.watkins@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 24 Jul 2001 22:59:40 -0000\r\nReceived: (qmail 76288 invoked from network); 24 Jul 2001 22:59:39 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 24 Jul 2001 22:59:39 -0000\r\nReceived: from unknown (HELO qsi.com.au) (203.202.39.12) by mta1 with SMTP; 24 Jul 2001 22:59:39 -0000\r\nReceived: from aubnmsx01.qsi.com.au (aubnmsx01.qsi.com.au [192.168.21.22]) by qsi.com.au (8.9.3/8.9.3) with ESMTP id IAA00614 for &lt;junit@yahoogroups.com&gt;; Wed, 25 Jul 2001 08:50:10 +1000\r\nReceived: by aubnmsx01.qsi.com.au with Internet Mail Service (5.5.2653.19) id &lt;PCHCNV4D&gt;; Wed, 25 Jul 2001 09:02:28 +1000\r\nMessage-ID: &lt;CF2BC135FB37D51197D400508BAF521709BB5C@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Reporting more then 1 failed assertion per test\r\nDate: Wed, 25 Jul 2001 09:02:28 +1000\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nX-eGroups-From: Robert Watkins &lt;robert.watkins@...&gt;\r\nFrom: Robert Watkins &lt;robertw@...&gt;\r\n\r\nPeter O&#39;Neill wrote:\n&gt; When I run my test suite I found that each test stops running \n&gt; after the\n&gt; first failed assertion. I have a number of assertions in each \n&gt; test and I\n&gt; would like to know every assertion that is broken. I have tried to\n&gt; create a default TestResult inside each test using,\n&gt; \n&gt; \tTestResult result = createResult();\n&gt; \n&gt; and then adding failures to &#39;result&#39; using,\n&gt; \n&gt; \tresult.addFailure(mytest, afe);\n&gt; \n&gt; which works fine, except that no AssertionFailedException gets thrown\n&gt; this way and my test passes even though I have broken assertions.\n&gt; \n&gt; Is there any way I can get JUnit to show all broken \n&gt; assertions for each\n&gt; test and not move onto the next test when the first assertion fails?\n\nYou can not do this easily within JUnit. The reason is simple: the various\nassertXYZ() methods throw Errors when they fail, and Java does not permit\nunwinding an exception stack trace so you can pick up where the exception\noccurred.\n\nIn many cases, you wouldn&#39;t want to, anyway. Having an error at point X\nwould often mean that more errors would be reported due to the first one (in\nmuch the same way a simple typo can spawn numerous compilation errors).\n\nThe right way, to get the same effect, is to have smaller test methods. If\nyou find that you are using a lot of common setup code, extract that out to\na helper method, or create a new test class and use the setUp() method.\n\nThe hard (and wrong) way is to change the assertion semantics. Define your\nown TestCase class, and provide new assertion methods so that, instead of\nthrowing an Error, you add the failure to a collection. Then, use a\nTestDecorator so that you can inspect the collection for errors, and fail\nthe test at that point. Note that you will probably have to build your own\nTest suite to do this (the inbuilt reflection support won&#39;t place the\ndecorator in for you)\n\nRobert.\n\n-- \n     &quot;Duct tape is like the Force: it has a light side, a dark side,\n                   and it holds the universe together&quot;\n  Robert Watkins     robertdw@...     robertw@...\n\n", 
+    "subject": "RE: [junit] Reporting more then 1 failed assertion per test"
+}

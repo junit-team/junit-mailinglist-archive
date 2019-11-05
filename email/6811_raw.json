@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 6812, 
+    "senderId": "ogNCHf2MaQVvvy5HDFQHYifiHEUd5l1Lm20VtA1t0ILoENBwo7vxY5WxMXTzWPhXtHtndY9WN09ce8tEhIrmDfqKrfksDMvtoYpmu9kKlDWAkyli", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ** How to test objects that depend on other  objects with mock objects **", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "I finally have time to respond. So said  Kirill Maximov  on  2003-01-28 -------------------- ... testing. ... not ... Yes, we should avoid such tricks;", 
+    "msgId": 6811, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 30 Jan 2003 23:22:15 -0000\r\nReceived: (qmail 22294 invoked from network); 30 Jan 2003 23:22:14 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m9.grp.scd.yahoo.com with QMQP; 30 Jan 2003 23:22:14 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta3.grp.scd.yahoo.com with SMTP; 30 Jan 2003 23:22:15 -0000\r\nReceived: from quincy ([24.42.96.247])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.06 201-253-122-126-106-20020509) with ESMTP\n          id &lt;20030130232210.YYWF123285.fep02-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Thu, 30 Jan 2003 18:22:10 -0500\r\nMessage-ID: &lt;200301301822080474.0172B6A2@smtp&gt;\r\nIn-Reply-To: &lt;20030128100216.GA25222@...&gt;\r\nReferences: &lt;b10uth+nv43@...&gt;\n &lt;20030127041452.GA15025@...&gt;\n &lt;200301272026130046.0159F8EA@...&gt;\n &lt;20030128100216.GA25222@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Thu, 30 Jan 2003 18:22:08 -0500\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] ** How to test objects that depend on other\n  objects with mock objects **\r\nContent-Type: text/plain; charset=&quot;KOI8-R&quot;\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.42.96.247] using ID &lt;srainsberger5790@...&gt; at Thu, 30 Jan 2003 18:22:06 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nI finally have time to respond.\n\nSo said  Kirill Maximov  on  2003-01-28 --------------------\n\n&gt;On  0, &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt; wrote:\n&gt;&gt; So said  Kirill Maximov  on  2003-01-27 --------------------\n&gt;&gt; \n&gt;&gt; &lt;snip /&gt;\n&gt;&gt; &gt;&gt; How can I switch the CONFIG_FILE_DIRECTORY value for testing when\n&gt;&gt; its \n&gt;&gt; &gt;&gt; in the constructor? \n&gt;&gt; &gt;\n&gt;&gt; &gt;  I&#39;d use such a trick:\n&gt;&gt; &gt;\n&gt;&gt; &gt;  String basePath = System.getProperty(&quot;CONFIG_FILE_DIRECTORY&quot;);\n&gt;&gt; &gt;  if (basePath == null)\n&gt;&gt; &gt;      basePath = ServiceResources.CONFIG_FILE_DIRECTORY;\n&gt;&gt; &gt;\n&gt;&gt; &gt;  Hope, this helps.\n&gt;&gt; &gt;  I don&#39;t think that creating a public constructor for singleton \n&gt;&gt; &gt;  only for testing purposes is Good Thing.\n&gt;&gt; \n&gt;&gt; A matter of taste. To me, there&#39;s no such thing as &quot;only for\ntesting.&quot;\n&gt;&gt; This implies that testing is not important, when actually it is\n&gt;&gt; all-important.\n&gt;\n&gt;  I don&#39;t agree about matter of taste. I&#39;m convinced that one should\nnot\n&gt;  try to increase visibility or add helper methods to ease testing. \n&gt;  And we should try as we might to avoid such tricks.\n\nYes, we should avoid such tricks; however it is wise to add them in,\nget the test to pass, then refactor the new method out. Singletons are\nbandages. We need to examine the wound. The Programmer Test that adds\nmethods to a class exposes the wound so we can clean it and let it\nheal.\n\n&gt;  Recently I had to rework a bunch of my tests when some previously\ntested\n&gt;  methods become private. And after such refactoring I revealed that\n&gt;  my tests become more clean and understandable. \n\nGood point. The quick green bar is what&#39;s important, though: make it\nrun, then make it right. If we have to add a constructor for a while to\nmake that happen, we do; then we figure out how to get rid of it.\nBetter the constructor be there with a passing test than no constructor\nand no passing test. The ideal situation is a passing test and no\nconstructor. Refactor to that point.\n\n&gt;&gt; If you read between the lines of my original reply, though, the\ndeeper\n&gt;&gt; question is, &quot;Why a singleton?&quot; :)\n&gt;\n&gt;  Sorry, I wasn&#39;t clever enough to read between lines :). But\n&gt;  this is quite another thing - we should keep design testable\n&gt;  and here I completely agree with you. Singletons are not very\n&gt;  suitable for testing.\n\nI always question singletons. :)\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\nAll correspondence (c) 2002 Diaspar Software Services.\nIf you want to use it, just ask; don&#39;t steal.\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 6743, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 6810, 
+    "contentTrasformed": false, 
+    "postDate": "1043968928", 
+    "canDelete": false, 
+    "nextInTopic": 6812, 
+    "prevInTopic": 6793, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwMTI4MTAwMjE2LkdBMjUyMjJAcXVlZW4uYWN0aW1pbmQuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwMTMwMTgyMjA4MDQ3NC4wMTcyQjZBMkBzbXRwPg==", 
+        "referencesHeader": "PGIxMHV0aCtudjQzQGVHcm91cHMuY29tPiA8MjAwMzAxMjcwNDE0NTIuR0ExNTAyNUBxdWVlbi5hY3RpbWluZC5jb20+IDwyMDAzMDEyNzIwMjYxMzAwNDYuMDE1OUY4RUFAc210cDEuYXR0Z2xvYmFsLm5ldD4gPDIwMDMwMTI4MTAwMjE2LkdBMjUyMjJAcXVlZW4uYWN0aW1pbmQuY29tPg=="
+    }
+}

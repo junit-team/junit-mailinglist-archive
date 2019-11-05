@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19975, 
+    "senderId": "PjL6l9QuYJ86_WLQsYwOc3oIFl_GMYAzTJv52Y_d-a6j55RWNwzAAaqldeHzWHPDp87GxRh2nOnd4bFuCqtFcnip2du6QSjA", 
+    "systemMessage": false, 
+    "subject": "[junit] Why does BaseTestRunner require TestCase class rather than the Test interface?", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Dear Bruno, Thank you for the defect report. I wasn t able to reproduce exactly the same behavior you describe, but JUnit 3 tests don t work exactly the same", 
+    "msgId": 19974, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 83471 invoked from network); 11 Oct 2007 02:57:14 -0000\r\nReceived: from unknown (69.147.108.200)\n  by m56.grp.scd.yahoo.com with QMQP; 11 Oct 2007 02:57:14 -0000\r\nReceived: from unknown (HELO elasmtp-kukur.atl.sa.earthlink.net) (209.86.89.65)\n  by mta1.grp.re1.yahoo.com with SMTP; 11 Oct 2007 02:57:14 -0000\r\nReceived: from [67.131.9.243] (helo=kentspavilion)\n\tby elasmtp-kukur.atl.sa.earthlink.net with asmtp (Exim 4.34)\n\tid 1IfoEb-000573-Mk\n\tfor junit@yahoogroups.com; Wed, 10 Oct 2007 22:57:14 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 10 Oct 2007 19:57:06 -0700\r\nMessage-ID: &lt;012901c80bb2$690e2cc0$6801a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 11\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3138\r\nthread-index: AcgLSLwECitrUGHJTsyT1Cm4e7jfjgADIidgABdE8UA=\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478986a28d8589f216956a9a348a6ae5c7246e7006086917c77350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: [junit] Why does BaseTestRunner require TestCase class rather than the Test interface?\r\nX-Yahoo-Group-Post: member; u=173198504; y=O1IrayfUqz8RSgtG2lDQWaky5T4eLO3BATZvKTcFyiwOqsWa\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nDear Bruno,\n \nThank you for the defect report. I wasn&#39;t able to reproduce exactly the same\nbehavior you describe, but JUnit 3 tests don&#39;t work exactly the same as they\ndid before. For example:\n \npublic class CastToTestTest {\n    public static class Example implements junit.framework.Test {\n        public int countTestCases() {\n            return 0;\n        }\n        public void run(TestResult result) {\n            // do nothing\n        }\n        public static junit.framework.Test suite() {\n            TestSuite result= new TestSuite();\n            result.addTest(new Example());\n            return result;\n        }\n    }\n    @Test public void runTestWhichIsNotATestCase() {\n        // Doesn&#39;t compile: TestRunner.run(Example.class);\n        TestResult result= TestRunner.run(Example.suite());\n        assertTrue(result.wasSuccessful());\n    }\n}\n\nThe first line of the test doesn&#39;t compile, which seems like an error to me,\nbut the test itself passes without a class cast exception. Did I\nmisunderstand your report?\n\nRegards,\n\nKent Beck\nThree Rivers Institute\n\n\n________________________________\n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nBruno Felaco\nSent: Wednesday, October 10, 2007 6:59 AM\nTo: junit@yahoogroups.com\nSubject: [junit] Why does BaseTestRunner require TestCase class rather than\nthe Test interface?\n\n\n\n\nHi,\n\nWe&#39;re having trouble with JUnit 4 which appears to be due to a small change\nthat was made in to BaseTestRunner. The problem is a ClassCastException in\nBaseTestRunner when loading our suite class. In JUnit 3, it didn&#39;t matter\nwhat type of class was loaded as long as it had a static suite() method with\nno arguments. But now in JUnit 4, the class must extend TestCase. I don&#39;t\nunderstand why this is necessary - the getTest() method returns the Test\ninterface and internally it still uses reflection to get the static suite()\nmethod.\nSo why does the code cast the Class to a TestCase? It seems like this is a\ncase of overzealous use of the new parameterized types in Java 5 and a\nregression from JUnit 3.\n\nAlso, in JUnit 3 the method loadSuiteClass() called getLoader() to get the\nClassLoader to use, which opened the door for extensibility. This is gone\nnow, why?\n\nThanks in advance...\n\n\n\n \n\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 19971, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 19973, 
+    "contentTrasformed": false, 
+    "postDate": "1192071426", 
+    "canDelete": false, 
+    "nextInTopic": 19975, 
+    "prevInTopic": 19973, 
+    "headers": {
+        "messageIdInHeader": "PDAxMjkwMWM4MGJiMiQ2OTBlMmNjMCQ2ODAxYThjMEBrZW50c3BhdmlsaW9uPg=="
+    }
+}

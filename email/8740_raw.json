@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 30, 
+    "nextInTime": 8741, 
+    "senderId": "ZfhcX9eyHunY2OyjaENL4AzirJpRcECI0ScqRWEVAWzi9Oe2bKmmGTevMu5nOmqUlq1EElSk5bsSedsHG7wQfwbVOAF5", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test console output?", 
+    "from": "Brett Neumeier &lt;random@...&gt;", 
+    "authorName": "Brett Neumeier", 
+    "msgSnippet": "... I agree with both of J. B. s points above.  However, at some points in the past I have been obligated to use class libraries that write to System.out, and", 
+    "msgId": 8740, 
+    "rawEmail": "Return-Path: &lt;random@...&gt;\r\nX-Sender: random@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 45987 invoked from network); 23 Jul 2003 02:31:05 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m16.grp.scd.yahoo.com with QMQP; 23 Jul 2003 02:31:05 -0000\r\nReceived: from unknown (HELO thrud.rnd.cx) (69.17.20.53)\n  by mta2.grp.scd.yahoo.com with SMTP; 23 Jul 2003 02:31:04 -0000\r\nReceived: from gnurr.rnd.cx (unknown [192.168.236.5])\n\tby thrud.rnd.cx (Postfix) with ESMTP id 33796F5008\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 22 Jul 2003 21:23:04 -0500 (CDT)\r\nSubject: Re: [junit] How to test console output?\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;200307221502240682.01399A50@...&gt;\r\nReferences: &lt;bfjue2+csg7@...&gt;\n\t &lt;200307221502240682.01399A50@...&gt;\r\nContent-Type: text/plain\r\nOrganization: \r\nMessage-Id: &lt;1058927452.2169.5.camel@...&gt;\r\nMime-Version: 1.0\r\nX-Mailer: Ximian Evolution 1.2.4-1.1mdk \r\nDate: 22 Jul 2003 21:30:53 -0500\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Brett Neumeier &lt;random@...&gt;\r\nX-Yahoo-Group-Post: member; u=122508602\r\nX-Yahoo-Profile: xptlq\r\n\r\nOn Tue, 2003-07-22 at 14:02, J. B. Rainsberger wrote:\n&gt; &gt;So said jxingtang on 2003-07-22 --------------------\n&gt; &gt;I do not know whether this is a duplicated question. I have a program \n&gt; &gt;with large number of console output from different source. Basically, \n&gt; &gt;I am using System.out.println(...). How could I verify those outputs \n&gt; &gt;are correct? Thanks!\n&gt; \n&gt; 1. Don&#39;t use System.out in your application directly. Your application\n&gt; components should accept a PrintWriter as a parameter somewhere.\n&gt; 2. In your tests, substitute a PrintWriter wrapping a StringWriter in\n&gt; place of System.out. This is easy to verify.\n\nI agree with both of J. B.&#39;s points above.  However, at some points in\nthe past I have been obligated to use class libraries that write to\nSystem.out, and which I cannot change.  So, to test code that uses these\nlibraries, I&#39;ve found that I get a lot of mileage out of creating a\nlittle &quot;ConsoleTester&quot; helper class, which appears below.  The basic\nidea is, in my unit test I create a ConsoleTester, then exercise the\ncode I want to test, then get the output that was written to System.out\nfrom the ConsoleTester and make assertions about it.\n\nAgain, please do not misunderstand:  I don&#39;t like this approach.  In my\nown code, I do not write to System.out, and I recommend that others\navoid doing so as well.\n\nCheers,\n\nbn\n\npublic class ConsoleTester {\n    private static final PrintStream originalOut = System.out;\n    private static final PrintStream originalErr = System.err;\n    private ByteArrayOutputStream out;\n    private ByteArrayOutputStream err;\n\n    public ConsoleTester() throws IOException {\n        resetStdout();\n        resetStderr();\n    }\n\n    public final void resetStdout() {\n        out = new ByteArrayOutputStream();\n        System.setOut(new PrintStream(out));\n    }\n\n    public final void resetStderr() {\n        err = new ByteArrayOutputStream();\n        System.setErr(new PrintStream(err));\n    }\n\n    public String getStdout() {\n        return out.toString();\n    }\n\n    public String getStderr() {\n        return err.toString();\n    }\n\n    public void shutdown() {\n        System.setOut(originalOut);\n        System.setErr(originalErr);\n    }\n\n    protected void finalize() throws Throwable {\n        shutdown();\n        super.finalize();\n    }\n}\n\n\n\n", 
+    "profile": "xptlq", 
+    "topicId": 8734, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 122508602, 
+    "prevInTime": 8739, 
+    "contentTrasformed": false, 
+    "postDate": "1058927453", 
+    "canDelete": false, 
+    "nextInTopic": 8744, 
+    "prevInTopic": 8736, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNzIyMTUwMjI0MDY4Mi4wMTM5OUE1MEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDEwNTg5Mjc0NTIuMjE2OS41LmNhbWVsQGdudXJyLnJuZC5jeD4=", 
+        "referencesHeader": "PGJmanVlMitjc2c3QGVHcm91cHMuY29tPgkgPDIwMDMwNzIyMTUwMjI0MDY4Mi4wMTM5OUE1MEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4="
+    }
+}

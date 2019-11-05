@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 25, 
+    "nextInTime": 14587, 
+    "senderId": "Pg0OE1XTNOP1NFyBFtnRVo1fDHlaWurNGpvHvfQ3Rd-bHoGYauC1d3NNEdvgRf4G3X7ByYLeU-LdK0eFce_-YS-vPJ862Vwk", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Can I create a dynamic JUnit ?  (in Cactus Framework)", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Cedric, TestSuite.addTest(Test) means add this test to this test suite TestSuite.addTestSuite(Class) means create the tests in Class and add them to this", 
+    "msgId": 14586, 
+    "profile": "kentlbeck", 
+    "topicId": 14533, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-928214080\">Cedric,<br/>\n<br/>\nTestSuite.addTest(Test) means &quot;add this test to this test suite&quot;<br/>\nTestSuite.addTestSuite(Class) means &quot;create the tests in Class and add them<br/>\nto this test suite&quot;<br/>\n<br/>\nIn the first example below you call addTestSuite(), so the constructor is<br/>\ncalled once for each testXXX() method. In the second example the constructor<br/>\nis called explicity, so it is only called once.<br/>\n<br/>\nThe OP described behavior that I don&#39;t understand. Once you create a<br/>\nTestSuite, sending run() to it shouldn&#39;t create any more test objects.<br/>\n<br/>\nSincerely yours,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of Cedric Beust<br/>\n&gt; Sent: Wednesday, August 31, 2005 10:42 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: RE: [junit] Can I create a dynamic JUnit ? (in <br/>\n&gt; Cactus Framework)<br/>\n&gt; <br/>\n&gt; &gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] <br/>\n&gt; On Behalf Of<br/>\n&gt; David Saff<br/>\n&gt; <br/>\n&gt; &gt; That&#39;s a little misleading and a little untrue.  _If_ you run<br/>\n&gt; &gt; JUnit on a class without a suite() method, or you have a<br/>\n&gt; &gt; suite() method that calls TestSuite.addTestSuite(Class), then<br/>\n&gt; &gt; _before any method is executed_, a fresh instance of the test<br/>\n&gt; &gt; class is created for each test method in the class.  However,<br/>\n&gt; &gt; if you have a suite() method that calls<br/>\n&gt; &gt; TestSuite.addTest(Test), which Donny did, then no such &quot;automatic&quot;<br/>\n&gt; &gt; creation _should_ happen. <br/>\n&gt; <br/>\n&gt; Wow, you really had me there.  I didn&#39;t believe it, so I <br/>\n&gt; tried it.  And you<br/>\n&gt; are right.<br/>\n&gt; <br/>\n&gt; Run the following with JUnit:<br/>\n&gt; <br/>\n&gt; public class Test1 extends TestCase {<br/>\n&gt; <br/>\n&gt;   public Test1() {<br/>\n&gt;     System.out.println(&quot;Constructor invoked&quot;);<br/>\n&gt;   }<br/>\n&gt;  <br/>\n&gt;   public void testA1() {<br/>\n&gt;     System.out.println(&quot;test1&quot;);<br/>\n&gt;   }<br/>\n&gt;  <br/>\n&gt;   public void testA2() {<br/>\n&gt;     System.out.println(&quot;test2&quot;);   <br/>\n&gt;   }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; and you will get<br/>\n&gt; <br/>\n&gt;         Constructor invoked<br/>\n&gt;         Constructor invoked<br/>\n&gt; <br/>\n&gt; Now, add a suite method:<br/>\n&gt; <br/>\n&gt;   public static Test suite() {<br/>\n&gt;     TestSuite suite= new TestSuite();<br/>\n&gt;     suite.addTest(new Test1());<br/>\n&gt;     return suite;<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt; and you get<br/>\n&gt; <br/>\n&gt;         Constructor invoked<br/>\n&gt; <br/>\n&gt; Now, what could possibly be the justification for this behavior?!?<br/>\n&gt; <br/>\n&gt; --<br/>\n&gt; Cédric<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://beust.com/weblog\">http://beust.com/weblog</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------ Yahoo! Groups Sponsor <br/>\n&gt; --------------------~--&gt; <br/>\n&gt; Get Bzzzy! (real tools to help you find a job). Welcome to <br/>\n&gt; the Sweet Life.<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/A77XvD/vlQLAA/TtwFAA/5cFolB/TM\">http://us.click.yahoo.com/A77XvD/vlQLAA/TtwFAA/5cFolB/TM</a><br/>\n&gt; --------------------------------------------------------------<br/>\n&gt; ------~-&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 14585, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1125633756", 
+    "canDelete": false, 
+    "nextInTopic": 14622, 
+    "prevInTopic": 14563, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwODMxMTc0MS5qN1ZIZm5ZTzAyODgwN0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PEUxRUIybVEtMDAwNlJVLU9vQHNtdHBhdXRoMDEubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

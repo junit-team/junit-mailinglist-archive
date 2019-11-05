@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 14977, 
+    "senderId": "Pv2aGhJjHuPd9h6QpTT-UrCrrqnICD2sHyqqJ5W19UAE588kLlE7al3yJ9f3BEFwABv5YTD2jHL66m0Dqz8NXpYS0Kxk_B2X", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] JUnit 4 RFE: ignoring a test at runtime", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Elliotte, I have a patch that makes this work, but I don t like it very much. One of our philosophies in JUnit has been to make it more of the intersection of", 
+    "msgId": 14976, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 96127 invoked from network); 27 Sep 2005 17:34:40 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m21.grp.scd.yahoo.com with QMQP; 27 Sep 2005 17:34:40 -0000\r\nReceived: from unknown (HELO smtpauth03.mail.atl.earthlink.net) (209.86.89.63)\n  by mta4.grp.scd.yahoo.com with SMTP; 27 Sep 2005 17:34:39 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth03.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1EKJK3-0007sq-1G\n\tfor junit@yahoogroups.com; Tue, 27 Sep 2005 13:32:55 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Tue, 27 Sep 2005 10:32:32 -0700\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;UTF-8&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nIn-Reply-To: &lt;4332D262.1000100@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nThread-Index: AcW/jSThI9x1J0N1QwWgi9tWN5ty0gD6cuYw\r\nMessage-ID: &lt;E1EKJK3-0007sq-1G@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d47858fd6117bcadbe0bcbc1e50f825329671b90ba8015284847350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] JUnit 4 RFE: ignoring a test at runtime\r\nX-Yahoo-Group-Post: member; u=173198504; y=6VkE_lc_pw4uz-ZfaAjLHlizMkgNEnqQf9RYsmb_463gcJPT\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nElliotte,\n\nI have a patch that makes this work, but I don&#39;t like it very mu=\r\nch. One of our philosophies in JUnit has been to make it more of the inters=\r\nection of all testing tool functionality instead of the union. While I can =\r\nimagine ignore() being sort of useful, especially now that we have @Ignore,=\r\n it doesn&#39;t seem *that* useful to me. Perhaps I need to lower my &quot;threshold=\r\n of utility&quot;. What do you think? How about others--would ignore() be helpfu=\r\nl to you?\n\nSincerely yours,\n\nKent Beck\nThree Rivers Institute\n\n&gt; -----Origi=\r\nnal Message-----\n&gt; From: junit@yahoogroups.com [mailto:junit@...=\r\nm] On \n&gt; Behalf Of Elliotte Harold\n&gt; Sent: Thursday, September 22, 2005 8:4=\r\n9 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] JUnit 4 RFE: ignoring a=\r\n test at runtime\n&gt; \n&gt; Some of my tests methods contain logic like this:\n&gt; \n=\r\n&gt;          XMLReader crimson;\n&gt;          try {\n&gt;              crimson =3D X=\r\nMLReaderFactory.createXMLReader(\n&gt;                &quot;org.apache.crimson.parse=\r\nr.XMLReaderImpl&quot;);\n&gt;          }\n&gt;          catch (SAXException ex) {\n&gt;     =\r\n         // can&#39;t test Crimson if you can&#39;t load it\n&gt;              return;\n=\r\n&gt;          }\n&gt;         // OK. We found Crimson. Now let&#39;s run the test\n&gt; \n&gt;=\r\n In other words, I&#39;m testing a workaround for a bug in a \n&gt; particular clas=\r\ns \n&gt; that may or may not be present. Such tests might also depend on \n&gt; pla=\r\ntform, java version, or other environmental conditions. In \n&gt; JUnit 3 if \n&gt;=\r\n I can&#39;t really make the test due to environmental problems I \n&gt; only have =\r\n\n&gt; two options: pass or fail. Neither is really satisfactory or properly \n&gt;=\r\n explains what;s happening.\n&gt; \n&gt; In JUnit 4 we can annotate a test as @Igno=\r\nre. However that&#39;s \n&gt; only good \n&gt; at compile time. What I want is an ignor=\r\ne() or skip() method \n&gt; similar to \n&gt; the fail() method. However this metho=\r\nd signals that a test \n&gt; was skipped \n&gt; instead of failed. Is there such a =\r\nmethod already? If not, \n&gt; could we have \n&gt; one please? I looked but I coul=\r\ndn&#39;t find one in the current \n&gt; code base, \n&gt; but then I just wasn&#39;t lookin=\r\ng in the right place.\n&gt; \n&gt; -- \n&gt; =EF=BB=BFElliotte Rusty Harold  elharo@met=\r\nalab.unc.edu\n&gt; XML in a Nutshell 3rd Edition Just Published!\n&gt; http://www.c=\r\nafeconleche.org/books/xian3/\n&gt; http://www.amazon.com/exec/obidos/ISBN=3D059=\r\n6007647/cafeaulaitA/\n&gt; ref=3Dnosim\n&gt; \n&gt; \n&gt; ------------------------ Yahoo! =\r\nGroups Sponsor \n&gt; --------------------~--&gt; \n&gt; Most low income households ar=\r\ne not online. Help bridge the \n&gt; digital divide today!\n&gt; http://us.click.ya=\r\nhoo.com/cd_AJB/QnQLAA/TtwFAA/5cFolB/TM\n&gt; ----------------------------------=\r\n----------------------------\n&gt; ------~-&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt;=\r\n \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 14915, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 14975, 
+    "contentTrasformed": false, 
+    "postDate": "1127842352", 
+    "canDelete": false, 
+    "nextInTopic": 14977, 
+    "prevInTopic": 14926, 
+    "headers": {
+        "inReplyToHeader": "PDQzMzJEMjYyLjEwMDAxMDBAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "messageIdInHeader": "PEUxRUtKSzMtMDAwN3NxLTFHQHNtdHBhdXRoMDMubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

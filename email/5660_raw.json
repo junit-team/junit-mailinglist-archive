@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 5661, 
+    "senderId": "CjT_gvfK2zOZqcib90JzlkdUACAb2_KJRn6jmNI74EZv-8He_BqO-er5jcu1fdLycL7pqWHRUlEpBcpWDZDIbRI7rsZRRHal2g", 
+    "systemMessage": false, 
+    "subject": "Re: (3.8) NullPointerException from ComparisonFailure", 
+    "from": "&quot;vbossica&quot; &lt;vbossica@...&gt;", 
+    "authorName": "vbossica", 
+    "msgSnippet": "... I saw a patch somewhere but can t remember where... so here s the quick patch I made: in the AssertTest class: public void", 
+    "msgId": 5660, 
+    "rawEmail": "Return-Path: &lt;vbossica@...&gt;\r\nX-Sender: vbossica@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_0_1); 27 Aug 2002 20:55:41 -0000\r\nReceived: (qmail 16256 invoked from network); 27 Aug 2002 20:55:41 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m15.grp.scd.yahoo.com with QMQP; 27 Aug 2002 20:55:41 -0000\r\nReceived: from unknown (HELO n20.grp.scd.yahoo.com) (66.218.66.76)\n  by mta1.grp.scd.yahoo.com with SMTP; 27 Aug 2002 20:55:41 -0000\r\nReceived: from [66.218.67.162] by n20.grp.scd.yahoo.com with NNFMP; 27 Aug 2002 20:55:41 -0000\r\nDate: Tue, 27 Aug 2002 20:55:39 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: (3.8) NullPointerException from ComparisonFailure\r\nMessage-ID: &lt;akgp0b+33eu@...&gt;\r\nIn-Reply-To: &lt;92CC8CA57F26144DA55A563F4628F9110498E5@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1222\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;vbossica&quot; &lt;vbossica@...&gt;\r\nX-Yahoo-Group-Post: member; u=112965394\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; I will be quite happy to patch this if this has not already\n&gt; been done, but don&#39;t wish to duplicate work if it already\n&gt; has been done.\n\nI saw a patch somewhere but can&#39;t remember where... so here&#39;s the\nquick patch I made:\n\nin the AssertTest class:\n\n    public void testComparisonErrorNullExpected() {\n        ComparisonFailure failure= new ComparisonFailure(&quot;Msg&quot;, null,\n&quot;abcde&quot;);\n\t\tassertEquals(&quot;Msg expected:&lt;null&gt; but was:&lt;abcde&gt;&quot;,\nfailure.getMessage());\n    }\n\n    public void testComparisonErrorNullActual() {\n\t\tComparisonFailure failure= new ComparisonFailure(&quot;Msg&quot;, &quot;abcde&quot;,\nnull);\n\t\tassertEquals(&quot;Msg expected:&lt;abcde&gt; but was:&lt;null&gt;&quot;,\nfailure.getMessage());\n\t}\n\nand in the ComparisonFailure file, line 33:\n\n        if (fExpected == null) {\n            if (message != null)\n                formatted= message+&quot; &quot;;\n            return formatted+&quot;expected:&lt;null&gt; but was:&lt;&quot;+fActual+&quot;&gt;&quot;;\n        }\n        if (fActual == null) {\n            if (message != null)\n                formatted= message+&quot; &quot;;\n            return formatted+&quot;expected:&lt;&quot;+fExpected+&quot;&gt; but\nwas:&lt;null&gt;&quot;;\n        }\n\nYou&#39;ll have to recompile JUnit (of course) to take advantage of the\nfix.\n\nI added this patch on the JUnit project page\n\n-Vladimir\n\n\n", 
+    "profile": "vbossica", 
+    "topicId": 5656, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "prevInTime": 5659, 
+    "contentTrasformed": false, 
+    "postDate": "1030481739", 
+    "canDelete": false, 
+    "nextInTopic": 5661, 
+    "prevInTopic": 5656, 
+    "headers": {
+        "inReplyToHeader": "PDkyQ0M4Q0E1N0YyNjE0NERBNTVBNTYzRjQ2MjhGOTExMDQ5OEU1QGNhbGxpc3RvLnBpeG9sb2d5LmNvbT4=", 
+        "messageIdInHeader": "PGFrZ3AwYiszM2V1QGVHcm91cHMuY29tPg=="
+    }
+}

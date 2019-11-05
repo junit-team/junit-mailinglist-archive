@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 11831, 
+    "senderId": "mVZxJzdMQcSU8BuybEqX5AoaRSAmbHJBtPEOpYx24vfaCAnAb5mAh8dVnW3ZSuqpiWQBEKx8k1OkQsiyYkrBnaEFcztjxA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] TestCase inheritance...", 
+    "from": "&quot;Thomas Robbs&quot; &lt;tom@...&gt;", 
+    "authorName": "Thomas Robbs", 
+    "msgSnippet": "... In a quick review, this is what I ve identified as being missed.  If I have implemented tests for A in AImplTest, and BImplTest does not extend AImplTest,", 
+    "msgId": 11830, 
+    "rawEmail": "Return-Path: &lt;Thomas.Robbs@...&gt;\r\nX-Sender: Thomas.Robbs@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 92690 invoked from network); 22 Aug 2004 14:18:38 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m25.grp.scd.yahoo.com with QMQP; 22 Aug 2004 14:18:38 -0000\r\nReceived: from unknown (HELO main-srv.CASERO.COM) (149.99.33.26)\n  by mta4.grp.scd.yahoo.com with SMTP; 22 Aug 2004 14:18:38 -0000\r\nX-MimeOLE: Produced By Microsoft Exchange V6.0.6375.0\r\ncontent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nDate: Sun, 22 Aug 2004 10:18:36 -0400\r\nMessage-ID: &lt;CC77B3857637EE4CB76EA8427B18F0B51027DA@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: &lt;CC77B3857637EE4CB76EA8427B18F0B51027DA@...&gt;\r\nThread-Topic: [junit] TestCase inheritance...\r\nthread-index: AcSGTPt9TvlmXFagSzKipU6ka3ywxQCBNGv1\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nX-eGroups-Remote-IP: 149.99.33.26\r\nX-eGroups-From: &quot;Thomas Robbs&quot; &lt;Thomas.Robbs@...&gt;\r\nFrom: &quot;Thomas Robbs&quot; &lt;tom@...&gt;\r\nSubject: RE: [junit] TestCase inheritance...\r\nX-Yahoo-Group-Post: member; u=177492222\r\nX-Yahoo-Profile: trobbs2\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\n&gt;Thomas Robbs wrote:\r\n\r\n&gt;&gt; Greetings Gurus... :-)\r\n&gt;&gt; \r\n&gt;&gt; \r\n&gt;&gt; \r\n&gt;&gt; I have a problem trying to determine the &quot;best practice&quot; (ooo that dirty\r\n&gt;&gt; phrase) for this particular scenario.  Here is the sitatution:\r\n&gt;&gt; \r\n&gt;&gt; \r\n&gt;&gt; \r\n&gt;&gt; Interface A   &lt;------implements---- GenericClassA\r\n&gt;&gt; \r\n&gt;&gt;      ^                                               ^\r\n&gt;&gt;      |                                                |\r\n&gt;&gt; \r\n&gt;&gt; extends                                     extends\r\n&gt;&gt; \r\n&gt;&gt;      |                                               |\r\n&gt;&gt; \r\n&gt;&gt;      |                                               |\r\n&gt;&gt; \r\n&gt;&gt; Interface B   &lt;------implements---- GenericClassB\r\n&gt;&gt; \r\n&gt;&gt; \r\n&gt;&gt; \r\n&gt;&gt; Given the above, I want to create a new class that extends\r\n&gt;&gt; &quot;GenericClassB&quot;, let&#39;s call it &quot;Foo&quot;.   \r\n\r\n&gt;I&#39;m going to use shorter names to make it easier for myself. :)\r\n\r\n&gt;Bad news: As far as I can see so far, no matter how you do this, you \r\n&gt;will have some runtime duplication in the tests. I would /really/ have \r\n&gt;to think about how to fix this.\r\n\r\n&gt;Foo extends BImpl implements B\r\n&gt;BImpl extends AImpl implements A\r\n\r\n&gt;Here&#39;s where I put the various tests:\r\n\r\n&gt;1. Tests for the contract of A go into Abstract Test Case ATestCase.\r\n&gt;2. Tests for the non-A behavior in AImpl go into Concrete Test Case \r\n&gt;AImplTest extends ATestCase. This way, AImplTest includes tests both for \r\n&gt;AImpl itself and how well it satisfies the contract of A.\r\n\r\n&gt;SIMILARLY...\r\n\r\n&gt;3. Tests for the contract of B go into Abstract Test Case BTestCase, \r\n&gt;which extends ATestCase to include the contract tests for both A and B.\r\n&gt;4. Tests for the non-B behavior in BImpl go into Concrete Test Case \r\n&gt;BImplTest which extends BTestCase.\r\n\r\n&gt;FINALLY...\r\n\r\n&gt;Tests for Foo-specific, non-B (and therefore non-A) behavior go into \r\n&gt;FooTest extends BImplTest. This way, FooTest inherits all the tests for \r\n&gt;the A and B interfaces.\r\n\r\n\r\nIn a quick review, this is what I&#39;ve identified as being missed.  If I have implemented tests for A in AImplTest, and BImplTest does not extend AImplTest, then I have to duplicate those tests in BImplTest.  Previously, I had BImplTest extend AImplTest and had an inner class in BImplTest (we&#39;ll call it BInnerTest) which extended BTestCase. \r\n\r\nOf course, that leads to my problem in FooTest as it extended BImplTest, but I didn&#39;t have a clean way to get the tests associated with BImplTest.BInnerTest.\r\n\r\nI should have included this in my previous message as it only took me a minute to figure out once I had my work laptop in front of me. :)\r\n\r\nIs there a way to further maximize the tests I&#39;m inheriting.  The problem above also leads me to the issue I spoke of related to overriding factory methods to return the right test fixture in FooTest.\r\n\r\nThanks again Joe,\r\n\r\nTom\r\n\r\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "trobbs2", 
+    "topicId": 11811, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 177492222, 
+    "prevInTime": 11829, 
+    "contentTrasformed": false, 
+    "postDate": "1093184316", 
+    "canDelete": false, 
+    "nextInTopic": 11833, 
+    "prevInTopic": 11829, 
+    "headers": {
+        "messageIdInHeader": "PENDNzdCMzg1NzYzN0VFNENCNzZFQTg0MjdCMThGMEI1MTAyN0RBQG1haW4tc3J2LmNhc2Vyby5jb20+"
+    }
+}

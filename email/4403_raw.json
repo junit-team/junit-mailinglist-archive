@@ -1,0 +1,29 @@
+{
+    "topicId": 4397, 
+    "postDate": "1016517289", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Theodore Norvell &lt;theo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "-Q638f_ioW2t63NRlZke5_kNQuexwpBIPaQc-Cmzt9AUG40Bxj0AUvZ6AFNkG3Xg9s3tBOCzoHUMEkVa0Pi7hYXopR23tmIr", 
+    "nextInTime": 4404, 
+    "userId": 105165521, 
+    "prevInTime": 4402, 
+    "prevInTopic": 4401, 
+    "headers": {
+        "inReplyToHeader": "PGE3NW9jNCs4czFxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuU09MLjQuNDQuMDIwMzE4MjEwNjUxMC4xMjA3Mi0xMDAwMDBAY2FzY2FkZS5jcy51YmMuY2E+"
+    }, 
+    "authorName": "Theodore Norvell", 
+    "numMessagesInTopic": 14, 
+    "msgSnippet": "... Here s an idea that might work. In your new thread catch the errors and failures and put them in the TestResult.  The problem is that it is not clear how", 
+    "contentTrasformed": false, 
+    "msgId": 4403, 
+    "nextInTopic": 4407, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;theo@...&gt;\r\nX-Sender: theo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 19 Mar 2002 05:54:50 -0000\r\nReceived: (qmail 71981 invoked from network); 19 Mar 2002 05:54:50 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m8.grp.scd.yahoo.com with QMQP; 19 Mar 2002 05:54:50 -0000\r\nReceived: from unknown (HELO pedigree.cs.ubc.ca) (142.103.6.50)\n  by mta2.grp.scd.yahoo.com with SMTP; 19 Mar 2002 05:54:50 -0000\r\nReceived: from cascade.cs.ubc.ca (theo@... [142.103.7.7])\n\tby pedigree.cs.ubc.ca (8.11.4/8.11.4) with ESMTP id g2J5snp09544\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 18 Mar 2002 21:54:49 -0800 (PST)\r\nReceived: from localhost (theo@localhost)\n\tby cascade.cs.ubc.ca (8.12.2/8.12.2/Submit) with ESMTP id g2J5snOh017502\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 18 Mar 2002 21:54:49 -0800 (PST)\r\nX-Authentication-Warning: cascade.cs.ubc.ca: theo owned process doing -bs\r\nDate: Mon, 18 Mar 2002 21:54:49 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: Get AssertionFailedError when assert from another\n thread.\r\nIn-Reply-To: &lt;a75oc4+8s1q@...&gt;\r\nMessage-ID: &lt;Pine.SOL.4.44.0203182106510.12072-100000@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: Theodore Norvell &lt;theo@...&gt;\r\nX-Yahoo-Group-Post: member; u=105165521\r\n\r\nOn Mon, 18 Mar 2002, nsparis wrote:\n\n&gt; Let me make it clearer...The exception is thrown, which is what is\n&gt; suppose to happen, but instead of being printed out in JUnit it\n&gt; crashes JUnit.  I.e. JUnit isnt automatically catching it and\n&gt; flagging it as an error for the test case.\n&gt;\n&gt; What do I need to change so that JUnit catches the exception and\n&gt; reports it as an error?\n\nHere&#39;s an idea that might work. In your new thread catch the errors and\nfailures and put them in the TestResult.  The problem is that it is\nnot clear how to find the TestResult using a standard TestCase.\nBelow is a stab at how it might be done.\n\nclass UpdateTest extends TestCase {\n    \tUpdateTest( String fname ) { super(fname) ; }\n\n\n\tpublic void runBare(TestResult result) throws Throwable {\n\t\tsetUp();\n\t\ttry {\n\t\t\trunTest(result);\n\t\t}\n\t\tfinally {\n\t\t\ttearDown();\n\t\t}\n\t}\n\n\tprotected void runTest(TestResult result) throws Throwable {\n\t\t...as in runTest() except look for a method\n\t\t   with a TestResult parameter...\n\t\ttry {\n\t\t\tObject[] params = new Object[]{ result } ;\n\t\t\trunMethod.invoke(this, params);\n\t\t}\n\t\t...as in runTest()...\n\t}\n\n\tprotected TestResult createResult() {\n\t    return new TestResult(){\n\t\t\tprotected void run(final TestCase test) {\n\t\t\t\tstartTest(test);\n\t\t\t\tProtectable p= new Protectable() {\n\t\t\t\t\tpublic void protect() throws Throwable {\n\t\t\t\t\t\ttest.runBare( this );\n\t\t\t\t\t}\n\t\t\t\t} ;\n\t\t\t\trunProtected(test, p);\n\t\t\t\tendTest(test); } } ;\n\t}\n\n// So far this is just a crude hack to pass the TestResult to the\n// test method.  Maybe there&#39;s a better way.  Maybe this way won&#39;t\n// work; I haven&#39;t tried it.\n}\n\nSo now you write a test method that takes a TestResult as\na parameter.  In it build a Runnable, passing in the TestResult,\nand wrap any code that might throw an AssertionFailedError\nor that calls the unit under test as follows:\n\t\ttry {\n\t\t\t..the actual testing code..\n\t\t}\n\t\tcatch (AssertionFailedError e) {\n\t\t\tresult.addFailure(test, e);\n\t\t}\n\t\tcatch (ThreadDeath e) { // don&#39;t catch ThreadDeath by accident\n\t\t\tthrow e;\n\t\t}\n\t\tcatch (Throwable e) {\n\t\t\tresult.addError(test, e);\n\t\t}\nwhere result is the TestResult object.  Now you can start the\nrunnable in a new thread. Luckly addFailure and addError\nare synchronized.\n\nCheers,\nTheodore Norvell\n\n\n", 
+    "subject": "Re: [junit] Re: Get AssertionFailedError when assert from another thread."
+}

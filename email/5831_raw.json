@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 5832, 
+    "senderId": "ftRnwD8av6yDqNmDgIEMO08FkXBf6fY6yC52-k2ufcxXw8G5yM8ZXlj-BAbfaRdsrzNrTjIcg_PlJu3fM6n-c2RmLBg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Running tests in some specified sequence", 
+    "from": "Taras Tielkes &lt;taras@...&gt;", 
+    "authorName": "Taras Tielkes", 
+    "msgSnippet": "Hi Francois, You are right, this is one way of doing this. However, I prefer not to put this logic in a build file. Usally, the ant build file I use just", 
+    "msgId": 5831, 
+    "rawEmail": "Return-Path: &lt;taras@...&gt;\r\nX-Sender: taras@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_1_3); 24 Sep 2002 08:51:00 -0000\r\nReceived: (qmail 31967 invoked from network); 24 Sep 2002 08:50:59 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m11.grp.scd.yahoo.com with QMQP; 24 Sep 2002 08:50:59 -0000\r\nReceived: from unknown (HELO ls4.buro.info.nl) (80.79.194.3)\n  by mta1.grp.scd.yahoo.com with SMTP; 24 Sep 2002 08:50:59 -0000\r\nReceived: by ls4.buro.info.nl with Internet Mail Service (5.5.2653.19)\n\tid &lt;TJFP04LV&gt;; Tue, 24 Sep 2002 10:50:57 +0200\r\nMessage-ID: &lt;DEA593548993924AAEA173FE34217C170F0AED@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Running tests in some specified sequence\r\nDate: Tue, 24 Sep 2002 10:50:52 +0200\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nFrom: Taras Tielkes &lt;taras@...&gt;\r\nX-Yahoo-Group-Post: member; u=78821570\r\nX-Yahoo-Profile: infopakkapakka\r\n\r\nHi Francois,\n\nYou are right, this is one way of doing this.\n\nHowever, I prefer not to put this logic in a build file.\n\nUsally, the ant build file I use just contains this:\n\n...\n&lt;batchtest fork=&quot;yes&quot;&gt;\n\t&lt;fileset dir=&quot;${classes.dir}&quot;&gt;\n\t\t&lt;include name=&quot;com/something/**/Test*.class&quot;/&gt;\n\t&lt;/fileset&gt;\n&lt;/batchtest&gt;\n...\n\nIf I start to put all kinds of exceptions at this single place, things will\nget messy very quickly.\n\nRegards,\n\ntt\n\n&gt; One thing you might want to try is to use Ant to run your unit tests. \n&gt; In Ant, you would use different batch tests to test the lower level \n&gt; parts, the the next higher part, etc. etc.\n&gt; \n&gt; Hope that helps !\n&gt; Francois\n&gt; \n&gt; Taras Tielkes wrote:\n&gt; &gt; Hi,\n&gt; &gt; \n&gt; &gt; I have a layered API class model that I&#39;d like to unit test.\n&gt; &gt; \n&gt; &gt; The API is layered in the sense that some high level APIs \n&gt; depend on lower\n&gt; &gt; level APIs. Other higher level APIs are built on the high \n&gt; level APIs.\n&gt; &gt; \n&gt; &gt; I have written unit tests for each of these APIs.\n&gt; &gt; \n&gt; &gt; These unit tests can be run in any sequence, however: I&#39;d \n&gt; like to specify\n&gt; &gt; that the unit tests for the lower level APIs should be run first.\n&gt; &gt; When these tests pass, the higher level APIs can be tested, \n&gt; having some\n&gt; &gt; confidence that the lower level works.\n&gt; &gt; \n&gt; &gt; The reason is that when an error occurs in a low level API, \n&gt; it&#39;s easier to\n&gt; &gt; diagnose when it occurs in the unit test for the lower \n&gt; level API, rather\n&gt; &gt; than as a result of the higher level API calling the low level API.\n&gt; &gt; \n&gt; &gt; When I add tests to a TestSuite using one of the addXXX() \n&gt; methods, is the\n&gt; &gt; sequence of adding the tests the same sequence if which the \n&gt; tests are run?\n&gt; &gt; \n&gt; &gt; If not, how can specify that a subset of all tests &#39;should&#39; \n&gt; be run in some\n&gt; &gt; sequence? (Note: not *must*, the unit tests can still be \n&gt; run in *any*\n&gt; &gt; sequence, but I&#39;d like the stuff that tests the low level \n&gt; parts of the code\n&gt; &gt; to run first)\n&gt; &gt; \n&gt; &gt; If TestSuite does not respect the sequence of the addXXX() \n&gt; calls for the\n&gt; &gt; running of the tests, can I implements this by extending TestSuite?\n&gt; &gt; \n&gt; &gt; Thanks in advance for any comments on this! (I&#39;m pretty new \n&gt; to unit testing\n&gt; &gt; in general)\n&gt; &gt; \n&gt; &gt; tt \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; To unsubscribe from this group, send an email to:\n&gt; &gt; junit-unsubscribe@yahoogroups.com\n&gt; &gt;  \n&gt; &gt; \n&gt; &gt; Your use of Yahoo! Groups is subject to \n&gt; http://docs.yahoo.com/info/terms/ \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; \n&gt; -- \n&gt; \n&gt; -- \n&gt; Francois Beausoleil (fbos@...)\n&gt; Creator of Java Gui Builder - http://jgb.sourceforge.net/\n&gt; Closed eyes are not always sleeping.\n&gt; \n&gt; \n&gt; \n&gt; ------------------------ Yahoo! Groups Sponsor \n&gt; ---------------------~--&gt;\n&gt; 4 DVDs Free +s&p Join Now\n&gt; http://us.click.yahoo.com/pt6YBB/NXiEAA/ySSFAA/5cFolB/TM\n&gt; --------------------------------------------------------------\n&gt; -------~-&gt;\n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;  \n&gt; \n&gt; Your use of Yahoo! Groups is subject to \n&gt; http://docs.yahoo.com/info/terms/ \n&gt; \n&gt; \n\n", 
+    "profile": "infopakkapakka", 
+    "topicId": 5826, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78821570, 
+    "prevInTime": 5830, 
+    "contentTrasformed": false, 
+    "postDate": "1032857452", 
+    "canDelete": false, 
+    "nextInTopic": 5832, 
+    "prevInTopic": 5830, 
+    "headers": {
+        "messageIdInHeader": "PERFQTU5MzU0ODk5MzkyNEFBRUExNzNGRTM0MjE3QzE3MEYwQUVEQGxzNC5idXJvLmluZm8ubmw+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 22969, 
+    "senderId": "5opLPwXUujHH73DVOwNUPRu2r3m18BUHqMBI2LXzyh5GIGREkvAuBQkJMLtuWg47mfMHLf0ihCmACHCw7Nzv91xN", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ExpectedException reset", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Tamas, If you put a System.out.println after your first call to throwNullPointer, you ll see that the test ends there.  The exception ends the test, and then", 
+    "msgId": 22968, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 65204 invoked from network); 27 Sep 2010 16:34:52 -0000\r\nX-Received: from unknown (66.196.94.107)\n  by m12.grp.re1.yahoo.com with QMQP; 27 Sep 2010 16:34:52 -0000\r\nX-Received: from unknown (HELO mail-yw0-f52.google.com) (209.85.213.52)\n  by mta3.grp.re1.yahoo.com with SMTP; 27 Sep 2010 16:34:52 -0000\r\nX-Received: by ywo32 with SMTP id 32so2236126ywo.11\n        for &lt;junit@yahoogroups.com&gt;; Mon, 27 Sep 2010 09:34:52 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.90.65.15 with SMTP id n15mr5515400aga.196.1285605292086; Mon,\n 27 Sep 2010 09:34:52 -0700 (PDT)\r\nX-Received: by 10.90.130.13 with HTTP; Mon, 27 Sep 2010 09:34:52 -0700 (PDT)\r\nIn-Reply-To: &lt;22CE92172C520548ACF120917BB4060A02AE653F@...&gt;\r\nReferences: &lt;22CE92172C520548ACF120917BB4060A02AE653F@...&gt;\r\nDate: Mon, 27 Sep 2010 09:34:52 -0700\r\nX-Google-Sender-Auth: eTvYGDIu857UqtaGHr5KjoZ5T7M\r\nMessage-ID: &lt;AANLkTimbX2VmoRQXdxapO7ids9WB126q5KJ4hThudT5j@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] ExpectedException reset\r\nX-Yahoo-Group-Post: member; u=341876227; y=V6HnQT6dSb6bziLiPcFWP-_02_aGQoOpAOJEuI9gvQ0\r\nX-Yahoo-Profile: dsaff\r\n\r\nTamas,\n\nIf you put a System.out.println after your first call to\nthrowNullP=\r\nointer, you&#39;ll see that the test ends there.  The exception\nends the test, =\r\nand then the rule is happy, because it got the\nexception it was looking for=\r\n.  This is the expected behavior.\n\n   David Saff\n\nOn Mon, Sep 27, 2010 at 7=\r\n:59 AM, Tamas Paulo &lt;Tamas_Paulo@...&gt; wrote:\n&gt; Hi All,\n&gt;\n&gt; I was using=\r\n the the ExpectedException rule, and realized that after getting the expect=\r\ned exception it &quot;sinks&quot; every following exception, whats more I couldn&#39;t ev=\r\nen reset it&#39;t expectations.\n&gt; Am I missing something, or is this the proper=\r\n behavior?\n&gt;\n&gt; See the following code which runs successfully:\n&gt; public cla=\r\nss Expect {\n&gt;\n&gt; =A0 =A0 =A0@Rule\n&gt; =A0 =A0 =A0public ExpectedException exce=\r\nption =3D ExpectedException.none();\n&gt;\n&gt; =A0 =A0 =A0@Test\n&gt; =A0 =A0 =A0publi=\r\nc void test() throws Exception\n&gt; =A0 =A0 =A0{\n&gt; =A0 =A0 =A0 =A0 =A0 =A0exce=\r\nption.expect(NullPointerException.class);\n&gt; =A0 =A0 =A0 =A0 =A0 =A0throwNul=\r\nlPointer();\n&gt; =A0 =A0 =A0 =A0 =A0 =A0throwNullPointer();\n&gt; =A0 =A0 =A0 =A0 =\r\n=A0 =A0throwException();\n&gt; =A0 =A0 =A0 =A0 =A0 =A0exception =3D ExpectedExc=\r\neption.none();\n&gt; =A0 =A0 =A0 =A0 =A0 =A0throwNullPointer();\n&gt; =A0 =A0 =A0 =\r\n=A0 =A0 =A0throwException();\n&gt; =A0 =A0 =A0 =A0 =A0 =A0exception =3D null;\n&gt;=\r\n =A0 =A0 =A0 =A0 =A0 =A0throwNullPointer();\n&gt; =A0 =A0 =A0 =A0 =A0 =A0throwE=\r\nxception();\n&gt; =A0 =A0 =A0}\n&gt;\n&gt; =A0 =A0 =A0private void throwNullPointer()\n&gt;=\r\n =A0 =A0 =A0{\n&gt; =A0 =A0 =A0 =A0 =A0 =A0throw new NullPointerException();\n&gt; =\r\n=A0 =A0 =A0}\n&gt;\n&gt; =A0 =A0 =A0private void throwException() throws Exception\n=\r\n&gt; =A0 =A0 =A0{\n&gt; =A0 =A0 =A0 =A0 =A0 =A0throw new Exception();\n&gt; =A0 =A0 =\r\n=A0}\n&gt; }\n&gt;\n&gt; Thanks in advance,\n&gt; Tam=E1s\n&gt;\n&gt;\n&gt; [Non-text portions of this =\r\nmessage have been removed]\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt;=\r\n Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22967, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22967, 
+    "contentTrasformed": false, 
+    "postDate": "1285605292", 
+    "canDelete": false, 
+    "nextInTopic": 22969, 
+    "prevInTopic": 22967, 
+    "headers": {
+        "inReplyToHeader": "PDIyQ0U5MjE3MkM1MjA1NDhBQ0YxMjA5MTdCQjQwNjBBMDJBRTY1M0ZARVBIVUJVRFNBMDAzNi5lcGFtLmNvbT4=", 
+        "messageIdInHeader": "PEFBTkxrVGltYlgyVm1vUlFYZHhhcE83aWRzOVdCMTI2cTVLSjRoVGh1ZFQ1akBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PDIyQ0U5MjE3MkM1MjA1NDhBQ0YxMjA5MTdCQjQwNjBBMDJBRTY1M0ZARVBIVUJVRFNBMDAzNi5lcGFtLmNvbT4="
+    }
+}

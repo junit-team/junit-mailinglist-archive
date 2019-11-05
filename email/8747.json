@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 8748, 
+    "senderId": "2UFUhXZWltdm3Lt-FR6JzPplpk3kp7e5gwkjHBuR5pWm17HOb7AkAm0ms1xV49KZUoy9nigeKzuxWgN_YdvtUQmJtI6etHERBGxXIg4VMvNLzPr5onZj", 
+    "systemMessage": false, 
+    "subject": "Re: client-server simulation in separate JVM&#39;s using Junit", 
+    "from": "&quot;Leonardo Abreu de Barros&quot; &lt;leobarros@...&gt;", 
+    "authorName": "Leonardo Abreu de Barros", 
+    "msgSnippet": "Hello, I m not sure if I understand what exactly is your problem, but it seems that you have exactly the same requirement I do. I need to start a server, on a", 
+    "msgId": 8747, 
+    "profile": "lbarros75", 
+    "topicId": 8717, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 142904876, 
+    "messageBody": "<div id=\"ygrps-yiv-2006852819\">Hello,<br/>\n<br/>\nI&#39;m not sure if I understand what exactly is your problem, but it <br/>\nseems that you have exactly the same requirement I do. I need to <br/>\nstart a server, on a separate JVM, start a client, run a suite of <br/>\ntests and then shutdown down them all.<br/>\n<br/>\nI achieved this using both the &lt;parallel&gt; task and the &quot;fork&quot; <br/>\nattribute of the &lt;java&gt; task. Following is the code I&#39;m using, please <br/>\nconsider if it can be of any help.<br/>\n<br/>\n&lt;target name=&quot;junit&quot; depends=&quot;compile&quot;&gt;<br/>\n  &lt;parallel&gt;<br/>\n    &lt;sequential&gt;<br/>\n      &lt;echo&gt; # Starting Server...&lt;/echo&gt;<br/>\n      &lt;java dir=&quot;${SERVER_DIR}&quot; classname=&quot;mypackage.MyServer&quot; <br/>\nfork=&quot;yes&quot;&gt;<br/>\n        &lt;jvmarg value=&quot;-server&quot;/&gt;<br/>\n        &lt;classpath refid=&quot;server.classpath&quot;/&gt;<br/>\n      &lt;/java&gt;<br/>\n    &lt;/sequential&gt;<br/>\n    &lt;sequential&gt;<br/>\n      &lt;!-- Waits for the server listener to be up --&gt;<br/>\n      &lt;waitfor maxwait=&quot;5&quot; maxwaitunit=&quot;second&quot;&gt;<br/>\n\t&lt;socket server=&quot;${server}&quot; port=&quot;${rmiport}&quot;/&gt;<br/>\n      &lt;/waitfor&gt;<br/>\n      &lt;junit printsummary=&quot;on&quot; fork=&quot;false&quot; haltonfailure=&quot;false&quot;  <br/>\nfailureproperty=&quot;tests.failed&quot; showoutput=&quot;true&quot;&gt;<br/>\n        &lt;classpath refid=&quot;project.classpath&quot;/&gt;<br/>\n\t&lt;formatter type=&quot;brief&quot; usefile=&quot;false&quot;/&gt;<br/>\n\t&lt;test name=&quot;${testfile}&quot;/&gt;<br/>\n      &lt;/junit&gt;<br/>\n      &lt;fail if=&quot;tests.failed&quot;&gt;<br/>\n        *****************************<br/>\n\tOne or more tests failed. Check output...<br/>\n        *****************************<br/>\n      &lt;/fail&gt;<br/>\n      &lt;echo&gt;Testes completed.&lt;/echo&gt;<br/>\n    &lt;/sequential&gt;<br/>\n  &lt;/parallel&gt;<br/>\n&lt;/target&gt;<br/>\n<br/>\nTake care,<br/>\nLeonardo Barros<br/>\n<br/>\n--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;korosh_afshar&quot; &lt;korosh_afshar@y...&gt; <br/>\nwrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; <br/>\n&gt; Hi,<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I have a need to spawn a server and multiple clients in different <br/>\n </span></blockquote>VM&#39;s <br/>\n<blockquote><span title=\"ireply\"> &gt; because of singleton use of a library that each client uses which <br/>\n&gt; limits me to this solution.   Server starts, then clients each <br/>\n </span></blockquote>start <br/>\n<blockquote><span title=\"ireply\"> &gt; and interact with the server and make assertions on the response <br/>\n </span></blockquote>from <br/>\n<blockquote><span title=\"ireply\"> &gt; server.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I know about Ant with parallel task or batch job.  I know about <br/>\n&gt; ActiveTestSuite and JUnitPref but they seems to run tests in <br/>\n </span></blockquote>different <br/>\n<blockquote><span title=\"ireply\"> &gt; threads but same JVM.<br/>\n&gt; <br/>\n&gt; I&#39;d like to do this from ONE TestCase since that seems like a nicer <br/>\n&gt; solution than Ant parallel task.  e.g my TestClientServer  would <br/>\n </span></blockquote>spawn <br/>\n<blockquote><span title=\"ireply\"> &gt; a server in a different VM and also spawn as many clients as I want <br/>\n&gt; each in its own VM and then once all client(s) test methods are <br/>\n </span></blockquote>done, <br/>\n<blockquote><span title=\"qreply\"> &gt; the TestClientServer tears down.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Is there a way to do this.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; thanks </span></blockquote></div>", 
+    "prevInTime": 8746, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1058960791", 
+    "canDelete": false, 
+    "nextInTopic": 8757, 
+    "prevInTopic": 8742, 
+    "headers": {
+        "inReplyToHeader": "PGJmaG5qMys5YmwxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGJmbHNpbitsMjd1QGVHcm91cHMuY29tPg=="
+    }
+}

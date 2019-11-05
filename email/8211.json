@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 8212, 
+    "senderId": "hNtN1Uj5tiZQfikkBFw7lrVQv0l51iw3YwWtc0cSWhqCcWsC2QnELodKhmNFIXrQemy_vNFXMNlD5L_P_xLGAQymlBnh", 
+    "systemMessage": false, 
+    "subject": "one time setUp and tearDown", 
+    "from": "&quot;Curt&quot; &lt;ccrandall77@...&gt;", 
+    "authorName": "Curt", 
+    "msgSnippet": "Hi, I ve run into a bit of a problem in trying to understand how to implement the solution in the JUnit FAQ for having one time setUp and tearDown. In my JUnit", 
+    "msgId": 8211, 
+    "profile": "ccrandall77", 
+    "topicId": 8211, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 111723574, 
+    "messageBody": "<div id=\"ygrps-yiv-892634869\">Hi,<br/>\n<br/>\n  I&#39;ve run into a bit of a problem in trying to understand how to <br/>\nimplement the solution in the JUnit FAQ for having one time setUp <br/>\nand tearDown.<br/>\n  In my JUnit setup, I have a class called TestSuiteMain whose main<br/>\n() method looks something like:<br/>\n<br/>\npublic static void main(String[] args)<br/>\n{<br/>\n    TestSuite suite = new TestSuite();<br/>\n    suite.addTest(new TestSuite(TestLookup.class));<br/>\n    suite.addTest(new TestSuite(TestDBMaps.class));<br/>\n        <br/>\n    junit.textui.TestRunner.run(suite);<br/>\n}<br/>\n<br/>\nIn the TestDBMaps class, I have a setUp() method that loads a <br/>\ndatabase with data, and a tearDown() method that purges the <br/>\ndatabase.  There are 30+ test methods that query the database, for <br/>\neach specific data mapping, strings the results together, and uses <br/>\nand assert to compare to the solution string.  I only want the <br/>\ndatabase to be loaded once before the tests and purged once after <br/>\nthe tests.<br/>\n<br/>\nIn my TestDBMaps class (which extends TestCase), I tried the <br/>\nsolution given in the FAQ.  So, I added:<br/>\n<br/>\npublic static Test suite()<br/>\n{<br/>\n\tTestSuite suite = new TestSuite();<br/>\n<br/>\n\tTestSetup wrapper = new TestSetup(suite)<br/>\n\t{<br/>\n\t\tprotected void setUp()<br/>\n\t\t{<br/>\n\t\t\toneTimeSetUp();<br/>\n\t\t}<br/>\n<br/>\n\t\tprotected void tearDown()<br/>\n\t\t{<br/>\n\t\t\toneTimeTearDown();<br/>\n\t\t}<br/>\n\t};<br/>\n\treturn wrapper;<br/>\n}<br/>\n<br/>\nI renamed my original setUp() and tearDown() to oneTimeSetUp() and <br/>\noneTimeTearDown() and made them static.<br/>\n<br/>\nThe problem now is that the TestDBMaps.suite() method does not <br/>\nexecute.  I assume I&#39;ve put this in the wrong spot, however, I&#39;m not <br/>\nsure where to put it... again I&#39;m assuming my TestSuiteMain class.  <br/>\nIf so, do I need to get rid of the TestSuiteMain.main() and replace <br/>\nit with TestSuiteMain.suite()?<br/>\n<br/>\nI really do not want to place the logic for one time setup and <br/>\nteardown in my TestSuiteMain since the setup for one of the test <br/>\nclasses is very different than it is for another test class.  To <br/>\nplace the logic in my TestSuiteMain would then require me to make a <br/>\nmonolithic set up and tear down that handles all classes... and this <br/>\nwill only grow as I add more test classes to my package.<br/>\n<br/>\nWhat is the best way to handle what I&#39;m trying to accomplish?<br/>\n<br/>\nOn another note, I found the JUnit documentation on www.junit.org to <br/>\nbe a little hard to understand, personally.  And it didn&#39;t seem to <br/>\ngo quite into as much depth as I would like.  Can anyone recommend a <br/>\ngood book on the subject?  One that covers XUnit methodologies in <br/>\nother languages would be great too.<br/>\n<br/>\nThank you,<br/>\nCurt</div>", 
+    "prevInTime": 8210, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1054237071", 
+    "canDelete": false, 
+    "nextInTopic": 8212, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJiNW5pZitjaTdmQGVHcm91cHMuY29tPg=="
+    }
+}

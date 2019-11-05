@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3038, 
+    "senderId": "_hwHieud0AJbJZlcVNElB9QHiRNzZt9QJXyJaSGp8LGmIQSTIsJiwRZsqSUu8jPtM0i_s0fiI3hW1JHs-l65w4oaKFJoiEfEkAn-Ua0", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing GUI Classes with no X-Display", 
+    "from": "Chester Kustarz 2 &lt;chester@...&gt;", 
+    "authorName": "Chester Kustarz 2", 
+    "msgSnippet": "... Thanks for the suggestions and information (I was the poster of the original question). I thought I would share my solution with the list. I too ended up", 
+    "msgId": 3037, 
+    "topicId": 3017, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1184252985\">On Fri, 19 Oct 2001, Robert Sartin wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; We&#39;re converting to an automatic test detection system that marks test<br/>\n&gt; types and we plan to mark tests that require GUI code to run and only<br/>\n&gt; run them in environments that have the GUI.<br/>\n<br/>\n </span></blockquote>Thanks for the suggestions and information (I was the poster of the<br/>\noriginal question). I thought I would share my solution with the list.<br/>\n<br/>\nI too ended up with a &quot;test detection system&quot; for a couple of reasons, the<br/>\nmain one being I cannot install virtual X displays on some of the systems<br/>\nI work on. So then I tried to break apart my AllUnitTests suite into<br/>\nGUI and non-GUI unit tests. However, I figured there was a better way<br/>\nto solve this issue. Since the problem arises in junit itself, I thought<br/>\nthat would be a great place to test for the problem. The &quot;solution&quot; I came<br/>\nup with is really simple:<br/>\n<br/>\npackage foo.applets.test;<br/>\nimport junit.framework.*;<br/>\n/**<br/>\n * Test suite for all unit tests for foo.applets package.<br/>\n */<br/>\npublic class AllTests { /* test suite */<br/>\n\tpublic static Test suite() {<br/>\n\t\tTestSuite suite = new TestSuite(&quot;Applet tests&quot;);<br/>\n\t\t// Add in non-GUI tests<br/>\n\t\tsuite.addTest(FormatterTest.suite());<br/>\n\t\t// Only add in GUI tests if we are not running on<br/>\n\t\t// a headless system (no display)<br/>\n\t\ttry {<br/>\n\t\t\t// Use GUI stuff -- if it throws an Error<br/>\n\t\t\t// ten we are running on a headless system<br/>\n\t\t\tnew foo.applets.Settings();<br/>\n\t\t\t\t/*<br/>\n\t\t\t\t * Settings is a class that has<br/>\n\t\t\t\t * AWT Fonts and Colors etc. in it.<br/>\n\t\t\t\t * On a headless system an Error will<br/>\n\t\t\t\t * be thrown here.<br/>\n\t\t\t\t */<br/>\n\t\t\t// Add in GUI tests<br/>\n\t\t\tsuite.addTest(QueryPanelTest.suite());<br/>\n\t\t\tsuite.addTest(FieldSelectionTest.suite());<br/>\n\t\t\t...<br/>\n\t\t} catch (Error e) {<br/>\n\t\t\t// ok, we just won&#39;t add the GUI tests<br/>\n\t\t\tSystem.out.println(&quot;Caught error &quot; + e);<br/>\n\t\t\tSystem.out.println(&quot;Ignoring GUI tests&quot;);<br/>\n\t\t}<br/>\n\t\treturn suite;<br/>\n\t}<br/>\n}<br/>\n<br/>\n----------------------------------------------------------------------<br/>\nWithout X-Display server (headless setup):<br/>\n<br/>\nCaught error java.lang.InternalError: Can&#39;t connect to X11 window server using &#39;foo.bar.com:0.0&#39; as the value of the DISPLAY variable.<br/>\nIgnoring GUI tests<br/>\n................[0, 1, 2]<br/>\n..[0, 1, 2]<br/>\n......<br/>\nTime: 0.963<br/>\n<br/>\nOK (25 tests)<br/>\n<br/>\n----------------------------------------------------------------------<br/>\nWith X-Display server (or the same as running in windows):<br/>\n<br/>\n...<br/>\n...............[0, 1, 2]<br/>\n..[0, 1, 2]<br/>\n......<br/>\nTime: 5.673<br/>\n<br/>\n<br/>\nOK (64 tests)<br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\nChester Kustarz 2<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.monkey.org/~chester\">http://www.monkey.org/~chester</a></div>", 
+    "prevInTime": 3036, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1003709866", 
+    "canDelete": false, 
+    "nextInTopic": 3038, 
+    "prevInTopic": 3024, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDExMDE5MTk1NjA4LjI5Njg2LnFtYWlsQHdlYjExNjA0Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuQlNPLjQuMzMuMDExMDIxMTk1OTI0MC4yNzQ5OS0xMDAwMDBAbmF1Z2h0eS5tb25rZXkub3JnPg=="
+    }
+}

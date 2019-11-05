@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20224, 
+    "senderId": "HRx7q001ao1KvUAPvo5iB4aXgTOu41WuquQBrEDb2hH-3nasrRlxEKllreRnh85jsOSZEqNQIumYrx-WciMLlWxP6GkqILb_-ohxarok1en4dXuDRItO6BVc_Vp4hg", 
+    "systemMessage": true, 
+    "subject": "Re: testing abstract methods", 
+    "from": "&quot;martinboehmsonneberg&quot; &lt;martin.boehm@...&gt;", 
+    "authorName": "martinboehmsonneberg", 
+    "msgSnippet": "Hi Chandima, there is a very simple pattern to solve your problem. You can use it to test abstract classes as interfaces as well. Imagine you have a Recycable", 
+    "msgId": 20223, 
+    "profile": "martinboehmsonneberg", 
+    "topicId": 20209, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 334026059, 
+    "messageBody": "<div id=\"ygrps-yiv-276556737\">Hi Chandima,<br/>\n<br/>\nthere is a very simple pattern to solve your problem. You can use it<br/>\nto test abstract classes as interfaces as well. Imagine you have a<br/>\nRecycable Class that has a recycable()-method. Because a Recycable is<br/>\na very abstract thing you simply create an AbstractRecycableTest like<br/>\nthis:<br/>\n<br/>\npublic abstract class AbstractRecycableTest extends TestCase {<br/>\n<br/>\n  private Recycable recycable = null;<br/>\n<br/>\n  public abstract Recycable createRecycable();<br/>\n<br/>\n  public void setUp() {<br/>\n    this.recycable = this.createRecycable();<br/>\n  }<br/>\n<br/>\n  public final void testIsRecycled() {<br/>\n    ...<br/>\n    this.recycable.recycle();<br/>\n    ...<br/>\n  }<br/>\n<br/>\n  public final void testRecycleToComponents() {<br/>\n    ...<br/>\n    this.recycable.recycle();<br/>\n    ...<br/>\n  }<br/>\n}<br/>\n<br/>\nDeclare an abstract creation-method for your concrete recycable, that<br/>\ncreates for example a tetrapack or bottle.<br/>\n<br/>\nThen create your concrete Testcases:<br/>\n<br/>\npublic class RecycableFlugzeugTest extends AbstractRecycableTest {<br/>\n<br/>\n  @Override<br/>\n  public final Recycable createRecycable() {<br/>\n    Flugzeug flugzeug = new Flugzeug();<br/>\n    return flugzeug;<br/>\n  }<br/>\n}<br/>\n<br/>\npublic class RecycableBottleTest extends AbstractRecycableTest {<br/>\n<br/>\n  @Override<br/>\n  public final Recycable createRecycable() {<br/>\n    Bottle bottle = new Bottle(1.0);<br/>\n    return bottle;<br/>\n  }<br/>\n}<br/>\n<br/>\nThis are the classes that can be run by the Testrunner.<br/>\n<br/>\nIn this general manner you are not only able to test that the<br/>\nrecycle()-method has been implemented. More over you are able to<br/>\nensure that the recycle()-method meets the requirements and that for<br/>\neach implementing or inheriting class! So you only have to write a<br/>\nRecycable[...]Test and implement a creation-method to ensure that your<br/>\nclass under test is really recycable.<br/>\nMaybe somebody has the idea to inherit the RecycableMilkBottleTest<br/>\nfrom your RecycableBottleTest and tries to override your<br/>\ncreation-method in an unexpected way; so don&#39;t forget to make each<br/>\ncreation method final to prevent this dangerous overriding.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;choi_chandima&quot; &lt;choi_chandima@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; hi friends ;<br/>\n&gt; i&#39;m using NetBeans as my development environment and i&#39;m having an <br/>\n&gt; abstract parent class caled &quot;Vehicle&quot; that has been inherited by o3 sub <br/>\n&gt; clases namely Van ,Lory,...etc. when i want to test the parent class <br/>\n&gt; which is abstract how could i do it as it doesn&#39;t let me instantiate.<br/>\n&gt; <br/>\n&gt; choi<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 20222, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1199964413", 
+    "canDelete": false, 
+    "nextInTopic": 20303, 
+    "prevInTopic": 20219, 
+    "headers": {
+        "inReplyToHeader": "PGZsaW5vNytyZ3Y0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGZtNHZkdCtqZHBpQGVHcm91cHMuY29tPg=="
+    }
+}

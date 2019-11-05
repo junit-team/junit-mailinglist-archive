@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 9338, 
+    "senderId": "AIVz45kbG39XV8hQDZjLMQfI96-y1jTmBJcVsEJffl4LI9l9zYxzxJUAX8IYQPQiLxR-2Bj3vCX76qKfnva3EJp9T81vNH1e2CAVMw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Possible TestCaseClassLoader bug", 
+    "from": "Malcolm Sparks &lt;malcolm@...&gt;", 
+    "authorName": "Malcolm Sparks", 
+    "msgSnippet": "No, I don t think it s a bug. Further down in the same method body it resolves the class: if (resolve) resolveClass(c); return c; The method wants to check to", 
+    "msgId": 9337, 
+    "profile": "xsumeman", 
+    "topicId": 9335, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139420845, 
+    "messageBody": "<div id=\"ygrps-yiv-2019228309\">No, I don&#39;t think it&#39;s a bug. Further down in the same method body<br/>\nit resolves the class:<br/>\n<br/>\nif (resolve)<br/>\n\tresolveClass(c);<br/>\nreturn c;<br/>\n<br/>\nThe method wants to check to see if the class should be<br/>\nexcluded before loading and resolving it. Otherwise, other classes<br/>\nthat the class depends upon might be loaded, but which cannot<br/>\nbe unloaded if the class is subsequently excluded by JUnit&#39;s class<br/>\nexclusion list.<br/>\n<br/>\n&lt;off-topic&gt;<br/>\nIf you really want to write your own JUnit class loader I would<br/>\nrecommend that you write it from scratch, and create an implementation<br/>\nthat only overrides ClassLoader.findClass(String name), specifying<br/>\nthe classes you want to include rather than classes you want to exclude.<br/>\nKeep the system CLASSPATH set to just the classes you need for your test<br/>\nrunner and nothing else. This would align your class loader to Sun<br/>\nrecommendations on such things. I don&#39;t know why JUnit&#39;s class loading<br/>\nis written the way it is, perhaps someone could enlighten me, but I<br/>\nexpect it is because the code pre-dates JDK 1.2, when the Java class<br/>\nloading model was no as stable.<br/>\n&lt;/off-topic&gt;<br/>\n<br/>\nMalcolm<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Sun, 2003-09-14 at 22:33, David Vydra wrote:<br/>\n&gt; I was writing a reloading console runner and had to make the following<br/>\n&gt; change in order to make it work. Is this a known bug?<br/>\n&gt; Thanks<br/>\n&gt; David<br/>\n&gt; www.testdriven.com<br/>\n&gt; <br/>\n&gt; public class TestCaseClassLoader extends ClassLoader {<br/>\n&gt; ...<br/>\n&gt; public synchronized Class loadClass(String name, boolean resolve)<br/>\n&gt;   throws ClassNotFoundException {<br/>\n&gt; <br/>\n&gt;   //Class c= findLoadedClass(name);<br/>\n&gt;   //DV original code forgot to resolve here<br/>\n&gt;   Class c = super.loadClass(name,resolve);<br/>\n&gt;   if (c != null)<br/>\n&gt;    return c;<br/>\n&gt; ...<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n-- <br/>\nDirector<br/>\nCongreve Computing Ltd. </span></blockquote></div>", 
+    "prevInTime": 9336, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1063618907", 
+    "canDelete": false, 
+    "nextInTopic": 9340, 
+    "prevInTopic": 9335, 
+    "headers": {
+        "inReplyToHeader": "PDAwMDYwMWMzN2IwNyRjZDE0NjgwMCQyOTAyMDEwYUBuYS5wbHVtdHJlZS5jb20+", 
+        "messageIdInHeader": "PDEwNjM2MTg5MDcuMzYyMy4zMC5jYW1lbEBsdXRoaWVuLmNvbmdyZXZlLmNvbT4=", 
+        "referencesHeader": "PGJqdWczbCtvOW1xQGVHcm91cHMuY29tPgkgPDAwMDYwMWMzN2IwNyRjZDE0NjgwMCQyOTAyMDEwYUBuYS5wbHVtdHJlZS5jb20+"
+    }
+}

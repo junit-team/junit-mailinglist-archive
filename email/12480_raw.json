@@ -1,0 +1,28 @@
+{
+    "topicId": 12480, 
+    "postDate": "1103110250", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Edoardo Comar &lt;edoardo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "YWYEjpjHgilSXmUwlJOJzTDCNq7SBpnDxcAUUhv6DQ9MC5AZcbyAqgabbrhEhPGLIp0OFyA1TOGtKttZTRpEEDKiZM55XVCiBzc", 
+    "nextInTime": 12481, 
+    "userId": 151206269, 
+    "prevInTime": 12479, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQxQzAyMDZBLjgwMzAyQHN1cGFuZXQuY29tPg=="
+    }, 
+    "authorName": "Edoardo Comar", 
+    "numMessagesInTopic": 1, 
+    "msgSnippet": "The default junit behavior is, for each testXXX method to invoke : public void runBare() throws Throwable { setUp(); try { runTest(); } finally { tearDown(); }", 
+    "contentTrasformed": false, 
+    "msgId": 12480, 
+    "nextInTopic": 0, 
+    "systemMessage": true, 
+    "rawEmail": "Return-Path: &lt;edoardo@...&gt;\r\nReceived: (qmail 57020 invoked from network); 15 Dec 2004 16:18:36 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m23.grp.scd.yahoo.com with QMQP; 15 Dec 2004 16:18:36 -0000\r\nReceived: from unknown (HELO n21a.bulk.scd.yahoo.com) (66.94.237.50)\n  by mta5.grp.scd.yahoo.com with SMTP; 15 Dec 2004 16:18:36 -0000\r\nReceived: from [66.218.69.6] by n21.bulk.scd.yahoo.com with NNFMP; 15 Dec 2004 16:17:40 -0000\r\nReceived: from [66.218.66.114] by mailer6.bulk.scd.yahoo.com with NNFMP; 15 Dec 2004 16:17:40 -0000\r\nX-Sender: edoardo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 34969 invoked from network); 15 Dec 2004 11:30:49 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m20.grp.scd.yahoo.com with QMQP; 15 Dec 2004 11:30:49 -0000\r\nReceived: from unknown (HELO smtp801.mail.ukl.yahoo.com) (217.12.12.138)\n  by mta5.grp.scd.yahoo.com with SMTP; 15 Dec 2004 11:30:49 -0000\r\nReceived: from unknown (HELO ?192.168.0.77?) (e.comar@62.188.53.154 with plain)\n  by smtp801.mail.ukl.yahoo.com with SMTP; 15 Dec 2004 11:30:48 -0000\r\nMessage-ID: &lt;41C0206A.80302@...&gt;\r\nDate: Wed, 15 Dec 2004 11:30:50 +0000\r\nUser-Agent: Mozilla Thunderbird 0.9 (X11/20041124)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nX-eGroups-Remote-IP: 217.12.12.138\r\nFrom: Edoardo Comar &lt;edoardo@...&gt;\r\nSubject: having tearDown invoked also on setUp failure\r\nX-Yahoo-Group-Post: member; u=151206269\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 15 Dec 2004 16:17:40 -0000\r\nX-eGroups-Remote-IP: 66.94.237.50\r\n\r\n\nThe default junit behavior is, for each testXXX method to invoke :\n\n   public void runBare() throws Throwable {\n       setUp();\n       try {\n           runTest();\n       }\n       finally {\n           tearDown();\n       }\n   }\n\n\nthis means that _tearDown()  is not invoked on setUp() failure_\nwhich is a problem if setUp fails 1/2 way after having created some \npersistent resources\n(e.g. database data, eclipse test projects ...)\n\na simple solution that works well for me, is to override runBare()\n(e.g. in a base testcase class for the project) :\n\n   /**\n    * override to have tearDown called on setUp failure\n    */\n   public final void runBare() throws Throwable {\n       try {\n           setUp();\n           runTest();\n       }\n       finally {\n           tearDown();\n       }\n   }\n\n \ncheers\n----------\nEdoardo Comar\nedoardo AT enigmatec DOT net\n\n\n\n[Non-text portions of this message have been removed]\n\n\n\n\n\n", 
+    "subject": "having tearDown invoked also on setUp failure"
+}

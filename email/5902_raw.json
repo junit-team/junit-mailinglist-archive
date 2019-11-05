@@ -1,0 +1,28 @@
+{
+    "topicId": 5875, 
+    "postDate": "1033568163", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "HdazhiIrI_KNQoI7Gq503ec3QXLIxPTSXH0VK_eypXi01nYGKaq8B66DZrQbY-ofnRtixEJIyfgLod2ReaX_tEAm6iiC-AqDhU-NLEp1", 
+    "nextInTime": 5903, 
+    "userId": 61568997, 
+    "prevInTime": 5901, 
+    "prevInTopic": 5901, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ4MUE4QENBU0UwNTI+"
+    }, 
+    "authorName": "Mark Meyers", 
+    "numMessagesInTopic": 38, 
+    "msgSnippet": "... class Xxx extends Assert implements Test ? Never tried it though... ... That is the case already: public class Assert... static public void", 
+    "contentTrasformed": false, 
+    "msgId": 5902, 
+    "nextInTopic": 5903, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;markm@...&gt;\r\nX-Sender: markm@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_1_4); 2 Oct 2002 14:21:35 -0000\r\nReceived: (qmail 59578 invoked from network); 2 Oct 2002 14:21:35 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m10.grp.scd.yahoo.com with QMQP; 2 Oct 2002 14:21:35 -0000\r\nReceived: from unknown (HELO smtp1.pandora.be) (195.130.132.33)\n  by mta2.grp.scd.yahoo.com with SMTP; 2 Oct 2002 14:21:34 -0000\r\nReceived: (qmail 1471 invoked from network); 2 Oct 2002 14:21:33 -0000\r\nReceived: from unknown (HELO horkos.telenet-ops.be) ([195.130.132.45]) (envelope-sender &lt;markm@...&gt;)\n          by hercules.telenet-ops.be (qmail-ldap-1.03) with SMTP\n          for &lt;junit@yahoogroups.com&gt;; 2 Oct 2002 14:21:33 -0000\r\nReceived: from localhost (localhost.localdomain [127.0.0.1])\n\tby horkos.telenet-ops.be (Postfix) with SMTP id E93D78496C\n\tfor &lt;junit@yahoogroups.com&gt;; Wed,  2 Oct 2002 16:21:33 +0200 (CEST)\r\nReceived: from case052.minervasoftcare.com (D57679CF.kabel.telenet.be [213.118.121.207])\n\tby horkos.telenet-ops.be (Postfix) with ESMTP id D160183F9E\n\tfor &lt;junit@yahoogroups.com&gt;; Wed,  2 Oct 2002 16:21:33 +0200 (CEST)\r\nReceived: by CASE052 with Internet Mail Service (5.5.2653.19)\n\tid &lt;TAJ35FDB&gt;; Wed, 2 Oct 2002 16:16:04 +0200\r\nMessage-ID: &lt;C450D96664CBD31182B600A0C97668B16481A8@CASE052&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Do JUnit internals suck?!?\r\nDate: Wed, 2 Oct 2002 16:16:03 +0200 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain;\n\tcharset=&quot;ISO-8859-1&quot;\r\nFrom: Mark Meyers &lt;markm@...&gt;\r\nX-Yahoo-Group-Post: member; u=61568997\r\n\r\n\n\n&gt; -----Original Message-----\n&gt; From: Berin Loritsch [mailto:bloritsch@...]\n&gt; ...\n&gt; \n&gt; Another issue I have is that while JUnit defines the Test interface,\n&gt; it only really expects the TestCase base class.  It is unclear how\n&gt; the Test interface interacts with the system.  Sometimes I would much\n&gt; rather work with my own base class that is completely separate from\n&gt; JUnit.  The Assert class should be made a static utility clasee, not\n&gt; a base class as well.  That would allow us to work with the assert\n&gt; methods from any class something like this is much better:\n&gt; \n\nclass Xxx extends Assert implements Test ?\nNever tried it though...\n\n&gt; Assert.isTrue( myObject.rocks() );\n&gt; \n&gt; than this:\n&gt; \n&gt; assertTrue( myObject.rocks() );\n&gt; \n&gt; ...\n&gt; \n&gt; What I would like to see is the following:\n&gt; \n&gt; * Explicit use of interfaces--make the contracts clear, and code the\n&gt;    test runners/collectors to use the interfaces and not the base\n&gt;    classes.  If there are different contracts with a type of \n&gt; test/suite,\n&gt;    then it needs a new interface.\n&gt; \n&gt; * Making Assert into a set of static utilities so that we don&#39;t have\n&gt;    to inherit it to make it useful.\n&gt; \n\nThat is the case already:\n\npublic class Assert...    \n    static public void assertTrue(boolean condition){\n        assertTrue(null, condition);\n    }\n    static public void fail(String message)...\n\nThe downside is of course not being able to override those methods...\n(redefining assertTrue(String, boolean) will not change behavior of\nassertTrue(boolean) as with instance methods)\n\n&gt; ...\n&gt; * Explicit declaration of the TestCase being the Leaf of the \n&gt; model, not\n&gt;    a branch (as it is now treated).  A different interface \n&gt; for TestSuite\n&gt;    and TestCase will help.\n&gt; \n\nWhen writing tests, it is very usefull to group related tests together in a\nsingle java file . \nIt may be clearer on the &quot;internals&quot; side if there would be a\nTestMethodInvoker class that takes a TestCase and a Method and invokes the\nmethod on the instance. \nYou could get rid of the TestCase(String nameThatIsReallyAMethodName)\nconstructor. The constructor is most definitely confusing to novice users.\nAnd they are encouraged to put setUp code in the constructor. It is there\nanyway, not so the setUp method.\nThe TestSuite and TestMethodInvoker would participate in the composite\npattern, the TestCase could then just be collection of test methods (and no\nlonger implement Test, behavior extracted to TestMethodInvoker ).\nIs that a good idea ?\nDownside is backward compatibility, of course...\n\n", 
+    "subject": "RE: [junit] Do JUnit internals suck?!?"
+}

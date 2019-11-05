@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 13629, 
+    "senderId": "dGcDEGmo_fXoRGgelO36JH5_EVh2Y1o5QW3x3oTa5IVT0PJh_ThicxSNfyMzTYjiMcxVGfQ84EF-91D-IIi3X6IeMb9uhiDskBw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] RE: Isolation or Collaboration", 
+    "from": "Chris Dollin &lt;kers@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... That s a different issue, though. That the program has different effects if method calls are reordered is one thing; that the program fails *internally* if", 
+    "msgId": 13628, 
+    "rawEmail": "Return-Path: &lt;kers@...&gt;\r\nX-Sender: kers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 46690 invoked from network); 25 May 2005 15:06:16 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m25.grp.scd.yahoo.com with QMQP; 25 May 2005 15:06:16 -0000\r\nReceived: from unknown (HELO tobor.hpl.hp.com) (192.6.10.60)\n  by mta2.grp.scd.yahoo.com with SMTP; 25 May 2005 15:06:15 -0000\r\nReceived: from localhost (localhost [127.0.0.1])\n\tby tobor.hpl.hp.com (Postfix) with ESMTP id 3998A37089\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 25 May 2005 16:05:53 +0100 (BST)\r\nReceived: from tobor.hpl.hp.com ([127.0.0.1])\n by localhost (tobor.hpl.hp.com [127.0.0.1]) (amavisd-new, port 20024)\n with LMTP id 32439-01-9 for &lt;junit@yahoogroups.com&gt;;\n Wed, 25 May 2005 16:05:47 +0100 (BST)\r\nReceived: from timmay.hpl.hp.com (timmay-hb.hpl.hp.com [15.144.59.39])\n\tby tobor.hpl.hp.com (Postfix) with ESMTP id 7D87B37083\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 25 May 2005 16:05:46 +0100 (BST)\r\nReceived: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [15.144.90.22])\n\tby timmay.hpl.hp.com (8.13.2/8.13.2) with ESMTP id j4PF5f87014518\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 25 May 2005 16:05:41 +0100 (BST)\r\nOrganization: HPLB\r\nTo: junit@yahoogroups.com\r\nDate: Wed, 25 May 2005 16:05:41 +0100\r\nUser-Agent: KMail/1.5\r\nReferences: &lt;200505251434.j4PEYCQx009157@...&gt;\r\nIn-Reply-To: &lt;200505251434.j4PEYCQx009157@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200505251605.41292.kers@...&gt;\r\nX-HPLB-IMAP-MailScanner-Information: Please contact the Helpdesk for more information\r\nX-HPLB-IMAP-MailScanner: Found to be clean\r\nX-HPLB-IMAP-MailScanner-SpamCheck: not spam, SpamAssassin (score=0,\n\trequired 5)\r\nX-Virus-Scanned: by amavisd-new at hplb.hpl.hp.com\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Chris Dollin &lt;kers@...&gt;\r\nSubject: Re: [junit] RE: Isolation or Collaboration\r\nX-Yahoo-Group-Post: member; u=88056088; y=HAIwLYXgfmvI8N7uzNCxiHSFrKHZkS2wAb_AQ5_ARQFTctaOxyRs\r\nX-Yahoo-Profile: anover_alias\r\n\r\nOn Wednesday 25 May 2005 15:34, Cedric Beust wrote:\n&gt; &gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On\n&gt; &gt;\n&gt; &gt; Not at all. That&#39;s what class invariants are for. Each public\n&gt; &gt; method is atomic. It is invoked when an object is any legal\n&gt; &gt; state and when the method returns it is always careful to\n&gt; &gt; leave the object in one of the legal states (barring bad\n&gt; &gt; synchronization and complicated multithreaded issues).\n&gt;\n&gt; That&#39;s not what I was saying.  I am sure your code won&#39;t crash if the\n&gt; method is called without these prerequisites, it&#39;s just that it won&#39;t be\n&gt; doing anything useful (no-op or throwing an exception), so testing it in\n&gt; these conditions will be useless:  you need to set up these prerequisites\n&gt; before you invoke the method.\n&gt;\n&gt; &gt; However, a situation where public method A must be\n&gt; &gt; invoked before method B is a code smell.\n&gt;\n&gt; I see code like this every day, and it&#39;s not a code smell to me.\n&gt;\n&gt; It&#39;s just what a program is about:  the logical execution of statements in\n&gt; a certain order.  Run them in a different order and the program no longer\n&gt; does what it&#39;s supposed to do.\n\nThat&#39;s a different issue, though. That the program has different \neffects if method calls are reordered is one thing; that the program \nfails *internally* if they&#39;re reordered is another.\n\nFor example, consider a Jena RDF Model object (which can be usefully\nthough of as a set of (S P O) statements, where S P and O are Resources\nnamed by URIs [1]).  You can .add(S P O) and .remove(S&#39; P&#39; O&#39;) to\nyour heart&#39;s content, with different S&#39;s and P&#39;s and O&#39;s, and the\nModel will eat it all up; you can invoke the methods in any order\nyou like.\n\nNow, for whatever effect you *want*, there&#39;s probably a best ordering,\nand lots of broken orderings. Nevertheless, each sequence of add/remove\ncalls is well-defined [2] - there&#39;s no &quot;you must do X to allow Y&quot;\ncircumstances. \n\n[1] S and O can also be &quot;blank&quot;, ie non-named, Resources, and O can\n    can be a literal value, but that doesn&#39;t affect this discussion.\n\n[2] Well, a model might be immutable, in which case the well-definition\n    is a bit boring - it throws an exception on the first mutation.\n\n-- \nChris &quot;electric hedgehog&quot; Dollin\n&quot;The compiler is free to insert padding because it makes the struct \nlook bigger and scares away predators.&quot; [Keith Thompson, comp.lang.c]\n\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 13451, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88056088, 
+    "prevInTime": 13627, 
+    "contentTrasformed": false, 
+    "postDate": "1117033541", 
+    "canDelete": false, 
+    "nextInTopic": 13629, 
+    "prevInTopic": 13625, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTI1MTQzNC5qNFBFWUNReDAwOTE1N0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDUwNTI1MTYwNS40MTI5Mi5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "referencesHeader": "PDIwMDUwNTI1MTQzNC5qNFBFWUNReDAwOTE1N0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

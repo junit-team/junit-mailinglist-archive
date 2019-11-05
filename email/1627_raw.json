@@ -1,0 +1,28 @@
+{
+    "topicId": 1627, 
+    "postDate": "993443349", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "autophile@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "u67ZHF4HqIEpsXZTspJ-M9oHdBJdJjM8b0DNHbwk-djMRmkTp70XVnvBdbn_CF8oYB0TT5Er1Cc", 
+    "nextInTime": 1628, 
+    "userId": 0, 
+    "prevInTime": 1626, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDloNmVtbCtrMms5QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "autophile@dol.net", 
+    "numMessagesInTopic": 1, 
+    "msgSnippet": "Hi all, I d like to run 100 tests which do exactly the same thing but use different data/result sets. I couldn t find anything in JUnit that would allow me to", 
+    "contentTrasformed": false, 
+    "msgId": 1627, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;autophile@...&gt;\r\nX-Sender: autophile@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 25 Jun 2001 04:29:14 -0000\r\nReceived: (qmail 41827 invoked from network); 25 Jun 2001 04:29:13 -0000\r\nReceived: from unknown (10.1.10.26) by l10.egroups.com with QMQP; 25 Jun 2001 04:29:13 -0000\r\nReceived: from unknown (HELO fj.egroups.com) (10.1.10.46) by mta1 with SMTP; 25 Jun 2001 04:29:13 -0000\r\nX-eGroups-Return: autophile@...\r\nReceived: from [10.1.10.96] by fj.egroups.com with NNFMP; 25 Jun 2001 04:29:13 -0000\r\nDate: Mon, 25 Jun 2001 04:29:09 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Method to run single test, different data\r\nMessage-ID: &lt;9h6eml+k2k9@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1428\r\nX-Mailer: eGroups Message Poster\r\nFrom: autophile@...\r\n\r\nHi all,\n\nI&#39;d like to run 100 tests which do exactly the same thing but use\ndifferent data/result sets. I couldn&#39;t find anything in JUnit that\nwould allow me to do this so that TestRunner would display all 100\ntests using the data set name rather than the test name (since there&#39;s\nreally only one test method).\n\nIf anyone knows how to do this, please let me know!\n\nIn the meantime, here&#39;s what I did as a work-around:\n\n1. In the TestCase, have the constructor take in a single String,\nwhich is the name of the data set.\n\n2. In the constructor, call super(yourSingleTestMethodName), and store\naway the data set name somewhere.\n\n3. Override both getName() and toString() to return the data set name.\nWe can do this because the code in TestCase actually accesses the\nprivate test name variable (containing yourSingleTestMethodName) and\nnot getName(), name(), or toString().\n\n4. In your suite() method, iterate over all the data sets, adding the\ntest cases:\n\nIterator i = dataSetNames.iterator();\n\nwhile (i.hasNext())\n  suite.addTest( new MyTestCase( (String)i.next() );\n\n\nAnd now the TestRunner will display the data set name as the name of\nthe test, yet it will run yourSingleTestMethodName as the actual test.\n\nClearly this is a kludge relying on the internals of the TestCase\ncode. Hopefully the next release of JUnit will include a method to run\na single test with different data sets while displaying the name of\nthe data set.\n\n\n", 
+    "subject": "Method to run single test, different data"
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 2352, 
+    "senderId": "mzkgSjnitweFslCYxmEX-tOBoB9b1L97Z3j_aWd3fTSupFNfYMqo6W4mNyU4hpTxj2bbfgc3ptLhPu7_uBE5f5rKJRYS8FNaRTabXx9rUeT8HJU", 
+    "systemMessage": false, 
+    "subject": "testing interfaces", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Yes to both. My guess is that there is a core set of features that belong to Document and DocumentPool whose behavior you want to guarantee is consistent", 
+    "msgId": 2351, 
+    "topicId": 2340, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-849510772\"><blockquote><span title=\"ireply\">&gt;I have 2 interfaces &quot;DocumentPool&quot; and &quot;Document&quot; and multiple<br/>\n&gt;implementions of these (like HTMLPool, WordDocPool). The target is to<br/>\n&gt;link these (about 50.000) docs using different &quot;rules&quot;.<br/>\n&gt;<br/>\n&gt;should i write my unit tests for each implementation or could i save<br/>\n&gt;time by writing one testcase to test the interface?<br/>\n<br/>\n </span></blockquote>Yes to both.<br/>\n<br/>\nMy guess is that there is a core set of features that belong to Document and <br/>\nDocumentPool whose behavior you want to guarantee is consistent across all <br/>\nimplementations. For that, you can use this strategy:<br/>\n<br/>\nabstract DocumentTestCase<br/>\n    abstract Document getDocument()<br/>\n    void testX()<br/>\n    void testY()<br/>\n    ...<br/>\n<br/>\nDocumentImpl1TestCase extends DocumentTestCase<br/>\n    Document getDocument() { return someDocumentImpl1; }<br/>\n<br/>\nDocumentImpl2TestCase extends DocumentTestCase<br/>\n    Document getDocument() { return someDocumentImpl2; }<br/>\n<br/>\nand so on.<br/>\n<br/>\nHere you run one test suite per implementation of Document, but the suites <br/>\nhave a common set of tests.<br/>\n<br/>\nYou may also have some behavior that is specific to a particular <br/>\nimplementation of Document. In this case, add tests for that behavior to the <br/>\ntest suite for that particular Document implementation. *Now* that test <br/>\nsuite covers both sets of features.<br/>\n<br/>\nRemember: test behavior, not methods. Maybe you expose a method that you <br/>\ndon&#39;t need to expose...<br/>\n<br/>\nGood luck.<br/>\n<br/>\nJBR.<br/>\n<br/>\n_________________________________________________________________<br/>\nGet your FREE download of MSN Explorer at <a rel=\"nofollow\" target=\"_blank\" href=\"http://explorer.msn.com/intl.asp\">http://explorer.msn.com/intl.asp</a></div>", 
+    "prevInTime": 2350, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "997798079", 
+    "canDelete": false, 
+    "nextInTopic": 2369, 
+    "prevInTopic": 2345, 
+    "headers": {
+        "messageIdInHeader": "PEY5M1d0eWk2N0VLUnVZRGxyamIwMDAwOGVkNEBob3RtYWlsLmNvbT4="
+    }
+}

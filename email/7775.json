@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7776, 
+    "senderId": "EKa2gVBBzgeoOeWVO1ucW9uw7k5A0wUuFICbrqonneGCW3XW5jBB9b55ZPK7Git5WpRi2kLorg1ohlIyeDIr1oCBi338QbTUg58uEvnBA1RU", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] A test to verify that an event is generated", 
+    "from": "&quot;Kris Henderson&quot; &lt;khenderson@...&gt;", 
+    "authorName": "Kris Henderson", 
+    "msgSnippet": "... That s kind of what I was thinking but I was having a hard time figuring out how to do it. Thankyou Vladimir, Manuel, and J.B.  I rewrote my test taking", 
+    "msgId": 7775, 
+    "profile": "kris_556", 
+    "topicId": 7751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90305179, 
+    "messageBody": "<div id=\"ygrps-yiv-633590433\"><blockquote><span title=\"ireply\">&gt; From: J. B. Rainsberger [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>] <br/>\n&gt; Q: Is threading required to verify generating the event? <br/>\n&gt; Avoiding it would be better.<br/>\n<br/>\n </span></blockquote>That&#39;s kind of what I was thinking but I was having a hard time figuring<br/>\nout how to do it.<br/>\n<br/>\nThankyou Vladimir, Manuel, and J.B.  I rewrote my test taking your<br/>\nsuggestions into account and my test is much more elegant now.<br/>\n<br/>\nHere&#39;s what my test looks like after I rewrote it:<br/>\n<br/>\n    public void testEvents()<br/>\n    {<br/>\n        final DeviceDescriptor device = new<br/>\nDeviceDescriptor(DeviceType.PRINTER, &quot;Name&quot;, &quot;Address&quot;);<br/>\n<br/>\n        class MockService extends AbstractDeviceListService<br/>\n        {<br/>\n            public MockService()<br/>\n            {<br/>\n            }        <br/>\n        }<br/>\n<br/>\n        class MockListener implements DeviceListListener<br/>\n        {<br/>\n            public int addCount = 0;<br/>\n            public int removeCount = 0;<br/>\n            <br/>\n            public void deviceAdded(DeviceListEvent event)<br/>\n            {<br/>\n                addCount += 1;<br/>\n                assertEquals(event.getDevice(), device);<br/>\n            }<br/>\n            public void deviceRemoved(DeviceListEvent event)<br/>\n            {<br/>\n                removeCount += 1;<br/>\n                assertEquals(event.getDevice(), device);<br/>\n            }<br/>\n        }<br/>\n        <br/>\n        MockService service = new MockService();<br/>\n        MockListener listener = new MockListener();<br/>\n<br/>\n        service.addDeviceListListener(listener);<br/>\n<br/>\n        service.addDevice(device);<br/>\n        assertEquals(listener.addCount, 1);<br/>\n<br/>\n        service.removeDevice(device, 0);<br/>\n        assertEquals(listener.removeCount, 1);<br/>\n    }<br/>\n<br/>\nKris</div>", 
+    "prevInTime": 7774, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1050617452", 
+    "canDelete": false, 
+    "nextInTopic": 7778, 
+    "prevInTopic": 7773, 
+    "headers": {
+        "messageIdInHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJBQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4="
+    }
+}

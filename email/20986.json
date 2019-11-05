@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 20987, 
+    "senderId": "Opbx2HyIrlAcHK_9wWWzCEyCqqliP9SWYQ-m_xDO5f2LrFHnDPw7tW2XSsRBxyhUqai9QmcabhizRRWT1Ni1RPcYbfo", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterized and Theories overlaps", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "[+CC: Charlie Poole, who might be interested in the example...] Joakim is correct.  A theory promises that correct code will pass the theory for any parameters", 
+    "msgId": 20986, 
+    "profile": "dsaff", 
+    "topicId": 20365, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-293482616\">[+CC: Charlie Poole, who might be interested in the example...]<br/>\n<br/>\nJoakim is correct.  A theory promises that correct code will pass the<br/>\ntheory for any parameters you pass in:<br/>\n<br/>\n@Theory public void additionIsCommutative(int x, int y) {<br/>\n   assertEquals(x + y, y + x);<br/>\n}<br/>\n<br/>\nA &quot;Parameterized test&quot; is what I like to call an &quot;answer key&quot;.  It can<br/>\nbe applied to some different parameters, but you have to look at the<br/>\nkey to know which are correct.  If we converted the Parameterized<br/>\nRunner to behave more like theories, it might look like (totally<br/>\nmaking this up):<br/>\n<br/>\n// Read top to bottom<br/>\n@Answers(&quot;a&quot;) public int[] = {3, 4, 5}<br/>\n@Answers(&quot;b&quot;) public int[] = {4, 3, 12}<br/>\n@Answers(&quot;c&quot;) public int[] = {5, 5, 13}<br/>\n<br/>\n@AnswerKey public void pythogoreanTheorem(int a, int b, int c) {<br/>\n   assertEquals(c, hypoteneuse(a, b));<br/>\n}<br/>\n<br/>\nThe Theories interface currently looks different than the<br/>\nParameterized interface because experience with the Parameterized<br/>\nRunner made me dissatisfied with the interface.<br/>\n<br/>\nHope this helps,<br/>\n<br/>\n   David Saff<br/>\n<br/>\nNot every value of a, b, and c should make this test pass.<br/>\n<br/>\nOn Sun, Oct 19, 2008 at 6:34 PM, Joakim Ohlrogge<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; The difference as far as I understand it is that theories make a<br/>\n&gt; promise that the theory will pass with anything you can pass in as<br/>\n&gt; parameters (minus any assumptions you make with assumeThat or<br/>\n&gt; similar). That makes it possible, in theory :), to generate data for<br/>\n&gt; theories and find holes in them (parameters where they don&#39;t pass).<br/>\n&gt;<br/>\n&gt; A theory could be something like:<br/>\n&gt;<br/>\n&gt; @Theory<br/>\n&gt; public void<br/>\n&gt; sortingAlgoritmsProduceResultsOfTheSameLengthAsTheInput(SortingAlgorithm<br/>\n&gt; algorithm, List input) {<br/>\n&gt; assertThat(algorithm.sort(input).length(), is(input.length));<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Regardless which sorting algorithm you use and which input you throw<br/>\n&gt; at it the result should have the same length as the input.<br/>\n&gt;<br/>\n&gt; Parameterized tests make no such claim. They will pass for the data<br/>\n&gt; that is setup in the test but may or may not fail with other data.<br/>\n&gt;<br/>\n&gt; Whether parameterized tests will stay or go... I don&#39;t know.<br/>\n&gt;<br/>\n&gt; Hope this helps<br/>\n&gt; /J<br/>\n&gt;<br/>\n&gt; On Fri, Oct 17, 2008 at 5:34 PM, jwirth &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rparree@...\">rparree@...</a>&gt; wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt; I&#39;m also &quot;struggling&quot; with this. Why have two concepts that deal with the<br/>\n&gt;&gt; same thing. Is it likely that Parameterized will be replaced by Theories<br/>\n&gt;&gt; when they become a integral part of Junit?<br/>\n&gt;&gt;<br/>\n&gt;&gt; I do see one difference between them, but this is not made clear in the<br/>\n&gt;&gt; documentation.<br/>\n&gt;&gt;<br/>\n&gt;&gt; The Parameterized runners parametrize the fixture, whereas Theories<br/>\n&gt;&gt; &quot;parametrizes&quot; the test method.<br/>\n&gt;&gt;<br/>\n&gt;&gt; Is that indeed the difference between them and will they therefore remain<br/>\n&gt;&gt; both?<br/>\n&gt;&gt;<br/>\n&gt;&gt; tx.,<br/>\n&gt;&gt;<br/>\n&gt;&gt; toalexsmail wrote:<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; There is 2 runners that did the same work. More precisely, all work<br/>\n&gt;&gt;&gt; that can be done by Parameterized runner can be done by Theories<br/>\n&gt;&gt;&gt; runner. I think it should be consider to refactor their<br/>\n&gt;&gt;&gt; implementations and to write more documentation about use of Theories.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; --<br/>\n&gt;&gt; View this message in context:<br/>\n&gt;&gt;<br/>\n&gt;&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/Parameterized-and-Theories-overlaps-tp16004982p20029916.html\">http://www.nabble.com/Parameterized-and-Theories-overlaps-tp16004982p20029916.html</a><br/>\n&gt;&gt; Sent from the JUnit - User mailing list archive at Nabble.com.<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt; --<br/>\n&gt; -----------------------------------------------------<br/>\n&gt; Joakim Ohlrogge<br/>\n&gt; Agical AB<br/>\n&gt; Västerlånggatan 79, 2 tr<br/>\n&gt; 111 29 Stockholm, SWEDEN<br/>\n&gt;<br/>\n&gt; Mobile: +46-708-754004<br/>\n&gt; Blog: johlrogge.wordpress.com<br/>\n&gt; E-mail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a><br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 20985, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1224524322", 
+    "canDelete": false, 
+    "nextInTopic": 20987, 
+    "prevInTopic": 20980, 
+    "headers": {
+        "inReplyToHeader": "PGI5ZWU1ZTQxMDgxMDE5MTUzNGk0ZDkyMTZmNGdlZGQ1OThiMWQ1MjdjYzI1QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgxMDIwMTAzOHkxNmUxN2I4YXQ0NjM1MDQzZDQ3ZWVhYmU2QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDI5OTE2LnBvc3RAdGFsay5uYWJibGUuY29tPgkgPGI5ZWU1ZTQxMDgxMDE5MTUzNGk0ZDkyMTZmNGdlZGQ1OThiMWQ1MjdjYzI1QG1haWwuZ21haWwuY29tPg=="
+    }
+}

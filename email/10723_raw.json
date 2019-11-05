@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 19, 
+    "nextInTime": 10724, 
+    "senderId": "YpINCZ11V1OKolnZUGd3elbwAlroqdq9Hhkp9n2BEqkr7MdjNmlotqkR8bOR_v4cUFKclSz_zCkxXdgDXLYnExAbKK-cERB-IC7gfAqZpE0QZg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] assert failure without exiting test.", 
+    "from": "&quot;Bryan LaPlante&quot; &lt;blaplante@...&gt;", 
+    "authorName": "Bryan LaPlante", 
+    "msgSnippet": "What I have had to do in this case is set up an ArrayList for tracking the failures and the last test to run checks the size of the ArrayList for any failures", 
+    "msgId": 10723, 
+    "rawEmail": "Return-Path: &lt;blaplante@...&gt;\r\nReceived: (qmail 56818 invoked from network); 29 Mar 2004 16:24:33 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m15.grp.scd.yahoo.com with QMQP; 29 Mar 2004 16:24:33 -0000\r\nReceived: from unknown (HELO n14.grp.scd.yahoo.com) (66.218.66.69)\n  by mta2.grp.scd.yahoo.com with SMTP; 29 Mar 2004 16:24:33 -0000\r\nX-eGroups-Return: blaplante@...\r\nReceived: from [66.218.67.250] by n14.grp.scd.yahoo.com with NNFMP; 29 Mar 2004 16:22:59 -0000\r\nX-Sender: blaplante@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 29236 invoked from network); 29 Mar 2004 15:20:44 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m10.grp.scd.yahoo.com with QMQP; 29 Mar 2004 15:20:44 -0000\r\nReceived: from unknown (HELO mail.tiw.net) (204.118.40.11)\n  by mta5.grp.scd.yahoo.com with SMTP; 29 Mar 2004 15:20:44 -0000\r\nReceived: from netwebapps.com ([204.118.40.43]) by mail.tiw.net with Microsoft SMTPSVC(5.0.2195.6713);\n\t Mon, 29 Mar 2004 09:15:44 -0600\r\nReceived: from vincent [69.23.112.216] by netwebapps.com with ESMTP\n  (SMTPD32-8.02) id AD941BA0072; Mon, 29 Mar 2004 09:15:32 -0600\r\nMessage-ID: &lt;002301c415a1$7cebc280$d478fea9@vincent&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;012b01c41599$d55df260$7064a8c0@...&gt;\r\nDate: Mon, 29 Mar 2004 09:21:19 -0600\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 6.00.2600.0000\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nX-OriginalArrivalTime: 29 Mar 2004 15:15:44.0828 (UTC) FILETIME=[B4F767C0:01C415A0]\r\nX-eGroups-Remote-IP: 204.118.40.11\r\nFrom: &quot;Bryan LaPlante&quot; &lt;blaplante@...&gt;\r\nReply-To: &quot;Bryan LaPlante&quot; &lt;blaplante@...&gt;\r\nSubject: Re: [junit] assert failure without exiting test.\r\nX-Yahoo-Group-Post: member; u=135058087\r\nX-Yahoo-Profile: iblaplante\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 29 Mar 2004 16:22:57 -0000\r\nX-eGroups-Remote-IP: 66.218.66.69\r\n\r\nWhat I have had to do in this case is set up an ArrayList for tracking the\nfailures and the last test to run checks the size of the ArrayList for any\nfailures that were added and then populate a fail with a delimited string\nthat makes a somewhat readable fail message.\n\nArrayList failures = null;\n\npublic void setUp throws Exception{\n    failures = new ArrayList();\n}\n\npublic void testLast(){\n    if(failures.size() &gt; 0){\n        StringBuffer messageString = new StringBuffer();\n        for(int i=0; i &gt; failures.size(); i++){\n            messageString.append(&quot;[ &quot; + failures.get(i) + &quot; ] : &quot;)\n        }\n        fail(messageString.toString());\n    }\n}\n\n----- Original Message -----\nFrom: &quot;Ilja Preuss&quot; &lt;preuss@...&gt;\nTo: &lt;junit@yahoogroups.com&gt;\nSent: Monday, March 29, 2004 8:26 AM\nSubject: RE: [junit] assert failure without exiting test.\n\n\n&gt; javayang@... wrote:\n&gt; &gt; Howdy folks,\n&gt; &gt;\n&gt; &gt; I have a test method that iteratres through a String array performing\n&gt; &gt; assert checks.  The problem I have is on the first failure, the tests\n&gt; &gt; discontinues and the rest of the array is not checked.  This makes\n&gt; &gt; sense because of the exception that is thrown and handled by JUNIT.\n&gt; &gt; Is there a away I can keep the loop running until it finishes all the\n&gt; &gt; strings.  I can catch the exception but how do I add it to the\n&gt; &gt; current aggregate test results that JUNIT is keeping track of.  Also,\n&gt; &gt; is this the best way or proper way to do this?  I don&#39;t think it\n&gt; &gt; makes very much sense to write a test method for each string in the\n&gt; &gt; arry, it wouldn&#39;t be very scalable or dynamic.  Thanks in advance for\n&gt; &gt; any help or advice.\n&gt;\n&gt; I think you could write a test *suite* for this. Perhaps something along\n&gt; the lines of\n&gt;\n&gt;  public class FooTest extends TestCase {\n&gt;\n&gt;    public FooTest(int testValue) {\n&gt;      this.testValue = testValue;\n&gt;    }\n&gt;\n&gt;    public void testBar() {\n&gt;      assertEquals(..., myFoo.bar(testValue));\n&gt;    }\n&gt;\n&gt;    public static Test suite() {\n&gt;      TestSuite suite = new TestSuite();\n&gt;      for ...\n&gt;        suite.addTest(new FooTest(i));\n&gt;      }\n&gt;      return suite;\n&gt;    }\n&gt;   }\n&gt;\n&gt; ???\n&gt;\n&gt; Take care, Ilja\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n\n", 
+    "profile": "iblaplante", 
+    "topicId": 10706, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 135058087, 
+    "prevInTime": 10722, 
+    "contentTrasformed": false, 
+    "postDate": "1080573679", 
+    "canDelete": false, 
+    "nextInTopic": 10724, 
+    "prevInTopic": 10720, 
+    "headers": {
+        "messageIdInHeader": "PDAwMjMwMWM0MTVhMSQ3Y2ViYzI4MCRkNDc4ZmVhOUB2aW5jZW50Pg==", 
+        "referencesHeader": "PDAxMmIwMWM0MTU5OSRkNTVkZjI2MCQ3MDY0YThjMEBkaXN5Lm5ldD4="
+    }
+}

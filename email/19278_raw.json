@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19279, 
+    "senderId": "xZHHY6NZlJhTOI0fXCtc4JrqZxrvam4rSFt1w4184ssS7gyBcdgQvA7-tkC4fIAEX7N1H2Y-Z3E-DwQrtNEwUZf4", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: @Test only work with runtime exception ?", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Kiwi, Good question.  JUnit 4 assumes that subclasses of TestCase should be run as JUnit 3 test classes, even if there are JUnit 4 annotations floating around.", 
+    "msgId": 19278, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 10868 invoked from network); 12 Apr 2007 14:42:12 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m46.grp.scd.yahoo.com with QMQP; 12 Apr 2007 14:42:12 -0000\r\nReceived: from unknown (HELO nz-out-0506.google.com) (64.233.162.234)\n  by mta7.grp.scd.yahoo.com with SMTP; 12 Apr 2007 14:42:10 -0000\r\nReceived: by nz-out-0506.google.com with SMTP id n29so465595nzf\n        for &lt;junit@yahoogroups.com&gt;; Thu, 12 Apr 2007 07:40:07 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:references:x-google-sender-auth;\n        b=pUPq44P6HIvRns2edHa5jPHI5iRE7MXKo2jHe0EFfv3YwHpeX7qoDZsW70hVXbWozIyApIZg3wnvRY0fBO380SF1AyONU8W4QI6t4PdpOFuv1HL67O1gq0JUaGYHg6gbWu/5mFyNiOuvvXoXxI2mefWKFeKedPnux0z4/6Vf+Hg=\r\nReceived: by 10.115.18.1 with SMTP id v1mr769618wai.1176388807673;\n        Thu, 12 Apr 2007 07:40:07 -0700 (PDT)\r\nReceived: by 10.114.158.7 with HTTP; Thu, 12 Apr 2007 07:40:07 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90704120740w6927905ak19e33f4c0ef3dfb@...&gt;\r\nDate: Thu, 12 Apr 2007 10:40:07 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;evkbsb+brpl@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;461D35D6.90101@...&gt; &lt;evkbsb+brpl@...&gt;\r\nX-Google-Sender-Auth: fce15dfe54e65d6e\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Re: @Test only work with runtime exception ?\r\nX-Yahoo-Group-Post: member; u=139771899; y=n19Y-jSmkg_pV0I4ohoPMj8iegD_G2lDDVKKTzcteb4\r\nX-Yahoo-Profile: dsaff\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nKiwi,\n\nGood question.  JUnit 4 assumes that subclasses of TestCase should be run as\nJUnit 3 test classes, even if there are JUnit 4 annotations floating\naround.  To override this, you can specify the runner directly*\n\n@RunWith(TestClassRunner.class)\npublic class JustATest extends TestCase {...}\n\nThat said, you may also want to, as you said, compose in an object or two\nthat give you the abstractions you need, rather than getting them through\ninheritance on an AbstractTestCase.  I&#39;ve found that the abstractions I\ncreate in this way are more easily re-usable and re-mixable.  Good luck,\n\n  David Saff\n\n* warning, this is currently an internal class name, and will change and\nbecome public, in 4.4\n\nOn 4/12/07, are_2cold1 &lt;gong@...&gt; wrote:\n&gt;\n&gt; --- In junit@yahoogroups.com, &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt; wrote:\n&gt; &gt;\n&gt; &gt; are_2cold1 wrote:\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt; hi i run this code in eclipse, but seem like it doesn&#39;t work.\n&gt; &gt; &gt;\n&gt; &gt; &gt; //test weather Exception throw\n&gt; &gt; &gt; @Test (expected = FileNotFoundException.class)\n&gt; &gt; &gt; public void testRead() throws IOException\n&gt; &gt; &gt; {\n&gt; &gt; &gt; Reader re = new FileReader(&quot;noSuchFile.txt&quot;);\n&gt; &gt; &gt; }\n&gt; &gt; &gt;\n&gt; &gt; &gt; any idea ?\n&gt; &gt;\n&gt; &gt; How doesn&#39;t it work?\n&gt; &gt; --\n&gt; &gt; J. B. (Joe) Rainsberger :: http://www.jbrains.ca\n&gt; &gt; Your guide to software craftsmanship\n&gt; &gt; JUnit Recipes: Practical Methods for Programmer Testing\n&gt; &gt; 2005 Gordon Pask Award for contribution Agile Software Practice\n&gt; &gt;\n&gt;\n&gt; Hi, thx for your reply (my stupid question :) ), I just find that is\n&gt; due to the reason I indirectly extends TestCase:\n&gt;\n&gt; public class JustATest extends TestCase (this is not work)\n&gt;\n&gt; public class JustATest (working!! because not extends TestCase)\n&gt;\n&gt; I just wondering if I can do this\n&gt;\n&gt; //code below not working: not test case will be found\n&gt; public class JustATest extends TestCase //or extends AbstractTestCase\n&gt; {\n&gt;         @Test(expected = NullPointerException.class)\n&gt;         public void runtime()\n&gt;         {\n&gt;             String str = null;\n&gt;             str.toLowerCase();\n&gt;         }\n&gt;\n&gt;\n&gt; }\n&gt;\n&gt; instead composite an Utility class that contain all the utility method\n&gt; that put in AbstractTestCase.\n&gt;\n&gt; Which one is better to work with(programmer)?\n&gt; any idea?\n&gt;\n&gt; happy hacking!\n&gt; kiwi\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19271, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19277, 
+    "contentTrasformed": false, 
+    "postDate": "1176388807", 
+    "canDelete": false, 
+    "nextInTopic": 19281, 
+    "prevInTopic": 19275, 
+    "headers": {
+        "inReplyToHeader": "PGV2a2JzYiticnBsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwNDEyMDc0MHc2OTI3OTA1YWsxOWUzM2Y0YzBlZjNkZmJAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDQ2MUQzNUQ2LjkwMTAxQGdtYWlsLmNvbT4gPGV2a2JzYiticnBsQGVHcm91cHMuY29tPg=="
+    }
+}

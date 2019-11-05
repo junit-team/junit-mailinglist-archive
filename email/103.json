@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 104, 
+    "senderId": "cXyhYmuOQz0WbAhqmxx-93g8ljOpFjENNQoFCu47DRWSGGH0qv9bFZ9j06yRpdenvz6x6PrdOWNlX-iSfV_Uzq16peHU_Ac", 
+    "systemMessage": false, 
+    "subject": "Testing abstract class implementations", 
+    "from": "&quot;Robert Sartin&quot; &lt;sartin@...&gt;", 
+    "authorName": "Robert Sartin", 
+    "msgSnippet": "This is related to the recent dicussion about testing abstract classes, but doesn t seem to have quite been covered. I have an abstract class Foo and", 
+    "msgId": 103, 
+    "topicId": 103, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1215261738\">This is related to the recent dicussion about testing abstract <br/>\nclasses, but doesn&#39;t seem to have quite been covered.<br/>\n<br/>\nI have an abstract class Foo and (currently) two implementations of <br/>\nit: FooImpl and FooSpecialImpl. As it turns out FooSpecialImpl is a <br/>\nproxy too FooImpl. Currently I suspect that other Foo implementations <br/>\nwill also be proxies, but I&#39;m not sure. Foo instances are returned by <br/>\na Bar (which is a Builder of sorts). The pattern of variation looks <br/>\nlike &quot;run exactly the same tests as for Foo, except do this extra <br/>\nwork at a predefined place in the middle of the test.&quot;<br/>\n<br/>\nGoals:<br/>\n<br/>\n1. Must have all &quot;generic&quot; Foo tests to run for each kind of proxy <br/>\ncreated without any extra coding beyond adding the new types to a <br/>\nlist. Otherwise it&#39;s too easy to add a new Foo test and forget to <br/>\nconfigure it for each Foo subclass, or too easy to add a new subclass <br/>\nand forget to add every Foo test to its tests.<br/>\n<br/>\n2. Must allow for per-test variations in builder configuration. <br/>\nStrongly prefer to do that without forcing it into setUp because <br/>\nthere are about 20 unique test configurations and I&#39;d hate to have to <br/>\ndo 20 test classes.<br/>\n<br/>\n3. Must allow addition of specific tests for a Foo subclass (for <br/>\nexample the FooSpecialImpl is to ensure that Foo methods run in a <br/>\ndesignated thread, we will want some tests that verify that happens). <br/>\nOK to have them in a different TestCase subclass.<br/>\n<br/>\n4. Somewhat desire that each test remains a separate test method. If <br/>\nnot possible to achieve other goals with this one could accept a <br/>\nsolution that collapses all Foo tests into a single testFoo method.<br/>\n<br/>\nMy current tests look something like this:<br/>\n<br/>\npublic class FooTest extends TestCase {<br/>\n  private Foo fooUnderTest = null;<br/>\n<br/>\n  /** Set up common infrastructure. */<br/>\n  public void setUp() {<br/>\n    Bar builder = new Bar;<br/>\n    // Do some manipulations to builder common to all tests.<br/>\n  }<br/>\n<br/>\n  /** Stimulate a Foo and check its responses. */<br/>\n  public void runFooTest() {<br/>\n    // ...<br/>\n  }<br/>\n<br/>\n  public Foo getFoo() {<br/>\n    return builder.constructFoo();<br/>\n  }<br/>\n<br/>\n  public void testSpecificFeature() {<br/>\n    // set specificStuff to configuration items specific to test<br/>\n    builder.configure(specificStuff);<br/>\n    fooUnderTest = getFoo();<br/>\n<br/>\n    // Set some instance variables to configure test details<br/>\n    // and expected results<br/>\n    runFooTest();<br/>\n  }<br/>\n}<br/>\n<br/>\n<br/>\nWhat I really wanted to do was create a FooSpecialTest that extends <br/>\nFooTest and just reimplements getFoo. Unfortunately, that does not <br/>\nwork (the error is &#39;1) warning(junit.framework.TestSuite$1) &quot;No tests <br/>\nfound in FooSpecialTest&quot;&#39;).<br/>\n<br/>\nAny suggestions? Solutions that meet all requirements are preferred. <br/>\nReasons to change the requirements and accompanying solutions are a <br/>\ngood second choice.<br/>\n<br/>\nRegards,<br/>\n<br/>\nRob</div>", 
+    "prevInTime": 102, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "976299050", 
+    "canDelete": false, 
+    "nextInTopic": 104, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDkwcjg3YStscjM1QGVHcm91cHMuY29tPg=="
+    }
+}

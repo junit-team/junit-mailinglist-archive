@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 12850, 
+    "senderId": "x304an7leylh7U_YSubuLbaxVhgkjOdbfx-07Z_dZVpAT3OqkeUB1H7yppOYYCdb4bx1IJWklpwTZyYjGXsF_VxPzvL6X1q7l2E", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing certain types of methods", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "Hi Pico, The basic idea of Mock Objects is this: Often, many of the inputs and outputs of your system are its interaction with other classes.  Those classes", 
+    "msgId": 12849, 
+    "profile": "zipwow", 
+    "topicId": 12836, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 198331568, 
+    "messageBody": "<div id=\"ygrps-yiv-1275888590\">Hi Pico,<br/>\n<br/>\nThe basic idea of Mock Objects is this:<br/>\n<br/>\nOften, many of the inputs and outputs of your system are its<br/>\ninteraction with other classes.  Those classes frequently have states<br/>\nor take actions that are difficult to test (sniffing packets, throwing<br/>\nexceptions).<br/>\n<br/>\nIn order to avoid this problem, you use a class that appears to your<br/>\nunit under test as though it is the tool it usually calls, but under<br/>\nthe covers you&#39;ve stripped out its functionality and replaced it with<br/>\nsomething you can test with.<br/>\n<br/>\nLet me assume that in your example, you pass in some kind of<br/>\nnetwork-access object in your constructor, which is then used by<br/>\nvarious methods.  You need to test what your code does when that<br/>\nnetwork object reports that it cannot contact any network at all. <br/>\nThis is a very difficult situation to simulate with the actual code.<br/>\n<br/>\nYou create (or if you&#39;re lucky, download) a class that subclasses your<br/>\nnetwork access object.  That class may be called<br/>\n&quot;AlwaysFailingMockNetworkAccessObject&quot;.  It is bone-stupid, and is in<br/>\nactuality not a network access object at all.  The only thing it does<br/>\nis fail when its access methods are called.<br/>\n<br/>\nSo in your test, you construct your class with this<br/>\nAlwaysFailingMockNetworkAccessObject, and then make your assertions<br/>\nabout your class&#39; behavior.<br/>\n<br/>\nAnother test might use a PlaybackMockNetworkAccessObject (another<br/>\nclass I made up).  This object might not contact a network at all, but<br/>\naccept in its constructor a set of data to return as though it came<br/>\nfrom a network.  Using this, you can write a set of assertions based<br/>\non a set of data.<br/>\n<br/>\nOne common first reaction to the Mock Objects approach is that &quot;It<br/>\ndoesn&#39;t *really* test the system&quot; since it doesn&#39;t involve some major<br/>\ncomponent.  This is when Unit Testers reply, &quot;It tests everything I&#39;m<br/>\nconcerned about -- I don&#39;t need to test the Network Access<br/>\nimplementation, it isn&#39;t my problem.&quot;  You&#39;ll also be doing an<br/>\nintegration test before you release.  This, however, is a unit test,<br/>\nand the Mock Objects approach helps you test just your unit.<br/>\n<br/>\nMake sense?  I think Mock Objects are fun.<br/>\n<br/>\n-Kevin Klinemeier<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Fri, 11 Feb 2005 09:18:16 +0200, Pico Geyer &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:picog@...\">picog@...</a>&gt; wrote:<br/>\n&gt; <br/>\n&gt; Thanks you all for your replies.<br/>\n&gt; <br/>\n&gt; My first question has definitely been well answered, I&#39;ll experiment<br/>\n&gt; with the different methods of testing these private fields.<br/>\n&gt; <br/>\n&gt; Now on to the second question:<br/>\n&gt; <br/>\n&gt; Much of the programming that I do is network related. This includes<br/>\n&gt; passing messages from server to client and even implementing some<br/>\n&gt; firewall capabilities.<br/>\n&gt; <br/>\n&gt; Lets take the firewall api provided my Microsoft as an example:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/rras/rr\">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/rras/rr</a><br/>\n&gt; as/packet_filtering_functions.asp<br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/rras/r\">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/rras/r</a><br/>\n&gt; ras/packet_filtering_functions.asp&gt;<br/>\n&gt; <br/>\n&gt; If I implement a simple firewall application that say blocks all<br/>\n&gt; outgoing http traffic. It would be nice to apply the advantages of JUnit<br/>\n&gt; to this code also.<br/>\n&gt; <br/>\n&gt; Is this possible?<br/>\n&gt; <br/>\n&gt; If MockObjects are the answer, could somebody please give me a reference<br/>\n&gt; to some introductory material regarding this.<br/>\n&gt; <br/>\n&gt; I&#39;ve done some reading on MockObjects but find all the material hard to<br/>\n&gt; understand and I&#39;m still failing to see how I&#39;m going to apply<br/>\n&gt; MockObjects to test my network methods.<br/>\n&gt; <br/>\n&gt; Thanks again.<br/>\n&gt; <br/>\n&gt; Pico </span></blockquote></div>", 
+    "prevInTime": 12848, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1108144808", 
+    "canDelete": false, 
+    "nextInTopic": 12850, 
+    "prevInTopic": 12847, 
+    "headers": {
+        "inReplyToHeader": "PEFEREYzRkUxOUQ2NDIxNDJBQjBGMDk4NzYxQUEwQ0U5MDhFNzc2QHNzbWFpbi5zb2Z0c3RhcnQuY28uemE+", 
+        "messageIdInHeader": "PDRmZmYwNjRmMDUwMjExMTAwMDdlOGZlZTUyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PEFEREYzRkUxOUQ2NDIxNDJBQjBGMDk4NzYxQUEwQ0U5MDhFNzc2QHNzbWFpbi5zb2Z0c3RhcnQuY28uemE+"
+    }
+}

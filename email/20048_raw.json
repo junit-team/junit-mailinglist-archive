@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 20049, 
+    "senderId": "Uc2__kuG6bTvAqQZyJbaXUjwWvug2JCjQbAEJAN2jzh1gO4cqMzW69-IqOr2EAC9fiwbnroziCed3LSMa4V88L_eBNFJ-Un-BK-DsSk", 
+    "systemMessage": true, 
+    "subject": "Collecting tests at run-time.", 
+    "from": "&quot;Buddha Buck&quot; &lt;blaisepascal@...&gt;", 
+    "authorName": "Buddha Buck", 
+    "msgSnippet": "We discovered something disheartening from a testing standpoint:  our development and production environments are different in ways which can, and do, change", 
+    "msgId": 20048, 
+    "rawEmail": "Return-Path: &lt;blaisepascal@...&gt;\r\nReceived: (qmail 59632 invoked from network); 1 Nov 2007 23:14:06 -0000\r\nReceived: from unknown (66.218.67.97)\n  by m50.grp.scd.yahoo.com with QMQP; 1 Nov 2007 23:14:06 -0000\r\nReceived: from unknown (HELO n19a.bullet.scd.yahoo.com) (66.94.237.48)\n  by mta18.grp.scd.yahoo.com with SMTP; 1 Nov 2007 23:14:06 -0000\r\nReceived: from [209.73.164.83] by n19.bullet.scd.yahoo.com with NNFMP; 01 Nov 2007 23:14:03 -0000\r\nReceived: from [66.218.66.81] by t7.bullet.scd.yahoo.com with NNFMP; 01 Nov 2007 23:14:03 -0000\r\nX-Sender: blaisepascal@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 94275 invoked from network); 1 Nov 2007 22:15:37 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m47.grp.scd.yahoo.com with QMQP; 1 Nov 2007 22:15:37 -0000\r\nX-Received: from unknown (HELO an-out-0708.google.com) (209.85.132.244)\n  by mta17.grp.scd.yahoo.com with SMTP; 1 Nov 2007 22:15:37 -0000\r\nX-Received: by an-out-0708.google.com with SMTP id d26so85173and\n        for &lt;junit@yahoogroups.com&gt;; Thu, 01 Nov 2007 15:15:37 -0700 (PDT)\r\nX-Received: by 10.100.107.7 with SMTP id f7mr1939495anc.1193955337247;\n        Thu, 01 Nov 2007 15:15:37 -0700 (PDT)\r\nX-Received: by 10.70.91.7 with HTTP; Thu, 1 Nov 2007 15:15:37 -0700 (PDT)\r\nMessage-ID: &lt;f2bdaaa10711011515i64e802e8yfeb99f5e13a24070@...&gt;\r\nDate: Thu, 1 Nov 2007 18:15:37 -0400\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Buddha Buck&quot; &lt;blaisepascal@...&gt;\r\nSubject: Collecting tests at run-time.\r\nX-Yahoo-Group-Post: member; u=189428691; y=O6UCX4Me-lD7X-Gbcp-_SK3-z8tSFb4wzqM8AQfn3kA3_iDyNQ\r\nX-Yahoo-Profile: buddhabuck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 01 Nov 2007 23:14:03 -0000\r\n\r\nWe discovered something disheartening from a testing standpoint:  our\ndevelopment and production environments are different in ways which can, and\ndo, change the manner of execution of our project.  As such, we&#39;d like to\nrun our unit tests as part of the execution of our final product, and not\njust through our IDE.\n\nWe develop using Eclipse 3.3, using the JUnit4 plugin.  We compile for\nproduction and acceptance testing using the JET Excelsior ahead-of-time\ncompiler, which is Java SE 5 compatible.  There are occasions when we have\nrun into SE6/SE5 compatibility problems but they had a tendency to cause the\ncompile to fail, not cause incorrect execution, so we didn&#39;t worry much\nabout it.\n\nWe started using the XStream XML serialization library. In its default mode\nof operation, it actually tests to see what JVM and what libraries it is\nrunning with to determine what execution mode it wants to run in -- with\ncertain JVMs, it can use different APIs for increased performance and\ncapabilities.  In our development environment, it was able to run in\n&quot;enhanced mode&quot; because it was using a recognized JVM (Sun Java 1.6).  In\nour production environment, it did not detect a &quot;blessed&quot; JVM, and ran in\n&quot;pure java mode&quot;.  Our product passed all tests, but failed badly when\npushed to our Customer because our tests didn&#39;t catch that it wasn&#39;t in\nenhanced mode.\n\nI saw from the JUnit 4 API that it is possible to directly run a testrunner\non a class, invoking all the tests in the class.  The @...()\nannotation (and the @RunWith annotation) allows one to make test suites\nwhich consist of several classes, allowing one invocation of the testrunner\nto cover all the classes in the suite.  Those techniques seem suited to\nallowing us to run the tests using our production JVM.  But those seem to\nrequire manual updating of the class lists in order to add new classes.\n\nThe problem is that we currently have over 500 tests, spread among many\nclasses in many packages.  I see a maintenance nightmare using @\nSuite.classes() because everytime we add a test class (which we do\nroutinely) we&#39;d have to manually find a suite to add it to.  I don&#39;t see a\nway to conveniently say &quot;for all classes in this package (or package\nhierarchy), run the unit tests&quot;.\n\nIs there a way to do what we want that isn&#39;t  a maintenance nightmare?\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "buddhabuck", 
+    "topicId": 20048, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189428691, 
+    "prevInTime": 20047, 
+    "contentTrasformed": false, 
+    "postDate": "1193955337", 
+    "canDelete": false, 
+    "nextInTopic": 20049, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGYyYmRhYWExMDcxMTAxMTUxNWk2NGU4MDJlOHlmZWI5OWY1ZTEzYTI0MDcwQG1haWwuZ21haWwuY29tPg=="
+    }
+}

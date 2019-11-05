@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 22393, 
+    "senderId": "M9G04ePQfzYxPgGC1uizJur95KF1Fl6gIvemnWWeL6a9rEBYYeyEB0AjTXoojh-9HHAvrvyrHsZqHEFyucShAliPo4T9SMHZCQ", 
+    "systemMessage": true, 
+    "subject": "[junit] Cannot use @Rule in Scala", 
+    "from": "Barry Kaplan &lt;groups1@...&gt;", 
+    "authorName": "Barry Kaplan", 
+    "msgSnippet": "Running the following test class MongoUserDetailsManagerTest { @Rule val mongo = new MongoResource( test_insight ) ... } Results in java.lang.Exception: Field", 
+    "msgId": 22392, 
+    "rawEmail": "Return-Path: &lt;groups1@...&gt;\r\nReceived: (qmail 26543 invoked from network); 11 Feb 2010 18:58:48 -0000\r\nReceived: from unknown (98.137.34.46)\n  by m5.grp.sp2.yahoo.com with QMQP; 11 Feb 2010 18:58:48 -0000\r\nReceived: from unknown (HELO n44d.bullet.mail.sp1.yahoo.com) (66.163.169.158)\n  by mta3.grp.sp2.yahoo.com with SMTP; 11 Feb 2010 18:58:48 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1265914691; bh=h2XZMlLnFrqgWLomn/dBj6K4Z6lnA0hSYvc92lZD4+4=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:Message-ID:Date:To:MIME-Version:Content-Type:Content-Transfer-Encoding:X-Nabble-From:X-Originating-IP:X-eGroups-Msg-Info:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:X-YGroups-SubInfo:Sender:X-Yahoo-Newman-Property:X-eGroups-Approved-By:X-eGroups-Auth; b=m/tFK3Od7ulZUbYErEf7SEF6OkZ3lriupAoV9L/bCX11pwhDyz7gW9XiAnbwA+GzmLply52cgtMRSKOfsvoq3DnVi9XV7YKNbcS86ESp5xrCBCj4vx5EfNLm+LrSz36q\r\nReceived: from [69.147.65.147] by n44.bullet.mail.sp1.yahoo.com with NNFMP; 11 Feb 2010 18:58:11 -0000\r\nReceived: from [98.137.34.36] by t10.bullet.mail.sp1.yahoo.com with NNFMP; 11 Feb 2010 18:58:11 -0000\r\nX-Sender: groups1@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 81743 invoked from network); 11 Feb 2010 18:57:49 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m3.grp.sp2.yahoo.com with QMQP; 11 Feb 2010 18:57:49 -0000\r\nX-Received: from unknown (HELO kuber.nabble.com) (216.139.236.158)\n  by mta3.grp.sp2.yahoo.com with SMTP; 11 Feb 2010 18:57:49 -0000\r\nX-Received: from isper.nabble.com ([192.168.236.156])\n\tby kuber.nabble.com with esmtp (Exim 4.63)\n\t(envelope-from &lt;groups1@...&gt;)\n\tid 1NfeEX-0005vZ-Kl\n\tfor junit@yahoogroups.com; Thu, 11 Feb 2010 10:57:49 -0800\r\nMessage-ID: &lt;27552231.post@...&gt;\r\nDate: Thu, 11 Feb 2010 10:57:49 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nX-Nabble-From: groups1@...\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Barry Kaplan &lt;groups1@...&gt;\r\nSubject: [junit] Cannot use @Rule in Scala\r\nX-Yahoo-Group-Post: member; u=134818751; y=_Dl1rW_i-RwLI4-Ngxr4nszghUN7hx20LSivYN5_bikezg\r\nX-Yahoo-Profile: memelet\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: copabella &lt;joe@...&gt; via web; 11 Feb 2010 18:58:09 -0000\r\n\r\n\nRunning the following test\n\n    class MongoUserDetailsManagerTest {\n      @Rule val mongo = new MongoResource(&quot;test_insight&quot;)\n      ...\n    }\n\nResults in\n\n    java.lang.Exception: Field mongo must be public\n\tat\norg.junit.runners.BlockJUnit4ClassRunner.validateRuleField(BlockJUnit4ClassRunner.java:184)\n\nThis is because the bytecode for scala public vars (public is the default\nscope scala) are not public. \n\nTo be able to use @Rule in scala I had to hack BlockJUnit4ClassRunner with:\n\n    private void validateRuleField(Field field, List&lt;Throwable&gt; errors) {\n        if (!MethodRule.class.isAssignableFrom(field.getType()))\n\t    errors.add(new Exception(&quot;Field &quot; + field.getName()\n                      + &quot; must implement MethodRule&quot;));\n        //TP_HACK To allow for scala val&#39;s\n        field.setAccessible(true);\n        // if (!Modifier.isPublic(field.getModifiers()))\n        // errors.add(new Exception(&quot;Field &quot; + field.getName()\n        //           + &quot; must be public&quot;));\n\t}\n\nMight it be considered to allow for non-public fields as some kind of JUnit\noption?\n\n-barry\n-- \nView this message in context: http://old.nabble.com/Cannot-use-%40Rule-in-Scala-tp27552231p27552231.html\nSent from the JUnit - User mailing list archive at Nabble.com.\n\n\n", 
+    "profile": "memelet", 
+    "topicId": 22392, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 134818751, 
+    "prevInTime": 22391, 
+    "contentTrasformed": false, 
+    "postDate": "1265914669", 
+    "canDelete": false, 
+    "nextInTopic": 22445, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDI3NTUyMjMxLnBvc3RAdGFsay5uYWJibGUuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 17159, 
+    "senderId": "RYOzbWPFvy1kIBqHDDiHVxJFZBXQGNtOYSHIqe1fMBQDCRgU6t_qZ4VMx9rIq-B443LlqDt32tnoqIhsmP-G8PF_Tcf8uWHEY6cn34S5-jtxP0bW", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] setUp versus constructors", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "The reason I started to use setUp instead of a constructor can be illustrated by two examples, they both do the same but one of them throws an exception from", 
+    "msgId": 17158, 
+    "profile": "j0hlrogge", 
+    "topicId": 17141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-1221592766\">The reason I started to use setUp instead of a constructor can be<br/>\nillustrated by two examples, they both do the same but one of them throws an<br/>\nexception from the constructor and the other throws an exception from the<br/>\nsetup method. I think that the exception thrown from the setup method is<br/>\nslightly easier to read and looks more like you would expect a failure to<br/>\nlook like from withing a test. It is a subtle difference but it made me pick<br/>\nsetUp over constructors.<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\n<br/>\npublic class TestSetup extends TestCase {<br/>\n    public void setUp () {<br/>\n        assertTrue(false);<br/>\n    }<br/>\n    public void testSomething() throws Exception {<br/>\n<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\nfails with this message:<br/>\n<br/>\njunit.framework.AssertionFailedError<br/>\n    at junit.framework.Assert.fail(Assert.java:47)<br/>\n    at junit.framework.Assert.assertTrue(Assert.java:20)<br/>\n    at junit.framework.Assert.assertTrue(Assert.java:27)<br/>\n    at com.agical.rmock.core.TestSetup.setUp(TestSetup.java:7)<br/>\n    at junit.framework.TestCase.runBare(TestCase.java:125)<br/>\n    at junit.framework.TestResult$1.protect(TestResult.java:106)<br/>\n    at junit.framework.TestResult.runProtected(TestResult.java:124)<br/>\n    at junit.framework.TestResult.run(TestResult.java:109)<br/>\n    at junit.framework.TestCase.run(TestCase.java:118)<br/>\n    at junit.framework.TestSuite.runTest(TestSuite.java:208)<br/>\n    at junit.framework.TestSuite.run(TestSuite.java:203)<br/>\n<br/>\nwhile this example:<br/>\n<br/>\npackage com.agical.rmock.core;<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\n<br/>\npublic class TestConstructor extends TestCase {<br/>\n    public TestConstructor () {<br/>\n        assertTrue(false);<br/>\n    }<br/>\n<br/>\n    public void testSomething() throws Exception {<br/>\n<br/>\n    }<br/>\n}<br/>\n<br/>\nfails with the slightly harder to read (IMO &lt;init&gt; is a bit more magical and<br/>\ncan confuse novice users, in addition you have a some extra stacktrace,<br/>\nsomething that is hidden in eclipse but not in ant (I think)) :<br/>\n<br/>\njunit.framework.AssertionFailedError: Exception in constructor:<br/>\ntestSomething (junit.framework.AssertionFailedError<br/>\n    at junit.framework.Assert.fail(Assert.java:47)<br/>\n    at junit.framework.Assert.assertTrue(Assert.java:20)<br/>\n    at junit.framework.Assert.assertTrue(Assert.java:27)<br/>\n    at com.agical.rmock.core.TestConstructor.&lt;init&gt;(TestConstructor.java:7)<br/>\n    at java.lang.reflect.Constructor.newInstance(Native Method)<br/>\n    at junit.framework.TestSuite.createTest(TestSuite.java:131)<br/>\n    at junit.framework.TestSuite.addTestMethod(TestSuite.java:114)<br/>\n    at junit.framework.TestSuite.&lt;init&gt;(TestSuite.java:75)<br/>\n    at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestLoader.getTest<br/>\n(JUnit3TestLoader.java:102)<br/>\n    at<br/>\norg.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestLoader.loadTests(<br/>\nJUnit3TestLoader.java:59)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(<br/>\nRemoteTestRunner.java:442)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(<br/>\nRemoteTestRunner.java:670)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(<br/>\nRemoteTestRunner.java:386)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(<br/>\nRemoteTestRunner.java:196)<br/>\n)<br/>\n    at junit.framework.Assert.fail(Assert.java:47)<br/>\n    at junit.framework.TestSuite$1.runTest(TestSuite.java:263)<br/>\n    at junit.framework.TestCase.runBare(TestCase.java:127)<br/>\n    at junit.framework.TestResult$1.protect(TestResult.java:106)<br/>\n    at junit.framework.TestResult.runProtected(TestResult.java:124)<br/>\n    at junit.framework.TestResult.run(TestResult.java:109)<br/>\n    at junit.framework.TestCase.run(TestCase.java:118)<br/>\n    at junit.framework.TestSuite.runTest(TestSuite.java:208)<br/>\n    at junit.framework.TestSuite.run(TestSuite.java:203)<br/>\n    at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(<br/>\nJUnit3TestReference.java:128)<br/>\n    at org.eclipse.jdt.internal.junit.runner.TestExecution.run(<br/>\nTestExecution.java:38)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(<br/>\nRemoteTestRunner.java:457)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(<br/>\nRemoteTestRunner.java:670)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(<br/>\nRemoteTestRunner.java:386)<br/>\n    at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(<br/>\nRemoteTestRunner.java:196)<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 17157, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1153292184", 
+    "canDelete": false, 
+    "nextInTopic": 17159, 
+    "prevInTopic": 17157, 
+    "headers": {
+        "inReplyToHeader": "PDA0NGMwMWM2YWFiYSQ4MzJkZTVhMCQ2NDAxYThjMEBUNDI+", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwNzE4MjM1NnIyZDYxZTRiZm41YTgwMjFlYmQ4OTRlZDc2QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGU5aDU4ditzaTFhQGVHcm91cHMuY29tPiA8MDQ0YzAxYzZhYWJhJDgzMmRlNWEwJDY0MDFhOGMwQFQ0Mj4="
+    }
+}

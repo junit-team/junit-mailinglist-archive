@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 6679, 
+    "senderId": "1-HKaNhiyKcLqzluYu_b3R1tHUjsVamFjRtq7HQefu9NIzflAjj_AbX35VvN2Hfa6f8tHtWBKsyWLNlxsJtPn7dKQ5xbCndjF09CLop8Zh0", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] tearDown() even if setUp() throws unexpected exception?", 
+    "from": "&quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "Personally, I d wrap it in a try{}catch{} in the setUp, close the connection and then throw the exception back out. =jason [:question | ^One] ... From: Paul", 
+    "msgId": 6678, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 21 Jan 2003 19:51:40 -0000\r\nReceived: (qmail 68544 invoked from network); 21 Jan 2003 19:51:39 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m8.grp.scd.yahoo.com with QMQP; 21 Jan 2003 19:51:39 -0000\r\nReceived: from unknown (HELO www.fastmail.fm) (66.111.4.2)\n  by mta3.grp.scd.yahoo.com with SMTP; 21 Jan 2003 19:51:39 -0000\r\nReceived: from www.fastmail.fm (localhost [127.0.0.1])\n\tby localhost.localdomain (Postfix) with ESMTP id AE39F18AF5\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 21 Jan 2003 14:51:36 -0500 (EST)\r\nReceived: from 127.0.0.1 ([127.0.0.1] helo=www.fastmail.fm) by fastmail.fm\n  with SMTP; Tue, 21 Jan 2003 14:51:36 -0500\r\nX-Epoch: 1043178696\r\nX-Sasl-enc: NY2y6d5hC7C1o3MMX9/kqA\r\nReceived: from RHINO (host-145.subnet-156.med.umich.edu [141.214.156.145])\n\tby www.fastmail.fm (Postfix) with ESMTP id 334F1133BE\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 21 Jan 2003 14:51:35 -0500 (EST)\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] tearDown() even if setUp() throws unexpected exception?\r\nDate: Tue, 21 Jan 2003 14:53:52 -0500\r\nMessage-ID: &lt;000001c2c186$d5a51720$919cd68d@RHINO&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;Windows-1252&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.2627\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nImportance: Normal\r\nIn-Reply-To: &lt;b0k2cj+9r8o@...&gt;\r\nFrom: &quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;\r\nX-Yahoo-Group-Post: member; u=109352929\r\nX-Yahoo-Profile: jacaetev\r\n\r\nPersonally, I&#39;d wrap it in a try{}catch{} in the setUp, close the\nconnection and then throw the exception back out.\n\n=jason\n[:question | ^One] \n\n-----Original Message-----\nFrom: Paul Holser &lt;pholser@...&gt; [mailto:pholser@...] \nSent: Tuesday, January 21, 2003 1:09 PM\nTo: junit@yahoogroups.com\nSubject: [junit] tearDown() even if setUp() throws unexpected exception?\n\n\nimagine the following test class:\n\n---\nimport java.sql.*;\nimport junit.framework.*;\n\npublic class FooTest extends TestCase {\n  private Connection dbConnection;\n  private Foo aFoo;\n\n  protected void setUp() throws Exception {\n    this.dbConnection = getConnection();  // from somewhere\n    this.aFoo = new Foo( 23 );  // could throw an exception\n  }\n\n  protected void tearDown() throws Exception {\n    try {\n      dbConnection.close();\n    }\n    finally {\n      super.tearDown();\n    }\n  }\n\n  // test methods here...\n}\n---\n\nif Foo&#39;s ctor starts throwing exceptions, all of a sudden the test \nclass is leaking connections, since tearDown() is not called if setUp\n() throws an unexpected exception.\n\nshould the developer exercise extra caution in such circumstances, \nperhaps by wrapping the remainder of the fixture set up thusly:\n\n  try {\n    // remainder of set up\n  }\n  catch ( Exception ex ) {\n    dbConnection.close();\n    throw ex;\n  }\n\nor, subclass TestCase and override runBare() to call setUp() in the \nsame try block as runTest()?\n\nhow best to handle this situation?  (let&#39;s suppose for the sake of \nargument that i&#39;m doing functional testing against a real DBMS and am \nthus not mocking the connection.)\n\nthanks for your guidance.\n\ncheers,\np\n\n\n\nYahoo! Groups Sponsor\nADVERTISEMENT\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. \n\n---\nOutgoing mail is certified Virus Free.\nChecked by AVG anti-virus system (http://www.grisoft.com).\nVersion: 6.0.438 / Virus Database: 246 - Release Date: 1/7/2003\n \n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 6677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 6677, 
+    "contentTrasformed": false, 
+    "postDate": "1043178832", 
+    "canDelete": false, 
+    "nextInTopic": 6681, 
+    "prevInTopic": 6677, 
+    "headers": {
+        "inReplyToHeader": "PGIwazJjais5cjhvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwMDAwMWMyYzE4NiRkNWE1MTcyMCQ5MTljZDY4ZEBSSElOTz4="
+    }
+}

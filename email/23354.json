@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 23355, 
+    "senderId": "HiZJxCXMbXpSfzT72-ktG-Uc5-l_ouy-kt2-_SI59kROOG3XRf4uxA6JsL-wjX77FIDngkmVS1NdTUOm6SkXljr_jinFOaPUyAE78aa6rHig7g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Sometimes my tests fail, sometimes not - why?!", 
+    "from": "Joakim Ohlrogge &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "I have had several issues when working with a the filesystem from unit tests. In theory you cannot expect the tests to be run sequencially as in test A has", 
+    "msgId": 23354, 
+    "profile": "j0hlrogge", 
+    "topicId": 23353, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-1075559769\">I have had several issues when working with a the filesystem from unit<br/>\ntests. In theory you cannot expect the tests to be run sequencially as in<br/>\ntest A has always run before test B (someone may request to run just one of<br/>\nthem by rightclicking on the test in eclipse for instance) so that is a bad<br/>\nassumption. I don&#39;t think that is your problem in this case though. I don&#39;t<br/>\nknow about all the magic that goes on with the filesystem behind the scenes<br/>\nbut especially on windows I have seen issues when files are occationaly not<br/>\ndeleted properly. I don&#39;t remember how I solved it but I would look for<br/>\nthings like wether the files are properly closed and flushed before you try<br/>\nto delete them (could be a race condition where the the write stream is<br/>\nalmost always GC:ed and closed in that process but sometimes not) that would<br/>\nlock the file for deletion occationall (when the the output stream has not<br/>\nyet been GC:ed). Make sure everything is explicitly closed.<br/>\nIt has happened that I think everything looks fine but I have problems<br/>\nanyway. That is when I start imagining that there the issue is related to<br/>\npounding on the filesystem too fast...  I don&#39;t think that has ever been the<br/>\ncase though but one gets paranoid.<br/>\n<br/>\nIn general when I have to tests against the file system I tend to to the<br/>\nsetup a bit in reverse. I use an empty target directory and recusrively<br/>\ndelete every file in it both in my setUp (@Before) and my tearDown (@After).<br/>\nThis way, in case a run gets interupted midway and the directory is left<br/>\ndirty it is cleaned prior to the next run.<br/>\n<br/>\nThis is not a JUnit issue in any case. In general avoid using the filesystem<br/>\nfrom your tests will spare you lots of grief. Perhaps most of what you want<br/>\nto test could be done in memory with<br/>\nByteArrayOutputStream/ByteArrayInputStream and only touch the filesystem in<br/>\nthat last case when you know everything works, you just want to see that you<br/>\ncan replace ByteArrayInput/OutputStream with FileInputOutputStream.<br/>\nA neat sideeffect by coding this way is that it&#39;s very simple to change<br/>\nsources/targets (like reading from any URL instead of the filesystem) or<br/>\nfiltering (like GZipping everything that is written to the target) which is<br/>\nnot as elegant to do if you pass around File objects. By all means make your<br/>\nAPI able to take a filename/File instance but make usre that the first thing<br/>\nyou do with it is creat a FileInputStream/FileOutputStream and pass it on to<br/>\nthe next method (using try finally of course). By running in memory you are<br/>\nalso better prepared to run tests in prallell etc.<br/>\n<br/>\nNo rock solid advice in here but hopefully something that helps some...<br/>\n-----------------------------------------------------<br/>\nJoakim Ohlrogge<br/>\nAgical AB<br/>\nVästerlånggatan 79, 2 tr<br/>\n111 29 Stockholm, SWEDEN<br/>\n<br/>\nMobile: +46-708-754004<br/>\nBlog: johlrogge.wordpress.com<br/>\nE-mail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a><br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Tue, Mar 29, 2011 at 11:22 PM, Nils Wilhelm &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:murphy@...\">murphy@...</a>&gt;wrote:<br/>\n<br/>\n&gt; Hi there,<br/>\n&gt;<br/>\n&gt; i have written a simple backup tool and 10 tests. They all have the same<br/>\n&gt; structure:<br/>\n&gt; 1. Create some test files and directories in an directory called &quot;source&quot;<br/>\n&gt; 2. Start the backup process (to backup the files/dirs in &quot;source&quot; to a<br/>\n&gt; directory called &quot;target&quot;)<br/>\n&gt; 3. Check whether all files in &quot;source&quot; exist also in &quot;target&quot;<br/>\n&gt; 4. Remove all files from the &quot;source&quot; and &quot;target&quot; directory so that the<br/>\n&gt; directories are empty for the next test.<br/>\n&gt;<br/>\n&gt; If i execute the whole test set ten times, i have 6-7 successes and 3-4<br/>\n&gt; failures. The error messages say that files in the target directory<br/>\n&gt; could not be created or deleted (in the last step of the tests, see<br/>\n&gt; above) if there is a failure. One possibility i could think of is that<br/>\n&gt; the tests are not run sequentially, so they could have influence at each<br/>\n&gt; other. But as far as i know JUnit runs all tests in separate threads and<br/>\n&gt; those sequentially. Is that correct? Does anybody have any suggestions?<br/>\n&gt;<br/>\n&gt; I use eclipse helios, JUnit 4.8.1, Java 1.6 and AspectJ<br/>\n&gt;<br/>\n&gt; Best regards,<br/>\n&gt;<br/>\n&gt; Nils<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 23353, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1301468192", 
+    "canDelete": false, 
+    "nextInTopic": 23355, 
+    "prevInTopic": 23353, 
+    "headers": {
+        "inReplyToHeader": "PDREOTI0RDlFLjkwNjAzMDNAcGxhbmV0LW9mLWFydC5kZT4=", 
+        "messageIdInHeader": "PEFBTkxrVGlud2ZLTjZ4RXBUYzgyLWRQZkxGanhkdXU4elYydEEzMU4zQ3l1dkBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PDREOTI0RDlFLjkwNjAzMDNAcGxhbmV0LW9mLWFydC5kZT4="
+    }
+}

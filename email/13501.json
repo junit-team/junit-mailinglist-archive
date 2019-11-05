@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 13502, 
+    "senderId": "6aINRbjJWz9oJXwLwmwZYcUYEAEg93nSN-aglReVhLHbRamnZ-D-2Pt4kT0T9xVvj8sRc0AuLCoAbaiYeqmyXK6Ru474QvmCguBJjROP-w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] DbUnit & ORM", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Does your business logic need to know where it gets the data from? Usually not. Separate the data source from the business logic using the data... class", 
+    "msgId": 13501, 
+    "profile": "nails762", 
+    "topicId": 13451, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-453612932\">John Smith wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; &quot;J. B. Rainsberger&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>&gt; wrote:<br/>\n&gt; <br/>\n&gt;  &gt;&gt;What are you trying to test?<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt;1. The client code that invokes your ORM layer.<br/>\n&gt;  &gt;&gt;2. The mappings between your entities and the database.<br/>\n&gt;  &gt;&gt;3. Your implementation of the ORM layer. (Did you build it?)<br/>\n&gt;  &gt;&gt;4. Something else entirely?<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt;I am also a fan of putting test data directly in the test, so I&#39;d be<br/>\n&gt;  &gt;&gt;inclined to use the ORM to set up test data on a test-by-test basis for<br/>\n&gt;  &gt;&gt;case #1 and #2, but not case #3. For case #3, my answer is long and<br/>\n&gt;  &gt;&gt;complex and I prefer not to type it unless that&#39;s what you mean. :)<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt;If it&#39;s case #4, then tell us more.<br/>\n&gt;  &gt;&gt;--<br/>\n&gt;  &gt;&gt;J. B. (Joe) Rainsberger<br/>\n&gt; <br/>\n&gt; I try to test number 1 if I understand what you mean. Its business logic<br/>\n&gt; which needs to be tested, like ABC analysis. For this you need to persist<br/>\n&gt; some entities in order to perform that business logic test.<br/>\n<br/>\n </span></blockquote>Does your business logic need to know where it gets the data from? <br/>\nUsually not. Separate the data source from the business logic using the <br/>\ndata...<br/>\n<br/>\nclass TransferAction...<br/>\npublic TransferAction(Repository repository) {<br/>\n     // assign to field<br/>\n}<br/>\n<br/>\npublic void transfer(String fromAccountId, String toAccountId, Money <br/>\namount) {<br/>\n     Account fromAccount = repository.findAccount(fromAccountId);<br/>\n     Account toAccount = repository.findAccount(toAccountId);<br/>\n     fromAccount.transfer(amount, toAccount);<br/>\n}<br/>\n<br/>\ninterface Repository...<br/>\nAccount findAccount(String id);<br/>\n<br/>\nclass DatabaseRepository implements Repository {<br/>\n     public Account findAccount(String id) {<br/>\n         // Use your ORM solution...<br/>\n     }<br/>\n}<br/>\n<br/>\n<br/>\nNow how do I test whether my transfer action properly handles <br/>\ninsufficient funds?<br/>\n<br/>\npublic void testInsufficientFunds() {<br/>\n     Repository fake = new Repository() {<br/>\n         public Account findAccount(String id) {<br/>\n             return new Account(id) {<br/>\n                 public transfer(Money amount, Account toAccount) {<br/>\n                     throw new InsufficientFundsException(this, amount);<br/>\n                 }<br/>\n             };<br/>\n         }<br/>\n     };<br/>\n<br/>\n     try {<br/>\n         new TransferAction(fake).transfer(&quot;1&quot;, &quot;2&quot;, Money.dollars(50));<br/>\n         fail(&quot;Transfer was supposed to fail!&quot;);<br/>\n     }<br/>\n     catch (InsufficientFundsException expected) {<br/>\n     }<br/>\n}<br/>\n<br/>\n<br/>\nWe fake out the Repository to serve up only accounts that blow up when <br/>\nwe try to transfer funds. Although the syntax is weird, the idea is <br/>\nstraightforward: no need to create a special account in the database <br/>\nthat happens not to have enough money.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Number 2 applies too I think. But not number 3.<br/>\n<br/>\n </span></blockquote>To test the mapping between objects and tables, simply check that you <br/>\nspecify the mapping metadata correctly. Use the ORM solution&#39;s <br/>\ndocumentation to provide the expected behavior. If you&#39;re really unsure <br/>\nhow to map a particular data type, test that against the database, but <br/>\ndon&#39;t test /every/ mapping against the database. Doing that is testing <br/>\nthe ORM solution more than the way you use it. (Doesn&#39;t the ORM solution <br/>\nalready work?)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Maybe DbUnit is good only for JDBC based applications and not for an ORM.<br/>\n<br/>\n </span></blockquote>DbUnit is good for any test that talks to a live database. I simply <br/>\nprefer to do that as little as possible.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 13500, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1115942753", 
+    "canDelete": false, 
+    "nextInTopic": 13502, 
+    "prevInTopic": 13486, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTExMDgzMDU0LjQ0NTkucW1haWxAd2ViNjAwMTkubWFpbC55YWhvby5jb20+", 
+        "messageIdInHeader": "PDQyODNFRjYxLjEwNzAwQHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PDIwMDUwNTExMDgzMDU0LjQ0NTkucW1haWxAd2ViNjAwMTkubWFpbC55YWhvby5jb20+"
+    }
+}

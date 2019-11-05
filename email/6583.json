@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 6584, 
+    "senderId": "3mLKlZrlL9gVLp4duAZnAuYvcBZ8fEwBzVvWpFBkMMrzWgLQwbnG-PcbnamIDf3BR4pLShS_ZisSLVMh7mk__BsYc6QhXw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit and ant", 
+    "from": "Lynne Lawrence &lt;lgl@...&gt;", 
+    "authorName": "Lynne Lawrence", 
+    "msgSnippet": "Veena, I cannot tell where you have your .class file since the javac portion of  your build.xml is not shown.  I am assuming from the run-junit target that you", 
+    "msgId": 6583, 
+    "topicId": 6578, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 132653444, 
+    "messageBody": "<div id=\"ygrps-yiv-1081927916\">Veena,<br/>\n<br/>\nI cannot tell where you have your .class file since the javac portion of  your<br/>\nbuild.xml is not shown.  I am assuming from the run-junit target that you have<br/>\ncreated it in the same directory as the .java file?  If so, the problem is<br/>\nJunit cannot find your class because it needs to have the basedir in it&#39;s<br/>\nclasspath and filenames must reference from the basedir so as to pick up the<br/>\npackage/directory name properly.<br/>\n<br/>\nBased on the assumption that the .class file is sitting in ${basedir}/test<br/>\nbeside the .java file, the following run-junit target works:<br/>\n<br/>\n    &lt;target name=&quot;run-junit&quot; description=&quot;junit-run&quot; &gt;<br/>\n        &lt;junit printsummary=&quot;true&quot; haltonfailure=&quot;false&quot;&gt;<br/>\n            &lt;classpath&gt;<br/>\n                &lt;pathelement path=&quot;${basedir}&quot; /&gt;<br/>\n            &lt;/classpath&gt;<br/>\n            &lt;formatter type=&quot;brief&quot; usefile=&quot;true&quot;/&gt;<br/>\n            &lt;batchtest fork=&quot;true&quot; todir=&quot;${test}&quot;&gt;<br/>\n                &lt;fileset dir=&quot;${basedir}&quot;<br/>\n                         includes=&quot;**/*Test.class&quot;/&gt;<br/>\n            &lt;/batchtest&gt;<br/>\n        &lt;/junit&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\nYou might want to consider implementing a directory structure along the lines<br/>\nof:<br/>\n<br/>\nbasedir<br/>\n    src<br/>\n    testsrc<br/>\n    build<br/>\n        classes<br/>\n        lib<br/>\n    lib<br/>\n<br/>\nto keep the .class files away from the .java files for ease of cleaning up,<br/>\nbuilding jars, etc...<br/>\n<br/>\nRegards,<br/>\n<br/>\nLynne<br/>\n<br/>\n&quot;veena_uin &quot; wrote:<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; Hi,<br/>\n&gt;<br/>\n&gt; please look at my code<br/>\n&gt;<br/>\n&gt; package test;<br/>\n&gt; import junit.framework.TestCase;<br/>\n&gt; public class GopalTest extends TestCase<br/>\n&gt; {<br/>\n&gt;         public GopalTest (String name)<br/>\n&gt;         {<br/>\n&gt;                 super(name);<br/>\n&gt;         }<br/>\n&gt;         public void testSomething()<br/>\n&gt;         {<br/>\n&gt;                 assertTrue(8 == (4 * 2));<br/>\n&gt;         }<br/>\n&gt;<br/>\n&gt;         public void testSomething1()<br/>\n&gt;         {<br/>\n&gt;                 assertTrue(4 == (2 * 2));<br/>\n&gt;         }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; and my build file<br/>\n&gt; &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br/>\n&gt; &lt;project basedir=&quot;.&quot; default=&quot;run-junit&quot; name=&quot;TdsTest&quot;&gt;<br/>\n&gt;   &lt;property name=&quot;test&quot; location=&quot;test&quot;/&gt;<br/>\n&gt;          &lt;target name=&quot;run-junit&quot; description=&quot;junit-run&quot; &gt;<br/>\n&gt;                 &lt;junit printsummary=&quot;true&quot; haltonfailure=&quot;false&quot;&gt;<br/>\n&gt;                         &lt;formatter type=&quot;brief&quot; usefile=&quot;true&quot;/&gt;<br/>\n&gt;                         &lt;batchtest fork=&quot;true&quot; todir=&quot;${test}&quot;&gt;<br/>\n&gt;                                 &lt;fileset dir=&quot;${test}&quot;<br/>\n&gt; includes=&quot;**/*Test.class&quot;/&gt;<br/>\n&gt;                         &lt;/batchtest&gt;<br/>\n&gt;                 &lt;/junit&gt;<br/>\n&gt;         &lt;/target&gt;<br/>\n&gt; &lt;/project&gt;<br/>\n&gt;<br/>\n&gt; and the o/p<br/>\n&gt;<br/>\n&gt; estsuite: GopalTest<br/>\n&gt; Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0 sec<br/>\n&gt;<br/>\n&gt; Null Test:      Caused an ERROR<br/>\n&gt; GopalTest<br/>\n&gt; java.lang.ClassNotFoundException: GopalTest<br/>\n&gt;         at java.net.URLClassLoader$1.run(URLClassLoader.java:200)<br/>\n&gt;         at java.security.AccessController.doPrivileged(Native Method)<br/>\n&gt;         at java.net.URLClassLoader.findClass(URLClassLoader.java:188)<br/>\n&gt;         at java.lang.ClassLoader.loadClass(ClassLoader.java:299)<br/>\n&gt;         at sun.misc.Launcher$AppClassLoader.loadClass<br/>\n&gt; (Launcher.java:286)<br/>\n&gt;         at java.lang.ClassLoader.loadClass(ClassLoader.java:255)<br/>\n&gt;         at java.lang.ClassLoader.loadClassInternal<br/>\n&gt; (ClassLoader.java:315)<br/>\n&gt;         at java.lang.Class.forName0(Native Method)<br/>\n&gt;         at java.lang.Class.forName(Class.java:120)<br/>\n&gt;<br/>\n&gt; what is the reason for it please reply.<br/>\n&gt;<br/>\n&gt; thanks<br/>\n&gt; veena<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> </span></blockquote></div>", 
+    "prevInTime": 6582, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1041504686", 
+    "canDelete": false, 
+    "nextInTopic": 6584, 
+    "prevInTopic": 6578, 
+    "headers": {
+        "messageIdInHeader": "PDNFMTQxOUFFLjZCQkFGNURAbnRlbG9zLm5ldD4=", 
+        "referencesHeader": "PGF1cnE1aitsNnM1QGVHcm91cHMuY29tPg=="
+    }
+}

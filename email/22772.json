@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 22773, 
+    "senderId": "s_F8MntVWlXmubqJ8i4F7m_jZP1jUQeM1UUZsy0SU3ryVX5C8IY3h-TiWOSP3txcnuAQzVZLmmrT3T_kvAlW99qD", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Large, hierarchical, randomized test suites: how to not \trun out of memory?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... You could add it as an annotation on the method, and read it in the rule. ... http://github.com/KentBeck/junit/issues#issue/78 is a feature request about", 
+    "msgId": 22772, 
+    "profile": "dsaff", 
+    "topicId": 22741, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-2055937165\">On Sun, Jun 13, 2010 at 12:58 PM,  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:allamistakeo18@...\">allamistakeo18@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;ve thought twice about your initial suggestion to use Theories and DataPoints. Conceptually, this is the functionality that I am looking for. But I don&#39;t want to have to instantiate all DataPoints at once. So, I figured out a simple hack: the DataPoints should be fake data points. The only thing that matters is their number. Then, the real (expensive) data points should be instantiated one by one in the @Before method. This looks like the following:<br/>\n&gt;<br/>\n&gt; @RunWith(Theories.class)<br/>\n&gt; public class TestClass {<br/>\n&gt;<br/>\n&gt;        @DataPoints<br/>\n&gt;        public static int[] runs () {<br/>\n&gt;                return new int [1000];<br/>\n&gt;        }<br/>\n&gt;<br/>\n&gt;        @Before<br/>\n&gt;        public void setUp() {<br/>\n&gt;                // Instantiate the random data points<br/>\n&gt;        }<br/>\n&gt;<br/>\n&gt;        @After<br/>\n&gt;        public void tearDown() {<br/>\n&gt;                // Free resources<br/>\n&gt;        }<br/>\n&gt;<br/>\n&gt;        @Theory<br/>\n&gt;        public void testMethod(int unused) {<br/>\n&gt;                // Run the test<br/>\n&gt;        }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; However, there are still 3 issues with this approach:<br/>\n&gt;<br/>\n&gt; 1) If TestClass contains multiple Theories, they are all run the same number of times (1000). I don&#39;t see how one could easily enforce a specific number of runs for each Theory.<br/>\n<br/>\n </span></blockquote>You could add it as an annotation on the method, and read it in the rule.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 2) JUnit still reports the method testMethod as one entity, instead of breaking it down into 1000 runs, and terminates after the very first failed run. I&#39;d like to have a more detailed report.<br/>\n<br/>\n </span></blockquote><a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/KentBeck/junit/issues#issue/78\">http://github.com/KentBeck/junit/issues#issue/78</a> is a feature request<br/>\nabout this very point.  A couple more votes would move it to the top.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 3) I am struggling with what appears to be a bug in JUnit when testMethod takes in other (real) data points. Then, regardless of their types, JUnit attempts to feed them with elements of the &quot;runs&quot; array of DataPoints. For instance:<br/>\n&gt;<br/>\n&gt; @RunWith(Theories.class)<br/>\n&gt; public class TestClass {<br/>\n&gt;<br/>\n&gt;        @DataPoints<br/>\n&gt;        public static int[] runs () {<br/>\n&gt;                return new int [1000];<br/>\n&gt;        }<br/>\n&gt;<br/>\n&gt;        @DataPoint<br/>\n&gt;        public static Class class = TestClass.class;<br/>\n&gt;<br/>\n&gt;        @Theory<br/>\n&gt;        public void testMethod(int unused, Class used) {<br/>\n&gt;                System.out.println(used.getName());<br/>\n&gt;        }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; This test fails because JUnit attempts to substitute &quot;used&quot; with runs[0]:<br/>\n&gt;<br/>\n&gt; org.junit.experimental.theories.internal.ParameterizedAssertionError: testMethod(runs[0], runs[0])<br/>\n&gt;<br/>\n&gt; Why is JUnit doing this? I&#39;m seeing this with both JUnit 4.5 and 4.8.1.<br/>\n&gt;<br/>\n&gt; Thanks again for your help<br/>\n<br/>\n </span></blockquote>Definitely a bug.  Have you filed it at github yet?<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22771, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1276523563", 
+    "canDelete": false, 
+    "nextInTopic": 22773, 
+    "prevInTopic": 22767, 
+    "headers": {
+        "inReplyToHeader": "PDUyNTU4NzFELUM2NDQtNEMwOC05MkYxLUQwQ0Y3NDIzODA2OUBtYWMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGltckIwWEkxb0NVZ0VqanNWR0tpQWJwNnBvWTRRTDdGTU9lMERnWkBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PDBDMTk3RUM0LTM3QzgtNDM3NS05MjM1LTkzQzU0MjI5REM5OEBtYWMuY29tPgk8QUFOTGtUaWtHOERldUtrVGcxbjBpaHZJTXhscGRHa0pQVjM0QlFIVjAzWENNQG1haWwuZ21haWwuY29tPgk8NTI1NTg3MUQtQzY0NC00QzA4LTkyRjEtRDBDRjc0MjM4MDY5QG1hYy5jb20+"
+    }
+}

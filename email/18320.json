@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 18321, 
+    "senderId": "jacax8TGlLqB83hHX_sV5XsXwS7yDAg3KMk7K6oansYkrFSzGyBoXtGPc2BoS4qly2Q2dMjn7G0pJeRe61X6SqD5VG7nFJH116U2bhFORA", 
+    "systemMessage": false, 
+    "subject": "Re: tests do not run after adding another suite to AllTests", 
+    "from": "&quot;bill turner&quot; &lt;bill.turner@...&gt;", 
+    "authorName": "bill turner", 
+    "msgSnippet": "David, Thanks for getting back to me. I was hoping I was doing something idiotically silly and would be obvious to others. Alas... Yes, I am using ant under", 
+    "msgId": 18320, 
+    "profile": "wltiii", 
+    "topicId": 18311, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 8358051, 
+    "messageBody": "<div id=\"ygrps-yiv-1243971699\">David,<br/>\n<br/>\nThanks for getting back to me. I was hoping I was doing something<br/>\nidiotically silly and would be obvious to others. Alas...<br/>\n<br/>\nYes, I am using ant under cygwin on windows xp. I have not tried<br/>\nrunning from command line, nor from within Eclipse, which obviously<br/>\nimplies not running from a debugger. I am not sure how I would do that<br/>\nin Eclipse, to tell you the truth. I have never done this, but see my<br/>\njunit recipes book discusses running tests from within eclipse. I&#39;ll<br/>\ngive that a try later today.<br/>\n<br/>\nI did comment out the various AllTests and found the offender. That<br/>\nAllTest only executed one test. So, I added a target for the one<br/>\noffending test class. When running that, the response is the same as<br/>\nbelow. It appears to be not running the test at all.<br/>\n<br/>\nI am using the ant junit command. I doubt the problem is in the ant<br/>\nscript as there are several targets that do work, and even the one<br/>\nAllTest works as long as I comment out the offending reference to<br/>\nAllTest within that class.<br/>\n<br/>\nI want this to work, of course, but I have to meet prod schedules so<br/>\nI&#39;ve tested in other ways. <br/>\n<br/>\nI&#39;ll post a reply once I&#39;ve tried your suggestions. In the meantime,<br/>\nif you think of any other suggestions, I&#39;d appreciate it.<br/>\n<br/>\nBill<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;David Saff&quot; &lt;saff@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Bill,<br/>\n&gt; <br/>\n&gt; On the face of it, there&#39;s nothing that seems obviously wrong, nor can I<br/>\n&gt; think of a common mistake that would lead to that behavior.  There&#39;s a<br/>\n&gt; couple ways to drive debugging from here, in order:<br/>\n&gt; <br/>\n&gt; 1) It looks like you&#39;re using ant.  Does either suite run from the<br/>\ncommand<br/>\n&gt; line, or from within an IDE like Eclipse?<br/>\n&gt; 2) Can you run the suite in a debugger (say, in Eclipse)?<br/>\n&gt; 3) Can you &quot;delta debug&quot; by commenting out lines in the offending<br/>\nsuite, and<br/>\n&gt; drive down to a particular problem class?<br/>\n&gt; 4) What ant command are you using?<br/>\n&gt; <br/>\n&gt; Good luck,<br/>\n&gt; <br/>\n&gt;    David Saff<br/>\n&gt; <br/>\n&gt; On 11/6/06, bill turner &lt;bill.turner@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; Running Junit 3.8.<br/>\n&gt; &gt;<br/>\n&gt; &gt; I have an AllTests class that does not run after adding a new suite.<br/>\n&gt; &gt; Here is the top level AllTest code:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;snip&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; public static Test suite () throws Exception<br/>\n&gt; &gt; {<br/>\n&gt; &gt; TestSuite suite = new TestSuite(&quot;all powerpick tests&quot;);<br/>\n&gt; &gt;<br/>\n&gt; &gt; suite.addTest(com.rjmdental.powerpick.types.test.AllTests.suite());<br/>\n&gt; &gt;    suite.addTest(com.rjmdental.powerpick.input.test.AllTests.suite());<br/>\n&gt; &gt; //<br/>\n&gt; &gt; suite.addTest(com.rjmdental.powerpick.sequence.test.AllTests.suite());<br/>\n&gt; &gt; return suite;<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;/snip&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; When the last one is uncommented my run changes from:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;snip&gt;<br/>\n&gt; &gt; test_powerpick:<br/>\n&gt; &gt;     [junit] Running com.rjmdental.powerpick.test.AllTests<br/>\n&gt; &gt;     [junit] Tests run: 58, Failures: 0, Errors: 0, Time elapsed:<br/>\n0.25 sec<br/>\n&gt; &gt;     [junit] Testsuite: com.rjmdental.powerpick.test.AllTests<br/>\n&gt; &gt;     [junit] Tests run: 58, Failures: 0, Errors: 0, Time elapsed:<br/>\n0.25 sec<br/>\n&gt; &gt;     .<br/>\n&gt; &gt;     .<br/>\n&gt; &gt;     .<br/>\n&gt; &gt; &lt;/snip&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; to:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;snip&gt;<br/>\n&gt; &gt; test_powerpick:<br/>\n&gt; &gt;     [junit] Running com.rjmdental.powerpick.test.AllTests<br/>\n&gt; &gt; &lt;/snip&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; I have compared the &quot;sequence&quot; AllTest to the &quot;input&quot; AllTest and see<br/>\n&gt; &gt; no significant difference. The sequence AllTest adds only one suite,<br/>\n&gt; &gt; whereas input adds two. I&#39;ve compared these class specific test<br/>\n&gt; &gt; classes and again see no significant difference. Obviously, I am<br/>\n&gt; &gt; missing something, but I do not know where to look. Any suggestions<br/>\n&gt; &gt; would be greatly appreciated.<br/>\n&gt; &gt;<br/>\n&gt; &gt; TIA,<br/>\n&gt; &gt;<br/>\n&gt; &gt; bill turner<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 18319, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1163000704", 
+    "canDelete": false, 
+    "nextInTopic": 18325, 
+    "prevInTopic": 18313, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDYxMTA2MTg1NXkyZjdkYzBkYXY4YTBiYjE3NTRmNDM5ZmNAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PGVpc3UyMCs0bGx0QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 12817, 
+    "senderId": "laxUPnLbqJ4wVDr8P4U4nApaH6r-_D-1Ddrzy-eiBpQ4JE3myWHh8lDS2BEtza01KOnYVr6dUNjoD7oKXwVdhRpA8lMl8J0i4jAVqTgX", 
+    "systemMessage": true, 
+    "subject": "Re: Testing exceptions", 
+    "from": "&quot;lranatunga&quot; &lt;lranatun@...&gt;", 
+    "authorName": "lranatunga", 
+    "msgSnippet": "Pico, previous replies to your question have hopefully given you some guidance in testing exceptions, but i have to raise some questions about your error", 
+    "msgId": 12816, 
+    "profile": "lranatunga", 
+    "topicId": 12807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 118806566, 
+    "messageBody": "<div id=\"ygrps-yiv-913360000\">Pico, previous replies to your question have hopefully given you some<br/>\nguidance in testing exceptions, but i have to raise some questions<br/>\nabout your error handling strategy in general...<br/>\n<br/>\n&lt;warning&gt;<br/>\nI am going to make a case against checked exceptions.  This is a much<br/>\ndiscussed topic, and you should be able to find many differing<br/>\nopinions.  For a detailed argument /against/ checked exceptions in<br/>\njava, see Bruce Eckels article:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.mindview.net/Etc/Discussions/CheckedExceptions\">http://www.mindview.net/Etc/Discussions/CheckedExceptions</a><br/>\n&lt;/warning&gt;<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Pico Geyer&quot; &lt;picog@s...&gt; wrote:<br/>\n&gt; ...<br/>\n&gt; <br/>\n&gt; try{<br/>\n&gt; \tstatement1<br/>\n&gt; \tstatement2<br/>\n&gt; }<br/>\n&gt; catch(ExceptionType1 e1){<br/>\n&gt; \tSystem.err.println(&quot;The following exception occurred &quot; +<br/>\n&gt; e1.toString());<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; I know that this is not a very good way of handling exceptions...<br/>\nGlad you noticed :)!<br/>\n<br/>\n&gt; The most obvious solution would be to let the method throw all<br/>\n&gt; exceptions that are generated. <br/>\nFor argument&#39;s sake, lets explore that option...<br/>\n<br/>\nHere&#39;s a question: if you&#39;re not going to do anything about an<br/>\nexception, why bother catching it?  And logging doesn&#39;t count - it&#39;s<br/>\nmere hand-waving.  In fact, here&#39;s how i would rate the possible<br/>\nresponses to a typical exception:<br/>\n<br/>\n1. Catch it and do nothing - if you do this, i /will/ fire you!<br/>\n2. Catch it and log it - marginally better, but you&#39;re still fired.<br/>\n3. Catch it, log it and rethrow it - you can keep your job, but your<br/>\nlog file will be filled up with the same exception logged repeatedly.<br/>\n4. Catch it and rethrow it - better, but if so, why catch it in the<br/>\nfirst place?<br/>\n<br/>\n(note that the topmost layers of your code are exempt - they obviously<br/>\nhave to catch all exceptions and at least report them).<br/>\n<br/>\nIf the answer to item 4. is that you have to catch exceptions because<br/>\nthe compiler forces you to, then your problem is the over-use of<br/>\nchecked exceptions.<br/>\n<br/>\n&gt; The problem is that there are 5 or 6 different types of <br/>\n&gt; exceptions that this method can generate and <br/>\n&gt; this seems to make my code very messy.<br/>\n/Any/ piece of code can raise dozens of exceptions, but you don&#39;t have<br/>\nto respond to most of them because they&#39;re /unchecked/.  I am curious<br/>\nwhy throwing your 5/6 exception makes your code messy - is it because<br/>\nthey are checked?<br/>\n<br/>\nConsider what happens if you get in the habit of not using checked<br/>\nexceptions and wrapping any existing checked exceptions with a<br/>\nRuntimeException:<br/>\n<br/>\n    try {<br/>\n        new FileInputStream(new File(&quot;/tmp/temp.txt&quot;));<br/>\n    }<br/>\n    catch (FileNotFoundException e) {<br/>\n        throw new RuntimeException(e);<br/>\n    }<br/>\n<br/>\nNow the client code isn&#39;t /forced/ to write a catch block for the<br/>\nFileNotFoundException. If the client actually needs to respond to this<br/>\nparticular exception, use a specific extension of RuntimeException.<br/>\n<br/>\nWhat you&#39;ll often find, however, is that the majority of your code<br/>\nwon&#39;t actually care about exceptions, leaving them to propogate up to<br/>\nyour top-level controllers where they can be communicated to users in<br/>\nsome fashion.<br/>\n<br/>\nI admit i&#39;m presenting an over-simplified view of the problem;<br/>\nmoreover, this attitude towards exception-handling makes most sense<br/>\nwithin an environment supported by rigorous and automated unit<br/>\ntesting.  Such environments encourage a rather simple strategy for<br/>\ndealing with exceptions:<br/>\n* Fix the bug in your code that /caused/ the exception, instead of<br/>\nwriting more code to respond to bad code. *<br/>\n<br/>\nSorry if i&#39;ve gone off on a tangential rant: i don&#39;t really have<br/>\nenough evidence to assume you are suffering from over-use of checked<br/>\nexceptions.  In any case, i hope this is food for thought.<br/>\n<br/>\nCheers, lasitha. </span></blockquote></div>", 
+    "prevInTime": 12815, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1107648743", 
+    "canDelete": false, 
+    "nextInTopic": 12822, 
+    "prevInTopic": 12813, 
+    "headers": {
+        "inReplyToHeader": "PEFEREYzRkUxOUQ2NDIxNDJBQjBGMDk4NzYxQUEwQ0U5MDhFNzZFQHNzbWFpbi5zb2Z0c3RhcnQuY28uemE+", 
+        "messageIdInHeader": "PGN1M25kNys4OTZmQGVHcm91cHMuY29tPg=="
+    }
+}

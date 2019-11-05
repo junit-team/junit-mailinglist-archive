@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20242, 
+    "senderId": "9Q3xb87d9bxkPfQjiYSjcXoC6K50JuhemdVc8GX7w0R16XxgKHxq1rvaUsl9Y1ckVExepi2D9jiU34lX4QgroBmhIj3m-nz-5A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Set Returning method", 
+    "from": "Chris Dollin &lt;chris.dollin@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... Just Do It. ... (Why might it ever be null?) ... So this `predecessors` thing is supposed to be a set of WorkflowStepPredecessors? ... Why is the", 
+    "msgId": 20241, 
+    "profile": "anover_alias", 
+    "topicId": 20239, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 155741085, 
+    "messageBody": "<div id=\"ygrps-yiv-141698161\">On Tuesday 15 January 2008 11:51, pankaj khare wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; how to write junit test case of method which are return Set or List.<br/>\n<br/>\n </span></blockquote>Just Do It.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  public Set getPredecessors()<br/>\n&gt;     {<br/>\n&gt;     if (this.predecessors != null)<br/>\n<br/>\n </span></blockquote>(Why might it ever be null?)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;     {<br/>\n&gt;         StringBuffer sbId = new StringBuffer();<br/>\n&gt;         sbId.append(&quot;&quot;);<br/>\n&gt; <br/>\n&gt;         for (Iterator iter = this.predecessors.iterator(); iter.hasNext();)<br/>\n&gt;         {<br/>\n&gt;         WorkflowStepPredecessor wsp = (WorkflowStepPredecessor) iter<br/>\n&gt;         .next();<br/>\n<br/>\n </span></blockquote>So this `predecessors` thing is supposed to be a set of WorkflowStepPredecessors?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;         // Lonmg ws=wsd.getPredecessorId();<br/>\n&gt;         if (sbId.toString().equals(&quot;&quot;))<br/>\n&gt;         {<br/>\n&gt;             sbId.append(wsp.getPredecessorStep().getWfPosition());<br/>\n&gt;         } else<br/>\n&gt;         {<br/>\n&gt;             sbId.append(&quot;,&quot;).append(<br/>\n&gt;                 wsp.getPredecessorStep().getWfPosition());<br/>\n<br/>\n </span></blockquote>Why is the innocently named `getPredecessors` doing all this string-bashing?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;         }<br/>\n&gt;         }<br/>\n<br/>\n </span></blockquote>Don&#39;t duplicate code like that.<br/>\n<br/>\nI find it useful to write loops like that, like this:<br/>\n<br/>\n    String thingy = &quot;&quot;;<br/>\n    while or for or whatever do<br/>\n        {<br/>\n        thebuffer.append( thingy ).append( newStuff );<br/>\n        thingy = yourPreferredSeparatingString<br/>\n        }<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;         setPredecessorsIds(sbId.toString());<br/>\n<br/>\n </span></blockquote>We don&#39;t know what setPredecessorIds does.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;     }<br/>\n&gt;     return this.predecessors;<br/>\n&gt;     }<br/>\n&gt; // setter method<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; public void setPredecessors(Set predecessors)<br/>\n&gt;     {<br/>\n&gt; <br/>\n&gt;     this.predecessors = predecessors;<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; i got class cast exception<br/>\n&gt; if i write following code<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; public void testGetPredecessors()<br/>\n&gt;     {<br/>\n&gt;     //MockControl controlPd=MockControl.createControl(Set.class);<br/>\n&gt;     //Set mockPd=(Set)controlPd.getMock();<br/>\n&gt;     //mockPd.add(&quot;ok&quot;);<br/>\n&gt;     //mockPd.toString();<br/>\n&gt;     //controlPd.setReturnValue(&quot;ok&quot;);<br/>\n&gt;     //controlPd.replay();<br/>\n&gt; <br/>\n&gt;     predecessors=new TreeSet();<br/>\n&gt;     predecessors.add(&quot;pk&quot;);<br/>\n&gt;     predecessors.toString();<br/>\n<br/>\n </span></blockquote>Why? <br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;     ws.setPredecessors(predecessors);<br/>\n<br/>\n </span></blockquote>`predecessors` is a set with a String in it.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;     Assert.assertEquals(&quot;pk&quot;,ws.getPredecessors());<br/>\n<br/>\n </span></blockquote>`getPredecessors` expects the predecessors to have WorkflowStepPredecessors<br/>\nin it. Boom. Also, /even if/ ws.getPredecessors() worked and delivered<br/>\na Set, the string &quot;pk&quot; isn&#39;t equal to /any/ Set, ever, not even a bit.<br/>\nBoom again.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;     //controlPd.verify();<br/>\n&gt;     }<br/>\n<br/>\n </span></blockquote>Perhaps it would help us if you were to explain what you&#39;re trying<br/>\nto test.<br/>\n<br/>\n-- <br/>\n&quot;A change is as good as a rest.&quot;                                      - Proverb<br/>\n<br/>\nHewlett-Packard Limited                                          registered no:<br/>\nregistered office: Cain Road, Bracknell, Berks RG12 1HN          690597 England</div>", 
+    "prevInTime": 20240, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1200408824", 
+    "canDelete": false, 
+    "nextInTopic": 20243, 
+    "prevInTopic": 20240, 
+    "headers": {
+        "inReplyToHeader": "PGI1YWYwYzcxMDgwMTE1MDM1MW8xMWE3MDU1cmVhMjliNmU5N2RiNGIzM2VAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDIwMDgwMTE1MTQ1My40NDc4Mi5jaHJpcy5kb2xsaW5AaHAuY29tPg==", 
+        "referencesHeader": "PGI1YWYwYzcxMDgwMTE1MDM1MW8xMWE3MDU1cmVhMjliNmU5N2RiNGIzM2VAbWFpbC5nbWFpbC5jb20+"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13811, 
+    "senderId": "AoORHDRTItoaPEErtNvf-5W4ICVLE5hIcMU7ompRqoD0SuGO6WrInWuKAENvmbSYM6ualUtBRWssxWILnv38kt0DkkfVlZN7B_CYdZ7oGw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing multiple interfaces?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "...  ... If a class implements interfaces A, B and C, then I would tend to want Contract Tests for each interface. If we use TestCase subclassing to do", 
+    "msgId": 13810, 
+    "profile": "nails762", 
+    "topicId": 13795, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-655700195\">jason r tibbetts wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; The pattern of writing an abstract TestCase to test an interface&#39;s<br/>\n&gt; methods and then subclassing it for each implementation of that<br/>\n&gt; interface is well-established<br/>\n </span></blockquote>&lt;snip /&gt;<br/>\n<blockquote><span title=\"ireply\">  &gt; But what&#39;s a good way to handle this when the CUT<br/>\n&gt; implements multiple interfaces, each of which has an abstract base test?<br/>\n<br/>\n </span></blockquote>If a class implements interfaces A, B and C, then I would tend to want <br/>\nContract Tests for each interface. If we use TestCase subclassing to do <br/>\nthat in JUnit, then that would mean three test case classes:<br/>\n<br/>\n1. TestXAsA extends ATests<br/>\n2. TestXAsB extends BTests<br/>\n3. TestXAsC extends CTests<br/>\n<br/>\nThis might bother some people, but it doesn&#39;t bother me: I don&#39;t need <br/>\none test case class per production code class.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I want to write something like the following, but I&#39;m looking for better<br/>\n&gt; ideas:<br/>\n&gt; <br/>\n&gt; public class FooBar implements Foo, Bar { ... }<br/>\n&gt; <br/>\n&gt; public class BarTestBase extends TestCase {<br/>\n&gt;    protected Bar bar;<br/>\n&gt; <br/>\n&gt;    public void testSomeMethod() { ... }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; // does NOT subclass FooTestBase or BarTestBase<br/>\n&gt; public class FooBarTest extends TestCase {<br/>\n&gt;    static class FooSubclassTest extends FooTestBase {<br/>\n&gt;      protected void setUp() { foo = new FooBar(); }<br/>\n&gt;    }<br/>\n&gt; <br/>\n&gt;    static class BarSubclassTest extends BarTestBase {<br/>\n&gt;      protected void setUp() { foo = new FooBar(); }<br/>\n&gt;    }<br/>\n&gt; <br/>\n&gt;    public static Test suite() {<br/>\n&gt;       TestSuite suite = new TestSuite(FooBarTest.class);<br/>\n&gt;       suite.addTest(new TestSuite(FooSubclassTest.class);  // ?<br/>\n&gt;       suite.addTest(new TestSuite(BarSubclassTest.class);  // ?<br/>\n&gt;       return suite;<br/>\n&gt;    }<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>You&#39;ve done here what I would do, except you&#39;ve added a suite() method <br/>\nto collect all the &quot;FooBar&quot; tests together. Since I usually try to run <br/>\nall my tests all the time, I&#39;d get that free.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Considerations:<br/>\n&gt; * This keeps all of the tests for the FooBar class in a single file.<br/>\n<br/>\n </span></blockquote>I don&#39;t find this important, but that&#39;s personal taste.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; * Because the static inner test classes&#39; names end with &#39;Test&#39;, they&#39;ll<br/>\n&gt; be picked up automatically by an Ant &lt;junit&gt; task that executes anything<br/>\n&gt; called &#39;*Test.class&#39;, right? If so, then adding them to the FooBarTest&#39;s<br/>\n&gt; suite is redundant.<br/>\n<br/>\n </span></blockquote>That&#39;s handy.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; * If the inner classes&#39; names end in &#39;Test&#39;, they must be declared<br/>\n&gt; static in order to prevent a reflection exception when the JUnit test<br/>\n&gt; loader attempts to invoke them, since they&#39;d have to be instantiated<br/>\n&gt; within an instance of FooBarTest.<br/>\n<br/>\n </span></blockquote>That makes sense.<br/>\n<br/>\nI think you&#39;re on the right track here. Let us know how it works for <br/>\nyou. This is one of those deeper examples that no-one has written about <br/>\nin detail yet. (Even _JUnit Recipes_ only mentions it in passing.) You <br/>\nshould write about your experiences with this pattern and share it with <br/>\nthe world. :)<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 13809, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1117747862", 
+    "canDelete": false, 
+    "nextInTopic": 13811, 
+    "prevInTopic": 13795, 
+    "headers": {
+        "inReplyToHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDQyOUY3QTk2LjgwMDAwQHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

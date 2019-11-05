@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 906, 
+    "senderId": "wbrog8ZMa-d1Y7qibEgFgJ7wTGdmkMBFU8T-KwzRSs3kTx5uRFvdTQ1x3K9i9ASkkUhwXe_35ek6wUY", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How can I test async callbacks?", 
+    "from": "mrettig@...", 
+    "authorName": "mrettig@homemail.com", 
+    "msgSnippet": "chelck wrote:  If I don t do anything the errors print out on the console as tracebacks, but they don t get recorded in the TestResult and its hard to", 
+    "msgId": 905, 
+    "topicId": 901, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1239511892\"><br><font size=\"2\" face=\"sans-serif\">chelck wrote:</font>\n<br><font size=\"2\" face=\"sans-serif\">&lt;snip&gt;</font>\n<br><font size=\"2\" face=\"Courier New\">If I don&#39;t do anything the errors print out on the<br>\nconsole as tracebacks, but they don&#39;t get recorded in the TestResult and its<br>\nhard to tell where they came from. Callbacks are obects with two methods:<br>\nok() and error(). Ideally I&#39;d like to define a TestCallback which can have<br>\nasserts and fails in it.</font>\n<br><font size=\"2\" face=\"sans-serif\">&lt;/snip&gt;</font>\n<br>\n<br><font size=\"2\" face=\"sans-serif\">I&#39;m assuming you are multithreading somewhere.</font>\n<br>\n<br><font size=\"2\" face=\"sans-serif\">Can you wait for the thread to finish before you exit the method?</font>\n<br>\n<br><font size=\"2\" face=\"sans-serif\">You should be able to setup a callback as a separate thread. Just launch the thread, wait for it to terminate, then ask the thread for the results of the callback. The only problem would be if you have callbacks that never come back. In this case you will need a timeout period, so you are sure your tests will always run.</font>\n<br>\n<br><font size=\"2\" face=\"Courier New\">public void testWithData() {</font>\n<br><font size=\"2\" face=\"sans-serif\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CallBackThread callBack = new CallBackThread();</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;callBack.start();<br>\n &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;m_model.getData(callBack);</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;callBack.join();</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;callBack.assertSuccess();<br>\n &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</font>\n<br>\n<br><font size=\"2\" face=\"sans-serif\">public class CallBackThread extends Thread{</font>\n<br><font size=\"2\" face=\"sans-serif\">private isWaitingForCallBack = true;</font>\n<br><font size=\"2\" face=\"sans-serif\">private Object data;</font>\n<br><font size=\"2\" face=\"sans-serif\">private Throwable failure;</font>\n<br><font size=\"2\" face=\"sans-serif\">.......</font>\n<br><font size=\"2\" face=\"sans-serif\">&nbsp; &nbsp; &nbsp; &nbsp; public void run(){</font>\n<br><font size=\"2\" face=\"sans-serif\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while(isWaitingForCallBack){</font>\n<br><font size=\"2\" face=\"sans-serif\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.sleep(10);</font>\n<br><font size=\"2\" face=\"sans-serif\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</font>\n<br><font size=\"2\" face=\"sans-serif\">&nbsp; &nbsp; &nbsp; &nbsp; }</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp;public void ok(Object result) {data = result;isWaitingForCallBack = false;}<br>\n public void error(Throwable t) {failure = t;isWaitingForCallBack = false;}</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp;public void assertSuccess(){ </font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(failure != null)</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw failure;</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; assertNotNull(data);</font>\n<br><font size=\"2\" face=\"Courier New\">&nbsp; &nbsp; &nbsp; &nbsp; }</font>\n<br><font size=\"2\" face=\"sans-serif\">...</font>\n<br><font size=\"2\" face=\"sans-serif\">}</font>\n<br>\n<br>\n<br>\n<br><font size=\"2\" face=\"sans-serif\">Regards,</font>\n<br>\n<br><font size=\"2\" face=\"sans-serif\">Mike</font></div>", 
+    "prevInTime": 904, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "986432991", 
+    "canDelete": false, 
+    "nextInTopic": 909, 
+    "prevInTopic": 904, 
+    "headers": {
+        "messageIdInHeader": "PE9GRjgzNjBFMkYuRTBFRTdGOTYtT044NjI1NkEyNS4wMDA0M0UwREB0aG91Z2h0d29ya3MuY29tPg=="
+    }
+}

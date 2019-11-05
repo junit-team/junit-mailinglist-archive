@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20731, 
+    "senderId": "56ANR6sY23l7S3SNESVkMQmNic134KPE04vNOnhBGC4LE0yJ7B9h6zykc5jKWMtoKmdncTjBF9M1qA2zrio3JTLm4aw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running parallel tests in JUnit4.4+", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Daniel, Per my earlier message, did this go anywhere?  Thanks, David Saff", 
+    "msgId": 20730, 
+    "profile": "dsaff", 
+    "topicId": 20427, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-2076210000\">Daniel,<br/>\n<br/>\nPer my earlier message, did this go anywhere?  Thanks,<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thu, Apr 3, 2008 at 3:51 PM, James Abley &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:james.abley@...\">james.abley@...</a>&gt; wrote:<br/>\n&gt; On 03/04/2008, Daniel Brolund &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:daniel.brolund@...\">daniel.brolund@...</a>&gt; wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt; Hi all,<br/>\n&gt;&gt;<br/>\n&gt;&gt;  I&#39;ve been looking around a bit for some sort of parallel execution of<br/>\n&gt;&gt;  JUnit 4.4+ tests, but I didn&#39;t find much.<br/>\n&gt;&gt;<br/>\n&gt;&gt;  So, I tried a few things myself and came up with the two examples below;<br/>\n&gt;&gt;  one is a parallel suite, and the other is for running parameterized test<br/>\n&gt;&gt;  instances in parallel. It is almost too simple for me to really believe<br/>\n&gt;&gt;  in it. ;-)<br/>\n&gt;&gt;<br/>\n&gt;&gt;  I would really like some feedback on it; things I&#39;ve missed, cases where<br/>\n&gt;&gt;  it won&#39;t work etc.<br/>\n&gt;&gt;<br/>\n&gt;&gt;  ===========================================<br/>\n&gt;&gt;<br/>\n&gt;&gt;  package com.agical.junit;<br/>\n&gt;&gt;<br/>\n&gt;&gt;  import java.util.List;<br/>\n&gt;&gt;<br/>\n&gt;&gt;  import org.junit.internal.runners.InitializationError;<br/>\n&gt;&gt;  import org.junit.runner.Runner;<br/>\n&gt;&gt;  import org.junit.runner.notification.RunNotifier;<br/>\n&gt;&gt;  import org.junit.runners.Suite;<br/>\n&gt;&gt;<br/>\n&gt;&gt;  public class ParallelSuite extends Suite {<br/>\n&gt;&gt;<br/>\n&gt;&gt;  public ParallelSuite(Class&lt;?&gt; klass) throws InitializationError {<br/>\n&gt;&gt;          super(klass);<br/>\n&gt;&gt;      }<br/>\n&gt;&gt;<br/>\n&gt;&gt;  public ParallelSuite(Class&lt;?&gt; klass, Class&lt;?&gt;[] annotatedClasses)<br/>\n&gt;&gt;              throws InitializationError {<br/>\n&gt;&gt;          super(klass, annotatedClasses);<br/>\n&gt;&gt;      }<br/>\n&gt;&gt;<br/>\n&gt;&gt;  @Override<br/>\n&gt;&gt;      protected void runChildren(final RunNotifier runNotifier) {<br/>\n&gt;&gt;          final List&lt;Runner&gt; runners = getRunners();<br/>\n&gt;&gt;          runRunnersInParallel(runNotifier, runners);<br/>\n&gt;&gt;      }<br/>\n&gt;&gt;<br/>\n&gt;&gt;  public static void runRunnersInParallel(final RunNotifier<br/>\n&gt;&gt;  runNotifier,<br/>\n&gt;&gt;              final List&lt;Runner&gt; runners) {<br/>\n&gt;&gt;          Thread[] threads = new Thread[runners.size()];<br/>\n&gt;&gt;          for (int i = 0; i &lt; threads.length; i++) {<br/>\n&gt;&gt;              final int index = i;<br/>\n&gt;&gt;              threads[i] = new Thread(new Runnable() {<br/>\n&gt;&gt;                  public void run() {<br/>\n&gt;&gt;                      runners.get(index).run(runNotifier);<br/>\n&gt;&gt;                  }});<br/>\n&gt;&gt;              threads[i].start();<br/>\n&gt;&gt;          }<br/>\n&gt;&gt;          for (int i = 0; i &lt; threads.length; i++) {<br/>\n&gt;&gt;              try {<br/>\n&gt;&gt;                  threads[i].join();<br/>\n&gt;&gt;              } catch (InterruptedException e) {<br/>\n&gt;&gt;                  throw new RuntimeException(&quot;Couldn&#39;t join thread<br/>\n&gt;&gt;  nicely&quot;, e);<br/>\n&gt;&gt;              }<br/>\n&gt;&gt;          }<br/>\n&gt;&gt;      }<br/>\n&gt;&gt;  }<br/>\n&gt;&gt;<br/>\n&gt;&gt;  ===========================================<br/>\n&gt;&gt;<br/>\n&gt;&gt;  package com.agical.junit;<br/>\n&gt;&gt;<br/>\n&gt;&gt;  import java.util.List;<br/>\n&gt;&gt;<br/>\n&gt;&gt;  import org.junit.runner.Runner;<br/>\n&gt;&gt;  import org.junit.runner.notification.RunNotifier;<br/>\n&gt;&gt;  import org.junit.runners.Parameterized;<br/>\n&gt;&gt;<br/>\n&gt;&gt;  public class ParallelAndParameterized extends Parameterized {<br/>\n&gt;&gt;<br/>\n&gt;&gt;  public ParallelAndParameterized(Class&lt;?&gt; klass) throws Exception {<br/>\n&gt;&gt;          super(klass);<br/>\n&gt;&gt;      }<br/>\n&gt;&gt;<br/>\n&gt;&gt;  @Override<br/>\n&gt;&gt;      protected void runChildren(final RunNotifier runNotifier) {<br/>\n&gt;&gt;          final List&lt;Runner&gt; runners = getRunners();<br/>\n&gt;&gt;          ParallelSuite.runRunnersInParallel(runNotifier, runners);<br/>\n&gt;&gt;      }<br/>\n&gt;&gt;  }<br/>\n&gt;&gt;<br/>\n&gt;&gt;  ===========================================<br/>\n&gt;&gt;<br/>\n&gt;&gt;  There is still some work needed to be done, but I would like to hear if<br/>\n&gt;&gt;  I&#39;m totally on the wrong path.<br/>\n&gt;&gt;<br/>\n&gt;&gt;  Cheers<br/>\n&gt;&gt;  Daniel<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Hi Daniel,<br/>\n&gt;<br/>\n&gt; Nice thinking. Did you consider using<br/>\n&gt; java.util.concurrent.CountDownLatch and maybe the Executor framework?<br/>\n&gt; That might better communicate the intention.<br/>\n&gt;<br/>\n&gt; Regards,<br/>\n&gt;<br/>\n&gt; James<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 20729, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1217519274", 
+    "canDelete": false, 
+    "nextInTopic": 20733, 
+    "prevInTopic": 20452, 
+    "headers": {
+        "inReplyToHeader": "PDIzZmNlOGU2MDgwNDAzMTI1MWgzZWE1ZjhlOG4xMWYzNTI0YWI4NzhlYjlmQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgwNzMxMDg0N3Y1M2ZkNGEwNW84ODZjYjc3NzVkYTMyN2E1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDEyMDcyMzQ0NjEuMTgzNDcuNDAuY2FtZWxAZGFuaWVsLWt1YnVudHU+CSA8MjNmY2U4ZTYwODA0MDMxMjUxaDNlYTVmOGU4bjExZjM1MjRhYjg3OGViOWZAbWFpbC5nbWFpbC5jb20+"
+    }
+}

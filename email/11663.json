@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 11664, 
+    "senderId": "jCmPqjx4Jy0z-rCiI_OKOeYmqyO30eOog_0QnPcScP-GXtM3Pi1YHnkxV3-rXxGhCLl9afFU1kJ-5TpPRsaEGGyxzGI9UeQDtrMXvWdHJw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Testing async calls", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Yes, it would work, and more simply than that. In your design, this happens: 1. The client registers itself with the server for callbacks. 2. The client", 
+    "msgId": 11663, 
+    "profile": "nails762", 
+    "topicId": 11653, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-115684807\">Kalyan Kumar M wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Yes, you are right. I guess I&#39;m in a wrong notion that I should test<br/>\n&gt; the whole thing in a one single go. Now, I realize that I can test<br/>\n&gt; the client and the server individually.<br/>\n&gt; <br/>\n&gt; Now, the big question is how do I test them independently?<br/>\n&gt; <br/>\n&gt; 1. Client: I&#39;m not sure if I can use Mock Objects to simulate the<br/>\n&gt; results from the server. Can someone please let me know if that<br/>\n&gt; would work?<br/>\n<br/>\n </span></blockquote>Yes, it would work, and more simply than that. In your design, this happens:<br/>\n<br/>\n1. The client registers itself with the server for callbacks.<br/>\n2. The client invokes executeAsynCall()<br/>\n3. The server invokes the client&#39;s onMessage() with the response.<br/>\n<br/>\nTo test /just/ the client, test /just/ #3. In other words, think of the <br/>\nvarious kinds of response messages the server can send back, then write <br/>\na test for each one that looks like this:<br/>\n<br/>\ntestHandleOkResponse() {<br/>\n     Message okResponse = new Message() { ... };<br/>\n<br/>\n     Client client = new Client();<br/>\n     client.onMessage(okResponse);<br/>\n<br/>\n     assertTrue(client.whateverItShouldDo());<br/>\n}<br/>\n<br/>\nJust create a message for each different kind of response, then test how <br/>\nthe client behaves in the presence of those kinds of server responses. <br/>\nIt doesn&#39;t matter /what/ causes the server to invoke onMessage()--that&#39;s <br/>\nserver responsibility--for now all that matters is how Client acts when <br/>\nServer passes it a response message.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 2. Server: The same way in which I was testing the server from the<br/>\n&gt; client. It&#39;s just that I&#39;m shifting the test code to the server now.<br/>\n&gt; Am I heading in the right direction?<br/>\n<br/>\n </span></blockquote>Yes. If you can invoke the server in synchronous mode, do that: <br/>\nsomewhere, somehow, it has a method that just returns a response that is <br/>\nthen formatted as a Message to put on a queue. Test the part of the <br/>\nserver that goes up until just before it queues the Message. That&#39;s <br/>\nwhere you can verify the logic.<br/>\n<br/>\nIf you can&#39;t do this because of a limitation in the current server <br/>\ndesign, use the FutureResult idea already recommended. It&#39;s not great, <br/>\nbut it&#39;d work.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 11662, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1090860300", 
+    "canDelete": false, 
+    "nextInTopic": 11664, 
+    "prevInTopic": 11662, 
+    "headers": {
+        "inReplyToHeader": "PGNlMzY2disyaXJtQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxMDUzNTBDLjcwMTA1MDZAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNlMzY2disyaXJtQGVHcm91cHMuY29tPg=="
+    }
+}

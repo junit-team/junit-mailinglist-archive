@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 17351, 
+    "senderId": "6TwM15tUQZIO_M6Pcuq9MJzZYcXp00E640k0zXeLChz0XFWljD0wRIr8-QfizJ4l2MqvZGDyKuY7ofFDl4zCzOx7wTcq4siy", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] How to add functionality for execution flexibilty?", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Michael, You re right that the JUnit documentation needs to be improved. As a volunteer project, we re open to contributions. The following example may serve", 
+    "msgId": 17350, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 8519 invoked from network); 9 Aug 2006 17:52:39 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m32.grp.scd.yahoo.com with QMQP; 9 Aug 2006 17:52:39 -0000\r\nReceived: from unknown (HELO elasmtp-galgo.atl.sa.earthlink.net) (209.86.89.61)\n  by mta6.grp.scd.yahoo.com with SMTP; 9 Aug 2006 17:52:39 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby elasmtp-galgo.atl.sa.earthlink.net with asmtp (Exim 4.34)\n\tid 1GAsEK-0001Pn-Sk\n\tfor junit@yahoogroups.com; Wed, 09 Aug 2006 13:52:33 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 9 Aug 2006 10:52:27 -0700\r\nMessage-ID: &lt;00c501c6bbdc$95a9cbd0$9dc8a8c0@T42&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 11\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869\r\nThread-Index: Aca61LbWCA9J3xbdSgi5YviaIbYLjgARhpdA\r\nin-reply-to: &lt;eb7l5b+8699@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d47871f28e14d885ed8c861875cb7b0052891b043dbb8868137a350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] How to add functionality for execution flexibilty?\r\nX-Yahoo-Group-Post: member; u=173198504; y=VCFBimYJ6vcaAx1vIPgHAih-2dbpd0TwROnnum6tJm-AgR-m\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nMichael,\n \nYou&#39;re right that the JUnit documentation needs to be improved. As a\nvolunteer project, we&#39;re open to contributions.\n \nThe following example may serve to address the situation you raise:\n \npublic class FilterExample {\n\t@Test public void runTestsInAList() {\n\t\tfinal String[] tests= new String[] {&quot;a&quot;, &quot;b&quot;};\n\t\tFilter namedTests= new Filter() {\n\t\t\t@Override\n\t\t\tpublic String describe() {\n\t\t\t\treturn &quot;only tests starting with &#39;a&#39;&quot;;\n\t\t\t}\n\t\t\t@Override\n\t\t\tpublic boolean shouldRun(Description description) {\n\t\t\t\tfor (String each : tests)\n\t\t\t\t\tif\n(description.getDisplayName().startsWith(each))\n\t\t\t\t\t\treturn true;\n\t\t\t\treturn false;\n\t\t\t}\n\t\t};\n\t\tRequest request=\nRequest.aClass(Tests.class).filterWith(namedTests);\n\t\tResult result= new JUnitCore().run(request);\n\t\tassertEquals(2, result.getRunCount());\n\t}\n\tpublic static class Tests {\n\t\t@Test public void a() {}\n\t\t@Test public void b() {}\n\t\t@Test public void c() {}\n\t}\n}\n\nSincerely yours,\n\nKent Beck\nThree Rivers Institute\n\n________________________________\n\n\tFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf\nOf Michael Schechter\n\tSent: Monday, August 07, 2006 8:11 AM\n\tTo: junit@yahoogroups.com\n\tSubject: [junit] How to add functionality for execution flexibilty?\n\t\n\t\n\n\tI am looking to add the following functionality to my tests:\n\t- When provided a list of method names on the command line, only\nthose\n\tmethods in the invoked class will be executed.\n\t\n\tI need this implementation at the test class level. This was pretty\n\tstraightforward with JUnit 3.8.1 - just create new instances of the\n\tderived TestCase with the method name as the argument, and add them\nto\n\tthe suite.\n\t\n\tI am having a lot of difficulty trying to replicate this\n\tfunctionality. The filter logic appears to be a one-shot exclusion\n\tfilter (everything not matching is dropped), and I can&#39;t seem to\nfind\n\tany documentation that would address this.\n\t\n\tAs Mr. Rainsberger and others have suggested, I have searched the\nweb\n\tfor an appropriate tutorial. I have found a number of good basic\n\ttutorials (including some references in this group), and a couple\nwith\n\tsome advanced content. I cannot seem to find one with the detail to\n\tunlock the tools and capabilities that I am positive are available\n\twithin the new JUnit framework. \n\t\n\tI am also convinced that no one is as capable as the authors in\n\tdocumenting the features of the framework, and I am having trouble\n\tfind Javadoc for some of the classes and APIs in the JUnit 4.1 tree.\n\tThere is a fairly good chance that I am looking in the wrong place.\n\t\n\tIf anyone has any suggestions or guidance on these issues, it would\nbe\n\tgreatly appreciated.\n\t\n\tThanks in advance!\n\t\n\tMichael Schechter\n\t\n\t\n\n\t \n\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 17338, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 17349, 
+    "contentTrasformed": false, 
+    "postDate": "1155145947", 
+    "canDelete": false, 
+    "nextInTopic": 17352, 
+    "prevInTopic": 17349, 
+    "headers": {
+        "inReplyToHeader": "PGViN2w1Yis4Njk5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwYzUwMWM2YmJkYyQ5NWE5Y2JkMCQ5ZGM4YThjMEBUNDI+"
+    }
+}

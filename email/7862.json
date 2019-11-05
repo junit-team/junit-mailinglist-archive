@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 7863, 
+    "senderId": "yeYV4VE9df8kPB4K0dW-BqGe-vjeGF0uSRNAgdntulq7LxEMHmdanWJkpNuHtMM_ALhtYqgUHs3O57qQ6umtzA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing JDialog", 
+    "from": "Yunas &lt;mailych@...&gt;", 
+    "authorName": "Yunas", 
+    "msgSnippet": "Hi, Thanks for the information.Both the tip works. I went by 2 ,since i wont need to modify my Orignal class. Yoonus ... ", 
+    "msgId": 7862, 
+    "profile": "mailych", 
+    "topicId": 7821, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 36185889, 
+    "messageBody": "<div id=\"ygrps-yiv-548839422\">Hi,<br/>\n<br/>\nThanks for the information.Both the tip works.<br/>\n<br/>\nI went by 2 ,since i wont need to modify my Orignal<br/>\nclass.<br/>\n<br/>\nYoonus<br/>\n--- Johannes Link &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:john.link@...\">john.link@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I guess you made the dialog modal. There&#39;s a flag<br/>\n&gt; for that in the JDialog<br/>\n&gt; constructor.<br/>\n&gt; <br/>\n&gt; There are two approaches I have used in that<br/>\n&gt; situation:<br/>\n&gt; 1. Provide a constructor which opens the dialog in<br/>\n&gt; non-modal mode just for<br/>\n&gt; testing purposes.<br/>\n&gt; <br/>\n&gt; 2. Open the dialog in another thread than the<br/>\n&gt; testing thread:<br/>\n&gt; private void openDialogInOtherThread() {<br/>\n&gt;     Runnable runnable = new Runnable() {<br/>\n&gt;         public void run() {<br/>\n&gt;                 dialog.show(); // =<br/>\n&gt; dialog.setVisible(true)<br/>\n&gt;         }<br/>\n&gt;     };<br/>\n&gt;     new Thread(runnable).start();<br/>\n&gt;     waitForDialogOpen();<br/>\n&gt; }<br/>\n&gt; private void waitForDialogOpen() {<br/>\n&gt;     while (!dialog.isShowing()) {<br/>\n&gt;         try {<br/>\n&gt;             Thread.sleep(10);<br/>\n&gt;         } catch (InterruptedException e) {<br/>\n&gt;         }<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Now you can perform your tests on dialog as you<br/>\n&gt; wish. Don&#39;t forget to call<br/>\n&gt; dialog.dispose() in tearDown.<br/>\n&gt; <br/>\n&gt; Hope that helps,<br/>\n&gt; Johannes<br/>\n&gt; <br/>\n&gt; ----- Original Message -----<br/>\n&gt; From: &quot;mailych&quot; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mailych@...\">mailych@...</a><br/>\n&gt; <br/>\n&gt; &gt; I have a class(MyClass) which extends JDialog.It<br/>\n&gt; contains few buttons<br/>\n&gt; &gt; and a textfield.On pressing the button,the<br/>\n&gt; corresponding text isd<br/>\n&gt; &gt; isplayed in the TextFiled.<br/>\n&gt; &gt;<br/>\n&gt; &gt; MyClass is made visible only from the calling<br/>\n&gt; class<br/>\n&gt; &gt;<br/>\n&gt; &gt; Now i need test it using JUnit.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Following is the abstract of test code.<br/>\n&gt; &gt;<br/>\n&gt; &gt; 1 MyClass myclass = new MyClass(title);<br/>\n&gt; &gt;<br/>\n&gt; &gt; 2 AbstractButtonTester btnTester = new<br/>\n&gt; AbstractButtonTester();<br/>\n&gt; &gt;<br/>\n&gt; &gt; 3 System.out.println(&quot;Before visible&quot;);<br/>\n&gt; &gt;<br/>\n&gt; &gt; 4 btnTester.actionDelay(DELAY*2);<br/>\n&gt; &gt;<br/>\n&gt; &gt; 5 myclass.setVisible(true);<br/>\n&gt; &gt;<br/>\n&gt; &gt; 6 btnTester.actionDelay(DELAY*2);<br/>\n&gt; &gt;<br/>\n&gt; &gt; 7 System.out.println(&quot;After visible&quot;);<br/>\n&gt; &gt;<br/>\n&gt; &gt; 8 // Get a KeyboardFocusManager<br/>\n&gt; &gt; 9 KeyboardFocusManager focusManager =<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n </span></blockquote>KeyboardFocusManager.getCurrentKeyboardFocusManager();<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;<br/>\n&gt; &gt; 10 // New GUI shown should not be null and<br/>\n&gt; supposed to be MyClass<br/>\n&gt; &gt;<br/>\n&gt; &gt; 11 Assert.assertNotNull(&quot;Class should not be<br/>\n&gt; null&quot;,<br/>\n&gt; &gt; focusManager.getCurrentFocusCycleRoot());<br/>\n&gt; &gt;<br/>\n&gt; &gt; 12 Assert.assertEquals(&quot;MyClass should be shown&quot;,<br/>\n&gt; MyClass.class,<br/>\n&gt; &gt;<br/>\n&gt; focusManager.getCurrentFocusCycleRoot().getClass());<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Now the problem is the code doesnt continue after<br/>\n&gt; line number:5,it<br/>\n&gt; &gt; prints &quot;Before visible&quot; . Only once i close my<br/>\n&gt; dialog box, it<br/>\n&gt; &gt; prints &quot;After visible&quot;<br/>\n&gt; &gt;<br/>\n&gt; &gt; But if MyClass extends JFrame,the code continues<br/>\n&gt; as expected.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Is this a bug??Can anybody suggest a work<br/>\n&gt; around(except making<br/>\n&gt; &gt; MyClass extending JFrame)<br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------ Yahoo! Groups Sponsor<br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n<br/>\n </span></blockquote>__________________________________________________<br/>\nDo you Yahoo!?<br/>\nThe New Yahoo! Search - Faster. Easier. Bingo<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://search.yahoo.com\">http://search.yahoo.com</a></div>", 
+    "prevInTime": 7861, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1051259899", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 7836, 
+    "headers": {
+        "inReplyToHeader": "PDAwMzUwMWMzMGEyYyRlM2ViYjUyMCRmZTc4YThjMEBoYWliYWNoPg==", 
+        "messageIdInHeader": "PDIwMDMwNDI1MDgzODE5Ljk1Nzk1LnFtYWlsQHdlYjEyODA4Lm1haWwueWFob28uY29tPg=="
+    }
+}

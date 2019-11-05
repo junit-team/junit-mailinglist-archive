@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 13259, 
+    "senderId": "dDBI4NvMsb_YjPKtYDmF4iqSYRiQa8m8YZe9vridWd0OcxOlxpnXb23iJYDbFwTErWiP5mDd7jwVlHOe_XTZw34HBzzX1g", 
+    "systemMessage": false, 
+    "subject": "Re: How to test this class ?", 
+    "from": "&quot;rubbinio&quot; &lt;rubbinio@...&gt;", 
+    "authorName": "rubbinio", 
+    "msgSnippet": "Thx Harald for your answer but I managed to find a solution myself after a loot of seraching on the net and a lot of reading I came up with my own solution.", 
+    "msgId": 13258, 
+    "rawEmail": "Return-Path: &lt;rubbinio@...&gt;\r\nX-Sender: rubbinio@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 74074 invoked from network); 10 Apr 2005 03:29:55 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m24.grp.scd.yahoo.com with QMQP; 10 Apr 2005 03:29:55 -0000\r\nReceived: from unknown (HELO n13a.bulk.scd.yahoo.com) (66.94.237.24)\n  by mta5.grp.scd.yahoo.com with SMTP; 10 Apr 2005 03:29:55 -0000\r\nDomainKey-Signature: \r\nReceived: from [66.218.66.59] by n13.bulk.scd.yahoo.com with NNFMP; 10 Apr 2005 03:29:55 -0000\r\nReceived: from [66.218.66.87] by mailer8.bulk.scd.yahoo.com with NNFMP; 10 Apr 2005 03:29:55 -0000\r\nDate: Sun, 10 Apr 2005 03:29:54 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;d3a6ji+c7i0@...&gt;\r\nIn-Reply-To: &lt;000a01c53d39$45c38980$6b00a8c0@HARRY&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2183\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;rubbinio&quot; &lt;rubbinio@...&gt;\r\nSubject: Re: How to test this class ?\r\nX-Yahoo-Group-Post: member; u=111748393\r\nX-Yahoo-Profile: rubbinio\r\n\r\n\nThx Harald for your answer but I managed to find a solution myself\nafter a loot of seraching on the net and a lot of reading I came up\nwith my own solution. Here it is in case someone else needs it.\n\nI basically created a thread which fakes an input and it works great.\nHere is the code:\n\n\nprivate class fakeInput extends Thread\n    {\n        private String in_;\n        \n        public fakeInput( String in )\n        {\n            in_ = in;\n        }\n        \n        public void run()\n        {\n            try \n            {\n                \n                PipedInputStream testInPipe = new PipedInputStream();\n            \tPipedOutputStream testOutPipe = new PipedOutputStream();\n            \ttestInPipe.connect(testOutPipe);\n            \tSystem.setIn(testInPipe);\n            \tString withline = in_ + &quot;&#92;n&quot;;\n                this.sleep(1000);\n                testOutPipe.write(withline.getBytes(), 0,\nwithline.length());\n\n                \n            }\n            catch ( Exception e)\n            {                \n            }\n            \n            \n        }\n    }\n\n\n--- In junit@yahoogroups.com, Harald M. Muller &lt;harald.m.mueller@b...&gt;\nwrote:\n&gt; \n&gt; &gt; \n&gt; &gt; I need to test a class in which all the methods read via System.in.\n&gt; &gt; \n&gt; &gt; How can I fake the input so that I can automate my tests ?\n&gt; &gt; \n&gt; &gt; Any answer will be helpfull ..... I am using JUnit under Eclipse.\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; ================================================================\n&gt; &gt; \n&gt; &gt; class Input {\n&gt; &gt; \n&gt; &gt;   static final BufferedReader keyboard = new BufferedReader( new\n&gt; &gt; InputStreamReader(System.in));\n&gt; &gt; \n&gt; \n&gt; Since JDK1.1, there is a method\n&gt; \tSystem.setIn(InputStream in)\n&gt; Just call this in setUp() to get Input from somewhere else (a\n&gt; FileInputStream or a ByteArrayInputStream probably make most sense). If\n&gt; you want to be perfect, do the following:\n&gt; \n&gt; class MyTestCase ... {\n&gt;   InputStream originalIn;\n&gt;   public void setUp() {\n&gt;     originalIn = System.in;\n&gt;     System.setIn(....);\n\n\n&gt;   }\n&gt;   public void tearDown() {\n&gt;     System.setIn(originalIn);\n&gt;   }\n&gt;   // ...\n&gt; }\n&gt; \n&gt; No need for any fancy refactoring ;-) - but it wouldn&#39;t hurt to do it!\n&gt; \n&gt; Regards\n&gt; Harald M. Mueller\n\n\n\n\n", 
+    "profile": "rubbinio", 
+    "topicId": 13253, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 111748393, 
+    "prevInTime": 13257, 
+    "contentTrasformed": false, 
+    "postDate": "1113103794", 
+    "canDelete": false, 
+    "nextInTopic": 13259, 
+    "prevInTopic": 13257, 
+    "headers": {
+        "inReplyToHeader": "PDAwMGEwMWM1M2QzOSQ0NWMzODk4MCQ2YjAwYThjMEBIQVJSWT4=", 
+        "messageIdInHeader": "PGQzYTZqaStjN2kwQGVHcm91cHMuY29tPg=="
+    }
+}

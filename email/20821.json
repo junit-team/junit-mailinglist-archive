@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 20822, 
+    "senderId": "rfNtvCZVqllJmjQh_mYKGXg5a4cKxUZTd-ZG33SqPgSr3XBgmnNbMEFwwSLeyBRS_c92IUy7_ENuDjioaPEXoOmHwN9zL_CCtfokkQ", 
+    "systemMessage": false, 
+    "subject": "Re: Paper on Abstract vs. Concrete parameters", 
+    "from": "&quot;toalexsmail&quot; &lt;toalexsmail@...&gt;", 
+    "authorName": "toalexsmail", 
+    "msgSnippet": "... www.threeriversinstitute.org/AbstractVsConcreteParameters.html. In ... I have read your paper and I have some comments. First of all lets consider concrete", 
+    "msgId": 20821, 
+    "profile": "toalexsmail", 
+    "topicId": 20817, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 340165037, 
+    "messageBody": "<div id=\"ygrps-yiv-2146787094\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;kentb&quot; &lt;kentb@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; All,<br/>\n&gt; <br/>\n&gt; In spite of the one feedback message I got that my recent post about<br/>\n&gt; abstract vs. concrete parameters was clear, I expanded the idea into a<br/>\n&gt; paper:<br/>\n </span></blockquote>www.threeriversinstitute.org/AbstractVsConcreteParameters.html. In<br/>\n<blockquote><span title=\"ireply\"> &gt; short, it tries to resolve the apparent contradiction between achieving<br/>\n&gt; testable code sometimes by making parameters concrete and sometimes by<br/>\n&gt; making parameters abstract. I&#39;d appreciate feedback, examples, and<br/>\n&gt; counter-examples.<br/>\n&gt; <br/>\n&gt; Regards,<br/>\n&gt; <br/>\n&gt; Kent Beck<br/>\n&gt; Three Rivers Institute<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>I have read your paper and I have some comments. First of all lets<br/>\nconsider concrete parameters case. <br/>\nIf you have to write unit test to the legacy code you are in trouble.<br/>\nConsider the case when method under test calls many other methods. If<br/>\nyou have customer, then these other method may check different<br/>\ninformation from it. Furthermore, API of these method expects to<br/>\nreceive customer object. So in this case you cant use concrete parameters.<br/>\nAnother point is the following. I found very helpful to add some<br/>\nconcrete parameters to the method. For example, if I have something<br/>\nlike this<br/>\npublic RechargeResult recharge(Customer cust){<br/>\n validate(cust);<br/>\n ...<br/>\n &lt;do the recharge&gt;<br/>\n}<br/>\n<br/>\nI can change it to:<br/>\n<br/>\npublic RechargeResult recharge(Customer cust){<br/>\n return recharge(cust, true);<br/>\n}<br/>\n<br/>\nprivate RechargeResult recharge(Customer cust, boolean hasValidate){<br/>\n if(hasValudate){<br/>\n   validate(cust);<br/>\n }<br/>\n ...<br/>\n &lt;do the recharge&gt;<br/>\n}<br/>\n<br/>\nIn this case API is not changed. Unit test however can call private<br/>\nrecharge() method (using PrivalegeAccessor object or if you&#39;re not<br/>\naware of it, using reflection you can call private methods) and pass<br/>\nhasValidate false if you want to skip validation. In this manner you<br/>\ncan actually alter behavior of the method in order to know exactly<br/>\nwhat subsystem is called.<br/>\n<br/>\nSome notes on this point. First of all, if you&#39;re using EJB you can&#39;t<br/>\nuse PrivalegeAccessor (reflection). In this case you should alter your<br/>\nAPI. Another point, it can be the case that your unit test need more<br/>\ninformation from the method that API supply it. This information is<br/>\noften available in the method body, but is not returned. In this case<br/>\nyou can do the following trick: <br/>\n<br/>\npublic RechargeResult recharge(Customer cust){<br/>\n RechargeDTO rechargeDTO= recharge(cust, true);<br/>\n return rechargeDTO.getRechargeResult().<br/>\n}<br/>\n<br/>\nprivate RechargeDTO recharge(Customer cust, boolean hasValidate){<br/>\n if(hasValudate){<br/>\n   validate(cust)<br/>\n }<br/>\n ...<br/>\n &lt;do the recharge&gt;<br/>\n}<br/>\n<br/>\nThat is your private method will return extended data (that will be<br/>\nused in your unit test), and public method will be return only the<br/>\ndata that is required by API.<br/>\n<br/>\nNow, lets consider abstract parameters. In the case of the legacy code<br/>\nyou can&#39;t use this pattern very widely.</div>", 
+    "prevInTime": 20820, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1220016994", 
+    "canDelete": false, 
+    "nextInTopic": 20906, 
+    "prevInTopic": 20818, 
+    "headers": {
+        "inReplyToHeader": "PEE0QkFGOTJBRkUyNTQyQTA5NDRCODM3OTExODBBMTI3QGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PGc5OHUxMitvMG1uQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 3534, 
+    "postDate": "1008323321", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Lothar Kimmeringer&quot; &lt;junit@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "s_zNuU4PCC57j-yyzZDCw73M7iX7TiXrf_0klv6-jpphSAYbJ71_HrB0ClgtYfvVtNIe0F0Gz6EN8QgIumIvC_GPcAC9I7VeEwIymGb7W38jpg", 
+    "nextInTime": 3536, 
+    "userId": 89242578, 
+    "prevInTime": 3534, 
+    "prevInTopic": 3534, 
+    "headers": {
+        "inReplyToHeader": "PDNDMTlDNzhGLkNDODY1QTE4QHhpbGlueC5jb20+", 
+        "messageIdInHeader": "PEUxNkVveGYtMDAwNzduLTAwQG1ydmRvbTAxLmt1bmRlbnNlcnZlci5kZT4="
+    }, 
+    "authorName": "Lothar Kimmeringer", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "... Hash: SHA1 ... I m using ResourceBundles for this. The advantage of that system is, that the config-files can be packed into the jar-files, because they ", 
+    "contentTrasformed": false, 
+    "msgId": 3535, 
+    "nextInTopic": 3536, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;junit@...&gt;\r\nX-Sender: junit@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_1_2); 14 Dec 2001 09:49:01 -0000\r\nReceived: (qmail 46668 invoked from network); 14 Dec 2001 09:49:00 -0000\r\nReceived: from unknown (216.115.97.171)\n  by m2.grp.snv.yahoo.com with QMQP; 14 Dec 2001 09:49:00 -0000\r\nReceived: from unknown (HELO moutvdom00.kundenserver.de) (195.20.224.149)\n  by mta3.grp.snv.yahoo.com with SMTP; 14 Dec 2001 09:49:00 -0000\r\nReceived: from [195.20.224.208] (helo=mrvdom01.kundenserver.de)\n\tby moutvdom00.kundenserver.de with esmtp (Exim 2.12 #2)\n\tid 16Eoxf-0004r2-00\n\tfor junit@yahoogroups.com; Fri, 14 Dec 2001 10:48:59 +0100\r\nReceived: from [62.180.31.149] (helo=WOODY)\n\tby mrvdom01.kundenserver.de with smtp (Exim 2.12 #2)\n\tid 16Eoxf-00077n-00\n\tfor junit@yahoogroups.com; Fri, 14 Dec 2001 10:48:59 +0100\r\nTo: &quot;junit@yahoogroups.com&quot; &lt;junit@yahoogroups.com&gt;\r\nDate: Fri, 14 Dec 2001 10:48:41 +0100\r\nPriority: Normal\r\nX-Mailer: PMMail 2000 Professional (2.20.2380) For Windows 2000 (5.0.2195;1)\r\nIn-Reply-To: &lt;3C19C78F.CC865A18@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nSubject: Re: [junit] Avoiding Hard coded locations\r\nMessage-Id: &lt;E16Eoxf-00077n-00@...&gt;\r\nFrom: &quot;Lothar Kimmeringer&quot; &lt;junit@...&gt;\r\nReply-To: &quot;Lothar Kimmeringer&quot; &lt;lothar@...&gt;\r\nX-Yahoo-Group-Post: member; u=89242578\r\n\r\n-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn Fri, 14 Dec 2001 01:34:07 -0800, Cormac Mullally wrote:\n\n&gt;I\n&gt;need access to the file system to get the xml files but i don&#39;t want to\n&gt;hard code in the dir.\n\nI&#39;m using ResourceBundles for this. The advantage of that system\nis, that the config-files can be packed into the jar-files, because they\nare searched in directories/jars specified in the CLASSPATH.\nThe code in the JUnit-Tests looks like this:\n\n[...]\n/** \n  * Tests the functionality of MailManager\n  * @author  &quot;Lothar Kimmeringer&quot; &lt;lothar@...&gt;\n * @version 1.0\n */\npublic class __Test_MailManager extends TestCase {\n    private static java.util.ResourceBundle config;\n[...]\n\n    static{\n        if (config == null){\n            config = java.util.ResourceBundle.getBundle(&quot;test/props/com_nuag_util_MailManager&quot;);\n        }\n    }\n\n[...]\n\n    public void testSendStandardMail() throws Exception{\n        mail.sendMessage(config.getString(&quot;SMTP.Host&quot;),\n                         Integer.parseInt(config.getString(&quot;SMTP.Port&quot;)),\n                         config.getString(&quot;Sender.Email&quot;),\n                         null,\n                         new String[]{config.getString(&quot;Recipient.Email&quot;)},\n                         null,\n                         null,\n                         &quot;Test-Subject&quot;, &quot;This is a test-message&quot;, null);\n[...]\n\n\nThe resource-file looks like this:\n\n- --- snip\nSMTP.Host=polly\nSMTP.Port=25\nSender.Email=&quot;Lothar Kimmeringer&quot; &lt;lothar@...&gt;\nRecipient.Email=&quot;Testuser at testmailer&quot; &lt;test@...&gt;\nCC.Email=\nBCC.Email=\n- --- snap\n\nThe name of the file can be specified as preferred. The format\ncom_nuag_util_MailManager allowes to put all files into one\ndirectory without running into trouble if there are classes with\nthe same name in different packages (e.g. Event).\n\n\nHope that helps\n\nRegards, Lothar\n\nPS: To avoid comments on that TestCase-example. The mailmanager tested here\n    already uses the javax.mail-framework, so I&#39;m aware of the existance ;-)\n\n- -- \nLothar Kimmeringer                   Email: lothar@...\n               PGP-encrypted mails preferred (Key-ID: 0x8BC3CD81)\n\nAlways remember: The answer is forty-two, there can only be wrong\n                 questions!\n\nPGP Public Key Fingerprint: D8ED CBE9 F072 CDCE  A3AF 401A 1140 A347\n\n-----BEGIN PGP SIGNATURE-----\nVersion: PGPsdk version 1.7.1 (C) 1997-1999 Network Associates, Inc. and its affiliated companies.\n\niQA/AwUBPBm86hFAo0f0L/0uEQJHSgCfegz6bndH2C/o2oGQALPnqEjRtBoAoKlp\nBtUe7UQgsp7Xc+d3nCymkuq4\n=mzUY\n-----END PGP SIGNATURE-----\n\n\n\n", 
+    "subject": "Re: [junit] Avoiding Hard coded locations"
+}

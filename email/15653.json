@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 15654, 
+    "senderId": "Cff2mr-O__4koKMiUunFRcHgtoBRzmNnp8xtgoY7MC-KElPc4Xuosm58qEZLpCNlCyI3Yq_zK_WzX1uT8T7-4RMho0WwuCqWXmD_fvfFh3ek", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Clarifying how to use unit tests", 
+    "from": "Rakesh Patel &lt;rakesh.mailgroups@...&gt;", 
+    "authorName": "Rakesh Patel", 
+    "msgSnippet": "Hi Cedric, if i write a test against my interface then i am essentially writing a functional test. Thats not terrible except for the fact that as its so high", 
+    "msgId": 15653, 
+    "profile": "patelr08", 
+    "topicId": 15467, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 217486622, 
+    "messageBody": "<div id=\"ygrps-yiv-973582345\">Hi Cedric,<br/>\n<br/>\nif i write a test against my interface then i am essentially writing a <br/>\nfunctional test. Thats not terrible except for the fact that as its so <br/>\nhigh up i will probably have to wire up the layers beneath, which you <br/>\nmention.<br/>\n<br/>\nSo for my high level test, I end up doing this:<br/>\n<br/>\nprotected void setUp() throws Exception {<br/>\nsuper.setUp();<br/>\nfs = new FetserverSoapBindingImpl();<br/>\nls = new LogonServiceImpl(manager, &quot;testCache&quot;);<br/>\nps = new PostcodeServiceMockImpl();<br/>\n<br/>\n((FetserverSoapBindingImpl) fs).setLs(ls);<br/>\n((FetserverSoapBindingImpl) fs).setPs(ps);<br/>\n}<br/>\n<br/>\nwhich is wiring up all my classes. Fortunately, i may have dummy <br/>\nimplementations instead i can use (PostcodeServiceMockImpl for example).<br/>\n<br/>\nI don&#39;t have a big issue doing this because i intend to use Spring which <br/>\nwill allow wiring up beans like this in a much simpler fashion.<br/>\n<br/>\nNow, the point about not having a testcase for an interface <br/>\nimplementation - if i skip it, what about all those private methods? <br/>\nSurely, this is the whole point of UNIT testing, ie calling all the <br/>\nmethods???<br/>\n<br/>\nPersonally, i prefer the high level approach but as an earlier post <br/>\npointed out, you don&#39;t get to test all the pathways from the top fully.<br/>\n<br/>\nAny feedback appreciated.<br/>\n<br/>\nR<br/>\n<br/>\nCédric Beust ♔ wrote:<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt;On 12/8/05, Rakesh Patel &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rakesh.mailgroups@...\">rakesh.mailgroups@...</a>&gt; wrote:<br/>\n&gt;  <br/>\n&gt;<br/>\n&gt;&gt;So here&#39;s my initial design.<br/>\n&gt;&gt;<br/>\n&gt;&gt;public interface PostcodeService {<br/>\n&gt;&gt;    public String getAddressAsXML(String postcode);<br/>\n&gt;&gt;}<br/>\n&gt;&gt;<br/>\n&gt;&gt;now, should I write a test class against the<br/>\n&gt;&gt;interface(PostcodeServiceTest) or against the implementation<br/>\n&gt;&gt;class(PostcodeServiceImplTest)?<br/>\n&gt;&gt;    <br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Interface:  absolutely.<br/>\n&gt;Implementation:  depends.<br/>\n&gt;<br/>\n&gt;Ideally, the business logic of your test should run against the interface<br/>\n&gt;exclusively and which implementation is being used can then be decided at<br/>\n&gt;setUp time, via dependency injection or data providers:<br/>\n&gt;<br/>\n&gt;private PostCodeService m_postCodeService;<br/>\n&gt;<br/>\n&gt;@Configuration(beforeTestClass = true)<br/>\n&gt;public void classSetUp() {<br/>\n&gt;  m_postCodeService = new PostCodeServiceImpl();<br/>\n&gt;}<br/>\n&gt;<br/>\n&gt;@Test<br/>\n&gt;public void verifyAddressAsXml(String postCode) {<br/>\n&gt;  m_postCodeService.foo(postCode);<br/>\n&gt;  // assert<br/>\n&gt;}<br/>\n&gt;<br/>\n&gt;In this example, classSetUp() hardcodes the implementation to be used but<br/>\n&gt;you could imagine making this more flexible (depending on a parameter, a<br/>\n&gt;test group, etc...).  Also, separating your tests from your set up (e.g.<br/>\n&gt;base class / child class) will give you even more flexibility to switch<br/>\n&gt;implementations at runtime without altering the business logic that tests<br/>\n&gt;your interface.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n&gt;&gt;I am spending way too long thinking about this rather than writing code<br/>\n&gt;&gt;which has me a bit worried.<br/>\n&gt;&gt;    <br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Sometimes, spending a lot of time thinking about a problem causes you to<br/>\n&gt;write less code in the end.  Hopefully, this is one of these cases :-)<br/>\n&gt;<br/>\n&gt;--<br/>\n&gt;Cédric<br/>\n&gt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://testng.org\">http://testng.org</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;[Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; <br/>\n&gt;Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; <br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 15652, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1134064145", 
+    "canDelete": false, 
+    "nextInTopic": 15656, 
+    "prevInTopic": 15651, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDUxMjA4MDgyMHY1M2VjNjE2NGdiYTRlNTdmNzJhMDA3OWU5QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQzOTg3MjExLjEwNjA0MDZAZ21haWwuY29tPg==", 
+        "referencesHeader": "PDQzODBDRUM5LjYwMDA3MDRAZ21haWwuY29tPgkgPDExMzI1ODMxOTMuNDM4MWQ5MTljZWYxMEBpbWFwLmNzYWlsLm1pdC5lZHU+CSA8NDM5ODQyQzQuODA5MDcwMEBnbWFpbC5jb20+IDxiODZiNmE5YzA1MTIwODA4MjB2NTNlYzYxNjRnYmE0ZTU3ZjcyYTAwNzllOUBtYWlsLmdvb2dsZS5jb20+"
+    }
+}

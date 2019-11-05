@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 6366, 
+    "senderId": "aVEnadUg1tK2adAXChamAxgDcm5_nwFLgk72ToC4jlMNPxfGjPcPhik-fKAGsVqldLKJHzlaeMggJ4pCO3u9zgl1T6smb4roDcs", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Running time consuming JUnit Tests", 
+    "from": "Denis Labaye &lt;d.labaye@...&gt;", 
+    "authorName": "Denis Labaye", 
+    "msgSnippet": "import junit.extensions.ActiveTestSuite; import junit.framework.Test; import junit.framework.TestCase; import junit.framework.TestSuite; /** * Running tests in", 
+    "msgId": 6365, 
+    "topicId": 6359, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 131579870, 
+    "messageBody": "<div id=\"ygrps-yiv-1462345833\">import junit.extensions.ActiveTestSuite;<br/>\nimport junit.framework.Test;<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\n<br/>\n/**<br/>\n * Running tests in parallel demo<br/>\n */<br/>\npublic class FooTest extends TestCase {<br/>\n\tpublic FooTest(String name) {<br/>\n\t\tsuper(name);<br/>\n\t}<br/>\n\tpublic void test1() throws InterruptedException {<br/>\n\t\tThread.sleep(10*1000);<br/>\n\t}<br/>\n\tpublic void test2() throws InterruptedException {<br/>\n\t\tThread.sleep(10*1000);<br/>\n\t}<br/>\n<br/>\n\t// this suite will run in 20 seconds<br/>\n\tpublic static Test sequentialSuite() {<br/>\n\t\tTestSuite suite =<br/>\n\t\t\tnew TestSuite();<br/>\n\t\tsuite.addTest(new FooTest(&quot;test1&quot;));<br/>\n\t\tsuite.addTest(new FooTest(&quot;test2&quot;));<br/>\n\t\treturn suite;<br/>\n\t}<br/>\n<br/>\n\t// this one in only 10 seconds<br/>\n\tpublic static Test parallelSuite() {<br/>\n\t\tTestSuite suite =<br/>\n\t\t\tnew ActiveTestSuite();<br/>\n\t\t\t//====================<br/>\n\t\tsuite.addTest(new FooTest(&quot;test1&quot;));<br/>\n\t\tsuite.addTest(new FooTest(&quot;test2&quot;));<br/>\n\t\treturn suite;<br/>\n\t}<br/>\n\t<br/>\n\tpublic static Test suite() {<br/>\n\t\t// return sequentialSuite();<br/>\n\t\treturn parallelSuite();<br/>\n\t}<br/>\n}<br/>\n<br/>\n<br/>\nh3vj a écrit :<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; Thanks Denis, I looked into this but really could not get much<br/>\n&gt; information on it. The java docs are not of much help. Also I tried a<br/>\n&gt; to run this with two tests but invain..<br/>\n&gt; <br/>\n&gt; Can you provide with some quick example as to how can it be<br/>\n&gt; implemented.<br/>\n&gt; <br/>\n&gt; Harpal<br/>\n&gt; <br/>\n&gt; --- In junit@y..., Denis Labaye &lt;d.labaye@l...&gt; wrote:<br/>\n&gt; &gt; You should use an ActiveTestSuite instead of a TestSuite.<br/>\n&gt; &gt; A TestSuite run tests sequentially, an ActiveTestSuite run tests in<br/>\n&gt; &gt; parallel.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hope this help<br/>\n&gt; &gt;<br/>\n&gt; &gt; Denis<br/>\n&gt; &gt;<br/>\n&gt; &gt; h3vj a écrit :<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Hi Friends,<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I have JUnit tests suite out of which some suites take about 10 -<br/>\n&gt; 15<br/>\n&gt; &gt; &gt; minutes to run and some take 1 -2 minutes to run.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; My doubt is that because the tests run one after another and not<br/>\n&gt; &gt; &gt; simultaneously they have to wait for the longer tests to finish<br/>\n&gt; first<br/>\n&gt; &gt; &gt; before they can start next less time consuming tests.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Is there any way that I can run these tests simultaneously for eg.<br/>\n&gt; &gt; &gt; Test 1 takes 10 minutes and Test 2 takes 5 minutes, presently this<br/>\n&gt; &gt; &gt; will take about 15 minutes total. Is there a way that I can finish<br/>\n&gt; &gt; &gt; both these tests in 10 minutes (max time taken by Test 1)?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I hope I made sense if not please let me know I will try to be<br/>\n&gt; more<br/>\n&gt; &gt; &gt; specific.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; To unsubscribe from this group, send an email to:<br/>\n&gt; &gt; &gt; junit-unsubscribe@y...<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Your use of Yahoo! Groups is subject to<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> </span></blockquote></div>", 
+    "prevInTime": 6364, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1039093722", 
+    "canDelete": false, 
+    "nextInTopic": 6367, 
+    "prevInTopic": 6363, 
+    "headers": {
+        "messageIdInHeader": "PDNERUY0RkRBLkUwQUYyRUE1QGxhcG9zdGUubmV0Pg==", 
+        "referencesHeader": "PGFzbDZnZys1MW1AZUdyb3Vwcy5jb20+"
+    }
+}

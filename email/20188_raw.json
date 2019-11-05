@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20189, 
+    "senderId": "vr27qOMywXwtvQmaEl6bleJUsKKc454Wtn4Ze9Iolexx8JXXTqO5h6iBGF-Ox-K_XCo2u4vnIy1DX90cin5jcdFf", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Bug in org.junit.Assert", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Walter, Nicely found.  Can you post it on the SourceForge bug tracker?  Many thanks, David Saff", 
+    "msgId": 20188, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 78992 invoked from network); 22 Dec 2007 19:54:21 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m52.grp.scd.yahoo.com with QMQP; 22 Dec 2007 19:54:21 -0000\r\nX-Received: from unknown (HELO wa-out-1112.google.com) (209.85.146.178)\n  by mta17.grp.scd.yahoo.com with SMTP; 22 Dec 2007 19:54:21 -0000\r\nX-Received: by wa-out-1112.google.com with SMTP id m28so1419229wag.13\n        for &lt;junit@yahoogroups.com&gt;; Sat, 22 Dec 2007 11:54:21 -0800 (PST)\r\nX-Received: by 10.142.245.10 with SMTP id s10mr1176069wfh.186.1198353261135;\n        Sat, 22 Dec 2007 11:54:21 -0800 (PST)\r\nX-Received: by 10.142.78.6 with HTTP; Sat, 22 Dec 2007 11:54:21 -0800 (PST)\r\nMessage-ID: &lt;4f7da6b90712221154u78ec4b6csc9e47934e6f2114d@...&gt;\r\nDate: Sat, 22 Dec 2007 14:54:21 -0500\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;fkh808+493m@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;fkh808+493m@...&gt;\r\nX-Google-Sender-Auth: 3f1a30cb5e655f0e\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Bug in org.junit.Assert\r\nX-Yahoo-Group-Post: member; u=139771899; y=YkB03-rs1MU_ipEjUf72U1HaY3Phj4DoH0DHQwBhFXg\r\nX-Yahoo-Profile: dsaff\r\n\r\nWalter,\n\nNicely found.  Can you post it on the SourceForge bug tracker?  Many thanks,\n\n  David Saff\n\nOn Dec 21, 2007 3:34 PM, Walter Gildersleeve &lt;newsgroups@...&gt; wrote:\n&gt; Hi,\n&gt;\n&gt; I searched around to see if anyone&#39;s submitted this bug.  I didn&#39;t\n&gt; find a dupe, so I&#39;ll go ahead and post; apologies if it&#39;s already known.\n&gt;\n&gt; In Assert#format(String, Object, Object), a NullPointerException is\n&gt; thrown if either param &quot;expected&quot; or &quot;actual&quot; is null and the other is\n&gt; *the string* &quot;null&quot;.  Here are a couple test cases demonstrating this:\n&gt;\n&gt; @Test(expected=NullPointerException.class)\n&gt; public void confirmError() {\n&gt;     assertEquals(null, &quot;null&quot;);\n&gt; }\n&gt;\n&gt; @Test(expected=NullPointerException.class)\n&gt; public void confirmErrorToo() {\n&gt;     assertEquals(&quot;null&quot;, null);\n&gt; }\n&gt;\n&gt; This is because Assert#format is trying to print extended information\n&gt; when two objects are visually identical but semantically different;\n&gt; namely, it wants to display the class names as well as the values,\n&gt; doing a Object#getClass() without checking if the object is null.\n&gt;\n&gt; Here&#39;s a possible fix:\n&gt;\n&gt;\n&gt; static String format(String message, Object expected, Object actual) {\n&gt;     String formatted = &quot;&quot;;\n&gt;     if (message != null && !message.equals(&quot;&quot;)) {\n&gt;         formatted = message + &quot; &quot;;\n&gt;     }\n&gt;\n&gt;     String expectedString = String.valueOf(expected);\n&gt;     String actualString = String.valueOf(actual);\n&gt;\n&gt;     if (expected == null) {\n&gt;         return formatted + &quot;expected: &lt;null&gt; but was: &quot;\n&gt;             + actual.getClass().getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;\n&gt;     } else if (actual == null) {\n&gt;         return formatted + &quot;expected: &quot; + expected.getClass().getName()\n&gt;                 + &quot;&lt;&quot; + expectedString + &quot;&gt; but was: &lt;null&gt;&quot;;\n&gt;     } else if (expectedString.equals(actualString)) {\n&gt;         return formatted + &quot;expected: &quot; + expected.getClass().getName()\n&gt;                 + &quot;&lt;&quot; + expectedString + &quot;&gt; but was: &quot;\n&gt;                 + actual.getClass().getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;\n&gt;     } else {\n&gt;         return formatted + &quot;expected:&lt;&quot; + expectedString + &quot;&gt; but was:&lt;&quot;\n&gt;                 + actualString + &quot;&gt;&quot;;\n&gt;     }\n&gt; }\n&gt;\n&gt; The assumption here is that actual and expected will never *both* be\n&gt; null.  Right?\n&gt;\n&gt; Walter Gildersleeve\n&gt; Portland, OR\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 20186, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 20187, 
+    "contentTrasformed": false, 
+    "postDate": "1198353261", 
+    "canDelete": false, 
+    "nextInTopic": 20189, 
+    "prevInTopic": 20186, 
+    "headers": {
+        "inReplyToHeader": "PGZraDgwOCs0OTNtQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcxMjIyMTE1NHU3OGVjNGI2Y3NjOWU0NzkzNGU2ZjIxMTRkQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZraDgwOCs0OTNtQGVHcm91cHMuY29tPg=="
+    }
+}

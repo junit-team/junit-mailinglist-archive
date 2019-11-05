@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 7828, 
+    "senderId": "w9it_Xyn3Vz_oJ4vqli1SLe0ftsoeqazNnX53IunAYhSDSAGRrCDA--rvNhz3adHcetfoxIb1mQ4Xm3YFGX7tIxW9wQiJrLNe1c", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing JDialog", 
+    "from": "&quot;Johannes Link&quot; &lt;john.link@...&gt;", 
+    "authorName": "Johannes Link", 
+    "msgSnippet": "I guess you made the dialog modal. There s a flag for that in the JDialog constructor. There are two approaches I have used in that situation: 1. Provide a", 
+    "msgId": 7827, 
+    "profile": "jlinkyh", 
+    "topicId": 7821, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 34183400, 
+    "messageBody": "<div id=\"ygrps-yiv-1694307331\">I guess you made the dialog modal. There&#39;s a flag for that in the JDialog<br/>\nconstructor.<br/>\n<br/>\nThere are two approaches I have used in that situation:<br/>\n1. Provide a constructor which opens the dialog in non-modal mode just for<br/>\ntesting purposes.<br/>\n<br/>\n2. Open the dialog in another thread than the testing thread:<br/>\nprivate void openDialogInOtherThread() {<br/>\n    Runnable runnable = new Runnable() {<br/>\n        public void run() {<br/>\n                dialog.show(); // = dialog.setVisible(true)<br/>\n        }<br/>\n    };<br/>\n    new Thread(runnable).start();<br/>\n    waitForDialogOpen();<br/>\n}<br/>\nprivate void waitForDialogOpen() {<br/>\n    while (!dialog.isShowing()) {<br/>\n        try {<br/>\n            Thread.sleep(10);<br/>\n        } catch (InterruptedException e) {<br/>\n        }<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\nNow you can perform your tests on dialog as you wish. Don&#39;t forget to call<br/>\ndialog.dispose() in tearDown.<br/>\n<br/>\nHope that helps,<br/>\nJohannes<br/>\n<br/>\n<blockquote><span title=\"qreply\"> ----- Original Message -----<br/>\nFrom: &quot;mailych&quot; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mailych@...\">mailych@...</a><br/>\n<br/>\n&gt; I have a class(MyClass) which extends JDialog.It contains few buttons<br/>\n&gt; and a textfield.On pressing the button,the corresponding text isd<br/>\n&gt; isplayed in the TextFiled.<br/>\n&gt;<br/>\n&gt; MyClass is made visible only from the calling class<br/>\n&gt;<br/>\n&gt; Now i need test it using JUnit.<br/>\n&gt;<br/>\n&gt; Following is the abstract of test code.<br/>\n&gt;<br/>\n&gt; 1 MyClass myclass = new MyClass(title);<br/>\n&gt;<br/>\n&gt; 2 AbstractButtonTester btnTester = new AbstractButtonTester();<br/>\n&gt;<br/>\n&gt; 3 System.out.println(&quot;Before visible&quot;);<br/>\n&gt;<br/>\n&gt; 4 btnTester.actionDelay(DELAY*2);<br/>\n&gt;<br/>\n&gt; 5 myclass.setVisible(true);<br/>\n&gt;<br/>\n&gt; 6 btnTester.actionDelay(DELAY*2);<br/>\n&gt;<br/>\n&gt; 7 System.out.println(&quot;After visible&quot;);<br/>\n&gt;<br/>\n&gt; 8 // Get a KeyboardFocusManager<br/>\n&gt; 9 KeyboardFocusManager focusManager =<br/>\n&gt; KeyboardFocusManager.getCurrentKeyboardFocusManager();<br/>\n&gt;<br/>\n&gt; 10 // New GUI shown should not be null and supposed to be MyClass<br/>\n&gt;<br/>\n&gt; 11 Assert.assertNotNull(&quot;Class should not be null&quot;,<br/>\n&gt; focusManager.getCurrentFocusCycleRoot());<br/>\n&gt;<br/>\n&gt; 12 Assert.assertEquals(&quot;MyClass should be shown&quot;, MyClass.class,<br/>\n&gt; focusManager.getCurrentFocusCycleRoot().getClass());<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Now the problem is the code doesnt continue after line number:5,it<br/>\n&gt; prints &quot;Before visible&quot; . Only once i close my dialog box, it<br/>\n&gt; prints &quot;After visible&quot;<br/>\n&gt;<br/>\n&gt; But if MyClass extends JFrame,the code continues as expected.<br/>\n&gt;<br/>\n&gt; Is this a bug??Can anybody suggest a work around(except making<br/>\n&gt; MyClass extending JFrame)<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 7826, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1051166640", 
+    "canDelete": false, 
+    "nextInTopic": 7832, 
+    "prevInTopic": 7821, 
+    "headers": {
+        "messageIdInHeader": "PDAwMzUwMWMzMGEyYyRlM2ViYjUyMCRmZTc4YThjMEBoYWliYWNoPg==", 
+        "referencesHeader": "PGI4NWQ0MCt2bzJvQGVHcm91cHMuY29tPg=="
+    }
+}

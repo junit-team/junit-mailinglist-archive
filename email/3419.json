@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 3420, 
+    "senderId": "KRJvPOZjWL64MCLdmKKbBXwS1kSdSQQRxVhSmpp3oategEUhhyi54Q5HXzNsqMDUpuKfTOl6bVVuBiEhEwd0n7fFBjbbApJ1BJHd7eldWUA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] ClassCastException while calling EJB&#39;s from JUnit", 
+    "from": "Scott Stirling &lt;sstirling@...&gt;", 
+    "authorName": "Scott Stirling", 
+    "msgSnippet": "I answered the same question on this list 7/16/01, which included a somewhat pedantic explanation of why this happens: Interestingly, calls to", 
+    "msgId": 3419, 
+    "profile": "jrun4", 
+    "topicId": 3414, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-602345891\">I answered the same question on this list 7/16/01, which included a somewhat<br/>\npedantic explanation of why this happens:<br/>\n<br/>\nInterestingly, calls to javax.rmi.PortableRemoteObject are delegated to an<br/>\nimplementation of javax.rmi.CORBA.PortableRemoteObjectDelegate, which in<br/>\nSun&#39;s 1.3.1 JDK is com.sun.corba.se.internal.javax.rmi.PortableRemoteObject.<br/>\nThat doesn&#39;t explain anything -- I just thought it was just kinda<br/>\ninteresting how buried that reference was.<br/>\n<br/>\nAnyway, this is another problem inherent to JUnit&#39;s Swingui&#39;s<br/>\nTestCaseClassLoader architecture.  Similar to the LinkageErrors with JAXP<br/>\nand the org.xml and org.w3c classes, but with a different result here.<br/>\nWe&#39;ve seen it here with EJB lookups too, but we mostly use the Ant runner so<br/>\nit&#39;s not usually a problem.<br/>\n<br/>\nSo why a ClassCastException when you narrow() in a TestCase?  <br/>\n<br/>\nHere&#39;s John Pletka&#39;s test code:<br/>\n<br/>\nPoint point;<br/>\nPointHome pointHome;<br/>\n<br/>\n//The next line works in textui, but throws <br/>\n//ClassCastException in swingui<br/>\npointHome =<br/>\n(PointHome)PortableRemoteObject.narrow(ctx.lookup(&quot;base/PointHome&quot;),PointHom<br/>\ne.class);<br/>\n<br/>\nRecall that in Java 2 an object&#39;s class (aka &quot;runtime type&quot;) is identified<br/>\nin the JVM as &lt;fully-qualified-classname;definingClassLoaderInstance&gt; or<br/>\n&lt;C;L&gt;.  That is, the defining loader is part of the runtime name identifying<br/>\nthat class (there&#39;s a subtle distinction in Java between &#39;class&#39; and &#39;type&#39;<br/>\nI won&#39;t go into).  Also recall that the JVM will ask a class&#39;s defining<br/>\nloader to load all unloaded classes referenced by the classes it loads.<br/>\n<br/>\nMy hypothesis (I just tested it here and proved it) is that the ctx.lookup()<br/>\nreturns an object that was loaded through the JVM&#39;s system classloader<br/>\n(sun.misc.Launcher$AppClassLoader), but the PointHome.class type is loaded<br/>\nby JUnit&#39;s TestCaseClassLoader.  In the narrow, the two fully qualified<br/>\nclass names are the same, but the defining classloaders for the two are<br/>\ndifferent so you get the exception because the JVM doesn&#39;t see them as being<br/>\nthe same &lt;C;L&gt; class/type.<br/>\n<br/>\nThe solution would be to exclude your EJB&#39;s interface classes from being<br/>\nloaded by the JUnit custom class loader by adding them to the<br/>\nexcluded.properties in junit.jar.  Granted, not a very nice solution unless,<br/>\nperhaps, it were easier to modify the exclusion list.  I hear in JUnit 4.0<br/>\nthat one idea is to make it easy to define exclusions in TestCases<br/>\nthemselves.<br/>\n<br/>\nYou can find out more about which loader loaded which class by doing this:<br/>\n<br/>\nSystem.out.println(ctx.lookup(&quot;base/PointHome&quot;).getClass().getClassLoader())<br/>\n;<br/>\nSystem.out.println(PointHome.class.getClassLoader());<br/>\n<br/>\nI bet you&#39;ll find when using the Swing UI that the PointHome type is defined<br/>\nby the JUnit TestCaseClassLoader and the object returned from ctx.lookup()<br/>\nwas defined through the JVM&#39;s system class loader.  When using the textui<br/>\nthey&#39;ll both load through the system loader.<br/>\n<br/>\nScott Stirling<br/>\nJRun QA<br/>\nMacromedia<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:steven.hale@...\">steven.hale@...</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:steven.hale@...\">steven.hale@...</a>]<br/>\n&gt; Sent: Monday, December 03, 2001 8:30 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: Re: [junit] ClassCastException while calling EJB&#39;s from JUnit<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  ... stumbled across the answer myself:<br/>\n&gt; <br/>\n&gt; the home and remote interfaces of the ejb should be added to <br/>\n&gt; the list of<br/>\n&gt; excluded classes in the excluded.properties file.<br/>\n&gt; <br/>\n&gt; (Jens Schumann posted the solution to this on the Orion <br/>\n&gt; interest group)<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; According to the JUnit faq the solution to this problem is to &quot;use<br/>\n&gt; excluded.properties ...or turn off reloading&quot;.<br/>\n&gt; <br/>\n&gt; Turning off reloading works but isn&#39;t the best solution. I&#39;ve tried<br/>\n&gt; unsuccessfully to exclude various packages but so far no joy. <br/>\n&gt; Any ideas<br/>\n&gt; which packages have to be excluded for this to work? We&#39;re running WLS<br/>\n&gt; 6.0sp1.<br/>\n&gt; <br/>\n&gt; Steven Hale, wm-data </span></blockquote></div>", 
+    "prevInTime": 3418, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1007391687", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 3417, 
+    "headers": {
+        "messageIdInHeader": "PDRGNDdEQ0ZBREM4REQ1MTE4RDJCMDA1MDhCOTUyRDk2MEMzQkI0QHNhbHNhLmFsbGFpcmUuY29tPg=="
+    }
+}

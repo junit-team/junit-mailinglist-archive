@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 3826, 
+    "senderId": "MTvOjO9LphBzQelQVDKuQ1dPZ0A3MyH-tmLq8ELivAmo6GzoF82hLG6bXBYrT1RFPyLb0Lb6SpAFpLuZtMRWkOV5j45tkaGha3vPrMBA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Test fails when run alone but passes when run togethe\tr with others!", 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "authorName": "Mark Meyers", 
+    "msgSnippet": "... You need more information to pinpoint the problem. My best guess is that it is about static variables combined with the classic classloader problem . If", 
+    "msgId": 3825, 
+    "topicId": 3825, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 61568997, 
+    "messageBody": "<div id=\"ygrps-yiv-1235229438\"><blockquote><span title=\"ireply\">&gt; Jason Rogers :<br/>\n&gt; <br/>\n&gt; The point being to make sure that *YOU* write your tests so <br/>\n&gt; that they are<br/>\n&gt; independent of each other.  If you write tests that effect <br/>\n&gt; data that other<br/>\n&gt; tests rely on, you will have issues.  I don&#39;t know if that is <br/>\n&gt; your problem<br/>\n&gt; here, I just thought I&#39;d &quot;stir you up by way of remembrance.&quot;<br/>\n<br/>\n&gt; marko schulz:<br/>\n&gt; Problems might come up, if you are using some kind of singleton or<br/>\n&gt; global data. Other sources of of trouble include the use of mechanisms<br/>\n&gt; that do additional class loading, such as CORBA.<br/>\n<br/>\n </span></blockquote>You need more information to pinpoint the problem. My best guess is that it<br/>\nis about static variables combined with the classic classloader &quot;problem&quot;.<br/>\nIf you have a class like this: <br/>\n<br/>\npackage org.foo;<br/>\n<br/>\npublic class StaticClass{<br/>\n    static int count=0;<br/>\n    public static void increment(){ count++; }<br/>\n    public static int getCount(){ return count;}<br/>\n}<br/>\n<br/>\nand a test method like this:<br/>\n<br/>\npublic void testStatic(){<br/>\n        org.foo.StaticClass.increment();<br/>\n        assertEquals(&quot;count not reset&quot;, 1, org.foo.StaticClass.getCount());<br/>\n}<br/>\n<br/>\nthe test will always succeed the first time, and only the second time if the<br/>\nStaticClass is reloaded. By default all classes in com.sun. sun.  java.<br/>\n(etc...) are not reloaded, therefore some libraries will retain state you<br/>\nthought you did not retain (in particular when they implement singleton as<br/>\nMarko pointed out).<br/>\n<br/>\nDoes your code use java.net, javax.rmi.CORBA, java.sql , ... ?</div>", 
+    "prevInTime": 3824, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1011362210", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ3RjQ5QENBU0UwNTI+"
+    }
+}

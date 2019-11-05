@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 79, 
+    "nextInTime": 15253, 
+    "senderId": "T3lE1IZ9EC4eX-pHTMC8rLtXEMtZ0Tz1SbjuQiO4cBalExxQVo_1iA1h2aj-IXPj5XxoGZYkptFXTaEy8LDUVe2khA9DvWSc", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] JUnit 4 restructuring", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Neil, I m glad you found such a simple change helpful. I will check it in today. Kent Beck Three Rivers Institute", 
+    "msgId": 15252, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 84737 invoked from network); 24 Oct 2005 21:58:14 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m24.grp.scd.yahoo.com with QMQP; 24 Oct 2005 21:58:14 -0000\r\nReceived: from unknown (HELO smtpauth07.mail.atl.earthlink.net) (209.86.89.67)\n  by mta1.grp.scd.yahoo.com with SMTP; 24 Oct 2005 21:58:14 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth07.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1EUAKX-00073z-PM\n\tfor junit@yahoogroups.com; Mon, 24 Oct 2005 17:58:11 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Mon, 24 Oct 2005 14:58:01 -0700\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nThread-Index: AcXYGh0qZI6yqmeCRIWklo65U+ZKDgAoIqGw\r\nIn-Reply-To: &lt;435C02AE.2020709@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nMessage-ID: &lt;E1EUAKX-00073z-PM@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d47869d51e7181ee6aecd29a49a844b7bdeced50083d83cc12a4350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] JUnit 4 restructuring\r\nX-Yahoo-Group-Post: member; u=173198504; y=t3lRfJbqrzR7V6_4cn-ixX1cqCrju2JVWCxEuznk9StbxG2r\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nNeil,\n\nI&#39;m glad you found such a simple change helpful. I will check it in today.\n\nKent Beck\nThree Rivers Institute \n\n&gt; -----Original Message-----\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; Behalf Of Neil Swingler\n&gt; Sent: Sunday, October 23, 2005 2:38 PM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: Re: [junit] JUnit 4 restructuring\n&gt; \n&gt; \n&gt; \n&gt; Kent Beck wrote:\n&gt; &gt; Neil,\n&gt; &gt;\n&gt; &gt; Thank you for the example. Would it be sufficient to make\n&gt; &gt; invokeTestMethod(Method method) protected so you could subclass\n&gt; &gt; TestClassRunner?\n&gt; &gt;\n&gt; &gt;   \n&gt; &gt;&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; &gt;&gt; Behalf Of Neil Swingler\n&gt; &gt;&gt;     \n&gt; &gt;&gt; decorating a test class TestSuite in JUnit3 but does not offer a \n&gt; &gt;&gt; solution to decorating the individual test methods.\n&gt; &gt;&gt;\n&gt; &gt;&gt; Lets say I code a custom Runner to run each test in it&#39;s own \n&gt; &gt;&gt; classloader \n&gt; &gt;&gt; but otherwise I want all the other standard JUnit4 \n&gt; annotations to be \n&gt; &gt;&gt; respected. I can reuse the TestIntrospector and \n&gt; &gt;&gt; TestMethodRunner classes \n&gt; &gt;&gt; (although they are in an internal package). But there is \n&gt; &gt;&gt; still code in \n&gt; &gt;&gt; TestClassRunner to do with exception handling that I will \n&gt; &gt;&gt; have to duplicate.\n&gt; &gt;&gt;\n&gt; &gt;&gt;     \n&gt; Hi Kent, I have made invokeTestMethod protected in my version \n&gt; of junit. \n&gt; It enables me to introduce the classloader. Here is my code:\n&gt; \n&gt; public class ReloadingTestClassRunner extends TestClassRunner {\n&gt;     private TestNotifier notifier;\n&gt;     private Class&lt;?&gt; testClass;\n&gt; \n&gt;     public void initialize(TestNotifier notifier,\n&gt;             Class&lt;? extends Object&gt; testClass) {\n&gt;         super.initialize(notifier, testClass);\n&gt;         this.notifier = notifier;\n&gt;         this.testClass = testClass;\n&gt;     }\n&gt; \n&gt;     protected void invokeTestMethod(Method method) throws Exception {\n&gt;         ClassReloader classReloader = new ClassReloader(\n&gt;                 (URLClassLoader) testClass\n&gt;                         .getClassLoader());\n&gt;         Class&lt;?&gt; reloadedClass = classReloader\n&gt;                 .reload(testClass);\n&gt;         Method reloadedMethod = reloadedClass.getMethod(method\n&gt;                 .getName(), (Class[]) method\n&gt;                 .getParameterTypes());\n&gt;         new TestMethodRunner(reloadedClass.newInstance(),\n&gt;                 reloadedMethod, this.notifier).run();\n&gt;     }\n&gt; }\n&gt; \n&gt; - Neil\n&gt; \n&gt; \n&gt; ------------------------ Yahoo! Groups Sponsor \n&gt; --------------------~--&gt; \n&gt; Fair play? Video games influencing politics. Click and talk back!\n&gt; http://us.click.yahoo.com/T8sf5C/tzNLAA/TtwFAA/5cFolB/TM\n&gt; --------------------------------------------------------------\n&gt; ------~-&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 15154, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 15251, 
+    "contentTrasformed": false, 
+    "postDate": "1130191081", 
+    "canDelete": false, 
+    "nextInTopic": 15253, 
+    "prevInTopic": 15248, 
+    "headers": {
+        "inReplyToHeader": "PDQzNUMwMkFFLjIwMjA3MDlAc3dpbmdsZXIuY2g+", 
+        "messageIdInHeader": "PEUxRVVBS1gtMDAwNzN6LVBNQHNtdHBhdXRoMDcubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

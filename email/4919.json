@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 4920, 
+    "senderId": "iQKVtmCz1fbzKfiQV1ixaySI1brIzpTXizqb_MlEsBR-mF5TggWcDzzyeCUiBrziWZsd9Ec6UoGJImHOboTR-fZXNblFcg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: JUnit--Tomcat--JDBC DataSource--JNDI", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... Or, if you really must test within the servlet container, try Cactus: http://jakarta.apache.org/cactus/index.html Mike -- Mike Clark Clarkware Consulting,", 
+    "msgId": 4919, 
+    "profile": "clarkware", 
+    "topicId": 4655, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "messageBody": "<div id=\"ygrps-yiv-757484213\">bofar wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; --- In junit@y..., &quot;weimar_wann&quot; &lt;weimar_wann@y...&gt; wrote:<br/>\n&gt; &gt; I&#39;m not quite sure how to pose my question...gotten in a little<br/>\n&gt; over<br/>\n&gt; &gt; my head here. Basically, I am writing unit tests for an application<br/>\n&gt; &gt; that is running on Tomcat 4.xx. Database connectivity is achieved<br/>\n&gt; &gt; through the use of a DataSource (configured in Tomcat&#39;s server.xml,<br/>\n&gt; &gt; web.xml). The actual Java classes that I am testing do a JNDI<br/>\n&gt; lookup<br/>\n&gt; &gt; on the DataSource to get a connection to the database. The<br/>\n&gt; connection<br/>\n&gt; &gt; pooling works just fine while running in the Servlet Container, but<br/>\n&gt; &gt; my problem is testing through JUnit...does anyone know how to test<br/>\n&gt; a<br/>\n&gt; &gt; connection that needs to be run through Tomcat?<br/>\n&gt;<br/>\n&gt; Hi Weimar,<br/>\n&gt;<br/>\n&gt; I started looking at this problem myself today. Are you are picking<br/>\n&gt; up your datasource from &quot;javax.naming.InitialContext ()&quot; ?<br/>\n&gt;<br/>\n&gt; If so, the solution is to have different initialization sources<br/>\n&gt; for InitialContext, depending on whether the code is running in<br/>\n&gt; the Tomcat container, or in a Junit test.<br/>\n&gt;<br/>\n&gt; First you need a global flag to indicate whether testing is occuring<br/>\n&gt; or not. Let&#39;s put it in a class called Testing:<br/>\n&gt;<br/>\n&gt; public class Testing {<br/>\n&gt;<br/>\n&gt;   private static boolean testing = false;<br/>\n&gt;<br/>\n&gt;   public synchronized static void testingOn () {<br/>\n&gt;      testing = true;<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   public static boolean isTestingOn () {<br/>\n&gt;      return testing;<br/>\n&gt;   }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Next, in the testcase that needs the database connectivity, set<br/>\n&gt; testing on in the setup method,<br/>\n&gt;<br/>\n&gt;   protected void setup () {<br/>\n&gt;      Testing.testingOn ();<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt; Now in the code that creates InitialContext(), add the following<br/>\n&gt; lines,<br/>\n&gt;<br/>\n&gt;    InitialContext ctx = new InitialContext ();<br/>\n&gt;    if (isTestingOn) {<br/>\n&gt;       DataSource ds = new TestingDataSource ();<br/>\n&gt;       // Note that dsName should be local dnName used by<br/>\n&gt;       // this program.<br/>\n&gt;       ctx.addToEnvironment (&quot;java:comp/env/jdbc/dsName&quot;, ds);<br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt; The last thing to do is write the TestingDataSource class that<br/>\n&gt; implements the DataSource interface. I&#39;m planning to look at that<br/>\n&gt; this afternoon, if you are interested in a copy, let me know.<br/>\n&gt;<br/>\n&gt; Sid Stuart<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>Or, if you really must test within the servlet container, try Cactus:<br/>\n<br/>\n    <a rel=\"nofollow\" target=\"_blank\" href=\"http://jakarta.apache.org/cactus/index.html\">http://jakarta.apache.org/cactus/index.html</a><br/>\n<br/>\nMike<br/>\n<br/>\n--<br/>\nMike Clark<br/>\nClarkware Consulting, Inc.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com\">http://www.clarkware.com</a><br/>\n720.851.2014</div>", 
+    "prevInTime": 4918, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1020899553", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4907, 
+    "headers": {
+        "messageIdInHeader": "PDNDRDlCMEUxLkE3NTYzMzYwQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PGFiYmJ0dCtoZzJoQGVHcm91cHMuY29tPg=="
+    }
+}

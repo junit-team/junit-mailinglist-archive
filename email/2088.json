@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 48, 
+    "nextInTime": 2089, 
+    "senderId": "bi18RbI1m3YFdYnmRBZedgbBvZiZ7gpnGkd5CGNhnSEqI8lUZIgvbx04Nux4nYzTjxjuG8Gkh8Gg5a7Hy6TEwgINtyWGEjXnzrpWMHbGXw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Reporting more then 1 failed assertion per test", 
+    "from": "Robert Watkins &lt;robertw@...&gt;", 
+    "authorName": "Robert Watkins", 
+    "msgSnippet": "... You can not do this easily within JUnit. The reason is simple: the various assertXYZ() methods throw Errors when they fail, and Java does not permit ", 
+    "msgId": 2088, 
+    "topicId": 2072, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-218256878\">Peter O&#39;Neill wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; When I run my test suite I found that each test stops running <br/>\n&gt; after the<br/>\n&gt; first failed assertion. I have a number of assertions in each <br/>\n&gt; test and I<br/>\n&gt; would like to know every assertion that is broken. I have tried to<br/>\n&gt; create a default TestResult inside each test using,<br/>\n&gt; <br/>\n&gt; \tTestResult result = createResult();<br/>\n&gt; <br/>\n&gt; and then adding failures to &#39;result&#39; using,<br/>\n&gt; <br/>\n&gt; \tresult.addFailure(mytest, afe);<br/>\n&gt; <br/>\n&gt; which works fine, except that no AssertionFailedException gets thrown<br/>\n&gt; this way and my test passes even though I have broken assertions.<br/>\n&gt; <br/>\n&gt; Is there any way I can get JUnit to show all broken <br/>\n&gt; assertions for each<br/>\n&gt; test and not move onto the next test when the first assertion fails?<br/>\n<br/>\n </span></blockquote>You can not do this easily within JUnit. The reason is simple: the various<br/>\nassertXYZ() methods throw Errors when they fail, and Java does not permit<br/>\nunwinding an exception stack trace so you can pick up where the exception<br/>\noccurred.<br/>\n<br/>\nIn many cases, you wouldn&#39;t want to, anyway. Having an error at point X<br/>\nwould often mean that more errors would be reported due to the first one (in<br/>\nmuch the same way a simple typo can spawn numerous compilation errors).<br/>\n<br/>\nThe right way, to get the same effect, is to have smaller test methods. If<br/>\nyou find that you are using a lot of common setup code, extract that out to<br/>\na helper method, or create a new test class and use the setUp() method.<br/>\n<br/>\nThe hard (and wrong) way is to change the assertion semantics. Define your<br/>\nown TestCase class, and provide new assertion methods so that, instead of<br/>\nthrowing an Error, you add the failure to a collection. Then, use a<br/>\nTestDecorator so that you can inspect the collection for errors, and fail<br/>\nthe test at that point. Note that you will probably have to build your own<br/>\nTest suite to do this (the inbuilt reflection support won&#39;t place the<br/>\ndecorator in for you)<br/>\n<br/>\nRobert.<br/>\n<br/>\n-- <br/>\n     &quot;Duct tape is like the Force: it has a light side, a dark side,<br/>\n                   and it holds the universe together&quot;<br/>\n  Robert Watkins     <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:robertdw@...\">robertdw@...</a>     <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:robertw@...\">robertw@...</a></div>", 
+    "prevInTime": 2087, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "996015748", 
+    "canDelete": false, 
+    "nextInTopic": 2090, 
+    "prevInTopic": 2087, 
+    "headers": {
+        "messageIdInHeader": "PENGMkJDMTM1RkIzN0Q1MTE5N0Q0MDA1MDhCQUY1MjE3MDlCQjVDQGF1Ym5tc3gwMS5xc2kuY29tLmF1Pg=="
+    }
+}

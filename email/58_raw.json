@@ -1,0 +1,28 @@
+{
+    "topicId": 56, 
+    "postDate": "975434661", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Blum, Robert&quot; &lt;rblum@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "4-m3BiU9qk13Jd9hckzwhlNsHFJzdXqOUR-dHU7QjqKach12N-nybgnWzcRg9SNZf9TRuoYspnWtzucHjh_mGdbXL59NliHcX2eBI9o", 
+    "nextInTime": 59, 
+    "userId": 0, 
+    "prevInTime": 57, 
+    "prevInTopic": 57, 
+    "headers": {
+        "messageIdInHeader": "PDU5MzNFNzk2NjZDQUQyMTFBRUY4MDAxMDVBNUZEQjM3MDJCOERDMDJAY2hpbXNnMS1udC5jaGkud21zLmNvbT4="
+    }, 
+    "authorName": "Blum, Robert", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "... UhOh. I didn t have my coffee yet :-) ... Not having an idea about doclets, I don t know if the following is applicable ... For simplicity, let s assume", 
+    "contentTrasformed": false, 
+    "msgId": 58, 
+    "nextInTopic": 59, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;rblum@...&gt;\r\nX-Sender: rblum@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_3_1_2); 28 Nov 2000 18:04:31 -0000\r\nReceived: (qmail 65176 invoked from network); 28 Nov 2000 18:04:23 -0000\r\nReceived: from unknown (10.1.10.27) by m8.onelist.org with QMQP; 28 Nov 2000 18:04:23 -0000\r\nReceived: from unknown (HELO mailhost.wms.com) (208.46.59.9) by mta2 with SMTP; 28 Nov 2000 18:04:22 -0000\r\nReceived: by MAILHOST with Internet Mail Service (5.5.2650.21) id &lt;W7RQN2BS&gt;; Tue, 28 Nov 2000 12:04:21 -0600\r\nMessage-ID: &lt;5933E79666CAD211AEF800105A5FDB3702B8DC02@...&gt;\r\nTo: &quot;&#39;junit@egroups.com&#39;&quot; &lt;junit@egroups.com&gt;\r\nSubject: RE: [junit] Test File Output comparison : Should probably be an F AQ but I didn&#39;t see it so....\r\nDate: Tue, 28 Nov 2000 12:04:21 -0600\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2650.21)\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: &quot;Blum, Robert&quot; &lt;rblum@...&gt;\r\n\r\n&gt; I am not sure that I grok what you are saying.\n\nUhOh. I didn&#39;t have my coffee yet :-)\n\n&gt; As a concrete example I am currently working on a a templated \n&gt; code generator implemented as a Javadoc DocLet. So I run Javadoc \n&gt;, giving it the classname of the doclet and the name\n&gt; of the code template, and the doclet takes the supplied class \n&gt; information from Javadoc and produces an output file according to the \n&gt; template&#39;s instructions. It is a simple program, using the reflection\n&gt; API and the doclet API to do most of the work.\n\nNot having an idea about doclets, I don&#39;t know if the following is\napplicable\n\n&gt; Most of the 9 classes can be quickly and cleanly unit tested \n&gt; with little work. But the overall transformation from Template \n&gt; to generated code also needs to be unit testable for refactoring\n&gt; and maintainence reasons.\n\nFor simplicity, let&#39;s assume that work is done in a class called\nTransformer...\n\n&gt; As far as I can tell, I need a standard &quot;oracular&quot; or dummy doclet\n&gt; information provider to act as the source of class information and \n&gt; a standard template to test as well as\n&gt; a piece of transformed output to verify against.\n\n&gt; The template and canonical output could be embedded as strings in the\n&gt; program itself.\n\n&gt; But the transformed text (going out via a PrintWriter class) \n&gt; I believe is only accessible as a file.\n\nSo, basically, you have something like\nTransformer.DoTransform(DocletInfoProvider info,String template,PrintWriter\nout)\n\nIgnore the first two parameters... the PrintWriter is the important part\n\n&gt; Am I wrong ? Can I restructure this so that it is \n&gt; unit testable writing to and from buffers and still manageable \n&gt; as a file output type of tool ?\n\nIf you pass the PrintWriter in, this is directly unit testable.\n\nSet up a PrintWriter like this:\n\n\t// ... set up Doclet info provider and template\n\n\t// set up print writer\n\tByteArrayOutputStream\tstream = new ByteArrayOutputStream;\t//\nGet an output stream to hold the results\n\tPrintWriter out=new PrintWriter(stream);\t\t// all\noutput ends up in stream\n\n\t// call your method\n\tTransformer.DoTransform(info,template,out);\n\n\t// Now, stream should contain the expected result\n\tassertEquals(expectedOutputString,stream.toString());\n\n\nThat should do the trick...\n\n&gt; &gt;One of the benefits you reap if you implement your classes \n&gt; that way is that\n&gt; &gt;you can add MD5 checksums, compression, etc without any \n&gt; redesign. If your\n&gt; &gt;class is writing directly to a file, you would have to \n&gt; modify that class to\n&gt; &gt;achieve the same.\n&gt; \n&gt; &gt;Of course, that&#39;s only a guess - I could be completely off :-)\n&gt; \n&gt; I think it is clear from my question above that I lack an \n&gt; understanding of\n&gt; how\n&gt; this would be achieved within the Javba I/O library.\n\nCompression and checksums? Checksums are implemented by CheckedOutputStream.\nCompression is a ZipOutputStream. They all inherit from FilterOutputStream.\n\n&gt; \n&gt; Awaiting your response with baited breath\n\nHopefully I could answer your question. If that&#39;s not what you were looking\nfor, I&#39;m probably misunderstanding your problem.\n\nBye,\n  Robert\n\nPlease be aware that messages sent over the Internet may not be secure and\nshould not be seen as forming a legally binding contract unless otherwise\nstated. Furthermore, I am not speaking for Midway Games in any way - this is\na strictly personal message.\n\n\n", 
+    "subject": "RE: [junit] Test File Output comparison : Should probably be an F AQ but I didn&#39;t see it so...."
+}

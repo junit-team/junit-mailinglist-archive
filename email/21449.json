@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 21450, 
+    "senderId": "y050nVVmnElMhYMJ4x--YYizTuG1bhcfVfU02rN9weRWkzKWPMO1uMqxB_pc_-HNsysIlntvYu_DQytT2pJKlARC2dY", 
+    "systemMessage": true, 
+    "subject": "ClasspathSuite, JUnit 3.8 mixed with 4.5, big suites and memory leaks", 
+    "from": "&quot;pgbossi&quot; &lt;pgbossi@...&gt;", 
+    "authorName": "pgbossi", 
+    "msgSnippet": "Hi all, We are in the process of building/modifying some suites on top of a legacy test collections, mostly written with JUnit 3.8. The test code is organized", 
+    "msgId": 21449, 
+    "profile": "pgbossi", 
+    "topicId": 21449, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 206615490, 
+    "messageBody": "<div id=\"ygrps-yiv-903422888\">Hi all,<br/>\n<br/>\nWe are in the process of building/modifying some suites on top of a legacy test collections, mostly written with JUnit 3.8. The test code is organized such that every package has an AllTests suite, including all the tests and suites below it.<br/>\n<br/>\nThis has the obvious disadvantage of requiring manual maintenance every time you add a new test.<br/>\n<br/>\nI&#39;d say that the ratio between JUnit 3.8 vs 4.5 tests is 5:1<br/>\n<br/>\nBecause of the mixed environment, we have decided to use excellent ClasspathSuite from Johannes Link: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.johanneslink.net/projects/cpsuite.html\">http://www.johanneslink.net/projects/cpsuite.html</a><br/>\n<br/>\nThe goal is to get rid of AllTests suites.<br/>\n<br/>\nAt the root of the system we have a big bang suite, running 3 sub-suites of roughly 500 tests each (so roughly 1500 tests in total, half of them are unit tests and the other half are acceptance tests based on HttpUnit). The big suite runs fine with 196 MB of heap.<br/>\n<br/>\nWe have started the conversion of one of such suites using ClasspathSuite and it worked fine in isolation, but not as part of the big suite: we consistently get an OutOfMemory exception indicating saturation of heap space. That happens even increasing the memory available to JUnit.<br/>\n<br/>\nWe think that this may be caused by JUnit 3.8 runner holding onto every tests until the end. This has been exacerbated by using ClasspathSuite. We have tried fixing it by patching it with a custom runner as suggested here: <a rel=\"nofollow\" target=\"_blank\" href=\"http://forum.springframework.org/archive/index.php/t-64510.html\">http://forum.springframework.org/archive/index.php/t-64510.html</a><br/>\n<br/>\nThe patch didn&#39;t seem to help even if the fTest references are nulled and we hint gc to run in the subsuite tearDown.<br/>\n<br/>\nHas anybody seen this too?<br/>\nAny suggested workaround and/or best practice?<br/>\n<br/>\nWe are currently converting all the 3.8 tests to 4.5 hoping to provide a more consistent environment, but I&#39;d like to know your take on this.<br/>\n<br/>\nThanks,<br/>\nGiuliano</div>", 
+    "prevInTime": 21448, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1238084135", 
+    "canDelete": false, 
+    "nextInTopic": 21452, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGdxZzluNysxOXA3QGVHcm91cHMuY29tPg=="
+    }
+}

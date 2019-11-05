@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 2819, 
+    "senderId": "LHTRF2Pr0p3x9o_pfexnZHC70fZjRuzoT6aFaKrfDuryuUoxyz0II5m_6DLN9DOycQkzsbo9g-GRJBPARy0XXT8-oRMH", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Refactoring and Test codes", 
+    "from": "Eric Vought &lt;evought@...&gt;", 
+    "authorName": "Eric Vought", 
+    "msgSnippet": "I don t have any papers, but I can comment on personal experience. I ve found that in my projects, I tend to spend about 1/3 of total refactoring time on test", 
+    "msgId": 2818, 
+    "topicId": 2817, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1450905340\">I don&#39;t have any papers, but I can comment on personal experience.<br/>\n<br/>\nI&#39;ve found that in my projects, I tend to spend about 1/3 of<br/>\ntotal refactoring time on test case maintenance. This includes adjusting<br/>\nthe testcases for results of refactoring, clean up or minor improvements<br/>\nof test code, and adding missing tests to an already populated test suite.<br/>\nI probably spend about the same proportion of coding time on writing<br/>\ninitial testcases. A good number of the refactorings I perform have<br/>\nminimal impact on the testcases, although their are exceptions.<br/>\n<br/>\nOverall, the kind of refactrorings you want to do on test code should<br/>\nfocus on simplicity and readability. You don&#39;t (typically) subclass<br/>\ntestcode or use it in other packages, so you don&#39;t refactor for reuse<br/>\n(much). Occasionally, I&#39;ll see something that is somewhat complex and<br/>\nused a lot that I will bubble it out to our test utility package and write<br/>\nunit tests for, but I won&#39;t leave complex, untested utility code<br/>\nin a test suite (unless I get lazy, but then I useually pay for it...).<br/>\nIt&#39;s really a bummer to spend time debugging your test code.<br/>\n<br/>\nThe recent discussion on this list about one-time setup of test fixtures<br/>\nis probably a good example of design which enables your tests to change<br/>\nless. As Kent has pointed out several times, a desire to do one time<br/>\ninitialization (in unit testing) rather than per test setup, usually<br/>\npoints to a problem in your design. Additionally, the same sorts of design<br/>\nchanges in both your code and tests isolates the damage to your testcases<br/>\nfrom code changes.<br/>\n<br/>\nMore concretely, global data is bad for unit tests. Whether that data is<br/>\nin a Singleton or a configuration database or complex logging setup,<br/>\ndesign based on it makes for fragile test cases. If I pass a global<br/>\nconfiguration database to all of my tests, then a change to the design,<br/>\nthe structure, or even the contents of that database effects all the<br/>\ntestcases. If, instead, I pass just the information that a<br/>\nparticular class needs, my testcases are better isolated from change. In<br/>\nparticular, the same interface boundaries that allow the use of Mock<br/>\nObjects also improve test isolation.<br/>\n<br/>\nAlso as discussed recently, functional/integration testing is a different<br/>\nanimal. In integration testing, you are demonstrating that all the code<br/>\nplays well together, and therefore, your testcase setup must be more<br/>\ncomplex. If, however, most of your classes are passed directly what they<br/>\nneed rather than accessing the large configration database (maybe one<br/>\nclass or so per component acts as a bridge to the configuration system),<br/>\nyou should see many fewer problems that are specifically integrational and<br/>\nyour tests should respond to change about as well as possible.<br/>\n<br/>\nThis configuration problem is one I am specifically working on some good<br/>\npatterns for locally. We have a few projects where interdependencies<br/>\nthrough the configuration system are getting out of hand. We are already<br/>\nwriting testcases which pass in a custom instantiation of the<br/>\nconfiguration Map which only contains the values of interest to the<br/>\nparticular test, but we end up seeing problems at integration time which<br/>\ncould be avoided by a better design.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, 3 Oct 2001, Bruce Vinchon wrote:<br/>\n<br/>\n&gt; Hi all,<br/>\n&gt;<br/>\n&gt; i&#39;m seeking some documentation or papers about impacts of extensive code<br/>\n&gt; refactoring on testcode design.<br/>\n&gt; Are there some tricks you shouldn&#39;t do in your test code to be more<br/>\n&gt; flexible ?<br/>\n&gt; About your experience, how much time do you spend to refactor your test<br/>\n&gt; code versus your code ?<br/>\n&gt; What about mock objects strategy when you refactor your code a lot ?<br/>\n&gt; Are there invariants in testing design that allow to refactor your code<br/>\n&gt; and impact less your test code ?<br/>\n&gt;<br/>\n&gt; regards,<br/>\n&gt;<br/>\n&gt; bruce vinchon.<br/>\n<br/>\n-- <br/>\nEric Vought<br/>\nChief Technical Officer - QLUE Consulting, Inc.<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:evought@...\">evought@...</a> toll-free: 888-771-3538  RTP area: 919-816-9901 </span></blockquote></div>", 
+    "prevInTime": 2817, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1002119343", 
+    "canDelete": false, 
+    "nextInTopic": 2819, 
+    "prevInTopic": 2817, 
+    "headers": {
+        "inReplyToHeader": "PE9GMTFBNDE1NTAuMDdGQTI3MTMtT05DMTI1NkFEQS4wMDMwRjNBOUBmcmFuY2UuaWJtLmNvbT4=", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMzAuMDExMDAzMTAwNTM1MC44NzQ3LTEwMDAwMEBicmFpbi5xbHVlLWxhbj4="
+    }
+}

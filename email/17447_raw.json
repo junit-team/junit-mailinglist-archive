@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 17448, 
+    "senderId": "aZ67jA22yHS-1qpGajbFBktWJozVGuRt9y2sb1zaPEf54PxVzjuKTR9HIqthkyBClusfCVt73jtBYflgNgOSFcQUeyTPSIg8EFtZcEma7jGm5FpZ15vtLdmBqUzNLQheCd73yk4", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit 4 with bea 9.2 workshop", 
+    "from": "&quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "... I think the difficulty here comes from the fact that in JUnit, test classes and test suites are hard to tell apart.  If you look at a class, it s a test", 
+    "msgId": 17447, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 45132 invoked from network); 15 Aug 2006 20:32:14 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m33.grp.scd.yahoo.com with QMQP; 15 Aug 2006 20:32:14 -0000\r\nReceived: from unknown (HELO smtp-out.google.com) (216.239.45.12)\n  by mta7.grp.scd.yahoo.com with SMTP; 15 Aug 2006 20:32:14 -0000\r\nReceived: from zps77.corp.google.com (zps77.corp.google.com [172.25.146.77])\n\tby smtp-out.google.com with ESMTP id k7FKTNpb019757\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 15 Aug 2006 13:29:30 -0700\r\nReceived: from smtp-out2.google.com (fpr16.prod.google.com [10.253.18.16])\n\tby zps77.corp.google.com with ESMTP id k7FGpqfn018884\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 15 Aug 2006 13:29:20 -0700\r\nReceived: by smtp-out2.google.com with SMTP id 16so167518fpr\n        for &lt;junit@yahoogroups.com&gt;; Tue, 15 Aug 2006 13:29:20 -0700 (PDT)\r\nReceived: by 10.253.29.11 with SMTP id c11mr627695fpc;\n        Tue, 15 Aug 2006 13:29:20 -0700 (PDT)\r\nReceived: by 10.253.29.2 with HTTP; Tue, 15 Aug 2006 13:29:20 -0700 (PDT)\r\nMessage-ID: &lt;b86b6a9c0608151329w6ea3ceebwcd0dd24e1422f355@...&gt;\r\nDate: Tue, 15 Aug 2006 13:29:20 -0700\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;44E21A84.5060709@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;ebfnv9+jp0f@...&gt; &lt;44DBEEEA.1080202@...&gt;\n\t &lt;b86b6a9c0608102346l3e8bcb01q7577e4e401a7a19f@...&gt;\n\t &lt;44DC4ADF.30400@...&gt;\n\t &lt;b86b6a9c0608110858t12e14cbbq6cf3636fad5d0e31@...&gt;\n\t &lt;44DCCB91.3070001@...&gt; &lt;44DCD45E.7020001@...&gt;\n\t &lt;44DFE12C.5020507@...&gt; &lt;44E21A84.5060709@...&gt;\r\nX-eGroups-Msg-Info: 1:6:0:0\r\nFrom: &quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;\r\nSubject: Re: [junit] JUnit 4 with bea 9.2 workshop\r\nX-Yahoo-Group-Post: member; u=199443513; y=oNvLCcKcGlE_Yc5NabvmfF9f1djK2_q6hsXvMOcUFskC\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nOn 8/15/06, J. B. Rainsberger &lt;jbrains@...&gt; wrote:\n\n&gt; This ain&#39;t cod=\r\ne, but maybe it&#39;ll help. Bear in mind I&#39;m handcuffed by my\n&gt; bias towards J=\r\nUnit 3.\n&gt;\n&gt; @BeforeClass makes a set up method run before running all the t=\r\nests in\n&gt; that test case class (any class with at least one @Test in it).\n&gt;=\r\n\n&gt; @BeforeSuite would make a set up method run before running all the tests=\r\n\n&gt; in an arbitrary JUnit 3-style test suite, which might be composed of\n&gt; t=\r\nests from multiple classes.\n\n\nI think the difficulty here comes from the fa=\r\nct that in JUnit, test classes\nand test suites are hard to tell apart.  If =\r\nyou look at a class, it&#39;s a\n&quot;test suite&quot; if has a suite() method and a &quot;tes=\r\nt class&quot; otherwise.  In\npractice, I&#39;ve always found that this blending made=\r\n it hard for me to\npinpoint a specific test or series of tests that I want =\r\nto investigate and\neither run in isolation of the others or eliminate tempo=\r\nrarily from the run.\n\nFrom that perspective, I can understand why David say=\r\ns that &quot;@BeforeClass&quot;\nis good enough and there is no need for @BeforeSuite,=\r\n since @BeforeClass can\nplay either role depending on whether the class it =\r\napplies to has a suite()\nor not.\n\nI still think that this is suboptimal, si=\r\nnce you will radically change the\nway your test is configured if you remove=\r\n your suite() method, and suddenly,\na lot of before/after methods will no l=\r\nonger be called...\n\n-- \nC=E9dric\nhttp://testng.org\n\n\n[Non-text portions of =\r\nthis message have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 17358, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 17446, 
+    "contentTrasformed": false, 
+    "postDate": "1155673760", 
+    "canDelete": false, 
+    "nextInTopic": 17451, 
+    "prevInTopic": 17438, 
+    "headers": {
+        "inReplyToHeader": "PDQ0RTIxQTg0LjUwNjA3MDlAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGI4NmI2YTljMDYwODE1MTMyOXc2ZWEzY2VlYndjZDBkZDI0ZTE0MjJmMzU1QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PGViZm52OStqcDBmQGVHcm91cHMuY29tPiA8NDREQkVFRUEuMTA4MDIwMkByb2dlcnMuY29tPgkgPGI4NmI2YTljMDYwODEwMjM0NmwzZThiY2IwMXE3NTc3ZTRlNDAxYTdhMTlmQG1haWwuZ29vZ2xlLmNvbT4JIDw0NERDNEFERi4zMDQwMEBtaXQuZWR1PgkgPGI4NmI2YTljMDYwODExMDg1OHQxMmUxNGNiYnE2Y2YzNjM2ZmFkNWQwZTMxQG1haWwuZ29vZ2xlLmNvbT4JIDw0NERDQ0I5MS4zMDcwMDAxQG1pdC5lZHU+IDw0NERDRDQ1RS43MDIwMDAxQHJvZ2Vycy5jb20+CSA8NDRERkUxMkMuNTAyMDUwN0BtaXQuZWR1PiA8NDRFMjFBODQuNTA2MDcwOUByb2dlcnMuY29tPg=="
+    }
+}

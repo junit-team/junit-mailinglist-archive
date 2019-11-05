@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 9906, 
+    "senderId": "RvJs8AiK5RPhFhoRoDsgCxQomsO83AC5KsVD9dFkXWUwTRcSnDJuGIInXlhX_w1f5eq8nO5BicH6xU_H0dnTgMP_QSPYRRiNCDOERgMTuQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Reg:Help on JUnit with HashTable and other issues", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Use DBUnit to set up the data and a separate test database for testing. Do not share your test database with anyone. This is one method you /want/ to test", 
+    "msgId": 9905, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 72794 invoked from network); 15 Nov 2003 14:50:24 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m1.grp.scd.yahoo.com with QMQP; 15 Nov 2003 14:50:24 -0000\r\nReceived: from unknown (HELO fep04-mail.bloor.is.net.cable.rogers.com) (66.185.86.74)\n  by mta1.grp.scd.yahoo.com with SMTP; 15 Nov 2003 14:50:24 -0000\r\nReceived: from rogers.com ([24.156.43.226])\n          by fep04-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20031115144851.TIH233718.fep04-mail.bloor.is.net.cable.rogers.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Sat, 15 Nov 2003 09:48:51 -0500\r\nMessage-ID: &lt;3FB63D17.3030006@...&gt;\r\nDate: Sat, 15 Nov 2003 09:49:59 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5b) Gecko/20030901 Thunderbird/0.2\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Reg:Help on JUnit with HashTable and other issues\r\nReferences: &lt;659C31367235D511A89C00B0D0AB5C3F08B5C795@...&gt;\r\nIn-Reply-To: &lt;659C31367235D511A89C00B0D0AB5C3F08B5C795@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep04-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Sat, 15 Nov 2003 09:48:51 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nNagarajan, Naveen (Cognizant) wrote:\n\n&gt; hi,\n&gt; \n&gt; I have the following queries.Pls answer them.\n&gt; \n&gt; A.Pls take a look at the following class :\n&gt; \n&gt; class XYZ{\n&gt; public Hashtable stvalues(){\n&gt; //this method hits the database and retrives a set of values\n&gt; // lets says a persons name,address,salary and computes some values on \n&gt; the salary\n&gt; }\n&gt; }\n&gt; assuming i have imported the required packages.\n&gt; \n&gt; class TestXYZ extends TestCase{\n&gt; \n&gt; public void teststvalues(){\n&gt; //test code\n&gt; }\n&gt; }\n&gt; \n&gt; The only way i can test the method is to create a Hashtable object with \n&gt; the expected data and compare it with actual data.\n&gt; but the expected values for the hashtable depends(indirectly) upon the \n&gt; state of database (the values in the table person).\n&gt; Also i need to build a hashtable object with all the values(which could \n&gt; run into say some 100 rows.if i am having 100 rows ,i need to check the \n&gt; all the 100 rows instead of a sample 2 rows of test data .) in my \n&gt; database which is tedious.and while building the object,the test may \n&gt; also become invalid because the database state may change in time and \n&gt; the fixture may become invalid.\n\nUse DBUnit to set up the data and a separate test database for testing. \nDo not share your test database with anyone. This is one method you \n/want/ to test against a live database, because you are testing your \nability to read data and map it. Just make sure you have exclusive \naccess to the database.\n\nIf you find yourself wanting to do this in more than (say) three places, \nthen come back for more advice, because my answer will change.\n\n&lt;snip /&gt;\n\n\n&gt; B.Also i am using Junit to test certain functions of session beans ?\n&gt; am using a combination of the  InitialContext object \n&gt; ,javax.rmi.PortableRemoteObject.narrow method,create() method of my \n&gt; interface which extends EJBHome to create an instance of the object \n&gt; required and then testing the functions .\n&gt; Am not sure whether this an valid approach.\n\nIt&#39;s a valid approach if it works.\n\n&gt; Is there any other better approach ?\n\nAre you testing your session bean logic? If so, extract it to a separate \nclass and test it in memory. Make the session bean Too Simple to Break \nby having it do nothing but delegate to the session bean logic class. \nUse MockEJB to test the session bean.\n\n&gt; C. Can Junit be used to test getter methods which have some DB hits and \n&gt; some logic in it ?\n\nJUnit can test anything to which a Java interface is available.\n\n&gt;     Is it in conformance with Junit philosophy ?\n\nIs it in conformance with the philosophy of Good Design? Google &quot;Single \nResponsibility Principle&quot;.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 9903, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 9904, 
+    "contentTrasformed": false, 
+    "postDate": "1068907799", 
+    "canDelete": false, 
+    "nextInTopic": 9911, 
+    "prevInTopic": 9903, 
+    "headers": {
+        "inReplyToHeader": "PDY1OUMzMTM2NzIzNUQ1MTFBODlDMDBCMEQwQUI1QzNGMDhCNUM3OTVAY3RzaW5jc2lzeHVhLmN0cy5jb20+", 
+        "messageIdInHeader": "PDNGQjYzRDE3LjMwMzAwMDZAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDY1OUMzMTM2NzIzNUQ1MTFBODlDMDBCMEQwQUI1QzNGMDhCNUM3OTVAY3RzaW5jc2lzeHVhLmN0cy5jb20+"
+    }
+}

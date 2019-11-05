@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 21361, 
+    "senderId": "6ztAAxphdiCfbwC0emlTA_RQtqzF1moXX-zbokockGn13dsyhiOUcqMXm3HyPBT6yM0B6z9fzPBQEHAK5Xuoh8Jq", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Conditionally running tests", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "yme0987654321, You can use assumptions in 4.5 and afterward to ignore entire classes: public class BigLongTest { @BeforeClass public static void", 
+    "msgId": 21360, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 17937 invoked from network); 17 Feb 2009 15:19:44 -0000\r\nX-Received: from unknown (66.218.67.97)\n  by m55.grp.scd.yahoo.com with QMQP; 17 Feb 2009 15:19:44 -0000\r\nX-Received: from unknown (HELO yx-out-1718.google.com) (74.125.44.154)\n  by mta18.grp.scd.yahoo.com with SMTP; 17 Feb 2009 15:19:44 -0000\r\nX-Received: by yx-out-1718.google.com with SMTP id 4so1095166yxp.56\n        for &lt;junit@yahoogroups.com&gt;; Tue, 17 Feb 2009 07:19:44 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.143.18.21 with SMTP id v21mr3013643wfi.149.1234883984129; Tue, \n\t17 Feb 2009 07:19:44 -0800 (PST)\r\nIn-Reply-To: &lt;gndcdm+mal4@...&gt;\r\nReferences: &lt;gndcdm+mal4@...&gt;\r\nDate: Tue, 17 Feb 2009 10:19:44 -0500\r\nX-Google-Sender-Auth: f466ffc815b9195a\r\nMessage-ID: &lt;4f7da6b90902170719gfe0c79fob261672b23d4763c@...&gt;\r\nTo: junit@yahoogroups.com\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Conditionally running tests\r\nX-Yahoo-Group-Post: member; u=341876227; y=SeNpzCV-JFmhH6gM3cVnflHFXhINm8Rr7xp_uVdOK2A\r\nX-Yahoo-Profile: dsaff\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nyme0987654321,\n\nYou can use assumptions in 4.5 and afterward to ignore entire classes:\n\npublic class BigLongTest {\n   @BeforeClass public static void isRunningAppropriate() {\n     assumeTrue(runningBigLongTests());\n   }\n\n   @Test...\n}\n\nDoes that work?\n\n   David Saff\n\nOn Mon, Feb 16, 2009 at 10:54 PM, yme0987654321 &lt;yme0987654321@...&gt;wrote:\n\n&gt; Hi,\n&gt;\n&gt; I&#39;ve tried looking around the group but I haven&#39;t seen an answer to\n&gt; this. I&#39;m trying to set up a group of tests that runs only under\n&gt; certain circumstances. Because they are database tests, they have\n&gt; expensive setup and teardown procedures (via DBUnit), so they are\n&gt; segregated to run separately. The way to get that done seems to be via\n&gt; a separate runner, so I hacked up a class that looks like this:\n&gt; (Inspiration from here:\n&gt; http://schuchert.wikispaces.com/CustomJunit4RunnerJUnit4_4 but that\n&gt; example no longer applies to the 4.5 API):\n&gt;\n&gt; public class SlowTestRunner extends Runner {\n&gt;\n&gt;    private Runner runner;\n&gt;    private Class&lt;?&gt; klass;\n&gt;\n&gt;    public SlowTestRunner(Class&lt;?&gt; klass, RunnerBuilder builder)\n&gt; throws Throwable {\n&gt;        this.klass = klass;\n&gt;        if (Boolean.getBoolean(&quot;RunSlowTests&quot;)) {\n&gt;            runner = getAppropriateRunner(builder);\n&gt;        } else {\n&gt;            runner = new IgnoredClassRunner(klass);\n&gt;        }\n&gt;    }\n&gt;\n&gt;    private Runner getAppropriateRunner(RunnerBuilder builder) {\n&gt;        List&lt;RunnerBuilder&gt; builders = Arrays.asList(\n&gt;                new IgnoredBuilder(),\n&gt;                new AnnotatedBuilder(builder),\n&gt;                new SuiteMethodBuilder(),\n&gt;                new JUnit3Builder(),\n&gt;                new JUnit4Builder());\n&gt;\n&gt;        for (RunnerBuilder each : builders) {\n&gt;            Runner runner = each.safeRunnerForClass(klass);\n&gt;            if (runner != null && runner.getClass() != this.getClass())\n&gt;                return runner;\n&gt;        }\n&gt;        //this is actually never going to happen, at least in the\n&gt; current implementation because the JUnit4Builder is the Builder of\n&gt; last resort.\n&gt;        return new ErrorReportingRunner(klass, new\n&gt; InitializationError(&quot;Unable to find suitable runner to delegate for &quot;\n&gt; + klass.getName()));\n&gt;    }\n&gt;\n&gt;    public Description getDescription() {\n&gt;        return runner.getDescription();\n&gt;    }\n&gt;\n&gt;    public void run(RunNotifier notifier) {\n&gt;        runner.run(notifier);\n&gt;    }\n&gt; }\n&gt;\n&gt; The method getAppropriateRunner is basically a copy/paste from\n&gt; AllDefaultPossibilitiesBuilder. I had to copy paste because the\n&gt; protected method forced a return of an AnnotatedBuilder, instead of\n&gt; just a RunnerBuilder, so overriding wasn&#39;t working well. Note the case\n&gt; here is that I&#39;m not sure if the class is a JUnit3 or 4 class, and I\n&gt; want to support both with one runner.\n&gt;\n&gt; At first I tried to just do a runnerForClass on builder passed to the\n&gt; constructor, but that causes an infinite loop, because the class has\n&gt; the RunWith annotation on it that references the very same Runner.\n&gt;\n&gt; Am I correct that the API isn&#39;t naturally supporting what I am trying\n&gt; to do, or is there another way to accomplish this?\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21356, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21359, 
+    "contentTrasformed": false, 
+    "postDate": "1234883984", 
+    "canDelete": false, 
+    "nextInTopic": 21361, 
+    "prevInTopic": 21359, 
+    "headers": {
+        "inReplyToHeader": "PGduZGNkbSttYWw0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwMjE3MDcxOWdmZTBjNzlmb2IyNjE2NzJiMjNkNDc2M2NAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGduZGNkbSttYWw0QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19620, 
+    "senderId": "QYSpDF3s0XKfChAED-tNyJ-IH7WSuQS0ErabdZxIPgjs4t23xvmWgBbgMCcXuSDEfDfsSprSr_wKtDfLvHmK3TY2", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Displaying the results of parameterized JUnit 4 tests in Eclipse", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... A different set of design tradeoffs makes this difficult in JUnit 4. in JUnit 3, you could ask each test case for its name, but that required having all of", 
+    "msgId": 19619, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 99204 invoked from network); 26 Jul 2007 15:33:19 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m55.grp.scd.yahoo.com with QMQP; 26 Jul 2007 15:33:19 -0000\r\nReceived: from unknown (HELO nz-out-0506.google.com) (64.233.162.232)\n  by mta7.grp.scd.yahoo.com with SMTP; 26 Jul 2007 15:33:19 -0000\r\nReceived: by nz-out-0506.google.com with SMTP id l1so478919nzf\n        for &lt;junit@yahoogroups.com&gt;; Thu, 26 Jul 2007 08:33:15 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;\n        b=DjyCMiZgVuRKmhmZ45NDFvzfiXw3mfuunuYUfTYz8jquYZw4GQOH8UMkUgRcKsKAe096/RcURjwKBxVDH7C+hQGhWLmMi9OS6bU+7bnIbOV+V/fL+VE+1F5hi5ZKhgyAFpGIR9U3d7R1SxVtHnwbSvcPCsdBIwsNPV188oAI/cI=\r\nReceived: by 10.114.199.1 with SMTP id w1mr1882179waf.1185463994842;\n        Thu, 26 Jul 2007 08:33:14 -0700 (PDT)\r\nReceived: by 10.114.134.7 with HTTP; Thu, 26 Jul 2007 08:33:14 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90707260833k1c87be5fsfa9a36cdbf99a7a1@...&gt;\r\nDate: Thu, 26 Jul 2007 11:33:14 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;f88591+a066@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;23fce8e60707250816t29f8e09bpf4a7ec89e7d22806@...&gt;\n\t &lt;f88591+a066@...&gt;\r\nX-Google-Sender-Auth: 50e8633d1afe1388\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Re: Displaying the results of parameterized JUnit 4 tests in Eclipse\r\nX-Yahoo-Group-Post: member; u=139771899; y=TGYqxKMwMltuxv6NJqXzUM2Cc6fKdY1cB-oK6QSSEpA\r\nX-Yahoo-Profile: dsaff\r\n\r\nOn 7/25/07, B=E9k=E9si Tibor &lt;bekesi2002@...&gt; wrote:\n&gt; As far as I kn=\r\now in JUnit 3 you could customize what to display in\n&gt; the JUnit view of Ec=\r\nlipse by overriding the getName() method of the\n&gt; TestCase. Is there any si=\r\nmilar solution for that in JUnit 4?\n\nA different set of design tradeoffs ma=\r\nkes this difficult in JUnit 4.\nin JUnit 3, you could ask each test case for=\r\n its name, but that\nrequired having all of the test case obects instantiate=\r\nd, which could\nconsume a lot of memory and start-up resources.  In JUnit 4,=\r\n the test\nobject does not exist until right before it runs, so it&#39;s up to a=\r\n\nRunner to statically determine the name of each test.\n\nBy the way, this is=\r\n also the reason for the default naming in the\nParameterized runner.  We wa=\r\nnted to be able to run on parameters that\nwere expensive to instantiate, or=\r\n could only be traversed once,\nwithout reverting to the &quot;all work up front&quot;=\r\n model of JUnit 3.  So we\nonly check the size of the parameter list when th=\r\ne methods are named.\nIt turns out that a lot of people are using lightweigh=\r\nt parameters\nlike static String literals as their parameters, and, like you=\r\n, have\nno problem traversing the list multiple times.  This accounts for\npr=\r\netty much all the requests for renaming tests that I&#39;m aware of.\n\n&gt; However=\r\n, I would be interested in a solution that captures\n&gt; the &quot;System.out&quot; of m=\r\ny &quot;testMethod[1]&quot; separately from\n&gt; the &quot;System.out&quot; of my &quot;testMethod[2]&quot;.=\r\n\n\nThere is no built-in solution for this.  When possible, I try to\ninclude =\r\nas much information as possible in my assertion failures, so\nthat I don&#39;t h=\r\nave to look at System.out to debug.  When this isn&#39;t\npossible, would it be =\r\nenough to let each test know it&#39;s own name, so\nyou could print it to System=\r\n.out?  If so, check out this posting:\n\nhttp://tech.groups.yahoo.com/group/j=\r\nunit/message/18728\n\nThere should probably be a better way to do this in the=\r\n future, but\nI&#39;m not aware of a current feature request for it.  Thanks,\n\n =\r\n  David Saff\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19607, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19618, 
+    "contentTrasformed": false, 
+    "postDate": "1185463994", 
+    "canDelete": false, 
+    "nextInTopic": 19625, 
+    "prevInTopic": 19618, 
+    "headers": {
+        "inReplyToHeader": "PGY4ODU5MSthMDY2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwNzI2MDgzM2sxYzg3YmU1ZnNmYTlhMzZjZGJmOTlhN2ExQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIzZmNlOGU2MDcwNzI1MDgxNnQyOWY4ZTA5YnBmNGE3ZWM4OWU3ZDIyODA2QG1haWwuZ21haWwuY29tPgkgPGY4ODU5MSthMDY2QGVHcm91cHMuY29tPg=="
+    }
+}

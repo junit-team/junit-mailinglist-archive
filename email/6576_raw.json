@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 6577, 
+    "senderId": "WxX1QLalm8voHKSEfod67wh6JmNAFoMBx2VnRSrahwZoCm7ll0aemX-J3zaAEqYGytG3N28tpBzdE5syXvBhnwZR0QIHM6Y98Il-pNXv8r6LqFCf4w", 
+    "systemMessage": false, 
+    "subject": "Re: Experience an UnsatisfiedLinkError when using the swing or awt ui of TestRun", 
+    "from": "&quot;chaz &lt;cchoy@...&gt;&quot; &lt;cchoy@...&gt;", 
+    "authorName": "chaz &lt;cchoy@pacbell.net&gt;", 
+    "msgSnippet": "... JUnit s ... any ... (0x400f0000) ... at least ... have it ... not, add ... Hi, Just wanted to take the time to thank you for your help, I was missing the", 
+    "msgId": 6576, 
+    "rawEmail": "Return-Path: &lt;cchoy@...&gt;\r\nReceived: (qmail 90425 invoked from network); 2 Jan 2003 02:04:32 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m11.grp.scd.yahoo.com with QMQP; 2 Jan 2003 02:04:32 -0000\r\nReceived: from unknown (HELO n16.grp.scd.yahoo.com) (66.218.66.71)\n  by mta1.grp.scd.yahoo.com with SMTP; 2 Jan 2003 02:04:32 -0000\r\nX-eGroups-Return: cchoy@...\r\nReceived: from [66.218.67.132] by n16.grp.scd.yahoo.com with NNFMP; 02 Jan 2003 02:04:32 -0000\r\nX-Sender: cchoy@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 1 Jan 2003 04:30:17 -0000\r\nReceived: (qmail 94203 invoked from network); 1 Jan 2003 04:30:17 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m15.grp.scd.yahoo.com with QMQP; 1 Jan 2003 04:30:17 -0000\r\nReceived: from unknown (HELO n29.grp.scd.yahoo.com) (66.218.66.85)\n  by mta3.grp.scd.yahoo.com with SMTP; 1 Jan 2003 04:30:17 -0000\r\nReceived: from [66.218.67.175] by n29.grp.scd.yahoo.com with NNFMP; 01 Jan 2003 04:30:17 -0000\r\nDate: Wed, 01 Jan 2003 04:30:14 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Experience an UnsatisfiedLinkError when using the swing or awt ui of TestRun\r\nMessage-ID: &lt;autqsm+dfld@...&gt;\r\nIn-Reply-To: &lt;1298882.x0gMhze5dN@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2643\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;chaz &lt;cchoy@...&gt;&quot; &lt;cchoy@...&gt;\r\nX-Yahoo-Group-Post: member; u=69389666\r\nX-Yahoo-Profile: honorable_crane\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 02 Jan 2003 02:04:30 -0000\r\n\r\n--- In junit@yahoogroups.com, Davor Cengija &lt;java-junit@m...&gt; wrote:\n&gt; chaz wrote:\n&gt; \n&gt; &gt; Hi,\n&gt; &gt;   I&#39;m experencing the following error below, when I try to use the\n&gt; &gt; swing or awt ui of TestRunner. Could someone please help to correct\n&gt; &gt; this error. I&#39;m using Redhat 7.3 and JUnit 3.8.1, and was just running\n&gt; &gt; the AllTests sample that came with JUnit.\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; Exception in thread &quot;main&quot; java.lang.UnsatisfiedLinkError:\n&gt; &gt; /usr/java/j2sdk1.4.1_01/jre/lib/i386/libfontmanager.so:\n&gt; &gt; libstdc++-libc6.1-1.so.2: cannot open shared object file: No such file\n&gt; &gt; or directory\n&gt; \n&gt; This is a basic JDK installation problem and has nothing to do with\nJUnit&#39;s \n&gt; test runner. You&#39;ll probably have the same error while trying to run\nany \n&gt; java GUI. Read the JDK 1.4.1 installation guide, especially its \n&gt; requirements section.\n&gt; \n&gt; But, while we&#39;re already here, it looks like you don&#39;t have the correct \n&gt; libstdc++ installed (or it might be installed in a non-standard way).\n&gt; \n&gt; run\n&gt; ldd /usr/java/j2sdk1.4.1_01/jre/lib/i386/libfontmanager.so\n&gt; \n&gt; and you should get something like \n&gt; \n&gt; libstdc++-libc6.1-1.so.2 =&gt; /usr/lib/libstdc++-libc6.1-1.so.2\n(0x400f0000)\n&gt; (also listed some other libraries).\n&gt; \n&gt; libstdc++-libc6.1-1.so.2 is in libstdc++2.10-2.96-0.76mdk package,\nat least \n&gt; on Mandrake 8.2.\n&gt; \n&gt; davor@lothar ~ $ rpm -qf /usr/lib/libstdc++-libc6.1-1.so.2\n&gt; libstdc++2.10-2.96-0.76mdk\n&gt; \n&gt; Redhat 7.3 should have a similar file and it should be in /usr/lib.\n&gt; \n&gt; So, if you don&#39;t have libstdc++ installed, install it. If you do\nhave it \n&gt; installed, then check if you have /usr/lib in /etc/ld.so.conf. If\nnot, add \n&gt; it and run ldconfig. If it still doesn&#39;t work, check that libstdc++ is \n&gt; installed correctly, e.g. all the simbolic links are created correctly. \n&gt; Here&#39;s what I have\n&gt; \n&gt; davor@lothar /usr/lib $ ls -l libstdc++-*\n&gt; -rw-r--r--    1 root     root       452342 Feb 21  2002 \n&gt; libstdc++-3-libc6.2-2-2.10.0.a\n&gt; -r-xr-xr-x    1 root     root       299756 Feb 21  2002 \n&gt; libstdc++-3-libc6.2-2-2.10.0.so*\n&gt; lrwxrwxrwx    1 root     root           24 Jul 21 22:56 \n&gt; libstdc++-libc6.1-1.so.2 -&gt; libstdc++-libc6.2-2.so.3*\n&gt; lrwxrwxrwx    1 root     root           30 Jul 25 07:46 \n&gt; libstdc++-libc6.2-2.a.3 -&gt; libstdc++-3-libc6.2-2-2.10.0.a\n&gt; lrwxrwxrwx    1 root     root           31 Jul 21 22:56 \n&gt; libstdc++-libc6.2-2.so.3 -&gt; libstdc++-3-libc6.2-2-2.10.0.so*\n&gt; \n&gt; -- \n&gt; davor.cengija@m...\nHi,\n  Just wanted to take the time to thank you for your help, I was\nmissing the symbolic link for the libstdc++-libc6.1-1.so.2. Once I\nplace it in the /usr/lib directory TestRunner for swing worked fine.\n\ncheers,\n\nchaz\n\n\n\n", 
+    "profile": "honorable_crane", 
+    "topicId": 6551, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 69389666, 
+    "prevInTime": 6575, 
+    "contentTrasformed": false, 
+    "postDate": "1041395414", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 6558, 
+    "headers": {
+        "inReplyToHeader": "PDEyOTg4ODIueDBnTWh6ZTVkTkBsb3RoYXIuY2VuZ2lqYS5jb20+", 
+        "messageIdInHeader": "PGF1dHFzbStkZmxkQGVHcm91cHMuY29tPg=="
+    }
+}

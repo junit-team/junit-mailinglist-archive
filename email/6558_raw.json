@@ -1,0 +1,29 @@
+{
+    "topicId": 6551, 
+    "postDate": "1040918181", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Davor Cengija &lt;java-junit@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "SoKf_e-FHKej1bwELcNifqWNOXxJb_V-oFUwx3LIBbZkFpkrX4sB0YndVZlxnRwmNFD5O8NOp-bakQEXjFgsSSJQGOeWxpahysJkmH0", 
+    "nextInTime": 6559, 
+    "userId": 106325759, 
+    "prevInTime": 6557, 
+    "prevInTopic": 6557, 
+    "headers": {
+        "messageIdInHeader": "PDEyOTg4ODIueDBnTWh6ZTVkTkBsb3RoYXIuY2VuZ2lqYS5jb20+", 
+        "referencesHeader": "PGF1MzYzdStxcmcxQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Davor Cengija", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "... This is a basic JDK installation problem and has nothing to do with JUnit s test runner. You ll probably have the same error while trying to run any java", 
+    "contentTrasformed": false, 
+    "msgId": 6558, 
+    "nextInTopic": 6576, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;java-junit@...&gt;\r\nX-Sender: java-junit@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 26 Dec 2002 16:01:24 -0000\r\nReceived: (qmail 82872 invoked from network); 26 Dec 2002 16:01:23 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m9.grp.scd.yahoo.com with QMQP; 26 Dec 2002 16:01:23 -0000\r\nReceived: from unknown (HELO main.gmane.org) (80.91.224.249)\n  by mta1.grp.scd.yahoo.com with SMTP; 26 Dec 2002 16:01:24 -0000\r\nReceived: from root by main.gmane.org with local (Exim 3.35 #1 (Debian))\n\tid 18RaQh-0007GG-00\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 26 Dec 2002 17:00:15 +0100\r\nX-Injected-Via-Gmane: http://gmane.org/\r\nTo: junit@yahoogroups.com\r\nReceived: from news by main.gmane.org with local (Exim 3.35 #1 (Debian))\n\tid 18RaNV-00071r-00\n\tfor &lt;gmane-comp-java-junit-user@...&gt;; Thu, 26 Dec 2002 16:56:57 +0100\r\nPath: lothar.cengija.com!nobody\r\nSubject: Re: Experience an UnsatisfiedLinkError when using the swing or awt ui of TestRunner.\r\nDate: Thu, 26 Dec 2002 16:56:21 +0100\r\nOrganization: =?ISO-8859-2?Q?Dru=B9tvo_s_neograni=E8enom_neodgovorno=B9=E6u?=\r\nLines: 58\r\nMessage-ID: &lt;1298882.x0gMhze5dN@...&gt;\r\nReferences: &lt;au363u+qrg1@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7Bit\r\nX-Complaints-To: usenet@...\r\nUser-Agent: KNode/0.6.1\r\nSender: news &lt;news@...&gt;\r\nX-eGroups-From: Davor Cengija &lt;davor.cengija@...&gt;\r\nFrom: Davor Cengija &lt;java-junit@...&gt;\r\nX-Yahoo-Group-Post: member; u=106325759\r\n\r\nchaz wrote:\n\n&gt; Hi,\n&gt;   I&#39;m experencing the following error below, when I try to use the\n&gt; swing or awt ui of TestRunner. Could someone please help to correct\n&gt; this error. I&#39;m using Redhat 7.3 and JUnit 3.8.1, and was just running\n&gt; the AllTests sample that came with JUnit.\n&gt; \n&gt; \n&gt; Exception in thread &quot;main&quot; java.lang.UnsatisfiedLinkError:\n&gt; /usr/java/j2sdk1.4.1_01/jre/lib/i386/libfontmanager.so:\n&gt; libstdc++-libc6.1-1.so.2: cannot open shared object file: No such file\n&gt; or directory\n\nThis is a basic JDK installation problem and has nothing to do with JUnit&#39;s \ntest runner. You&#39;ll probably have the same error while trying to run any \njava GUI. Read the JDK 1.4.1 installation guide, especially its \nrequirements section.\n\nBut, while we&#39;re already here, it looks like you don&#39;t have the correct \nlibstdc++ installed (or it might be installed in a non-standard way).\n\nrun\nldd /usr/java/j2sdk1.4.1_01/jre/lib/i386/libfontmanager.so\n\nand you should get something like \n\nlibstdc++-libc6.1-1.so.2 =&gt; /usr/lib/libstdc++-libc6.1-1.so.2 (0x400f0000)\n(also listed some other libraries).\n\nlibstdc++-libc6.1-1.so.2 is in libstdc++2.10-2.96-0.76mdk package, at least \non Mandrake 8.2.\n\ndavor@lothar ~ $ rpm -qf /usr/lib/libstdc++-libc6.1-1.so.2\nlibstdc++2.10-2.96-0.76mdk\n\nRedhat 7.3 should have a similar file and it should be in /usr/lib.\n\nSo, if you don&#39;t have libstdc++ installed, install it. If you do have it \ninstalled, then check if you have /usr/lib in /etc/ld.so.conf. If not, add \nit and run ldconfig. If it still doesn&#39;t work, check that libstdc++ is \ninstalled correctly, e.g. all the simbolic links are created correctly. \nHere&#39;s what I have\n\ndavor@lothar /usr/lib $ ls -l libstdc++-*\n-rw-r--r--    1 root     root       452342 Feb 21  2002 \nlibstdc++-3-libc6.2-2-2.10.0.a\n-r-xr-xr-x    1 root     root       299756 Feb 21  2002 \nlibstdc++-3-libc6.2-2-2.10.0.so*\nlrwxrwxrwx    1 root     root           24 Jul 21 22:56 \nlibstdc++-libc6.1-1.so.2 -&gt; libstdc++-libc6.2-2.so.3*\nlrwxrwxrwx    1 root     root           30 Jul 25 07:46 \nlibstdc++-libc6.2-2.a.3 -&gt; libstdc++-3-libc6.2-2-2.10.0.a\nlrwxrwxrwx    1 root     root           31 Jul 21 22:56 \nlibstdc++-libc6.2-2.so.3 -&gt; libstdc++-3-libc6.2-2-2.10.0.so*\n\n-- \ndavor.cengija@...\n\n\n\n", 
+    "subject": "Re: Experience an UnsatisfiedLinkError when using the swing or awt ui of TestRunner."
+}

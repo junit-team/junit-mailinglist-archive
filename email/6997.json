@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 6998, 
+    "senderId": "jkCBTlMkuphl3eVClsmiiw_duGRulD-pCUeBAvTbyimOiWTvpS3pDmUJvpLk1IcN91GjkO3KD6STN11ZxneRCWtmLVLBn3NuxpnarfeKajfnV3gRFWZs", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing multi-threads access to one database", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... It s one solution.  It has the drawback that you can t use the reflection mechanism to create your TestSuite.  If you want to do so, you ll have to do", 
+    "msgId": 6997, 
+    "profile": "vbossica", 
+    "topicId": 6994, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "messageBody": "<div id=\"ygrps-yiv-1501876161\"><blockquote><span title=\"ireply\">&gt; Now the test is successful, however, I have very skeptical about it.  I<br/>\n&gt; don&#39;t know if it&#39;s ok to pass the<br/>\n&gt;     testDatabase to the test case like this<br/>\n<br/>\n </span></blockquote>It&#39;s one solution.  It has the drawback that you can&#39;t use the <br/>\nreflection mechanism to create your TestSuite.  If you want to do so, <br/>\nyou&#39;ll have to do something like this (in the suite() method of your <br/>\nHelper):<br/>\n<br/>\nsuite = new TestSuite(DataLockTestHelper.class);<br/>\nreturn new TestSetup(suite) {<br/>\n   Database database;<br/>\n   public void setUp() {<br/>\n      // start the database<br/>\n      for (int ii = 0; ii &lt; fTests.testCount(); ii++) {<br/>\n          MyTestCase test = (FilerTestCase) fTests.testAt(ii);<br/>\n          test.setDatabase(database);<br/>\n       }<br/>\n   }<br/>\n   public void tearDown() {<br/>\n      // stop the database<br/>\n   }<br/>\n};<br/>\n<br/>\nAnother solution is to use a static variable to hold your database.  You <br/>\ncan use the ResourceManager of the JUnit-addons package for this purpose.<br/>\n<br/>\nhth<br/>\n<br/>\n-Vladimir<br/>\n<br/>\n-- <br/>\nVladimir R. Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 6996, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1045673320", 
+    "canDelete": false, 
+    "nextInTopic": 7002, 
+    "prevInTopic": 6994, 
+    "headers": {
+        "inReplyToHeader": "PDFlOC4yM2NiMGIwLjJiODQ3ODk3QGFvbC5jb20+", 
+        "messageIdInHeader": "PDNFNTNCNTY4LjIwNDA0MDZAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PDFlOC4yM2NiMGIwLjJiODQ3ODk3QGFvbC5jb20+"
+    }
+}

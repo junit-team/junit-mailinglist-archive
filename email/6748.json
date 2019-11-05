@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 6749, 
+    "senderId": "BSeMZhtboVgCFYz0U96_qn2L4Zxq382BLG4Dl0rG-y75UxfzmYcOBgP_EpN2rWFb70lRmgSxHiTPUolefygXTBeg1dptaZmPSgfwqtS4Ww", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] When can you NOT use Mock objects?", 
+    "from": "&quot;Scott Stirling&quot; &lt;scottstirling@...&gt;", 
+    "authorName": "Scott Stirling", 
+    "msgSnippet": "... This is kind of a vague question.  But I can certainly think of a simple case where a mock object won t do, which is if you need to test a method that", 
+    "msgId": 6748, 
+    "profile": "jrun5", 
+    "topicId": 6744, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112036634, 
+    "messageBody": "<div id=\"ygrps-yiv-647399146\"><blockquote><span title=\"ireply\">&gt; -----Original Message-----<br/>\n&gt; From: tobemligado &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jasbell@...\">jasbell@...</a>&gt;<br/>\n&gt;<br/>\n&gt; Can someone explain a coding situation where a Mock object can not be<br/>\n&gt; used to solve a test case<br/>\n<br/>\n </span></blockquote>This is kind of a vague question.  But I can certainly think of a simple<br/>\ncase where a mock object won&#39;t do, which is if you need to test a method<br/>\nthat creates an object you want to mock, but doesn&#39;t provide a parameter by<br/>\nwhich the mock object can be introduced.<br/>\n<br/>\nTake the example posted yesterday in the &quot;Websphere Connection Pool&quot; thread,<br/>\nwhere I suggested passing a mock object implementation of ConnectionFactory<br/>\nin as a parameter instead of a real ConnectionFactory:<br/>\n<br/>\npublic Object  doMyThing(ConnectionFactory factory, String s)<br/>\n    Connection con = factory.getConnection();<br/>\n    // do stuff on the connection<br/>\n    con.close();<br/>\n    // and return the object.<br/>\n    return object;<br/>\n}<br/>\n<br/>\nBut if you had to test a method that created the ConnectionFactory inside<br/>\nthe method, you couldn&#39;t use a mock object.  You&#39;d have to refactor the<br/>\nmethod, or ask whoever owns it to.  :-&gt;<br/>\n<br/>\npublic Object  doMyThing(String s)<br/>\n    ConnectionFactory factory = getConnectionFactory();<br/>\n    Connection con = factory.getConnection();<br/>\n    // do stuff on the connection<br/>\n    con.close();<br/>\n    // and return the object.<br/>\n    return object;<br/>\n}<br/>\n<br/>\nA zanier solution to the second case there is to use AspectJ to add a<br/>\npointcut that advises the method to get a mock ConnectionFactory instead of<br/>\ndoing the real getConnectionFactory call.  That technique is described here:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www-106.ibm.com/developerworks/java/library/j-aspectj2/?loc=j\">http://www-106.ibm.com/developerworks/java/library/j-aspectj2/?loc=j</a><br/>\n<br/>\n<br/>\nBest,<br/>\nScott Stirling</div>", 
+    "prevInTime": 6747, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1043613880", 
+    "canDelete": false, 
+    "nextInTopic": 6752, 
+    "prevInTopic": 6746, 
+    "headers": {
+        "inReplyToHeader": "PGIxMTA0dCttNnR0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEtJRUhJQklPQkFFTEpBSElQTkhEQUVIQkNPQUEuc2NvdHRzdGlybGluZ0ByY24uY29tPg=="
+    }
+}

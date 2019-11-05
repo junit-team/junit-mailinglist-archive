@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20428, 
+    "senderId": "JP21fQofxWT_uEOM8CEYnaWiCkvfyxPI0v46pVqgTNcxbp3MLv-aVZyy0Qwxca3R9FI_m2KiFeSUsgxZ-LEWSj9t7A_aWXvVGeNrhpoGPy5t", 
+    "systemMessage": false, 
+    "subject": "Running parallel tests in JUnit4.4+", 
+    "from": "Daniel Brolund &lt;daniel.brolund@...&gt;", 
+    "authorName": "Daniel Brolund", 
+    "msgSnippet": "Hi all, I ve been looking around a bit for some sort of parallel execution of JUnit 4.4+ tests, but I didn t find much. So, I tried a few things myself and", 
+    "msgId": 20427, 
+    "profile": "daniel.brolund", 
+    "topicId": 20427, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 331284687, 
+    "messageBody": "<div id=\"ygrps-yiv-430583669\">Hi all,<br/>\n<br/>\nI&#39;ve been looking around a bit for some sort of parallel execution of<br/>\nJUnit 4.4+ tests, but I didn&#39;t find much.<br/>\n<br/>\nSo, I tried a few things myself and came up with the two examples below;<br/>\none is a parallel suite, and the other is for running parameterized test<br/>\ninstances in parallel. It is almost too simple for me to really believe<br/>\nin it. ;-)<br/>\n<br/>\nI would really like some feedback on it; things I&#39;ve missed, cases where<br/>\nit won&#39;t work etc.<br/>\n<br/>\n===========================================<br/>\n<br/>\npackage com.agical.junit;<br/>\n<br/>\nimport java.util.List;<br/>\n<br/>\nimport org.junit.internal.runners.InitializationError;<br/>\nimport org.junit.runner.Runner;<br/>\nimport org.junit.runner.notification.RunNotifier;<br/>\nimport org.junit.runners.Suite;<br/>\n<br/>\npublic class ParallelSuite extends Suite {<br/>\n<br/>\n    public ParallelSuite(Class&lt;?&gt; klass) throws InitializationError {<br/>\n        super(klass);<br/>\n    }<br/>\n<br/>\n    public ParallelSuite(Class&lt;?&gt; klass, Class&lt;?&gt;[] annotatedClasses) <br/>\n            throws InitializationError {<br/>\n        super(klass, annotatedClasses);<br/>\n    }<br/>\n<br/>\n    @Override<br/>\n    protected void runChildren(final RunNotifier runNotifier) {<br/>\n        final List&lt;Runner&gt; runners = getRunners();<br/>\n        runRunnersInParallel(runNotifier, runners);<br/>\n    }<br/>\n<br/>\n    public static void runRunnersInParallel(final RunNotifier<br/>\nrunNotifier, <br/>\n            final List&lt;Runner&gt; runners) {<br/>\n        Thread[] threads = new Thread[runners.size()];<br/>\n        for (int i = 0; i &lt; threads.length; i++) {<br/>\n            final int index = i;<br/>\n            threads[i] = new Thread(new Runnable() {<br/>\n                public void run() {<br/>\n                    runners.get(index).run(runNotifier);<br/>\n                }});<br/>\n            threads[i].start();<br/>\n        }<br/>\n        for (int i = 0; i &lt; threads.length; i++) {<br/>\n            try {<br/>\n                threads[i].join();<br/>\n            } catch (InterruptedException e) {<br/>\n                throw new RuntimeException(&quot;Couldn&#39;t join thread<br/>\nnicely&quot;, e);<br/>\n            }<br/>\n        }<br/>\n    }<br/>\n}<br/>\n<br/>\n===========================================<br/>\n<br/>\npackage com.agical.junit;<br/>\n<br/>\nimport java.util.List;<br/>\n<br/>\nimport org.junit.runner.Runner;<br/>\nimport org.junit.runner.notification.RunNotifier;<br/>\nimport org.junit.runners.Parameterized;<br/>\n<br/>\npublic class ParallelAndParameterized extends Parameterized {<br/>\n<br/>\n    public ParallelAndParameterized(Class&lt;?&gt; klass) throws Exception {<br/>\n        super(klass);<br/>\n    }<br/>\n<br/>\n    @Override<br/>\n    protected void runChildren(final RunNotifier runNotifier) {<br/>\n        final List&lt;Runner&gt; runners = getRunners();<br/>\n        ParallelSuite.runRunnersInParallel(runNotifier, runners);<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\n===========================================<br/>\n<br/>\nThere is still some work needed to be done, but I would like to hear if<br/>\nI&#39;m totally on the wrong path.<br/>\n<br/>\nCheers<br/>\nDaniel</div>", 
+    "prevInTime": 20426, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1207234459", 
+    "canDelete": false, 
+    "nextInTopic": 20428, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDEyMDcyMzQ0NjEuMTgzNDcuNDAuY2FtZWxAZGFuaWVsLWt1YnVudHU+"
+    }
+}

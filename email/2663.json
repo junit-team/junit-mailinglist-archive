@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 2664, 
+    "senderId": "pL21XZ7ocq9MhO3m9nhidTXUpkUS9In452-E-RAwFWwG6mLt4ublz7HY0yZecgbzJqKkbkQGio-JyvA1B_UZTmlbi1ZgFEFT8Rv3rNtE0YOtaA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Proper use of TestReult", 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "One thing you have to understand is that when a assertion failed, the method is exited because an Error is thrown.  There is no way to avoid this unless you", 
+    "msgId": 2663, 
+    "topicId": 2662, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1133509955\">One thing you have to understand is that when a assertion failed, the method is exited because an Error is thrown.  There is no way to avoid this unless you write your own JUnit app.  I don&#39;t think that it&#39;s what you want...<br/>\n<br/>\nif you have 3 mendatory fields, you write 4 methods.  The first 3 test that you successfully see when fields are missing and the 4th to see if everything&#39;s fine when you have your 3 mendatory fields.  You have done quite the same thing (removing one field after another) but my approach is more simple.  <br/>\n<br/>\nRemember: &quot;keep tests simple&quot;.  The more complicated the test code is, the more likely you introduce errors in the test code.  The goal of unit testing is not to debug your test code :-)<br/>\n<br/>\nto implement the simpliest tests possible:<br/>\n<br/>\n- use the setUp() method to create your data object<br/>\n- create 4 tests methods (in my example it&#39;s 4)<br/>\n- remove one single mendatory field at the beginning of each test method<br/>\n- call the fail() method to tell JUnit that something wrong happend<br/>\n<br/>\nprivate Data data;<br/>\n<br/>\npublic void setUp () {<br/>\n  data = new Data();<br/>\n  data.put(...);<br/>\n}<br/>\n<br/>\npublic void testField1Missing () {<br/>\n  data.remove(...);<br/>\n  try {<br/>\n     profile = home.create(data);<br/>\n  } catch (IllegalFieldsFormatException e) {<br/>\n     // if home throws this excpetion when a field is missing, it&#39;s fine<br/>\n  }<br/>\n}<br/>\n<br/>\npublic void testAllFieldsOK () {<br/>\n  try {<br/>\n     profile = home.create(data);<br/>\n  } catch (IllegalFieldsFormatException e) {<br/>\n     fail(&quot;this execption should not have been thrown&quot;)<br/>\n  }<br/>\n}<br/>\n<br/>\nHope it helps<br/>\n<br/>\n-Vladimir</div>", 
+    "prevInTime": 2662, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1000493386", 
+    "canDelete": false, 
+    "nextInTopic": 2667, 
+    "prevInTopic": 2662, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDEwOTE0MTg0OTQ2LjEzMy5jcG10YUBjMDA3LnNudi5jcC5uZXQ+"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 6476, 
+    "senderId": "VLS1X9YixHoNNADFNFp3Bh-8NsdID3b-9o0W0Qw8r8pcaJjxzC0xOvPirT60epM9oaAQzudR9_UtvYHUoROCr5PlguU8UP6WA5lbbAWPmaFa5YFprdQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] New TestCase instance per test method?", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vbossica@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... yes.  For each methods testXYZ the methods of your TestCase object are called in the following order: setUp, testXYZ, tearDown. if you do some", 
+    "msgId": 6475, 
+    "profile": "vbossica", 
+    "topicId": 6474, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "messageBody": "<div id=\"ygrps-yiv-906146614\"><blockquote><span title=\"ireply\">&gt; My question is this - does jUnit instantiate my TestCase class for<br/>\n&gt; each test method that I have?<br/>\n<br/>\n </span></blockquote>yes.  For each methods &#39;testXYZ&#39; the methods of your TestCase object are <br/>\ncalled in the following order: setUp, testXYZ, tearDown.<br/>\n<br/>\nif you do some integration tests, you have to start/stop the server once <br/>\nfor all of your tests -&gt; use a TestSetup to &quot;encapsulate&quot; your main <br/>\ntestsuite.<br/>\n<br/>\n    Test suite() {<br/>\n       TestSuite suite = ...<br/>\n       suite.addTestSuite(...)<br/>\n<br/>\n       return new TestSetup(suite) {<br/>\n           public void setUp() {<br/>\n              /* start you server here */<br/>\n           }<br/>\n<br/>\n           public void tearDown() {<br/>\n              /* teardown your server here */<br/>\n           }<br/>\n       }<br/>\n    }<br/>\n<br/>\nThe tearDown method is not executed in a finally block, it means that if <br/>\nyou have errors/failures in your tests, the server will not be closed <br/>\nproperly.  To fix this, use the junitx.extension.TestSetup class of the <br/>\njunit-addons package (the tearDown is executed in a finally block).<br/>\n<br/>\nhth<br/>\n<br/>\n-Vladimir<br/>\n<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://junit-addons.sf.net\">http://junit-addons.sf.net</a>&gt;<br/>\n<br/>\n-- <br/>\nVladimir R. Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 6474, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1040140883", 
+    "canDelete": false, 
+    "nextInTopic": 6478, 
+    "prevInTopic": 6474, 
+    "headers": {
+        "inReplyToHeader": "PGF0bmd1NCs4M2U5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDNERkY0QTUzLjQwOTAxMDZAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PGF0bmd1NCs4M2U5QGVHcm91cHMuY29tPg=="
+    }
+}

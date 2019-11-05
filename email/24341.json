@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 24342, 
+    "senderId": "HJfiUKWXDipiO6N1AJcIj7LiMp7DgiMwDs6HBhIggi0EubMeMIEKTaH6RGP6b56lmC01KmcRogRJMmPsQfJZ3e3unMNiLA8", 
+    "systemMessage": false, 
+    "subject": "A way to log test execution (who is going to run/stop), FYI...", 
+    "from": "&quot;Oleskandr&quot; &lt;gavenkoa@...&gt;", 
+    "authorName": "Oleskandr", 
+    "msgSnippet": "Our build on Jenkins stuck on some test. Our *large* organisation forbid access to build server... So I want to find this broken test (seems to be DB related", 
+    "msgId": 24341, 
+    "profile": "gavenkoa", 
+    "topicId": 24341, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 463328153, 
+    "messageBody": "<div id=\"ygrps-yiv-1813554672\">Our build on Jenkins stuck on some test. Our *large* organisation forbid access to build server...<br/>\n<br/>\nSo I want to find this broken test (seems to be DB related test with using DbUnit).<br/>\n<br/>\nFirstly I think to run &#39;sed -i &quot;s=...=...=&quot; *Test.java&quot;&#39; on test sources. But this require to make fake commit to SVN and then revert history back.<br/>\n<br/>\nAfter googling I found:<br/>\n<br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"http://stackoverflow.com/questions/473401/get-name-of-currently-executing-test-in-junit-4\">http://stackoverflow.com/questions/473401/get-name-of-currently-executing-test-in-junit-4</a><br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"http://stackoverflow.com/questions/1069456/how-to-obtain-test-case-name-in-junit-4-at-runtime\">http://stackoverflow.com/questions/1069456/how-to-obtain-test-case-name-in-junit-4-at-runtime</a><br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"http://stackoverflow.com/questions/10222164/junit-4-test-annotation-reports-test-name-as-unknown\">http://stackoverflow.com/questions/10222164/junit-4-test-annotation-reports-test-name-as-unknown</a><br/>\n<br/>\nSo getting run test name is hard task. But I found &quot;listener&quot; keyword so next googling take me:<br/>\n<br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"http://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.html\">http://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.html</a><br/>\n<br/>\n  (Using custom listeners and reporters)<br/>\n<br/>\nand I end with implementation:<br/>\n<br/>\n    &lt;plugin&gt;<br/>\n        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;<br/>\n        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;<br/>\n        &lt;version&gt;2.13&lt;/version&gt;<br/>\n        &lt;configuration&gt;<br/>\n            &lt;reportFormat&gt;text&lt;/reportFormat&gt;<br/>\n            &lt;trimStackTrace&gt;false&lt;/trimStackTrace&gt;<br/>\n            &lt;useFile&gt;false&lt;/useFile&gt;<br/>\n            &lt;properties&gt;<br/>\n                &lt;property&gt;<br/>\n                    &lt;name&gt;listener&lt;/name&gt;<br/>\n                    &lt;value&gt;com.company.utils.LogTests&lt;/value&gt;<br/>\n                &lt;/property&gt;<br/>\n            &lt;/properties&gt;<br/>\n            &lt;includes&gt;<br/>\n                &lt;include&gt;com/company/core/**/*Test.java&lt;/include&gt;<br/>\n            &lt;/includes&gt;<br/>\n        &lt;/configuration&gt;<br/>\n    &lt;/plugin&gt;<br/>\n<br/>\n<br/>\n  import java.io.*;<br/>\n  import org.junit.runner.Description;<br/>\n  import org.junit.runner.notification.RunListener;<br/>\n<br/>\n  public class LogTests extends RunListener {<br/>\n<br/>\n      static PrintStream out = new PrintStream(new FileOutputStream(FileDescriptor.out));<br/>\n<br/>\n      public void testStarted(Description description) {<br/>\n          out.println(&quot;Test started:  &quot; + description.getDisplayName());<br/>\n      }<br/>\n<br/>\n      public void testFinished(Description description) {<br/>\n          out.println(&quot;Test finished: &quot; + description.getDisplayName());<br/>\n      }<br/>\n  }<br/>\n<br/>\nNext I add profile to pom.xml and configure build on Jenkins with &#39;-Pjunitlog&#39;.<br/>\n<br/>\nWhat is wonderful that JUnit got Listener support not so long time ago (near 4 years ago):<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"https://github.com/junit-team/junit/tree/r4.7\">https://github.com/junit-team/junit/tree/r4.7</a><br/>\n<br/>\n<br/>\nAre there any other ways to print test method name without putting System.out in each tests?</div>", 
+    "prevInTime": 24340, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1361539940", 
+    "canDelete": false, 
+    "nextInTopic": 24355, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGtnN3MxNCtmMGkwQGVHcm91cHMuY29tPg=="
+    }
+}

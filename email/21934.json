@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21935, 
+    "senderId": "RN7lP9wpOPpPm0yDB3yWl-5BHCYjsMm7oPQCfyrb79zF7_aYa-TfM6wmsZEzV1m7hDKbzA6IPN28n-ldNvQYEkczDpfIgJyi", 
+    "systemMessage": true, 
+    "subject": "assertThat() failure output doesn&#39;t allow Matcher to describe the mismatch", 
+    "from": "&quot;beckymc22&quot; &lt;beckymc22@...&gt;", 
+    "authorName": "beckymc22", 
+    "msgSnippet": "Hi, I recently upgraded to JUnit 4 and started exploring Matchers. I found that the org.junit.Assert.assertThat() method doesn t allow my Matcher s", 
+    "msgId": 21934, 
+    "profile": "beckymc22", 
+    "topicId": 21934, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 414844477, 
+    "messageBody": "<div id=\"ygrps-yiv-1490780239\">Hi,<br/>\n<br/>\nI recently upgraded to JUnit 4 and started exploring Matchers. I found that the org.junit.Assert.assertThat() method doesn&#39;t allow my Matcher&#39;s describeMismatch() method to influence the 2nd part of the failure output (the &quot;got:&quot; part), in my case it&#39;s not a String:<br/>\n<br/>\njava.lang.AssertionError: <br/>\nExpected: a CDR record with call ID: 12345678900<br/>\n     got: &lt;org.cafesip.sipexchange.ejbs.cdr.value.CdrRecord@1712b3a&gt;<br/>\n<br/>\n\tat org.junit.Assert.assertThat(Assert.java:778)<br/>\n\tat org.junit.Assert.assertThat(Assert.java:736)<br/>\n\tat org.cafesip.sipexchange.ejbs.cdr.tests.CdrServiceTest.testCdrCreation<br/>\n(CdrServiceTest.java:154)<br/>\n<br/>\n<br/>\nI think I see the reason for it in the code:<br/>\n<br/>\n\tpublic static &lt;T&gt; void assertThat(String reason, T actual,<br/>\n\t\t\tMatcher&lt;T&gt; matcher) {<br/>\n\t\tif (!matcher.matches(actual)) {<br/>\n\t\t\tDescription description= new StringDescription();<br/>\n\t\t\tdescription.appendText(reason);<br/>\n\t\t\tdescription.appendText(&quot;&#92;nExpected: &quot;);<br/>\n\t\t\tdescription.appendDescriptionOf(matcher);<br/>\n\t\t\tdescription.appendText(&quot;&#92;n     got: &quot;);<br/>\n\t\t\tdescription.appendValue(actual);<br/>\n\t\t\tdescription.appendText(&quot;&#92;n&quot;);<br/>\n\t\t\tthrow new java.lang.AssertionError(description.toString());<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n<br/>\nBut if I use the hamcrest assertThat() method, it calls my Matcher&#39;s describeMatch() method and I get something more useful:<br/>\n<br/>\njava.lang.AssertionError: <br/>\nExpected: a CDR record with call ID: 12345678900<br/>\n     but: the call ID was &quot;1234567890&quot;<br/>\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)<br/>\n\tat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)<br/>\n\tat org.cafesip.sipexchange.ejbs.cdr.tests.CdrServiceTest.testCdrCreation<br/>\n(CdrServiceTest.java:154)<br/>\n<br/>\n<br/>\nDid I miss something in using the JUnit version of assertThat? Or, it&#39;s not all there yet?<br/>\n<br/>\nThanks,<br/>\nBecky</div>", 
+    "prevInTime": 21933, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1253398392", 
+    "canDelete": false, 
+    "nextInTopic": 21939, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGg5M2wxbytzY2NjQGVHcm91cHMuY29tPg=="
+    }
+}

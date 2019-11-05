@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 15723, 
+    "senderId": "rUumYLuX9K7jm0tacFuGKBZwnwx9YdEbK4MhZ94iUqtg46dJJu1c_L8sIvhkHn41N3HgnI3qEJNeVm0GPypQRyMCtiTJUGju", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Junit NoClassDefError when attempting to access static members of a class", 
+    "from": "Mark Levison &lt;mlevison@...&gt;", 
+    "authorName": "Mark Levison", 
+    "msgSnippet": "Cedric thanks for the reply. ... That makes sense except if I remove the static from ErrorState and just use it as an instance variable everything works. So", 
+    "msgId": 15722, 
+    "rawEmail": "Return-Path: &lt;mlevison@...&gt;\r\nReceived: (qmail 53132 invoked from network); 23 Dec 2005 17:47:09 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m24.grp.scd.yahoo.com with QMQP; 23 Dec 2005 17:47:09 -0000\r\nReceived: from unknown (HELO n8a.bullet.scd.yahoo.com) (66.94.237.42)\n  by mta4.grp.scd.yahoo.com with SMTP; 23 Dec 2005 17:47:09 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.66.58] by n8.bullet.scd.yahoo.com with NNFMP; 23 Dec 2005 17:46:17 -0000\r\nReceived: from [66.218.66.88] by mailer7.bullet.scd.yahoo.com with NNFMP; 23 Dec 2005 17:46:16 -0000\r\nX-Sender: mlevison@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 6472 invoked from network); 22 Dec 2005 19:04:11 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m27.grp.scd.yahoo.com with QMQP; 22 Dec 2005 19:04:11 -0000\r\nReceived: from unknown (HELO nproxy.gmail.com) (64.233.182.197)\n  by mta6.grp.scd.yahoo.com with SMTP; 22 Dec 2005 19:04:11 -0000\r\nReceived: by nproxy.gmail.com with SMTP id m18so148619nfc\n        for &lt;junit@yahoogroups.com&gt;; Thu, 22 Dec 2005 11:03:36 -0800 (PST)\r\nReceived: by 10.48.254.13 with SMTP id b13mr106705nfi;\n        Thu, 22 Dec 2005 11:03:36 -0800 (PST)\r\nReceived: by 10.48.48.15 with HTTP; Thu, 22 Dec 2005 11:03:35 -0800 (PST)\r\nMessage-ID: &lt;f5cc41ca0512221103s48655f53g96f3cfcbeec30512@...&gt;\r\nDate: Thu, 22 Dec 2005 14:03:35 -0500\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;b86b6a9c0512211350o32c9257cub3aeb6e72d797b07@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;do74um+tfjk@...&gt;\n\t &lt;b86b6a9c0512211350o32c9257cub3aeb6e72d797b07@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Mark Levison &lt;mlevison@...&gt;\r\nSubject: Re: [junit] Junit NoClassDefError when attempting to access static members of a class\r\nX-Yahoo-Group-Post: member; u=190425386; y=Nf6janxWBwbUfjgVuZWGUj7G5Fr_AQfF-t6uX9Pm1x1bbUzxsiA\r\nX-Yahoo-Profile: marklevison\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 23 Dec 2005 17:46:16 -0000\r\n\r\nCedric thanks for the reply.\n\n&gt;  &gt; I have a JUnit (3.8.1) test (in eclipse =\r\n3.1) that attemps to access a\n&gt;  &gt; class for of statics:\n&gt;  &gt;\n&gt;  &gt; public f=\r\ninal class SpecifiersHelpers {\n&gt;  &gt;         public static final String DISP=\r\nLAY_NAME =3D &quot;A nice name&quot;;\n&gt;  &gt;         public static final ErrorState ERR=\r\nOR_STATE =3D new\n&gt;  &gt; ErrorState(&quot;foo&quot;, null);\n&gt;  &gt; ....\n&gt;  &gt; }\n&gt;  &gt;\n&gt;  &gt; A=\r\ns long as I only attempt to access primitive types I&#39;m ok. But as\n&gt;  &gt; soon=\r\n as I attempt to access ERROR_STATE or any other object from\n&gt;  &gt; Specifier=\r\nsHelpers, I get an NoClassDefError. From a little googling I\n&gt;  &gt; can tell =\r\nthat this is a class loading problem - but beyond that I\n&gt;  &gt; don&#39;t underst=\r\nand. The obvious workaround is just to avoid the use of\n&gt;  &gt; statics in thi=\r\ns situation. However, I want to understand what&#39;s going\n&gt;  &gt; on and how I c=\r\nan safely use statics. BTW I&#39;m using statics here to\n&gt;  &gt; create a number o=\r\nf commonly defined elements.\n&gt;\n&gt;\n&gt;  Probably one of these two things is hap=\r\npening:\n&gt;\n&gt;  - ErrorState is not in your classpath at runtime\n\nThat makes s=\r\nense except if I remove the static from ErrorState and\njust use it as an in=\r\nstance variable everything works. So there is\nsomething about creating Erro=\r\nrState as a static that happens before\nthe class is loaded.\n\n&gt;  - If it is,=\r\n its constructor is throwing an exception\n\nIts a very simple constructor - =\r\njust assign a pair of local variables\n- no exceptions to be thrown.\n\nMark\n-=\r\n---------------------------------------------------------------------\nBlog:=\r\n http://dotnetjunkies.com/WebLog/mlevison/\n\n\n\n", 
+    "profile": "marklevison", 
+    "topicId": 15718, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190425386, 
+    "prevInTime": 15721, 
+    "contentTrasformed": false, 
+    "postDate": "1135278215", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15720, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDUxMjIxMTM1MG8zMmM5MjU3Y3ViM2FlYjZlNzJkNzk3YjA3QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PGY1Y2M0MWNhMDUxMjIyMTEwM3M0ODY1NWY1M2c5NmYzY2ZjYmVlYzMwNTEyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGRvNzR1bSt0ZmprQGVHcm91cHMuY29tPgkgPGI4NmI2YTljMDUxMjIxMTM1MG8zMmM5MjU3Y3ViM2FlYjZlNzJkNzk3YjA3QG1haWwuZ29vZ2xlLmNvbT4="
+    }
+}

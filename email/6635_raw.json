@@ -1,0 +1,29 @@
+{
+    "topicId": 6634, 
+    "postDate": "1042161582", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Celis &lt;shane.celis@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "lbVHIxnmNVWBROqKGWP6b9RQk8eE5Fr_GBO4iT1O-VVVWtJBa36CiviCSTQxOqO0uHOJ8tY6Chfx5kB8IHKwnWrM1dKBuc6A", 
+    "nextInTime": 6636, 
+    "userId": 132411217, 
+    "prevInTime": 6634, 
+    "prevInTopic": 6634, 
+    "headers": {
+        "inReplyToHeader": "PGF2a25jYitwYW5kQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDk4RjhCOTE2LTI0MzktMTFENy04QzM2LTAwMzA2NUY5QTgwRUBzdW4uY29tPg=="
+    }, 
+    "authorName": "Shane Celis", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "This is likely to stir up some debate, because many tests can be written that don t require any asserts.  So a test shouldn t be judged by the number of", 
+    "contentTrasformed": false, 
+    "msgId": 6635, 
+    "nextInTopic": 6638, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;shane.celis@...&gt;\r\nReceived: (qmail 72825 invoked by uid 7800); 10 Jan 2003 15:57:04 -0000\r\nX-Sender: shane.celis@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 10 Jan 2003 01:19:37 -0000\r\nReceived: (qmail 86598 invoked from network); 10 Jan 2003 01:19:37 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m9.grp.scd.yahoo.com with QMQP; 10 Jan 2003 01:19:37 -0000\r\nReceived: from unknown (HELO nwkea-mail-1.sun.com) (192.18.42.13)\n  by mta2.grp.scd.yahoo.com with SMTP; 10 Jan 2003 01:19:40 -0000\r\nReceived: from dm-usca19-13.red.iplanet.com (host-179-56-18-192.iplanet.com [192.18.56.179] (may be forged))\n\tby nwkea-mail-1.sun.com (8.9.3+Sun/8.9.3) with ESMTP id RAA18981\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 9 Jan 2003 17:19:40 -0800 (PST)\r\nReceived: from ms-usca15-11.red.iplanet.com (ms-usca15-11.red.iplanet.com [192.18.56.153])\n\tby dm-usca19-13.red.iplanet.com (8.10.2+Sun/8.10.2/IPLANET,v1.1) with ESMTP id h0A1J0a16602\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 9 Jan 2003 17:19:00 -0800 (PST)\r\nReceived: from sun.com ([10.5.50.215])\n by ipost.red.iplanet.com (iPlanet Messaging Server 5.2 (built Feb 21 2002))\n with ESMTP id &lt;0H8H00HPE50R4I@...&gt; for\n junit@yahoogroups.com; Thu, 09 Jan 2003 17:19:39 -0800 (PST)\r\nDate: Thu, 09 Jan 2003 17:19:42 -0800\r\nSubject: Re: [junit] How to count test assertions\r\nIn-reply-to: &lt;avkncb+pand@...&gt;\r\nTo: junit@yahoogroups.com\r\nMessage-id: &lt;98F8B916-2439-11D7-8C36-003065F9A80E@...&gt;\r\nMIME-version: 1.0\r\nX-Mailer: Apple Mail (2.551)\r\nContent-type: text/plain; charset=US-ASCII; format=flowed\r\nContent-transfer-encoding: 7BIT\r\nFrom: Shane Celis &lt;shane.celis@...&gt;\r\nX-Yahoo-Group-Post: member; u=132411217\r\nX-eGroups-Approved-By: nails762 &lt;jbr@...&gt; via email; 10 Jan 2003 15:57:04 -0000\r\n\r\nThis is likely to stir up some debate, because many tests can be \nwritten that don&#39;t require any asserts.  So a test shouldn&#39;t be judged \nby the number of asserts it uses.  (However, I have been in situations \nwhere I did flush out a test by adding more asserts and the fact that \nthe output looked no different was somewhat disappointing.)\n\nI&#39;m tempted to say that the generated tests is what you should look \ninto, rather than JUnit.  For example, if your generated test put \nsomething like this into the body:\n\nthrow new Exception(&quot;Test Not Yet Implemented&quot;);\n\nThen you would have a complete TODO list of all the methods you&#39;ve left \nto write tests for and wouldn&#39;t be receiving these false positives.  \nBut having a ton of errors coming from your tests isn&#39;t a great \nsolution either.  It would be nice if JUnit provided a means for test \ngenerators to inform JUnit like so:\n\nAuto generated tests might look like:\n\nvoid testFoo() {\n\tthrow new NotYetImplementedException();\n}\n\nOutput might look like:\n\n.......F\n[/snip]\nFAILURES!!!\nTests run: 8,  Failures: 1,  Errors: 0,  NYI: 302\n\n-shane\n\n\nOn Thursday, January 9, 2003, at 12:51  PM, SteveKelem \n&lt;s_kelem@...&gt; wrote:\n\n&gt; JUnit (3.8.1) counts the number of test methods that pass/fail.\n&gt; With some of the test generation methods, such as JUnitDoclet, empty\n&gt; methods are generated (a good thing) for each class. But when the\n&gt; tests are run, the generated document shows that all these methods\n&gt; pass (questionably good).  This gives a false sense that the code\n&gt; being tested is being tested, when it really isn&#39;t because the test\n&gt; bodies are empty.\n&gt;\n&gt; Is there a way to track the number of assertions that pass/fail\n&gt; instead of the number of methods that are invoked in the test classes?\n&gt;  This way the numbers reported (e.g., 122 tests run) would tend to\n&gt; imply better test coverage, or at least more actual tests executing,\n&gt; rather than lots of empty tests running.  (Yes, I know bad tests can\n&gt; be written that skew the results, but we don&#39;t need to go into that\n&gt; now.)\n&gt; This way more the classes for which tests haven&#39;t yet been written,\n&gt; but the skeleton is up and running, would show up in the report as 0\n&gt; tests run, rather than whatever number of test skeletons have been\n&gt; generated\n&gt; and may or may not be empty.\n&gt;\n&gt; Thanks,\n&gt; Steve Kelem\n\n\n", 
+    "subject": "Re: [junit] How to count test assertions"
+}

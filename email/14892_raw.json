@@ -1,0 +1,30 @@
+{
+    "topicId": 14869, 
+    "postDate": "1127322822", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "y8ZtGRKRdgHjAxLJ14CB1EXj2AjVcFhUQMcfF9L8ZkVjLzEaJJ3cHSvbRHVrCiRhBRhC7w_3YJEn9Sk2jdYW1MnoIAXL0UmKR6AxEJT48g", 
+    "nextInTime": 14893, 
+    "userId": 12653864, 
+    "prevInTime": 14891, 
+    "prevInTopic": 14891, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwOTIxMTcyMy4yMzM2Ni5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "messageIdInHeader": "PDQzMzE5NEM2LjgwNzAxMDVAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "referencesHeader": "PGRncWdhdStxYTQ1QGVHcm91cHMuY29tPiA8MjAwNTA5MjExNjE3LjU4OTE2LmtlcnNAaHBsYi5ocGwuaHAuY29tPiA8NDMzMTdFQUYuOTA1MDIwMUBtZXRhbGFiLnVuYy5lZHU+IDwyMDA1MDkyMTE3MjMuMjMzNjYua2Vyc0BocGxiLmhwbC5ocC5jb20+"
+    }, 
+    "authorName": "Elliotte Harold", 
+    "numMessagesInTopic": 18, 
+    "msgSnippet": "... No, it is not sufficient though it might perhaps be necessary. Sufficiency would also require that Java had an API that could recognize these things. It", 
+    "contentTrasformed": false, 
+    "msgId": 14892, 
+    "nextInTopic": 14910, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;elharo@...&gt;\r\nX-Sender: elharo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 88343 invoked from network); 21 Sep 2005 17:13:54 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m27.grp.scd.yahoo.com with QMQP; 21 Sep 2005 17:13:54 -0000\r\nReceived: from unknown (HELO mail26.sea5.speakeasy.net) (69.17.117.28)\n  by mta3.grp.scd.yahoo.com with SMTP; 21 Sep 2005 17:13:54 -0000\r\nReceived: (qmail 30284 invoked from network); 21 Sep 2005 17:13:44 -0000\r\nReceived: from dsl254-067-087.nyc1.dsl.speakeasy.net (HELO [192.168.254.100]) (elharo@[216.254.67.87])\n          (envelope-sender &lt;elharo@...&gt;)\n          by mail26.sea5.speakeasy.net (qmail-ldap-1.03) with AES256-SHA encrypted SMTP\n          for &lt;junit@yahoogroups.com&gt;; 21 Sep 2005 17:13:43 -0000\r\nMessage-ID: &lt;433194C6.8070105@...&gt;\r\nDate: Wed, 21 Sep 2005 13:13:42 -0400\r\nUser-Agent: Thunderbird 1.4 (Macintosh/20050908)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;dgqgau+qa45@...&gt; &lt;200509211617.58916.kers@...&gt; &lt;43317EAF.9050201@...&gt; &lt;200509211723.23366.kers@...&gt;\r\nIn-Reply-To: &lt;200509211723.23366.kers@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Elliotte Harold &lt;elharo@...&gt;\r\nSubject: Re: [junit] How do i check if i am getting right output\r\nX-Yahoo-Group-Post: member; u=12653864; y=ZJ5GDvXJi3s88McfcZ7h3qOT9VO9kVU6NAlNhbsK0xGjEanH\r\n\r\nChris Dollin wrote:\n\n&gt; It is sufficient if such things exist, &quot;standard&quot; or not, on\n&gt; platforms supporting Java, &quot;modern&quot; or not. \n\nNo, it is not sufficient though it might perhaps be necessary. \nSufficiency would also require that Java had an API that could recognize \nthese things. It doesn&#39;t. To Java, files are byte sequences, nothing more.\n\n&gt; The program says &quot;read [or write] the next K bytes down this\n&gt; stream&quot;. If &quot;this stream&quot; happened to be connected to a record-\n&gt; oriented file, Java should do exactly what the program says -\n&gt; which is to invoke the filing-system call appropriate to writing \n&gt; to that file, I would have thought, not just splattering the\n&gt; bytes randomly into the file&#39;s blocks.\n\nNothing&#39;s random. It puts the data where the program says to put the \ndata, but it always treats the file as a sequence of bytes. Every API in \nJava for file access--FileInputStream, RandomAccessFile, FileChannel, \netc.--sees the file as a contiguous sequence of bytes. Any notion of \nrecord boundary is in the application logic, not the Java library.\n\n&gt; [Which is why Jena&#39;s RDF/XML writer uses line.separator at a\n&gt;  critical point; we had been generating RDF/XML that some \n&gt;  application running on Windows Did Not Like. Having the user\n&gt;  change it to a Modern Application wasn&#39;t an option.]\n\nYou may not realize it, but this risks creating malformed XML when your \nlibrary is used on certain IBM platforms. These things happen when you \nwrite to platform defaults that can be in active conflict with the \nrequirements of the format or protocol you&#39;re writing.\n\n-- \n﻿Elliotte Rusty Harold  elharo@...\nXML in a Nutshell 3rd Edition Just Published!\nhttp://www.cafeconleche.org/books/xian3/\nhttp://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim\n\n", 
+    "subject": "Re: [junit] How do i check if i am getting right output"
+}

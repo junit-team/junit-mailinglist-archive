@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 11447, 
+    "senderId": "_rGCPq8Po938gNWjDd_zqXFUek8idXxvhlzSNNqcfIiDDma1PZcM-qdTjaUXxk-q7BgbQemz17X5CNSYMqFkI2HimFImJIlgHQEYubiaIw1SUPybenLutPE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] PrivateAccessor - Failed static method invocation?", 
+    "from": "Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;", 
+    "authorName": "Mark Van Peteghem", 
+    "msgSnippet": "... The method you want to test is not static. There are two overloads for the function invoke in the class PrivateAccessor, one for static methods, one for", 
+    "msgId": 11446, 
+    "rawEmail": "Return-Path: &lt;Mark.Van.Peteghem@...&gt;\r\nReceived: (qmail 85711 invoked from network); 13 Jul 2004 16:29:45 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m24.grp.scd.yahoo.com with QMQP; 13 Jul 2004 16:29:45 -0000\r\nReceived: from unknown (HELO n26.grp.scd.yahoo.com) (66.218.66.82)\n  by mta1.grp.scd.yahoo.com with SMTP; 13 Jul 2004 16:29:44 -0000\r\nX-eGroups-Return: Mark.Van.Peteghem@...\r\nReceived: from [66.218.67.156] by n26.grp.scd.yahoo.com with NNFMP; 13 Jul 2004 16:27:18 -0000\r\nX-Sender: Mark.Van.Peteghem@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 63320 invoked from network); 13 Jul 2004 07:44:47 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m20.grp.scd.yahoo.com with QMQP; 13 Jul 2004 07:44:47 -0000\r\nReceived: from unknown (HELO apate.telenet-ops.be) (195.130.132.57)\n  by mta6.grp.scd.yahoo.com with SMTP; 13 Jul 2004 07:44:46 -0000\r\nReceived: from localhost (localhost.localdomain [127.0.0.1])\n\tby apate.telenet-ops.be (Postfix) with SMTP id 489ED2B417B\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 13 Jul 2004 09:44:36 +0200 (MEST)\r\nReceived: from q-mentum.com (D5763AB4.kabel.telenet.be [213.118.58.180])\n\tby apate.telenet-ops.be (Postfix) with ESMTP id 2D2992B4140\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 13 Jul 2004 09:44:36 +0200 (MEST)\r\nMessage-ID: &lt;40F39333.8030207@...&gt;\r\nDate: Tue, 13 Jul 2004 09:45:55 +0200\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ccv5it+igta@...&gt;\r\nIn-Reply-To: &lt;ccv5it+igta@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 195.130.132.57\r\nFrom: Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;\r\nSubject: Re: [junit] PrivateAccessor - Failed static method invocation?\r\nX-Yahoo-Group-Post: member; u=184823457\r\nX-Yahoo-Profile: mvp_be\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 13 Jul 2004 16:27:16 -0000\r\nX-eGroups-Remote-IP: 66.218.66.82\r\n\r\nleephilipreilly wrote:\n\n&gt; [snip]\n&gt; I have the following method:\n&gt;\n&gt; private void doSomething(Long someValue, String anotherValue) throws\n&gt; SomeException\n&gt; {\n&gt;    ...\n&gt; }\n&gt;\n&gt; I&#39;m my test, I do something like:\n&gt;\n&gt; try {\n&gt;   PrivateAccessor.invoke(\n&gt;      MyClass.class,\n&gt;      &quot;doSomething&quot;, \n&gt;      new Class[] {Long.class,String.class },\n&gt;      new Object[] {someValue, anotherValue});\n&gt; }\n&gt;\n&gt; catch (Throwable t) {\n&gt;   System.out.println(t.getMessage());\n&gt; }         \n\nThe method you want to test is not static. There are two overloads for \nthe function invoke in the class PrivateAccessor, one for static \nmethods, one for non-static methods. You seem to use the one for static \nmethods, since the first argument is a Class object, not an object of \nyour class.\n\nWhat you should do instead is:\n\nMyClass myObj = new MyClass;\ntry {\n  PrivateAccessor.invoke(\n     myObj,\n     &quot;doSomething&quot;, \n     new Class[] {Long.class,String.class },\n     new Object[] {someValue, anotherValue});\n}\n\ncatch (Throwable t) {\n  System.out.println(t.getMessage());\n}         \n\n-- \n  Mark Van Peteghem\n  http://www.q-mentum.com\n\n\n\n", 
+    "profile": "mvp_be", 
+    "topicId": 11435, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 184823457, 
+    "prevInTime": 11445, 
+    "contentTrasformed": false, 
+    "postDate": "1089704755", 
+    "canDelete": false, 
+    "nextInTopic": 11794, 
+    "prevInTopic": 11435, 
+    "headers": {
+        "inReplyToHeader": "PGNjdjVpdCtpZ3RhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwRjM5MzMzLjgwMzAyMDdAcS1tZW50dW0uY29tPg==", 
+        "referencesHeader": "PGNjdjVpdCtpZ3RhQGVHcm91cHMuY29tPg=="
+    }
+}

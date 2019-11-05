@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 24773, 
+    "senderId": "0iRQUqICfpR2iUSOJrRmi4vAqwePbHC9OzeYPqMW2NcgyCQppdxH2aTzvXXOlsfyWbkA1A8nnfpqihLKbGsBh0MB3p6XZ282UjkdeWoOw9s34BoTiT-aMEzapsL9", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Add message element to @Test?", 
+    "from": "=?UTF-8?Q?Kevin_Cooney_=E2=98=95?= &lt;kcooney@...&gt;", 
+    "authorName": "Kevin Cooney ☕", 
+    "msgSnippet": "Short version: use assertThrows(). I would recommend against using the expected parameter of @Test. It only allows you to assert that there exists some code", 
+    "msgId": 24772, 
+    "profile": "kevinwcooney", 
+    "topicId": 24771, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 347643069, 
+    "messageBody": "<div id=\"ygrps-yiv-1249542304\"><div dir=\"ltr\"><div>Short version: use assertThrows().</div><div><br></div><div>I would recommend against using the &#39;expected&#39; parameter of @Test. It only allows you to assert that there exists some code in the test method that throws an exception of the given type. The test can pass for the wrong reason. Also, there&#39;s no way to make assertions on the exception message or exception cause when you use @Test(expected = MyException.class).<br></div><div><br></div><div>I would also recommend against ExpectedException. I&#39;ve seen to many cases where it was used incorrectly (either doing validation after the method that is expected to throw, or using ExpectedException inside of helper method).</div><div><br><div>In JUnit 4.13 and JUnit 5, you will be able to use assertThrows() instead, which allows the test to isolate what part of the test method is expected to throw:</div><div><br></div><div><div><font face=\"monospace, monospace\">@Test<br>public void popWithEmptyStackShouldThrow() {</font></div><div><font face=\"monospace, monospace\">  Stack stack = new Stack();</font></div><div><font face=\"monospace, monospace\">  assertThrows(EmptyStackException.class, () -&gt; stack.pop());</font></div><div><font face=\"monospace, monospace\">}</font></div></div><div><br></div><div>Note that the JUnit 5 versions of assertThrows() allows you to specify a message or a supplier for a message. We didn&#39;t add a way to specify a message in JUnit 4.13; we could add it, but I&#39;ve seen some large teams use assertThrows() and no one has asked for a way to customize the exception message.</div><div><br></div><div>For JUnit 4.12 and below, I recommend good &#39;ol try...catch</div><div><div><br></div><div>The only safe use cases I see for the &#39;expected&#39; parameter of @Test are when the only thing the test method does is call a single method that is expected to throw. In that case, you can use &#39;expected&#39; and just give the test method a readable name:</div><div><br></div><div><font face=\"monospace, monospace\">private final MyObject myObject = new MyObject();</font></div><div><font face=\"monospace, monospace\"><br></font></div><div><font face=\"monospace, monospace\">@Test(expected = NullPointerException.class)<br>public void doSomething_paramMustNotBeNull() {</font></div><div><font face=\"monospace, monospace\">  myObject.doSomething(null);</font></div><div><font face=\"monospace, monospace\">}</font></div><div><br></div><div>That being said, once you get used to lambdas, the assertThrows() version is very readable:</div><div><br></div><div><div><font face=\"monospace, monospace\">@Test<br>public void doSomething_paramMustNotBeNull() {</font></div><div><font face=\"monospace, monospace\">  assertThrows(</font></div><div><font face=\"monospace, monospace\">      NullPointerException.class, () -&gt; myObject.doSomething(null));</font></div><div><font face=\"monospace, monospace\">}</font></div></div><div><div><div class=\"ygrps-yiv-1249542304gmail_extra\"><div><div class=\"ygrps-yiv-1249542304gmail_signature\"><br>-- Kevin<br></div></div>\n<br><blockquote><span title=\"qreply\"> <div class=\"ygrps-yiv-1249542304gmail_quote\">On Thu, Aug 31, 2017 at 10:13 AM, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:nick.radov@...\">nick.radov@...</a> [junit] <span dir=\"ltr\">&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;</span> wrote:<br><blockquote class=\"ygrps-yiv-1249542304gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex;\">\n\n\n<u></u>\n\n\n\n\n\n\n\n\n\n \n<div style=\"background-color:rgb(255,255,255);\">\n<span style=\"display:none;\"> </span>\n\n\n<div id=\"ygrps-yiv-1249542304gmail-m_-4319757940206689135ygrp-mlmsg\">\n  <div id=\"ygrps-yiv-1249542304gmail-m_-4319757940206689135ygrp-msg\">\n\n\n    <div id=\"ygrps-yiv-1249542304gmail-m_-4319757940206689135ygrp-text\">\n      \n      \n      <p>Would it make sense to enhance the @Test annotation with a new optional message element? Currently all of the Assert methods have overloaded forms including a message parameter in order to report what went wrong in human readable terms. However when you use the @Test annotation with an expected element to check that a particular exception was thrown there&#39;s no way to report a custom message back to the user.<br>\n<br>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://junit.org/junit4/javadoc/latest/org/junit/Test.html#expected()\">http://junit.org/junit4/ javadoc/latest/org/junit/Test. html#expected()</a><br>\n<br>\nAlternatively, could we add a method to the ExpectedException rule to set a custom failure message?<br>\n<br>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://junit.org/junit4/javadoc/latest/org/junit/rules/ExpectedException.html\">http://junit.org/junit4/ javadoc/latest/org/junit/ rules/ExpectedException.html</a></p>\n\n    </div>\n     \n\n    \n    <div style=\"color:rgb(255,255,255);height:0px;\"></div>\n\n\n</div>\n\n\n\n  \n\n\n\n\n\n\n</div></div></blockquote></div><br></span></blockquote></div></div></div></div></div></div>\n</div>", 
+    "prevInTime": 24771, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1504228744", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 24771, 
+    "headers": {
+        "inReplyToHeader": "PG9vOWczbStobHU0aWdAWWFob29Hcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBRFcwVXlUMk1HdmpURVhRS045Vk12cUptRFJoZW5BaFhKTUdGY0hnb2tXTmZ4YVNVd0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PG9vOWczbStobHU0aWdAWWFob29Hcm91cHMuY29tPg=="
+    }
+}

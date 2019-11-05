@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7780, 
+    "senderId": "KjEJRdRx5SlcABoEKTVpM921O4UdD8tKLi_cEAYXvsY9HX6_yl3_imCftdbiO-3GOVSyRjOyQRFWq32HGE48qMP5EbCscYbqzd9WikVKlw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] A test to verify that an event is generated", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Another excellent idea. Self-shunt is a simpler place to start. If you find that the TestCase needs to do more than be the event listener, then factor out the", 
+    "msgId": 7779, 
+    "profile": "nails762", 
+    "topicId": 7751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-495389737\">Another excellent idea. Self-shunt is a simpler place to start. If you find that the TestCase needs to do more than be the event listener, then factor out the event listener into a separate SpyEventListener class.<br/>\n<br/>\nTake care.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;So said Bernd on 4/18/2003 --------------------<br/>\n&gt;<br/>\n&gt;Kris, <br/>\n&gt;<br/>\n&gt;&gt; Does anyone see any problems that might arise in this test? <br/>\n&gt;....<br/>\n&gt;&gt;          currentThread.sleep(5000);<br/>\n&gt;&gt;          fail(&quot;Timed out waiting for the event.&quot;);<br/>\n&gt;<br/>\n&gt;If the event is not generated it takes looooong for the test to fail.<br/>\n&gt;<br/>\n&gt;&gt;  Is there <br/>\n&gt;&gt; a better/more prefered way to do this?<br/>\n&gt;<br/>\n&gt;as others said: avoid threading.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;and the listener may be the TestCase class itself<br/>\n&gt;(Is this called the &quot;self shunt&quot; pattern?):<br/>\n&gt;<br/>\n&gt;public MyTestCase extends TestCase implements MyEventListener{<br/>\n&gt;<br/>\n&gt;      public void somethingHappened(MyEvent event)<br/>\n&gt;      {<br/>\n&gt;            // e.g. inc counter<br/>\n&gt;            // e.g. add event to a list<br/>\n&gt;      }<br/>\n&gt;....<br/>\n&gt;}<br/>\n&gt;<br/>\n&gt;Bernd<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;&gt; Here is the code/pseudocode of the test case I came up with:<br/>\n&gt;&gt; <br/>\n&gt;&gt; public void testEventGenerated()<br/>\n&gt;&gt; {<br/>\n&gt;&gt;      MyClassThatFiresAnEvent myClass = new MyClassThatFiresAnEvent();<br/>\n&gt;&gt; <br/>\n&gt;&gt;      final Thread currentThread = Thread.currentThread();<br/>\n&gt;&gt; <br/>\n&gt;&gt;      myClass.addMyEventListener(new MyEventListener()<br/>\n&gt;&gt;      {<br/>\n&gt;&gt;          public void somethingHappened(MyEvent event)<br/>\n&gt;&gt;          {<br/>\n&gt;&gt;              currentThread.interrupt();<br/>\n&gt;&gt;          }<br/>\n&gt;&gt;      });<br/>\n&gt;&gt;                 <br/>\n&gt;&gt;      Thread thread = new Thread()<br/>\n&gt;&gt;      {<br/>\n&gt;&gt;          public void run()<br/>\n&gt;&gt;          {<br/>\n&gt;&gt;              myClass.callMethodThatFiresTheEvent();<br/>\n&gt;&gt;          }<br/>\n&gt;&gt;      };<br/>\n&gt;&gt;      thread.start();<br/>\n&gt;&gt;         <br/>\n&gt;&gt;      try<br/>\n&gt;&gt;      {<br/>\n&gt;&gt;          currentThread.sleep(5000);<br/>\n&gt;&gt;          fail(&quot;Timed out waiting for the event.&quot;);<br/>\n&gt;&gt;      }<br/>\n&gt;&gt;      catch(InterruptedException ie)<br/>\n&gt;&gt;      {<br/>\n&gt;&gt;          System.out.println(&quot;Expect this exception&quot;);<br/>\n&gt;&gt;      }<br/>\n&gt;&gt; }<br/>\n&gt;&gt; <br/>\n&gt;&gt; Thanks,<br/>\n&gt;&gt; Kris<br/>\n&gt;&gt; <br/>\n&gt;&gt; <br/>\n&gt;&gt; <br/>\n&gt;&gt; ------------------------ Yahoo! Groups Sponsor <br/>\n&gt;&gt; ---------------------~--&gt;<br/>\n&gt;&gt; Get 128 Bit SSL Encryption!<br/>\n&gt;&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/xaxhjB/hdqFAA/VygGAA/5cFolB/TM\">http://us.click.yahoo.com/xaxhjB/hdqFAA/VygGAA/5cFolB/TM</a><br/>\n&gt;&gt; --------------------------------------------------------------<br/>\n&gt;&gt; -------~-&gt;<br/>\n&gt;&gt; <br/>\n&gt;&gt; To unsubscribe from this group, send an email to:<br/>\n&gt;&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;&gt;  <br/>\n&gt;&gt; <br/>\n&gt;&gt; Your use of Yahoo! Groups is subject to <br/>\n&gt;&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt;&gt; <br/>\n&gt;&gt; <br/>\n&gt;&gt; <br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Yahoo! Groups Sponsor<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;To unsubscribe from this group, send an email to:<br/>\n&gt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service.<br/>\n </span></blockquote>J. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 7778, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1050690758", 
+    "canDelete": false, 
+    "nextInTopic": 7780, 
+    "prevInTopic": 7778, 
+    "headers": {
+        "inReplyToHeader": "PDAwMWEwMWMzMDU3YiQ1N2JlOTU1MCQxZjAzYThjMEBkZWxsPg==", 
+        "messageIdInHeader": "PDIwMDMwNDE4MTQzMjM4MDM1Ni4wMDJDMzgyRkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDAwMWEwMWMzMDU3YiQ1N2JlOTU1MCQxZjAzYThjMEBkZWxsPg=="
+    }
+}

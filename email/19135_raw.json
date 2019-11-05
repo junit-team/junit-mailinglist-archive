@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19136, 
+    "senderId": "5e0g4Ze13smE8bZN5VE2T2FLOgcPPKfq2SLc6ieYu7iTMaa_BueU4T_tFCdOnDN8Ka4rTzQM5SX74Ccp6uYmjIOg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing/Debugging JNLP Applications: can it be done?", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Luigi, Have you tried using mock objects to implement the JNLP services?  I don t have experience with JNLP, but Eclipse plug-ins have many of the same", 
+    "msgId": 19135, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 37661 invoked from network); 23 Mar 2007 23:00:21 -0000\r\nReceived: from unknown (66.218.66.72)\n  by m25.grp.scd.yahoo.com with QMQP; 23 Mar 2007 23:00:21 -0000\r\nReceived: from unknown (HELO ug-out-1314.google.com) (66.249.92.172)\n  by mta14.grp.scd.yahoo.com with SMTP; 23 Mar 2007 23:00:21 -0000\r\nReceived: by ug-out-1314.google.com with SMTP id x30so1132680ugc\n        for &lt;junit@yahoogroups.com&gt;; Fri, 23 Mar 2007 16:00:17 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;\n        b=KOn/1ZC5uwZHIc1vODy33fEWQureWuFneX2zuA7FO0Xnhly0bbO2jACaN/yRiUfK1XsPd260AdywJIE6dDLj0PCxGvpYpuYZT8giJq3314SZGRK2L1cA1nLDHtHpEPwvHoophWXcyaRheQlYHtHPwh1Q9crikqhTUNvWxp7NMR0=\r\nReceived: by 10.114.195.19 with SMTP id s19mr1439565waf.1174690816582;\n        Fri, 23 Mar 2007 16:00:16 -0700 (PDT)\r\nReceived: by 10.114.135.19 with HTTP; Fri, 23 Mar 2007 16:00:16 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90703231600s2637341co6c6128b76520c8f3@...&gt;\r\nDate: Fri, 23 Mar 2007 19:00:16 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;eu0a57+bgn8@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;eu0a57+bgn8@...&gt;\r\nX-Google-Sender-Auth: 87d784a2130c7e87\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Testing/Debugging JNLP Applications: can it be done?\r\nX-Yahoo-Group-Post: member; u=139771899; y=GkEBfn2bumdziIgpkJuuobZvYaEQVwEvk6fmgAeeTQs\r\nX-Yahoo-Profile: dsaff\r\n\r\nLuigi,\n\nHave you tried using mock objects to implement the JNLP services?  I\ndon&#39;t have experience with JNLP, but Eclipse plug-ins have many of the\nsame restrictions (it&#39;s impossible to get most services without a\nsignficant container start-up overhead), and mocks really help me\nthere.\n\nGood luck,\n\n   David Saff\n\nOn 3/23/07, Luigi Lauro &lt;luigi.lauro@...&gt; wrote:\n&gt; I&#39;ve found out on my own skin that it&#39;s very hard to test JNLP-enabled applications (Java\n&gt; Web Start).\n&gt;\n&gt; This is because the jnlp service implementations such  as PersistenceServiceImpl and\n&gt; BasicServiceImpl get only loaded at JVM  startup time when java is launched from the\n&gt; javaws executable, which needs a full fledged jnlp package (.jnlp file, jar archives, etc...).\n&gt;\n&gt; This makes testing jnlp-based classes very hard,  since automated testing with JUnit or\n&gt; debugging with an IDE is out of discussion AFAIK.\n&gt;\n&gt; I&#39;ve tried manually including my Mac OS X Java6 javaws.jar (which  contains the system-\n&gt; dependent implementation classes for the JNLP  interfaces) and manually initializing and\n&gt; loading the services, but it all fails horribly because of several missing things (mostly\n&gt; missing system properties, which impl classes expect, and are  probably set up by javaws\n&gt; or some other yet-to-be-found class).\n&gt;\n&gt; It can _PROBABLY_ be done by tinkering with it and slowly adding everything needed by\n&gt; going exception and after exception manually  putting in the tidbits impl classes expect,\n&gt; but it&#39;s for sure a long  and tedious work, and I guess it would be strongly platform-\n&gt; dependent (for example, I&#39;ve noticed the impl classes in javaws varies consistently  on the\n&gt; various platforms, and so do JNLP expected system properties).\n&gt;\n&gt; Or, maybe, if I am REALLY lucky, I can find a JNLPInitializerWhatever class, with a\n&gt; &#39;startmeup&#39; method for setting  everything. Dreaming is not a crime you know? :P\n&gt;\n&gt; Any help here is SERIOUSLY appreciated, I&#39;m currently losing hours and hours each day\n&gt; because I have to deploy a full JNLP java package in order to test jnlp-enabled application,\n&gt; and I can&#39;t debug them at all.\n&gt;\n&gt; Also, automated JUnit testing can&#39;t presently be done AFAIK.\n&gt;\n&gt; Anyone knows a solution, or can give me some hints about this problem?\n&gt;\n&gt; Thanks in advance for any answer\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19132, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19134, 
+    "contentTrasformed": false, 
+    "postDate": "1174690816", 
+    "canDelete": false, 
+    "nextInTopic": 19136, 
+    "prevInTopic": 19134, 
+    "headers": {
+        "inReplyToHeader": "PGV1MGE1NytiZ244QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwMzIzMTYwMHMyNjM3MzQxY282YzYxMjhiNzY1MjBjOGYzQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGV1MGE1NytiZ244QGVHcm91cHMuY29tPg=="
+    }
+}

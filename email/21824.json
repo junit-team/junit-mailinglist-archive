@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 21825, 
+    "senderId": "AuRwpFZ1SpJKslHHsElcyqNISV-d9MQvd9vbYVWvSyOQn_hbyuOcoet2LXtSZWw7LFblHmkyX71GlK4MPCFIHesIxyhL", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Can I capture Stdandard Output of a test", 
+    "from": "Mike Forsberg &lt;bigmike@...&gt;", 
+    "authorName": "Mike Forsberg", 
+    "msgSnippet": "The thing to think about is, with what is the class really collaborating.  If a class requires to dump something to standard out, you might think about the", 
+    "msgId": 21824, 
+    "profile": "bigmike_f", 
+    "topicId": 21819, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89428055, 
+    "messageBody": "<div id=\"ygrps-yiv-1131713153\">The thing to think about is, with what is the class &quot;really&quot;<br/>\ncollaborating.  If a class requires to dump something to standard out,<br/>\nyou might think about the following pattern.<br/>\n<br/>\nclass Foz {<br/>\n<br/>\npublic Foz (..., PrintStream out) {<br/>\n// link in collaborators but do no work.<br/>\n}<br/>\n<br/>\npublic void methodThatDoesWork() {<br/>\n// do the work.<br/>\n}<br/>\n<br/>\npublic static final void main(String[] args) {<br/>\n   Foz theFoz = new Foz(..., System.out);<br/>\n   theFoz.methodThatDoesWork();<br/>\n}<br/>\n<br/>\n}<br/>\n<br/>\nAs you can see, this leads to much more testable code.  You now can,<br/>\nin your tests, insert your own PrintStream that records all the<br/>\noutput.  The parse and verify as needed.  It also cleans up the test<br/>\noutput, which should not be polluted with stray System.out calls.<br/>\n<br/>\nHope I helped,<br/>\n<br/>\nBig Mike<br/>\n<br/>\nP.S. I learned this from <a rel=\"nofollow\" target=\"_blank\" href=\"http://misko.hevery.com/code-reviewers-guide/\">http://misko.hevery.com/code-reviewers-guide/</a><br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Fri, Jul 17, 2009 at 2:19 PM, cant_jim&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jimcant@...\">jimcant@...</a>&gt; wrote:<br/>\n&gt; How can I capture the standard output of test?  I need to check that the messages from the class I&#39;m testing are correct.  For example if my class class calls a parser that print &quot;invalid input at line xx&quot; when it fails, I want to be able go catch that output and compare it to the expected value.  If it could be directed to a file on a per-test basis, I could do a diff to check it.<br/>\n&gt;<br/>\n&gt; Any suggestions would be appreciated.<br/>\n&gt;<br/>\n&gt; Thanks,<br/>\n&gt;<br/>\n&gt; Jim Cant<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21823, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1247920496", 
+    "canDelete": false, 
+    "nextInTopic": 21825, 
+    "prevInTopic": 21819, 
+    "headers": {
+        "inReplyToHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGE1MjdmZGRmMDkwNzE4MDUzNHI0ZWJiNGIyNHVmNzFiODA4OTJiYWNmNjgyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg=="
+    }
+}

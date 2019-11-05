@@ -1,0 +1,28 @@
+{
+    "topicId": 262, 
+    "postDate": "979939265", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Kevin Bourrillion &lt;kevinb@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "lc-N4zUdTxKMeGEhnnFEde4ngVNIYjAq2MNABdxbrWcLKsAxVg24IP1l0vtxpJc8z8_Zd6qg-g7tbksHJoEImOYBmioEyuSWx2zdcg", 
+    "nextInTime": 263, 
+    "userId": 0, 
+    "prevInTime": 261, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDU5Mzk2QTYzMjJBN0Q0MTFBNDUxMDAwMkIzMEExMjJBNTcwMUJBQGVtYWlsLm1vZGVsdDEuY29tPg=="
+    }, 
+    "authorName": "Kevin Bourrillion", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "I don t think I understand ActiveTestSuite. The best I can tell, I should be able to run the same suite simultaneously in multiple threads by doing this: ", 
+    "contentTrasformed": false, 
+    "msgId": 262, 
+    "nextInTopic": 288, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;kevinb@...&gt;\r\nX-Sender: kevinb@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-7_0_1_2); 19 Jan 2001 21:25:30 -0000\r\nReceived: (qmail 39653 invoked from network); 19 Jan 2001 21:23:36 -0000\r\nReceived: from unknown (10.1.10.26) by l9.egroups.com with QMQP; 19 Jan 2001 21:23:36 -0000\r\nReceived: from unknown (HELO bgpmail1.modeln.com) (63.114.1.68) by mta1 with SMTP; 19 Jan 2001 21:23:36 -0000\r\nReceived: by email.modelt1.com with Internet Mail Service (5.5.2650.21) id &lt;DGHDD79L&gt;; Fri, 19 Jan 2001 13:21:50 -0800\r\nMessage-ID: &lt;59396A6322A7D411A4510002B30A122A5701BA@...&gt;\r\nTo: &quot;&#39;junit@egroups.com&#39;&quot; &lt;junit@egroups.com&gt;\r\nSubject: ActiveTestSuite confusion\r\nDate: Fri, 19 Jan 2001 13:21:05 -0800\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2650.21)\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: Kevin Bourrillion &lt;kevinb@...&gt;\r\n\r\nI don&#39;t think I understand ActiveTestSuite.\n\nThe best I can tell, I should be able to run the same suite simultaneously\nin multiple threads by doing this:\n\n    static Test createThreadedTest(Test test, int numThreads) {\n        TestSuite ats = new ActiveTestSuite();\n        for (int i = 0; i &lt; numThreads; i++)\n            ats.addTest(test);\n        return ats;\n    }\n\nAnd this does basically that.  But the problem is, all the threads are\nacting on the same actual TestCase instances.  Meaning that my test case\n&quot;firmament&quot; becomes pretty much useless--an object I initialize in setUp()\nmight have been mucked with by another thread by the time I use it!\n\nIt has other side effects too.  For example, suppose I have a TestListener\nthat records every test executed and the word &quot;PASS&quot; or &quot;FAIL&quot;.  Since JUnit\noffers no callback method when a test passes (apparently it goes against\ntheir philosophy), the only way to do this I&#39;ve found is to set a &quot;failed&quot;\nflag in addError() and addFailure() and check that flag in endTest().  But\nif you use ActiveTestSuite, I&#39;m sure you can figure out what can go wrong.\n\nSo, anyone know how ActiveTestSuite was intended to be used?  Documentation\nis very slight.\n\nThanks!\nKevin\n\n\n", 
+    "subject": "ActiveTestSuite confusion"
+}

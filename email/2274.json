@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 2275, 
+    "senderId": "0ePq9mEvBvuVIyvd4EaXSS9qQJYaX8AC6RJCCxBda27Nh_6wOpWzKEcoZIgskAwgXf5n1Y7t_1VHmW0QqWWeOPXqwleLMg4QlzEuWi9rKyEr", 
+    "systemMessage": false, 
+    "subject": "Testing for exceptions", 
+    "from": "&quot;Francois Beausoleil&quot; &lt;fbos44@...&gt;", 
+    "authorName": "Francois Beausoleil", 
+    "msgSnippet": "Hello everyone, I do not want to restart a polemic on the Exception discussions, but I think I found an easier way to test that a method throws a specific", 
+    "msgId": 2274, 
+    "topicId": 2274, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1166862018\">Hello everyone,<br/>\n<br/>\nI do not want to restart a polemic on the Exception discussions, but I think<br/>\nI found an easier way to test that a method throws a specific Exception.<br/>\nCheck out this usage code:<br/>\npublic class TestSomething extends TestCase {<br/>\n    .<br/>\n    .<br/>\n    .<br/>\n   public void testProperException() {<br/>\n        Syslog.debug(this, &quot;Before proper throws&quot;);<br/>\n        assertThrows(NoSuchMethodException.class, new ERunner() {    // &lt;--<br/>\nThis is what&#39;s new<br/>\n            public void run() throws Throwable {<br/>\n                throw new NoSuchMethodException();<br/>\n            }<br/>\n        });<br/>\n<br/>\n        // No AssertFailedError here, the method threw the expected<br/>\nexception<br/>\n    }<br/>\n<br/>\n    public void testImproperException() {<br/>\n        Syslog.debug(this, &quot;Before improper throws&quot;);<br/>\n        assertThrows(NoSuchMethodException.class, new ERunner() {    // &lt;--<br/>\nAnd here again<br/>\n            public void run() throws Throwable {<br/>\n                throw new Exception();<br/>\n            }<br/>\n        });<br/>\n<br/>\n        // AssertFailedError thrown here, the method did not throw the<br/>\nexpected exception<br/>\n    }<br/>\n}<br/>\n<br/>\nERunner is an interface in junit.framework that declares the one method (I<br/>\nwanted to use Runnable, but it does not throw anything, so cannot be used<br/>\nfor this purpose).  The anonymous inner-class throws or not an Exception.<br/>\nIf it does, the thrown Exception`s class is equaled against the<br/>\nexpectedThrowable parameter of the assertThrows method.  If they match,<br/>\nthat&#39;s good.  If not, then an AssertFailedError is thrown.<br/>\n<br/>\nAnother benefit of this method is that we do not have to declare every test<br/>\nmethod to throw Exception.  The ERunner&#39;s run method takes care of this for<br/>\nus.<br/>\n<br/>\nI would think that this usage might correct or alleviate many of the<br/>\nproblems that were discussed previously.  Since we are calling an<br/>\nassertSomething method, one can always add the assert counting mechanism to<br/>\nhis/her JUnit version and be assured that Exception assertions are counted<br/>\nproperly.<br/>\n<br/>\nThis usage would have one drawback:  It does not allow testing specific<br/>\nconditions on the Throwable object itself.  I have seen many people use<br/>\n&quot;assertEquals(true, success.getMessage().contains(&quot;foo&quot;) &gt; 0);&quot; in their<br/>\ncode.  We would need to add a specific method in the ERunner interface to<br/>\nhandle this case.  Either the method is provided with the thrown exception<br/>\nand it asserts whatever it wants, or we ask the ERunner to provide a string<br/>\nthat must be present in the throwable&#39;s getMessage().  This would also<br/>\nentail changing ERunner from an interface to an abstract class (run is<br/>\nabstract, whereas the other method would have a default blank<br/>\nimplementation).<br/>\n<br/>\nAnyway, these are my thoughts.  I would appreciate comments and suggestions<br/>\non this way of doing things.  Would anybody use it if it were in the<br/>\nFramework ?  I will provide the source code on request, or put it in the<br/>\nlist&#39;s archive if enough interest is generated.<br/>\n<br/>\nThank you,<br/>\nFrancois Beausoleil</div>", 
+    "prevInTime": 2273, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "997199817", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PERBVjcyWmtmekRza3FDNUV0clUwMDAwMDYzN0Bob3RtYWlsLmNvbT4="
+    }
+}

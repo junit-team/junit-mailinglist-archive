@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 20519, 
+    "senderId": "HWcYasLIlDqgfhX7VCl3VbuSReZ59P7Ht599ymhbuDBUOr3psByhydCI52fN014StLOHjaLXhQZjYuw-Cc_Mdm68R_dQtchVh-w9Enbv", 
+    "systemMessage": true, 
+    "subject": "Re: request for  enhancements", 
+    "from": "&quot;Roger Glover&quot; &lt;glover_roger@...&gt;", 
+    "authorName": "Roger Glover", 
+    "msgSnippet": "... Would it be possible to have Assert.fail(message, exception) method  in future version of the junit. I see this to be very critical for methods failing and", 
+    "msgId": 20518, 
+    "rawEmail": "Return-Path: &lt;glover_roger@...&gt;\r\nReceived: (qmail 7801 invoked from network); 5 Jun 2008 22:32:58 -0000\r\nReceived: from unknown (66.218.67.94)\n  by m44.grp.scd.yahoo.com with QMQP; 5 Jun 2008 22:32:58 -0000\r\nReceived: from unknown (HELO n38a.bullet.mail.sp1.yahoo.com) (66.163.168.132)\n  by mta15.grp.scd.yahoo.com with SMTP; 5 Jun 2008 22:32:58 -0000\r\nReceived: from [216.252.122.216] by n38.bullet.mail.sp1.yahoo.com with NNFMP; 05 Jun 2008 22:32:58 -0000\r\nReceived: from [66.218.69.4] by t1.bullet.sp1.yahoo.com with NNFMP; 05 Jun 2008 22:32:58 -0000\r\nReceived: from [66.218.66.81] by t4.bullet.scd.yahoo.com with NNFMP; 05 Jun 2008 22:32:58 -0000\r\nX-Sender: glover_roger@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 17345 invoked from network); 5 Jun 2008 19:29:02 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m52.grp.scd.yahoo.com with QMQP; 5 Jun 2008 19:29:02 -0000\r\nX-Received: from unknown (HELO n45a.bullet.mail.sp1.yahoo.com) (66.163.168.139)\n  by mta17.grp.scd.yahoo.com with SMTP; 5 Jun 2008 19:29:02 -0000\r\nX-Received: from [216.252.122.216] by n45.bullet.mail.sp1.yahoo.com with NNFMP; 05 Jun 2008 19:29:02 -0000\r\nX-Received: from [66.218.69.3] by t1.bullet.sp1.yahoo.com with NNFMP; 05 Jun 2008 19:29:02 -0000\r\nX-Received: from [66.218.67.199] by t3.bullet.scd.yahoo.com with NNFMP; 05 Jun 2008 19:29:02 -0000\r\nDate: Thu, 05 Jun 2008 19:29:01 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;g29ept+9r1d@...&gt;\r\nIn-Reply-To: &lt;g25scd+esa2@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;Roger Glover&quot; &lt;glover_roger@...&gt;\r\nSubject: Re: request for  enhancements\r\nX-Yahoo-Group-Post: member; u=151020962; y=DUvaBi0arltaaLP9s5Dd23OomtyiZ9CF6h_-7yKQ1boBnfS5Ei5p\r\nX-Yahoo-Profile: glover_roger\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 05 Jun 2008 22:32:57 -0000\r\n\r\n\n--- In junit@yahoogroups.com, &quot;nagendra.raja&quot; &lt;nagendra.raja@...&gt; wrote:\nWould it be possible to have Assert.fail(message, exception) method  in\nfuture version of the junit. I see this to be very critical for methods\nfailing and resulting in exceptions. this way user could simultaneously\nsay what is related message resulting failure along with the exact stack\ntrace.\nWhat would be the purpose? You get better information simply by letting\nthe original exception propagate. That is, by not intercepting it. If\nthe exception is a checked exception, simply add that exception type to\nthe test method&#39;s throws clause. In my opinion, more tests are crippled\nby trying to catch exceptions and &quot;re-throw&quot; them with fail() than by\nany other testing antipattern. The main, but not the only, legitimate\nuse of fail() is to cause test failure when you expected an exception to\nbe thrown but it was not. For example (JUnit 3):\npublic void testConnect_badURL() {\n     try {\n         service.setURL(&quot;https://bogus.site.danger.com&quot;);\n         service.connect();\n\n         fail(&quot;Should have thrown IOException&quot;);\n     } catch (java.io.IOException ioe) {\n         assertNotNull(ioe);\n         assertEquals(&quot;Unable to connect: https://bogus.site.danger.com&quot;,\n             ioe.getMessage());\n     }\n}\nIn the case where you are using what you expect is a good URL and it\nstill throws the bad URL exception, you should, instead 0f catching the\nexception and manufacturing a failure, just let it pass through and\ncause an error. For example:\npublic void testConnect_goodURL() throws java.io.IOException {\n     service.setURL(&quot;https://perfectly.legitimate.serviceURL.com&quot;);\n     HttpsURLConnection connection = (HttpsURLConnection)\nservice.connect();\n     assertNotNull(connection);\n}If the connect() method throws an exception here, this code gives you\nexactly what you are looking for, full exception message and stack trace\ndata, without resorting to try-catch and fail().\nAlso, junit does not give the count of no of test cases passed.. it says\ntotal, failed and errors only.. would be happy to see total passed and\nits % to encourage people to work on fixing others.\n\nAnother need, which I had been badly looking for was no of asserts which\nhave been executed.. this tells me how much of auto testing has been\ndone.\n\ni.e assertEquals() assertNotNull all these calls should have a way\nreport to total assertcounter.\nI have no opinion on any of these. I don&#39;t need them, but I can\nunderstand why someone else might want them.\n\n-- Roger Glover\n     Object Partners, Inc.\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "glover_roger", 
+    "topicId": 20515, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 151020962, 
+    "prevInTime": 20517, 
+    "contentTrasformed": false, 
+    "postDate": "1212694141", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20515, 
+    "headers": {
+        "inReplyToHeader": "PGcyNXNjZCtlc2EyQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGcyOWVwdCs5cjFkQGVHcm91cHMuY29tPg=="
+    }
+}

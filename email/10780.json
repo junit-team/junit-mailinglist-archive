@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10781, 
+    "senderId": "b4726iyapE-Ea0c7Ikdpht06pP0wHPawtva52TYaVCa1z1BzawsJNn8Lem30xiD0ACrHR4HWypQ8e1I3b-Ulr9c8pDXlhb2q_2E", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Best practice - should I fake, or depend on real world objects?", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "Short answer: do both? I think the more real approach would be preferable, for the reasons you describe.  I can see your point about how ugly the test code", 
+    "msgId": 10780, 
+    "profile": "zipwow", 
+    "topicId": 10756, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "messageBody": "<div id=\"ygrps-yiv-593494372\">Short answer: do both?<br/>\n<br/>\nI think the &quot;more real&quot; approach would be preferable, for the reasons<br/>\nyou describe.  I can see your point about how ugly the test code is<br/>\nlooking, and how unhelpful the serialization string is to reading the<br/>\ntest code.<br/>\n<br/>\nI think you could blend the two approaches with a testing-only &quot;mock&quot;<br/>\nsubclass that adds some setter methods.  The subclass would not change<br/>\nthe constructor or any public methods. This would allow you to write<br/>\nunit test code like:<br/>\n<br/>\npublic void nameTest() {<br/>\n    A a = newCreate(&quot;3492342,0,0,,,2,3,4,29394020&quot;);<br/>\n    a.setName(NAME);<br/>\n    testObj.doSOmething();<br/>\n    <br/>\n    assert(&quot;testObj did wrong thing&quot;,testObj.getName(),NAME);<br/>\n}<br/>\n<br/>\nFor the purposes of your application, the object&#39;s still immutable. <br/>\nThe subclass exists only in your testing codebase.  Your test setup<br/>\ncode isn&#39;t running concurrently with the unit under test, so threading<br/>\nissues aren&#39;t a problem.  You may have to make the fields of the<br/>\noriginal object protected rather than private, but I think that&#39;s a<br/>\nsmall price to pay.<br/>\n<br/>\nYou can then make yourself some &quot;basic&quot; classes accessible through some<br/>\nkind of fixture, to make the above test look more like:<br/>\n<br/>\npublic void nameTest() {<br/>\n    A a = getBasicThingForTheUISubsys();<br/>\n    a.setName(NAME);<br/>\n    .<br/>\n    .<br/>\n    .<br/>\n}<br/>\n<br/>\nThis lets the reader see that this test is just like the *other* test<br/>\nthat uses the basicThingForTheUISubsys() except it&#39;s looking at the<br/>\nname.<br/>\n<br/>\nThis is all just from the hip, let me know what you think.<br/>\n<br/>\n-Kevin Klinemeier<br/>\n<br/>\n<br/>\n__________________________________<br/>\nDo you Yahoo!?<br/>\nYahoo! Small Business $15K Web Design Giveaway <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://promotions.yahoo.com/design_giveaway/\">http://promotions.yahoo.com/design_giveaway/</a></div>", 
+    "prevInTime": 10779, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1081186076", 
+    "canDelete": false, 
+    "nextInTopic": 10790, 
+    "prevInTopic": 10756, 
+    "headers": {
+        "inReplyToHeader": "PEU1Qzc5MDQ5RDQ2MUQzMTFCODMxMDAwNjI5NTBCNTRBMDEyN0M0NjRAbnQtc3RvYy0wLnNicz4=", 
+        "messageIdInHeader": "PDIwMDQwNDA1MTcyNzU2LjY5NTExLnFtYWlsQHdlYjYwMzA1Lm1haWwueWFob28uY29tPg=="
+    }
+}

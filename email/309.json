@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 310, 
+    "senderId": "qXR12QiICDTFTjj-a9aGl3DOrZBhRTSHbMdE5THkKo-W21DUduvtFBnaSt0GqEpW86t5Xu2098I6IlGAACun42nR3P12Da0o-D9FbmAJ0w", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Programming By Contract", 
+    "from": "Andrew Clarke &lt;andrew.clarke@...&gt;", 
+    "authorName": "Andrew Clarke", 
+    "msgSnippet": "There are two issues here: (1)  Assertion failures are the bit of JUnit that deteremines whether your test has passed or failed.  If you catch", 
+    "msgId": 309, 
+    "topicId": 292, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1870812045\">There are two issues here:<br/>\n<br/>\n(1)  Assertion failures are the bit of JUnit that deteremines whether your<br/>\ntest has passed or failed.  If you catch AssertionFailedException in your<br/>\ntests you&#39;ll always get a green light!  <br/>\n<br/>\nNevertheless you are right to want to protect your users from failed<br/>\nassertions.  I would argue that you do this by not including any JUnit code<br/>\nin your deployment to the live environment.  Test cases & suites should be<br/>\nseparate bits of code.  I&#39;m working with Oracle JDeveloper (I must have been<br/>\nvery bad in a previous existence) and that has a Jar tool that allows you to<br/>\nexclude individual classes from a package.  I assume most other IDEs other<br/>\nsomething similar.<br/>\n<br/>\n(2)  Exceptions thrown by a failure in the code should be trapped.  That&#39;s<br/>\nobvious.  The question is whether they should be checked exceptions or not.<br/>\nChecked exceptions have to be caught but you don&#39;t have to do anything with<br/>\nthem.  This code:<br/>\n\ttry {<br/>\n\t\tdoSomeMethod();<br/>\n\t}\t<br/>\n\tcatch (Exception e) {}<br/>\n&quot;handles&quot; any checked exception thrown by doSomeMethod() but doesn&#39;t<br/>\nactually do anything with it.  <br/>\n<br/>\nI wrote a ExceptionHandler to generically handle exceptions (retrieve and<br/>\nformat meaningful error messages from database table, log serious errors,<br/>\netc.).  The problem is propagation: if you are throwing exceptions upwards<br/>\nyou can&#39;t have an error handler using checked exceptions otherwise you end<br/>\nup coding:<br/>\n\ttry {<br/>\n\t\tdoSomeMethod();<br/>\n\t}\t<br/>\n\tcatch (Exception e) {<br/>\n\t\ttry {<br/>\n\t\t\tdoErrorHandling(e);<br/>\n\t\t}<br/>\n\t\tcatch (PropagatedException pe) {<br/>\n\t\t}\t<br/>\n<br/>\n\t}<br/>\nand you&#39;re no better off!  That&#39;s why I sub-classed PropagatedException from<br/>\nRuntimeException.<br/>\n<br/>\nIMHO &quot;Programming By Contact&quot; is a cool idea but a pain to implement;<br/>\nconsequently unless there are adequate quality procedures in place<br/>\ndevelopers will circumvent checked exceptions whenever that&#39;s the easiest<br/>\noption (if my own behaviour is any yardstick).  If you&#39;re working in a<br/>\ncomponent-building shop by all means throw lots of bespoke exceptions.  Just<br/>\ndon&#39;t be under any illusions that the developers will do anything meaningful<br/>\nwith them  The catch(Exception e) {} compiles and at least the user is<br/>\npresented with an ugly error stack but the code *still doesn&#39;t work*<br/>\n<br/>\nregards, APC<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:tony.heap@...\">tony.heap@...</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:tony.heap@...\">tony.heap@...</a>]<br/>\nSent: 24 January 2001 13:53<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a><br/>\nSubject: [junit] Re: Programming By Contract<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a>, Robert Sartin &lt;sartin@a...&gt; wrote:<br/>\n&gt; <br/>\n&gt; --- Robert Sartin &lt;sartin@a...&gt; wrote:<br/>\n&gt; &gt;Assertion failures should be caught. Meyer is right on this.<br/>\n&gt; <br/>\n&gt; Once more with feeling and correctness:<br/>\n&gt; <br/>\n&gt; Assertion failures should *never* be caught. Meyer is right on this.<br/>\n<br/>\nWhat about in a production system where I don&#39;t want a poor end user <br/>\nto be troubled with 20 or so lines of exception stack trace, and more <br/>\nimportantly, I want to ask them very nicely to report the error to <br/>\ntech support.<br/>\n<br/>\nOr even worse, it&#39;s a Web app and Joe Public is using it, and I want <br/>\nto redirect them to an ever-so-nice error page.<br/>\n<br/>\nOr even even worse, it&#39;s a web app and the client is using it from <br/>\nhome one night just before he signs the final cheque...<br/>\n<br/>\n&gt; <br/>\n&gt; Regards,<br/>\n&gt; <br/>\n&gt; Rob<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; __________________________________________________<br/>\n&gt; Do You Yahoo!?<br/>\n&gt; Yahoo! Auctions - Buy the things you want at great prices. <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://auctions.yahoo.com/\">http://auctions.yahoo.com/</a><br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@egroups.com\">junit-unsubscribe@egroups.com</a> </span></blockquote></div>", 
+    "prevInTime": 308, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "980347217", 
+    "canDelete": false, 
+    "nextInTopic": 311, 
+    "prevInTopic": 306, 
+    "headers": {
+        "messageIdInHeader": "PDM5QzhFNjMzNjU1MUQyMTE4Q0E3MDAxMDRCQjNGOTA0MDNDOTAwRDlAVUstTE9QLU1BSUwwMj4="
+    }
+}

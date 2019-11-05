@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 5351, 
+    "senderId": "_gkRQL_5KSnA7m-V4OCCFjb3jT0lOoZ5LwlBvaN4UcxJyO45h_ZZt6Srfm8WhZp6_blwvzqsCCxlO8lxafCd8fusAKOLHELLH23h1Sdc", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] How to record test results in XML format", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "go to http://jakarta.apache.org/ant download a binary (which includes documentation) set up your build script (read the documentation) run it (read the", 
+    "msgId": 5350, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_7_4); 9 Jul 2002 15:59:31 -0000\r\nReceived: (qmail 73434 invoked from network); 9 Jul 2002 15:59:31 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m11.grp.scd.yahoo.com with QMQP; 9 Jul 2002 15:59:31 -0000\r\nReceived: from unknown (HELO www.fastmail.fm) (209.61.183.86)\n  by mta3.grp.scd.yahoo.com with SMTP; 9 Jul 2002 15:59:31 -0000\r\nReceived: from www.fastmail.fm (localhost [127.0.0.1])\n\tby localhost.localdomain (Postfix) with ESMTP id B00646D9C8\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  9 Jul 2002 10:59:26 -0500 (CDT)\r\nX-Epoch: 1026230366\r\nX-Sasl-enc: eVgesw1V7Olfz5pKlNIkAw\r\nReceived: from [165.215.13.251] (unknown [165.215.13.251])\n\tby www.fastmail.fm (Postfix) with ESMTP id B80266DAAE\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  9 Jul 2002 10:59:23 -0500 (CDT)\r\nSubject: RE: [junit] How to record test results in XML format\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20020709133747.39963.qmail@...&gt;\r\nReferences: &lt;20020709133747.39963.qmail@...&gt;\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Ximian Evolution 1.0.5 \r\nDate: 09 Jul 2002 07:59:16 -0400\r\nMessage-Id: &lt;1026215966.1716.15.camel@rhino&gt;\r\nMime-Version: 1.0\r\nFrom: Jason Rogers &lt;jacaetevha@...&gt;\r\nX-Yahoo-Group-Post: member; u=109352929\r\nX-Yahoo-Profile: jacaetev\r\n\r\ngo to http://jakarta.apache.org/ant\ndownload a binary (which includes documentation)\nset up your build script (read the documentation)\nrun it (read the documentation)\n\nA simple build script may be (you&#39;ll want to replace all the hardcoded\npaths to properties):\n\n&lt;project name=&quot;MyProject&quot; default=&quot;tests&quot;&gt;\n  &lt;path id=&quot;somePath&quot;&gt;\n    &lt;pathelement location=&quot;lib/sub1/some1.jar&quot;/&gt;\n    &lt;pathelement location=&quot;lib/sub2/some2.jar&quot;/&gt;\n    &lt;pathelement location=&quot;lib/sub3/some3.jar&quot;/&gt;\n  &lt;/path&gt;\n\n  &lt;target name=&quot;tests&quot; depends=&quot;build&quot;&gt;\n    &lt;junit printsummary=&quot;yes&quot; haltonfailure=&quot;no&quot;&gt;\n      &lt;classpath refid=&quot;somePath&quot;/&gt;\n\n      &lt;formatter type=&quot;xml&quot;/&gt;\n\n      &lt;batchtest fork=&quot;yes&quot; todir=&quot;reports&quot;&gt;\n        &lt;fileset dir=&quot;build&quot;/&gt;\n      &lt;/batchtest&gt;\n    &lt;/junit&gt;\n\n    &lt;junitreport todir=&quot;reports&quot;&gt;\n      &lt;fileset dir=&quot;reports&quot;&gt;\n        &lt;include name=&quot;TEST-*.xml&quot;/&gt;\n      &lt;/fileset&gt;\n      &lt;report format=&quot;frames&quot; todir=&quot;reports&quot;/&gt;\n    &lt;/junitreport&gt;\n  &lt;/target&gt;\n\n  &lt;target name=&quot;build&quot;&gt;\n    &lt;javac\n        srcdir=&quot;src&quot;\n        destdir=&quot;build&quot;&gt;\n        &lt;classpath refid=&quot;somePath&quot;/&gt;\n    &lt;/javac&gt;\n  &lt;/target&gt;\n&lt;/project&gt;\nOn Tue, 2002-07-09 at 09:37, syed Anwaruddin wrote: Hi Scott,\n\nThanks for the immediate reply!!!\n\nYou mean, I need to install ANT module???\nI am very new to this. Please mail me one example OR\natleast let me know where can I find the documentation\nfor this.\n\nThanks and Regards,\nSyed.\n\n\n--- Scott Stirling &lt;scottstirling@...&gt; wrote:\n&gt; Easiest way to do it is use the JUnit tasks (&lt;junit&gt;\n&gt; and &lt;batchtest&gt;) in\n&gt; Ant, which will automatically output results in XML\n&gt; format if you tell\n&gt; them to.  Then use &lt;junitreport&gt; to automatically\n&gt; transform the XML into\n&gt; a nice framed HTML report.\n&gt; \n&gt; Scott Stirling\n&gt; \n&gt; &gt; -----Original Message-----\n&gt; &gt; From: s_thoda [mailto:s_thoda@...] \n&gt; &gt; Sent: Monday, July 08, 2002 5:28 PM\n&gt; &gt; To: junit@yahoogroups.com\n&gt; &gt; Subject: [junit] How to record test results in XML\n&gt; format\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; Hi All,\n&gt; &gt; \n&gt; &gt; We have an Autotest suit using Junit in my\n&gt; project. We were \n&gt; &gt; generating .txt files to record all the test\n&gt; results. I want to use \n&gt; &gt; XML for recording all the autotest results. Please\n&gt; advice me on how \n&gt; &gt; to go about this. \n&gt; \n&gt; \n&gt; \n&gt; \n\n\n__________________________________________________\nDo You Yahoo!?\nSign up for SBC Yahoo! Dial - First Month Free\nhttp://sbc.yahoo.com\n\n\n\nYahoo! Groups Sponsor\nADVERTISEMENT\nClick Here!\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service.\n\n\n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 5346, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 5349, 
+    "contentTrasformed": false, 
+    "postDate": "1026215956", 
+    "canDelete": false, 
+    "nextInTopic": 5352, 
+    "prevInTopic": 5349, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwNzA5MTMzNzQ3LjM5OTYzLnFtYWlsQHdlYjEzNTA3Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDEwMjYyMTU5NjYuMTcxNi4xNS5jYW1lbEByaGlubz4=", 
+        "referencesHeader": "PDIwMDIwNzA5MTMzNzQ3LjM5OTYzLnFtYWlsQHdlYjEzNTA3Lm1haWwueWFob28uY29tPg=="
+    }
+}

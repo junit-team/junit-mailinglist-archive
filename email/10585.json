@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10586, 
+    "senderId": "BJTL4asxIdoaMr2dQJjO6DAOBQ_oUb_r5SebajfzXztfjXoBo25bsLWBGzaoODkBSo2T16UdUU8eMtNzWNVwhlyl5qrT", 
+    "systemMessage": false, 
+    "subject": "Re: Can&#39;t add an object to a TestSuite?", 
+    "from": "&quot;natemc47&quot; &lt;nate@...&gt;", 
+    "authorName": "natemc47", 
+    "msgSnippet": "JB, Thanks for your quick reply.  Unfortunately, I get the same error when I change new FooTest() to FooTest.suite().  I m using JUnit 3.8.1 if that matters. ", 
+    "msgId": 10585, 
+    "profile": "natemc47", 
+    "topicId": 10580, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 7396725, 
+    "messageBody": "<div id=\"ygrps-yiv-894194448\">JB, <br/>\n <br/>\nThanks for your quick reply.  Unfortunately, I get the same error when I change new  <br/>\nFooTest() to FooTest.suite().  I&#39;m using JUnit 3.8.1 if that matters.  <br/>\n  <br/>\nAfter a peek at the JUnit source, I think we need a completely different Test  <br/>\nimplementation for this so we can write  <br/>\n  <br/>\n    public static final class BarTest extends ObjectTestSuite { ... }  <br/>\n  <br/>\nHere&#39;s a first draft below.  Though far from complete, it works for my trivial  <br/>\nexample.  What do you think?  <br/>\n  <br/>\nThanks again,  <br/>\nNate  <br/>\n  <br/>\n  <br/>\n  <br/>\npublic abstract class ObjectTestSuite extends Assert implements Test {  <br/>\n    protected ObjectTestSuite() {  <br/>\n        testMethods = new ArrayList();  <br/>\n        for (Class theClass = getClass(); theClass != ObjectTestSuite.class; theClass  <br/>\n= theClass.getSuperclass()) {  <br/>\n            final Method[] methods = theClass.getDeclaredMethods();  <br/>\n            for (int i = 0; i &lt; methods.length; ++i) {  <br/>\n                if (isPublicTestMethod(methods[i])) {  <br/>\n                    testMethods.add(methods[i]);  <br/>\n                }  <br/>\n            }  <br/>\n        }  <br/>\n    }  <br/>\n  <br/>\n    public final int countTestCases() {  <br/>\n        return testMethods.size();  <br/>\n    }  <br/>\n  <br/>\n    public final void run(final TestResult testResult) {  <br/>\n        for (int i = 0; i &lt; testMethods.size(); ++i) {  <br/>\n            try {  <br/>\n                testResult.startTest(this);  <br/>\n                ((Method) testMethods.get(i)).invoke(this, new Class[0]);  <br/>\n                testResult.endTest(this);  <br/>\n            }  <br/>\n            catch (final Exception e) {  <br/>\n                e.printStackTrace();  <br/>\n            }  <br/>\n        }  <br/>\n    }  <br/>\n  <br/>\n    private static boolean isPublicTestMethod(final Method method) {  <br/>\n        return isTestMethod(method) && Modifier.isPublic(method.getModifiers());  <br/>\n    }  <br/>\n  <br/>\n    private static boolean isTestMethod(final Method method) {  <br/>\n        return method.getParameterTypes().length == 0 &&  <br/>\n                method.getName().startsWith(&quot;test&quot;) &&  <br/>\n                method.getReturnType().equals(Void.TYPE);  <br/>\n    }  <br/>\n  <br/>\n    private final ArrayList testMethods;  <br/>\n}  <br/>\n  <br/>\n  <br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; wrote:  <br/>\n&gt; natemc47 wrote:  <br/>\n&gt;   <br/>\n&gt; &gt; Hello,  <br/>\n&gt; &gt;   <br/>\n&gt; &gt; I thought the code below would work, but it doesn&#39;t.  Is there a way to do  <br/>\n&gt; &gt; something along these lines, or am I barking up the wrong tree?  <br/>\n&gt;   <br/>\n&gt; Yes. The fix is included below.  <br/>\n&gt; &gt;   <br/>\n&gt; &gt; Thanks!  <br/>\n&gt; &gt; Nate  <br/>\n&gt; &gt;   <br/>\n&gt; &gt; P.S.  The error I get is  <br/>\n&gt; &gt; [nate@crunchy foo]$ java -cp foo.jar:junit.jar FooTest  <br/>\n&gt; &gt; .F  <br/>\n&gt; &gt; Time: 0.022  <br/>\n&gt; &gt; There was 1 failure:  <br/>\n&gt; &gt; 1) null(FooTest)junit.framework.AssertionFailedError  <br/>\n&gt; &gt;         at FooTest.main(FooTest.java:12)  <br/>\n&gt; &gt;   <br/>\n&gt; &gt;   <br/>\n&gt; &gt;   <br/>\n&gt; &gt; import junit.framework.Test;  <br/>\n&gt; &gt; import junit.framework.TestCase;  <br/>\n&gt; &gt; import junit.framework.TestSuite;  <br/>\n&gt; &gt; import junit.textui.TestRunner;  <br/>\n&gt; &gt;   <br/>\n&gt; &gt; public class FooTest extends TestCase {  <br/>\n&gt; &gt;     public static void main(final String[] args) {  <br/>\n&gt; &gt;         TestRunner.run(new FooTest());  <br/>\n&gt;   <br/>\n&gt; +         TestRunner.run(FooTest.suite());  <br/>\n&gt;   <br/>\n&gt; &gt;     }  <br/>\n&gt; &gt;   <br/>\n&gt; &gt;     public static Test suite() {  <br/>\n&gt; &gt;         final TestSuite suite = new TestSuite();  <br/>\n&gt; &gt;         suite.addTest(new BarTest(5));  <br/>\n&gt; &gt;         return suite;  <br/>\n&gt; &gt;     }  <br/>\n&gt; &gt;   <br/>\n&gt; &gt;     public static final class BarTest extends TestCase {  <br/>\n&gt; &gt;         public BarTest(final int x) { this.x = x; }  <br/>\n&gt; &gt;         public void testBar() { System.out.println(x); }  <br/>\n&gt; &gt;         private final int x;  <br/>\n&gt; &gt;     }  <br/>\n&gt; &gt; }  <br/>\n&gt; --   <br/>\n&gt; J. B. Rainsberger,  <br/>\n&gt; Diaspar Software Services  <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603  <br/>\n&gt; Let&#39;s write software that people understand </span></blockquote></div>", 
+    "prevInTime": 10584, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1078337574", 
+    "canDelete": false, 
+    "nextInTopic": 10586, 
+    "prevInTopic": 10581, 
+    "headers": {
+        "inReplyToHeader": "PDQwNDU1MTZBLjQwNjA4MDZAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGMyNTc3Nitwcm5uQGVHcm91cHMuY29tPg=="
+    }
+}

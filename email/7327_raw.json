@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 7328, 
+    "senderId": "PFGys1US4ROZFOiuNVnoaY767ElUXqrbgboAKD60zFHelybCZGJOlxRG7iofI9X5OFR8qJvPws4FHf-9zf7Xm7LroN4vI4YiU5ZRkg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ThreadLocal", 
+    "from": "David Corbin &lt;dcorbin@...&gt;", 
+    "authorName": "David Corbin", 
+    "msgSnippet": "... But how do you get a hold of the factory that knows the correct way to to create the object.  The answer is one of the choices above (as you go on to", 
+    "msgId": 7327, 
+    "rawEmail": "Return-Path: &lt;dcorbin@...&gt;\r\nX-Sender: dcorbin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 24 Mar 2003 23:00:11 -0000\r\nReceived: (qmail 40160 invoked from network); 24 Mar 2003 23:00:11 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m14.grp.scd.yahoo.com with QMQP; 24 Mar 2003 23:00:11 -0000\r\nReceived: from unknown (HELO imf23bis.bellsouth.net) (205.152.58.195)\n  by mta2.grp.scd.yahoo.com with SMTP; 24 Mar 2003 23:00:11 -0000\r\nReceived: from picolo.corbin.machturtle.com ([67.33.167.243])\n          by imf23bis.bellsouth.net\n          (InterMail vM.5.01.04.25 201-253-122-122-125-20020815) with ESMTP\n          id &lt;20030324230214.RKCR9768.imf23bis.bellsouth.net@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Mon, 24 Mar 2003 18:02:14 -0500\r\nReceived: from picolo.corbin.machturtle.com\n\t([192.168.26.3] helo=machturtle.com ident=dcorbin)\n\tby picolo.corbin.machturtle.com with esmtp (Exim 3.36 #1 (Debian))\n\tid 18xavI-0003Lw-00\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 24 Mar 2003 18:00:08 -0500\r\nMessage-ID: &lt;3E7F8DF7.2010606@...&gt;\r\nDate: Mon, 24 Mar 2003 18:00:07 -0500\r\nUser-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4a) Gecko/20030305\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] ThreadLocal\r\nReferences: &lt;3E7E09B2.8010505@...&gt; &lt;20030324031214.95DEB1B6E6@...&gt; &lt;3E7F03A4.30401@...&gt; &lt;20030324201905.D66BF1432C@...&gt;\r\nIn-Reply-To: &lt;20030324201905.D66BF1432C@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: David Corbin &lt;dcorbin@...&gt;\r\nX-Yahoo-Group-Post: member; u=35064267\r\nX-Yahoo-Profile: david_corbin\r\n\r\nJason Rogers wrote:\n\n&gt;On Mon, 24 Mar 2003 08:09:56 -0500, &quot;David Corbin&quot;\n&gt;&lt;dcorbin@...&gt; said:\n&gt;&lt;snip&gt;\n&gt;  \n&gt;\n&gt;&gt;   Well,  as  near  as I can tell there are 4 choices on how something is\n&gt;&gt;   made\n&gt;&gt;   available:\n&gt;&gt;   1) at construction\n&gt;&gt;   2) as an argument\n&gt;&gt;   3) as a global/singleton\n&gt;&gt;   4) as ThreadLocal (similar to #3, but more flexible, certainly in the\n&gt;&gt;   web environment)\n&gt;&gt;   #2 is what I&#39;ve been doing, and has created the smell\n&gt;&gt;   #1  generally  doesn&#39;t  work  well, because the &quot;something&quot; may not be\n&gt;&gt;   very\n&gt;&gt;   tightly bound to the object being constucted.\n&gt;&gt;   That leaves #3 and #4.  I have a long-standing global-phobia.  Perhaps\n&gt;&gt;   it&#39;s  too  strong. #4 of course, isn&#39;t that differrent from #3 ( think\n&gt;&gt;   of\n&gt;&gt;   them as semi-global).\n&gt;&gt;   Have a missed a choice?\n&gt;&gt;    \n&gt;&gt;\n&gt;\n&gt;Yes, the ones I mentioned on my previous response.  Factories for\n&gt;instance.  \n&gt;\nBut how do you get a hold of the factory that knows the correct way to \nto create the object.  The answer is one of the choices above (as you go \non to mention below). \n\n&gt;If there is behavior that you need in the class you are\n&gt;testing and it makes sense to break it out into its own class (as you\n&gt;have done) write a Factory that will give you back an instance of the\n&gt;needed class to be able to work with.  The Factory could be globally\n&gt;accessible, if that makes sense or pass it in at creation time.  Often\n&gt;times factories can give you access to several behaviors simultaneously,\n&gt;so if you need to pass in the Factory at instance creation time, you need\n&gt;only pass one or two.  If they are globally accessible however (either to\n&gt;the system as a whole, or to a package, etc.), you obviously don&#39;t need\n&gt;to pass them in.  I find that the factories I write are often static such\n&gt;that I don&#39;t need an instance of one to get an instance of the object I\n&gt;am after.\n&gt;\n&gt;Let&#39;s say I have a DBQuery that obviously needs a DatabaseConnection to\n&gt;do much of its work.  The query doesn&#39;t need the connection for its full\n&gt;life-span, only for the short period of time in which to run against the\n&gt;DB, perhaps the rest of the time is doing maintenance work or creating\n&gt;Record objects to represent a row in the DB, etc.  So, I make a Factory\n&gt;(in this case probably a pool) available from which the query can grab a\n&gt;connection when it needs it and then give it back. \n&gt;\nBut that factory is  a global, and while factories have benefits, you \nhaven&#39;t gotten rid of the need to access global data, or pass in the \ninformation in one of the other manners. \n\n&gt; The connection too\n&gt;has things that it may need only for a short period of time and can give\n&gt;them up -- i.e. a Prepared or CallableStatement.  It can get the\n&gt;statement from a factory it has access to and then give it back when it&#39;s\n&gt;done.\n&gt;\n&gt;  \n&gt;\n\n\n\n", 
+    "profile": "david_corbin", 
+    "topicId": 7316, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 35064267, 
+    "prevInTime": 7326, 
+    "contentTrasformed": false, 
+    "postDate": "1048546807", 
+    "canDelete": false, 
+    "nextInTopic": 7328, 
+    "prevInTopic": 7326, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwMzI0MjAxOTA1LkQ2NkJGMTQzMkNAd3d3LmZhc3RtYWlsLmZtPg==", 
+        "messageIdInHeader": "PDNFN0Y4REY3LjIwMTA2MDZAbWFjaHR1cnRsZS5jb20+", 
+        "referencesHeader": "PDNFN0UwOUIyLjgwMTA1MDVAbWFjaHR1cnRsZS5jb20+IDwyMDAzMDMyNDAzMTIxNC45NURFQjFCNkU2QHd3dy5mYXN0bWFpbC5mbT4gPDNFN0YwM0E0LjMwNDAxQG1hY2h0dXJ0bGUuY29tPiA8MjAwMzAzMjQyMDE5MDUuRDY2QkYxNDMyQ0B3d3cuZmFzdG1haWwuZm0+"
+    }
+}

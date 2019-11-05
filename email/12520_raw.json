@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12521, 
+    "senderId": "tShts5c9quJHtvQt2biFV4e4XIkEga14cIxCJpeUnEKWkVomlOOwMq-aVZ3FUtoGSe-xpM2vXA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Multithreading: Testing scheduled method invocation?!", 
+    "from": "&lt;berndq@...&gt;", 
+    "authorName": "berndq@gmx.net", 
+    "msgSnippet": "Hi, as a waring: I am not familiar with the framworks you use. I assume you are waiting for Quartz to call a method in one of your tested code, right? In cases", 
+    "msgId": 12520, 
+    "rawEmail": "Return-Path: &lt;berndq@...&gt;\r\nX-Sender: berndq@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 96447 invoked from network); 22 Dec 2004 06:58:31 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m23.grp.scd.yahoo.com with QMQP; 22 Dec 2004 06:58:31 -0000\r\nReceived: from unknown (HELO mail.gmx.net) (213.165.64.20)\n  by mta1.grp.scd.yahoo.com with SMTP; 22 Dec 2004 06:58:30 -0000\r\nReceived: (qmail invoked by alias); 22 Dec 2004 06:57:18 -0000\r\nReceived: from p5091725F.dip.t-dialin.net (EHLO PRECM60) (80.145.114.95)\n  by mail.gmx.net (mp008) with SMTP; 22 Dec 2004 07:57:18 +0100\r\nX-Authenticated: #14434090\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 22 Dec 2004 07:57:12 +0100\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.6353\r\nIn-Reply-To: &lt;200412220131.05639.michael@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nThread-Index: AcTnvY/DBcUv31iDSCSO1KR8m9lmLQANaOTA\r\nX-Y-GMX-Trusted: 0\r\nX-eGroups-Remote-IP: 213.165.64.20\r\nFrom: &lt;berndq@...&gt;\r\nSubject: RE: [junit] Multithreading: Testing scheduled method invocation?!\r\nX-Yahoo-Group-Post: member; u=106754364\r\nX-Yahoo-Profile: bernd_q\r\n\r\nHi, \n\nas a waring: I am not familiar with the framworks you use.\nI assume you are waiting for Quartz to call a method \nin one of your tested code, right? \nIn cases like this I call the method directly from the test code.\n\nHTH\n\nBernd\n\n\n&gt; -----Original Message-----\n&gt; From: Michael Schuerig [mailto:michael@...] \n&gt; Sent: Wednesday, December 22, 2004 1:31 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] Multithreading: Testing scheduled method invocation?!\n&gt; \n&gt; \n&gt; \n&gt; I&#39;m working on a class that interacts with the Spring framework&#39;s \n&gt; application context and the Quartz scheduler. I&#39;m pretty new to the \n&gt; latter, thus I&#39;m testing my understanding of Quartz just as \n&gt; much as I&#39;m \n&gt; testing my code. In effect, I can&#39;t (yet) build the fixture \n&gt; for my code \n&gt; completely with mocks as I have to ascertain what these mocks are \n&gt; supposed to do first.\n&gt; \n&gt; The complication here is that Quartz uses its own &quot;hidden&quot; \n&gt; thread(s) to \n&gt; fulfill its duties. It is such a thread that effects the \n&gt; change that I \n&gt; need to check for. As I don&#39;t want to test Quartz, of course, I&#39;m \n&gt; content with checking that my scheduled job is executed at \n&gt; all. Thus I \n&gt; schedule it for immediate execution, wait for 2 secs to give Quartz \n&gt; some time before the fixture is torn down again.\n&gt; \n&gt; Now, all this works surprisingly well. Still, I don&#39;t like \n&gt; the part of \n&gt; waiting some arbitrary time.\n&gt; \n&gt; (Thinking break)\n&gt; \n&gt; After getting this far, I remembered that Doug Lea&#39;s \n&gt; concurrency utils \n&gt; have made their way into J2SE 5.0 and there I found just what \n&gt; I needed: \n&gt; java.util.concurrent.CountDownLatch\n&gt; \n&gt; Now I have a TestCase that looks in outline like this\n&gt; \n&gt; \n&gt; public class MultiThreadedTest extends TestCase {\n&gt;     private static CountDownLatch latch;\n&gt;     private MyMock mock;\n&gt; \n&gt;     protected void setUp() {\n&gt;         latch = new CountDownLatch(1);\n&gt;         mock = new MyMock();\n&gt;     }\n&gt; \n&gt;     public void testMe() throws Exception {\n&gt;         startSomeWorkInAnotherThread(mock);\n&gt;         latch.await(); // some timeout might be prudent\n&gt;         mock.verify();\n&gt;     }\n&gt; \n&gt; \n&gt;     private static class MyMock implements Whatever {\n&gt;         private boolean wasCalled = false;\n&gt; \n&gt;         public void methodCalledFromOtherThread() {\n&gt;             wasCalled = true;\n&gt;             latch.countDown();\n&gt;         }\n&gt; \n&gt;         public void verify() {\n&gt;             assertTrue(wasCalled);\n&gt;         }\n&gt;     }\n&gt; }\n&gt; \n&gt; \n&gt; I appreciate your comments.\n&gt; \n&gt; Michael\n&gt; \n&gt; -- \n&gt; Michael Schuerig                            This is not a false alarm\n&gt; mailto:michael@...                         This is not a test\n&gt; http://www.schuerig.de/michael/                      --Rush, Red Tide\n&gt; \n&gt; \n&gt; ------------------------ Yahoo! Groups Sponsor \n&gt; --------------------~--&gt; \n&gt; Make a clean sweep of pop-up ads. Yahoo! Companion Toolbar.\n&gt; Now with Pop-Up Blocker. Get it for free!\n&gt; http://us.click.yahoo.com/L5YrjA/eSIIAA/yQLSAA/5cFolB/TM\n&gt; --------------------------------------------------------------\n&gt; ------~-&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n&gt; \n\n\n\n", 
+    "profile": "bernd_q", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106754364, 
+    "prevInTime": 12519, 
+    "contentTrasformed": false, 
+    "postDate": "1103698632", 
+    "canDelete": false, 
+    "nextInTopic": 12521, 
+    "prevInTopic": 12519, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg=="
+    }
+}

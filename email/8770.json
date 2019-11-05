@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 8771, 
+    "senderId": "0HBiQ6jud_gjMWRmC4qpT4dsnBMh2MdYDVrJ3diwpAHEjq3QDG_ZnMgx6p96VeLdtE6kapGdpzBuO1kuVjzrc-NeNW6JrEZBhCowcX0XYQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test private member variables?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Presumably you have a design like this: MyClass MyClass(arg1, arg2, arg3, ...) { this.arg1 = arg1; ... } main(String[] args) { arg1 = parse(args[0]); ... ", 
+    "msgId": 8770, 
+    "profile": "nails762", 
+    "topicId": 8767, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1432997974\"><blockquote><span title=\"ireply\">&gt;So said jxingtang on 2003-07-23 --------------------<br/>\n&gt;I have a program to setup quite a few private member variables during <br/>\n&gt;initialization. Particular, it extracts command line arguments passed <br/>\n&gt;to the main method. How do I verify that command line arguments are <br/>\n&gt;extracted corrctly to the right private member variables? Do I have <br/>\n&gt;to add a bunch of new public get methods for those variables? I do <br/>\n&gt;not like this idea as the design is affected by testing. Could <br/>\n&gt;someone provide some better approaches? Thanks in advance! <br/>\n<br/>\n </span></blockquote>Presumably you have a design like this:<br/>\n<br/>\nMyClass<br/>\n    MyClass(arg1, arg2, arg3, ...) {<br/>\n        this.arg1 = arg1;<br/>\n        ...<br/>\n    }<br/>\n<br/>\n    main(String[] args) {<br/>\n        arg1 = parse(args[0]);<br/>\n        ...<br/>\n<br/>\n        new MyClass(arg1, arg2, ...).go();<br/>\n    }<br/>\n<br/>\nNow what do you want to test?<br/>\n<br/>\n1. That main() parses the command line arguments correctly?<br/>\n<br/>\nIn this case, build parsing into a separate class and test it. Perhaps the argument parser answers a Map of name -&gt; argument value. In this case, it&#39;s easy to verify that the parser answers the expected Map.<br/>\n<br/>\nOnce you&#39;ve done this, main() calls the parser, then does stuff like this:<br/>\n<br/>\nnew MyClass(<br/>\n    (Integer) args.get(&quot;blah&quot;),<br/>\n    (String) args.get(&quot;foo&quot;),<br/>\n    ...<br/>\n);<br/>\n<br/>\nA little ugly, due to the casting, but not horrible.<br/>\n<br/>\n2. That main() passes the parameters correctly to MyClass&#39; constructor?<br/>\n<br/>\nRather than expose getX() methods, add equals() that compares two MyClass objects and answers true if their fields have the same values. Then in your test, set up the &quot;expected MyClass&quot; with the argument values you expect main() to pass in and use assertEquals() to compare them.<br/>\n<br/>\nTake care.<br/>\n<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 8769, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1058993746", 
+    "canDelete": false, 
+    "nextInTopic": 8771, 
+    "prevInTopic": 8767, 
+    "headers": {
+        "inReplyToHeader": "PGJmbXJ1Mys0bWpjQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwNzIzMTY1NTQ2MDg1MC4wMDE1OEQ2MkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGJmbXJ1Mys0bWpjQGVHcm91cHMuY29tPg=="
+    }
+}

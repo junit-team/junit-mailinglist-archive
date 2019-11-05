@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 10543, 
+    "senderId": "lxKurasmYNJ3m3ajP9pFmyyGpY-Plz6hQ9wktShWtE3U0GFI4XaQnHf4-LwuIBnCJiv6h9oV-K6orEm46WvCD9YXH-_7U8iXFN41qQwM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TDD for servlets and multipart/form-data?", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... FWIW: This is what I did... Note: The goToPage(...) methods are home brewed to deal with our specific navigation issues.  You essentially just need to", 
+    "msgId": 10542, 
+    "profile": "jacaetev", 
+    "topicId": 10540, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "messageBody": "<div id=\"ygrps-yiv-1284416546\">On Fri, 2004-02-27 at 14:24, George Armhold wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Does anyone have a suggestion for how to test servlets that expect<br/>\n&gt; multipart/form-data?  I&#39;m trying to TDD a file submission servlet.<br/>\n&gt; I&#39;m looking through httpunit/servletunit, but don&#39;t see how to create<br/>\n&gt; a WebRequest that is multipart.  It looks like I can create a web page<br/>\n&gt; that contains a form which points to my servlet, and then submit on<br/>\n&gt; that, but that seems kind of convoluted.  There must be a better way.<br/>\n&gt; Any pointers will be appreciated, thanks.<br/>\n<br/>\n </span></blockquote>FWIW: This is what I did...<br/>\n<br/>\nNote: The &#39;goToPage(...)&#39; methods are home brewed to deal with our<br/>\nspecific navigation issues.  You essentially just need to call<br/>\ngetResponse(WebRequest) on a WebConversation (or something like that).<br/>\n<br/>\n=jason<br/>\n<br/>\nCODE:<br/>\n<br/>\n    public void testFileUpload() throws Exception {<br/>\n        File file = File.createTempFile(&quot;prefix&quot;, &quot;.txt&quot;);<br/>\n        file.deleteOnExit();<br/>\n        <br/>\n        WebResponse page = login();<br/>\n        WebResponse positionTab = goToPage(page, &quot;Position Upload&quot;);<br/>\n        <br/>\n        WebForm[] forms = positionTab.getForms();<br/>\n        assertEquals(2, forms.length);<br/>\n        <br/>\n        PostMethodWebRequest request = new<br/>\nPostMethodWebRequest(localhost() + &quot;/&quot; + forms[1].getAction());<br/>\n        request.setMimeEncoded(true);<br/>\n        request.setParameter(&quot;file&quot;, new UploadFileSpec[]{new<br/>\nUploadFileSpec(file)});<br/>\n        request.setParameter(&quot;destinationDirectory&quot;,<br/>\nDESTINATION_DIRECTORY);<br/>\n        //goToPage(localhost() + &quot;/&quot; + forms[1].getAction());<br/>\n        page = goToPage(request);<br/>\n        File uploadedFile = new File(DESTINATION_DIRECTORY + &quot;/&quot; +<br/>\nfile.getName());<br/>\n        uploadedFile.deleteOnExit();<br/>\n        assertTrue(uploadedFile.exists());<br/>\n    }</div>", 
+    "prevInTime": 10541, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1077879460", 
+    "canDelete": false, 
+    "nextInTopic": 10546, 
+    "prevInTopic": 10540, 
+    "headers": {
+        "inReplyToHeader": "PDQwM0Y1MzJGLjgwMjA5MDdAY3MucnV0Z2Vycy5lZHU+", 
+        "messageIdInHeader": "PDEwNzc4Nzk0NjAuMjMwMTEuMTEuY2FtZWxAZWFudXMucmlza21ldHJpY3MtYWEucmlza21ldHJpY3MuY29tPg==", 
+        "referencesHeader": "PDQwM0Y1MzJGLjgwMjA5MDdAY3MucnV0Z2Vycy5lZHU+"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 79, 
+    "nextInTime": 15372, 
+    "senderId": "3OQmgbgE-zPIGHnb8eAzSBLlLEwtMYzUTEPp1eGpN2odpu94PI1-CRS6AtCyjhv1z4ZG9brDij6KrR36Wbc-rg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit 4 restructuring", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... Not again.  :) Just to clarify, callMethod could be written with exactly the semantics needed above.  I believe that your point was that clarity has been", 
+    "msgId": 15371, 
+    "profile": "dsaff", 
+    "topicId": 15154, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-1065056430\">J. B. Rainsberger wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; But it&#39;s really just using summaryString as a testing utility.  I&#39;d be<br/>\n&gt; &gt; tempted to write this instead, which feels clearer:<br/>\n&gt; &gt;<br/>\n&gt; &gt; assertThat(states, summarizeTo(&quot;GREEN 0.0 GREEN 0.5 RED 1.0&quot;))<br/>\n&gt;<br/>\n&gt; The problem with this is that you lose the context of the &quot;states&quot;<br/>\n&gt; object in the method &quot;summarizeTo&quot;. Generalizing this looks bad, as it<br/>\n&gt; resorts to the kind of reflection you showed next:<br/>\n&gt;<br/>\n&gt; &gt; Constraint summarizeTo(String summary) {<br/>\n&gt; &gt;     return applyTo(eq(summary), callMethod(&quot;summaryString&quot;));<br/>\n&gt; &gt; }<br/>\n&gt;<br/>\n&gt; callMethod on which object? Bang, you&#39;re dead. :)<br/>\n<br/>\n </span></blockquote>Not again.  :)<br/>\n<br/>\nJust to clarify, callMethod could be written with exactly the semantics <br/>\nneeded above.  I believe that your point was that clarity has been shot <br/>\ndead, since not many people want to reason about higher-order functions <br/>\nrather than string equality when doing testing.  Very true.  This is <br/>\nwhat I get for choosing the first example at hand.<br/>\n<br/>\nHowever, thinking harder about constraints was helpful for me.  The aha <br/>\nfor me is that writing a new constraint has value whenever it allows the <br/>\nframework to get its hands on a whole value that it otherwise wouldn&#39;t <br/>\nhave.  This is why I actually rarely write<br/>\n<br/>\nassertThat(x, eq(&quot;Target string&quot;));<br/>\n<br/>\n(I did in the first month or so after learning JMock.  Martin Fowler: <br/>\n&quot;Often when you come across something new it can be a good idea to <br/>\noveruse it in order to find out it&#39;s [sic] boundaries.&quot;)<br/>\n<br/>\nassertEquals(&quot;Target string&quot;, x);<br/>\n<br/>\nmeans exactly the same thing, doesn&#39;t freak non-JMock maintainers, and <br/>\nproduces an error string that Eclipse can parse nicely for me.<br/>\n<br/>\nHowever,<br/>\n<br/>\nassertTrue(x &lt; 100)<br/>\n<br/>\nis much more troublesome.  The framework never gets its hands on the <br/>\nactual value of x, so all you get is &quot;assertion failed&quot; (or in Ruby, <br/>\n&quot;&lt;false&gt; is not &lt;true&gt;&quot;.  I love that.).  Instead,<br/>\n<br/>\nassertThat(x, lessThan(100))<br/>\n<br/>\nexposes the actual value of x to the framework, and now you get an <br/>\ninformative failure message for free.  All this is to say that <br/>\nsummarizeTo was a bad place to write a constraint. <br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; So...<br/>\n&gt;<br/>\n&gt;      assertThat(states.summary(), eq(new Summary(0, 0.5, 1));<br/>\n&gt;<br/>\n&gt; would be my choice.<br/>\n<br/>\n </span></blockquote>Mine is<br/>\n<br/>\nassertThat(states.summary(), eq(new Summary(&quot;GREEN 0.0 GREEN 0.5 RED 1.0&quot;)))<br/>\n<br/>\n    David Saff</div>", 
+    "prevInTime": 15370, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1131395981", 
+    "canDelete": false, 
+    "nextInTopic": 15373, 
+    "prevInTopic": 15370, 
+    "headers": {
+        "inReplyToHeader": "PDQzNkJCRUVCLjUwMjA4MDNAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzNkZCQjhELjIwMTA5MDhAbWl0LmVkdT4=", 
+        "referencesHeader": "PDU3YTM2MzE0MDUxMTAzMjM0NHgxNmY1MDAyM3ljMzkxZWU3MjEyNzFmOTNAbWFpbC5nbWFpbC5jb20+IDw0MzZCNkQyQy4yMDUwNzAwQG1pdC5lZHU+IDw0MzZCQkVFQi41MDIwODAzQHJvZ2Vycy5jb20+"
+    }
+}

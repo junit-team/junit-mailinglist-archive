@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 23670, 
+    "senderId": "ngNXD23mhGmncNoIa2eQKKuRZ2Y0YNnOSwsFBfM5hourMVmuWvpr7vIero7g4jr98FJC9haBXbgNOhOWoV_RHlSfjxXJOCJDIBJSWJus_w-pZJ7BZkyOmeM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Result and testAssumptionFailure handling", 
+    "from": "Stephen Connolly &lt;stephen.alan.connolly@...&gt;", 
+    "authorName": "Stephen Connolly", 
+    "msgSnippet": "I think there are a number of issues with this categorization... I think 4 might not be enough. Here is my straw-man Where do the @Theory public void", 
+    "msgId": 23669, 
+    "rawEmail": "Return-Path: &lt;stephen.alan.connolly@...&gt;\r\nReceived: (qmail 7350 invoked by uid 7800); 19 Sep 2011 20:43:23 -0000\r\nX-Sender: stephen.alan.connolly@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 19816 invoked from network); 19 Sep 2011 20:23:43 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 19 Sep 2011 20:23:43 -0000\r\nX-Received: from unknown (HELO mail-wy0-f179.google.com) (74.125.82.179)\n  by mta2.grp.sp2.yahoo.com with SMTP; 19 Sep 2011 20:23:43 -0000\r\nX-Received: by mail-wy0-f179.google.com with SMTP id 21so7248276wyh.10\n        for &lt;junit@yahoogroups.com&gt;; Mon, 19 Sep 2011 13:23:43 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.227.143.72 with SMTP id t8mr3179647wbu.95.1316463822936; Mon,\n 19 Sep 2011 13:23:42 -0700 (PDT)\r\nX-Received: by 10.227.129.18 with HTTP; Mon, 19 Sep 2011 13:23:42 -0700 (PDT)\r\nIn-Reply-To: &lt;CACj8BuPrmye4f7hOvYqZHt42o0P62bfEgW8FAd59LZqeMAijfA@...&gt;\r\nReferences: &lt;j561a9+1bik@...&gt;\n\t&lt;CACj8BuPrmye4f7hOvYqZHt42o0P62bfEgW8FAd59LZqeMAijfA@...&gt;\r\nDate: Mon, 19 Sep 2011 21:23:42 +0100\r\nMessage-ID: &lt;CA+nPnMx-apfCB_EvNgD+FU6JYiaj=T7exGZvhzPuVm1RqMTBog@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Stephen Connolly &lt;stephen.alan.connolly@...&gt;\r\nSubject: Re: [junit] Result and testAssumptionFailure handling\r\nX-Yahoo-Group-Post: member; u=458231986; y=iaGhz3__L11-axrM3KyOjkrklXRwgGP1Xrxdfd5X9yyLgz5BGitT9GqADUu8Rw\r\nX-Yahoo-Profile: stephenalanconnolly\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 19 Sep 2011 20:43:23 -0000\r\n\r\nI think there are a number of issues with this categorization... I\nthink 4 =\r\nmight not be enough.\n\nHere is my straw-man\n\nWhere do the\n\n@Theory\npublic vo=\r\nid something() {\n  assumeThat(x, isLessThan(y))\n  ...\n}\n\nassumption failure=\r\n&#39;s get counted?\n\nand how do you differentiate them from regular assumption =\r\nfailures?\n\n-Stephen\n\nOn 19 September 2011 20:26, David Saff &lt;david@...=\r\n&gt; wrote:\n&gt; Works for me, however...\n&gt;\n&gt; It&#39;s also been proposed (I think as=\r\n an analogy to NUnit, and maybe\n&gt; TestNG) that there should be four categor=\r\nies of test reports:\n&gt;\n&gt; - PASSED\n&gt; - FAILED\n&gt; - IGNORED: The user asked th=\r\ne framework not to run this test.\n&gt; - ABORTED: The user asked the framework=\r\n to run this test, but the\n&gt; framework couldn&#39;t.\n&gt;\n&gt; The difference between=\r\n IGNORED and ABORTED would be that the user\n&gt; shouldn&#39;t be surprised by IGN=\r\nORED tests (the user took an action, like\n&gt; adding an @Ignore annotation, t=\r\nhat caused the framework to skip the\n&gt; test). =A0However, an ABORTED test m=\r\night be a surprise to the user: the\n&gt; test assumes that it is connected to =\r\nthe network, and that assumption\n&gt; failed.\n&gt;\n&gt; Splitting out these states m=\r\night allow tools depending on the test\n&gt; runs to take different actions bas=\r\ned on the different results. =A0For\n&gt; example, ABORTED tests might be treat=\r\ned similarly to IGNORED tests\n&gt; during development, but would prevent check=\r\n-in or deployment.\n&gt;\n&gt; This raises three very different questions:\n&gt; (1) Sh=\r\nould we have these 4 states, or stick with our current 3?\n&gt; (2) If we choos=\r\ne to have 4 states, what&#39;s the best name for the new state?\n&gt; (3) Are assum=\r\nption failures, by default, to be treated as IGNORED, or ABORTED?\n&gt;\n&gt; It mi=\r\nght be good to get these decisions made, and move on.\n&gt;\n&gt; =A0 David Saff\n&gt;\n=\r\n&gt; On Sun, Sep 18, 2011 at 8:10 PM, Stefan Birkner &lt;mail@...&gt; =\r\nwrote:\n&gt;&gt; Currently the Result class simply ignores testAssumptionFailure. =\r\nThe corresponding method is empty and there&#39;s a comment: // do nothing: sam=\r\ne as passing (for 4.5; may change in 4.6)\n&gt;&gt; I would like to increase the i=\r\ngnored tests count for an assumption failure. It&#39;s because Result doesn&#39;t p=\r\nrovide any information, that a test is ignored because of a failing assumpt=\r\nion.\n&gt;&gt;\n&gt;&gt; Any objections?\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt; ------------------------------------=\r\n\n&gt;&gt;\n&gt;&gt; Yahoo! Groups Links\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;\n&gt;\n&gt; ------------------------------=\r\n------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "stephenalanconnolly", 
+    "topicId": 23663, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 458231986, 
+    "prevInTime": 23668, 
+    "contentTrasformed": false, 
+    "postDate": "1316463822", 
+    "canDelete": false, 
+    "nextInTopic": 23672, 
+    "prevInTopic": 23667, 
+    "headers": {
+        "inReplyToHeader": "PENBQ2o4QnVQcm15ZTRmN2hPdllxWkh0NDJvMFA2MmJmRWdXOEZBZDU5TFpxZU1BaWpmQUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBK25Qbk14LWFwZkNCX0V2TmdEK0ZVNkpZaWFqPVQ3ZXhHWnZoelB1Vm0xUnFNVEJvZ0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGo1NjFhOSsxYmlrQGVHcm91cHMuY29tPgk8Q0FDajhCdVBybXllNGY3aE92WXFaSHQ0Mm8wUDYyYmZFZ1c4RkFkNTlMWnFlTUFpamZBQG1haWwuZ21haWwuY29tPg=="
+    }
+}

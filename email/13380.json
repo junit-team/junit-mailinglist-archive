@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 13381, 
+    "senderId": "FXB-Ta3T0Oc995qqRK3p0lEyTFY3p5B5BuLnd2MH_LVlFk0z_Glc-g7wYNcb_xSbQNQizAUvLcisA87gbFfqcPb6CO2HMio5Fw", 
+    "systemMessage": false, 
+    "subject": "One time setup revisited", 
+    "from": "Adam Wildavsky &lt;adam@...&gt;", 
+    "authorName": "Adam Wildavsky", 
+    "msgSnippet": "I ve read the FAQ and searched the archives looking for info on running setup and teardown code before and after a test run. Per the FAQ I can use TestSetup to", 
+    "msgId": 13380, 
+    "profile": "tameware", 
+    "topicId": 13380, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 10310563, 
+    "messageBody": "<div id=\"ygrps-yiv-1752624262\">I&#39;ve read the FAQ and searched the archives looking for info on <br/>\nrunning setup and teardown code before and after a test run. Per the <br/>\nFAQ I can use TestSetup to run code before and after a suite with no <br/>\ntrouble. But if the test run consists of a single test method I also <br/>\nwant my functions to run before and after that method, for instance <br/>\nif the test is invoked from IDEA.<br/>\n<br/>\nI&#39;ve solved the problem for now by using TestSetup, overriding <br/>\nrunTest, and adding a reference counting scheme. This works well <br/>\nenough, but I wonder if it&#39;s overkill. Is there a simpler scheme that <br/>\nwill get the job done?<br/>\n<br/>\npublic class myTest extends TestCase {<br/>\n   private static int setupCount = 0;<br/>\n<br/>\n   public static class OneTimeTestSetup extends TestSetup {<br/>\n     public OneTimeTestSetup(TestSuite ts) {<br/>\n       super(ts);<br/>\n     }<br/>\n<br/>\n     public void setUp() throws Exception {<br/>\n       oneTimeSetup();<br/>\n     }<br/>\n<br/>\n     public void tearDown() throws Exception {<br/>\n       oneTimeTeardown();<br/>\n     }<br/>\n   }<br/>\n<br/>\n   protected void runTest() throws Throwable {<br/>\n     oneTimeSetup();<br/>\n     super.runTest();<br/>\n     oneTimeTeardown();<br/>\n   }<br/>\n<br/>\n   private static final void oneTimeSetup() throws Exception {<br/>\n     if (setupCount == 0) {<br/>\n       doOneTimeSetup();<br/>\n     }<br/>\n<br/>\n     setupCount++;<br/>\n   }<br/>\n<br/>\n   private static final void oneTimeTeardown() throws Exception {<br/>\n     setupCount--;<br/>\n<br/>\n     if (setupCount == 0) {<br/>\n       doOneTimeTeardown();<br/>\n     }<br/>\n   }<br/>\n<br/>\n   public static Test suite() {<br/>\n     return new OneTimeTestSetup(new TestSuite(OrderBrokerTest.class));<br/>\n   }<br/>\n<br/>\n   // doOneTimeSetup(), doOneTimeTeardown(), and the tests follow...<br/>\n}<br/>\n<br/>\n-- <br/>\nAdam Wildavsky  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:adam@...\">adam@...</a>  <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.tameware.com\">http://www.tameware.com</a></div>", 
+    "prevInTime": 13379, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1114979055", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PHAwNjIxMDIxZWJlOWFlNzkyNzQzNkBbMTkyLjE2OC4wLjIyMl0+"
+    }
+}

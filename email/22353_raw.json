@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 22354, 
+    "senderId": "d-BTNnPDsmrlLeC-q4lgjxHt_6HaX_-iuqN4u5SnVh-AlxLIKYH35LinrmPSr0jsUVG9NuFy55f9X24sB7uiBAtn", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to use @DataPoints? in theories", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Berin, My expectations are the same as yours in this case.  This looks like a bug.  Can you file it at http://github.com/KentBeck/junit/issues and add the", 
+    "msgId": 22353, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 16874 invoked from network); 2 Feb 2010 14:21:19 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m11.grp.re1.yahoo.com with QMQP; 2 Feb 2010 14:21:19 -0000\r\nX-Received: from unknown (HELO mail-pz0-f175.google.com) (209.85.222.175)\n  by mta1.grp.sp2.yahoo.com with SMTP; 2 Feb 2010 14:21:19 -0000\r\nX-Received: by pzk5 with SMTP id 5so90913pzk.29\n        for &lt;junit@yahoogroups.com&gt;; Tue, 02 Feb 2010 06:21:19 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.140.57.16 with SMTP id f16mr4156805rva.153.1265120478723; Tue, \n\t02 Feb 2010 06:21:18 -0800 (PST)\r\nIn-Reply-To: &lt;75F5ED8A5A553646A46E00E6EC854FA304379FE7@...-ais.com&gt;\r\nReferences: &lt;75F5ED8A5A553646A46E00E6EC854FA304379FE7@...-ais.com&gt;\r\nDate: Tue, 2 Feb 2010 09:21:18 -0500\r\nX-Google-Sender-Auth: b94c924f611a0052\r\nMessage-ID: &lt;4f7da6b91002020621o38e3f28ekdd00efe9d3e64474@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] How to use @DataPoints? in theories\r\nX-Yahoo-Group-Post: member; u=341876227; y=xz4qMcPadRCwJNY21DfWKdiJTeVXLxYrRSLQ_AuqsFA\r\nX-Yahoo-Profile: dsaff\r\n\r\nBerin,\n\nMy expectations are the same as yours in this case.  This looks lik=\r\ne a\nbug.  Can you file it at http://github.com/KentBeck/junit/issues and\nad=\r\nd the &quot;bug&quot; tag, so I don&#39;t forget?  Thanks,\n\n   David Saff\n\nOn Tue, Feb 2,=\r\n 2010 at 9:15 AM, Loritsch, Berin C.\n&lt;berin.loritsch@...&gt; wrote:\n&gt; J=\r\nust to see how things map, I attempted to do something like this:\n&gt;\n&gt; @RunW=\r\nith(Theories.class)\n&gt; public class TrackableTestCase {\n&gt; =A0 =A0 =A0 =A0@Da=\r\ntaPoints\n&gt; =A0 =A0 =A0 =A0public static Class[] collectTargets() {\n&gt; =A0 =\r\n=A0 =A0 =A0 =A0 =A0 =A0 =A0Class[] targets =3D new Class[] {\n&gt; =A0 =A0 =A0 =\r\n=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0User.class, Incident.class\n&gt; =A0 =A0 =A0=\r\n =A0 =A0 =A0 =A0 =A0};\n&gt;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return targets;\n&gt;=\r\n =A0 =A0 =A0 =A0}\n&gt;\n&gt; =A0 =A0 =A0 =A0@Theory\n&gt; =A0 =A0 =A0 =A0public void e=\r\nxamineClass(Class klass) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0System.out.prin=\r\ntln(klass.getName());\n&gt; =A0 =A0 =A0 =A0}\n&gt; }\n&gt;\n&gt;\n&gt; The problem of course is=\r\n that the Theories runner couldn&#39;t map the\n&gt; datapoints to the Theory:\n&gt; ja=\r\nva.lang.AssertionError: Never found parameters that satisfied method\n&gt; assu=\r\nmptions. =A0Violated assumptions: []\n&gt;\n&gt; When I did the same thing with Str=\r\nings, I had no problems. =A0I did find\n&gt; out that the return type had to be=\r\n an array and not a list. =A0The\n&gt; Theories runner just couldn&#39;t map the cl=\r\nasses to the theory that took\n&gt; the class. =A0Additionally, when I had both=\r\n the class data points and the\n&gt; string data points, the Theories runner at=\r\ntempted to map the whole array\n&gt; of strings to the examineClass theory abov=\r\ne. =A0Unsurprisingly there was a\n&gt; class cast exception there.\n&gt;\n&gt; So what =\r\nare the limitations of this feature? =A0Can I use my own defined\n&gt; objects?=\r\n =A0Does it only get confused when you are trying to feed it Class\n&gt; object=\r\ns? =A0It is unexpected that it is not behaving properly here.\n&gt;\n&gt;\n&gt; [Non-te=\r\nxt portions of this message have been removed]\n&gt;\n&gt;\n&gt;\n&gt; --------------------=\r\n----------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22352, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22352, 
+    "contentTrasformed": false, 
+    "postDate": "1265120478", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22352, 
+    "headers": {
+        "inReplyToHeader": "PDc1RjVFRDhBNUE1NTM2NDZBNDZFMDBFNkVDODU0RkEzMDQzNzlGRTdAdmFmZjAxLW1haWwwMS5hZC5nZC1haXMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MTAwMjAyMDYyMW8zOGUzZjI4ZWtkZDAwZWZlOWQzZTY0NDc0QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDc1RjVFRDhBNUE1NTM2NDZBNDZFMDBFNkVDODU0RkEzMDQzNzlGRTdAdmFmZjAxLW1haWwwMS5hZC5nZC1haXMuY29tPg=="
+    }
+}

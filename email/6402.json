@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 108, 
+    "nextInTime": 6403, 
+    "senderId": "0_27hYsnib_8lX3fADnmE1cVacTmPtQ_hESeuCz5bS5oI27us1i9jj5uQta-YZ4E-jh1zZrC9zgoRd8s1oy8kslpjHq0BtACHb3lQd9D", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] RE: Testing Private Methods", 
+    "from": "Eric Armstrong &lt;eric.armstrong@...&gt;", 
+    "authorName": "Eric Armstrong", 
+    "msgSnippet": "That is one great question. I, too, look forward to hearing how people respond. There is no doubt in my mind that private methods need just as much testing as", 
+    "msgId": 6402, 
+    "profile": "ericsilverlight", 
+    "topicId": 1696, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78994084, 
+    "messageBody": "<div id=\"ygrps-yiv-79087229\">That is one great question.<br/>\nI, too, look forward to hearing how people respond.<br/>\n<br/>\nThere is no doubt in my mind that private methods need just as<br/>\nmuch testing as any other method.<br/>\n<br/>\nHere&#39;s a thought, though:<br/>\n   What if those methods were package-private, instead?<br/>\n    The methods would still not be part of published APIs, and<br/>\n    they could then be invoked from a test class in the same<br/>\n    package.<br/>\n<br/>\nThe interesting questions that arise are then:<br/>\n   a.) Of what use are private methods?<br/>\n        It would appear for the sake of testing that while fields may<br/>\n        be private, methods should never be.<br/>\n<br/>\n   b.) Who will be affected if every private method becomes<br/>\n         package-private? Do large-scale packages exist in which<br/>\n         individual developers publish the package-private APIs for<br/>\n         the class or two they work on, so that other package-<br/>\n         developers can use them?<br/>\n<br/>\n         Or is it the case that the distinction between private and<br/>\n         package-private was a nice idea in theory, but it never had<br/>\n         much practical use, so blurring the distinction between them<br/>\n         makes excellent sense?<br/>\n<br/>\nHenry Stapp wrote:<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; The &#39;how to test private methods&#39; question (see below) came up on the<br/>\n&gt; NUnit<br/>\n&gt; group, and I thought some TDD gurus here might be able to help out.<br/>\n&gt; Sorry if<br/>\n&gt; this has already been rehashed a hundred times, but I was wrestling<br/>\n&gt; with<br/>\n&gt; this a lot myself, and despite reading the Wiki threads on this, I<br/>\n&gt; still<br/>\n&gt; don&#39;t have a good &#39;pattern&#39; to use...<br/>\n&gt;<br/>\n&gt; The example from my case was a class, KeyAuthenticator, with a method<br/>\n&gt; Validate(). Validate calls several internal methods to check<br/>\n&gt; hashcodes,<br/>\n&gt; timestamps, etc. but the client shouldn&#39;t really need to know about<br/>\n&gt; any of<br/>\n&gt; that. The problem was that the methods for checking hashcodes and<br/>\n&gt; timestamps<br/>\n&gt; were the parts that needed the most testing...<br/>\n&gt;<br/>\n&gt; public class KeyAuthenticator {<br/>\n&gt;       //... instance variables etc...<br/>\n&gt;       public bool Validate() {<br/>\n&gt;             if (!CheckTimestamp()) return false;<br/>\n&gt;             if (!CheckHash()) return false;<br/>\n&gt;             return true;<br/>\n&gt;       }<br/>\n&gt;<br/>\n&gt;       private bool CheckTimestamp() {<br/>\n&gt;             //... timestamp math<br/>\n&gt;       }<br/>\n&gt;<br/>\n&gt;       private bool CheckHash() {<br/>\n&gt;             //... MD5 hash comparison<br/>\n&gt;       }<br/>\n&gt;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Leaving out the backdoor reflection approach for the moment, the<br/>\n&gt; choices<br/>\n&gt; seemed to be:<br/>\n&gt;<br/>\n&gt; 1) &quot;pollute&quot; the interface by making methods public that should be<br/>\n&gt; private.<br/>\n&gt; Some argue that this is the correct thing to do, but generally<br/>\n&gt; accepted<br/>\n&gt; principles of good design seem to require making your public interface<br/>\n&gt; as<br/>\n&gt; minimal as possible.<br/>\n&gt;<br/>\n&gt; 2) Only test the public interface, perhaps giving up detailed testing<br/>\n&gt; of<br/>\n&gt; internal logic.<br/>\n&gt; The argument for this is that if the internal logic can&#39;t be easily<br/>\n&gt; tested<br/>\n&gt; through exercising the public API, then you should theoretically be<br/>\n&gt; able to<br/>\n&gt; get rid of all the &#39;untestable&#39; code, since it can&#39;t ever be<br/>\n&gt; reached...<br/>\n&gt; Somehow to me (as an admitted TDD newbie), it just seemed better to be<br/>\n&gt; able<br/>\n&gt; to bang on these internal methods directly, rather than relying on the<br/>\n&gt;<br/>\n&gt; public methods to access them. It seems easier and cleaner to test a<br/>\n&gt; method<br/>\n&gt; in isolation than to try to test it only via it&#39;s caller...<br/>\n&gt;<br/>\n&gt; 3) Make more classes... change the private methods into public methods<br/>\n&gt; of<br/>\n&gt; new simple classes.<br/>\n&gt; To use the example above, I could create a &#39;KeyHash&#39; class and a<br/>\n&gt; &#39;KeyTimestamp&#39; class, then have each of these expose public methods...<br/>\n&gt;<br/>\n&gt; perhaps this is the best refactoring, but it seemed to me to cause a<br/>\n&gt; profusion of one-method classes...<br/>\n&gt;<br/>\n&gt; 4) Make the methods &#39;protected&#39;, have your Test class inherit from<br/>\n&gt; your<br/>\n&gt; class under test.<br/>\n&gt; This does work, however having a bunch of protected methods in your<br/>\n&gt; class<br/>\n&gt; interface could give the impression to future users that the class was<br/>\n&gt;<br/>\n&gt; designed to be inherited from, which is not really true in this<br/>\n&gt; case...<br/>\n&gt;<br/>\n&gt; I&#39;d love to hear the group&#39;s thoughts... </span></blockquote></div>", 
+    "prevInTime": 6401, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1039738260", 
+    "canDelete": false, 
+    "nextInTopic": 6403, 
+    "prevInTopic": 6401, 
+    "headers": {
+        "messageIdInHeader": "PDNERjkyNTk0LjIwOTY2OUFAc3VuLmNvbT4=", 
+        "referencesHeader": "PDY2QzUzQjBDODhEM0Q0MTE4RjRBMDA5MDI3RENFMDY0MDIwMzYzQkJAeWxhY3lidGV4YzAxLnlvdWJldC5jb20+"
+    }
+}

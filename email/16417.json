@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 16418, 
+    "senderId": "pgL-hzXlDKxDqfwu94Z6Dlfjlx_GALAkVtmRtVmGkBNg2raCUR5nVQY4ZKYXy0WQg0mWeX5jqMDemLFcKj1Uso8Q9WfY9xTOMmtTNBEyeKkI9b1_", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to test a recursive method", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "I agree with Joe and Cedric here, don t really see why you want to test it but some important infomration might me missing. Whaat I do see is an oportunity to", 
+    "msgId": 16417, 
+    "profile": "j0hlrogge", 
+    "topicId": 16390, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-601164543\">I agree with Joe and Cedric here, don&#39;t really see why you want to<br/>\ntest it but some important infomration might me missing.<br/>\n<br/>\nWhaat I do see is an oportunity to talk about intercept in rMock that<br/>\ncan be used to test this kind of thing (but just because you can<br/>\ndoesn&#39;t mean you should, hmm maybe that includes talking about<br/>\nfeatures aswell in the wrong context aswell...).<br/>\n<br/>\n<br/>\npublic class MyClassUnderTest {<br/>\n     public void myRecursiveMethod(int times) {<br/>\n          if ( times &gt; 0) {<br/>\n              myRecursiveMethod(--times);<br/>\n          }<br/>\n     }<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\npublic class RecursicveTest extends RMockTestCase {<br/>\n     private MyClassUnderTest cut;<br/>\n     public void setUp() {<br/>\n         cut = (MyClassUnderTest)intercept(MyClassUnderTest.class,<br/>\n&quot;classUnderTest&quot;);<br/>\n     }<br/>\n<br/>\n    public void testRecurse() {<br/>\n         cut.myRecursiveMethod(4);<br/>\n         modify().multiplicity(expect.exactly(4)).args(is.gt(-1)).forward();<br/>\n         // The modification ensures that the method is called no more<br/>\nthan and no less than<br/>\n         // 4 times. As long as times is greater than -1 it is ok and<br/>\nwhen a method call with these  parameters is intercepted the call is<br/>\nforwarded to the underlying implementation of the method.<br/>\n<br/>\n         startVerification();<br/>\n         // lets start verifying what we setUp<br/>\n<br/>\n         cut.myRecursiveMethod(4);<br/>\n    }<br/>\n<br/>\n}<br/>\n<br/>\nI have never written a test like this and I don&#39;t think I will in the<br/>\nfuture either, this is purely for fun.<br/>\n<br/>\nWhat I have done though is to use itercept to extend AbstractClasses<br/>\nto verify the abstract classes contracts. What I have used it even<br/>\nmore for is to verify that streams, readers, writers that I pass to<br/>\nclasses I test are closed (or not closed) as expected (or similar<br/>\nsituations).<br/>\n<br/>\nHope it was at least almost as fun reading the example as it was for<br/>\nme writing it. I have not run the test though so I don&#39;t know if it<br/>\nfails, would be pretty embarassing if it looped more/fewer times than<br/>\nI expected :P<br/>\n<br/>\nRegards<br/>\nJoakim Ohlrogge<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\namine achergui wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Is there any test pattern to test a recursive method ( in my case,<br/>\n&gt; the method&#39;s body calls  collaborators thus in the test method i use mocks).<br/>\n&gt; Is there any pattern or recipe to solve this?<br/>\n<br/>\n </span></blockquote>So you have a method that wants to invoke itself, and you&#39;d like to mock<br/>\n  the call to itself.<br/>\n<br/>\nIn this case, ignore the method being repetitively recursive, because by<br/>\nputting a mock in there, you&#39;re ensuring that the method will only call<br/>\nitself one. (The mock won&#39;t invoke itself any more than that.)<br/>\n<br/>\nAs for a method invoking itself, there&#39;s no direct way to mock the<br/>\ninvocation. Some basic reasoning should make that clear: if the method<br/>\nis mocked, then it wouldn&#39;t invoke itself. :)<br/>\n<br/>\nI have thought about this in the abstract before, and don&#39;t have an<br/>\nanswer, except to point out that I&#39;ve never wanted to do this. There<br/>\nmust be a reason for that, and I hope it&#39;s a good one. :)<br/>\n<br/>\nCan you tell us what this method does? Perhaps that will shed some light<br/>\non what to do.<br/>\n--<br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 16416, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1143450824", 
+    "canDelete": false, 
+    "nextInTopic": 16426, 
+    "prevInTopic": 16412, 
+    "headers": {
+        "inReplyToHeader": "PDQ0MjczQjQ2LjEwODA4QHJvZ2Vycy5jb20+", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwMzI3MDExM203Yjc0MTU4Y3g5YzUyNDdkZTY5ZTAyYzI1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGEwM2EyMDkzMDYwMzI0MDk0OGw3OTIzMTJhMnRhZDQ4Y2I0MTNkYmM4YTZiQG1haWwuZ21haWwuY29tPgkgPDQ0MjczQjQ2LjEwODA4QHJvZ2Vycy5jb20+"
+    }
+}

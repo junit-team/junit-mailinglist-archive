@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 40, 
+    "nextInTime": 9576, 
+    "senderId": "RG03dTBsTvBXD1kPYPSjTmkKraw7zZ1yf-Pzy4TP2h0vEz3iRDnLSoanl_QzxraIAR2wL58RSLnKFaB5gNhvFmY8kaY1BS5XTyRY3hv49A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Recursive TestRunner", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Rakesh wrote:  ... OK. This is totally different from repeating test cases . It appears to me that you want to execute some setup code once, execute ", 
+    "msgId": 9575, 
+    "profile": "nails762", 
+    "topicId": 9399, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-789142974\">Rakesh wrote:<br/>\n<br/>\n&lt;snip /&gt;<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; So it will execute all the TestCases, and the setUp() and tearDown()<br/>\n&gt; function makes sure that the fixture<br/>\n&gt; is not executing every time a TestCase is called.<br/>\n&gt; So I have initialization of my application only once, and all the<br/>\n&gt; TestCases run in the same environment.<br/>\n<br/>\n </span></blockquote>OK. This is totally different from &quot;repeating test cases&quot;.<br/>\n<br/>\nIt appears to me that you want to execute some setup code once, execute <br/>\nan entire TestSuite, then execute some teardown code once. Is that correct?<br/>\n<br/>\nIf it is, then look at TestSetup and the JUnit FAQ. Google keyworks: <br/>\nJUnit FAQ TestSetup.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Now I want to be able to run the same TestSuite again and again, till I<br/>\n&gt; myself don&#39;t stop the application.<br/>\n&gt; I looked into the RepeatedTestCase class, but couldn&#39;t get it working<br/>\n&gt; for me in my required manner.<br/>\n&gt; Can you give me some pointers on how to use RepeatedTestCase class<br/>\n&gt; As I am not quite clear on that, and couldn&#39;t find documentation on<br/>\n&gt; this.<br/>\n<br/>\n </span></blockquote>My above comment is not quite right, then.<br/>\n<br/>\nYou want to do this:<br/>\n1. Start JVM.<br/>\n2. Execute one-time setup code.<br/>\n3. Execute your TestSuite many times.<br/>\n4. Tear down the JVM.<br/>\n<br/>\nThe solution you need depends on how you run your tests.<br/>\n<br/>\nIf you want to use the text-based test runner, you&#39;re out of luck. Each <br/>\ninvocation of the text-based test runner runs in its own JVM, so if you <br/>\nwant to do one-time setup of data in the JVM and execute a suite n <br/>\ntimes, that won&#39;t happen. If your one-time setup is for something <br/>\noutside the JVM, then you essentially have to remember to do the setup <br/>\nand teardown as needed.<br/>\n<br/>\nIf you can use the Swing-based test runner, there is hope. Override the <br/>\nmethod terminate() to invoke your one-time tear down code before the <br/>\ntest runner terminates. Wrap starting the test runner in your own main() <br/>\nmethod that performs your one-time setup first. Here is the code.<br/>\n<br/>\npublic class EnvironmentSetupRunner {<br/>\n     public static void main(String[] args) throws Exception {<br/>\n         oneTimeEnvironmentSetUp();<br/>\n<br/>\n         new TestRunner() {<br/>\n             public void terminate() {<br/>\n                 oneTimeEnvironmentTearDown();<br/>\n                 super.terminate();<br/>\n             }<br/>\n         }<br/>\n         .start(<br/>\n             new String[] { AnotherSetGlobalDataTest.class.getName()});<br/>\n<br/>\n     }<br/>\n<br/>\n     private static void oneTimeEnvironmentTearDown() {<br/>\n         System.out.println(&quot;Teardown&quot;);<br/>\n     }<br/>\n<br/>\n     private static void oneTimeEnvironmentSetUp() {<br/>\n         System.out.println(&quot;Setup&quot;);<br/>\n     }<br/>\n}<br/>\n<br/>\nNeat little trick, and it&#39;s going in my book. :)<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 9574, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1064945538", 
+    "canDelete": false, 
+    "nextInTopic": 9576, 
+    "prevInTopic": 9573, 
+    "headers": {
+        "inReplyToHeader": "PDAwMTkwMWMzODc3OSRjODUzMjJiMCQ0YWUyMmEwZkBudDI2NzQ+", 
+        "messageIdInHeader": "PDNGNzlDNzgyLjQwOTA1MDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDAwMTkwMWMzODc3OSRjODUzMjJiMCQ0YWUyMmEwZkBudDI2NzQ+"
+    }
+}

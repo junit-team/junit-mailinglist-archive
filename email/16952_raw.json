@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 16953, 
+    "senderId": "-iBHU23sKLSlS9nPayn3svbnd9YUIiSr3XF32X5JjStMTsriT1q_rFr-e0eWTCQB5iQpfb3wEEoDlIvQ_7qAp_JghpxzALSJ", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] org.junit.runner.notification.RunListener", 
+    "from": "Ernst Reissner &lt;rei3ner@...&gt;", 
+    "authorName": "Ernst Reissner", 
+    "msgSnippet": "Hello Kent, ... // unchanged public void testRunStarted(Description desc) public void testRunFinished(Result result) // the latter two are the values given by", 
+    "msgId": 16952, 
+    "rawEmail": "Return-Path: &lt;rei3ner@...&gt;\r\nReceived: (qmail 69638 invoked from network); 18 Jun 2006 20:01:40 -0000\r\nReceived: from unknown (66.218.67.36)\n  by m26.grp.scd.yahoo.com with QMQP; 18 Jun 2006 20:01:40 -0000\r\nReceived: from unknown (HELO n25.bullet.scd.yahoo.com) (66.94.237.54)\n  by mta10.grp.scd.yahoo.com with SMTP; 18 Jun 2006 20:01:40 -0000\r\nReceived: from [66.218.69.1] by n25.bullet.scd.yahoo.com with NNFMP; 18 Jun 2006 20:01:35 -0000\r\nReceived: from [66.218.66.70] by t1.bullet.scd.yahoo.com with NNFMP; 18 Jun 2006 20:01:35 -0000\r\nX-Sender: rei3ner@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 65434 invoked from network); 18 Jun 2006 13:47:58 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m26.grp.scd.yahoo.com with QMQP; 18 Jun 2006 13:47:58 -0000\r\nReceived: from unknown (HELO mail-in-09.arcor-online.net) (151.189.21.49)\n  by mta9.grp.scd.yahoo.com with SMTP; 18 Jun 2006 13:47:58 -0000\r\nReceived: from mail-in-05-z2.arcor-online.net (mail-in-05-z2.arcor-online.net [151.189.8.17])\n\tby mail-in-09.arcor-online.net (Postfix) with ESMTP id 79CF030DCF8\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 18 Jun 2006 15:47:17 +0200 (CEST)\r\nReceived: from mail-in-03.arcor-online.net (mail-in-03.arcor-online.net [151.189.21.43])\n\tby mail-in-05-z2.arcor-online.net (Postfix) with ESMTP id 681DB1A76CC;\n\tSun, 18 Jun 2006 15:47:17 +0200 (CEST)\r\nReceived: from [88.64.53.149] (dslb-088-064-053-149.pools.arcor-ip.net [88.64.53.149])\n\t(Authenticated sender: rei3ner@...)\n\tby mail-in-03.arcor-online.net (Postfix) with ESMTP id A55A917B3C1;\n\tSun, 18 Jun 2006 15:47:16 +0200 (CEST)\r\nMessage-ID: &lt;449558A3.8080003@...&gt;\r\nDate: Sun, 18 Jun 2006 15:44:03 +0200\r\nUser-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.11) Gecko/20050727\r\nX-Accept-Language: en-us, fr, de, he, el\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;014301c6922f$8b4fd160$6501a8c0@T42&gt;\r\nIn-Reply-To: &lt;014301c6922f$8b4fd160$6501a8c0@T42&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Ernst Reissner &lt;rei3ner@...&gt;\r\nSubject: Re: [junit] org.junit.runner.notification.RunListener\r\nX-Yahoo-Group-Post: member; u=272157167; y=b0rSrWW-aW9UP8fSWYN3kfrxbtJc-SSaDKa1EvBgGCIqqg\r\nX-Yahoo-Profile: rei3ner\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via web; 18 Jun 2006 20:01:34 -0000\r\n\r\nHello Kent,\n\n&gt; These ideas sound interesting. Can you turn them into test cases?\n\n\n\n\n&gt;\n&gt; currently i try to substitute for the junit3.x gui.\n&gt; to this end i have to implement\n&gt;\n&gt; org.junit.runner.notification.RunListener\n&gt;\n&gt; I think it would be reasonable,\n&gt; to extend this interface:\n&gt; - start test: report timeout if any\n&gt; - ignore test: report reason.\n&gt;\n\n\n\n\n\n\n  \n\n\n\n// unchanged\npublic void testRunStarted(Description desc)\npublic void testRunFinished(Result result)\n\n// the latter two are the values given by @Test\npublic void testStarted(Description desc*, long timeout, Throwable\nexpected*)\n\n// unchanged\npublic void testFinished(Description desc)\npublic void testFailure(Failure failure)\n\n// reason is the value given by @Ignore\npublic void testIgnored(Description desc*,**| String| ||*|*reason*)\n\n// fired when RunNotifier.pleaseStop() has been invoked\n// and junit is able to react on it\n|*public void testRunAborted()*\n\n\n\nBy the way: |method|| RunNotifier.pleaseStop()||||\nexists whereas|||||||||||||||||| JUnitCore||.pleaseStop() ||||||\n||does not\nI Think it should be added.\n\nBy the way: if i give a timeout it turns out that the process goes on in\nthe background until it finishes.\nThis makes bad performance to the following tests.\nBut (i&#39;m not so much into it) maybe there is no way to stop the thread\n(Thread.stop() is &quot;@deprecated&quot;).\nOn the other hand, starting each testcase in its own thread would be a\nway to stop a testcase quickly\nrather than asking kindly &quot;||pleaseStop()&quot;.\n||I&#39;d prefer this because my testcases are sometimes lengthy.\n\n\n\nHope there are some usable thoughts in here.\n\nGreetings\n\nErnst\n|||||||\n\n\n[Non-text portions of this message have been removed]\n\n\n\n\n", 
+    "profile": "rei3ner", 
+    "topicId": 16912, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 272157167, 
+    "prevInTime": 16951, 
+    "contentTrasformed": false, 
+    "postDate": "1150638243", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16946, 
+    "headers": {
+        "inReplyToHeader": "PDAxNDMwMWM2OTIyZiQ4YjRmZDE2MCQ2NTAxYThjMEBUNDI+", 
+        "messageIdInHeader": "PDQ0OTU1OEEzLjgwODAwMDNAYXJjb3IuZGU+", 
+        "referencesHeader": "PDAxNDMwMWM2OTIyZiQ4YjRmZDE2MCQ2NTAxYThjMEBUNDI+"
+    }
+}

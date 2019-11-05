@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14769, 
+    "senderId": "4hpOp3UyVWRZ7-edfs8SvJuVOrzAMph5hKE5wJF74cB_PHYc16eSr2OyfGOEm4OrOMLUaL9cuXBfyjyhucKjMMXDFsrcDkC0KB3Mr4Kv5hn6FCz1EOkB5TB6X38fdgidRUqA0X0", 
+    "systemMessage": false, 
+    "subject": "RE: How to test a JCA coonector?", 
+    "from": "=?us-ascii?Q?Harald_M._Muller?= &lt;harald.m.mueller@...&gt;", 
+    "authorName": "Harald M. Muller", 
+    "msgSnippet": "... My gut feeling is that you need to connect to the real EIS (my analogy: Testing a JDBC driver for database XY will not be possible without an XY database", 
+    "msgId": 14768, 
+    "rawEmail": "Return-Path: &lt;harald_m_mueller@...&gt;\r\nX-Sender: harald_m_mueller@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 10843 invoked from network); 10 Sep 2005 19:27:42 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m33.grp.scd.yahoo.com with QMQP; 10 Sep 2005 19:27:42 -0000\r\nReceived: from unknown (HELO mail.gmx.net) (213.165.64.20)\n  by mta2.grp.scd.yahoo.com with SMTP; 10 Sep 2005 19:27:42 -0000\r\nReceived: (qmail invoked by alias); 10 Sep 2005 19:27:40 -0000\r\nReceived: from pD9FA3E25.dip.t-dialin.net (EHLO HARRY) [217.250.62.37]\n  by mail.gmx.net (mp009) with SMTP; 10 Sep 2005 21:27:40 +0200\r\nX-Authenticated: #4240783\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Sat, 10 Sep 2005 21:27:41 +0200\r\nMessage-ID: &lt;000e01c5b63d$b61c5ea0$5d00a8c0@HARRY&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.3416\r\nImportance: Normal\r\nIn-Reply-To: &lt;1126353059.918.32673.m19@yahoogroups.com&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106\r\nX-Y-GMX-Trusted: 0\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nX-eGroups-From: =?us-ascii?Q?Harald_M._Muller?= &lt;harald_m_mueller@...&gt;\r\nFrom: =?us-ascii?Q?Harald_M._Muller?= &lt;harald.m.mueller@...&gt;\r\nReply-To: &lt;harald_m_mueller@...&gt;\r\nSubject: RE: How to test a JCA coonector?\r\nX-Yahoo-Group-Post: member; u=74507428; y=fdCdNqIAlMzO0PP-EWsSmwqV1nhZaSiVQ1y8wy_OrbXYyLszGTnX58kxbQ\r\nX-Yahoo-Profile: harald_m_mueller\r\n\r\n&gt;    From: &quot;Patrick&quot; &lt;despeedo@...&gt;\n&gt; Subject: How to test a JCA coonector?\n&gt; \n&gt; hi folks,\n&gt; \n&gt; I have some serious doubts about how to test a JCA connector. The\n&gt; company I work for has developed this connector to an EIS written in\n&gt; C/C++. This JCA connector uses the Command design pattern in order to\n&gt; get/send and validate information on the EIS. \n&gt; \n&gt; Now they have added two new commands to this connector and I&#39;m\n&gt; supposed to test them. As it&#39;s legacy code, there are no junit tests\n&gt; and I will be the first one to write them but only for those new\n&gt; commands. My idea is to test the JCA connector out of the container\n&gt; and have a mock EIS since testing inside the container and connecting\n&gt; to the real EIS seems really painfull to me. :)  \n&gt;\n\nMy gut feeling is that you need to connect to the real EIS (my analogy:\nTesting a JDBC driver for database XY will not be possible without an XY\ndatabase server up and running: Even if we agree that such a design of\nmocking the intended recipient might be nice, I have not seen driver\nwriters do that ...).\n\nAre you sure that connecting to the EIS is painful? Did you check this\nfor a day or two? After all, your company makes a living selling this\nbeast, so you should have enough people around you you can set up one\n&quot;in a sec&quot;. Or maybe you have one such EIS running all the time\nsomewhere for testing purposes (24x7), and you can hookup to that EIS\nanytime. In case you want to test *all* of your connector (including the\nintegration to the (a) infrastructure services of container - including\ntransaction handling, especially the 2PC case!! -, (b) network\nstacks/protocols, (c) operating system), you have no other choice, of\ncourse. Whether this is still a &quot;unit test&quot; has to be defined by you.\n\nThe second possibility is that you mock on the transport layer: The JCA\nconnector either uses TCP/IP or some other network to connect to the EIS\n- maybe you can write a small server (on another port) which accepts the\nsame low-level commands. This will, however and IMHO, become horrible\nsoon unless you have people and software around knowing this low level.\nThe same is probably true if JNI is used ...\n\nThe third possibility is to provide a clear interface inside the\nconnector so that the parts to be &quot;unit-tested&quot; are above that\nseparation. This might require a refactoring or redesign of the JCA\nconnector, but maybe not: The people who write the connector may already\nhave had the same problem and might have introduced a suitable\nabstraction for (at least parts of) a mock EIS.\n\nAnd sorry if I just uttered trivialities ... but that&#39;s all I could\nextract from your posting ...\n\nRegards\nHarald\n\n\n", 
+    "profile": "harald_m_mueller", 
+    "topicId": 14764, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 74507428, 
+    "prevInTime": 14767, 
+    "contentTrasformed": false, 
+    "postDate": "1126380461", 
+    "canDelete": false, 
+    "nextInTopic": 14782, 
+    "prevInTopic": 14764, 
+    "headers": {
+        "inReplyToHeader": "PDExMjYzNTMwNTkuOTE4LjMyNjczLm0xOUB5YWhvb2dyb3Vwcy5jb20+", 
+        "messageIdInHeader": "PDAwMGUwMWM1YjYzZCRiNjFjNWVhMCQ1ZDAwYThjMEBIQVJSWT4="
+    }
+}

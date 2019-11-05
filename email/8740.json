@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 30, 
+    "nextInTime": 8741, 
+    "senderId": "wy9jIY6zYyLI7Z0yhe2-EK5j5f0KD-ibbJovSjnwvwJV4TxD4K_xLZxLY-38UakJ21szSpMKcx36ATiTumaMWxAHFeL_", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test console output?", 
+    "from": "Brett Neumeier &lt;random@...&gt;", 
+    "authorName": "Brett Neumeier", 
+    "msgSnippet": "... I agree with both of J. B. s points above.  However, at some points in the past I have been obligated to use class libraries that write to System.out, and", 
+    "msgId": 8740, 
+    "profile": "xptlq", 
+    "topicId": 8734, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 122508602, 
+    "messageBody": "<div id=\"ygrps-yiv-1289490308\">On Tue, 2003-07-22 at 14:02, J. B. Rainsberger wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;So said jxingtang on 2003-07-22 --------------------<br/>\n&gt; &gt;I do not know whether this is a duplicated question. I have a program <br/>\n&gt; &gt;with large number of console output from different source. Basically, <br/>\n&gt; &gt;I am using System.out.println(...). How could I verify those outputs <br/>\n&gt; &gt;are correct? Thanks!<br/>\n&gt; <br/>\n&gt; 1. Don&#39;t use System.out in your application directly. Your application<br/>\n&gt; components should accept a PrintWriter as a parameter somewhere.<br/>\n&gt; 2. In your tests, substitute a PrintWriter wrapping a StringWriter in<br/>\n&gt; place of System.out. This is easy to verify.<br/>\n<br/>\n </span></blockquote>I agree with both of J. B.&#39;s points above.  However, at some points in<br/>\nthe past I have been obligated to use class libraries that write to<br/>\nSystem.out, and which I cannot change.  So, to test code that uses these<br/>\nlibraries, I&#39;ve found that I get a lot of mileage out of creating a<br/>\nlittle &quot;ConsoleTester&quot; helper class, which appears below.  The basic<br/>\nidea is, in my unit test I create a ConsoleTester, then exercise the<br/>\ncode I want to test, then get the output that was written to System.out<br/>\nfrom the ConsoleTester and make assertions about it.<br/>\n<br/>\nAgain, please do not misunderstand:  I don&#39;t like this approach.  In my<br/>\nown code, I do not write to System.out, and I recommend that others<br/>\navoid doing so as well.<br/>\n<br/>\nCheers,<br/>\n<br/>\nbn<br/>\n<br/>\npublic class ConsoleTester {<br/>\n    private static final PrintStream originalOut = System.out;<br/>\n    private static final PrintStream originalErr = System.err;<br/>\n    private ByteArrayOutputStream out;<br/>\n    private ByteArrayOutputStream err;<br/>\n<br/>\n    public ConsoleTester() throws IOException {<br/>\n        resetStdout();<br/>\n        resetStderr();<br/>\n    }<br/>\n<br/>\n    public final void resetStdout() {<br/>\n        out = new ByteArrayOutputStream();<br/>\n        System.setOut(new PrintStream(out));<br/>\n    }<br/>\n<br/>\n    public final void resetStderr() {<br/>\n        err = new ByteArrayOutputStream();<br/>\n        System.setErr(new PrintStream(err));<br/>\n    }<br/>\n<br/>\n    public String getStdout() {<br/>\n        return out.toString();<br/>\n    }<br/>\n<br/>\n    public String getStderr() {<br/>\n        return err.toString();<br/>\n    }<br/>\n<br/>\n    public void shutdown() {<br/>\n        System.setOut(originalOut);<br/>\n        System.setErr(originalErr);<br/>\n    }<br/>\n<br/>\n    protected void finalize() throws Throwable {<br/>\n        shutdown();<br/>\n        super.finalize();<br/>\n    }<br/>\n}</div>", 
+    "prevInTime": 8739, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1058927453", 
+    "canDelete": false, 
+    "nextInTopic": 8744, 
+    "prevInTopic": 8736, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNzIyMTUwMjI0MDY4Mi4wMTM5OUE1MEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDEwNTg5Mjc0NTIuMjE2OS41LmNhbWVsQGdudXJyLnJuZC5jeD4=", 
+        "referencesHeader": "PGJmanVlMitjc2c3QGVHcm91cHMuY29tPgkgPDIwMDMwNzIyMTUwMjI0MDY4Mi4wMTM5OUE1MEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4="
+    }
+}

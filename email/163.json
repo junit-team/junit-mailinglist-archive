@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 164, 
+    "senderId": "wiCm07QIUN9PUtTlRlyovAZosjPB9LkeEcEM0CBazr_UEcDXS-uEG4EhZhzWrbaiF2NDjTfRH4R6vTBm", 
+    "systemMessage": false, 
+    "subject": "[Fwd: Re: [junit] newbie question: how to avoid rerunning fixture code on every test]", 
+    "from": "jphedley@netscape.net", 
+    "authorName": "jphedley@netscape.net", 
+    "msgSnippet": "... Subject: Re: [junit] newbie question: how to avoid rerunning fixture code on every test Date: Fri, 22 Dec 2000 18:31:33 -0500 From: jphedley@netscape.net", 
+    "msgId": 163, 
+    "topicId": 163, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-492009252\">-------- Original Message --------<br/>\nSubject: Re: [junit] newbie question: how to avoid rerunning fixture code on <br/>\nevery test<br/>\nDate: Fri, 22 Dec 2000 18:31:33 -0500<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jphedley@netscape.net\">jphedley@netscape.net</a> (Justin Hedley)<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a><br/>\nReferences: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:852569BD.00715A05.00@uhcnh002.uhc.com\">852569BD.00715A05.00@uhcnh002.uhc.com</a>&gt;<br/>\n<br/>\nErr.....  I just spent some time responding to this but my message got lost <br/>\nsince my mail session expired, POS.<br/>\n<br/>\nThis is definitely a source of confusion that surprises some; even some who <br/>\nhave worked some time with JUnit.<br/>\n<br/>\nEach test in your suite(e.g., test_underScore1) corresponds to a new instance <br/>\nof the child of TestCase (e.g., SomeNameTest).  Examine how a TestSuite is <br/>\nconstructed:<br/>\n1)statically<br/>\npublic static Test suite(){<br/>\n    TestSuite suite = new TestSuite();<br/>\n    suite.addTest(new SomeNameTest(&quot;test_underScore1&quot;));<br/>\n    suite.addTest(new SomeNameTest(&quot;test_underScore2&quot;));<br/>\n    return suite;<br/>\n} <br/>\n2)dynamically(via reflection)<br/>\npublic static Test suite(){<br/>\n    TestSuite suite = new TestSuite(SomeNameTest.class);<br/>\n}<br/>\nEach test case you add corresponds to a new object.  There interference <br/>\ncannot take place between test cases.  This can be illustrated from a the <br/>\noutput of a class I route to demonstrate this,<br/>\n<br/>\nbash-2.02$ java junit.textui.TestRunner SomeNameTest<br/>\nTest constructor called1<br/>\nTest constructor called2<br/>\nTest constructor called3<br/>\n.setUp called<br/>\ntest_underScore1<br/>\n1 Instance of class SomeNameTest<br/>\ntearDown called<br/>\n.setUp called<br/>\ntest_underScore2<br/>\n2 Instance of class SomeNameTest<br/>\ntearDown called<br/>\n.setUp called<br/>\ntest_underScore3<br/>\n3 Instance of class SomeNameTest<br/>\ntearDown called<br/>\n<br/>\nTime: 0<br/>\n<br/>\nOK (3 tests)<br/>\n<br/>\nSo if each test case is it&#39;s own class, why not rely on the constructor and <br/>\nfinalize method.  Nothing can guarantee when the finalize gets called by the <br/>\nGarbage collector but tearDown is guaranteed to get called at the end of test <br/>\nthus freeing resources for it.  For whatever reason (any takers?) the <br/>\nconstructor get for all tests gets called prior to an tests being running so <br/>\nsetUp forces resources to be allocated at the time they are needed.  <br/>\n<br/>\nI have included my test code which I used to illustrate my points.<br/>\n<br/>\nMy first response was a bit more elegant but now it&#39;s in the bit bucket.<br/>\n<br/>\ncheers,<br/>\nJ.P.<br/>\n<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a> wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; I am pretty new to both junit and java programming.  I read most of the <br/>\n </span></blockquote>JUnit<br/>\n<blockquote><span title=\"ireply\"> &gt; doc on the junit home page.   After reading the Cook&#39;s tour paper, it seems <br/>\n </span></blockquote>that<br/>\n<blockquote><span title=\"ireply\"> &gt; the design intent is to have the setup and teardown code allocate and <br/>\n </span></blockquote>release<br/>\n<blockquote><span title=\"ireply\"> &gt; all the test fixture objects for every seperate test, to avoid tests <br/>\n </span></blockquote>interfering<br/>\n<blockquote><span title=\"ireply\"> &gt; with eachother.<br/>\n&gt; <br/>\n&gt; What if the setup logic involves connecting to databases and running queries<br/>\n&gt; that tends to be a bit slow for doing on every single test?  Is an <br/>\n </span></blockquote>explanation<br/>\n<blockquote><span title=\"ireply\"> &gt; available anywhere on the web telling how to get tests to run faster by<br/>\n&gt; executing slow initialization code only once before all the tests?<br/>\n&gt; <br/>\n&gt; thanks<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n </span></blockquote>__________________________________________________________________<br/>\nGet your own FREE, personal Netscape Webmail account today at <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://webmail.netscape.com/\">http://webmail.netscape.com/</a><br/>\n<br/>\n__________________________________________________________________<br/>\nGet your own FREE, personal Netscape Webmail account today at <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://webmail.netscape.com/\">http://webmail.netscape.com/</a></div>", 
+    "prevInTime": 162, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "977533140", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIzRDU2NjkwLjU2ODk3NTNBLjAwOUYzQTgxQG5ldHNjYXBlLm5ldD4="
+    }
+}

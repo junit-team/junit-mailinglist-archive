@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 11314, 
+    "senderId": "s-bWTPxAog6nQECerau2f3cG4dqEfzURYM-6Zy7UQJ0T11oaZ9Wx3ZuUtdaemdBzNJWP9qIR1ZMt9n1O1CK4rq5KNYz1FPueq-NQdlZlOpwnQesBOg", 
+    "systemMessage": false, 
+    "subject": "Creating own subclass of TestCase as base for tests", 
+    "from": "Martijn Dashorst &lt;yahoogroups@...&gt;", 
+    "authorName": "Martijn Dashorst", 
+    "msgSnippet": "Hi, I m a maintainer of jWebUnit and we ve got a problem with resource deallocation when many tests are run (1000+). This is due to the HTTP driver (WebTester)", 
+    "msgId": 11313, 
+    "profile": "martijn_dashorst", 
+    "topicId": 11313, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 130778978, 
+    "messageBody": "<div id=\"ygrps-yiv-1620459702\">Hi,<br/>\n<br/>\nI&#39;m a maintainer of jWebUnit and we&#39;ve got a problem with resource <br/>\ndeallocation when many tests are run (1000+). This is due to the HTTP <br/>\ndriver (WebTester) which is allocated in the constructor (bad policy, I <br/>\nknow) and which is only freed when the TestCase is cleaned up by the GC.<br/>\n<br/>\nNow my question is: how do I allocate/deallocate the HTTP driver without <br/>\nneeding my clients&#39; subclasses to call super.setUp() and <br/>\nsuper.tearDown() in their implementations of setUp()/tearDown().<br/>\n<br/>\nI was thinking of overriding runBare() in which I allocate the driver <br/>\nbefore calling super.runBare(), and in a finally block, I dereference <br/>\nthe driver:<br/>\n<br/>\n  public void runBare() throws Throwable {<br/>\n      try {<br/>\n          tester = new WebTester();<br/>\n          super.runBare();<br/>\n      } finally {<br/>\n          tester = null;<br/>\n      }<br/>\n  }<br/>\n<br/>\nThis allows subclasses of WebTestCase to override setUp() and tearDown() <br/>\nwithout requiring them to call super.setUp()/tearDown().<br/>\n<br/>\nThis is rather risky, for I have no guarantee that runBare() is called <br/>\nin each environment (ant, Eclipse, IntelliJ, etc).<br/>\n<br/>\nCreating my own WebTestCase extends Assert implements Test would require <br/>\nme to implement a lot of code, not just delegation, or am I missing <br/>\nsomething?<br/>\n<br/>\nI hope you could shed some light on this.<br/>\n<br/>\nMartijn Dashorst</div>", 
+    "prevInTime": 11312, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1088541961", 
+    "canDelete": false, 
+    "nextInTopic": 11314, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQwRTFENTA5LjIwNjAyMDRAZGFzaG9yc3QuZGRzLm5sPg=="
+    }
+}

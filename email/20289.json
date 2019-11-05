@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20290, 
+    "senderId": "66q9HBj9oO4eznqtWdGP38zN-z5T9qbI_x17bIoHkuTsGMzd9LzRETOi8AxwXOcDCVhNatNE5efsHGLHFZLc7Tc9eZgLVfts", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Question about JUnit 4 execution", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "The answer to what I think is Milan s question is one for each method annotated with @Test . The order, James, is as you have pointed out. Regards, Kent Beck ", 
+    "msgId": 20289, 
+    "profile": "kentlbeck", 
+    "topicId": 20266, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-974626694\">The answer to what I think is Milan&#39;s question is &quot;one for each method<br/>\nannotated with @Test&quot;. The order, James, is as you have pointed out.<br/>\n <br/>\nRegards,<br/>\n <br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n  _____  <br/>\n<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\nJames Abley<br/>\nSent: Monday, February 04, 2008 6:07 AM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: Re: [junit] Question about JUnit 4 execution<br/>\n<br/>\n<br/>\n<br/>\nOn 03/02/2008, Milan Milanovic &lt;milanmilanovich@<br/>\n&lt;mailto:milanmilanovich%40yahoo.com&gt; yahoo.com&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi,<br/>\n&gt;<br/>\n&gt; if I may rewrite my question, when I run this &quot;Test&quot; class, how many<br/>\n </span></blockquote>instances of this class are created and runned ?!<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; --<br/>\n&gt; Thx, Milan.<br/>\n&gt;<br/>\n&gt; ----- Original Message ----<br/>\n&gt; From: Lasse Koskela &lt;lasse.koskela@ &lt;mailto:lasse.koskela%40gmail.com&gt;<br/>\n </span></blockquote>gmail.com&gt;<br/>\n<blockquote><span title=\"ireply\"> &gt; To: junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com<br/>\n&gt; Sent: Sunday, February 3, 2008 12:28:29 AM<br/>\n&gt; Subject: Re: [junit] Question about JUnit 4 execution<br/>\n&gt;<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; On Jan 28, 2008 4:37 PM, milanmilanovich &lt;milanmilanovich@ yahoo.com&gt;<br/>\n </span></blockquote>wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; &gt; public class Test {<br/>\n&gt;<br/>\n&gt; &gt; public static MyClass ins;<br/>\n&gt;<br/>\n&gt; &gt; @BeforeClass<br/>\n&gt;<br/>\n&gt; &gt; public static void beforeAllMethod( ) {<br/>\n&gt;<br/>\n&gt; &gt; ins = new MyClass();<br/>\n&gt;<br/>\n&gt; &gt; // Is this &quot;ins&quot; object available in all @Test methods in the class?<br/>\n&gt;<br/>\n&gt; &gt; }<br/>\n&gt;<br/>\n&gt; &gt; }<br/>\n&gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt; &gt; My question is related to the static &quot;ins&quot; object, is this object<br/>\n&gt;<br/>\n&gt; &gt; unique to this Class and its @Test methods during JUnit test of this<br/>\n&gt;<br/>\n&gt; &gt; test class ?<br/>\n&gt;<br/>\n&gt; I&#39;m not sure what you mean by &quot;unique to this class&quot; but the static<br/>\n&gt;<br/>\n&gt; field initialized by a @BeforeClass method is accessible by all<br/>\n&gt;<br/>\n&gt; instances of the test class and therefore by all @Test methods.<br/>\n&gt;<br/>\n&gt; Lasse<br/>\n&gt;<br/>\n&gt; --<br/>\n&gt;<br/>\n&gt; Lasse Koskela<br/>\n&gt;<br/>\n&gt; * Author of &quot;Test Driven&quot; (Manning Publications, 2007) *<br/>\n&gt;<br/>\n&gt; * Reaktor Innovations * <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.ri\">http://www.ri</a> fi/en *<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>Well, I just did a little experiment, which confirmed my intuitive<br/>\nunderstanding of how it works.<br/>\n<br/>\npublic class TestBeforeClass {<br/>\n<br/>\npublic static MyClass ins;<br/>\n<br/>\npublic MyOtherClass oth;<br/>\n<br/>\n@BeforeClass<br/>\npublic static void beforeAllMethod() {<br/>\n// if I initialize &quot;ins&quot; static object here<br/>\nins = new MyClass();<br/>\n<br/>\n// Is this &quot;ins&quot; object available in all @Test methods in the<br/>\n<br/>\n}<br/>\n<br/>\n@Before<br/>\npublic void before() {<br/>\n// If I instantiate &quot;oth&quot; object here<br/>\noth = new MyOtherClass();<br/>\n<br/>\n}<br/>\n<br/>\n@After<br/>\npublic void after() {<br/>\n<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void testMethod() {<br/>\n// I work here with my objects;<br/>\nins.someMethod();<br/>\noth.someMethod();<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void otherTestHere() {<br/>\nins.someMethod();<br/>\noth.someMethod();<br/>\n}<br/>\n}<br/>\n<br/>\nAnd with appropriate System.out calls in constructors and methods:<br/>\n<br/>\nMyClass.&lt;init&gt;<br/>\nMyOtherClass.&lt;init&gt;<br/>\nMyClass.someMethod<br/>\nMyOtherClass.someMethod<br/>\nMyOtherClass.&lt;init&gt;<br/>\nMyClass.someMethod<br/>\nMyOtherClass.someMethod<br/>\n<br/>\nSo @BeforeClass only gets called once, but @Before gets called before<br/>\neach test, as you would expect,<br/>\n<br/>\nCheers,<br/>\n<br/>\nJames<br/>\n<br/>\n<br/>\n <br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 20288, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1202147284", 
+    "canDelete": false, 
+    "nextInTopic": 20293, 
+    "prevInTopic": 20287, 
+    "headers": {
+        "inReplyToHeader": "PDIzZmNlOGU2MDgwMjA0MDYwN3MxZGJiYjkwZm45YTQ0MmYwNGJlMWZmODEwQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDAzMTkwMWM4Njc1NiQxODQxYzEzMCQ2NzAxYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PDUwNzQxNC41Mzk4Mi5xbUB3ZWIzNjMxMC5tYWlsLm11ZC55YWhvby5jb20+IDwyM2ZjZThlNjA4MDIwNDA2MDdzMWRiYmI5MGZuOWE0NDJmMDRiZTFmZjgxMEBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

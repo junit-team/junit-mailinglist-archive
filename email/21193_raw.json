@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21194, 
+    "senderId": "9KOuc3LU26focjMq-Wk3uv3CGc1x9HsiNsFQbDYQ2MKYc6JMJ3oLCWA667WHIR-GKahi7G9ejYrs3j5pf0ngycoyZKb-Ivbt", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: One test for all implementors of an interface", 
+    "from": "&quot;Nat Pryce&quot; &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "A JUnit parameterised test would be significantly simpler. --Nat ... -- http://www.natpryce.com", 
+    "msgId": 21193, 
+    "rawEmail": "Return-Path: &lt;nat.pryce@...&gt;\r\nX-Sender: nat.pryce@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 34568 invoked from network); 13 Dec 2008 18:47:35 -0000\r\nX-Received: from unknown (66.218.67.97)\n  by m49.grp.scd.yahoo.com with QMQP; 13 Dec 2008 18:47:35 -0000\r\nX-Received: from unknown (HELO an-out-0708.google.com) (209.85.132.244)\n  by mta18.grp.scd.yahoo.com with SMTP; 13 Dec 2008 18:47:35 -0000\r\nX-Received: by an-out-0708.google.com with SMTP id d11so856059and.30\n        for &lt;junit@yahoogroups.com&gt;; Sat, 13 Dec 2008 10:47:34 -0800 (PST)\r\nX-Received: by 10.100.143.17 with SMTP id q17mr3676996and.29.1229194054508;\n        Sat, 13 Dec 2008 10:47:34 -0800 (PST)\r\nX-Received: by 10.100.9.17 with HTTP; Sat, 13 Dec 2008 10:47:34 -0800 (PST)\r\nMessage-ID: &lt;17fa53d0812131047w52963349q4ff1f8df52843db9@...&gt;\r\nDate: Sat, 13 Dec 2008 18:47:34 +0000\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;b1c52b470812111415y18b04e97he7e39180a8e1193a@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;ghs14k+a3es@...&gt; &lt;ghs2d6+dl4p@...&gt;\n\t &lt;b1c52b470812111415y18b04e97he7e39180a8e1193a@...&gt;\r\nX-eGroups-Msg-Info: 2:2:2:0:2\r\nFrom: &quot;Nat Pryce&quot; &lt;nat.pryce@...&gt;\r\nSubject: Re: [junit] Re: One test for all implementors of an interface\r\nX-Yahoo-Group-Post: member; u=216973656; y=NMQ4fdVBmc6cBb6Yr6SH2B6_roeG6HK48agBiizYuMEq-dw4\r\nX-Yahoo-Profile: nat_pryce\r\n\r\nA JUnit parameterised test would be significantly simpler.\n\n--Nat\n\n2008/12/=\r\n11 Fr=E9d=E9ric Camblor &lt;fcamblor@...&gt;:\n&gt; John,\n&gt;\n&gt; What you can do i=\r\ns to rely on spring and\n&gt; AbstractDependencyInjectionSpringContextTest (ugh=\r\n !) in order to inject, via\n&gt; spring, your interface&#39;s implementation.\n&gt;\n&gt; =\r\nA piece of example (let&#39;s assume MyConcreteClass implements MyInterface) :\n=\r\n&gt;\n&gt; public class MyTest extends AbstractDependencyInjectionSpringContextTes=\r\nt {\n&gt;\n&gt; private MyInterface foo;\n&gt;\n&gt; public void MyTest(String name){\n&gt; sup=\r\ner(name);\n&gt; setAutowireMode(AUTOWIRE_BY_NAME); // Activating spring autowir=\r\ning :\n&gt; foo will be automatically injected via spring before test is run\n&gt; =\r\n}\n&gt;\n&gt; // provide a &quot;public&quot; foo setter, in order to allow spring to autowir=\r\ne\n&gt; it\n&gt; public void setFoo(MyInterface foo){ this.foo =3D foo; }\n&gt;\n&gt; publi=\r\nc void testInjection(){\n&gt; assertNotNull(foo);\n&gt; assertEquals(0, foo.size())=\r\n;\n&gt; foo.add(&quot;Hello&quot;);\n&gt; assertEquals(1, foo.size());\n&gt; }\n&gt; }\n&gt;\n&gt; Your sprin=\r\ng xml file will be like the following :\n&gt; &lt;beans&gt;\n&gt; &lt;bean id=3D&quot;foo&quot; class=\r\n=3D&quot;MyConcreteClass&quot; /&gt;\n&gt; &lt;/beans&gt;\n&gt;\n&gt; Hope this helps\n&gt; Fr=E9d=E9ric\n&gt;\n&gt; 2=\r\n008/12/11 John &lt;john_roshi@...&gt;\n&gt;\n&gt;&gt; --- In junit@yahoogroups.com &lt;ju=\r\nnit%40yahoogroups.com&gt;, &quot;lancezant&quot;\n&gt;\n&gt;&gt; &lt;lance.zant@...&gt; wrote:\n&gt;&gt;\n&gt;&gt; &gt; Th=\r\ne crux of the problem is that the base tests need a way to\n&gt;&gt; &gt; instantiate=\r\n the class under test without knowing what class that is.\n&gt;&gt;\n&gt;&gt; That&#39;s EXAC=\r\nTLY where I was stuck.\n&gt;&gt;\n&gt;&gt; &gt; To do this, the base test class relied on an=\r\n abstract factory method\n&gt;&gt; &gt; implemented in each concrete test class accor=\r\nding to the target\n&gt;&gt; &gt; implementation.\n&gt;&gt;\n&gt;&gt; Aha! Let me try that, thanks.=\r\n\n&gt;&gt;\n&gt;&gt; --john\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;\n&gt; --\n&gt; Fr=E9d=E9ric Camblor\n&gt;\n&gt; [Non-text portions=\r\n of this message have been removed]\n&gt;\n&gt; \n\n\n\n-- \nhttp://www.natpryce.com\n\n", 
+    "profile": "nat_pryce", 
+    "topicId": 21184, 
+    "spamInfo": {
+        "reason": "2", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "prevInTime": 21192, 
+    "contentTrasformed": false, 
+    "postDate": "1229194054", 
+    "canDelete": false, 
+    "nextInTopic": 21194, 
+    "prevInTopic": 21192, 
+    "headers": {
+        "inReplyToHeader": "PGIxYzUyYjQ3MDgxMjExMTQxNXkxOGIwNGU5N2hlN2UzOTE4MGE4ZTExOTNhQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDE3ZmE1M2QwODEyMTMxMDQ3dzUyOTYzMzQ5cTRmZjFmOGRmNTI4NDNkYjlAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGdoczE0aythM2VzQGVHcm91cHMuY29tPiA8Z2hzMmQ2K2RsNHBAZUdyb3Vwcy5jb20+CSA8YjFjNTJiNDcwODEyMTExNDE1eTE4YjA0ZTk3aGU3ZTM5MTgwYThlMTE5M2FAbWFpbC5nbWFpbC5jb20+"
+    }
+}

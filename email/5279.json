@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5280, 
+    "senderId": "Ao8z1PIzJfoDiavJ35CJRwQ3f8b7HiuGGOVDWO7KvTxFK4z8s1o5mrCmIl3BBuPQKE1LKgaGU5v7hLORbdUF1t9XEhKvhfIWholeHljBdOKl", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] design issue", 
+    "from": "Vladimir Bossicard &lt;vbossica@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "... Thanks J.B. I ll answer :-) From what I saw from your code, I guess that you want to write the errors/failures into a log file.  First question to answer:", 
+    "msgId": 5279, 
+    "profile": "vbossica", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "messageBody": "<div id=\"ygrps-yiv-2001809334\"><blockquote><span title=\"ireply\">&gt; Vladimir is probably a better person to answer these questions than I<br/>\n&gt; am, since he has worked more closely with the API from a developer&#39;s<br/>\n&gt; point of view. Vladimir? :)<br/>\n<br/>\n </span></blockquote>Thanks J.B. I&#39;ll answer :-)<br/>\n<br/>\n From what I saw from your code, I guess that you want to write the <br/>\nerrors/failures into a log file.  First question to answer: is <br/>\nTestListener the right solution?  In this case, I would rather go with <br/>\nthe JUnitReport task from Ant.  Another solution would be to pipe the <br/>\nTextUIRunner into a file (with junit.textrunner ... &gt; result.log).<br/>\n<br/>\nBut I imagine that you really want to use a TestListener and the task is <br/>\nto record all errors/failures into a log file.  The quickest solution I <br/>\nfound (with the version 3.7 of JUnit) is the following:<br/>\n<br/>\npackage junit.textui;    // (1)<br/>\n<br/>\npublic class VBORunner<br/>\n     extends TestRunner {<br/>\n<br/>\n\tpublic TestResult doRun(Test suite, boolean wait) {<br/>\n\t\tTestResult result= createTestResult();<br/>\n<br/>\n\t\tresult.addListener(new VBOListener());      // (2)<br/>\n\t\t<br/>\n\t\tresult.addListener(this);<br/>\n\t\tlong startTime= System.currentTimeMillis();<br/>\n\t\tsuite.run(result);<br/>\n\t\tlong endTime= System.currentTimeMillis();<br/>\n\t\tlong runTime= endTime-startTime;<br/>\n\t\twriter().println();<br/>\n\t\twriter().println(&quot;Time: &quot;+elapsedTimeAsString(runTime));<br/>\n\t\tprint(result);<br/>\n<br/>\n\t\twriter().println();<br/>\n<br/>\n\t\tpause(wait);<br/>\n\t\treturn result;<br/>\n\t}<br/>\n<br/>\n\tpublic static void main(String args[]) {<br/>\n\t\tTestRunner aTestRunner= new VBORunner();   // (3)<br/>\n\t\ttry {<br/>\n\t\t\tTestResult r= aTestRunner.start(args);  // (4)<br/>\n\t\t\tif (!r.wasSuccessful())<br/>\n\t\t\t\tSystem.exit(-1);<br/>\n\t\t\tSystem.exit(0);<br/>\n\t\t} catch(Exception e) {<br/>\n\t\t\tSystem.err.println(e.getMessage());<br/>\n\t\t\tSystem.exit(-2);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n}<br/>\n<br/>\n(1) the VBORunner class must be placed into the junit.textui package <br/>\nsince the method start (4) is defined as protected<br/>\n(2) only the TestResult object allows several listeners, so we will use <br/>\nit to add our listener (VBOListener simply implements TestListener). The <br/>\nversion 3.8 introduces the TestRunListener, but there&#39;s no mechanism yet <br/>\nto specify several TestRunListeners].<br/>\n(3) I had to overwrite the main method to create my special VBORunner.<br/>\n<br/>\nThis class can only be used with the console but the idea is the same <br/>\nfor the other runners.<br/>\n<br/>\nThere are several other possibilities but I think that this one is the <br/>\nquickest.  Anyone has another idea?<br/>\n<br/>\nHope this help<br/>\n<br/>\n-Vladimir<br/>\n<br/>\n-- <br/>\nVladimir Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 5278, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1025297990", 
+    "canDelete": false, 
+    "nextInTopic": 5294, 
+    "prevInTopic": 5278, 
+    "headers": {
+        "messageIdInHeader": "PDNEMUNDRTQ2LjQwODAzMDhAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PDIwMDIwNjI2MjIwMTQ0LjU3Njg1LnFtYWlsQHdlYjIwNDE0Lm1haWwueWFob28uY29tPiA8MjAwMjA2MjgwOTIwNTIwMjA1LjAwMTZERUYxQHNtdHAxLnN5bXBhdGljby5jYT4="
+    }
+}

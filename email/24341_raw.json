@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 24342, 
+    "senderId": "c96-2l7iE49a02xuuo0LfxRs-pWBKtHHlwQLGmIJ3F-uQydZryz3D3Rktjp816Dxy2DBiE_KzoA1HbTv2qWbNnkxI_Qclik", 
+    "systemMessage": false, 
+    "subject": "A way to log test execution (who is going to run/stop), FYI...", 
+    "from": "&quot;Oleskandr&quot; &lt;gavenkoa@...&gt;", 
+    "authorName": "Oleskandr", 
+    "msgSnippet": "Our build on Jenkins stuck on some test. Our *large* organisation forbid access to build server... So I want to find this broken test (seems to be DB related", 
+    "msgId": 24341, 
+    "rawEmail": "Return-Path: &lt;gavenkoa@...&gt;\r\nReceived: (qmail 74523 invoked by uid 7800); 22 Feb 2013 13:35:11 -0000\r\nX-Sender: gavenkoa@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 94015 invoked from network); 22 Feb 2013 13:32:22 -0000\r\nX-Received: from unknown (10.193.84.151)\n  by m8.grp.bf1.yahoo.com with QMQP; 22 Feb 2013 13:32:22 -0000\r\nX-Received: from unknown (HELO ng6-ip2.bullet.mail.bf1.yahoo.com) (98.139.165.38)\n  by mta5.grp.bf1.yahoo.com with SMTP; 22 Feb 2013 13:32:22 -0000\r\nX-Received: from [98.139.164.125] by ng6.bullet.mail.bf1.yahoo.com with NNFMP; 22 Feb 2013 13:32:22 -0000\r\nX-Received: from [10.193.94.44] by tg6.bullet.mail.bf1.yahoo.com with NNFMP; 22 Feb 2013 13:32:22 -0000\r\nDate: Fri, 22 Feb 2013 13:32:20 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;kg7s14+f0i0@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 2:3:4:0:0\r\nFrom: &quot;Oleskandr&quot; &lt;gavenkoa@...&gt;\r\nSubject: A way to log test execution (who is going to run/stop), FYI...\r\nX-Yahoo-Group-Post: member; u=463328153; y=Qig5LAElnXrA3aGW38542FwMEwilViE0mDGMwy8Wuq3-z_U\r\nX-Yahoo-Profile: gavenkoa\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 22 Feb 2013 13:35:11 -0000\r\n\r\nOur build on Jenkins stuck on some test. Our *large* organisation forbid ac=\r\ncess to build server...\n\nSo I want to find this broken test (seems to be DB=\r\n related test with using DbUnit).\n\nFirstly I think to run &#39;sed -i &quot;s=3D...=\r\n=3D...=3D&quot; *Test.java&quot;&#39; on test sources. But this require to make fake comm=\r\nit to SVN and then revert history back.\n\nAfter googling I found:\n\n  http://=\r\nstackoverflow.com/questions/473401/get-name-of-currently-executing-test-in-=\r\njunit-4\n  http://stackoverflow.com/questions/1069456/how-to-obtain-test-cas=\r\ne-name-in-junit-4-at-runtime\n  http://stackoverflow.com/questions/10222164/=\r\njunit-4-test-annotation-reports-test-name-as-unknown\n\nSo getting run test n=\r\name is hard task. But I found &quot;listener&quot; keyword so next googling take me:\n=\r\n\n  http://maven.apache.org/surefire/maven-surefire-plugin/examples/junit.ht=\r\nml\n\n  (Using custom listeners and reporters)\n\nand I end with implementation=\r\n:\n\n    &lt;plugin&gt;\n        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n       =\r\n &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n        &lt;version&gt;2.13&lt;/vers=\r\nion&gt;\n        &lt;configuration&gt;\n            &lt;reportFormat&gt;text&lt;/reportFormat&gt;\n=\r\n            &lt;trimStackTrace&gt;false&lt;/trimStackTrace&gt;\n            &lt;useFile&gt;fal=\r\nse&lt;/useFile&gt;\n            &lt;properties&gt;\n                &lt;property&gt;\n          =\r\n          &lt;name&gt;listener&lt;/name&gt;\n                    &lt;value&gt;com.company.util=\r\ns.LogTests&lt;/value&gt;\n                &lt;/property&gt;\n            &lt;/properties&gt;\n  =\r\n          &lt;includes&gt;\n                &lt;include&gt;com/company/core/**/*Test.jav=\r\na&lt;/include&gt;\n            &lt;/includes&gt;\n        &lt;/configuration&gt;\n    &lt;/plugin&gt;\n=\r\n\n\n  import java.io.*;\n  import org.junit.runner.Description;\n  import org.j=\r\nunit.runner.notification.RunListener;\n\n  public class LogTests extends RunL=\r\nistener {\n\n      static PrintStream out =3D new PrintStream(new FileOutputS=\r\ntream(FileDescriptor.out));\n\n      public void testStarted(Description desc=\r\nription) {\n          out.println(&quot;Test started:  &quot; + description.getDisplay=\r\nName());\n      }\n\n      public void testFinished(Description description) {=\r\n\n          out.println(&quot;Test finished: &quot; + description.getDisplayName());\n =\r\n     }\n  }\n\nNext I add profile to pom.xml and configure build on Jenkins wi=\r\nth &#39;-Pjunitlog&#39;.\n\nWhat is wonderful that JUnit got Listener support not so =\r\nlong time ago (near 4 years ago):\n\nhttps://github.com/junit-team/junit/tree=\r\n/r4.7\n\n\nAre there any other ways to print test method name without putting =\r\nSystem.out in each tests?\n\n\n", 
+    "profile": "gavenkoa", 
+    "topicId": 24341, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 463328153, 
+    "prevInTime": 24340, 
+    "contentTrasformed": false, 
+    "postDate": "1361539940", 
+    "canDelete": false, 
+    "nextInTopic": 24355, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGtnN3MxNCtmMGkwQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 9867, 
+    "senderId": "DjiuJr1WENmTo9kEe58Uj_wYUvVrecB5IyXe_VzY96ADjtdY_QZDuhIcx_LVNkcDONNrC8kxC8hPzeciXd0Z18eOnwusk0tYJf9Y4KM", 
+    "systemMessage": false, 
+    "subject": "Formatting results on a per suite basis", 
+    "from": "&quot;mtardifsitepak&quot; &lt;mtardif@...&gt;", 
+    "authorName": "mtardifsitepak", 
+    "msgSnippet": "I am calling JUnit from a task within ant (xml provided below). When I run ant for my entire suite of tests, I get output which looks like this: [junit]", 
+    "msgId": 9866, 
+    "profile": "mtardifsitepak", 
+    "topicId": 9866, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 165745870, 
+    "messageBody": "<div id=\"ygrps-yiv-243564145\">I am calling JUnit from a task within ant (xml provided below). When I<br/>\nrun ant for my entire suite of tests, I get output which looks like this:<br/>\n<br/>\n    [junit] Testcase: testRun took 1.979 sec<br/>\n    [junit] Testcase: testRun took 0.572 sec<br/>\n    [junit] Testcase: testRun took 0.451 sec<br/>\n    ...<br/>\n<br/>\nThe problem here is that I have different suites containing tests with<br/>\nthe same name. My setup is an extensive hierarchy of tests where each<br/>\nsubdirectory contains an AllTests class calling addTestSuite for each<br/>\nof the tests within the same directory and addTest for each AllTests<br/>\nclass in the first level of subdirectories. For example:<br/>\n<br/>\n    suite.addTest(test.com.sitepak.subdir.AllTests.suite());<br/>\n    suite.addTestSuite(test.com.sitepak.SSHTest.class);<br/>\n<br/>\nI have tried many approaches to solve this problem but none have been<br/>\nsatisfactory:<br/>\n<br/>\n1. I tried overriding the PlainJUnitResultFormatter class, giving my<br/>\nown implementation of the methods defined in the JUnitResultFormatter<br/>\ninterface. Problem is, startTestSuite is only called once when running<br/>\nall the AllTests test in the root directory. The reason is probably<br/>\nthat when I call addTest and then addTestSuite, the tests are all<br/>\nbeing cumulated in what is considered the same suite.<br/>\n<br/>\n2. I then tried overridig the XMLJUnitResultFormatter, as stated in<br/>\nsome of the posting in this newsgroup. Once filtered through an XSLT<br/>\nfile, I&#39;m sure I could get the name of the test and its corresponding<br/>\nclass in the same line in a nicely formatted HTML file. However, I<br/>\nneed immediate feedback when calling ant from the command line.<br/>\n<br/>\n3. I finally tried calling each test individually, as suggested in the<br/>\nJUnit or Ant FAQ. This consists of providing the following XML in ant:<br/>\n<br/>\n  &lt;batchtest fork=&quot;yes&quot;&gt;<br/>\n    &lt;fileset dir=&quot;${src.tests}&quot;&gt;<br/>\n      &lt;include name=&quot;**/*Test*.java&quot;/&gt;<br/>\n      &lt;exclude name=&quot;**/AllTests.java&quot;/&gt;<br/>\n    &lt;/fileset&gt;<br/>\n  &lt;/batchtest&gt;<br/>\n<br/>\nThe problem with this approach is that tests are run individually<br/>\nwhich makes it impossible to print a summary of the number of tests<br/>\nwhich have failed during the run.<br/>\n<br/>\nIf anyone has other suggestions, please let me know. Here is context<br/>\ninformation which might be useful:<br/>\n<br/>\nAnt target:<br/>\n<br/>\n  &lt;target name=&quot;run_tests&quot; depends=&quot;init&quot;&gt;<br/>\n    &lt;property name=&quot;testcase&quot; value=&quot;test.com.sitepak.AllTests&quot;/&gt;<br/>\n    &lt;junit printSummary=&quot;yes&quot; fork=&quot;on&quot;&gt;<br/>\n      &lt;classpath refid=&quot;classpath.run&quot;/&gt;<br/>\n      &lt;jvmarg value=&quot;-Xmx128m&quot;/&gt;<br/>\n      &lt;formatter type=&quot;plain&quot; usefile=&quot;false&quot;/&gt;<br/>\n      &lt;test name=&quot;${testcase}&quot;/&gt;<br/>\n    &lt;/junit&gt;<br/>\n  &lt;/target&gt;<br/>\n<br/>\nVersions:<br/>\n<br/>\n  JUnit 3.8.1<br/>\n  Ant 1.6<br/>\n  Linux 2.4.21</div>", 
+    "prevInTime": 9865, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1068748667", 
+    "canDelete": false, 
+    "nextInTopic": 9869, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJwMGoxciszY3J1QGVHcm91cHMuY29tPg=="
+    }
+}

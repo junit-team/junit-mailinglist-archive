@@ -1,0 +1,30 @@
+{
+    "topicId": 19708, 
+    "postDate": "1186421804", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Stephen Smith &lt;steve@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "QJDldjY-DhYH3kURigTWeR4oLyggjNOv2anxxzlnsPiHmrbiW3FNrVaPeWqTqyDsLDw11-Yp3xHl3ejc8FbJVC6L207D_EaQTeKgdBA5Axg", 
+    "nextInTime": 19710, 
+    "userId": 231973488, 
+    "prevInTime": 19708, 
+    "prevInTopic": 19708, 
+    "headers": {
+        "inReplyToHeader": "PGY5NWpoaCs0ZTdzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ2Qjc1QzJDLjkwMDA5MDJAc3RlcGhlbi1zbWl0aC5jby51az4=", 
+        "referencesHeader": "PGY5NWpoaCs0ZTdzQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Stephen Smith", 
+    "numMessagesInTopic": 13, 
+    "msgSnippet": "The easiest way to do this is to use a very common testing pattern. It s well described in JB Rainsberger s JUnit Recipes book (which everyone on this mailing", 
+    "contentTrasformed": false, 
+    "msgId": 19709, 
+    "nextInTopic": 19710, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;steve@...&gt;\r\nX-Sender: steve@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 69927 invoked from network); 6 Aug 2007 17:37:05 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m43.grp.scd.yahoo.com with QMQP; 6 Aug 2007 17:37:05 -0000\r\nReceived: from unknown (HELO authsmtp.streamline.net) (217.174.253.233)\n  by mta7.grp.scd.yahoo.com with SMTP; 6 Aug 2007 17:37:04 -0000\r\nReceived: (qmail 14356 invoked from network); 6 Aug 2007 17:36:53 -0000\r\nReceived: from host86-147-30-188.range86-147.btcentralplus.com (HELO ?192.168.1.65?) (root@...@86.147.30.188)\n  by server217-174-253-232.live-servers.net with ESMTPA; 6 Aug 2007 17:36:53 -0000\r\nMessage-ID: &lt;46B75C2C.9000902@...&gt;\r\nDate: Mon, 06 Aug 2007 18:36:44 +0100\r\nUser-Agent: Thunderbird 2.0.0.6 (Windows/20070728)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;f95jhh+4e7s@...&gt;\r\nIn-Reply-To: &lt;f95jhh+4e7s@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Stephen Smith &lt;steve@...&gt;\r\nReply-To: steve@...\r\nSubject: Re: [junit] Testing several classes with the same test case\r\nX-Yahoo-Group-Post: member; u=231973488\r\n\r\nThe easiest way to do this is to use a very common testing pattern. It&#39;s well described in JB Rainsberger&#39;s JUnit \nRecipes book (which everyone on this mailing list ends up recommending once every few months or so), but essentially you \ncreate a test fixture and then use the Template Method pattern to create your implementation. A test suite might be a \ngood idea to package all of the different implementation test classes together.\n\nIn JUnit 3.8.2 code (it&#39;d be nicer in JUnit 4):\n\npublic abstract class AlgorithmTestCase extends TestCase {\n   private Algorithm m_algorithm;\n   public void testCalculate() {\n     // do your test on m_algorithm\n   }\n\n   protected void setUp() {\n     m_algorithm = makeAlgorithm();\n   }\n\n   protected void tearDown() {\n     m_algorithm = null;\n   }\n\n   protected abstract Algorithm makeAlgorithm();\n}\n\npublic class Algorithm1Test extends AlgorithmTestCase {\n   protected Algorithm makeAlgorithm() {\n     return new Algorithm1();\n   }\n}\n\n---\nStephen Smith, MEng (Wales).\nhttp://www.stephen-smith.co.uk/\n\ndmugtasimov wrote:\n&gt; \n&gt; \n&gt; Imagine that there is a class Algorithm and its subclassed Algorithm1,\n&gt; Algorithm2, .. Algorithm9. All AlgorithmN classes have the same\n&gt; contract (thus they have same methods and these method should supply\n&gt; the same output for the same input).\n&gt; \n&gt; public abstract Algorithm {\n&gt; public abstract String calculate(String in);\n&gt; }\n&gt; \n&gt; public Algorithm1 {\n&gt; public String calculate(String in) {\n&gt; ... method body 1...\n&gt; }\n&gt; }\n&gt; \n&gt; public Algorithm2 {\n&gt; public String calculate(String in) {\n&gt; ... method body 2...\n&gt; }\n&gt; }\n&gt; \n&gt; and so on up to 9.\n&gt; \n&gt; There is test case AlgorithmTestCase extends TestCase.\n&gt; public AlgorithmTestCase extends TestCase {\n&gt; public void testAlgorithm() {\n&gt; Algorithm algorithm = ... Algorithm1..Algorithm9 instance creation\n&gt; code ...;\n&gt; assertEquals(&quot;RESULT1&quot;, algorithm.calculate(&quot;INPUT1&quot;));\n&gt; }\n&gt; }\n&gt; \n&gt; Is it possible using JUnit and how to run AlgorithmTestCase meeting\n&gt; the following conditions?\n&gt; 1. Each instance of AlgorithmTestCase does test only one Algorithm\n&gt; subclass.\n&gt; 2. AlgorithmTestCase is run against each Algorithm subclass.\n&gt; 3. GUI runner is started only once.\n&gt; \n&gt; I tried to do that by passing subclass name in system properties, but\n&gt; failed. It happens because when I add test case by\n&gt; suite.addTestSuite(Class ...) the actual of TestCase is created after\n&gt; the last test case is added, so system properties contain the last\n&gt; supplied value.\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; ------------------------------------------------------------------------\n&gt; \n&gt; No virus found in this incoming message.\n&gt; Checked by AVG Free Edition. \n&gt; Version: 7.5.476 / Virus Database: 269.11.6/938 - Release Date: 05/08/2007 16:16\n\n", 
+    "subject": "Re: [junit] Testing several classes with the same test case"
+}

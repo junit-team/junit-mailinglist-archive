@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 6492, 
+    "senderId": "7BIKVY3jt0NDlwF571oY7-gvGrAr_iRY7B1OYT7ejue52crl0aRVje6XYzAynjOVlhZKAr3s13PjSkaAeF8YYigmo-Gmtw", 
+    "systemMessage": false, 
+    "subject": "Understanding Fixtures", 
+    "from": "Jonathan Hecht &lt;jhecht@...&gt;", 
+    "authorName": "Jonathan Hecht", 
+    "msgSnippet": "I do not think I understand how to use fixtures.  I have looked at the FAQ and junit documentation on line and it is not helping me with my problem. As far as", 
+    "msgId": 6491, 
+    "profile": "jhhecht1968", 
+    "topicId": 6491, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 119142234, 
+    "messageBody": "<div id=\"ygrps-yiv-333220161\">I do not think I understand how to use fixtures.  I have looked at the <br/>\nFAQ and junit documentation on line and it is not helping me with my <br/>\nproblem.<br/>\n<br/>\nAs far as I can tell I am implementing fixtures the correct way.  I <br/>\ndeclare the objects I want to test as private member variables in <br/>\nProgramTest which extends TestCase.  I then initialize the objects in <br/>\nsetUp().<br/>\n<br/>\nWhen I run ProgramTest setUp() is called but the tests themselves give <br/>\nnull pointer exceptions.  When I create each object under each <br/>\nindividual test method the tests work as expected.  Obviously I am not <br/>\nwriting the fixture correctly, but I cannot figure what I am doing <br/>\nwrong.  If this matters, I am developing on Mac OS X Jaguar.  The <br/>\nsample code provided with junit download runs correctly.<br/>\n<br/>\nTo run this program, I am putting ProgramTest.class, MyProgram.class <br/>\nand junit.jar in same directory and using<br/>\njava -cp junit.jar:. ProgramTest in command line.  I have experimented <br/>\nwith this code and find that JUnit calls setUp() and tearDown() <br/>\ncorrectly, but somehow the objects do not carry over to the individual <br/>\ntest methods.<br/>\nThis is the code for my test:<br/>\n<br/>\n<br/>\nimport junit.framework.*;<br/>\npublic class ProgramTest extends junit.framework.TestCase {<br/>\n\tprivate MyProgram word;<br/>\n\tprivate MyProgram game;<br/>\n\tprivate MyProgram anotherWord;<br/>\n\t<br/>\n\tprotected void setUp() {<br/>\n\t\t// if this code is put under each individual test method, it runs <br/>\ncorrectly<br/>\n\t\t<br/>\n\t\tMyProgram word = new MyProgram(&quot;Word&quot;, MyProgram.WORDPROCESSOR);<br/>\n\t\tword.setPrice(50);<br/>\n\t\tMyProgram game = new MyProgram(&quot;Game&quot;, MyProgram.GAME);<br/>\n\t\tgame.setPrice(30);<br/>\n\t\tMyProgram anotherWord = new MyProgram(&quot;Word&quot;, <br/>\nMyProgram.WORDPROCESSOR);<br/>\n\t\tanotherWord.setPrice(50);<br/>\n\t}<br/>\n\t<br/>\n\tprotected void tearDown() {<br/>\n\t\tword = null;<br/>\n\t\tgame = null;<br/>\n\t\tanotherWord = null;<br/>\n\t}<br/>\n\tpublic void testPriceIncrease() {<br/>\n\t\tint expected = 80;<br/>\n\t\tgame.increasePrice(word.getPrice());<br/>\n\t\tint result = game.getPrice();<br/>\n\t\tAssert.assertEquals(expected, result);<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testEquals() {<br/>\n\t\tAssert.assertTrue(!word.equals(null));<br/>\n\t\tAssert.assertTrue(word.equals(word));<br/>\n\t\tAssert.assertTrue(word.equals(anotherWord));<br/>\n\t\tAssert.assertTrue(!word.equals(game));<br/>\n\t\tAssert.assertEquals(word, word);<br/>\n\t\tAssert.assertEquals(word, anotherWord);<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testGetPrice() {<br/>\n\t\tint expected = 50;<br/>\n\t\tint result = word.getPrice();<br/>\n\t\tAssert.assertEquals(expected, result);<br/>\n\t}<br/>\n\t<br/>\n\tpublic static Test suite() {<br/>\n\t\treturn new TestSuite(ProgramTest.class);<br/>\n\t}<br/>\n\t<br/>\n\tpublic static void main(String args[]) {<br/>\n\t\tjunit.textui.TestRunner.run(ProgramTest.class);<br/>\n\t}<br/>\n}<br/>\n<br/>\npublic class MyProgram {<br/>\n\tprivate String name;<br/>\n\tprivate int task;<br/>\n\tpublic static final int WORDPROCESSOR = 1,<br/>\n\t\tSPREADSHEET = 2, GAME = 3;<br/>\n\tprivate int price;<br/>\n\t<br/>\n\tpublic MyProgram(String s, int t) {<br/>\n\t\tname = s;<br/>\n\t\ttask = t;<br/>\n\t}<br/>\n\tpublic void setPrice(int p) {<br/>\n\t\tprice = p;\t<br/>\n\t}<br/>\n\tpublic int getPrice() {<br/>\n\t\treturn price;\t<br/>\n\t}<br/>\n\tpublic String getName() {<br/>\n\t\treturn name;\t<br/>\n\t}<br/>\n\tpublic int getTask() {<br/>\n\t\treturn task;\t<br/>\n\t}<br/>\n\tpublic void increasePrice(int increase) {<br/>\n\t\tprice += increase;\t<br/>\n\t}<br/>\n\tpublic boolean equals(Object testProgram) {<br/>\n\t\tif(!(testProgram instanceof MyProgram)) {<br/>\n\t\t\treturn false;\t<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tif (name.equals(program.getName()) &&<br/>\n\t\ttask == (MyProgram)testProgram.getTask() &&<br/>\n\t\tprice == (MyProgram)testProgram.getPrice()) {<br/>\n\t\t\treturn true;\t<br/>\n\t\t}<br/>\n\t\telse {<br/>\n\t\t\treturn false;\t<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n}</div>", 
+    "prevInTime": 6490, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1040163031", 
+    "canDelete": false, 
+    "nextInTopic": 6493, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDVCQTk3RkJGLTEyMEMtMTFENy1CRDg2LTAwMEEyNzhDRDdCQUBtYWMuY29tPg=="
+    }
+}

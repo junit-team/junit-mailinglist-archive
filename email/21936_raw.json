@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 21937, 
+    "senderId": "Qr-hEk1CQN3ewQnKLhECig99IfNrPnlkAtRMhDewqcFb_w6570EPULZYahBVOz_WMlPKPSwb6lpj1rMEApCBW7cFa1w7hjZSWQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: strange behaviour with assertEquals", 
+    "from": "Chris Dollin &lt;chris.dollin@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... I would deduce that `testObject.feedbackText` is not a String. ... If `testObject.feedbackText` should be a String, then either it has type String (in", 
+    "msgId": 21936, 
+    "rawEmail": "Return-Path: &lt;chris.dollin@...&gt;\r\nX-Sender: chris.dollin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 24483 invoked from network); 21 Sep 2009 08:04:56 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m4.grp.sp2.yahoo.com with QMQP; 21 Sep 2009 08:04:56 -0000\r\nX-Received: from unknown (HELO g1t0027.austin.hp.com) (15.216.28.34)\n  by mta3.grp.re1.yahoo.com with SMTP; 21 Sep 2009 08:04:56 -0000\r\nX-Received: from colossus.hpl.hp.com (colossus.hpl.hp.com [16.25.191.16])\n\t(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))\n\t(No client certificate requested)\n\tby g1t0027.austin.hp.com (Postfix) with ESMTPS id 5694B38141\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 21 Sep 2009 08:04:25 +0000 (UTC)\r\nX-Received: from localhost (localhost [127.0.0.1])\n\tby colossus.hpl.hp.com (Postfix) with ESMTP id DB63F1BA304\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 21 Sep 2009 09:04:23 +0100 (BST)\r\nX-Virus-Scanned: Debian amavisd-new at hpl.hp.com\r\nX-Received: from colossus.hpl.hp.com ([127.0.0.1])\n\tby localhost (colossus.hpl.hp.com [127.0.0.1]) (amavisd-new, port 10024)\n\twith LMTP id 35guCO4m75oU for &lt;junit@yahoogroups.com&gt;;\n\tMon, 21 Sep 2009 09:04:23 +0100 (BST)\r\nX-Received: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [16.25.175.192])\n\tby colossus.hpl.hp.com (Postfix) with ESMTP id 5A96D1BA301\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 21 Sep 2009 09:04:23 +0100 (BST)\r\nOrganization: HP Labs\r\nTo: junit@yahoogroups.com\r\nDate: Mon, 21 Sep 2009 09:07:06 +0100\r\nUser-Agent: KMail/1.9.10\r\nReferences: &lt;h8of0m+92p9@...&gt;\r\nIn-Reply-To: &lt;h8of0m+92p9@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200909210907.06697.chris.dollin@...&gt;\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: Chris Dollin &lt;chris.dollin@...&gt;\r\nSubject: Re: [junit] Re: strange behaviour with assertEquals\r\nX-Yahoo-Group-Post: member; u=155741085\r\nX-Yahoo-Profile: anover_alias\r\n\r\nOn Tuesday 15 September 2009 17:22:46 tris_0011 wrote:\n&gt; Hi!\n&gt; \n&gt; Yes, i think that&#39;s the answer.\n&gt; &#39;assertEquals (&quot;5&quot;, testObject.feedbackText);&#39; doesn&#39;t work, but\n&gt; &#39;assertEquals (&quot;5&quot;, testObject.feedbackText.toString());&#39; does the job.\n\nI would deduce that `testObject.feedbackText` is not a String.\n\n&gt; My problem is that testObject.feedbackText should be a String and \n&gt; not a Object, so i don&#39;t understand why should i use toString() on a String? \n\nIf `testObject.feedbackText` &quot;should be&quot; a String, then either it has type\nString (in which case my deduction is broken), or it doesn&#39;t, in which case\nI&#39;d add an assertion like\n\n  assertTrue( &quot;feedback text must be a String&quot;, testObject.feedbackText instanceof String );\n\n[in my local code, I have an assert method `assertInstanceOf(Class, value)`,\n which checks that `value` has type `Class` or subclass thereof and provides\n a decent error message if it isn&#39;t.]\n\n&gt; Maybe it would help inexperienced users like myself to give an Error-Message \n&gt; instead of this behaviour? \n\nI don&#39;t think it&#39;s feasible for the machine to detect and usefully report\nthis error. \n\n&gt; \n&gt; Thanks for your help!\n&gt; sjel\n&gt; \n&gt; \n&gt; --- In junit@yahoogroups.com, Chris Dollin &lt;chris.dollin@...&gt; wrote:\n&gt; &gt;\n&gt; &gt; On Thursday 10 September 2009 16:49:23 tris_0011 wrote:\n&gt; &gt; \n&gt; &gt; &gt; for instance: &#39;assertEquals (&quot;5&quot;, testClass.testObject.feedbackText);&#39;\n&gt; &gt; &gt; doesn&#39;t work, but &#39;assertTrue (testClass.testObject.feedbackText.equals (&quot;5&quot;));&#39; does.\n&gt; &gt; \n&gt; &gt; I don&#39;t know if it&#39;s related, but if `assertEquals(A, B)` does\n&gt; &gt; an `A.equals(B)`, your assertTrue is doing a B.equals(A), and if\n&gt; &gt; B isn&#39;t a String and has its own .equals, it&#39;s possible that it&#39;s\n&gt; &gt; miswritten to be more relaxed about equality. \n\n\n-- \n&quot;If time remained, the reasons would have rhymed.&quot;            - IQ, /Frequency/\n\nHewlett-Packard Limited registered office:                Cain Road, Bracknell,\nregistered no: 690597 England                                    Berks RG12 1HN\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 21855, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 155741085, 
+    "prevInTime": 21935, 
+    "contentTrasformed": false, 
+    "postDate": "1253520426", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 21932, 
+    "headers": {
+        "inReplyToHeader": "PGg4b2YwbSs5MnA5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDkwOTIxMDkwNy4wNjY5Ny5jaHJpcy5kb2xsaW5AaHAuY29tPg==", 
+        "referencesHeader": "PGg4b2YwbSs5MnA5QGVHcm91cHMuY29tPg=="
+    }
+}

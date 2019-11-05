@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 23027, 
+    "senderId": "JoyN3iwaDkeYB1lGcXJmJ4YTVjpK_7rlkAHpdJOG5DCutotjMhT5TlhjxakfW63g1ncc1ItHsV5EevFkMOwc9FuR", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] assumeTrue(false) only causes test ignore if called from @BeforeClass method", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Kent, It s more about making a bold once-for-all decision about how failing assumptions are communicated, and then informing/persuading the various runners to", 
+    "msgId": 23026, 
+    "profile": "dsaff", 
+    "topicId": 23023, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-447769364\">Kent,<br/>\n<br/>\nIt&#39;s more about making a bold once-for-all decision about how failing<br/>\nassumptions are communicated, and then informing/persuading the<br/>\nvarious runners to pick up on that communication.<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Fri, Oct 22, 2010 at 10:41 AM, Kent Beck &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:kentb@...\">kentb@...</a>&gt; wrote:<br/>\n&gt; So are we missing one or more test cases or is the problem subtler than that?<br/>\n&gt;<br/>\n&gt; Kent<br/>\n&gt;<br/>\n&gt; On Oct 22, 2010, at 5:57 AM, David Saff wrote:<br/>\n&gt;<br/>\n&gt;&gt; Vince,<br/>\n&gt;&gt;<br/>\n&gt;&gt; We need to do a better job with this. Failing assumptions changed the<br/>\n&gt;&gt; interface for JUnit to include tests that could be &quot;ignored&quot; halfway<br/>\n&gt;&gt; through their execution, and we need to work with the maven and<br/>\n&gt;&gt; Eclipse runner implementors to make sure that we output something they<br/>\n&gt;&gt; can ingest. Thank you for the reminder.<br/>\n&gt;&gt;<br/>\n&gt;&gt; David Saff<br/>\n&gt;&gt;<br/>\n&gt;&gt; On Thu, Oct 21, 2010 at 6:58 PM, vinceharron &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:vince@...\">vince@...</a>&gt; wrote:<br/>\n&gt;&gt; &gt; I&#39;ve tried this on JUnit 4.7 and 4.8.2.  I hope one of you can point out something I&#39;m doing wrong.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; assumeTrue(false) only causes ignore if called from @BeforeClass method.  I was hoping that assumeTrue(false) called at any point would cause an Ignore result.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://kentbeck.github.com/junit/javadoc/latest/\">http://kentbeck.github.com/junit/javadoc/latest/</a><br/>\n&gt;&gt; &gt; &quot;The default JUnit runner treats tests with failing assumptions as ignored.&quot;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; I&#39;m running my tests with both Maven and Eclipse&#39;s JUnit 4 UI.  Both have the same results.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; As I understand the JUnit docs, all three of these tests should be ignored/skipped.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; Running com.mycompany.app.AssumeTest<br/>\n&gt;&gt; &gt; Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 sec<br/>\n&gt;&gt; &gt; Running com.mycompany.app.AssumeBeforeTest<br/>\n&gt;&gt; &gt; Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 sec<br/>\n&gt;&gt; &gt; Running com.mycompany.app.AssumeBeforeClassTest<br/>\n&gt;&gt; &gt; Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.006 sec<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; public class AssumeTest<br/>\n&gt;&gt; &gt; {<br/>\n&gt;&gt; &gt;    @Test<br/>\n&gt;&gt; &gt;    public void test()<br/>\n&gt;&gt; &gt;    {<br/>\n&gt;&gt; &gt;        assumeTrue(false);<br/>\n&gt;&gt; &gt;        assertTrue(false);<br/>\n&gt;&gt; &gt;    }<br/>\n&gt;&gt; &gt; }<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; public class AssumeBeforeTest<br/>\n&gt;&gt; &gt; {<br/>\n&gt;&gt; &gt;    @Before<br/>\n&gt;&gt; &gt;    public void before()<br/>\n&gt;&gt; &gt;    {<br/>\n&gt;&gt; &gt;        assumeTrue(false);<br/>\n&gt;&gt; &gt;    }<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;    @Test<br/>\n&gt;&gt; &gt;    public void test()<br/>\n&gt;&gt; &gt;    {<br/>\n&gt;&gt; &gt;        assertTrue(false);<br/>\n&gt;&gt; &gt;    }<br/>\n&gt;&gt; &gt; }<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; public class AssumeBeforeClassTest<br/>\n&gt;&gt; &gt; {<br/>\n&gt;&gt; &gt;    @BeforeClass<br/>\n&gt;&gt; &gt;    public static void before() {<br/>\n&gt;&gt; &gt;        assumeTrue(false);<br/>\n&gt;&gt; &gt;    }<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;    @Test<br/>\n&gt;&gt; &gt;    public void test()<br/>\n&gt;&gt; &gt;    {<br/>\n&gt;&gt; &gt;        assertTrue(false);<br/>\n&gt;&gt; &gt;    }<br/>\n&gt;&gt; &gt; }<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; ------------------------------------<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; Yahoo! Groups Links<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23025, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1287758667", 
+    "canDelete": false, 
+    "nextInTopic": 23050, 
+    "prevInTopic": 23025, 
+    "headers": {
+        "inReplyToHeader": "PERFMkRCMjhDLUQ2NTAtNEI5QS05ODA1LTU5NzEzREU1OTU2MEBlYXJ0aGxpbmsubmV0Pg==", 
+        "messageIdInHeader": "PEFBTkxrVGltcko9em9DZlRCZ2tvbzN5U2FMbnBNNDgtcU5PTkhxSFhDVlo9MUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGk5cWdpdCszODdmQGVHcm91cHMuY29tPgk8QUFOTGtUaT1SbUN3dUMtMl9HZnNNS0s1TEMyN2lXWG4zNF9aZlIxRzJzWnA4QG1haWwuZ21haWwuY29tPgk8REUyREIyOEMtRDY1MC00QjlBLTk4MDUtNTk3MTNERTU5NTYwQGVhcnRobGluay5uZXQ+"
+    }
+}

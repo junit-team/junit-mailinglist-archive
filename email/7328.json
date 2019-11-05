@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 7329, 
+    "senderId": "F9eNxebzqIj2BbwgVCdSEoJeiv-Mwfzn6VXCKa6lqRxP09oJaab5rqzxbtRQOSrNKsOSYDoh2jgptVzd1J4fBZQ3T-DqozAdjEJU7x5uL2fr2Cj3nA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ThreadLocal", 
+    "from": "&quot;Jeff Nielsen&quot; &lt;jeff.nielsen@...&gt;", 
+    "authorName": "Jeff Nielsen", 
+    "msgSnippet": "A common pattern we use with our web apps is this. - Factories manage the creation of resources for the next level down (e.g., web tier - EJB tier, EJB tier", 
+    "msgId": 7328, 
+    "profile": "jeffreymads", 
+    "topicId": 7316, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 65487161, 
+    "messageBody": "<div id=\"ygrps-yiv-1179702920\">A common pattern we use with our web apps is this.<br/>\n<br/>\n- Factories manage the creation of resources for the next level down (e.g.,<br/>\nweb tier -&gt; EJB tier, EJB tier -&gt; integration tier)<br/>\n<br/>\n- Classes that need to access/instantiate resources in a lower layer (e.g.,<br/>\nan EJB that needs a DB connection) take a factory object at construction<br/>\ntime.<br/>\n<br/>\n- The factories are configured at runtime using simple java property files<br/>\n(e.g., use.database=true, use.ejbs=false)<br/>\n<br/>\n- Test code can configure factories using parameters (e.g., testFactory =<br/>\nnew DataSourceFactory(false) . . . ) and pass these factories in to the<br/>\nobject(s) under test.<br/>\n<br/>\nThis allows us to ensure that tests always use the mock objects, without<br/>\n&quot;cluttering&quot; the production code with lots of conditional logic or extra<br/>\nmethod parameters.<br/>\n<br/>\nJeff Nielsen<br/>\nDigital Focus<br/>\nwww.digitalfocus.com<br/>\n<br/>\n<blockquote><span title=\"qreply\"> ----- Original Message -----<br/>\nFrom: &quot;David Corbin&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dcorbin@...\">dcorbin@...</a>&gt;<br/>\nTo: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\nSent: Monday, March 24, 2003 8:09 AM<br/>\nSubject: Re: [junit] ThreadLocal<br/>\n<br/>\n<br/>\n&gt; Jason Rogers wrote:<br/>\n&gt;<br/>\n&gt; &gt;On Sun, 23 Mar 2003 14:23:30 -0500, &quot;David Corbin&quot;<br/>\n&gt; &gt;&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dcorbin@...\">dcorbin@...</a>&gt; said:<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;&gt;   I&#39;m getting tired of having to pass some objects through 6-8 methods,<br/>\n&gt; &gt;&gt;   and it&#39;s making method signatures very ugly.<br/>\n&gt; &gt;&gt;   The question is, what do folks think about using ThreadLocal to<br/>\ncreate<br/>\n&gt; &gt;&gt;   &quot;per   request  singleton-like&quot;  objects.   By  using  a  common<br/>\nbase<br/>\n&gt; &gt;&gt;   TestCase,<br/>\n&gt; &gt;&gt;   I could set up the TLS easily enough without overburdening the unit<br/>\n&gt; &gt;&gt;   tests, I think.<br/>\n&gt; &gt;&gt;   David<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;I think was you are sensing is a &quot;code smell.&quot;<br/>\n&gt; &gt;<br/>\n&gt; There&#39;s no doubt about that.  It&#39;s a question of how to solve the smell.<br/>\n&gt;<br/>\n&gt; &gt; I don&#39;t have an opinion<br/>\n&gt; &gt;about the TLS you mentioned but I would suggest using this &quot;pain&quot; to<br/>\n&gt; &gt;force yourself to refactor some more.  For instance, you could use<br/>\n&gt; &gt;Factories, Delegators|Facades, or Proxies instead polluting your API with<br/>\n&gt; &gt;unneeded args.<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &lt;snip&gt;<br/>\n&gt;<br/>\n&gt; &gt;In some cases, that may be the thing to do, in<br/>\n&gt; &gt;others however it makes more sense for the object you are testing to have<br/>\n&gt; &gt;those things implicitly available -- your situation sounds a lot like the<br/>\n&gt; &gt;latter.<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; Well, as near as I can tell there are 4 choices on how something is made<br/>\n&gt; available:<br/>\n&gt;<br/>\n&gt; 1) at construction<br/>\n&gt; 2) as an argument<br/>\n&gt; 3) as a global/singleton<br/>\n&gt; 4) as ThreadLocal (similar to #3, but more flexible, certainly in the<br/>\n&gt; web environment)<br/>\n&gt;<br/>\n&gt; #2 is what I&#39;ve been doing, and has created the smell<br/>\n&gt; #1 generally doesn&#39;t work well, because the &quot;something&quot; may not be very<br/>\n&gt; tightly bound to the object being constucted.<br/>\n&gt; That leaves #3 and #4.  I have a long-standing global-phobia.  Perhaps<br/>\n&gt; it&#39;s too strong. #4 of course, isn&#39;t that differrent from #3 ( think of<br/>\n&gt; them as semi-global).<br/>\n&gt;<br/>\n&gt; Have a missed a choice?<br/>\n&gt;<br/>\n&gt; David.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;       Yahoo! Groups Sponsor<br/>\n&gt;             ADVERTISEMENT<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service.<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 7327, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1048555545", 
+    "canDelete": false, 
+    "nextInTopic": 7333, 
+    "prevInTopic": 7327, 
+    "headers": {
+        "messageIdInHeader": "PDAwOTcwMWMyZjI2ZCQ3NjhkZDk4MCRlNzA1MDAwYUBqbmllbHNlbjI+", 
+        "referencesHeader": "PDNFN0UwOUIyLjgwMTA1MDVAbWFjaHR1cnRsZS5jb20+IDwyMDAzMDMyNDAzMTIxNC45NURFQjFCNkU2QHd3dy5mYXN0bWFpbC5mbT4gPDNFN0YwM0E0LjMwNDAxQG1hY2h0dXJ0bGUuY29tPg=="
+    }
+}

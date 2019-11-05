@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 1659, 
+    "senderId": "zAT6IeksdmiyVlzS9dxAyLcDcCnoIx-Wrle8d0AA9Ckb8UiicVquMdFzVgbJt2vdXUxRjHfjuXePSSIE-1B7npYhzmS0GwuvM_WUiRGiUXemOyg", 
+    "systemMessage": false, 
+    "subject": "FW: RE: [junit] Running setUp once for all tests in a test suite", 
+    "from": "&quot;Jason Rogers&quot; &lt;jason.rogers@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "J.P. asked that I post this for him to the group.  Thanks again J.P. for the correction! -Jason ... From: jphedley@netscape.net [mailto:jphedley@netscape.net] ", 
+    "msgId": 1658, 
+    "topicId": 1658, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-283575944\">J.P. asked that I post this for him to the group.  Thanks again J.P. for the<br/>\ncorrection!<br/>\n<br/>\n-Jason<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jphedley@...\">jphedley@...</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jphedley@...\">jphedley@...</a>]<br/>\nSent: Tuesday, June 26, 2001 8:36 AM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nCc: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jason.rogers@...\">jason.rogers@...</a><br/>\nSubject: Re: RE: [junit] Running setUp once for all tests in a test<br/>\nsuite<br/>\n<br/>\n<br/>\nJason,<br/>\n      I apologize for mailing you directly but I cannot post to junit site<br/>\nsince I had recently had some bounces due to my mailbox filling while in<br/>\nEurope- I cannot get the bloody yahoo usergroup account to reset.<br/>\n<br/>\nAnyway, I hope this is of interest and if you would like to polst this for<br/>\nme, I would greatly appreciate it.<br/>\n<br/>\ncheers,<br/>\nJ.P.<br/>\n<br/>\n<br/>\n<br/>\nNo, that is not correct.  Each test runs in its own instance of TestCase so<br/>\nplacing test fixture code in the constructor will not make any difference.<br/>\n(In a document and presentation I created for work, I have some potential<br/>\nreasonS why setUp() exists at all).   For example,<br/>\n<br/>\n  D:&#92;junit&#92;junitexamples&#92;wwsdc&gt;java junit.textui.TestRunner<br/>\nEachTestOwnObject<br/>\n  .<br/>\n  setUp called<br/>\n  test_underScore1 called<br/>\n         in number 1 instance of class EachTestOwnObject<br/>\n  tearDown called<br/>\n  .<br/>\n  setUp called<br/>\n  test_underScore2 called<br/>\n         in number 2 instance of class EachTestOwnObject<br/>\n  tearDown called<br/>\n<br/>\n  Time: 0.016<br/>\n<br/>\n  OK (2 tests)<br/>\n<br/>\n<br/>\n  So you do need to use the junit.extensions.TestSetup decorator.  Here is<br/>\nan template that I hope<br/>\n  might help<br/>\n<br/>\n  public class TestSetupDecorator extends TestSetup<br/>\n  {<br/>\n     TestSetupDecorator(Test test){ super(test);}<br/>\n<br/>\n     protected void setUp(){<br/>\n         /* create resources or call static initialization<br/>\n             methods of your test class */<br/>\n     }<br/>\n<br/>\n     protected void tearDown(){<br/>\n         //free resources<br/>\n     }<br/>\n  }<br/>\n<br/>\n  In your  child of TestCase,<br/>\n<br/>\n  public static Test suite(){<br/>\n<br/>\n     //Wrap your TestSuite in the decorator<br/>\n         return new TestSetupDecorator(new<br/>\n             TestSuite(<br/>\n                 UserTestSetupDecorator.class));<br/>\n  }<br/>\n<br/>\n<br/>\n  Voila, you will get,<br/>\n<br/>\n  D:&#92;junit&#92;junitexamples&#92;wwsdc&gt;java UserTestSetupDecorator<br/>\n<br/>\n  TestSetupDecorator::setUp() called<br/>\n  .<br/>\n  setUp called<br/>\n  test_underScore1<br/>\n  tearDown called<br/>\n  .<br/>\n  setUp called<br/>\n  test_underScore2<br/>\n  tearDown called<br/>\n<br/>\n  TestSetupDecorator::tearDown() called<br/>\n<br/>\n  OK (2 tests)<br/>\n<br/>\n  I hope this is sufficently clear- it&#39;s 5:OOam in morning but I can&#39;t sleep<br/>\ndue to jet lag from travelling in Europe.  If not I will try to help more.</div>", 
+    "prevInTime": 1657, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "993561405", 
+    "canDelete": false, 
+    "nextInTopic": 1839, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2MEU1QGV4Y2g+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 9644, 
+    "senderId": "rqqTFnw9r6yDjvSlyR-Vmdco5mVBwtf9KCE6I_EHzW4pVELJmUymtiJ1OZUinG84Ecra_mK70D3-j8-6QDDBZSi5L1iNZu0Ly68DPu61rV0d", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] How would you test a code which is used in Multi-threaded context", 
+    "from": "&quot;Kris Henderson&quot; &lt;khenderson@...&gt;", 
+    "authorName": "Kris Henderson", 
+    "msgSnippet": "Sal, In testGetAndPutWithThread() It doesn t look like you re starting your thread.  Also, I don t see any asserts in testGetAndPutWithThread(). What exactly", 
+    "msgId": 9643, 
+    "profile": "kris_556", 
+    "topicId": 9641, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90305179, 
+    "messageBody": "<div id=\"ygrps-yiv-1221060735\">Sal,<br/>\n<br/>\nIn testGetAndPutWithThread() It doesn&#39;t look like you&#39;re starting your<br/>\nthread.  Also, I don&#39;t see any asserts in testGetAndPutWithThread().<br/>\nWhat exactly is failing is this test?<br/>\n<br/>\nKris<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; -----Original Message-----<br/>\n&gt; From: shailesh401 [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:skadam@...\">skadam@...</a>] <br/>\n&gt; Sent: Monday, October 06, 2003 8:33 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; <br/>\n&gt; Guys,<br/>\n&gt;   Testing the following code in 1 thread is easy, but<br/>\n&gt; in multiple thread is confusing...<br/>\n&gt; <br/>\n&gt; 1st test passes, 2nd one fail.<br/>\n&gt; <br/>\n&gt; Any suggestions or help.<br/>\n&gt; <br/>\n&gt; Thanks<br/>\n&gt;  Sal<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; --------------  SynchronizedQueue.java ----------------<br/>\n&gt; <br/>\n&gt; import java.util.Vector;<br/>\n&gt; <br/>\n&gt; public class SynchronizedQueue {<br/>\n&gt;     private Vector elements = new Vector(10,10);<br/>\n&gt; <br/>\n&gt;     public synchronized Object get() {<br/>\n&gt;         while (elements.isEmpty()) {<br/>\n&gt;             try {<br/>\n&gt;                 wait();<br/>\n&gt;             } catch (InterruptedException e) {<br/>\n&gt;             }<br/>\n&gt;         }<br/>\n&gt;         notifyAll();<br/>\n&gt;         Object anElement = elements.remove(0);<br/>\n&gt;         return anElement;<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public synchronized void put(Object anElement) {<br/>\n&gt;         elements.add(anElement);<br/>\n&gt;         notifyAll();<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; ------------------ SynchronizedQueueTest ----------------------------<br/>\n&gt; import junit.framework.TestCase;<br/>\n&gt; <br/>\n&gt; import java.util.Vector;<br/>\n&gt; <br/>\n&gt; public class SynchronizedQueueTest extends TestCase {<br/>\n&gt; <br/>\n&gt;         public void testGetAndPutWithoutThreads() throws Exception {<br/>\n&gt;         final SynchronizedQueue synchronizedQueue = new <br/>\n&gt; SynchronizedQueue();<br/>\n&gt;         synchronizedQueue.put(&quot;111&quot;);<br/>\n&gt;         synchronizedQueue.put(&quot;222&quot;);<br/>\n&gt;         synchronizedQueue.put(&quot;333&quot;);<br/>\n&gt;         assertEquals(&quot;111&quot;, synchronizedQueue.get());<br/>\n&gt;         assertEquals(&quot;222&quot;, synchronizedQueue.get());<br/>\n&gt;         assertNotSame(&quot;444&quot;, synchronizedQueue.get());<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public void testGetAndPutWithThread() throws Exception {<br/>\n&gt;         Vector elements = new Vector();<br/>\n&gt;         SynchronizedQueue synchronizedQueue = new SynchronizedQueue();<br/>\n&gt;         new Thread() {<br/>\n&gt;             public void run() {<br/>\n&gt;                 elements.add(synchronizedQueue.get());<br/>\n&gt;                 elements.add(synchronizedQueue.get());<br/>\n&gt;             }<br/>\n&gt;         };<br/>\n&gt;         synchronizedQueue.put(&quot;FirstElement&quot;);<br/>\n&gt;         synchronizedQueue.put(&quot;SecondElement&quot;);<br/>\n&gt;         elements.add(synchronizedQueue.get());<br/>\n&gt;         synchronizedQueue.put(&quot;ThirdElement&quot;);<br/>\n&gt;         elements.toString();<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------ Yahoo! Groups Sponsor <br/>\n&gt; ---------------------~--&gt;<br/>\n&gt; Buy Ink Cartridges or Refill Kits for your HP, Epson, Canon or Lexmark<br/>\n&gt; Printer at MyInks.com. Free s/h on orders $50 or more to the <br/>\n&gt; US & Canada.<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.c1tracking.com/l.asp?cid=5511\">http://www.c1tracking.com/l.asp?cid=5511</a><br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/mOAaAA/3exGAA/qnsNAA/5cFolB/TM\">http://us.click.yahoo.com/mOAaAA/3exGAA/qnsNAA/5cFolB/TM</a><br/>\n&gt; --------------------------------------------------------------<br/>\n&gt; -------~-&gt;<br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 9642, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1065463715", 
+    "canDelete": false, 
+    "nextInTopic": 9645, 
+    "prevInTopic": 9641, 
+    "headers": {
+        "messageIdInHeader": "PEY3QjE2RUI4OTg0QjE0NDA5QUNCMDE1RjEzMjZCQjY2ODgxNkFFQEFUTDFWRVhDMDA1LnVzZG9tMDA0LnRjby50Yz4="
+    }
+}

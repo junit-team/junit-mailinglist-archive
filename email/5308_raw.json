@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5309, 
+    "senderId": "I16dk-rVY9RjgRk4UvPXj-4vLGZFJxPtn1MJAqWeIm7eduWW-vPO0t0inpDUkE8IONfTesQyMi2pyVtL3f0bvQCwHXWPyxUvBI-OfmCqvaOg5f6D", 
+    "systemMessage": false, 
+    "subject": "Exploring with tests (RE: [junit] Re: distinguishing between  failures and errors)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Poor man. ... offers ... I like the scrapbook in VAJ. Always did. ... typed ... language... An interpreter is best: I liked that when a first started with", 
+    "msgId": 5308, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_7_4); 3 Jul 2002 13:50:33 -0000\r\nReceived: (qmail 34315 invoked from network); 3 Jul 2002 13:50:33 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 3 Jul 2002 13:50:33 -0000\r\nReceived: from unknown (HELO tomts9-srv.bellnexxia.net) (209.226.175.53)\n  by mta2.grp.scd.yahoo.com with SMTP; 3 Jul 2002 13:50:33 -0000\r\nReceived: from siferra ([64.228.120.48]) by tomts9-srv.bellnexxia.net\n          (InterMail vM.5.01.04.19 201-253-122-122-119-20020516) with ESMTP\n          id &lt;20020703135033.CCFT22497.tomts9-srv.bellnexxia.net@siferra&gt;\n          for &lt;junit@yahoogroups.com&gt;; Wed, 3 Jul 2002 09:50:33 -0400\r\nMessage-ID: &lt;200207030953080376.0850F7C2@...&gt;\r\nIn-Reply-To: &lt;C450D96664CBD31182B600A0C97668B16480CB@CASE052&gt;\r\nReferences: &lt;C450D96664CBD31182B600A0C97668B16480CB@CASE052&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Wed, 03 Jul 2002 09:53:08 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Exploring with tests (RE: [junit] Re: distinguishing between\n  failures and errors)\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nOn 2002-07-03 at 14:53 Mark Meyers wrote:\n\n&gt;&gt; -----Original Message-----\n&gt;&gt; From: J. B. Rainsberger \n&gt;...\n&gt;&gt; &gt;&gt; From: J. B. Rainsberger [mailto:jbr@...]\n&gt;&gt; &gt;...\n&gt;&gt; &gt;&gt; &gt;...\n&gt;...\n&gt;&gt; \n&gt;&gt; Do you have experience to back up this statement? I started learning\n&gt;&gt; Smalltalk using a combination of:\n&gt;&gt; \n&gt;&gt; * Well-named classes\n&gt;&gt; * A primer on the syntax\n&gt;&gt; * SUnit\n&gt;&gt; \n&gt;Agreed, I learned about Smalltalk whitout the benefit of SUnit.\n\nPoor man.\n\n&gt;When starting with java, I tried to do it the same way (VisualAge\noffers\n&gt;similar funcionality in the scrapbook).\n\nI like the scrapbook in VAJ. Always did.\n\n&gt;Switching to forte, I had a test class with a main method, where I\ntyped\n&gt;some code to see what it did.\n&gt;I believe that&#39;s a very common way to explore any programming\nlanguage...\n\nAn interpreter is best: I liked that when a first started with Ruby; I\nliked that with Smalltalk and I&#39;ve seen one or two in Java. I think\nthat interpreters are the perfect way to take the very first steps with\na language. Next is writing tests.\n\n&gt;Now I put all that exploring code in testcases, so I can use them as\n&gt;documentation later. \n\nExcellent. EVERYONE PAY ATTENTION.\n\n&gt;Wouldn&#39;t want to start counting how often I &quot;explored&quot;\n&gt;Class.isAssignableFrom(Class) - amongst others. Whenever I read the\n&gt;javadoc:\n&gt;\n&gt;   &quot;Determines if the class or interface represented by this Class\nobject\n&gt;is\n&gt;either the same as, \n&gt;    or is a superclass or\n&gt;    superinterface of, the class or interface represented by \n&gt;    the specified Class parameter.&quot;\n\nWould this not be clearer?\n\n    Determines whether the object &#39;that&#39; can be assigned to an object\n    whose type is the current Class object.\n\nThis is a special case of writing a comment that describes the\nimplementation, rather than explains the intent. A stupid comment, in\nother words.\n\n&gt;I start panicking. The method name does not help either\n&gt;(Class.isSuperTypeOf(Class) would be clearer).\n\nI think isAssignableFrom() is a fine name, and it even works without\ndocumentation:\n\n    assertTrue( this.getClass().isAssignableFrom(that) );\n\nClear enough for me. Even better would be:\n\n    assertTrue( this.canBeAssignedTo(thatClass) );\n\nThe method should just be on Object, or mixed in from\nRuntimeTypeInformation. Shame there are no mixins in Java...\n\n&gt;    public void testIsAssignableFrom(){\n&gt;        assertTrue(Number.class.isAssignableFrom(Integer.class));\n&gt;    }\n&gt;\n&gt;is much clearer to me, poor programmer.\n&gt;Meaning: &quot;an instance of class Integer can be assigned to a variable\nof\n&gt;type\n&gt;Number&quot;.\n\nPerfect.\n\n&gt;or &quot;Number is a super class of Integer&quot;.\n\nLess perfect; the above is more to the point. Number could, after all,\nbe an interface that Integer implements.\n\n&gt;BTW, JB, is this what you call learning tests ?\n\nYes, although I saw Kent first use the term in his Test-Driven\nDevelopment book. Thanks, Kent.\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\nAll correspondence (c) 2002 Diaspar Software Services.\nIf you want to use it, just ask; don&#39;t steal.\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 5307, 
+    "contentTrasformed": false, 
+    "postDate": "1025704388", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 5304, 
+    "headers": {
+        "inReplyToHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ4MENCQENBU0UwNTI+", 
+        "messageIdInHeader": "PDIwMDIwNzAzMDk1MzA4MDM3Ni4wODUwRjdDMkBzbXRwMS5zeW1wYXRpY28uY2E+", 
+        "referencesHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ4MENCQENBU0UwNTI+"
+    }
+}

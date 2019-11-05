@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 10338, 
+    "senderId": "sH8hrI9kii_8VYw0BMkJVXp67jFEQeJnmE6UivRQVOqzLXRFeWtjIGM3xboztvmJI_ZfPg8JuPZAFJIX9cTh5Sq-EBnC9NGnWi3en4SBag", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] database migration: tests organisation", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Define enormously . 10^5? 10^10? 10^20? ... Is there an infinite recursion somewhere? ... So you are storing test data in a database? Interesting. How", 
+    "msgId": 10337, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 51106 invoked from network); 29 Jan 2004 23:24:09 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m7.grp.scd.yahoo.com with QMQP; 29 Jan 2004 23:24:09 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta2.grp.scd.yahoo.com with SMTP; 29 Jan 2004 23:24:09 -0000\r\nReceived: from rogers.com ([64.80.115.147])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040129230801.IYFO171486.fep02-mail.bloor.is.net.cable.rogers.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Thu, 29 Jan 2004 18:08:01 -0500\r\nMessage-ID: &lt;401992B7.4080303@...&gt;\r\nDate: Thu, 29 Jan 2004 18:09:43 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6b) Gecko/20031205 Thunderbird/0.4\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20040129113915.GA5270@raphael&gt;\r\nIn-Reply-To: &lt;20040129113915.GA5270@raphael&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep02-mail.bloor.is.net.cable.rogers.com from [64.80.115.147] using ID &lt;jbrains@...&gt; at Thu, 29 Jan 2004 18:08:01 -0500\r\nX-eGroups-Remote-IP: 66.185.86.72\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] database migration: tests organisation\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nBauduin Raphael wrote:\n\n&gt; Hi,\n&gt; \n&gt; I am now developing the tests to validate a database migration.\n&gt; \n&gt; My main class is this one :\n&gt; \n&gt; class TestDatabaseMigration {\n&gt; \n&gt;     public static Test suite() {\n&gt;         TestSuite suite= new TestSuite();\n&gt;         suite.addTest(CustomersTest.suite());\n&gt;         return suite;\n&gt;        \n&gt;     }\n&gt;     public static void main (String[] arg){\n&gt; \n&gt;         junit.textui.TestRunner.run(suite());\n&gt; \n&gt;     }\n&gt; }\n&gt; \n&gt; In the CustomersTest class, I add several tests for each customer, so\n&gt; the number of tests added is growing enormously, all in the same suite.\n\nDefine &quot;enormously&quot;. 10^5? 10^10? 10^20?\n\n&gt; I&#39;m afraid I won&#39;t be able to add test indefinitively like that (I juste\n&gt; had a Exception in thread &quot;main&quot; java.lang.OutOfMemoryError, and\n&gt; wondered if any of you had any suggestions on how to organise tests.\n\nIs there an infinite recursion somewhere?\n\n&gt; I&#39;m working with Hibernate. For the last test (with CustomerOrdersQuantity)\n&gt; I need to get the orders of the customer that is tested, meaning even\n&gt; more memory consumption.\n&gt; \n&gt; And here is the interesting par of the class CustomersTest.suite():\n&gt;    \n&gt; \n&gt;             //Iterate on source database\n&gt;             Iterator iterator = session.iterate(&quot;from Customer&quot;);\n&gt;             custdb.hibernate.Customer customerPg;\n&gt;             while (iterator.hasNext())\n&gt;             {\n&gt;                 customer=(Customer) iterator.next();\n&gt;                 //get corresponding customer in destination database\n&gt;                 customerPg=( custdb.hibernate.Customer) \n&gt; sessionPg.load(custdb.hibernate.Customer.class, customer.getCustomerId());\n&gt;                \n&gt;                 //Test customer name\n&gt;                 customerSuite.addTest(new \n&gt; CustomerCompanyName(&quot;customer_name_&quot;+customer.getCustomerId(),customer, \n&gt; customerPg));\n&gt;                 //Test customer VAT\n&gt;                 customerSuite.addTest(new \n&gt; CustomerVat(&quot;customer_vat_&quot;+customer.getCustomerId(),customer, customerPg));\n&gt;                 //Test customer description\n&gt;                 customerSuite.addTest(new \n&gt; CustomerDescription(&quot;customer_description_&quot;+customer.getCustomerId(),customer, \n&gt; customerPg));\n&gt;                 //Test that both customers have the same amount of \n&gt; orders defined\n&gt;                 customerSuite.addTest(new \n&gt; CustomerOrdersQuantity(&quot;customer_orders_quantity&quot;+customer.getCustomerId(),customer, \n&gt; customerPg));\n&gt;                 //i++;\n&gt;             }                      \n\nSo you are storing test data in a database? Interesting. How many \nrecords? Do you really need to test every record? or just a \nrepresentative set of records? What if there are 1000 records that all \ntest the same essential code path?\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 10334, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 10336, 
+    "contentTrasformed": false, 
+    "postDate": "1075417783", 
+    "canDelete": false, 
+    "nextInTopic": 10347, 
+    "prevInTopic": 10334, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwMTI5MTEzOTE1LkdBNTI3MEByYXBoYWVsPg==", 
+        "messageIdInHeader": "PDQwMTk5MkI3LjQwODAzMDNAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDQwMTI5MTEzOTE1LkdBNTI3MEByYXBoYWVsPg=="
+    }
+}

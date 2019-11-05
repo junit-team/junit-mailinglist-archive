@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 1006, 
+    "senderId": "n7lT_S1bV_cF0bsHdqVJPD3n6oqWTozt4yVj587V9wINk4oG_9EOmqG4t8qFOl_haJpcjnbJ-VQfSDP70ijh-3Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing JOptionPane", 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "authorName": "Joi Ellis", 
+    "msgSnippet": "... I d stick the showMessageDialog() call within a SwingUtilities.invokeLater() call.  This allows your test thread to continue operating. ... Eek.  doClick()", 
+    "msgId": 1005, 
+    "topicId": 1003, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1924105955\">On Fri, 20 Apr 2001, Logan, Daniel (ING) wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Since the JOptionPane.showMessageDialog(...) method presents a modal dialog<br/>\n&gt; and the thread halts execution until a user intervenes how can I test this?<br/>\n<br/>\n </span></blockquote>I&#39;d stick the showMessageDialog() call within a SwingUtilities.invokeLater()<br/>\ncall.  This allows your test thread to continue operating.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; here is the test case I am struggling with:<br/>\n&gt; <br/>\n&gt; public void testInformationMessage( )<br/>\n&gt; {<br/>\n&gt; \tMyPanel panel = new MyPanel();<br/>\n&gt; \tpanel.someButton.doClick();   //MyPanel will listen for button click<br/>\n&gt; and show info message<br/>\n<br/>\n </span></blockquote>Eek.  doClick() is not thread-safe.  I ended up writing a static clicker<br/>\nmethod:<br/>\n<br/>\n /**<br/>\n   * Safely call doClick() on the specified JButton.<br/>\n   * @param button The button to doClick().<br/>\n   */<br/>\n  public static void safeDoClick(final JButton button) {<br/>\n    try {<br/>\n      SwingUtilities.invokeAndWait(<br/>\n        new Runnable() {<br/>\n          public void run() {<br/>\n            button.doClick();<br/>\n          }<br/>\n        }<br/>\n      );<br/>\n    }<br/>\n    catch (Exception ex) {<br/>\n      ex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n<br/>\nI&#39;d do something like this pseudo-code:<br/>\n  <br/>\n  safeShowMessageDialog( panel );<br/>\n  sleep(1 second);<br/>\n  assert(panel.isVisible());<br/>\n  safeDoClick(panel.button);<br/>\n  sleep(1 second);<br/>\n  assert(! panel.isVisible());<br/>\n  assert(&quot;whatever happens after button is clicked&quot;,...);<br/>\n<br/>\nI don&#39;t like using sleep() since it&#39;s fragile but I haven&#39;t had any<br/>\ntrouble with it in a year&#39;s testing, so...  I prefer turning the test class<br/>\ninto an event listener and having it wait for events to arrive before<br/>\nproceeding.  I have an extension class that implements a bunch of <br/>\nlisteners and stuffs events into a queue for later inspection.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; \t// assert????????   what do I assert here....after returning from<br/>\n&gt; doClick it is to late because<br/>\n&gt; \t//the JOptionPane would be closed<br/>\n&gt; \t//furthermore...how will I even automate the click on the OK button<br/>\n&gt; within the JOptionPane<br/>\n&gt; \t//so it does not just hang indefinitely?<br/>\n&gt; }<br/>\n </span></blockquote>-- <br/>\nJoi Ellis                    Software Engineer<br/>\nAravox Technologies          <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gyles19@...\">gyles19@...</a><br/>\n<br/>\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I<br/>\nreally like about Linux is that it has Microsoft worried.  Anything<br/>\nthat kicks a monopoly in the pants has got to be good for something.<br/>\n           - Chris Johnson</div>", 
+    "prevInTime": 1004, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987775701", 
+    "canDelete": false, 
+    "nextInTopic": 1007, 
+    "prevInTopic": 1003, 
+    "headers": {
+        "inReplyToHeader": "PEZEQjAyNDBDQjE5RUQzMTFCRDhEMDA1MDhCNUJGNzRCMDcyQTEwNERAVFdSUC1FWENILTAwMT4=", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwNDIwMDg1NTU4MC4zMjQ4Ny0xMDAwMDBAam9pLmFyYXZveC5jb20+"
+    }
+}

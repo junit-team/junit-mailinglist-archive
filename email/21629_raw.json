@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 33, 
+    "nextInTime": 21630, 
+    "senderId": "c2Ct22LqKesBqvRg-rNnBSdIegdWx-yUXio65dPFojXiuMQJyoxNtbA1V3ybRsyweVR2deoBnJr1hYJYuKTEayjRFxaMEV2q8BSbNb8aY_dwxAuQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Missing API: Assert.assertThat(boolean) or \tIsCollection.isEmpty()", 
+    "from": "Martijn Dashorst &lt;martijn.dashorst@...&gt;", 
+    "authorName": "Martijn Dashorst", 
+    "msgSnippet": "In my recent unit testing frenzy I used mockito as an alternative to easymock. The problem is that both Hamcrest and Mockito define matchers in the global", 
+    "msgId": 21629, 
+    "rawEmail": "Return-Path: &lt;martijn.dashorst@...&gt;\r\nX-Sender: martijn.dashorst@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 22594 invoked from network); 19 May 2009 06:02:29 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m5.grp.sp2.yahoo.com with QMQP; 19 May 2009 06:02:29 -0000\r\nX-Received: from unknown (HELO mail-fx0-f169.google.com) (209.85.220.169)\n  by mta3.grp.sp2.yahoo.com with SMTP; 19 May 2009 06:02:29 -0000\r\nX-Received: by fxm17 with SMTP id 17so4042824fxm.41\n        for &lt;junit@yahoogroups.com&gt;; Mon, 18 May 2009 23:02:26 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.103.105.1 with SMTP id h1mr4569983mum.13.1242712945634; Mon, \n\t18 May 2009 23:02:25 -0700 (PDT)\r\nIn-Reply-To: &lt;17fa53d0905181321m28de08f2p287523286f2b5b48@...&gt;\r\nReferences: &lt;918312fe0905130605i2d08f95dpfc19ba870992f87f@...&gt;\n\t &lt;4f7da6b90905130616i28436338tb932b451e9b9a3b3@...&gt;\n\t &lt;918312fe0905130619k25d63ea3yfbe1cf9efa0cf2be@...&gt;\n\t &lt;4f7da6b90905130625r3a10d0dctd1ad58b88f8d7750@...&gt;\n\t &lt;D04B62A56C65EA4B860036108BD0A66C0310B239@...&gt;\n\t &lt;4f7da6b90905140745g6f7e64eai918f3bc370cf314@...&gt;\n\t &lt;200905161054.n4GAs2sJ025114@...&gt;\n\t &lt;4f7da6b90905180919o1940a086k3df6e090969c1688@...&gt;\n\t &lt;17fa53d0905181321m28de08f2p287523286f2b5b48@...&gt;\r\nDate: Tue, 19 May 2009 08:02:25 +0200\r\nMessage-ID: &lt;918312fe0905182302y30058bcfs6b9463e265a18562@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Martijn Dashorst &lt;martijn.dashorst@...&gt;\r\nSubject: Re: [junit] Missing API: Assert.assertThat(boolean) or \n\tIsCollection.isEmpty()\r\nX-Yahoo-Group-Post: member; u=240822343; y=N7o7d3qZRLCyqO1GhyZUuRid7CnTRDli-XS8dqpOEXyC1ElxeLA6wSA1bw\r\nX-Yahoo-Profile: martijn_dashorst\r\n\r\nIn my recent unit testing frenzy I used mockito as an alternative to\neasymo=\r\nck. The problem is that both Hamcrest and Mockito define\nmatchers in the gl=\r\nobal namespace (if you use static imports that is).\n\nThe proposed API below=\r\n by David Saff:\n&gt; assertThat(list).isEmpty();\n&gt; assertThat(list).equals(lis=\r\nt2);\n&gt; assertThat(list).contains(item);\n&gt; assertThat(file).exists();\n&gt; asse=\r\nrtThat(objectStreamField).isPrimitive();\n\nWould make the static import prob=\r\nlem go away. I also think this is\nnicer to program as static imports are no=\r\nt yet nicely supported by\nEclipse (haven&#39;t used them with other IDEs though=\r\n).\n\nMartijn\n\nOn Mon, May 18, 2009 at 10:21 PM, Nat Pryce &lt;nat.pryce@gmail.c=\r\nom&gt; wrote:\n&gt;\n&gt;\n&gt; On 18/05/2009, David Saff &lt;david@...&gt; wrote:\n&gt;&gt; To be=\r\n clear, my proposal was a single syntax that would allow\n&gt;&gt; hamcrest-style =\r\nassertions from a boolean method on any non-final\n&gt;&gt; class, including:\n&gt;&gt;\n&gt;=\r\n&gt; assertThat(list).isEmpty();\n&gt;&gt; assertThat(list).equals(list2);\n&gt;&gt; assertT=\r\nhat(list).contains(item);\n&gt;&gt; assertThat(file).exists();\n&gt;&gt; assertThat(objec=\r\ntStreamField).isPrimitive();\n&gt;&gt;\n&gt;&gt; The _big_ blocker for this idea is that =\r\nString is final, meaning that\n&gt;&gt; there&#39;s no way to use the same syntax to g=\r\net this to compile:\n&gt;&gt;\n&gt;&gt; assertThat(&quot;abc&quot;).contains(&quot;c&quot;);\n&gt;\n&gt; You could wr=\r\nite a special-case overload for Strings that returned some\n&gt; kind of string=\r\n-matcher-builder. It&#39;s a kludge but maybe consistency\n&gt; would be worth it.\n=\r\n&gt;\n&gt; Also, what about accessors that return types other than boolean? I&#39;m\n&gt; =\r\nsure there&#39;s a way to automagically generate composite matchers for\n&gt; them =\r\nsomehow.\n&gt;\n&gt; By the way, there is at least one project on google-code that =\r\ndoes\n&gt; half of this: generate matchers using reflection and cglib.\n&gt;\n&gt; --Na=\r\nt\n&gt;\n&gt; --\n&gt; http://www.natpryce.com\n&gt;\n&gt; \n\n\n\n-- \nBecome a Wicket expert, lear=\r\nn from the best: http://wicketinaction.com\nApache Wicket 1.3.5 is released\n=\r\nGet it now: http://www.apache.org/dyn/closer.cgi/wicket/1.3.\n\n", 
+    "profile": "martijn_dashorst", 
+    "topicId": 21596, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 240822343, 
+    "prevInTime": 21628, 
+    "contentTrasformed": false, 
+    "postDate": "1242712945", 
+    "canDelete": false, 
+    "nextInTopic": 21630, 
+    "prevInTopic": 21628, 
+    "headers": {
+        "inReplyToHeader": "PDE3ZmE1M2QwOTA1MTgxMzIxbTI4ZGUwOGYycDI4NzUyMzI4NmYyYjViNDhAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDkxODMxMmZlMDkwNTE4MjMwMnkzMDA1OGJjZnM2Yjk0NjNlMjY1YTE4NTYyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDkxODMxMmZlMDkwNTEzMDYwNWkyZDA4Zjk1ZHBmYzE5YmE4NzA5OTJmODdmQG1haWwuZ21haWwuY29tPgkgPDRmN2RhNmI5MDkwNTEzMDYxNmkyODQzNjMzOHRiOTMyYjQ1MWU5YjlhM2IzQG1haWwuZ21haWwuY29tPgkgPDkxODMxMmZlMDkwNTEzMDYxOWsyNWQ2M2VhM3lmYmUxY2Y5ZWZhMGNmMmJlQG1haWwuZ21haWwuY29tPgkgPDRmN2RhNmI5MDkwNTEzMDYyNXIzYTEwZDBkY3RkMWFkNThiODhmOGQ3NzUwQG1haWwuZ21haWwuY29tPgkgPEQwNEI2MkE1NkM2NUVBNEI4NjAwMzYxMDhCRDBBNjZDMDMxMEIyMzlAYm9zdG9uLWV4LmxhdmFzdG9ybS5sb2NhbC5jb20+CSA8NGY3ZGE2YjkwOTA1MTQwNzQ1ZzZmN2U2NGVhaTkxOGYzYmMzNzBjZjMxNEBtYWlsLmdtYWlsLmNvbT4JIDwyMDA5MDUxNjEwNTQubjRHQXMyc0owMjUxMTRAcnM0OS5sdXhzY2kuY29tPgkgPDRmN2RhNmI5MDkwNTE4MDkxOW8xOTQwYTA4NmszZGY2ZTA5MDk2OWMxNjg4QG1haWwuZ21haWwuY29tPgkgPDE3ZmE1M2QwOTA1MTgxMzIxbTI4ZGUwOGYycDI4NzUyMzI4NmYyYjViNDhAbWFpbC5nbWFpbC5jb20+"
+    }
+}

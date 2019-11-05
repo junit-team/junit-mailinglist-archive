@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 13257, 
+    "senderId": "_QyZgvXNa4Ws4-Gu1DlIUd66rjVxyls7NRwCrysbS2gChzR0aSshpIAO-fig4GBFR1LJEAO0YzFa0YMUfJeoJkSzucFVyt4-Sec40K3lyw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test this class ?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Right now you re using a BufferedReader that talks to System.in. If you had a BufferedReader that talks to a StringReader, then you could fake all the", 
+    "msgId": 13256, 
+    "profile": "nails762", 
+    "topicId": 13253, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1340423289\">rubbinio wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; <br/>\n&gt; I need to test a class in which all the methods read via System.in.<br/>\n&gt; <br/>\n&gt; How can I fake the input so that I can automate my tests ?<br/>\n<br/>\n </span></blockquote>Right now you&#39;re using a BufferedReader that talks to System.in. If you <br/>\nhad a BufferedReader that talks to a StringReader, then you could fake <br/>\nall the input using Strings.<br/>\n<br/>\nRight now you&#39;re hardcoding the value of &quot;keyboard&quot; for each instance of <br/>\nthe class Input. You could introduce a parameter so that:<br/>\n  * your tests could pass in a StringReader<br/>\n  * your production code could pass in the InputStreamReader talking to <br/>\nSystem.in<br/>\n<br/>\nStep 1: Change everything in Input so it&#39;s no longer static.<br/>\nStep 2: Introduce this constructor:<br/>\n<br/>\npublic class Input(Reader source) {<br/>\n     this.keyboard = new BufferedReader(source);<br/>\n}<br/>\n<br/>\nStep 3: Consider renaming &quot;keyboard&quot; since it&#39;s no longer talking <br/>\n(necessarily) to a keyboard.<br/>\n<br/>\nNow, to use your class, write code like this:<br/>\n<br/>\nInput keyboardInput = new Input(new InputStreamReader(System.in));<br/>\n<br/>\nIn your tests, write code like this:<br/>\n<br/>\ntestReadInt() {<br/>\n     Input input = new Input(new StringReader(&quot;26&#92;n&quot;));<br/>\n     assertEquals(26, input.readInt());<br/>\n}<br/>\n<br/>\nThis is a specific example of refactoring code so that it doesn&#39;t depend <br/>\ndirectly on global data (System.in). In general, it&#39;s a good idea not to <br/>\ndepend directly on global data.<br/>\n<br/>\nI hope this helped.<br/>\n&#92;--<br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 13255, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1113071860", 
+    "canDelete": false, 
+    "nextInTopic": 13257, 
+    "prevInTopic": 13253, 
+    "headers": {
+        "inReplyToHeader": "PGQzN2dqZSs5M2VkQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyNTgyMEY0LjEwMjAxMDhAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGQzN2dqZSs5M2VkQGVHcm91cHMuY29tPg=="
+    }
+}

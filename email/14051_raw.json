@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 14052, 
+    "senderId": "qfuz-XTWiKZlW9IEYy06SLn11wcZ-HNRpJUCtlPb4VTGr4YI9FTFEGDC3E4kmlVEGbIZLZBNBF4qe0bkLm3jygvh_0_A2uTd0Nz9_FmlwPT_LaNVrA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Using a Special Class Loader to test a Singleton", 
+    "from": "Andrew McDonagh &lt;andrew.mcdonagh@...&gt;", 
+    "authorName": "Andrew McDonagh", 
+    "msgSnippet": "... snipped code. I take it you want to do some kind of reset of the singleton so that you can test different datasets? If so, forget about classloading,", 
+    "msgId": 14051, 
+    "rawEmail": "Return-Path: &lt;andrew.mcdonagh@...&gt;\r\nX-Sender: andrew.mcdonagh@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 17554 invoked from network); 28 Jun 2005 09:00:43 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m29.grp.scd.yahoo.com with QMQP; 28 Jun 2005 09:00:43 -0000\r\nReceived: from unknown (HELO relay.ipaccess.com) (217.204.123.74)\n  by mta4.grp.scd.yahoo.com with SMTP; 28 Jun 2005 09:00:42 -0000\r\nReceived: from magrat.ipaccess.com ([172.28.0.6])\n\tby relay.ipaccess.com with esmtp (Exim 4.50)\n\tid 1DnBxR-00054B-Am\n\tfor junit@yahoogroups.com; Tue, 28 Jun 2005 09:00:41 +0000\r\nReceived: from aragorn.ipaccess.com\n\t([172.28.0.78] helo=aragorn ident=mail)\n\tby magrat.ipaccess.com with esmtp (Exim 3.35 #1 (Debian))\n\tid 1DnBxQ-0007LL-00\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 28 Jun 2005 09:00:40 +0000\r\nReceived: from [172.28.1.102] (helo=[172.28.1.102])\n\tby aragorn with esmtp (Exim 3.35 #1 (Debian))\n\tid 1DnBxQ-0003ze-00\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 28 Jun 2005 09:00:40 +0000\r\nMessage-ID: &lt;42C111B5.4040305@...&gt;\r\nDate: Tue, 28 Jun 2005 10:00:37 +0100\r\nUser-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;d9q55f+765k@...&gt;\r\nIn-Reply-To: &lt;d9q55f+765k@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Andrew McDonagh &lt;andrew.mcdonagh@...&gt;\r\nReply-To: andrew.mcdonagh@...\r\nSubject: Re: [junit] Using a Special Class Loader to test a Singleton\r\nX-Yahoo-Group-Post: member; u=73998260; y=mCNk_XBofohqFHqVri8bF4Y2Gg9S0tWYuINB5Zhi6vdQSQAZSakJRg\r\nX-Yahoo-Profile: andy_ipaccess\r\n\r\nraycclough wrote:\n\n&gt;I know that the JUnit community frowns on Singletons.  However I have\n&gt;a piece of code which uses a singleton, and I want to test it.  The\n&gt;singleton takes a &quot;Reader&quot; in it&#39;s constructor (which may be null, and\n&gt;then it uses a properties file to create its data).  I want to test it\n&gt;using various different data sets.  In line with that, I created a\n&gt;custom Class Loader, and use Reflection to create the object.  It\n&gt;works great (except, of course, where it doesn&#39;t).  The reflexively\n&gt;obtained constructor returns an object of type &#39;Object&#39;, which the\n&gt;debugger says has the correct underlying type, and it contains the\n&gt;correct data, but I cannot Cast it to the type it needs to be.  Any\n&gt;hint to what I&#39;m doing wrong?  Thanks for any advice you can give me\n&gt;on this.\n&gt;\n&gt;  \n&gt;\n\nsnipped code.\n\nI take it you want to do some kind of reset of the singleton so that you \ncan test different datasets?\n\nIf so, forget about classloading, reflection, etc and keep it simple.\n\nA number of options are available all...\n\n1) just add a public instance method to reset the reader and anything \nelse of the singleton:\n\nclass DefaultGatewayController {\n    public static DefaultGatewayController getInstance() {\n       return s_instance;\n    }\n\n   public void resetReader(Reader r) {\n        ....\n\n   }\n}\n\n2) Hide the reset methods behind an interface. Move the Singleton \nimplementation behind an interface and a test interface.  The \ngetInstance() method return type would be the standard interface, but \nyour tests can cast to the testInterface to get access to the reset methods.\n\nclass GatewayControllerSingleton {\n     private static GatewayController s_instance;\n\n    public static GatewayController  getInstance() {\n        if (s_instance != null) {\n            s_instance = new DefaultGatewayController();\n       }\n\n        return s_instance;\n    }\n\n}\n\ninterface GatewayController {\n...\n}\n\n\ninterface TestableGatewayController {\n   void resetReader(Reader r);\n}\n\n\nclass DefaultGatewayController implements GatewayController, \nTestableGatewayController{\n...\n}\n\nPlus some other approaches....\n\nHTH\n\nAndrew\n\n", 
+    "profile": "andy_ipaccess", 
+    "topicId": 14046, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 73998260, 
+    "prevInTime": 14050, 
+    "contentTrasformed": false, 
+    "postDate": "1119949237", 
+    "canDelete": false, 
+    "nextInTopic": 14053, 
+    "prevInTopic": 14046, 
+    "headers": {
+        "inReplyToHeader": "PGQ5cTU1Zis3NjVrQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyQzExMUI1LjQwNDAzMDVAaXBhY2Nlc3MuY29tPg==", 
+        "referencesHeader": "PGQ5cTU1Zis3NjVrQGVHcm91cHMuY29tPg=="
+    }
+}

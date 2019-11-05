@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 4024, 
+    "senderId": "oo7CBkH0kRYE3iIS6N29bvQsGVK16J8yeWeuTg1XmVZhD83akJlkoLEYhkQ5IEissGr-5DM0irK-7AdxaQwm58DXb0qgE8Fy3iLVYHSW", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Database Select query checks!! newbie", 
+    "from": "Dale E Martin &lt;dmartin@...&gt;", 
+    "authorName": "Dale E Martin", 
+    "msgSnippet": "... It is definitely true that each system has major variations, and finding the common subset is problematic.  I ve approached this problem a couple of ", 
+    "msgId": 4023, 
+    "topicId": 4008, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 72011287, 
+    "messageBody": "<div id=\"ygrps-yiv-821402175\"><blockquote><span title=\"ireply\">&gt; Database dependent: normally inserting data into a database if pretty<br/>\n&gt; simple but it&#39;s true that if you plan to support Sybase, Oracle and<br/>\n&gt; mySQL, you may have to write 3 different scripts to populate your 3<br/>\n&gt; different databases.  But it must be done only once.<br/>\n<br/>\n </span></blockquote>It is definitely true that each system has major variations, and finding<br/>\nthe common subset is problematic.  I&#39;ve approached this problem a couple of<br/>\ndifferent ways.   <br/>\n<br/>\nThe first way is to assume that you&#39;ll need to be able to insert data into<br/>\nany table that your application is using.  If this is the case, then you<br/>\ncan write the insertion code and tests for it up front, and then use the<br/>\nactual insertion code to do the inserts.  The problem with this approach is<br/>\nthat to do any decent testing, you also need the retrieval code<br/>\n(i.e. queries.)  And then you also need to be able to delete the data that<br/>\nyou&#39;ve inserted if you want to leave the DB in a &quot;pristine&quot; state.  (So<br/>\nyou&#39;ve have to insert the data, do your tests, and delete the data for each<br/>\ntest that needs the data, or in &quot;setup&quot; and &quot;teardown&quot; at the very least.)<br/>\nIn a project I&#39;m currently working on, I&#39;ve ended up with<br/>\n&quot;testInsertUpdateDelete&lt;Object&gt;&quot; since you wind up testing all of these<br/>\nfunctions if you want to test one of them.<br/>\n<br/>\nAnother case is where you don&#39;t ever need to insert any data - you&#39;re<br/>\naccessing the DB in a read-only fashion.  In this case, hopefully you&#39;ve<br/>\ngot access to test data in some form and you can write tests against the<br/>\nreal data.  If not, and you want to shortcut writing JDBC insertion code,<br/>\nant has a cool facility:<br/>\n &lt;target name=&quot;generateTestData&quot;&gt;<br/>\n &lt;sql<br/>\n    driver=&quot;COM.ibm.db2.jdbc.app.DB2Driver&quot;<br/>\n    url=&quot;jdbc:db2:&lt;DB NAME&gt;&quot;<br/>\n    userid=&quot;&lt;usrname&gt;&quot;<br/>\n    password=&quot;&lt;password&gt;&quot;<br/>\n    print=&quot;true&quot;<br/>\n    autocommit=&quot;true&quot;<br/>\n<blockquote><span title=\"ireply\">     &gt;<br/>\n </span></blockquote>  &lt;classpath&gt;<br/>\n     &lt;pathelement location=&quot;d:/sqllib/java/db2java.zip&quot;/&gt;<br/>\n  &lt;/classpath&gt;<br/>\n      insert into someSchema.someTable ( column1, column2 ) <br/>\n          values ( &#39;value1&#39; , &#39;value2&#39; );<br/>\n  &lt;/sql&gt;<br/>\n  &lt;/target&gt;<br/>\n<br/>\nYou can throw &quot;arbitrary&quot; SQL into here and populate the database with test<br/>\ndata fairly easily.<br/>\n<br/>\nHope this is helpful!<br/>\n<br/>\nLater,<br/>\n\tDale<br/>\n-- <br/>\nDale E. Martin, Clifton Labs, Inc.<br/>\nSenior Computer Engineer<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dmartin@...\">dmartin@...</a><br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.cliftonlabs.com\">http://www.cliftonlabs.com</a><br/>\npgp key available</div>", 
+    "prevInTime": 4022, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1013521744", 
+    "canDelete": false, 
+    "nextInTopic": 4024, 
+    "prevInTopic": 4022, 
+    "headers": {
+        "inReplyToHeader": "PDNDNjg0N0U1LjcwODAwMDdAYm9zc2ljYXJkLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDIwMjEyMDg0OTA0LkE3MzBAY2xpZnRvbmxhYnMuY29tPg==", 
+        "referencesHeader": "PDIwMDIwMjEwMTAwMDM3LjgxMDgzLnFtYWlsQHdlYjIwNjAxLm1haWwueWFob28uY29tPiA8MTAxMzQ2MzMxMi4zYzY4MzkxMDNlMmI1QHdlYm1haWwuYmxhY2tzdW4uY2E+IDwzQzY4M0YxQy41REFGODZFNkBzYWJyZS5jb20+IDwzQzY4NDdFNS43MDgwMDA3QGJvc3NpY2FyZC5jb20+"
+    }
+}

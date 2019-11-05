@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 15392, 
+    "senderId": "H8Yl8XPLuJFzp0BFwssIgSYrnlxgtcyjasVC37zBh0_UIAqCg6bRP0S6ctGTq1TXOT9Zqkop-NXSy9YgyZ00JW77uqrJBeMG21vRO-vmOSQyDpw", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Re: After I write my first testcase, I write 15 class make it run:-", 
+    "from": "Rob Biedenharn &lt;Rob_Biedenharn@...&gt;", 
+    "authorName": "Rob Biedenharn", 
+    "msgSnippet": "I hope it s not too late for me to chime in on this. (Particularly since I m going to say the same thing as David and J.B. ;-) You re thinking in terms that", 
+    "msgId": 15391, 
+    "profile": "rab6687", 
+    "topicId": 15328, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 41798573, 
+    "messageBody": "<div id=\"ygrps-yiv-94378306\">I hope it&#39;s not too late for me to chime in on this. (Particularly since I&#39;m<br/>\ngoing to say the same thing as David and J.B. ;-)<br/>\n<br/>\nYou&#39;re thinking in terms that are too big.<br/>\n<br/>\nInstead of:<br/>\npublic void test_First_UP_Button_Pressed() {<br/>\nview.pressed(1, UP);<br/>\nassertTrue(firstDoor.isOpen());<br/>\n}<br/>\n<br/>\nJust:<br/>\npublic void test_First_UP_Button_Pressed() {<br/>\nassertEquals(0, model.activeButtonCount());<br/>\nmodel.press(1, Direction.UP);<br/>\nassertEquals(1, model.activeButtonCount());<br/>\nassertTrue(model.isPressed(1, Direction.UP));<br/>\n}<br/>\n<br/>\nNote that this is focused on the model rather than the view.<br/>\n<br/>\nThere are probably lots of things that you expect to happen between pressing<br/>\nthe UP and the door opening. Where is the elevator right now? Is the<br/>\nelevator on the first floor before the door opens?<br/>\n<br/>\nWhen you test the view parts, you&#39;ll probably have a view.isButtonActive(1,<br/>\nDirection.UP) since the button state should change once the elevator<br/>\narrives, right?<br/>\n<br/>\nWhen I started trying to do test-first, it was very hard to think in tiny<br/>\nsteps, but that&#39;s the way that it works best. I still wouldn&#39;t say that my<br/>\nTest-First behavior is a &quot;habit&quot; as I really have to think about it. Perhaps<br/>\none day it will feel natural, but I have to &quot;undo&quot; many, many years of<br/>\nCode-First, Test-Later development.<br/>\n<br/>\n-Rob<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 11/3/05, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt; Isaac,<br/>\n&gt;<br/>\n&gt; J.B.&#39;s point is a good one--now that the code is written, concentrate on<br/>\n&gt; testing the non-UI model first. If we had to do it again, given just<br/>\n&gt; the test that you have written here, I could make it pass with<br/>\n&gt;<br/>\n&gt; class View {<br/>\n&gt; public void pressed(int floorNum, Direction direction) {<br/>\n&gt; // do nothing<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; class Door {<br/>\n&gt; boolean isOpen() {<br/>\n&gt; return true;<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; This probably looks like cheating. It has two advantages--I now have a<br/>\n&gt; working test suite (hooray!), and it helps me think of some more tests I<br/>\n&gt; should write. Perhaps I would next write a test that forces me to write<br/>\n&gt; code for pressed(), and then one that leads to a more interesting<br/>\n&gt; implementation of isOpen.<br/>\n&gt;<br/>\n&gt; David Saff<br/>\n&gt;<br/>\n&gt; isaachanstar wrote:<br/>\n&gt;<br/>\n&gt; &gt; I&#39;m very sorry for that I forget this important thing. Here is my<br/>\n&gt; &gt; first testcast:<br/>\n&gt; &gt; ____________________________________________________<br/>\n&gt; &gt; public void test_First_UP_Button_Pressed() {<br/>\n&gt; &gt; view.pressed(1, UP);<br/>\n&gt; &gt; assertTrue(firstDoor.isOpen());<br/>\n&gt; &gt; }<br/>\n&gt; &gt; ____________________________________________________<br/>\n&gt; &gt; here &quot;view&quot; is the Swing GUI interface.<br/>\n&gt; &gt;<br/>\n&gt; &gt; to make it run, i create Elevator, Door, Button class, and then, i<br/>\n&gt; &gt; create ElevatorModel to hold them all,<br/>\n&gt; &gt;<br/>\n&gt; &gt; and then, i create ElevatorView interface (i think i must separate<br/>\n&gt; &gt; model and view), and then, i create a<br/>\n&gt; &gt;<br/>\n&gt; &gt; Mockview class, this class is my first nightmare, too many swing api<br/>\n&gt; &gt; trouble me a lot. And then, i think<br/>\n&gt; &gt;<br/>\n&gt; &gt; &quot;simulate elevator&quot; should based on &quot;events&quot;, so i create<br/>\n&gt; &gt; ElevatorArrivedListen, ButtonPressedListener,<br/>\n&gt; &gt;<br/>\n&gt; &gt; and ElevatorArrivedEvent, ButtonPressedListener. And then, i review my<br/>\n&gt; &gt; program -- one testcase and more<br/>\n&gt; &gt;<br/>\n&gt; &gt; then ten classes (interface).<br/>\n&gt; &gt;<br/>\n&gt; &gt; This is the descriptionof my program. Help gives me some advice, any<br/>\n&gt; &gt; sentence will help me, thanks.<br/>\n&gt;<br/>\n<br/>\n<br/>\n<br/>\n--<br/>\nRob Biedenharn<br/>\nPersonal: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:Rob_Biedenharn@...\">Rob_Biedenharn@...</a><br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:Rob@...\">Rob@...</a><br/>\n(C) 513-295-4739<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 15390, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1131648204", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15355, 
+    "headers": {
+        "inReplyToHeader": "PDQzNkFEODgwLjgwMTA5MDNAbWl0LmVkdT4=", 
+        "messageIdInHeader": "PDFhY2E2OTNlMDUxMTEwMTA0M3QzN2UwYzEwOGoxOTVjMzM1MjE0MWNlOTQxQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGRrZGhoMytuOWZoQGVHcm91cHMuY29tPiA8NDM2QUQ4ODAuODAxMDkwM0BtaXQuZWR1Pg=="
+    }
+}

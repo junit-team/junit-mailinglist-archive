@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 17147, 
+    "senderId": "YdzH6mG6gSHU0pDWzanOjevWV4TK3Y5Ijhrn6kvEFxROegK6oa444VM_oaRAY9Q_-DinLzhoKGRbskAd8g9zcL66OKDgTIG5a2eK2SIYlDM5", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] setUp versus constructors", 
+    "from": "&quot;Brett L. Schuchert&quot; &lt;schuchert@...&gt;", 
+    "authorName": "Brett L. Schuchert", 
+    "msgSnippet": "Test Isolation The constructor is run once, setUp (or @Before) is run before each test method. If you want to make sure each test has the same", 
+    "msgId": 17146, 
+    "rawEmail": "Return-Path: &lt;schuchert@...&gt;\r\nReceived: (qmail 74537 invoked from network); 18 Jul 2006 09:08:16 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m35.grp.scd.yahoo.com with QMQP; 18 Jul 2006 09:08:16 -0000\r\nReceived: from unknown (HELO n16c.bullet.sc5.yahoo.com) (66.163.187.207)\n  by mta7.grp.scd.yahoo.com with SMTP; 18 Jul 2006 09:08:16 -0000\r\nReceived: from [66.163.187.120] by n16.bullet.sc5.yahoo.com with NNFMP; 18 Jul 2006 09:07:30 -0000\r\nReceived: from [66.218.69.4] by t1.bullet.sc5.yahoo.com with NNFMP; 18 Jul 2006 09:07:30 -0000\r\nReceived: from [66.218.66.71] by t4.bullet.scd.yahoo.com with NNFMP; 18 Jul 2006 09:07:30 -0000\r\nX-Sender: schuchert@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 34363 invoked from network); 18 Jul 2006 02:21:09 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m35.grp.scd.yahoo.com with QMQP; 18 Jul 2006 02:21:09 -0000\r\nReceived: from unknown (HELO web54101.mail.yahoo.com) (206.190.37.236)\n  by mta7.grp.scd.yahoo.com with SMTP; 18 Jul 2006 02:21:09 -0000\r\nReceived: (qmail 36347 invoked by uid 60001); 18 Jul 2006 02:21:07 -0000\r\nMessage-ID: &lt;20060718022107.36345.qmail@...&gt;\r\nReceived: from [68.229.202.105] by web54101.mail.yahoo.com via HTTP; Mon, 17 Jul 2006 19:21:07 PDT\r\nDate: Mon, 17 Jul 2006 19:21:07 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;e9h58v+si1a@...&gt;\r\nMIME-Version: 1.0\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Brett L. Schuchert&quot; &lt;schuchert@...&gt;\r\nReply-To: &quot;Brett L. Schuchert&quot; &lt;schuchert@...&gt;\r\nSubject: Re: [junit] setUp versus constructors\r\nX-Yahoo-Group-Post: member; u=162568887; y=ivHDjOMMC1b3XDNifRQwtiZFWxmH7WzXISpPOF6wzFfC6EBj\r\nX-Yahoo-Profile: schuchert\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: copabella &lt;joe@...&gt; via web; 18 Jul 2006 09:07:26 -0000\r\n\r\nTest Isolation\n \nThe constructor is run once, setUp (or @Before) is run before each test method. If you want to make sure each test has the same setup/configuration before the test executes, put it in setUp. If, on the other hand, you want to make sure all tests in a test case use the same values, put it in the constructor.\n \nConstructor E.G.: I want to use a common DAO for all tests. Initialize it in the CTOR\n \nsetUp E.G.: I want to create a new instance of Foo for every test. I put it in setUp so a test can change it, I init it in setUp so one test does not affect the next one (I use this frequently)\n \nYou really need setUp. The constructor is a nice plus.\n \nYou can alternatively clean up using tearDown.\n \nI have a large set of examples at http://schuchert.wikispaces.com/Car+Rental+Example. The included zip file has 100 Unit Tests (more on that in another message). But if you have a look at VehicleComponentTest, you&#39;ll see the following:\n@Before\npublic void init() {\n   vehicle = generateVehicle();\n}\n \nEvery test in that class uses this vehicle variable. Sure I could put that same line in every test, but this is a simple example. Another more complex example: VehicleTypeComponentTest:\n@Before\npublic void setup() {\n   component = CarRentalBeanFactory.getBean(VehicleTypeComponent.class);\n   component.removeAll();\n   createAndInstallVehicleType(PRE_EXISTING_1, MAKE, MODEL, YEAR, ValidState.valid);\n   createAndInstallVehicleType(PRE_EXISTING_2, MAKE, MODEL, YEAR, ValidState.valid);\n   createAndInstallVehicleType(PRE_EXISTING_3, MAKE, MODEL, YEAR, ValidState.invalid);\n   createAndInstallVehicleType(PRE_EXISTING_4, MAKE, MODEL, YEAR, ValidState.valid);\n}\n \nI want to start with a fresh set of known values (four VehicleTypes in this case) before each test. Not every test uses all of these, but I have them as I write new tests. \n \nSince it is possible for a test to change one of these VehicleTypes, I reinstall them for each test so that tests run in isolation.\n \nBrett\n \nTutorials and Articles\n     http://schuchert.wikispaces.com/\n\n\n\n----- Original Message ----\nFrom: clgonsal &lt;clgonsal@...&gt;\nTo: junit@yahoogroups.com\nSent: Monday, July 17, 2006 6:08:15 PM\nSubject: [junit] setUp versus constructors\n\n\nI&#39;ve been using JUnit for a few years now, and one thing that&#39;s always\nbothered me is the &quot;setUp&quot; method.\n\nI always do my initialization in my constructor (if I&#39;m not just doing\nit at the field definition) as constructors allow me to initialize\nfinal fields. The semantics of using a constructor also seem far more\nobvious to me as everyone reading my code knows Java, while not\neveryone is a JUnit guru.\n\nThe additional complexity of having the (as far as I can tell)\nredundant setUp method seems counterproductive, so why does setUp exist?\n\n\n \n\n[Non-text portions of this message have been removed]\n\n\n\n\n\n", 
+    "profile": "schuchert", 
+    "topicId": 17141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 162568887, 
+    "prevInTime": 17145, 
+    "contentTrasformed": false, 
+    "postDate": "1153189267", 
+    "canDelete": false, 
+    "nextInTopic": 17149, 
+    "prevInTopic": 17145, 
+    "headers": {
+        "inReplyToHeader": "PGU5aDU4ditzaTFhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDYwNzE4MDIyMTA3LjM2MzQ1LnFtYWlsQHdlYjU0MTAxLm1haWwueWFob28uY29tPg=="
+    }
+}

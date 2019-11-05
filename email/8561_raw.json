@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 8562, 
+    "senderId": "xB97wk41xx8ds4G5P7vfT0LvV_nw0sAERkrTxZENSropOOhuSihhBTKkM5ZakNgkOz2WpjlPlz_8Cccgo1k_zaK15N68Wbb4rEVyG2_WDhLMrBhXPItU", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] textui.TestRunner not printing to given PrintStream", 
+    "from": "&quot;Stirling, Scott&quot; &lt;scott.stirling@...&gt;", 
+    "authorName": "Stirling, Scott", 
+    "msgSnippet": "Hmm -- I hope this email comes through in ascii.  I am sending this from Outlook Web Access. ... From: Kevin Baynes [mailto:kbaynes@yahoo.com] [KB] I m", 
+    "msgId": 8561, 
+    "rawEmail": "Return-Path: &lt;scott.stirling@...&gt;\r\nX-Sender: scott.stirling@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 39747 invoked from network); 3 Jul 2003 07:34:21 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m3.grp.scd.yahoo.com with QMQP; 3 Jul 2003 07:34:21 -0000\r\nReceived: from unknown (HELO mail1.workscape.net) (63.68.17.254)\n  by mta2.grp.scd.yahoo.com with SMTP; 3 Jul 2003 07:34:21 -0000\r\nReceived: from pantera.corp.workscape.net ([10.32.0.238]) by mail1.workscape.net with Microsoft SMTPSVC(5.0.2195.5329); Thu, 3 Jul 2003 03:34:19 -0400\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165\r\nContent-Class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nSubject: RE: [junit] textui.TestRunner not printing to given PrintStream\r\nImportance: normal\r\nPriority: normal\r\nDate: Thu, 3 Jul 2003 03:34:18 -0400\r\nMessage-ID: &lt;E846E1497BC9E747A88011167C797D0A022A2391@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: &lt;E846E1497BC9E747A88011167C797D0A022A2391@...&gt;\r\nThread-Topic: [junit] textui.TestRunner not printing to given PrintStream\r\nthread-index: AcNBH0MsIK24ChAbQkS5Y8ttZDnYjwAAYyDN\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReturn-Path: &lt;scott.stirling@...&gt;\r\nX-OriginalArrivalTime: 03 Jul 2003 07:34:19.0334 (UTC) FILETIME=[8397C660:01C34135]\r\nFrom: &quot;Stirling, Scott&quot; &lt;scott.stirling@...&gt;\r\nX-Yahoo-Group-Post: member; u=150177187\r\nX-Yahoo-Profile: stirlingdev\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHmm -- I hope this email comes through in ascii.  I am sending this from Outlook Web Access.\r\n \r\n-----Original Message----- \r\nFrom: Kevin Baynes [mailto:kbaynes@...] \r\n\r\n[KB]\r\nI&#39;m creating a textui.TestRunner with a PrintStream that writes to\r\nfile. I can write to the PrintStream, but TestRunner keeps printing to\r\nthe stdOut. Any ideas why it&#39;s not printing anything to the file?\r\n\r\n[SS]\r\nI&#39;d call it a bug in JUnit.\r\n \r\nWhen you call TestRunner.run(suite()) a new TestRunner is created with the default constructor.:\r\n\r\nstatic public TestResult run(Test test) {\r\n    TestRunner runner= new TestRunner();\r\n    return runner.doRun(test);\r\n}\r\n \r\nThis is the guy who actually runs your test, and he writes to System.out because  TestRunner&#39;s default constructor calls another constructor like so:\r\n\r\npublic TestRunner() {\r\n    this(System.out);\r\n}\r\n\r\n  \r\n[KB&#39;s code] \r\n// construct TestRunner to output all results to our log file\r\njunit.textui.ResultPrinter printer = new junit.textui.ResultPrinter(out);\r\njunit.textui.TestRunner    runner  = new junit.textui.TestRunner(printer);\r\nrunner.run(suite());\r\n\r\n[SS]\r\nSo, if you run TestRunner like that, you&#39;ll always get a set of results printed to System.out. Doh!\r\n \r\nYou need to call the ahh, heh, creatively named TestRunner.doRun(Test suite, boolean wait) or TestRunner.doRun(Test suite) method instead.\r\n \r\nA different, clunky workaround would be to do System.setOut(out) before you call run(suite()), where &#39;out&#39; is your own PrintStream and make the PrintStream write to the bit bucket.\r\n \r\nHope this helps,\r\n \r\nScott Stirling\r\nFramingham, MA\r\n \r\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "stirlingdev", 
+    "topicId": 8558, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150177187, 
+    "prevInTime": 8560, 
+    "contentTrasformed": false, 
+    "postDate": "1057217658", 
+    "canDelete": false, 
+    "nextInTopic": 8577, 
+    "prevInTopic": 8558, 
+    "headers": {
+        "messageIdInHeader": "PEU4NDZFMTQ5N0JDOUU3NDdBODgwMTExNjdDNzk3RDBBMDIyQTIzOTFAcGFudGVyYS5jb3JwLndvcmtzY2FwZS5uZXQ+"
+    }
+}

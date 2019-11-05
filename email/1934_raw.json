@@ -1,0 +1,28 @@
+{
+    "topicId": 1920, 
+    "postDate": "995290634", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "rainsber@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "wnjzzB3XXSgkh4em_oFcn81d1bs9Yd9SI3DTlejou110mL5wJeQJsCM_RfrzKh9ca607IvvRO8b9Vg", 
+    "nextInTime": 1935, 
+    "userId": 0, 
+    "prevInTime": 1933, 
+    "prevInTopic": 1923, 
+    "headers": {
+        "messageIdInHeader": "PE9GQTUxMjgyQzUuMTU2NTFCNzgtT044NTI1NkE4Qi4wMDRBOEFFMEB0b3JvbGFiLmlibS5jb20+"
+    }, 
+    "authorName": "rainsber@ca.ibm.com", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "This is using a hammer to kill a fly. public void testExpectException() throws Exception { try { somethingThatThrowsIllegalArgumentException(); fail( No", 
+    "contentTrasformed": false, 
+    "msgId": 1934, 
+    "nextInTopic": 1936, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;rainsber@...&gt;\r\nX-Sender: rainsber@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 16 Jul 2001 13:38:37 -0000\r\nReceived: (qmail 73352 invoked from network); 16 Jul 2001 13:37:23 -0000\r\nReceived: from unknown (10.1.10.27) by l9.egroups.com with QMQP; 16 Jul 2001 13:37:23 -0000\r\nReceived: from unknown (HELO e31.bld.us.ibm.com) (32.97.110.129) by mta2 with SMTP; 16 Jul 2001 13:37:21 -0000\r\nReceived: from westrelay02.boulder.ibm.com (westrelay02.boulder.ibm.com [9.99.140.23]) by e31.bld.us.ibm.com (8.9.3/8.9.3) with ESMTP id JAA20124 for &lt;junit@yahoogroups.com&gt;; Mon, 16 Jul 2001 09:29:20 -0400\r\nReceived: from d25ml02.torolab.ibm.com (d25ml02.torolab.ibm.com [9.26.6.103]) by westrelay02.boulder.ibm.com (8.11.1m3/NCO v4.96.1.0) with ESMTP id f6GDbIi17162 for &lt;junit@yahoogroups.com&gt;; Mon, 16 Jul 2001 07:37:18 -0600\r\nImportance: Normal\r\nSubject: Re: [junit] How do I implement a test case for a thrown exception?\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Lotus Notes Release 5.0.3 (Intl) 21 March 2000\r\nMessage-ID: &lt;OFA51282C5.15651B78-ON85256A8B.004A8AE0@...&gt;\r\nDate: Mon, 16 Jul 2001 09:37:14 -0400\r\nX-MIMETrack: Serialize by Router on D25ML02/25/M/IBM(Release 5.0.5 |September 22, 2000) at 07/16/2001 09:37:18 AM\r\nMIME-Version: 1.0\r\nContent-type: text/plain; charset=us-ascii\r\nFrom: rainsber@...\r\n\r\nThis is using a hammer to kill a fly.\n\npublic void testExpectException() throws Exception {\n    try {\n        somethingThatThrowsIllegalArgumentException();\n        fail(&quot;No exception was thrown?!&quot;);\n    }\n    catch (IllegalArgumentException success) {\n    }\n}\n\nI don&#39;t see the value in the &quot;exceptionCaught&quot; flag, since it&#39;s easier to\nplace a fail() inside the try{...} at the point when the test has &quot;gone too\nfar&quot;. Also, I don&#39;t see the value in catching the other exceptions and\nfailing -- let JUnit catch them and report them as errors. Within the\ncontext of this test case, it would be an error: something else went wrong\nwhile I was trying to test passing illegal arguments. Maybe the test is\nbad, maybe the test environment is bad, maybe the code is just plain broken\nsomewhere else.\n\nAs a style point, I call the expected exception &quot;success&quot; to tell the\nreader that the exception is expected.\n\nJ. B. Rainsberger  &lt;rainsber@...&gt;\nCommerce Suite Accelerator: Rule Services, IBM Toronto Lab\n8200 Warden Av, Office A3-735 [A3/FNB/8200/MKM]\nMarkham ON   L6G 1C7\n905 413-2501 (969-2501)\n\n\nMike Duffy &lt;mduffy_lists@...&gt; on 07/13/2001 17:53:53\n\nPlease respond to junit@yahoogroups.com\n\nTo:   junit@yahoogroups.com\ncc:\nSubject:  [junit] How do I implement a test case for a thrown exception?\n\n\n\nDo you think the following observations are correct?\n\nThe Junit.org site has an FAQ section\n(http://junit.sourceforge.net/doc/faq/faq.htm) with the following\nquestion: How do I implement a test case for a thrown exception?\n\nThe answer they give is not completely correct because it does not\naccount for the possiblility that another exception could be thrown.\nIt would be better to test that the intended exception is actually\nthrown.  For example:\n\n// Test IllegalArgumentException is thrown when partnerID is null.\n    public void test_00_isPartnerAssigned() {\n\n        boolean exceptionCaught = false;\n\n        try {\n            boolean assignedStatus =\ninstancePartnerHierarchyWorker.isPartnerAssigned(null);\n            fail(&quot;IllegalArgumentException should be thrown.&quot;);\n\n        } catch (IllegalArgumentException iae) {\n\n            // Test Succeeds.\n            exceptionCaught = true;\n\n        } catch (PartnerNotFoundException pnfe){\n\n            fail(&quot;PartnerNotFoundException should not be thrown.&quot;);\n\n        } catch (PersistenceException pe){\n\n            fail(&quot;PersistenceException should not be thrown.&quot;);\n        }\n\n        assertTrue(exceptionCaught);\n    }\n\n__________________________________________________\nDo You Yahoo!?\nGet personalized email addresses from Yahoo! Mail\nhttp://personal.mail.yahoo.com/\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n\n\n\n\n", 
+    "subject": "Re: [junit] How do I implement a test case for a thrown exception?"
+}

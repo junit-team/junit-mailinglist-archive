@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12520, 
+    "senderId": "tmKjhPKkR43uDfpOKyxQrFkDfcW7doNcqpnv2Xsc_U0gj4u6X4011VgX1igmjdLPEhi8dSTw1eAroRheatUS7xVHB7kv4MaBUBy0B9E", 
+    "systemMessage": false, 
+    "subject": "Multithreading: Testing scheduled method invocation?!", 
+    "from": "Michael Schuerig &lt;michael@...&gt;", 
+    "authorName": "Michael Schuerig", 
+    "msgSnippet": "I m working on a class that interacts with the Spring framework s application context and the Quartz scheduler. I m pretty new to the latter, thus I m testing", 
+    "msgId": 12519, 
+    "rawEmail": "Return-Path: &lt;michael@...&gt;\r\nX-Sender: michael@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 46352 invoked from network); 22 Dec 2004 00:31:07 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m20.grp.scd.yahoo.com with QMQP; 22 Dec 2004 00:31:07 -0000\r\nReceived: from unknown (HELO smtp1.netcologne.de) (194.8.194.112)\n  by mta6.grp.scd.yahoo.com with SMTP; 22 Dec 2004 00:31:07 -0000\r\nReceived: from xdsl-81-173-152-88.netcologne.de (xdsl-81-173-152-88.netcologne.de [81.173.152.88])\n\tby smtp1.netcologne.de (Postfix) with ESMTP id 68C7838F67\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 22 Dec 2004 01:31:04 +0100 (MET)\r\nTo: junit@yahoogroups.com\r\nDate: Wed, 22 Dec 2004 01:31:05 +0100\r\nUser-Agent: KMail/1.7.1\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200412220131.05639.michael@...&gt;\r\nX-eGroups-Remote-IP: 194.8.194.112\r\nFrom: Michael Schuerig &lt;michael@...&gt;\r\nSubject: Multithreading: Testing scheduled method invocation?!\r\nX-Yahoo-Group-Post: member; u=83951433\r\nX-Yahoo-Profile: mschuerig\r\n\r\n\nI&#39;m working on a class that interacts with the Spring framework&#39;s \napplication context and the Quartz scheduler. I&#39;m pretty new to the \nlatter, thus I&#39;m testing my understanding of Quartz just as much as I&#39;m \ntesting my code. In effect, I can&#39;t (yet) build the fixture for my code \ncompletely with mocks as I have to ascertain what these mocks are \nsupposed to do first.\n\nThe complication here is that Quartz uses its own &quot;hidden&quot; thread(s) to \nfulfill its duties. It is such a thread that effects the change that I \nneed to check for. As I don&#39;t want to test Quartz, of course, I&#39;m \ncontent with checking that my scheduled job is executed at all. Thus I \nschedule it for immediate execution, wait for 2 secs to give Quartz \nsome time before the fixture is torn down again.\n\nNow, all this works surprisingly well. Still, I don&#39;t like the part of \nwaiting some arbitrary time.\n\n(Thinking break)\n\nAfter getting this far, I remembered that Doug Lea&#39;s concurrency utils \nhave made their way into J2SE 5.0 and there I found just what I needed: \njava.util.concurrent.CountDownLatch\n\nNow I have a TestCase that looks in outline like this\n\n\npublic class MultiThreadedTest extends TestCase {\n    private static CountDownLatch latch;\n    private MyMock mock;\n\n    protected void setUp() {\n        latch = new CountDownLatch(1);\n        mock = new MyMock();\n    }\n\n    public void testMe() throws Exception {\n        startSomeWorkInAnotherThread(mock);\n        latch.await(); // some timeout might be prudent\n        mock.verify();\n    }\n\n\n    private static class MyMock implements Whatever {\n        private boolean wasCalled = false;\n\n        public void methodCalledFromOtherThread() {\n            wasCalled = true;\n            latch.countDown();\n        }\n\n        public void verify() {\n            assertTrue(wasCalled);\n        }\n    }\n}\n\n\nI appreciate your comments.\n\nMichael\n\n-- \nMichael Schuerig                            This is not a false alarm\nmailto:michael@...                         This is not a test\nhttp://www.schuerig.de/michael/                      --Rush, Red Tide\n\n", 
+    "profile": "mschuerig", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 83951433, 
+    "prevInTime": 12518, 
+    "contentTrasformed": false, 
+    "postDate": "1103675465", 
+    "canDelete": false, 
+    "nextInTopic": 12520, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg=="
+    }
+}

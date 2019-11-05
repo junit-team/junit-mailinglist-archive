@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 9965, 
+    "senderId": "hiPNR9l7S4hx5pKGQ0pp00mtJk8iXiAqnMSBACzQx5gxeC5t-wBeg9aWECWkTNuLjQ9zNpqqW_SzBjcE1VJ12ZtVTlFrRg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterized Test Case example", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... Could you explain what overriding runTest() buys you over using something obvious like: public void testCalculateAge() { assertEquals(new", 
+    "msgId": 9964, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 22630 invoked from network); 20 Nov 2003 23:00:09 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m12.grp.scd.yahoo.com with QMQP; 20 Nov 2003 23:00:09 -0000\r\nReceived: from unknown (HELO jhunter.x-query.com) (206.163.128.106)\n  by mta2.grp.scd.yahoo.com with SMTP; 20 Nov 2003 23:00:09 -0000\r\nReceived: from [192.168.1.100] (c-24-9-180-178.client.comcast.net [24.9.180.178])\n\t(authenticated bits=0)\n\tby jhunter.x-query.com (8.12.8/8.12.9) with ESMTP id hAKMwVP2004176\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 20 Nov 2003 14:58:31 -0800\r\nMime-Version: 1.0 (Apple Message framework v606)\r\nIn-Reply-To: &lt;3FBD2FE6.3080309@...&gt;\r\nReferences: &lt;3FBD2FE6.3080309@...&gt;\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nMessage-Id: &lt;48F7DE68-1BAD-11D8-B93F-000A95A547BC@...&gt;\r\nContent-Transfer-Encoding: 7bit\r\nSubject: Re: [junit] Parameterized Test Case example\r\nDate: Thu, 20 Nov 2003 16:00:07 -0700\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Apple Mail (2.606)\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nX-Yahoo-Group-Post: member; u=33026788\r\nX-Yahoo-Profile: clarkware\r\n\r\n\nOn Nov 20, 2003, at 2:19 PM, J. B. Rainsberger wrote:\n\n&gt; This is what I mean by a parameterized test case. The feature \n&gt; &quot;calculate\n&gt; a person&#39;s age by a given date.&quot; Each test is a single assertion, but\n&gt; since only the data changes, this test is data-driven, rather than\n&gt; duplicating the invocation of &quot;getAgeAsOf()&quot; in five tests.\n&gt;\n&gt; -------------------\n&gt; package ca.bluejays.scouting.amateur.model.test;\n&gt;\n&gt; import java.util.Date;\n&gt;\n&gt; import junit.framework.*;\n&gt; import XXX.BiographicalReport;\n&gt; import XXX.PlayerFactory;\n&gt;\n&gt; import com.diasparsoftware.java.util.DateUtil;\n&gt;\n&gt; public class CalculateAgeTest extends TestCase {\n&gt;      private int expectedAge;\n&gt;      private Date futureDate;\n&gt;\n&gt;      public CalculateAgeTest(String testName, int expectedAge,\n&gt;              Date futureDate) {\n&gt;\n&gt;          super(testName);\n&gt;          this.expectedAge = expectedAge;\n&gt;          this.futureDate = futureDate;\n&gt;      }\n&gt;\n&gt;      public static Test suite() {\n&gt;          TestSuite suite = new TestSuite(&quot;Calculate Age&quot;);\n&gt;          suite.addTest(new CalculateAgeTest(&quot;birthday&quot;, 30, DateUtil\n&gt;                  .makeDate(2004, 5, 4)));\n&gt;          suite.addTest(new CalculateAgeTest(&quot;day before birthday&quot;, 29,\n&gt;                  DateUtil.makeDate(2004, 5, 3)));\n&gt;          suite.addTest(new CalculateAgeTest(&quot;day after birthday&quot;, 30,\n&gt;                  DateUtil.makeDate(2004, 5, 5)));\n&gt;          suite.addTest(\n&gt;                  new CalculateAgeTest(&quot;date of birth&quot;, 0, DateUtil\n&gt;                          .makeDate(1974, 5, 4)));\n&gt;          suite.addTest(\n&gt;                  new CalculateAgeTest(&quot;invalid future date&quot;, 0, \n&gt; DateUtil\n&gt;                          .makeDate(1974, 5, 3)));\n&gt;          return suite;\n&gt;      }\n&gt;\n&gt;      protected void runTest() throws Exception {\n&gt;          BiographicalReport biographicalReport = PlayerFactory\n&gt;                  .makeBiographicalReport(&quot;Joe&quot;, &quot;Rainsberger&quot;, DateUtil\n&gt;                          .makeDate(1974, 5, 4));\n&gt;\n&gt;          assertEquals(new Integer(expectedAge), biographicalReport\n&gt;                  .getAgeAsOf(futureDate));\n&gt;      }\n&gt; }\n\nCould you explain what overriding runTest() buys you over using \nsomething obvious like:\n\n     public void testCalculateAge() {\n          assertEquals(new Integer(expectedAge),\n              biographicalReport.getAgeAsOf(futureDate));\n     }\n\nwhere biographicalReport is an instance variable initialized in \nsetUp().  As each run of the test method will be data-driven as \nintended, it would appear to do the same thing.\n\nI&#39;m guessing it has something to do with not wanting to create a \nBiographicalReport instance on every test method.  At any rate, it \nseems to be reaching fairly deep in the trick bag and I&#39;m wondering \nwhat I&#39;m missing with the obvious approach.\n\nMike\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 9954, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "prevInTime": 9963, 
+    "contentTrasformed": false, 
+    "postDate": "1069369207", 
+    "canDelete": false, 
+    "nextInTopic": 9965, 
+    "prevInTopic": 9961, 
+    "headers": {
+        "inReplyToHeader": "PDNGQkQyRkU2LjMwODAzMDlAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQ4RjdERTY4LTFCQUQtMTFEOC1COTNGLTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "referencesHeader": "PDNGQkQyRkU2LjMwODAzMDlAcm9nZXJzLmNvbT4="
+    }
+}

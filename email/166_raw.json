@@ -1,0 +1,29 @@
+{
+    "topicId": 161, 
+    "postDate": "977843584", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "charliehubbard76@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "SZooITbnxyiOW46U11CjpEmkL7JJQ56RkoKk3bhSc6d_yrvNlnRLgAydkTzRWlrkz3fYlweo7zhXMlgs1zQey1w", 
+    "nextInTime": 167, 
+    "userId": 0, 
+    "prevInTime": 165, 
+    "prevInTopic": 162, 
+    "headers": {
+        "inReplyToHeader": "PDg1MjU2OUJELjAwNzE1QTA1LjAwQHVoY25oMDAyLnVoYy5jb20+", 
+        "messageIdInHeader": "PDkyYWNpMCt1cDIxQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "charliehubbard76@yahoo.com", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "... Stephen, What you want to do is create a class that extends TestSetup. TestSetups allow you to do some initilization/de-initilization around a test suite", 
+    "contentTrasformed": false, 
+    "msgId": 166, 
+    "nextInTopic": 171, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;charliehubbard76@...&gt;\r\nX-Sender: charliehubbard76@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_3_1_3); 26 Dec 2000 15:13:10 -0000\r\nReceived: (qmail 94805 invoked from network); 26 Dec 2000 15:13:10 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 26 Dec 2000 15:13:10 -0000\r\nReceived: from unknown (HELO fl.egroups.com) (10.1.10.48) by mta3 with SMTP; 26 Dec 2000 16:14:15 -0000\r\nX-eGroups-Return: charliehubbard76@...\r\nReceived: from [10.1.10.101] by fl.egroups.com with NNFMP; 26 Dec 2000 15:13:10 -0000\r\nDate: Tue, 26 Dec 2000 15:13:04 -0000\r\nTo: junit@egroups.com\r\nSubject: Re: newbie question: how to avoid rerunning fixture code on every test\r\nMessage-ID: &lt;92aci0+up21@...&gt;\r\nIn-Reply-To: &lt;852569BD.00715A05.00@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1091\r\nX-Mailer: eGroups Message Poster\r\nFrom: charliehubbard76@...\r\n\r\n--- In junit@egroups.com, &quot;Stephen P Peterson&quot; \n&lt;stephen.peterson@i...&gt; wrote:\n&gt; What if the setup logic involves connecting to databases and \n&gt; running queries that tends to be a bit slow for doing on every \n&gt; single test?  Is an explanation available anywhere on the web \n&gt; telling how to get tests to run faster by executing slow \n&gt; initialization code only once before all the tests?\n\nStephen,\n\nWhat you want to do is create a class that extends TestSetup.  \nTestSetups allow you to do some initilization/de-initilization around \na test suite just as you described.\n\nclass MyTestSetup extends TestSetup {\n  public MyTestSetup( Test t ) {\n    super(t);\n  }\n\n  protected void setUp() {\n    Connection = DriverManager.getConnection(&quot;jdbc:url&quot;);\n  }\n\n  protected void tearDown() {\n  }\n}\n\nclass MyTest extends TestCase {\n  public MyTest( String name ) {\n    super( name );\n  }\n\n  public void testOne() {\n  }\n\n  public static Test suite() {\n     return new MyTestSetup( new TestSuite( MyTest.class ) );\n  }\n\n  public static void main( String args[] ) {\n     TestRunner.run( suite() );\n  }\n}\n\n\n\n\n", 
+    "subject": "Re: newbie question: how to avoid rerunning fixture code on every test"
+}

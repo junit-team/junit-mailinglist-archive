@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 22309, 
+    "senderId": "iXfrr15LU971fT2R1_L9u3-J0uxzNkoLzKZBuSSBNgHV0snPFAD9e1KKEgld7kdE2GHPimrZko3-JtAKhSU3uHgC", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] how to get test class from Runner?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Bill, Thanks for sticking with this.  It s only gotten more interesting. In the most general case, there s no guarantee that the children of a Suite must be", 
+    "msgId": 22308, 
+    "profile": "dsaff", 
+    "topicId": 22303, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-697668210\">Bill,<br/>\n<br/>\nThanks for sticking with this.  It&#39;s only gotten more interesting.<br/>\n<br/>\nIn the most general case, there&#39;s no guarantee that the children of a<br/>\nSuite must be ParentRunners.  The most notable example would be a<br/>\nJUnit-3-style test case.<br/>\n<br/>\nYour best bet may indeed be a RunnerBuilder.  I&#39;m imagining something like this:<br/>\n<br/>\nClassLoaderSuite(Class&lt;?&gt; testClass, RunnerBuilder builder) {<br/>\n   super(testClass, new ClassLoadingRunnerBuilder(builder));<br/>\n}<br/>\n<br/>\nclass ClassLoadingRunnerBuilder extends RunnerBuilder {<br/>\n  public ClassLoadingRunnerBuilder(RunnerBuilder delegate) {<br/>\n    this.delegate = delegate;<br/>\n  }<br/>\n<br/>\n  public Runner runnerForClass(Class&lt;?&gt; testClass) throws Throwable {<br/>\n    return new ClassLoadingRunnerWrapper(delegate.runnerForClass(testClass),<br/>\ntestClass);<br/>\n  }<br/>\n}<br/>\n<br/>\nclass ClassLoadingRunnerWrapper extends Runner {<br/>\n  public ClasssLoadingRunnerWrapper(Runner delegate, Class testClass) {<br/>\n    this.delegate = delegate;<br/>\n    this.testClass = testClass;<br/>\n  }<br/>\n<br/>\n  public Description getDescription() {<br/>\n    return delegate.getDescription();<br/>\n  }<br/>\n<br/>\n  public void run(RunNotifier notifier) {<br/>\n    doStuffBeforeRunningClass(testClass);<br/>\n    delegate.run(notifier);<br/>\n    doStuffAfterRunningClass(testClass);<br/>\n  }<br/>\n}<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, Jan 20, 2010 at 3:44 PM, Bill Shannon &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:Bill.Shannon@...\">Bill.Shannon@...</a>&gt; wrote:<br/>\n&gt; I&#39;ve discovered that my ClassLoaderSuite that loads each test class in its<br/>\n&gt; own ClassLoader also needs to set the thread&#39;s context class loader before<br/>\n&gt; running the test, and restore it after running the test.  If I override the<br/>\n&gt; runChild method, how do I find the test class (so I can find its ClassLoader)?<br/>\n&gt; The javadocs say that runChild runs &quot;the test corresponding to child&quot;, but<br/>\n&gt; &quot;child&quot; isn&#39;t a parameter.  I assume it means the test corresponding to<br/>\n&gt; &quot;runner&quot;, but I don&#39;t see how to get from &quot;runner&quot; to the test class.<br/>\n&gt;<br/>\n&gt; Do I need to implement my own Runner, and thus my own RunnerBuilder?<br/>\n&gt; I&#39;m not sure how to connect all these pieces together.<br/>\n&gt;<br/>\n&gt; I suppose I could create a delegating RunnerBuilder to wrap the one<br/>\n&gt; I&#39;m given, and have it replace the Runners with delegating Runners<br/>\n&gt; that can also remember the class that the Runner was created for,<br/>\n&gt; but is there a better way?<br/>\n&gt;<br/>\n&gt; If I assume the runner is always going to be a ParentRunner, I can use<br/>\n&gt; parent.getTestClass().getJavaClass() to get what I want.  But how safe<br/>\n&gt; is it to assume that the runner will always be a ParentRunner?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22307, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1264083935", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22303, 
+    "headers": {
+        "inReplyToHeader": "PDRCNTc2QjEzLjEwNDAzMDhAc3VuLmNvbT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MTAwMTIxMDYyNXUxMTA5OTUzZXhjNTIwN2Q4NjI0MTI5YTgwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRCNTc2QjEzLjEwNDAzMDhAc3VuLmNvbT4="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 1073, 
+    "postDate": "988658611", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "David Li &lt;david@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "6dGfRU01vCGUMFlgma7lHpqomvX56WuH_7JjjcKdJY02dDYU24wU5WZS1Z76Bo8GOrbtfsDRSTMsma0BqFseJGN31f4iu5ZPXQ", 
+    "nextInTime": 1074, 
+    "userId": 0, 
+    "prevInTime": 1072, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNBRURCQkIzLjQ0MTlBNThDQGRpZ2l0YWxzZXNhbWUuY29tPg=="
+    }, 
+    "authorName": "David Li", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "Hi, I think I just found a solution to my long time problem with JUnit. We do development mostly on server side components and most of these server side", 
+    "contentTrasformed": false, 
+    "msgId": 1073, 
+    "nextInTopic": 1075, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;david@...&gt;\r\nX-Sender: david@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 30 Apr 2001 19:11:17 -0000\r\nReceived: (qmail 16696 invoked from network); 30 Apr 2001 19:11:16 -0000\r\nReceived: from unknown (10.1.10.27) by l10.egroups.com with QMQP; 30 Apr 2001 19:11:16 -0000\r\nReceived: from unknown (HELO mail.topware.com.tw) (202.39.2.221) by mta2 with SMTP; 30 Apr 2001 19:11:15 -0000\r\nReceived: from digitalsesame.com (firewall.topware.com.tw [202.39.2.222]) by mail.topware.com.tw (8.11.0/8.11.0) with ESMTP id f3UJ59A17314; Tue, 1 May 2001 03:05:09 +0800\r\nSender: david@...\r\nMessage-ID: &lt;3AEDBBB3.4419A58C@...&gt;\r\nDate: Tue, 01 May 2001 03:23:31 +0800\r\nOrganization: DigitalSesame\r\nX-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-4CLE i686)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: On extending JUnit with AspectJ...\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: David Li &lt;david@...&gt;\r\n\r\nHi,\n\n  I think I just found a solution to my long time problem with JUnit. We\ndo development mostly on server side components and most of these server\nside classes need to run with the server context properly setup. \n\n  Setting up these server contxt often involve using specialized\nclassloader to load the class. Using JUnit&#39;s native test runner often\nconflict with these classloader. ;( \n\n  We end up have to write our implementation of TestRunner for each of\nthese environment and we often have to implement all three TestRunners.\nThe work is tedious and this makes tracking new version of JUnit a lot\nharder. :(\n\n  There doesn&#39;t seem to be a good Object Oriented Java based solution to\nthis problem. The problem of having to adapt each TestRunner to specific\nenvironment will requires extending all three TestRunner at the same\ntime and have to call the class different names. \n\n  Aspect Oriented Programming (www.aspectj.org) seem to solve this\nproblem elegantly. The following is a quick sample codes on adapting\nLog4J into JUnit which extending all three TestRunner in one file. \n\n  The problem: We use Log4J in our components and JUnit to unit test of\nthe components. The problem is that Log4J need to be initialized at\nleast once from the main method. Doing it in a OO way will require us to\nextending all three TestRunner to something like \n\npublic class TestRunnerWithLog4J extends junit.awtui.TestRunner\n{\n    public static void main(String[] args) {\n        Log4J_INIT_CODES_HERE;\n        super.main(args);\n    }\n}\n\n  Second problem we are having is that we need to document the fact and\nmake our developers aware what TestRunner to be use with what framework.\nWe now have three versions of TestRunner:\n\nTestRunnerWithEnhydra, TestRunnerWithOzone and TestRunnerWithLog4. \n\nIn this case, Ozone uses Log4J as well. The list grows very fast and the\nextensions codes become a big tangled codes and maintaince hell!\n\nAspectJ seems to provide a very elegant solution to this. The following\nis my first try to use AspectJ to solve this problem:\n\n---\npackage junit.aspect;\n\naspect Log4JRunner {\n\n    pointcut runnerMain():\n        executions(public static void\njunit.awtui.TestRunner.main(String[])) ||\n        executions(public static void\njunit.textui.TestRunner.main(String[])) ||\n        executions(public static void\njunit.swingui.TestRunner.main(String[]));\n\n    before(): runnerMain() {\n        org.apache.log4j.BasicConfigurator.configure();\n       \norg.apache.log4j.Category.getRoot().setPriority(org.apache.log4j.Priority.DEBUG);\n    }\n}\n---\n\nThis aspect simply extending the main method in each TestRunner to\nproperly initialize the Log4J. This extension gives three main\nadvantages:\n\n1. No modification to the original JUnit codes\n2. No messy subclass of TestRunner to maintaine.\n3. No special documents for each TestRunner for each environment.\n\nI&#39;d like to get the opinion of the JUnit users and developers on using\nAOP as the extension proramming for JUnit.\n\nThanks.\n\nDavid Li\nDigitalSesame\n\n", 
+    "subject": "On extending JUnit with AspectJ..."
+}

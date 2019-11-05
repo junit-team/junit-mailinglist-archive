@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 6952, 
+    "senderId": "x-EdUmzIuC4HA3XVryvtWRBKqc4_0uodxZ06YnbMq2ukmgiUKvlWVW4wZi229pjV3s1aBY7pm3SXiM36iiIB6Lj8zNZTAJq9B_9vgQQ53IpfGEswOLPmaV9wInCD09PIiwwlwjeqxcMMKPu3b1etf4KOCE2d", 
+    "systemMessage": false, 
+    "subject": "Re: if setUp fails, then is setUp doing too much?", 
+    "from": "&quot;martijn_dashorst &lt;yahoogroups@...&gt;&quot; &lt;yahoogroups@...&gt;", 
+    "authorName": "martijn_dashorst &lt;yahoogroups@dashorst.d", 
+    "msgSnippet": "... I agree that it gives a bad smell, but let me expand a bit. In short: if you use the setUp()/tearDown() to write XML start/close tags, then it is very", 
+    "msgId": 6951, 
+    "profile": "martijn_dashorst", 
+    "topicId": 6951, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 130778978, 
+    "messageBody": "<div id=\"ygrps-yiv-198976781\">J.B. Rainsberger wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; if setUp fails, then is setUp doing too much? <br/>\n<br/>\n </span></blockquote>I agree that it gives a bad smell, but let me expand a bit. <br/>\n<br/>\nIn short: if you use the setUp()/tearDown() to write XML start/close <br/>\ntags, then it is very cumbersome that tearDown() isn&#39;t called. This <br/>\nwill break your continuous integration cycle.<br/>\n<br/>\nThe long version:<br/>\n<br/>\nI created a TestCase subclass so that we could write more readable <br/>\nfunctional tests. It is for an Interactive Voice Response system. The <br/>\nfunctional tests assert that the correct voice segments are played in <br/>\nthe in the right order at the right time.<br/>\n<br/>\nIn my subclass, a XML start tag is written in the setUp(), and it&#39;s <br/>\nclosing tag in the tearDown(). Note that the functional tests should <br/>\nbe read and written by business people, that&#39;s why I finalized setUp <br/>\nand tearDown. Example code:<br/>\n<br/>\npublic abstract class CallFlowTestCase extends TestCase{<br/>\n    final void setUp() {<br/>\n        phone.hangUp();<br/>\n        log.write( &quot;&lt;test name=&#92;&quot;&quot; + getName() + &quot;&#92;&quot;&gt;&quot; );<br/>\n        beforeTest();<br/>\n    }<br/>\n    final void tearDown(){<br/>\n        afterTest();<br/>\n        log.write( &quot;&lt;/test&gt;&quot; );<br/>\n        phone.hangUp();<br/>\n    }<br/>\n    public void beforeTest(){<br/>\n    }<br/>\n    public void afterTest(){<br/>\n    }<br/>\n    // etc.<br/>\n}<br/>\n<br/>\npublic class TestHelloWorldLine extends CallFlowTestCase {<br/>\n    public void beforeTest(){<br/>\n        dial( &quot;12345678&quot; );<br/>\n        assertPhoneStatus( CONNECTED );<br/>\n    }<br/>\n    public void testHelloWorld(){<br/>\n        assertVoiceSegment( &quot;HELLOWORLD.wav&quot; );<br/>\n    }<br/>\n}<br/>\n<br/>\nShared callflow navigation, setting opening hours, or other <br/>\nparameters should typically be done in the setUp() method. This <br/>\navoids much duplication of testcode and it is its purpose. <br/>\n<br/>\nOf course this can be done with methods, but that also leeds to <br/>\nduplication of code, noticable in large test classes (connect<br/>\n();navigateMenu1();navigateMenu2();navigateMenu3(); in each test <br/>\nmethod for class TestMenu4 clouds the test scenario to my taste).<br/>\n<br/>\nThe client code in beforeTest() can fail, for example: <br/>\n * The application at number 12345678 might not be running), <br/>\n * some default navigation (always dial 1 at the start)<br/>\n   doesn&#39;t give the expected result due to a different <br/>\n   parameter setting the testwriter didn&#39;t account for.<br/>\nIt is very inconvenient if the closing tag isn&#39;t written after each <br/>\ntest. The application logs several messages (which voice segments <br/>\nwere written, etc) to this log between the opening/end tags. This <br/>\nhelps debugging the IVR application (or, quite often, the test).<br/>\n<br/>\nMartijn Dashorst</div>", 
+    "prevInTime": 6950, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1045151425", 
+    "canDelete": false, 
+    "nextInTopic": 6959, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGIyZ2VzMSt1bXV1QGVHcm91cHMuY29tPg=="
+    }
+}

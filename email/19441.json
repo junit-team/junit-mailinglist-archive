@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19442, 
+    "senderId": "imvIJSZd5CQ-vTnTiH8NNLQby0UTEwHCbdI-dj6i08o-4a1SEHWWx87gJkqIght4tiD1UGli6k2E3e0pmb1t0mllrSKgeGOpG2wx-GeOzWEV-wyM1g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Class-level Parameterized Test", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "Ed, ... Put the test suite in each subclass, not in the base class. If all your subclasses need to do is return a URL, then it s not very onerous at all. The", 
+    "msgId": 19441, 
+    "profile": "tibbettj_at_verdi_sra_com", 
+    "topicId": 19436, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "messageBody": "<div id=\"ygrps-yiv-74305475\">Ed,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Thanks for the response. The only thing that changes between my tests is <br/>\n&gt; the DB URL (string). Having to maintain a subclass for each db AND a <br/>\n&gt; test suite listing all of the subclasses seems onerous. It seems like I <br/>\n&gt; should be able to simply give a list of DB URLs and have JUnit execute a <br/>\n&gt; setup method ONCE for each set of tests. What&#39;s the easiest way to do this?<br/>\n<br/>\n </span></blockquote>Put the test suite in each subclass, not in the base class. If all your <br/>\nsubclasses need to do is return a URL, then it&#39;s not very onerous at <br/>\nall. The Oracle-specific subclass, for example, will look like:<br/>\n<br/>\npublic class OracleDbTest<br/>\nextends DbTestBase {<br/>\n<br/>\n   @BeforeClass<br/>\n   public static void initDb() {<br/>\n     initDbWithUrl(&quot;file:///some/oracle/url&quot;);<br/>\n   }<br/>\n<br/>\n   @AfterClass<br/>\n   public static void cleanup() {<br/>\n     cleanupDb();<br/>\n   }<br/>\n<br/>\n   public static junit.framework.Test suite() {<br/>\n     return new JUnit4TestAdapter(OracleDbTest.class);<br/>\n   }<br/>\n}<br/>\n<br/>\nand the base class will be<br/>\n<br/>\npublic abstract class DbTestBase {<br/>\n<br/>\n   @Test<br/>\n   public final void someTest() { ... }<br/>\n<br/>\n   protected static final void initDbWithUrl(String url) {<br/>\n     ...<br/>\n   }<br/>\n<br/>\n   protected static final void cleanupDb() {<br/>\n     ...<br/>\n   }<br/>\n<br/>\n}<br/>\n<br/>\nIf maintaining a *DbTest class for each DB implementation is too much <br/>\nmaintenance for your taste, then consider writing a code generator for <br/>\ncustom annotations like these. You&#39;ll probably find that maintaining <br/>\nthem by hand is the less onerous option. :)<br/>\n<br/>\n@... (name = Oracle, url = &quot;file:///some/oracle/url&quot; )<br/>\n@... (name = MySQL, url = &quot;file:///some/mysql/url&quot; )<br/>\n@... (name = Foo, url = &quot;file:///some/foo/url&quot; )<br/>\npublic abstract class DbTestBase {<br/>\n   ...<br/>\n}<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; ----- Original Message ----<br/>\n&gt; From: jason r tibbetts &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:tibbettj@...\">tibbettj@...</a> <br/>\n&gt; &lt;mailto:tibbettj%40verdi.iisd.sra.com&gt;&gt;<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> &lt;mailto:junit%40yahoogroups.com&gt;<br/>\n&gt; Sent: Thursday, June 7, 2007 5:46:35 PM<br/>\n&gt; Subject: Re: [junit] Class-level Parameterized Test<br/>\n&gt; <br/>\n&gt; Ed,<br/>\n&gt; <br/>\n&gt;  &gt; I have a set of tests in a single Unit, say test1() and test2(). I<br/>\n&gt; <br/>\n&gt;  &gt; want to execute my set of tests over the elements in a list of<br/>\n&gt; <br/>\n&gt;  &gt; resources where each resource is expensive to allocate. For example,<br/>\n&gt; <br/>\n&gt;  &gt; let&#39;s say I had a list of databases (e.g., OracleDB, MySQLDB, ...),<br/>\n&gt; <br/>\n&gt;  &gt; and I want to execute my set of tests over each DB. Creating a DB<br/>\n&gt; <br/>\n&gt;  &gt; connection is expensive so I only want to create one DB connection per<br/>\n&gt; <br/>\n&gt;  &gt; test set as follows:<br/>\n&gt; <br/>\n&gt;  &gt;<br/>\n&gt; <br/>\n&gt;  &gt; Create OracleDB connection<br/>\n&gt; <br/>\n&gt;  &gt; test1()<br/>\n&gt; <br/>\n&gt;  &gt; test2()<br/>\n&gt; <br/>\n&gt;  &gt; Create MySQLDB connection<br/>\n&gt; <br/>\n&gt;  &gt; test1()<br/>\n&gt; <br/>\n&gt;  &gt; test2()<br/>\n&gt; <br/>\n&gt;  &gt;<br/>\n&gt; <br/>\n&gt;  &gt; What&#39;s the best way to do this? I know about parameterized JUnit<br/>\n&gt; <br/>\n&gt;  &gt; tests; however, this calls the constructor for EACH test. I only want<br/>\n&gt; <br/>\n&gt;  &gt; to allocate a DB connection per test set. Perhaps there&#39;s some<br/>\n&gt; <br/>\n&gt;  &gt; @BeforeParameter hook that is only executed when the parameter values<br/>\n&gt; <br/>\n&gt;  &gt; changes, not for each test.<br/>\n&gt; <br/>\n&gt; Sounds like what you want isn&#39;t a parameterized test, but a test<br/>\n&gt; <br/>\n&gt; fixture. Create an abstract base class for the test methods, and give it<br/>\n&gt; <br/>\n&gt; a getConnection( ) abstract method. Then subclass it, once per DB, and in<br/>\n&gt; <br/>\n&gt; each subclass, use @BeforeClass and @AfterClass to do the expensive<br/>\n&gt; <br/>\n&gt; stuff. Each subclass&#39;s getConnection( ) will return its (static) connection. </span></blockquote></div>", 
+    "prevInTime": 19440, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1181322377", 
+    "canDelete": false, 
+    "nextInTopic": 19444, 
+    "prevInTopic": 19439, 
+    "headers": {
+        "inReplyToHeader": "PDk1NTc5Ny45NzQzNi5xbUB3ZWI1MjkwMy5tYWlsLnJlMi55YWhvby5jb20+", 
+        "messageIdInHeader": "PDQ2Njk4Qzg5LjcwMjA3MDJAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "referencesHeader": "PDk1NTc5Ny45NzQzNi5xbUB3ZWI1MjkwMy5tYWlsLnJlMi55YWhvby5jb20+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10958, 
+    "senderId": "kSBWHBVs4ddh5IVe075lZIZUJX4K2I_81Yl5UAk55DldAi3uwEaDZ-3GsX7opsscWdzzagw0vfoxyZaMMqmo327SdgkfoujKUFc1DoCXtyxDtqvPSpDRBG4", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Test implementation", 
+    "from": "Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;", 
+    "authorName": "Mark Van Peteghem", 
+    "msgSnippet": "... I often use the Parameterized Test Case instead. Just give an instance of each class as a parameter. It allows me to test several classes that implement", 
+    "msgId": 10957, 
+    "rawEmail": "Return-Path: &lt;Mark.Van.Peteghem@...&gt;\r\nReceived: (qmail 86095 invoked from network); 4 May 2004 17:08:18 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m25.grp.scd.yahoo.com with QMQP; 4 May 2004 17:08:18 -0000\r\nReceived: from unknown (HELO n15.grp.scd.yahoo.com) (66.218.66.70)\n  by mta6.grp.scd.yahoo.com with SMTP; 4 May 2004 17:08:17 -0000\r\nX-eGroups-Return: Mark.Van.Peteghem@...\r\nReceived: from [66.218.67.157] by n15.grp.scd.yahoo.com with NNFMP; 04 May 2004 17:08:04 -0000\r\nX-Sender: Mark.Van.Peteghem@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 19018 invoked from network); 3 May 2004 20:06:43 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m25.grp.scd.yahoo.com with QMQP; 3 May 2004 20:06:43 -0000\r\nReceived: from unknown (HELO apate.telenet-ops.be) (195.130.132.57)\n  by mta2.grp.scd.yahoo.com with SMTP; 3 May 2004 20:06:43 -0000\r\nReceived: from localhost (localhost.localdomain [127.0.0.1])\n\tby apate.telenet-ops.be (Postfix) with SMTP id 3EEC02B4184\n\tfor &lt;junit@yahoogroups.com&gt;; Mon,  3 May 2004 22:06:42 +0200 (MEST)\r\nReceived: from q-mentum.com (D5763B8F.kabel.telenet.be [213.118.59.143])\n\tby apate.telenet-ops.be (Postfix) with ESMTP id 1D24E2B41E8\n\tfor &lt;junit@yahoogroups.com&gt;; Mon,  3 May 2004 22:06:42 +0200 (MEST)\r\nMessage-ID: &lt;4096A6D7.1090103@...&gt;\r\nDate: Mon, 03 May 2004 22:08:55 +0200\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;c70rrl+t0db@...&gt; &lt;4093F40D.5000501@...&gt;\r\nIn-Reply-To: &lt;4093F40D.5000501@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 195.130.132.57\r\nFrom: Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;\r\nSubject: Re: [junit] Test implementation\r\nX-Yahoo-Group-Post: member; u=184823457\r\nX-Yahoo-Profile: mvp_be\r\nX-eGroups-Approved-By: geektank &lt;yahoo-m@...&gt; via web; 04 May 2004 17:08:04 -0000\r\nX-eGroups-Remote-IP: 66.218.66.70\r\n\r\nJ. B. Rainsberger wrote:\n\n&gt; popmanse wrote:\n&gt;\n&gt; &gt;\n&gt; &gt; If you define an interface, what is the best strategy to test all\n&gt; &gt; implementing classes.\n&gt;\n&gt; Google Abstract Test Case, and especially read any hits at c2.com.\n\n\nI often use the Parameterized Test Case instead. Just give an instance \nof each class as a parameter. It allows me to test several classes that \nimplement the same interface in just one test case; with the Abstract \nTest Case pattern you have to write a test case for every class.\n\nHere&#39;s a simplified example:\n\n   import junit.framework.*;\n   import com.zoo.Animals.*;\n\n   public class AnimalTest extends TestCase {\n\n       private Animal animal;\n       private int nrLegs;\n\n       public AnimalTest(String testName, Animal animal, int nrLegs) {\n           super(testName);\n           this.animal = animal;\n           this.nrLegs = nrLegs;\n      }\n      public static Test suite() {\n          TestSuite suite = new TestSuite(&quot;Number of legs&quot;);\n          suite.addTest(new AnimalTest(&quot;Chicken&quot;, new Chicken(), 2));\n          suite.addTest(new AnimalTest(&quot;Cat&quot;, new Cat(), 4));\n          suite.addTest(new AnimalTest(&quot;Fly&quot;, new Fly(), 6));\n          suite.addTest(new AnimalTest(&quot;Spider&quot;, new Spider(), 8));\n          return suite;\n      }\n      public void runTest() throws Throwable {\n           assertTrue(nrLegs==animal.getNrLegs());\n      }\n   }\n\n\nHowever, it shouldn&#39;t be used in every case. If you want to test \nbehavior that is specific to one or more classes, but not all, you&#39;ll \nneed the Abstract Test Case. Also, if an interface is implemented by \nmany classes in different projects, e.g. Enumerator, it shouldn&#39;t be \nused either; I don&#39;t know why, it just feels bad :-).\n\n-- \n  Mark Van Peteghem\n  http://www.q-mentum.com\n\n\n\n\n", 
+    "profile": "mvp_be", 
+    "topicId": 10942, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 184823457, 
+    "prevInTime": 10956, 
+    "contentTrasformed": false, 
+    "postDate": "1083614935", 
+    "canDelete": false, 
+    "nextInTopic": 10959, 
+    "prevInTopic": 10943, 
+    "headers": {
+        "inReplyToHeader": "PDQwOTNGNDBELjUwMDA1MDFAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQwOTZBNkQ3LjEwOTAxMDNAcS1tZW50dW0uY29tPg==", 
+        "referencesHeader": "PGM3MHJybCt0MGRiQGVHcm91cHMuY29tPiA8NDA5M0Y0MEQuNTAwMDUwMUByb2dlcnMuY29tPg=="
+    }
+}

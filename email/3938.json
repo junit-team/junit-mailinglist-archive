@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 3939, 
+    "senderId": "HA-s9-QkA2MMyNBtJlGIlg3UZYSfDbA08bBjG_l8CTHDktfuuHa_1KWAujzl3V8KWToMRu6yTydYRmyo7Sqrgk3w-WWIGBs3KT7cxA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] finally", 
+    "from": "Berin Loritsch &lt;bloritsch@...&gt;", 
+    "authorName": "Berin Loritsch", 
+    "msgSnippet": "... Actually, both can be of interest.  If I can see both the exceptions reported, I can fix both issues at the same time.  Sometimes the exception thrown in ", 
+    "msgId": 3938, 
+    "profile": "bloritsch", 
+    "topicId": 3932, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64910131, 
+    "messageBody": "<div id=\"ygrps-yiv-1331518897\">Vladimir Bossicard wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;&gt;The only problem I have with the way JUnit is setup right now is that an<br/>\n&gt;&gt;&gt;Exception (even a failed assertion) will mask any Exception in the test case.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;I don&#39;t understand.  Can you explain your complaint in more detail?<br/>\n&gt;&gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; If an exception (1) is thrown during the normal execution of the test, <br/>\n&gt; the framework executes the tearDown method (because the tearDown method <br/>\n&gt; is always executed).  If tearDown() throws another exception (2), JUnit <br/>\n&gt; will only report the exception (2) and the (1) is lost into the great <br/>\n&gt; void.  It doesn&#39;t help much because what does interest you is really the <br/>\n&gt;   first exception.<br/>\n&gt; <br/>\n&gt; The solution is trivial: store any exception that was thrown during the <br/>\n&gt; execution of the &#39;runTest&#39; method, then execute tearDown and if an <br/>\n&gt; exception is caught, resend the first one.<br/>\n<br/>\n<br/>\n </span></blockquote>Actually, both can be of interest.  If I can see both the exceptions reported,<br/>\nI can fix both issues at the same time.  Sometimes the exception thrown in<br/>\ntearDown is unrelated to the runTest exception.  I would adjust the Exception type<br/>\nthrown to have an interface like this:<br/>\n<br/>\npublic class TestException extends Exception<br/>\n{<br/>\n     private final String    m_message;<br/>\n     private final Throwable m_runTest;<br/>\n     private final Throwable m_tearDown;<br/>\n<br/>\n     TestException( String message, Throwable runTest )<br/>\n     {<br/>\n         this( message, runTest, null );<br/>\n     }<br/>\n<br/>\n     TestException( String message, Throwable runTest, Throwable tearDown)<br/>\n     {<br/>\n         m_message = (null == message) ? &quot;Exception thrown during test&quot; : message;<br/>\n         m_runTest = runTest;<br/>\n         m_tearDown = tearDown;<br/>\n     }<br/>\n<br/>\n     Throwable getRunTestThrowable()<br/>\n     {<br/>\n         return m_runTest;<br/>\n     }<br/>\n<br/>\n     Throwable getTearDownThrowable()<br/>\n     {<br/>\n         return m_tearDown;<br/>\n     }<br/>\n<br/>\n     void printStackTrace()<br/>\n     {<br/>\n         printStackTrace( System.err );<br/>\n     }<br/>\n<br/>\n     void printStackTrace( PrintWriter pw )<br/>\n     {<br/>\n         pw.println( m_message );<br/>\n         pw.println(&quot;Contains runTest() exception&quot;);<br/>\n         m_runTest.printStackTrace( pw );<br/>\n<br/>\n         if ( null != m_tearDown )<br/>\n         {<br/>\n             System.err.println(&quot;Contains tearDown() exception&quot;);<br/>\n             m_tearDown.printStackTrace( pw );<br/>\n         }<br/>\n     }<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\n<br/>\n&quot;They that give up essential liberty to obtain a little temporary safety<br/>\n  deserve neither liberty nor safety.&quot;<br/>\n                 - Benjamin Franklin</div>", 
+    "prevInTime": 3937, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1012586135", 
+    "canDelete": false, 
+    "nextInTopic": 3940, 
+    "prevInTopic": 3937, 
+    "headers": {
+        "messageIdInHeader": "PDNDNUFENjk2LjYwOTAxMDNAYXBhY2hlLm9yZz4=", 
+        "referencesHeader": "PDIwMDIwMjAxMTU0NjU5Ljc2NzE2LnFtYWlsQHdlYjIwODA4Lm1haWwueWFob28uY29tPiA8M0M1QUM4NzUuNzAxMDIwNUBpbXBlcml0ZWsuY29tPiA8M0M1QUNFQzIuNzA1MDYwNUBib3NzaWNhcmQuY29tPg=="
+    }
+}

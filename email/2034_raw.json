@@ -1,0 +1,28 @@
+{
+    "topicId": 2034, 
+    "postDate": "995656359", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Frank Enos &lt;fenos@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "lFYUN2pcuemZHfHH3wZ_swkHa12UE97DtFn_pidMzmN8AIblt_frq03THulZWd30Ey9EitrVhgdmzdqBDGMHt00", 
+    "nextInTime": 2035, 
+    "userId": 0, 
+    "prevInTime": 2033, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDUuMS4wLjE0LjAuMjAwMTA3MjAxNTExMTkuMDM1MzI5MjhAcG9wLm1pbmRzcHJpbmcuY29tPg=="
+    }, 
+    "authorName": "Frank Enos", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "I ve provided coded examples below. My basic question is this: Does Junit (3.7) manipulate exceptions in some way that would prevent an exception from being", 
+    "contentTrasformed": false, 
+    "msgId": 2034, 
+    "nextInTopic": 2035, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;fenos@...&gt;\r\nX-Sender: fenos@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 20 Jul 2001 19:12:45 -0000\r\nReceived: (qmail 35011 invoked from network); 20 Jul 2001 19:11:45 -0000\r\nReceived: from unknown (10.1.10.27) by l8.egroups.com with QMQP; 20 Jul 2001 19:11:45 -0000\r\nReceived: from unknown (HELO nyc.rr.com) (24.29.99.80) by mta2 with SMTP; 20 Jul 2001 19:11:45 -0000\r\nReceived: from ENOS_WIN2K.mnh.com ([66.108.37.25]) by nyc.rr.com  with Microsoft SMTPSVC(5.5.1877.357.35); Fri, 20 Jul 2001 15:11:43 -0400\r\nMessage-Id: &lt;5.1.0.14.0.20010720151119.03532928@...&gt;\r\nX-Sender: fenos@...\r\nX-Mailer: QUALCOMM Windows Eudora Version 5.1\r\nDate: Fri, 20 Jul 2001 15:12:39 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Junit manipulating exceptions?\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;; format=flowed\r\nReturn-Path: fenos@...\r\nFrom: Frank Enos &lt;fenos@...&gt;\r\n\r\nI&#39;ve provided coded examples below. My basic question is this: Does Junit \n(3.7) manipulate exceptions in some way that would prevent an exception \nfrom being caught in a normal try/catch block? The behavior I&#39;m seeing is \nthat if I attempt to catch the specific exception thrown by a method (e.g. \ncatch (java.sql.SQLException e), the catch block fails to catch it and \nJunit logs it as an error. If I use catch (Exception e), the exception is \ncaught as I would expect. I find that I can call getClass() on the caught \nException and that it returns the expected SQLException, whereas using \ninstanceof fails.\n\nExamples (behaves the same using other methods throwing other exception types)\nmethods are from:\npublic class PersistenceTest extends TestCase {...}\n\n   public static void main(String[] args) {\n\ttry {\n       PersistenceManager.singleton().write(&quot;insert into noSuchTable \nvalues(&#39;junk&#39;)&quot;);\n\t  System.out.println(&quot;No exception writing to non-existent table&quot;);\n\t} catch (SQLException e) {\n\t  System.out.println(e.getClass().toString());\n\t}\n   }\n\nIf I simply invoke this main()  method which I have added to the test \nclass, it behaves as expected, printing the expected name of the class and \nexiting normally.\n\n   public void testBadWrite() {\n\ttry {\n       \t\tPersistenceManager.singleton().write(&quot;insert into noSuchTable \nvalues(&#39;hey&#39;)&quot;);\n\t  \tfail(&quot;No exception writing to non-existent table&quot;);\n\t} catch (SQLException e) {\n\t  assertTrue(e.toString().indexOf(&quot;ORA-00942&quot;) &gt; -1);\n\t}\n   }\n\nThis test method fails to catch the SQLException, passing it upwards and \nlogging an error.\n\nThe following test passes, however:\n\n   public void testBadWrite2() {\n\ttry {\n       \t\tPersistenceManager.singleton().write(&quot;insert into noSuchTable \nvalues(&#39;hey&#39;)&quot;);\n\t  \tfail(&quot;No exception writing to non-existent table&quot;);\n\t} catch (Exception e) {\n\t  assertEquals(&quot;java.sql.SQLException&quot;, e.getClass().getName())\n\t  assertTrue(e.toString().indexOf(&quot;ORA-00942&quot;) &gt; -1);\n\t}\n   }\n\nWhat am I missing?\nThanks,\nFrank\n\n\n", 
+    "subject": "Junit manipulating exceptions?"
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 396, 
+    "senderId": "P6ZcOApMDUmj11Vsl_hCYDIDLdPR05TdjO4Yi3HKl_x_z3ph9QiDIw9ARk5ITSqEnSpRwFLYUduKQZmpaK4jKVJiG0iFJVwMaDdeF8EUWw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] passing arguments to TestRunner?", 
+    "from": "Robert Watkins &lt;robertw@...&gt;", 
+    "authorName": "Robert Watkins", 
+    "msgSnippet": "... As the suite() method only gets invoked once per test class, this would be a place you could do it. If you do so, you ll have to manage the test-suite ", 
+    "msgId": 395, 
+    "topicId": 394, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-725116182\">\n<html>\n<head>\n \n \n<title>RE: [junit] passing arguments to TestRunner?</title>\n</head>\n \n\n<p><font SIZE=\"2\">Andy Kriger writes:</font>\n<br><font SIZE=\"2\">&gt; </font>\n<br><font SIZE=\"2\">&gt; I want to load a text file that contains data to test. Currently, I</font>\n<br><font SIZE=\"2\">&gt; have static ArrayLists in my TestCase class. In the setUp method, I</font>\n<br><font SIZE=\"2\">&gt; check if those ArrayLists are null, and if they are, load the test</font>\n<br><font SIZE=\"2\">&gt; data. So, I only load the test data once but it seems messy to have</font>\n<br><font SIZE=\"2\">&gt; test data loaded for the whole suite in a method intended to setup a</font>\n<br><font SIZE=\"2\">&gt; single test method. I guess this data loading can be moved to the</font>\n<br><font SIZE=\"2\">&gt; suite() method?</font>\n</p>\n\n<p><font SIZE=\"2\">As the suite() method only gets invoked once per test class, this would be a place you could do it. If you do so, you&#39;ll have to manage the test-suite yourself, however; the automatic discovery of tests via reflection will no longer work.</font></p>\n\n<p><font SIZE=\"2\">&nbsp;</font>\n<br><font SIZE=\"2\">&gt; However, I still have to hardcode the name of the data file. The</font>\n<br><font SIZE=\"2\">&gt; TestCase class has a main method and I tried passing the test file</font>\n<br><font SIZE=\"2\">&gt; name as an argument to that however that simply runs TestRunner</font>\n<br><font SIZE=\"2\">&gt; which creates a new instance of the TestCase and undoes my data</font>\n<br><font SIZE=\"2\">&gt; loading. Is there a way to pass the name of the data file as an </font>\n<br><font SIZE=\"2\">&gt; argument to TestRunner so it can be loaded when TestRunner calls</font>\n<br><font SIZE=\"2\">&gt; suite()?</font>\n</p>\n\n<p><font SIZE=\"2\">Not in this version.</font>\n<br><font SIZE=\"2\">&nbsp;</font>\n<br><font SIZE=\"2\">&gt; If not, I guess I&#39;m looking for a setUp method for suites as well as</font>\n<br><font SIZE=\"2\">&gt; test methods.</font>\n</p>\n\n<p><font SIZE=\"2\">We implemented such a utility at my last place of employment. In hindsight, while it was fun and interesting, I consider the solution we used as overkill (but then, we had a lot of time on our hands).</font></p>\n\n<p><font SIZE=\"2\">What I&#39;d suggest, with the benefit of hindsight, is a Singleton-like pattern. Provide a utility class (possibly an inner class of the test class) which provides static methods for obtaining your data. The first time that the methods are called (or via a static initialisor, if you prefer), read your data in, and cache it for future requests.</font></p>\n\n<p><font SIZE=\"2\">If you are worried about hard-coding the name of the data file, don&#39;t be; for your automated tests, you&#39;ll want the data in a known location. If you want some configurability over the test, you can always store the location of the data file in a properties file.</font></p>\n\n<p><font SIZE=\"2\">If you&#39;re going to be using a known location for your automated test, but you want to be able to override it (say, you&#39;ve got a data file that reproduces a problem and you want to look into it), I&#39;d suggest writing a main() method in your test class that configures the Singleton object. If you invoke the test case manually, you&#39;ll be able to provide the location. If you invoke it via JUnit or via another suite(), you won&#39;t.</font></p>\n\n<p><font SIZE=\"2\">Robert.</font>\n</p>\n\n<p><font SIZE=\"2\">-- </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp;&nbsp; &quot;Duct tape is like the Force: it has a light side, a dark side,</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and it holds the universe together&quot;</font>\n<br><font SIZE=\"2\">&nbsp; Robert Watkins&nbsp;&nbsp;&nbsp;&nbsp; robertdw@...&nbsp;&nbsp;&nbsp;&nbsp; robertw@...</font>\n</p>\n<br>\n\n \n</html></div>", 
+    "prevInTime": 394, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "981423067", 
+    "canDelete": false, 
+    "nextInTopic": 396, 
+    "prevInTopic": 394, 
+    "headers": {
+        "messageIdInHeader": "PDMzQTVFNjk5REFDNEQ0MTE5N0MyMDA1MDhCQUY1MjE3MkE1NkJBQGF1Ym5tc3gwMS5xc2kuY29tLmF1Pg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 5679, 
+    "senderId": "FUqNhnEDVKT4I4JTsKpTORTGbj_ntUIWzFRZJyfVLXVl7TsUZw3-207nV-IhwARESjfLYlxzPY0roo1imWLffkVYGP9EA0_qMWAGtdJc", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Just replaced my 3.7 jar with 3.8", 
+    "from": "&quot;Berin Loritsch&quot; &lt;bloritsch@...&gt;", 
+    "authorName": "Berin Loritsch", 
+    "msgSnippet": "... Most factory methods that use a classloader rely on the context classloader being set.  The reason is that if they are smart, they will try to use the", 
+    "msgId": 5678, 
+    "rawEmail": "Return-Path: &lt;bloritsch@...&gt;\r\nX-Sender: bloritsch@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_0_1); 29 Aug 2002 18:04:39 -0000\r\nReceived: (qmail 59832 invoked from network); 29 Aug 2002 18:04:39 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 29 Aug 2002 18:04:39 -0000\r\nReceived: from unknown (HELO www1.kc.aoindustries.com) (209.15.201.70)\n  by mta2.grp.scd.yahoo.com with SMTP; 29 Aug 2002 18:04:39 -0000\r\nReceived: from Gabriel ([65.105.132.131])\n\tby www1.kc.aoindustries.com (8.11.6/8.11.0) with ESMTP id g7TI4cb27622\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 29 Aug 2002 13:04:38 -0500\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Re: Just replaced my 3.7 jar with 3.8\r\nDate: Thu, 29 Aug 2002 14:04:33 -0400\r\nMessage-ID: &lt;000301c24f86$88c92210$ac00a8c0@Gabriel&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.2627\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nImportance: Normal\r\nIn-reply-to: &lt;20020829105637.14841.h011.c003.wm@...&gt;\r\nFrom: &quot;Berin Loritsch&quot; &lt;bloritsch@...&gt;\r\nReply-To: &lt;bloritsch@...&gt;\r\nX-Yahoo-Group-Post: member; u=64910131\r\nX-Yahoo-Profile: bloritsch\r\n\r\n&gt; From: Vladimir Bossicard [mailto:vbossica@...] \n&gt; \n&gt; When I read the code for the new version, I noticed the \n&gt; following line in the\n&gt; ReloadingTestSuiteLoader:\n&gt; \n&gt;         Thread.currentThread().setContextClassLoader( loader );\n&gt; \n&gt; I don&#39;t know if this is the cause of your problem, but it&#39;s \n&gt; worth trying recompiling the 3.8 without this line and see \n&gt; what happens.\n\n\nMost factory methods that use a classloader rely on the context\nclassloader being set.  The reason is that if they are smart,\nthey will try to use the current thread&#39;s context classloader.\n\nThread.currentThread().getContextClassLoader().loadClass( className\n).newInstance();\n\n\nIf you remove that method you could potentially screw up those methods.\n\nThen again if jUnit and whatever J2EE server are both setting the thread\ncontext classloader then there is a problem.  Someone has to use the\nother classloader as a parent.\n\nWhat would be smart is if jUnit would create its classloader using the\ncurrent thread context classloader as the parent--then set the context\nclassloader.  Then the two classloaders should be compatible.\n\n\n", 
+    "profile": "bloritsch", 
+    "topicId": 5663, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64910131, 
+    "prevInTime": 5677, 
+    "contentTrasformed": false, 
+    "postDate": "1030644273", 
+    "canDelete": false, 
+    "nextInTopic": 5679, 
+    "prevInTopic": 5677, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwODI5MTA1NjM3LjE0ODQxLmgwMTEuYzAwMy53bUBtYWlsLnRlbG9jaXR5LmNvbS5jcml0aWNhbHBhdGgubmV0Pg==", 
+        "messageIdInHeader": "PDAwMDMwMWMyNGY4NiQ4OGM5MjIxMCRhYzAwYThjMEBHYWJyaWVsPg=="
+    }
+}

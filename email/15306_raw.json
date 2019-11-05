@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 20, 
+    "nextInTime": 15307, 
+    "senderId": "bDZrjoXlQ4gts6bErm09RrMTPLdyLfZGQmI6QaAPyRnqkH8Yjsuog2g_tf9Pae3mvkPyZCEjWNRxmoHva-ZKqHnKnyZ22shrcyhsqDB-5oUVv_4", 
+    "systemMessage": true, 
+    "subject": "RE: [junit] Re: Private method throws an exception", 
+    "from": "&quot;Mitch Christensen&quot; &lt;mitchellch@...&gt;", 
+    "authorName": "Mitch Christensen", 
+    "msgSnippet": "I think you ve hit the nail on the head. My approach is to isolate the method under test as much as possible. However, calls to private methods don t lend", 
+    "msgId": 15306, 
+    "rawEmail": "Return-Path: &lt;mitchellch@...&gt;\r\nReceived: (qmail 15207 invoked from network); 31 Oct 2005 20:32:48 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m26.grp.scd.yahoo.com with QMQP; 31 Oct 2005 20:32:48 -0000\r\nReceived: from unknown (HELO n4a.bulk.scd.yahoo.com) (66.94.237.38)\n  by mta5.grp.scd.yahoo.com with SMTP; 31 Oct 2005 20:32:48 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.6] by n4.bulk.scd.yahoo.com with NNFMP; 31 Oct 2005 20:32:04 -0000\r\nReceived: from [66.218.66.75] by mailer6.bulk.scd.yahoo.com with NNFMP; 31 Oct 2005 20:32:04 -0000\r\nX-Sender: mitchellch@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 97364 invoked from network); 31 Oct 2005 19:22:13 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m33.grp.scd.yahoo.com with QMQP; 31 Oct 2005 19:22:13 -0000\r\nReceived: from unknown (HELO rwcrmhc12.comcast.net) (204.127.198.39)\n  by mta5.grp.scd.yahoo.com with SMTP; 31 Oct 2005 19:22:13 -0000\r\nReceived: from engglaptop016 (h-67-102-110-27.snfccasy.covad.net[67.102.110.27])\n          by comcast.net (rwcrmhc13) with SMTP\n          id &lt;2005103118495601500ahvhce&gt;; Mon, 31 Oct 2005 18:49:56 +0000\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Mon, 31 Oct 2005 10:46:01 -0800\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nIn-Reply-To: &lt;dk5o5m+f2hf@...&gt;\r\nThread-Index: AcXeShHyLC+yvtkjQEaiQem6EL9+pAAADUmg\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Mitch Christensen&quot; &lt;mitchellch@...&gt;\r\nSubject: RE: [junit] Re: Private method throws an exception\r\nX-Yahoo-Group-Post: member; u=241632947; y=e4o4JAhlpcKiItpbC4sWL98gh3RLdhzeT6eHfbiLu6WtJdViNBgA\r\nX-Yahoo-Profile: mitchellch60\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 31 Oct 2005 20:32:02 -0000\r\n\r\nI think you&#39;ve hit the nail on the head.\n\n \n\nMy approach is to isolate the method under test as much as possible.\nHowever, calls to private methods don&#39;t lend themselves easily to being\nfactored out of the test.  I eliminate remote object method calls with\nmocks, and local method calls (to public/protected methods of the same\nclass) by overriding them in an anonymous inner class declared in my test\nmethod.  Obviously I can&#39;t override a private method.\n\n \n\nI think the solution is to refactor the private method such that it can be\neither eliminated (by extracting a public/protected parent method that can\nbe overriden) or tested along with the method under test (by supporting some\nform of mock object injection).  \n\n \n\nDoes this sound reasonable?\n\n \n\n-Mitch\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of Jeff\nGrigg\nSent: Monday, October 31, 2005 10:36 AM\nTo: junit@yahoogroups.com\nSubject: [junit] Re: Private method throws an exception\n\n \n\n&gt;&gt; --- mitchellch60 wrote:\n&gt;&gt;&gt; My method under test calls a private method in the same\n&gt;&gt;&gt; class.  The private method throws an exception preventing\n&gt;&gt;&gt; me for completing my unit test.\n\n--- &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; wrote:\n&gt; I understand you don&#39;t believe in polluting the public API,\n&gt; but saying that that suggestion won&#39;t solve the problem is\n&gt; ridiculous.\n&gt; [...]\n\nMost often when I see this symptom -- a private method or something \ndeep in the hierarchy failing, and preventing testing -- it&#39;s because \nthe code I&#39;m testing is using some external resource, such as a \ndatabase, that really needs a Mock Object implementation for testing.\n\nI don&#39;t have enough information to be sure that this is the proper \nadvice, but in my experience, it&#39;s been a good guess.  (...until more \ndetailed information becomes available.)\n\n\n\n\n\n\n  _____  \n\nYAHOO! GROUPS LINKS \n\n \n\n*\t Visit your group &quot;junit &lt;http://groups.yahoo.com/group/junit&gt; &quot; on\nthe web.\n  \n*\t To unsubscribe from this group, send an email to:\n junit-unsubscribe@yahoogroups.com\n&lt;mailto:junit-unsubscribe@yahoogroups.com?subject=Unsubscribe&gt; \n  \n*\t Your use of Yahoo! Groups is subject to the Yahoo!\n&lt;http://docs.yahoo.com/info/terms/&gt;  Terms of Service. \n\n \n\n  _____  \n\n\n\n[Non-text portions of this message have been removed]\n\n\n\n\n", 
+    "profile": "mitchellch60", 
+    "topicId": 15264, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 241632947, 
+    "prevInTime": 15305, 
+    "contentTrasformed": false, 
+    "postDate": "1130784361", 
+    "canDelete": false, 
+    "nextInTopic": 15309, 
+    "prevInTopic": 15305, 
+    "headers": {
+        "inReplyToHeader": "PGRrNW81bStmMmhmQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 14917, 
+    "senderId": "6wZgLqgoLNrMvWX1OGtDBE0YUvFaBkYz-jS4fYg1HlPc30A1d9MZCMHA6AQHcaa8pM01kmZPaxlmvXC3aww3HyxKWAZBTB8aDYxXVDO9eXYrlfuGWa9Q4tq0nF_o71INkM1j", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit 4 RFE: ignoring a test at runtime", 
+    "from": "=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "For the record, here is how you do it in TestNG. And yes, it s very useful. @Test(groups = { initXmlParser }) public void init() throws SAXException { ", 
+    "msgId": 14916, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 41484 invoked from network); 22 Sep 2005 16:31:31 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m28.grp.scd.yahoo.com with QMQP; 22 Sep 2005 16:31:31 -0000\r\nReceived: from unknown (HELO 216-239-45-4.google.com) (216.239.45.4)\n  by mta1.grp.scd.yahoo.com with SMTP; 22 Sep 2005 16:31:31 -0000\r\nReceived: from 216-239-45-4.google.com (zze35.corp.google.com [172.25.13.35])\n\tby lois.corp.google.com with ESMTP id j8MGUD3e000339\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 22 Sep 2005 09:31:26 -0700\r\nReceived: by 216-239-45-4.google.com with SMTP id 35so151640zze\n        for &lt;junit@yahoogroups.com&gt;; Thu, 22 Sep 2005 09:31:26 -0700 (PDT)\r\nReceived: by 172.25.13.31 with SMTP id 31mr19744zze;\n        Thu, 22 Sep 2005 09:31:26 -0700 (PDT)\r\nReceived: by 172.25.13.33 with HTTP; Thu, 22 Sep 2005 09:31:26 -0700 (PDT)\r\nMessage-ID: &lt;b86b6a9c050922093142dbd50f@...&gt;\r\nDate: Thu, 22 Sep 2005 09:31:26 -0700\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;4332D262.1000100@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;4332D262.1000100@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: =?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;\r\nReply-To: =?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;\r\nSubject: Re: [junit] JUnit 4 RFE: ignoring a test at runtime\r\nX-Yahoo-Group-Post: member; u=199443513; y=IF3K7GPvsykbXkINqE-w4buMwbFgCn_0-vIf4-2VC882\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nFor the record, here is how you do it in TestNG. And yes, it&#39;s very useful.=\r\n\n\n@Test(groups =3D { &quot;initXmlParser&quot; })\npublic void init() throws SAXExcept=\r\nion {\ncrimson =3D XMLReaderFactory.createXMLReader(\n&quot;org.apache.crimson.par=\r\nser.XMLReaderImpl&quot;;\n}\n\n@Test(dependsOnGroups =3D { &quot;initXmlParser&quot; })\npubli=\r\nc void parseFile() {\n// use the parser\n}\n\nIf the parser is found, both init=\r\n() and parseFile() are run.\n\nIf the parser is not found, init() will fail a=\r\nnd parseFile() will be marked\nas a SKIP in the reports (not a FAIL).\n\nIt ma=\r\nkes the code much cleaner, no nasty try/catch or other noise, just the\nfact=\r\ns :-)\n\n--\nC=E9dric\n\n\nOn 9/22/05, Elliotte Harold &lt;elharo@...&gt; w=\r\nrote:\n&gt;\n&gt; Some of my tests methods contain logic like this:\n&gt;\n&gt; XMLReader c=\r\nrimson;\n&gt; try {\n&gt; crimson =3D XMLReaderFactory.createXMLReader(\n&gt; &quot;org.apac=\r\nhe.crimson.parser.XMLReaderImpl&quot;);\n&gt; }\n&gt; catch (SAXException ex) {\n&gt; // can=\r\n&#39;t test Crimson if you can&#39;t load it\n&gt; return;\n&gt; }\n&gt; // OK. We found Crimso=\r\nn. Now let&#39;s run the test\n&gt;\n&gt; In other words, I&#39;m testing a workaround for =\r\na bug in a particular class\n&gt; that may or may not be present. Such tests mi=\r\nght also depend on\n&gt; platform, java version, or other environmental conditi=\r\nons. In JUnit 3 if\n&gt; I can&#39;t really make the test due to environmental prob=\r\nlems I only have\n&gt; two options: pass or fail. Neither is really satisfactor=\r\ny or properly\n&gt; explains what;s happening.\n&gt;\n&gt; In JUnit 4 we can annotate a=\r\n test as @Ignore. However that&#39;s only good\n&gt; at compile time. What I want i=\r\ns an ignore() or skip() method similar to\n&gt; the fail() method. However this=\r\n method signals that a test was skipped\n&gt; instead of failed. Is there such =\r\na method already? If not, could we have\n&gt; one please? I looked but I couldn=\r\n&#39;t find one in the current code base,\n&gt; but then I just wasn&#39;t looking in t=\r\nhe right place.\n&gt;\n&gt; --\n&gt; Elliotte Rusty Harold elharo@...\n&gt; XML=\r\n in a Nutshell 3rd Edition Just Published!\n&gt; http://www.cafeconleche.org/bo=\r\noks/xian3/\n&gt; http://www.amazon.com/exec/obidos/ISBN=3D0596007647/cafeaulait=\r\nA/ref=3Dnosim\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n[Non-text porti=\r\nons of this message have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 14915, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 14915, 
+    "contentTrasformed": false, 
+    "postDate": "1127406686", 
+    "canDelete": false, 
+    "nextInTopic": 14925, 
+    "prevInTopic": 14915, 
+    "headers": {
+        "inReplyToHeader": "PDQzMzJEMjYyLjEwMDAxMDBAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDUwOTIyMDkzMTQyZGJkNTBmQG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PDQzMzJEMjYyLjEwMDAxMDBAbWV0YWxhYi51bmMuZWR1Pg=="
+    }
+}

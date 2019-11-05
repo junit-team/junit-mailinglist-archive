@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 22714, 
+    "senderId": "ZRgaptv30gKH2ol18nOVwPKiChK6bwnrUgRUTq8jtF0xQbuCrUXI25dr-frWluwau2W2fo9mdlJoUwdOHDuxshiVBIcT2sVe32p8EnHMP2xCqdaUcg", 
+    "systemMessage": true, 
+    "subject": "How do I set the testcase name dynamically with using junit4?", 
+    "from": "&quot;zx200287853714&quot; &lt;zx200287853714@...&gt;", 
+    "authorName": "zx200287853714", 
+    "msgSnippet": "Hi, experts We re using the junit 3.8.1 currently, and we re planning to move to junit4, but we meet a question that we want to address. Imagine we have a", 
+    "msgId": 22713, 
+    "profile": "zx200287853714", 
+    "topicId": 22713, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 446924437, 
+    "messageBody": "<div id=\"ygrps-yiv-1817778403\">Hi, experts<br/>\n<br/>\nWe&#39;re using the junit 3.8.1 currently, and we&#39;re planning to move to junit4, but we meet a question that we want to address.<br/>\n<br/>\nImagine we have a test, and it has four test cases:<br/>\n<br/>\npublic class XXXTest extends TestCase {<br/>\n    public void testA();<br/>\n    public void testB();<br/>\n    public void testC();<br/>\n}<br/>\n<br/>\nAnd we have a boolean type which presents whether the test is transactional or not, and we want either transactional or non-transactional needs to run under testA, testB, testC.<br/>\n<br/>\nTo do that, we add a suite() method, and add the tests with different transactional configuration, so that it can run actually 6 test cases. But here comes another question, how can we distinguish the failures, because there are actually 3 test cases in the test?<br/>\n<br/>\nLuckily Junit3.8.1 can set the test case name dynamically through setName, so we can do this:<br/>\n<br/>\npublic class XXXTest extends TestCase {<br/>\n    boolean transactional;<br/>\n<br/>\n    public static Test suite() {<br/>\n        TestSuite allTests = new TestSuite();<br/>\n        addTests(allTests, false);<br/>\n        addTests(allTests, true);<br/>\n        return allTests;<br/>\n    }<br/>\n<br/>\n    private static void addTests(Testsuite allTests,<br/>\n                                 boolean transactional) {<br/>\n         Testsuite suite = new TestSuite(XXXTest.class);<br/>\n         Enumeration e = suite.tests();<br/>\n         while (e.hasMoreElements()) {<br/>\n              XXXTest test = (XXXTest) e.nextElement();<br/>\n              test.init(transactional);<br/>\n              allTests.addTest(test);<br/>\n          }<br/>\n     }<br/>\n<br/>\n     private void init(boolean transactional) {<br/>\n          this.transactional = transactional;<br/>\n     }<br/>\n<br/>\n     public void tearDown() {<br/>\n          setName(getName() + (transactional ? &quot;-txnal&quot; : &quot;-nontxnal&quot;));<br/>\n     }<br/>\n<br/>\n     public void testA();<br/>\n     public void testB();<br/>\n     public void testC();<br/>\n}<br/>\n<br/>\nSo when we run the test, we will get the test case name as following:<br/>\n<br/>\n    testA-txnal<br/>\n    testA-non-txnal<br/>\n    testB-txnal<br/>\n    testB-non-txnal<br/>\n    testC-txnal<br/>\n    testC-non-txnal<br/>\n<br/>\nWith these information, we can easily figure out which test fails.<br/>\n<br/>\nBut the setName() method doesn&#39;t work in Junit4, since I don&#39;t need to extend from TestCase any longer. I know I can use the Parameterized to do the same thing, but there is no way to set the customerized test case name, so what I get is:<br/>\n    <br/>\n     testA-0<br/>\n     testA-1<br/>\n     testB-0<br/>\n     testB-1<br/>\n     testC-0<br/>\n     testC-1<br/>\n<br/>\nWhich doesn&#39;t make sense to figure out in which mode the test fails, and the worse is that we use the test case name to create a directory to save the failed test results, but now it&#39;s hard to do that in junit4.<br/>\n<br/>\nSo is there anyway to support dynamically naming a test case?<br/>\n<br/>\nThanks and regards!<br/>\nTao</div>", 
+    "prevInTime": 22712, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1274670652", 
+    "canDelete": false, 
+    "nextInTopic": 22714, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGh0Y3FucytkYjhwQGVHcm91cHMuY29tPg=="
+    }
+}

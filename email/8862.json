@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 30, 
+    "nextInTime": 8863, 
+    "senderId": "0DiGRhT3hBSrYbQaIChwc884g0yISI6R8IBEMtYSfo1jPDEbv1LC9Ac7A8xfAZEHIoPYCce4l07i1SBXRhCAs81PJxUZ-SNb", 
+    "systemMessage": false, 
+    "subject": "Re: How to test console output?", 
+    "from": "&quot;jxingtang&quot; &lt;jxingtang@...&gt;", 
+    "authorName": "jxingtang", 
+    "msgSnippet": "... StringWriter ... to ... to a ... create a new one. ... I have found a way to solve the problem. I calls the getBuffer()to get the string buffer from the", 
+    "msgId": 8862, 
+    "profile": "jxingtang", 
+    "topicId": 8734, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126373237, 
+    "messageBody": "<div id=\"ygrps-yiv-657132441\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; <br/>\nwrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; &gt;So said jxingtang on 2003-07-29 --------------------<br/>\n&gt; &gt;--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Alain Ravet &lt;alain.ravet.list@w...&gt; <br/>\n&gt; &gt;wrote:<br/>\n&gt; &gt;&gt; <br/>\n&gt; &gt;&gt; J. B. Rainsberger wrote:<br/>\n&gt; &gt;&gt; <br/>\n&gt; &gt;&gt; &gt;1. Don&#39;t use System.out in your application directly. Your <br/>\n&gt; &gt;application components should accept a PrintWriter as a parameter <br/>\n&gt; &gt;somewhere.<br/>\n&gt; &gt;&gt; &gt;2. In your tests, substitute a PrintWriter wrapping a <br/>\n </span></blockquote>StringWriter <br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;in place of System.out. This is easy to verify.<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; <br/>\n&gt; &gt;&gt; Without providing any code - :) -, I&#39;d suggest you use AspectJ <br/>\n </span></blockquote>to <br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;&gt; implement solution  (2) without modifying the orignal code.<br/>\n&gt; &gt;&gt; You would capture all the &quot;System.out.println()&quot; and feed them <br/>\n </span></blockquote>to a <br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;&gt; StringWriter that you would use in your tests.<br/>\n&gt; &gt;&gt; <br/>\n&gt; &gt;&gt; If you use IDEA, the eap/under construction version offers - <br/>\n&gt; &gt;partial - <br/>\n&gt; &gt;&gt; AspectJ support.<br/>\n&gt; &gt;&gt; <br/>\n&gt; &gt;&gt; Alain Ravet<br/>\n&gt; &gt;<br/>\n&gt; &gt;A further question for StringWriter manipulation. Since I have to <br/>\n&gt; &gt;test several methods with console output which share the same <br/>\n&gt; &gt;StringWriter wrapped in the PrinterWriter. The problem is how to <br/>\n&gt; &gt;clean up the buffer after one test case. flush() method seems not <br/>\n&gt; &gt;work as expected.  <br/>\n&gt; <br/>\n&gt; Why do you have to share the same StringWriter for each test? Just <br/>\n </span></blockquote>create a new one.<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; <br/>\n<br/>\n </span></blockquote>I have found a way to solve the problem. I calls the getBuffer()to <br/>\nget the string buffer from the StringWriter and delete its content.<br/>\n<br/>\nThe reason for me to share the StringWriter is that I do not want to <br/>\nconstruct a new class instance being tested for each method. I only <br/>\nconstruct on in setUp(). Here are of my code snippets.<br/>\n<br/>\npublic class MyClass<br/>\n{<br/>\n    private PrintWriter MyWriter;<br/>\n\t<br/>\n    // Constructor for production release<br/>\n    public MyClass()<br/>\n    {<br/>\n        MyWriter = new PrintWriter( System.out );<br/>\n    }<br/>\n<br/>\n    // Constructor for Junit testing\t<br/>\n    public MyClass( PrintWriter pw )<br/>\n    {<br/>\n        MyWriter = pw;<br/>\n    }<br/>\n<br/>\n    public void DumpOutput( Vector params )<br/>\n    {<br/>\n       // Clip ...<br/>\n    }<br/>\n};<br/>\n<br/>\npublic class MyClassTest extends TestCase<br/>\n{<br/>\n    private MyClass MyTestObj = null;<br/>\n<br/>\n    private StringWriter StrWriter = null;<br/>\n<br/>\n    // Clip ...<br/>\n<br/>\n    protected void setUp()<br/>\n    {<br/>\n        StrWriter = new StringWriter();<br/>\n\tPrintWriter prWriter = new PrintWriter( StrWriter );<br/>\n\tTestObj = new MyClass( prWriter );<br/>\n    }<br/>\n<br/>\n    public DumpOutputTest()<br/>\n    {<br/>\n        Vector testParams = new Vector();<br/>\n        // Testcase 1<br/>\n        testParams.addElement( &quot;A&quot; );<br/>\n        testParams.addElement( &quot;B&quot; );<br/>\n        testParams.addElement( &quot;C&quot; );<br/>\n        <br/>\n        TestObj.DumpOutput( testParams );<br/>\n <br/>\n        String outStr = StrWriter.toString();<br/>\n        <br/>\n        // Code to evaluate outStr<br/>\n        // Clip ....  <br/>\n        <br/>\n        // Clean buffer of StringWriter<br/>\n        StringBuffer sbuff = StrWriter.getBuffer();<br/>\n        sbuff.delete( 0, outStr.length());<br/>\n<br/>\n        // Testcase 2 <br/>\n        testParams.addElement( &quot;X&quot; );<br/>\n        testParams.addElement( &quot;Y&quot; );<br/>\n        testParams.addElement( &quot;Z&quot; );<br/>\n        <br/>\n        TestObj.DumpOutput( testParams );<br/>\n <br/>\n        String outStr = StrWriter.toString();<br/>\n        <br/>\n        // Code to evaluate outStr<br/>\n        // Clip ....  <br/>\n     }<br/>\n<br/>\n     // Clip ...<br/>\n};<br/>\n<br/>\nPlease give your valuable comments for my further correction and <br/>\nimprovements.</div>", 
+    "prevInTime": 8861, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1059576908", 
+    "canDelete": false, 
+    "nextInTopic": 8864, 
+    "prevInTopic": 8850, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNzMwMTYwMjIyMDgzOC4wMDRFODM3MkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGJnOG04Yys4ZXM1QGVHcm91cHMuY29tPg=="
+    }
+}

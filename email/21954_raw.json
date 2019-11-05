@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 21955, 
+    "senderId": "yUC7h-Es3zaYWcVwWTa-tuZiLuxpEpAa415LDmz_RfMaWpa62lO1CmC05n_HNG2bzoxe_WAOhuyTu-giBO6f-AqEk1WXeYrK6VwyjhAgO_Himd7sZPPe", 
+    "systemMessage": true, 
+    "subject": "Re: How are you supposed to use org.junit.matchers.JUnitMatchers.everyItem?", 
+    "from": "&quot;Bogdan&quot; &lt;bogdan.mocanu.notifications@...&gt;", 
+    "authorName": "Bogdan", 
+    "msgSnippet": "The problem is with everyItem(), because it returns a (not parameterized) Matcher , which is incompatible with Matcher which is expected", 
+    "msgId": 21954, 
+    "rawEmail": "Return-Path: &lt;bogdan.mocanu.notifications@...&gt;\r\nReceived: (qmail 16438 invoked from network); 8 Oct 2009 07:16:47 -0000\r\nReceived: from unknown (98.137.34.46)\n  by m2.grp.re1.yahoo.com with QMQP; 8 Oct 2009 07:16:47 -0000\r\nReceived: from unknown (HELO n40b.bullet.mail.sp1.yahoo.com) (66.163.168.154)\n  by mta3.grp.sp2.yahoo.com with SMTP; 8 Oct 2009 07:16:46 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1254986206; bh=tGnikz/Ckxh0mSvSHNZ+q0XGXRvacryzoc9lNNmedvA=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:X-Received:Date:To:Message-ID:In-Reply-To:User-Agent:MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer:X-Yahoo-Newman-Property:X-Originating-IP:X-eGroups-Msg-Info:X-Yahoo-Post-IP:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:X-YGroups-SubInfo:Sender:X-eGroups-Approved-By:X-eGroups-Auth; b=e70EsX52/LPRh9AwrjXEphkQ7/RAoFCh811a8jNN6yvzkR5j1tvBSGB6XjiSYLCH6zE6J2tyjbS2lA0Eg2hBFFOtaZ9CkWNqB/64NSITEFT5ZeOorVihWNA+Vf5lNh33\r\nReceived: from [69.147.65.172] by n40.bullet.mail.sp1.yahoo.com with NNFMP; 08 Oct 2009 07:16:46 -0000\r\nReceived: from [98.137.34.34] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 08 Oct 2009 07:16:46 -0000\r\nX-Sender: bogdan.mocanu.notifications@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 86093 invoked from network); 8 Oct 2009 06:09:19 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m7.grp.re1.yahoo.com with QMQP; 8 Oct 2009 06:09:19 -0000\r\nX-Received: from unknown (HELO n42b.bullet.mail.sp1.yahoo.com) (66.163.168.156)\n  by mta3.grp.sp2.yahoo.com with SMTP; 8 Oct 2009 06:09:19 -0000\r\nX-Received: from [69.147.65.151] by n42.bullet.mail.sp1.yahoo.com with NNFMP; 08 Oct 2009 06:09:19 -0000\r\nX-Received: from [98.137.34.32] by t5.bullet.mail.sp1.yahoo.com with NNFMP; 08 Oct 2009 06:09:19 -0000\r\nDate: Thu, 08 Oct 2009 06:09:16 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;hajvmc+b7qh@...&gt;\r\nIn-Reply-To: &lt;hai63r+kfdr@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;Bogdan&quot; &lt;bogdan.mocanu.notifications@...&gt;\r\nSubject: Re: How are you supposed to use org.junit.matchers.JUnitMatchers.everyItem?\r\nX-Yahoo-Group-Post: member; u=414734247; y=yVX429UjmYktyPwuKmYGSXttiwlRFZ3z7BfZxCzsp24hYp2Z6mS6SecH2A\r\nX-Yahoo-Profile: bogdanmocanu2011\r\nX-YGroups-SubInfo: t=0;f=272;g=1taW48AcIYYXJvBo1mRZNg2mmBvtJ7Z0lykXs1mvCwgbiNBNDiQrEeT_vLH89vBlCTA;\r\nX-eGroups-Approved-By: copabella &lt;joe@...&gt; via web; 08 Oct 2009 07:16:45 -0000\r\n\r\n\n\nThe problem is with everyItem(), because it returns a (not parameterized)=\r\n Matcher&lt;Iterable&lt;Object&gt;&gt;, which is incompatible with Matcher&lt;T&gt; which is =\r\nexpected (which, finally, is Matcher&lt;Iterable&lt;AgreementAndAgreementType&gt;&gt;).=\r\n\n\nThis way works:\nList&lt;AgreementAndAgreementType&gt; result =3D AgreementAndAg=\r\nreementTypeDAO.listByUser(c, userId);\nassertThat( (List)result, everyItem(h=\r\nasProperty(&quot;userId&quot;, equalTo(userId))));\n\nAdding a cast to raw List makes t=\r\nhe parameters uniform, therefore allowing for the call.\n\n--- In junit@yahoo=\r\ngroups.com, &quot;Alan&quot; &lt;Alan.Burlison@...&gt; wrote:\n&gt;\n&gt; I&#39;m trying to use the eve=\r\nryItem method from org.junit.matchers.JUnitMatchers like this:\n&gt; \n&gt; List&lt;Ag=\r\nreementAndAgreementType&gt; result =3D\n&gt;   AgreementAndAgreementTypeDAO.listBy=\r\nUser(c, userId);\n&gt; assertThat(result, everyItem(hasProperty(&quot;userId&quot;, equal=\r\nTo(userId))));\n&gt; \n&gt; but I&#39;m getting a compile error:\n&gt; \n&gt; MyTest.java:51: c=\r\nannot find symbol\n&gt; symbol  : method assertThat(java.util.List&lt;org.opensola=\r\nris.auth.data.AgreementAndAgreementType&gt;,org.hamcrest.Matcher&lt;java.lang.Ite=\r\nrable&lt;java.lang.Object&gt;&gt;)\n&gt; \n&gt; rewriting that as a loop works fine:\n&gt; \n&gt; fo=\r\nr (AgreementAndAgreementType a : result) {\n&gt;     assertThat(a, hasProperty(=\r\n&quot;userId&quot;, equalTo(userId)));\n&gt; }\n&gt; \n&gt; but I&#39;m trying to use everyItem to do=\r\n the looping instead.  I&#39;ve clearly not got the usage of everyItem right, b=\r\nut I haven&#39;t been able to find any examples of how it is supposed to be use=\r\nd.\n&gt;\n\n\n\n", 
+    "profile": "bogdanmocanu2011", 
+    "topicId": 21953, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 414734247, 
+    "prevInTime": 21953, 
+    "contentTrasformed": false, 
+    "postDate": "1254982156", 
+    "canDelete": false, 
+    "nextInTopic": 21955, 
+    "prevInTopic": 21953, 
+    "headers": {
+        "inReplyToHeader": "PGhhaTYzcitrZmRyQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGhhanZtYytiN3FoQGVHcm91cHMuY29tPg=="
+    }
+}

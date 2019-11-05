@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4921, 
+    "senderId": "vIaOq-kFnAg4KHmJpO97CbZnR-5fhBqefd7rGF_4V5hUhXUKzwMikn2uNNl1aNZPlLLDiLHM3sQ0iLXSavH0oz7f2GnAfCMNQBo18Z3uUV0", 
+    "systemMessage": false, 
+    "subject": "Problem with junit TestSetup decorator and ant/batchtest/junitreporter", 
+    "from": "&quot;Christian Cabanero&quot; &lt;chumpboy@...&gt;", 
+    "authorName": "Christian Cabanero", 
+    "msgSnippet": "I ve discovered a weird bug/problem when combining junit and using a TestSetup decorator with ant and a batchtest task within a junit task and then using a", 
+    "msgId": 4920, 
+    "profile": "Chumpboy", 
+    "topicId": 4920, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 58842428, 
+    "messageBody": "<div id=\"ygrps-yiv-1623142101\">I&#39;ve discovered a weird bug/problem when combining junit and using a<br/>\nTestSetup decorator with ant and a batchtest task within a junit task and<br/>\nthen using a junitreport task to convert the test results into an html<br/>\nformatted report.  Say you have the following TestCase:<br/>\n<br/>\npublic class SomeTest extends TestCase {<br/>\n<br/>\n\t....<br/>\n<br/>\n\tpublic static Test suite() {<br/>\n\t\tTest suite = new TestSuite();<br/>\n\t\tsuite.addTestSuite(SomeTest.class);<br/>\n<br/>\n\t\tTestSetup setup = new TestSetup(suite) {<br/>\n\t\t\tprotected void setup() throws Exception {<br/>\n\t\t\t\t&lt;code that throws an exception &gt;<br/>\n\t\t\t}<br/>\n\t\t\tprotected void tearDown() throws Exception {<br/>\n\t\t\t...<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t\treturn setup;<br/>\n\t}<br/>\n<br/>\n\t...<br/>\n}<br/>\n<br/>\n<br/>\nThe problem I found is that if an exception occurs in the setup() method of<br/>\nthe TestSetup decorator then the batchtest task actually ends up ignoring<br/>\nthe exception and moving happily along creating an empty TEST-SomeTest.xml<br/>\nfile. So, when the junitreport task runs after the batchtest task is<br/>\ncompleted, it&#39;ll actually IGNORE the TEST-SomeTest.xml file (which has a<br/>\nfile size of 0 bytes) and just move on to the next file.  So when you see<br/>\nyour test results all formatted nice in html you&#39;ll see no mention of the<br/>\nfailed SomeTest.class TestCase and you might mistakenly feel free to commit<br/>\nyour code (yes, I found this out the hard way).<br/>\n<br/>\nSo my question is, has anyone found a good way to get around this problem?<br/>\nI&#39;m using the latest versions of junit and ant.  I guess this is really a<br/>\nproblem with the batchtest task in ant but I was hoping to see if anyone<br/>\nhere has gotten around this.  If anyone is using this combination I&#39;d<br/>\ndefinitely suggest taking a look at this to make sure it&#39;s not affecting you<br/>\nas it&#39;s incredibly easy to miss.  Just go to your test-results directory and<br/>\nlook for any empty TEST*.xml files.<br/>\n<br/>\nHere&#39;s the relevant section of my ant build script:<br/>\n<br/>\n&lt;target name=&quot;test&quot; depends=&quot;compile, rebuildtestdbs&quot;&gt;<br/>\n    &lt;junit fork=&quot;yes&quot; printsummary=&quot;yes&quot; haltonfailure=&quot;no&quot;&gt;<br/>\n        &lt;formatter type=&quot;xml&quot;/&gt;<br/>\n<br/>\n        &lt;batchtest todir=&quot;test-results&quot;&gt;<br/>\n             &lt;fileset dir=&quot;${build.dir}&quot; includes=&quot;**/*Test.class&quot;/&gt;<br/>\n        &lt;batchtest&gt;<br/>\n    &lt;/junit&gt;<br/>\n<br/>\n    &lt;junitreport toDir=&quot;${junit.reports.home}&quot;&gt;<br/>\n        &lt;fileset dir=&quot;test-results&quot;&gt;<br/>\n            &lt;include name=&quot;TEST*.xml&quot;/&gt;<br/>\n        &lt;/fileset&gt;<br/>\n<br/>\n        &lt;report format=&quot;frames&quot; toDir=&quot;${junit.reports.home}&quot;/&gt;<br/>\n    &lt;/junitreport&gt;<br/>\n&lt;/target&gt;<br/>\n<br/>\nThanks!<br/>\nChristian</div>", 
+    "prevInTime": 4919, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1020899392", 
+    "canDelete": false, 
+    "nextInTopic": 4921, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDAwMTEwMWMxZjZlNSQ3NjMxYmY4MCRlMDAwYThjMEBhbGF0cm9uLmNvbT4="
+    }
+}

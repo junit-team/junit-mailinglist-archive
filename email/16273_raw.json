@@ -1,0 +1,28 @@
+{
+    "topicId": 16273, 
+    "postDate": "1141600072", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Kamal Ahmed &lt;KAhmed@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "jKJLWt9OvtJyrVqXRx3vX5Llm6iHOayowDYNmNBRNHdsRMuSonJSDL_y3s9X_N-q5waDVCshOD6gLXFNLOssDEOqQhOWi1ig_rI", 
+    "nextInTime": 16274, 
+    "userId": 253370470, 
+    "prevInTime": 16272, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDVCMTBFNTBFMTRBNDU5NEVCMUI1NTY2QjY5QUQ5NDA3MEQxQUFDNjJAbWFpbGVhc3Q+"
+    }, 
+    "authorName": "Kamal Ahmed", 
+    "numMessagesInTopic": 21, 
+    "msgSnippet": "Hi, I am trying to test the following method , in the package different then where my test cases are: public Date getNextCheckDate(Date inStart) { ", 
+    "contentTrasformed": false, 
+    "msgId": 16273, 
+    "nextInTopic": 16274, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;KAhmed@...&gt;\r\nX-Sender: KAhmed@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 15969 invoked from network); 5 Mar 2006 23:11:28 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m29.grp.scd.yahoo.com with QMQP; 5 Mar 2006 23:11:28 -0000\r\nReceived: from unknown (HELO smtpwest.webmethods.com) (63.119.28.34)\n  by mta6.grp.scd.yahoo.com with SMTP; 5 Mar 2006 23:11:28 -0000\r\nReceived: from exwest1.webmethods.com (Not Verified[172.20.0.16]) by smtpwest.webmethods.com with NetIQ MailMarshal 6.0 Service Pack 1a (v6,0,3,33)\n\tid &lt;B440b700f0000&gt;; Sun, 05 Mar 2006 15:11:11 -0800\r\nReceived: by exwest1 with Internet Mail Service (5.5.2657.72)\n\tid &lt;1V8A9TG2&gt;; Sun, 5 Mar 2006 15:07:57 -0800\r\nMessage-ID: &lt;5B10E50E14A4594EB1B5566B69AD94070D1AAC62@maileast&gt;\r\nTo: junit@yahoogroups.com\r\nDate: Sun, 5 Mar 2006 15:07:52 -0800 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2657.72)\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Kamal Ahmed &lt;KAhmed@...&gt;\r\nSubject: testing switch statements in method\r\nX-Yahoo-Group-Post: member; u=253370470\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHi,\n\n \n\nI am trying to test the following method , in the package different then\nwhere my test cases are:\n\n \n\n    public Date getNextCheckDate(Date inStart) {\n\n        cal.setTime(inStart);\n\n \n\n        switch (type) {\n\n        case TOP_OF_MINUTE:\n\n            cal.set(Calendar.SECOND, 0);\n\n            cal.set(Calendar.MILLISECOND, 0);\n\n            cal.add(Calendar.MINUTE, 1);\n\n            break;\n\n        case TOP_OF_HOUR:\n\n            cal.set(Calendar.MINUTE, 0);\n\n            cal.set(Calendar.SECOND, 0);\n\n            cal.set(Calendar.MILLISECOND, 0);\n\n            cal.add(Calendar.HOUR_OF_DAY, 1);\n\n            break;\n\n        case HALF_DAY:\n\n            cal.set(Calendar.MINUTE, 0);\n\n            cal.set(Calendar.SECOND, 0);\n\n            cal.set(Calendar.MILLISECOND, 0);\n\n            int hour = cal.get(Calendar.HOUR_OF_DAY);\n\n            if (hour &lt; 12) {\n\n                cal.set(Calendar.HOUR_OF_DAY, 12);\n\n            } else {\n\n                cal.set(Calendar.HOUR_OF_DAY, 0);\n\n                cal.add(Calendar.DAY_OF_MONTH, 1);\n\n            }\n\n            break;\n\n        case TOP_OF_DAY:\n\n            cal.set(Calendar.HOUR_OF_DAY, 0);\n\n            cal.set(Calendar.MINUTE, 0);\n\n            cal.set(Calendar.SECOND, 0);\n\n            cal.set(Calendar.MILLISECOND, 0);\n\n            cal.add(Calendar.DATE, 1);\n\n            break;\n\n        case TOP_OF_WEEK:\n\n            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());\n\n            cal.set(Calendar.HOUR_OF_DAY, 0);\n\n            cal.set(Calendar.SECOND, 0);\n\n            cal.set(Calendar.MILLISECOND, 0);\n\n            cal.add(Calendar.WEEK_OF_YEAR, 1);\n\n            break;\n\n        case TOP_OF_MONTH:\n\n            cal.set(Calendar.DATE, 1);\n\n            cal.set(Calendar.HOUR_OF_DAY, 0);\n\n            cal.set(Calendar.SECOND, 0);\n\n            cal.set(Calendar.MILLISECOND, 0);\n\n            cal.add(Calendar.MONTH, 1);\n\n            break;\n\n        default:\n\n            throw new IllegalStateException(&quot;Unknown periodicity type.&quot;);\n\n        }\n\n        return cal.getTime();\n\n \n\n    } // getNextCheckDate(Date inStart)\n\n \n\nHere is my test class:\n\n \n\npublic class TimePeriodTest extends TestCase {\n\n \n\n          private static final TimeZone gmtTimeZone =\nTimeZone.getTimeZone(&quot;GMT&quot;);\n\n          private Date d;\n\n \n\n          TimePeriod tp;\n\n \n\n          Locale loc;\n\n \n\n          // int type;\n\n \n\n          /**\n\n           * public int getType() { return type; }\n\n           */\n\n \n\n          public void testGetType() {\n\n                   // System.out.println(gmtTimeZone.getDisplayName());\n\n                   assertEquals(gmtTimeZone.getDisplayName(), &quot;Greenwich\nMean Time&quot;);\n\n \n\n          }\n\n          public void testgetNextCheckDate()\n\n          {\n\n                   tp = new\nTimePeriod().getNextCheckDate(d.after(2006-03-05));\n\n          }\n\n \n\n}\n\n \n\nAny idea, Anyone on how to go about testing this? Because, When I am trying\nto use the TimePeriod constructor, I get an error: \n\n&quot;Change the visibility of TimePeriod.java to public.\n\n \n\nThanks,\n\n-Kamal.\n\n \n\n \n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "subject": "testing switch statements in method"
+}

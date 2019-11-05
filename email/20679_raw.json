@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20680, 
+    "senderId": "gvGIOiWak2-KNLBFnvfOW1y2MwVtiwikIOjk_uFiOGUsw_tkq4kMcpfHoWjbDf7FvkHHD6txTeSzRhaU89rpfiSmN_zKfyn5", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] which is the best way to obtain test method execution time", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Dear Shubha, Here is one way to solve your problem in JUnit 4.5. The key is understanding that in 4.5 every test is run by a block of statements (see ", 
+    "msgId": 20679, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 83601 invoked from network); 10 Jul 2008 20:23:45 -0000\r\nX-Received: from unknown (66.218.67.94)\n  by m46.grp.scd.yahoo.com with QMQP; 10 Jul 2008 20:23:45 -0000\r\nX-Received: from unknown (HELO elasmtp-curtail.atl.sa.earthlink.net) (209.86.89.64)\n  by mta15.grp.scd.yahoo.com with SMTP; 10 Jul 2008 20:23:45 -0000\r\nX-Received: from [71.210.0.54] (helo=kentspavilion)\n\tby elasmtp-curtail.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1KH2g3-0003JI-SV\n\tfor junit@yahoogroups.com; Thu, 10 Jul 2008 16:23:44 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;103637.47280.qm@...&gt;\r\nDate: Thu, 10 Jul 2008 13:23:41 -0700\r\nMessage-ID: &lt;01b501c8e2ca$d907fe30$4000a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;103637.47280.qm@...&gt;\r\nThread-Index: AcjiFKN6ClTYMX8/SpGoJOubdBRCTQAtFEvw\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3198\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478174de44350bfa1f8fa417e85eeaec30d31475965f44d3885350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] which is the best way to obtain test method execution time\r\nX-Yahoo-Group-Post: member; u=173198504; y=ZN1ZDRGoEbJ9hFCoqXmCcjZLBuY8uqW_MuFup6VLe7UM_ACf\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nDear Shubha,\n \nHere is one way to solve your problem in JUnit 4.5. The key is understanding\nthat in 4.5 every test is run by a &quot;block&quot; of &quot;statements&quot; (see\nhttp://threeriversinstitute.org/TwoMoreImplementationPatterns.htm for more\ndetails). Befores and afters are run by statements high up in the block. The\nlast statement in the block just invokes the test method. You can modify\nthis behavior by wrapping this statement in a statement that measures time.\nHere&#39;s an overview of the sample code below:\n  * NanoTimer is a little utility to measure time (at the end we&#39;ll make\nsure that timing just the test takes less than half the time of timing the\ntest including @Before and @After)\n  * MeasuringInvoker wraps a Statement and times it. You will probably want\nto save your timing measurements somewhere for later reporting.\n  * The MeasuringRunner extends the default BlockJUnit4ClassRunner by\nwrapping the superclass&#39; default invoker with our MeasuringInvoker.\n \nThat&#39;s the body of the extension. What follows is a self-test of the code.\nThe sample class has a @Before and @After to start and end measuring the\noverall time. The test ensures that the time required for just the test\nmethod is less than half of the time required for the whole test including\nbefores and afters.\n \nI hope this helps.\n \nRegards,\n \nKent Beck\nThree Rivers Institute\npublic class MeasureTestOnlyTimeTest {\n \n static class NanoTimer {\n  private long start;\n  private long end;\n  public void start() { start= System.nanoTime(); }\n  public void end() { end= System.nanoTime(); }\n  public long duration() { return end - start; }\n }\n\n static NanoTimer all= new NanoTimer();\n static NanoTimer justTest= new NanoTimer();\n \n static class MeasuringInvoker extends Statement {\n  private final Statement invoker;\n  \n  public MeasuringInvoker(Statement invoker) {\n   this.invoker= invoker;\n  }\n  \n  @Override\n  public void evaluate() throws Throwable {\n   justTest.start();\n   invoker.evaluate();\n   justTest.end();\n  }\n }\n \n public static class MeasuringRunner extends BlockJUnit4ClassRunner {\n  public MeasuringRunner(Class&lt; ? &gt; klass) throws InitializationError {\n   super(klass);\n  }\n\n  @Override\n  protected Statement invoke(FrameworkMethod method, Object test) {\n   return new MeasuringInvoker(super.invoke(method, test));\n  }\n }\n \n @RunWith(MeasuringRunner.class)\n public static class LongBeforeAndAfter {\n  @Before public void before() {\n   all.start();\n  }\n  @After public void after() {\n   all.end();\n  }\n  @Test public void test() {\n  }\n }\n  \n @Test public void dontMeasureBeforeAndAfter() {\n  JUnitCore.runClasses(LongBeforeAndAfter.class);\n  assertTrue(all.duration() &gt; justTest.duration() * 2);\n }\n}\n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 20672, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 20678, 
+    "contentTrasformed": false, 
+    "postDate": "1215721421", 
+    "canDelete": false, 
+    "nextInTopic": 20681, 
+    "prevInTopic": 20672, 
+    "headers": {
+        "inReplyToHeader": "PDEwMzYzNy40NzI4MC5xbUB3ZWI5NDgwNS5tYWlsLmluMi55YWhvby5jb20+", 
+        "messageIdInHeader": "PDAxYjUwMWM4ZTJjYSRkOTA3ZmUzMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PDEwMzYzNy40NzI4MC5xbUB3ZWI5NDgwNS5tYWlsLmluMi55YWhvby5jb20+"
+    }
+}

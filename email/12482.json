@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 12483, 
+    "senderId": "eMLCNXpwkFw_oePLhviM7w9VSe2ajW6yyo6-qoU0zEGMz2CQDxSE07tplfN9j_QqT8GsdCmU2F8LeiyP5KBVnivGZ_f08btnFgg", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] how to test private method with Junit?", 
+    "from": "Chris Collins &lt;gosub3000@...&gt;", 
+    "authorName": "Chris Collins", 
+    "msgSnippet": "Use reflection.  The example below uses the java reflection api to invoke a private method in the TestMe class. More information can be found at: ", 
+    "msgId": 12482, 
+    "profile": "computingunit42", 
+    "topicId": 12475, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 206352336, 
+    "messageBody": "<div id=\"ygrps-yiv-1900964108\">Use reflection.  The example below uses the java reflection api to<br/>\ninvoke a private method in the TestMe class.<br/>\n<br/>\nMore information can be found at:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.onjava.com/pub/a/onjava/2003/11/12/reflection.html\">http://www.onjava.com/pub/a/onjava/2003/11/12/reflection.html</a><br/>\n<br/>\nFile: TestMe.java<br/>\n-------------------------<br/>\npublic class TestMe {<br/>\n    private int add(int a, int b){<br/>\n        return a+b;<br/>\n    }<br/>\n}<br/>\n<br/>\nFile: UnitTest_TestMe.java<br/>\n---------------------------------------<br/>\nimport junit.framework.TestCase;<br/>\nimport java.lang.reflect.*;<br/>\n<br/>\npublic class UnitTest_TestMe extends TestCase {<br/>\n    public void test_add(){<br/>\n        try {<br/>\n            TestMe classUnderTest = new TestMe();<br/>\n            Class cls = Class.forName(&quot;TestMe&quot;);<br/>\n            Class paramTypes[] = new Class[2];<br/>\n            paramTypes[0] = Integer.TYPE;<br/>\n            paramTypes[1] = Integer.TYPE;<br/>\n            Method[] methods = cls.getDeclaredMethods();<br/>\n            <br/>\n            for(int i=0; i&lt;methods.length; i++){<br/>\n                if(methods[i].getName().equals(&quot;add&quot;)){<br/>\n                    methods[i].setAccessible(true);<br/>\n                    Object arglist[] = new Object[2];<br/>\n                    arglist[0] = new Integer(37);<br/>\n                    arglist[1] = new Integer(47);<br/>\n                    Object retobj = methods[i].invoke(classUnderTest, arglist);<br/>\n                    Integer retval = (Integer)retobj;<br/>\n                    assertEquals(retval.intValue(), 37+47); <br/>\n                }<br/>\n            }           <br/>\n         }<br/>\n         catch (Throwable e) {<br/>\n            System.err.println(e);<br/>\n            fail();<br/>\n         }<br/>\n    }<br/>\n}<br/>\n<br/>\nHope this helps<br/>\n<br/>\n-Chris<br/>\n<br/>\n-- <br/>\nChris Collins<br/>\ne: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gosub3000@...\">gosub3000@...</a><br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://gosub3000.blogspot.com\">http://gosub3000.blogspot.com</a></div>", 
+    "prevInTime": 12481, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1103131146", 
+    "canDelete": false, 
+    "nextInTopic": 12487, 
+    "prevInTopic": 12479, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMjE0MTU1OTAwLjY1NjIwLnFtYWlsQHdlYjE1NzA5Lm1haWwuY25iLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDgxZWRjNTI2MDQxMjE1MDkxOTUyZTNhZDU1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDQxMjE0MDIwMDAyLjczODAucW1haWxAd2ViNTM1MDQubWFpbC55YWhvby5jb20+CSA8MjAwNDEyMTQxNTU5MDAuNjU2MjAucW1haWxAd2ViMTU3MDkubWFpbC5jbmIueWFob28uY29tPg=="
+    }
+}

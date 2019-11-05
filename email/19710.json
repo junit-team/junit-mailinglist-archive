@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 19711, 
+    "senderId": "6wnsrnAEd93yzUTAO1CkwEiscmHU6XCtWESsGf5wF_ay50gBqzVIGyrN3doEGg4vjgiSwqJm0qMSIAM5aQWifc_nmvW_MRoNJsns", 
+    "systemMessage": true, 
+    "subject": "Re: Testing several classes with the same test case", 
+    "from": "&quot;dmugtasimov&quot; &lt;dimasoft2001@...&gt;", 
+    "authorName": "dmugtasimov", 
+    "msgSnippet": "Stephen, this is what I am trying to avoid. I want to have a single TestCase that is parameterized to run on any given Algorithm subclass. In your example I", 
+    "msgId": 19710, 
+    "profile": "dmugtasimov", 
+    "topicId": 19708, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 217594743, 
+    "messageBody": "<div id=\"ygrps-yiv-554007809\">Stephen,<br/>\n<br/>\nthis is what I am trying to avoid. I want to have a single TestCase<br/>\nthat is parameterized to run on any given Algorithm subclass. In your<br/>\nexample I should create a new TestCase for each Algorighm subclass.<br/>\n<br/>\nIn practice I have 10 test cases and 10 &quot;Algorithms&quot;. The problem is<br/>\nthat I don&#39;t want to write and support 100 test classes, bu only 10.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Stephen Smith &lt;steve@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; The easiest way to do this is to use a very common testing pattern.<br/>\nIt&#39;s well described in JB Rainsberger&#39;s JUnit <br/>\n&gt; Recipes book (which everyone on this mailing list ends up<br/>\nrecommending once every few months or so), but essentially you <br/>\n&gt; create a test fixture and then use the Template Method pattern to<br/>\ncreate your implementation. A test suite might be a <br/>\n&gt; good idea to package all of the different implementation test<br/>\nclasses together.<br/>\n&gt; <br/>\n&gt; In JUnit 3.8.2 code (it&#39;d be nicer in JUnit 4):<br/>\n&gt; <br/>\n&gt; public abstract class AlgorithmTestCase extends TestCase {<br/>\n&gt;    private Algorithm m_algorithm;<br/>\n&gt;    public void testCalculate() {<br/>\n&gt;      // do your test on m_algorithm<br/>\n&gt;    }<br/>\n&gt; <br/>\n&gt;    protected void setUp() {<br/>\n&gt;      m_algorithm = makeAlgorithm();<br/>\n&gt;    }<br/>\n&gt; <br/>\n&gt;    protected void tearDown() {<br/>\n&gt;      m_algorithm = null;<br/>\n&gt;    }<br/>\n&gt; <br/>\n&gt;    protected abstract Algorithm makeAlgorithm();<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public class Algorithm1Test extends AlgorithmTestCase {<br/>\n&gt;    protected Algorithm makeAlgorithm() {<br/>\n&gt;      return new Algorithm1();<br/>\n&gt;    }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; ---<br/>\n&gt; Stephen Smith, MEng (Wales).<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.stephen-smith.co.uk/\">http://www.stephen-smith.co.uk/</a><br/>\n&gt; <br/>\n&gt; dmugtasimov wrote:<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; Imagine that there is a class Algorithm and its subclassed Algorithm1,<br/>\n&gt; &gt; Algorithm2, .. Algorithm9. All AlgorithmN classes have the same<br/>\n&gt; &gt; contract (thus they have same methods and these method should supply<br/>\n&gt; &gt; the same output for the same input).<br/>\n&gt; &gt; <br/>\n&gt; &gt; public abstract Algorithm {<br/>\n&gt; &gt; public abstract String calculate(String in);<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; public Algorithm1 {<br/>\n&gt; &gt; public String calculate(String in) {<br/>\n&gt; &gt; ... method body 1...<br/>\n&gt; &gt; }<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; public Algorithm2 {<br/>\n&gt; &gt; public String calculate(String in) {<br/>\n&gt; &gt; ... method body 2...<br/>\n&gt; &gt; }<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; and so on up to 9.<br/>\n&gt; &gt; <br/>\n&gt; &gt; There is test case AlgorithmTestCase extends TestCase.<br/>\n&gt; &gt; public AlgorithmTestCase extends TestCase {<br/>\n&gt; &gt; public void testAlgorithm() {<br/>\n&gt; &gt; Algorithm algorithm = ... Algorithm1..Algorithm9 instance creation<br/>\n&gt; &gt; code ...;<br/>\n&gt; &gt; assertEquals(&quot;RESULT1&quot;, algorithm.calculate(&quot;INPUT1&quot;));<br/>\n&gt; &gt; }<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; Is it possible using JUnit and how to run AlgorithmTestCase meeting<br/>\n&gt; &gt; the following conditions?<br/>\n&gt; &gt; 1. Each instance of AlgorithmTestCase does test only one Algorithm<br/>\n&gt; &gt; subclass.<br/>\n&gt; &gt; 2. AlgorithmTestCase is run against each Algorithm subclass.<br/>\n&gt; &gt; 3. GUI runner is started only once.<br/>\n&gt; &gt; <br/>\n&gt; &gt; I tried to do that by passing subclass name in system properties, but<br/>\n&gt; &gt; failed. It happens because when I add test case by<br/>\n&gt; &gt; suite.addTestSuite(Class ...) the actual of TestCase is created after<br/>\n&gt; &gt; the last test case is added, so system properties contain the last<br/>\n&gt; &gt; supplied value.<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt;<br/>\n------------------------------------------------------------------------<br/>\n&gt; &gt; <br/>\n&gt; &gt; No virus found in this incoming message.<br/>\n&gt; &gt; Checked by AVG Free Edition. <br/>\n&gt; &gt; Version: 7.5.476 / Virus Database: 269.11.6/938 - Release Date:<br/>\n05/08/2007 16:16<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19709, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1186423889", 
+    "canDelete": false, 
+    "nextInTopic": 19711, 
+    "prevInTopic": 19709, 
+    "headers": {
+        "inReplyToHeader": "PDQ2Qjc1QzJDLjkwMDA5MDJAc3RlcGhlbi1zbWl0aC5jby51az4=", 
+        "messageIdInHeader": "PGY5N284aCtlNzhqQGVHcm91cHMuY29tPg=="
+    }
+}

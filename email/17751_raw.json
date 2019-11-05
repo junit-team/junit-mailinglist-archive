@@ -1,0 +1,30 @@
+{
+    "topicId": 17266, 
+    "postDate": "1157279583", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "WBKmXWDnIcHHx8-UBeIOaU2gis6kTubFMcUVWNpUROMR7yB7TvNaGy3uIDa_POVhtcVgi-mHmPHT3fOVsE6PAoysHPfVi4tOw8dMfaUVyQ", 
+    "nextInTime": 17752, 
+    "userId": 12653864, 
+    "prevInTime": 17750, 
+    "prevInTopic": 17750, 
+    "headers": {
+        "inReplyToHeader": "PDVBNzg1MDUxLTE1NDktNDM5RC04NjcxLUVFNUY0RkFEODhEQUBvYmplY3RtZW50b3IuY29tPg==", 
+        "messageIdInHeader": "PDQ0RkFBRjVGLjIwNzAwMDhAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "referencesHeader": "PDVBNzg1MDUxLTE1NDktNDM5RC04NjcxLUVFNUY0RkFEODhEQUBvYmplY3RtZW50b3IuY29tPg=="
+    }, 
+    "authorName": "Elliotte Harold", 
+    "numMessagesInTopic": 287, 
+    "msgSnippet": "... But you can t do that with an interface. At a minimum you need Document doc = Factory.newDocument(); ... In Java, if the public interface of the class", 
+    "contentTrasformed": false, 
+    "msgId": 17751, 
+    "nextInTopic": 17752, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;elharo@...&gt;\r\nX-Sender: elharo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 70492 invoked from network); 3 Sep 2006 10:36:07 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m32.grp.scd.yahoo.com with QMQP; 3 Sep 2006 10:36:07 -0000\r\nReceived: from unknown (HELO mail5.sea5.speakeasy.net) (69.17.117.7)\n  by mta1.grp.scd.yahoo.com with SMTP; 3 Sep 2006 10:36:07 -0000\r\nReceived: (qmail 23239 invoked from network); 3 Sep 2006 10:33:04 -0000\r\nReceived: from dsl254-067-087.nyc1.dsl.speakeasy.net (HELO [192.168.254.100]) (elharo@[216.254.67.87])\n          (envelope-sender &lt;elharo@...&gt;)\n          by mail5.sea5.speakeasy.net (qmail-ldap-1.03) with AES256-SHA encrypted SMTP\n          for &lt;junit@yahoogroups.com&gt;; 3 Sep 2006 10:33:04 -0000\r\nMessage-ID: &lt;44FAAF5F.2070008@...&gt;\r\nDate: Sun, 03 Sep 2006 06:33:03 -0400\r\nUser-Agent: Thunderbird 1.5.0.5 (Macintosh/20060719)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;5A785051-1549-439D-8671-EE5F4FAD88DA@...&gt;\r\nIn-Reply-To: &lt;5A785051-1549-439D-8671-EE5F4FAD88DA@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Elliotte Harold &lt;elharo@...&gt;\r\nSubject: Re: [junit] Re: Test-friendly, but not caller-friendly?\r\nX-Yahoo-Group-Post: member; u=12653864; y=1wz5CTs9CDwomnlNhpb0OZwtDRujQTeFGgWmjIziDPB328Bn\r\n\r\nRobert Martin wrote:\n\n&gt; It&#39;s not.  Overuse of factories is an abomination.  So *IF* I thought  \n&gt; an interface would help, I would simply prefer:\n&gt; \n&gt; Document doc = Document.newDocument();\n\nBut you can&#39;t do that with an interface. At a minimum you need\n\nDocument doc = Factory.newDocument();\n\n\n&gt; The simplicity of interfaces vs concrete classes comes from  \n&gt; dependencies.  Let&#39;s say we have some concrete class named  \n&gt; MyDocument, and it has lots and lots of methods.  Users of this class  \n&gt; depend on all these methods even if they don&#39;t call them.  If I make  \n&gt; a change to MyDocument it can affect all the callers to the extent  \n&gt; that they all have to be recompiled and redeployed.  (Yes, you can  \n&gt; play the game and try to figure out whether or not the class really  \n&gt; and truly needs to be recompiled, but that way lay madness.)\n\nIn Java, if the public interface of the class doesn&#39;t change, you don;t \nneed to recompile clients. In fact, even if you only add things to the \npublic interface of the class, you don&#39;t need to recompile clients. In \nfact, you only need to recompile clients if the public interface changes \nin such a way that the clients need to be rewritten.\n\n&gt; If I interpose one or more interfaces then suddenly the callers  \n&gt; depend ONLY on the methods in the interfaces that they use; and those  \n&gt; interfaces can be *very* sparse.  \n\nIf I have a class that depends on only two methods in the library class, \nthen any changes beyond those two methods and the class signature itself \nare irrelevant to the client, and do not require recompilation. You do \nnot need to interpose an interface to get this benefit. Dynamic binding \ngives this to you automatically. Now in a language like C++ that links \nstatically, it may be a very different story. But in Java the clients \ndepend only on the methods in the class that they actually use. A public \nchange to a method the client actually uses requires rewriting and \nrecompilation, but so does a change to such a method in an interface. \nInterfaces add nothing to this.\n\n&gt;  Even if there is only one  \n&gt; interface, and that interface has all the methods of MyDocument I can  \n&gt; still swap out MyDocument for some other implementation or some Mock  \n&gt; implementation.  I can also add new methods to MyDocument without  \n&gt; forcing recompilation and redeployment of the callers.\n\nAgain, if MyDocument is a class you can still add new methods to \nMyDocument without  forcing recompilation and redeployment of the \ncallers. This has nothing to do with interfaces and everything to do \nwith dynamic linking. (And again, I&#39;m talking about Java here. It can be \ndifferent in other languages.)\n\n\n-- \n﻿Elliotte Rusty Harold  elharo@...\nJava I/O 2nd Edition Just Published!\nhttp://www.cafeaulait.org/books/javaio2/\nhttp://www.amazon.com/exec/obidos/ISBN=0596527500/ref=nosim/cafeaulaitA/\n\n", 
+    "subject": "Re: [junit] Re: Test-friendly, but not caller-friendly?"
+}

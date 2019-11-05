@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 26, 
+    "nextInTime": 22522, 
+    "senderId": "X0VcG9yYEP2iDgY0E9y0WwZxR6M2ZXcAzm7Arv60eDpZ1NA1rDdOeErhFK769WfuDZdWsSj5xUX814PgrwIqirK1IU9Khg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Using @Rule TemporaryFolder in @BeforeClass", 
+    "from": "Kent Beck &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Gosh, that almost looks like a test :-) Kent ... [Non-text portions of this message have been removed]", 
+    "msgId": 22521, 
+    "profile": "kentlbeck", 
+    "topicId": 22516, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-1522443865\">Gosh, that almost looks like a test :-)<br/>\n<br/>\nKent<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Mar 9, 2010, at 12:24 PM, Gary wrote:<br/>\n<br/>\n&gt; Some context: In this test, we want to configure a server, start it, run tests, shutdown the server and clear any evidence left on disk. <br/>\n&gt; <br/>\n&gt; I was hoping this would map to JUnit as follows:<br/>\n&gt; - configure the server: Use a TemporaryFolder Rule to create server configuration files. <br/>\n&gt; - start the server in @BeforeClass using the configuration files. <br/>\n&gt; - run tests in @Test methods<br/>\n&gt; - shutdown the server in @AfterClass<br/>\n&gt; - clear configuration files and anything else the server created there (logs and other temp files) is done automatically by the TemporaryFolder Rule<br/>\n&gt; <br/>\n&gt; Gary<br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Kent Beck &lt;kentb@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hmmm... I don&#39;t think we ever tried @Rule on a static variable before. I&#39;m not even sure what they mean. Rules are inserted before an individual test is run. Should static rules be inserted before the class is run or before each individual test? Before the class is run, I&#39;m thinking. Opinions?<br/>\n&gt; &gt; <br/>\n&gt; &gt; Kent<br/>\n&gt; &gt; <br/>\n&gt; &gt; On Mar 9, 2010, at 9:43 AM, gary_d_gregory wrote:<br/>\n&gt; &gt; <br/>\n&gt; &gt; &gt; @Rule objects are not initialized before @BeforeClass methods are called. Is this by design or a bug? <br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; For example:<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; package test;<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; import java.io.File;<br/>\n&gt; &gt; &gt; import java.io.IOException;<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; import junit.framework.Assert;<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; import org.junit.BeforeClass;<br/>\n&gt; &gt; &gt; import org.junit.Rule;<br/>\n&gt; &gt; &gt; import org.junit.Test;<br/>\n&gt; &gt; &gt; import org.junit.rules.TemporaryFolder;<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; public class TemporaryFolderRuleBeforeClass {<br/>\n&gt; &gt; &gt; @Rule<br/>\n&gt; &gt; &gt; public static TemporaryFolder testFolder = new TemporaryFolder();<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; @BeforeClass<br/>\n&gt; &gt; &gt; public static void testInTempFolder() throws IOException {<br/>\n&gt; &gt; &gt; File tempFile = testFolder.newFile(&quot;file.txt&quot;);<br/>\n&gt; &gt; &gt; File tempFolder = testFolder.newFolder(&quot;folder&quot;);<br/>\n&gt; &gt; &gt; System.out.println(&quot;Test folder: &quot; + testFolder.getRoot());<br/>\n&gt; &gt; &gt; // test<br/>\n&gt; &gt; &gt; Assert.assertNotNull(testFolder.getRoot());<br/>\n&gt; &gt; &gt; }<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; @Test<br/>\n&gt; &gt; &gt; public void test() {<br/>\n&gt; &gt; &gt; // noop<br/>\n&gt; &gt; &gt; }<br/>\n&gt; &gt; &gt; }<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; Having the TemporaryFolder Rule declared as static is OK as this example test shows:<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; public class TestTemporaryFolderRuleStatic {<br/>\n&gt; &gt; &gt; @Rule<br/>\n&gt; &gt; &gt; public static TemporaryFolder testFolder = new TemporaryFolder();<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; @Test<br/>\n&gt; &gt; &gt; public void testInTempFolder() throws IOException {<br/>\n&gt; &gt; &gt; File tempFile = testFolder.newFile(&quot;file.txt&quot;);<br/>\n&gt; &gt; &gt; File tempFolder = testFolder.newFolder(&quot;folder&quot;);<br/>\n&gt; &gt; &gt; System.out.println(&quot;Test folder: &quot; + testFolder.getRoot());<br/>\n&gt; &gt; &gt; // test<br/>\n&gt; &gt; &gt; Assert.assertNotNull(testFolder.getRoot());<br/>\n&gt; &gt; &gt; }<br/>\n&gt; &gt; &gt; }<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; How can @Rules be used from @BeforeClass? <br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; Calling TemporaryFolder.create() would work only for TemporaryFolder and not Rules in general but would be against the advice of create method Javadoc.<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; [Non-text portions of this message have been removed]<br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 22520, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1268185107", 
+    "canDelete": false, 
+    "nextInTopic": 22522, 
+    "prevInTopic": 22520, 
+    "headers": {
+        "inReplyToHeader": "PGhuNmFwNCtlb2hqQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDVFRDEyNUZDLTQ1REEtNDJGQi1BRDkwLTFBNzVFOERBRkExMkBlYXJ0aGxpbmsubmV0Pg==", 
+        "referencesHeader": "PGhuNmFwNCtlb2hqQGVHcm91cHMuY29tPg=="
+    }
+}

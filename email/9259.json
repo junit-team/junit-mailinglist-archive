@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 9260, 
+    "senderId": "1Am-BB-C5uFxEidPH9UjCAD1vtVZ_cX8JLDBem99afcCX1QTUqvw02EotXekrnbknWdOdo_W8xwubwIN7LK7xXFfsOStRi2nr2gHkgls", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Ordering of tests -- indispensible feature??", 
+    "from": "Eric Armstrong &lt;eric.armstrong@...&gt;", 
+    "authorName": "Eric Armstrong", 
+    "msgSnippet": "I should have mentioned that I m using the javadoc doclet APIs, which imposes extreme limits on the amount of serious unit testing I can do. So I m", 
+    "msgId": 9259, 
+    "profile": "ericsilverlight", 
+    "topicId": 9254, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78994084, 
+    "messageBody": "<div id=\"ygrps-yiv-52353988\">I should have mentioned that I&#39;m using the javadoc<br/>\ndoclet APIs, which imposes extreme limits on the<br/>\namount of serious &quot;unit testing&quot; I can do.<br/>\n<br/>\nSo I&#39;m effectively using JUnit to do integration<br/>\ntests, and working in the debugger a lot of time,<br/>\nwhere the integration test lets me expose problems<br/>\nI can then debug on.<br/>\n<br/>\nWhat I&#39;ve settled on at the moment is:<br/>\n   a) Put the most recent test at the top of the<br/>\n      list, and put a breakpoint at the start of<br/>\n      the first test.<br/>\n<br/>\n   b) When the test fails in semi-normal fashion,<br/>\n      exit the debugger and poke around to find<br/>\n      the problem.<br/>\n<br/>\n   c) If it fails in some egregious manner, let<br/>\n      all of the tests run to see if I can isolate<br/>\n      it a little better.<br/>\n<br/>\n   d) When it passes, move it to the bottom of the<br/>\n      list.<br/>\n<br/>\n   e) Run all of the tests whenever I take a break,<br/>\n      so they&#39;re there to look at when I get back.<br/>\n<br/>\nThis is a lot less pure than having lots of tests,<br/>\nbut being unable to unit test the basic library<br/>\nfunctions (no exposed constructors, only interfaces)<br/>\nhas created a situation where it&#39;s difficult to control<br/>\nthe depth of the bugs I see -- they tend to be deep,<br/>\nand result basic design revisions.<br/>\n<br/>\nI&#39;ve isolated the problem as much as possible with<br/>\nnon-dependent infrastructure that I&#39;ve tested to my<br/>\nhearts content -- and which naturally doesn&#39;t produce<br/>\nany &quot;interesting&quot; bugs, I&#39;m happy to say.<br/>\n<br/>\nI&#39;m not sure how many others find themselves in<br/>\nsituations like this. But since there are no concrete<br/>\nclasses in the library I&#39;m using, there is absolutely<br/>\nno way to create proxy objects with any assurance that<br/>\nthe replicate the behavior that the library exhibits.<br/>\n<br/>\nSo it seemed to me that this might be an unusual case<br/>\nwhere &quot;ordering&quot; was desirable -- for time&#39;s sake,<br/>\nrather than for the correctness of the result.<br/>\n<br/>\nOr maybe, now that I&#39;ve characterized the problem a<br/>\nlittle further, you and other helpful folks on this<br/>\nlist will be able to better assist me in finding the<br/>\n&quot;one true path&quot; to testing nirvana.<br/>\n:_))<br/>\n<br/>\nJ. B. Rainsberger wrote:<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; Eric Armstrong wrote:<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;&gt;I&#39;m finding a need to get either forward or backward<br/>\n&gt;&gt;order in my test methods, and it&#39;s beginning to look<br/>\n&gt;&gt;like a pretty indispensible feature.<br/>\n&gt;&gt;<br/>\n&gt;&gt;Each test is independent of all the others, of course,<br/>\n&gt;&gt;so it doesn&#39;t particularly matter which one is rum first<br/>\n&gt;&gt;when they all succeed. It matters when one fails.<br/>\n&gt;&gt;<br/>\n&gt;&gt;Let&#39;s say that testB uses functions that are tested in testA.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Let&#39;s instead say that TestB collaborates with lightweight objects that <br/>\n&gt; provide predictable results according to the behavior we expect of A.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;&gt;During development, I&#39;ll be coding testA first. When that<br/>\n&gt;&gt;passes, I&#39;ll move to testB.<br/>\n&gt;&gt;<br/>\n&gt;&gt;But tests take time. And as the number of tests grows, it<br/>\n&gt;&gt;takes longer and longer to get to the last test on the list.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; How long is long? How many tests? What&#39;s your test throughput 100/s? <br/>\n&gt; 200/s? Less?<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;&gt;So testing in reverse order speeds things up during development.<br/>\n&gt;&gt;(Or simply running the last test, rather than all of them.)<br/>\n&gt;&gt;<br/>\n&gt;&gt;But when running the full suite of tests, it&#39;s helpful to<br/>\n&gt;&gt;run them in the original order -- because sometimes a regression<br/>\n&gt;&gt;causes a test to fail which was passing earlier, and it&#39;s<br/>\n&gt;&gt;good to discover such violated assumptions.<br/>\n&gt;&gt;<br/>\n&gt;&gt;So there&#39;s a tension between wanting to speed things up<br/>\n&gt;&gt;and wanting to verify that previously valid assumptions<br/>\n&gt;&gt;still hold.<br/>\n&gt;&gt;<br/>\n&gt;&gt;The only way I can see to satisfy both goals is to allow<br/>\n&gt;&gt;tests to run either from first to last, or from last to<br/>\n&gt;&gt;first.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Another option is to execute only the current suite while working on the <br/>\n&gt; behavior under test, then execute the full suite when you think you have <br/>\n&gt; the behavior under test working.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;&gt;Any other ideas?<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Yes. Write faster tests. I usually get up to about 1500 before I start <br/>\n&gt; to notice a break in my rhythm. If I notice a break in my rhythm before <br/>\n&gt; I hit 1500 tests, then I fix the tests. </span></blockquote></div>", 
+    "prevInTime": 9258, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1062479649", 
+    "canDelete": false, 
+    "nextInTopic": 9306, 
+    "prevInTopic": 9255, 
+    "headers": {
+        "inReplyToHeader": "PDNGNTNERjAyLjIwOTAwMDRAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDNGNTQyNzIxLjgwNzAxMDlAc3VuLmNvbT4=", 
+        "referencesHeader": "PDNGNTNEQTRGLjIwNzA4MDZAc3VuLmNvbT4gPDNGNTNERjAyLjIwOTAwMDRAcm9nZXJzLmNvbT4="
+    }
+}

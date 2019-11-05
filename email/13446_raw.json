@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 13447, 
+    "senderId": "0QM90D8KvUM3phBUeXLHzo3curvWpG6DlELZ7YJcGsLFjukYoCXqfUU_pAtRoBgVdY2nUA0zlbLNoBjaRe-awbsB", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running same tests again with different configuration..", 
+    "from": "Arun J &lt;mail.jak@...&gt;", 
+    "authorName": "Arun J", 
+    "msgSnippet": "Folks, Sorry for absconding for some time..problem of being in a different timezone.. Trying to elaborate my problem stmt as it lead to different", 
+    "msgId": 13446, 
+    "rawEmail": "Return-Path: &lt;mail.jak@...&gt;\r\nX-Sender: mail.jak@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 73064 invoked from network); 10 May 2005 04:45:54 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m21.grp.scd.yahoo.com with QMQP; 10 May 2005 04:45:54 -0000\r\nReceived: from unknown (HELO zproxy.gmail.com) (64.233.162.201)\n  by mta6.grp.scd.yahoo.com with SMTP; 10 May 2005 04:45:54 -0000\r\nReceived: by zproxy.gmail.com with SMTP id 34so2243662nzf\n        for &lt;junit@yahoogroups.com&gt;; Mon, 09 May 2005 21:45:53 -0700 (PDT)\r\nReceived: by 10.36.3.16 with SMTP id 16mr1408504nzc;\n        Mon, 09 May 2005 21:45:53 -0700 (PDT)\r\nReceived: by 10.36.3.11 with HTTP; Mon, 9 May 2005 21:45:53 -0700 (PDT)\r\nMessage-ID: &lt;e717330e050509214552531440@...&gt;\r\nDate: Tue, 10 May 2005 10:15:53 +0530\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;428028D5.4080307@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;200505091856.j49IuTlv030037@...&gt;\n\t &lt;428028D5.4080307@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Arun J &lt;mail.jak@...&gt;\r\nReply-To: Arun J &lt;mail.jak@...&gt;\r\nSubject: Re: [junit] Running same tests again with different configuration..\r\nX-Yahoo-Group-Post: member; u=190187075\r\nX-Yahoo-Profile: jayarunkumar\r\n\r\nFolks,\nSorry for absconding for some time..problem of being in a different =\r\ntimezone..\n\nTrying to elaborate my problem stmt as it lead to different int=\r\nerpretation:\nI have an API that needs to be tested. My tests are written fo=\r\nr that\nAPI.  Now this is an API/SPI model.  Hence multiple implementation a=\r\nre\nmade available for the SPI.  So what I wanted to do is to run the same\ns=\r\net of tests on the same API but flipping the underlying SPI\nImplementation.=\r\n  I wanted my test results to reflect this for\ndifferent SPI implementation=\r\n.\n\nCedric, \nI am not in a position to use TestNG right now.  I was thinking=\r\n about\nstrategy pattern too, but not sure how does it work with jUnit based=\r\n\nframework.\n\n~JAK\n\n\nOn 5/10/05, Jim Frohnhofer &lt;fijimf@...&gt; wrote:\n&gt; =\r\n Cedric Beust wrote:\n&gt;  \n&gt;  &gt;&gt;From: junit@yahoogroups.com [mailto:junit@yah=\r\noogroups.com] On \n&gt;  &gt;&gt;    \n&gt;  &gt;&gt;\n&gt;  &gt;\n&gt;  &gt;  \n&gt;  &gt;\n&gt;  &gt;&gt;I wanted to run the=\r\n same set of tests with different \n&gt;  &gt;&gt;underlying Implementation. Is there=\r\n a ready mix available for \n&gt;  &gt;&gt;this purpose?\n&gt;  &gt;&gt;    \n&gt;  &gt;&gt;\n&gt;  &gt;\n&gt;  &gt;Str=\r\nategy pattern maybe?\n&gt;  &gt;\n&gt;  &gt;Have your suites create instances of the same=\r\n test class with different\n&gt;  &gt;strategy objects.  You create these instance=\r\ns in your suite method (not\n&gt;  &gt;quite sure how you would store the various =\r\nStrategy objects, though, since\n&gt;  &gt;you can&#39;t keep state with JUnit).\n&gt;  &gt;\n=\r\n&gt;  &gt;In TestNG, it would look like this:\n&gt;  &gt;\n&gt;  &gt;@Factory\n&gt;  &gt;public Object=\r\n[] create() {\n&gt;  &gt;  List result =3D new ArrayList();\n&gt;  &gt;  result.add(new M=\r\nyTest(new Strategy1());\n&gt;  &gt;  result.add(new MyTest(new Strategy2());\n&gt;  &gt;\n=\r\n&gt;  &gt;  return result.toArray();\n&gt;  &gt;}\n&gt;  &gt;  \n&gt;  &gt;\n&gt;  In JUnit it would look =\r\nlike this\n&gt;  \n&gt;  public abstract class FooTest extends TestCase {\n&gt;      pr=\r\notected Foo foo;\n&gt;     \n&gt;      //tests\n&gt;  \n&gt;  }\n&gt;  \n&gt;  public class FooImpl=\r\nTest extends FooTest {\n&gt;      public void setUp() {\n&gt;          foo =3D new =\r\nFooImpl();\n&gt;      } \n&gt;  }\n&gt;  \n&gt;  public class FooOtherImplTest extends FooT=\r\nest {\n&gt;      public void setUp() {\n&gt;          foo =3D new FooOtherImpl();\n&gt;=\r\n      } \n&gt;  }\n&gt;  \n&gt;  \n&gt;  ________________________________\n&gt;  Yahoo! Groups =\r\nLinks\n&gt;  \n&gt;  \n&gt; To visit your group on the web, go to:\n&gt; http://groups.yaho=\r\no.com/group/junit/\n&gt;   \n&gt; To unsubscribe from this group, send an email to:=\r\n\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;   \n&gt; Your use of Yahoo! Groups is su=\r\nbject to the Yahoo! Terms of Service. \n\n\n-- \n,,,,,      Arunkumar Jayaraman=\r\n     \n( &#39;,&#39;)      mail.jak@...\n&lt;|&quot;|&gt;    Work: +91-80-51988318\n_/&quot;|_  =\r\n  Mobile: +91-9845283731\n\n", 
+    "profile": "jayarunkumar", 
+    "topicId": 13437, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190187075, 
+    "prevInTime": 13445, 
+    "contentTrasformed": false, 
+    "postDate": "1115700353", 
+    "canDelete": false, 
+    "nextInTopic": 13448, 
+    "prevInTopic": 13444, 
+    "headers": {
+        "inReplyToHeader": "PDQyODAyOEQ1LjQwODAzMDdAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGU3MTczMzBlMDUwNTA5MjE0NTUyNTMxNDQwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDUwNTA5MTg1Ni5qNDlJdVRsdjAzMDAzN0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4JIDw0MjgwMjhENS40MDgwMzA3QGdtYWlsLmNvbT4="
+    }
+}

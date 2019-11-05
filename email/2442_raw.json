@@ -1,0 +1,28 @@
+{
+    "topicId": 2417, 
+    "postDate": "998484288", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "UCOtku-7RAO6dYlf1Cp30QmIyPGU-bVn0iC7F2_vW97h2S-Jie2M5S5NMiixt8tDBImKrxqQkQEVA2T75yGayx0rO98o6HcUQmgcR6vY", 
+    "nextInTime": 2443, 
+    "userId": 0, 
+    "prevInTime": 2441, 
+    "prevInTopic": 2440, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxMzA2OTdDQENBU0UwNTI+"
+    }, 
+    "authorName": "Mark Meyers", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "if suiteMethod is not static, as you expect, invoke(null, ...) will throw a nullpointer exception. Assert that fact first with: ", 
+    "contentTrasformed": false, 
+    "msgId": 2442, 
+    "nextInTopic": 2444, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;markm@...&gt;\r\nX-Sender: markm@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_1); 22 Aug 2001 12:50:08 -0000\r\nReceived: (qmail 88913 invoked from network); 22 Aug 2001 12:45:11 -0000\r\nReceived: from unknown (10.1.10.27)\n  by l8.egroups.com with QMQP; 22 Aug 2001 12:45:11 -0000\r\nReceived: from unknown (HELO pop3.telenet-ops.be) (195.130.132.40)\n  by mta2 with SMTP; 22 Aug 2001 12:45:10 -0000\r\nReceived: from case052.minervasoftcare.com (D576783B.kabel.telenet.be [213.118.120.59])\n\tby pop3.telenet-ops.be (Postfix) with ESMTP id 109A79BB45\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 22 Aug 2001 14:45:10 +0200 (CEST)\r\nReceived: by CASE052 with Internet Mail Service (5.5.2448.0)\n\tid &lt;Q3VZ0J4D&gt;; Wed, 22 Aug 2001 14:44:58 +0200\r\nMessage-ID: &lt;C450D96664CBD31182B600A0C97668B130697C@CASE052&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] code works with textui, but not with swingui/awtui\r\nDate: Wed, 22 Aug 2001 14:44:48 +0200\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2448.0)\r\nContent-Type: text/plain;\n\tcharset=&quot;ISO-8859-1&quot;\r\nFrom: Mark Meyers &lt;markm@...&gt;\r\n\r\nif suiteMethod is not static, as you expect, invoke(null, ...) will throw a\nnullpointer exception.\nAssert that fact first with:\nModifier.isStatic(suiteMethod.getModifiers())\njust after line 45, I would suggest\n\n\n-----Original Message-----\nFrom: Alain RAVET [mailto:aravet@...]\nSent: woensdag 22 augustus 2001 14:20\nTo: junit@yahoogroups.com\nSubject: RE: [junit] code works with textui, but not with swingui/awtui\n\n\n-----Message d&#39;origine-----\n&gt;&gt; Can you run under debug mode and find what exactly is throwing the null?\n\nIt all happens in line 53 ( see code of getTest() below)\nI have run it in debug mode, but afaik it looks fine.\n\n-------------------------------------------------------------\njava.lang.NullPointerException\n-------------------------------------------------------------\n   java.lang.NullPointerException\n\tat java.lang.reflect.Method.invoke(Native Method)\n\tat junit.runner.BaseTestRunner.getTest(BaseTestRunner.java:53)\n\tat junit.awtui.TestRunner.runSuite(TestRunner.java:393)\n\tat junit.awtui.TestRunner.start(TestRunner.java:474)\n\tat junit.awtui.TestRunner.main(TestRunner.java:315)\n\tat junit.awtui.TestRunner.run(TestRunner.java:320)\n\tat cirb_httpTest.tele.project.statmrbc.AllTests.main      \n\n------------------------------------------------------------\njunit.runner.BaseTestRunner.getTest()\n------------------------------------------------------------\n\n\tpublic Test getTest(String suiteClassName) {\n\t\tif (suiteClassName.length() &lt;= 0) {\n\t\t\tclearStatus();\n\t\t\treturn null;\n\t\t}\n\t\tClass testClass= null;\n\t\ttry {\n\t\t\ttestClass= loadSuiteClass(suiteClassName);\n\t\t} catch (ClassNotFoundException e) {\n\t\t\tString clazz= e.getMessage();\n\t\t\tif (clazz == null) \n\t\t\t\tclazz= suiteClassName;\n\t\t\trunFailed(&quot;Class not found &#92;&quot;&quot;+clazz+&quot;&#92;&quot;&quot;);\n\t\t\treturn null;\n\t\t} catch(Exception e) {\n\t\t\trunFailed(&quot;Error: &quot;+e.toString());\n\t\t\treturn null;\n\t\t}\n\t\tMethod suiteMethod= null;\n\t\ttry {\n\t\t\tsuiteMethod= testClass.getMethod(SUITE_METHODNAME,\nnew Class[0]);\n\t \t} catch(Exception e) {\n\t \t\t// try to extract a test suite automatically\n\t\t\tclearStatus();\t\t\t\n\t\t\treturn new TestSuite(testClass);\n\t\t}\n\t\tTest test= null;\n\t\ttry {\n line 53 &gt;&gt;&gt;&gt;\t\ttest= (Test)suiteMethod.invoke(null, new Class[0]);\n// static method\n\t\t\tif (test == null)\n\t\t\t\treturn test;\n\t\t} \n\t\tcatch (InvocationTargetException e) {\n\t\t\trunFailed(&quot;Failed to invoke suite():&quot; +\ne.getTargetException().toString());\n\t\t\treturn null;\n\t\t}\n\t\tcatch (IllegalAccessException e) {\n\t\t\trunFailed(&quot;Failed to invoke suite():&quot; +\ne.toString());\n\t\t\treturn null;\n\t\t}\n\t\t\n\t\tclearStatus();\n\t\treturn test;\n\t}\n\nThis mail has been checked by exiscan.\nTo be safe, please scan the mail attachements with your local virus scanner\n!\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "RE: [junit] code works with textui, but not with swingui/awtui"
+}

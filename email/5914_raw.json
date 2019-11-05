@@ -1,0 +1,29 @@
+{
+    "topicId": 5875, 
+    "postDate": "1033583356", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Michael Silverstein&quot; &lt;msilverstein@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "lTCErQkAx2XD94hotcp2RZF9bLasbqrWwgaaFbhGYbpGNTbIERsKeVl00yQkpD-SKTcNbgc77XKj3HulN0PQ2JUBz-xXdWQgDkigJYq0uqeCjvHeRtUlJGkL", 
+    "nextInTime": 5915, 
+    "userId": 62742148, 
+    "prevInTime": 5913, 
+    "prevInTopic": 5913, 
+    "headers": {
+        "inReplyToHeader": "PDNEOUIwOTRGLjcwNDA2MDNAYXBhY2hlLm9yZz4=", 
+        "messageIdInHeader": "PE5EQkJKRUZLTURHRklCRUtLRUxFTUVJQUVEQUEubXNpbHZlcnN0ZWluQHNpbHZlcm1hcmsuY29tPg=="
+    }, 
+    "authorName": "Michael Silverstein", 
+    "numMessagesInTopic": 38, 
+    "msgSnippet": "Mr. Loritsch exactly describes the problem I ran into yesterday while extending the Test Mentor tool to have its test components (that live in a different", 
+    "contentTrasformed": false, 
+    "msgId": 5914, 
+    "nextInTopic": 5917, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;msilverstein@...&gt;\r\nX-Sender: msilverstein@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_1_4); 2 Oct 2002 18:32:36 -0000\r\nReceived: (qmail 37337 invoked from network); 2 Oct 2002 18:32:35 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m12.grp.scd.yahoo.com with QMQP; 2 Oct 2002 18:32:35 -0000\r\nReceived: from unknown (HELO ncsmtp03.ogw.rr.com) (24.93.67.84)\n  by mta3.grp.scd.yahoo.com with SMTP; 2 Oct 2002 18:32:35 -0000\r\nReceived: from mail6.nc.rr.com (fe6 [24.93.67.53])\n\tby ncsmtp03.ogw.rr.com (8.12.5/8.12.2) with ESMTP id g92IWRib016700\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 2 Oct 2002 14:32:28 -0400 (EDT)\r\nReceived: from dell7500 ([24.74.163.86]) by mail6.nc.rr.com  with Microsoft SMTPSVC(5.5.1877.757.75);\n\t Wed, 2 Oct 2002 14:32:34 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Do JUnit internals suck?!?\r\nDate: Wed, 2 Oct 2002 14:29:16 -0400\r\nMessage-ID: &lt;NDBBJEFKMDGFIBEKKELEMEIAEDAA.msilverstein@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\nIn-Reply-To: &lt;3D9B094F.7040603@...&gt;\r\nImportance: Normal\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.00.3018.1300\r\nFrom: &quot;Michael Silverstein&quot; &lt;msilverstein@...&gt;\r\nReply-To: &lt;msilverstein@...&gt;\r\nX-Yahoo-Group-Post: member; u=62742148\r\n\r\nMr. Loritsch exactly describes the problem I ran into yesterday while\nextending the Test Mentor tool to have its test components (that live in a\ndifferent hierarchy) appear like JUnit tests. My first inclination was to\nsimply have Test Mentor test components implement the junit.framework.Test\ninterface and then implement countTestCases() and run(TestResult). The\nproblem I ran in to is that we don&#39;t compose tests by way of methods\nbeginning with &#39;testxxx&#39;, as JUnit does. What would have made the job a lot\neasier would have been some method in the Test interface that is passed a\ntest collector, such as collectTests(TestCollector), for example.\n\nSo subclasses of TestCase would implement code in\ncollectTests(TestCollector) that adds tests to the collector by virtue of\nthe &#39;testxxx&#39; methods, in order to maintain the current behavior, but other\nclasses in other hierarchies could implement other strategies to add tests\nto the collector.\n\n&gt; &gt; Berin Loritsch wrote:\n&gt; The problem with altering behavior based on a class hierarchy in the\n&gt; way that JUnit does it is that it is neither polymorphic, nor interface\n&gt; based.  It is somewhere in the middle--which is not clear.  Altering the\n&gt; behavior of a TestCollector based on the TestCase/TestSuite\n&gt; implementations means that if I had my own implementation of the Test\n&gt; interface I don&#39;t know how it is going to be handled.  Interfaces do\n&gt; not require you to have the same base class.  When used properly, that\n&gt; is a definite *strength*.  When used improperly, it causes problems\n&gt; in predictability.\n&gt;\n&gt; My point is that the contracts with the Test interface are not defined\n&gt; clearly enough.  If I have to write a test harness (which I do BTW) that\n&gt; works quite differently than the core JUnit TestCase, then I am SOL.  I\n&gt; can&#39;t take advantage of any of the features that I would otherwise be\n&gt; able to expect with the relationship between TestCase and TestSuite.  I\n&gt; might be able to have a bunch of individual Test objects--which in some\n&gt; cases might be even better, but my objects would not be treated the same\n&gt; as the TestCase/TestSuite.\n&gt;\n&gt; For instance, I need to have a setup where I instantiate a component\n&gt; container, and the tests.  I want the tests to automatically collect all\n&gt; the testXXXX() methods and execute them.  However I can&#39;t do that unless\n&gt; I extend TestCase.  I can&#39;t extend TestCase because of other mitigating\n&gt; circumstances.\n&gt;\n&gt; Lastly, when your contracts are fixated with the *interface* and not the\n&gt; abstract class, you do not depend on the internals of the abstract\n&gt; class.  There are some of those dependencies.  Logic for running a test\n&gt; should not be included in the TestCase itself.  The only thing that\n&gt; should be in a TestCase are the individual testXXX() methods and\n&gt; possibly the setUp()/tearDown() methods.\n\n\n", 
+    "subject": "RE: [junit] Do JUnit internals suck?!?"
+}

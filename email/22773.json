@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 22774, 
+    "senderId": "3m-PjVczFA9ucE5ECFqbn9PcfuRu1n3lnnevXJjmnbffZdXUVnHy4eDNwiGoyCzc9f4XOVzBG_zhNGSb6A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Large, hierarchical, randomized test suites: how to not\trun out of memory?", 
+    "from": "allamistakeo18@...", 
+    "authorName": "allamistakeo18@mac.com", 
+    "msgSnippet": "In the meantime, I have been experimenting with TestNG, and I am sorry to report that it does a much better job than JUnit at solving my problem. Using", 
+    "msgId": 22773, 
+    "topicId": 22741, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 449575965, 
+    "messageBody": "<div id=\"ygrps-yiv-847501081\">In the meantime, I have been experimenting with TestNG, and I am sorry to report that it does a much better job than JUnit at solving my problem. Using TestNG&#39;s DataProvider functionality, I was able to quickly get everything I need (and that JUnit hasn&#39;t been able to deliver yet): <br/>\n<br/>\n<br/>\n1) A DataProvider returns an Object[][] that gives, for each run of the test method, the sequence of input parameters for that method. So, to run a parameterless test method 1000 times, you just need to write: <br/>\n<br/>\n@DataProvider (name = &quot;dataProvider&quot;)<br/>\npublic Object[][] dfs () {<br/>\n\treturn new Object [1000][];<br/>\n}<br/>\n<br/>\n@Test (dataProvider = &quot;dataProvider&quot;)<br/>\npublic void test () {<br/>\n\t// Run the test<br/>\n}<br/>\n<br/>\nNo need to use the same hack as with JUnit that requires test methods to take in an unused int, like I previously suggested. <br/>\n<br/>\n<br/>\n2) Even better: if I wanted to pass the data points as inputs to the test method instead of creating them inside the @Before method, TestNG provides a way to create these data points one by one instead of all at once, hereby saving memory. You just need to write a DataProvider that returns an Iterator&lt;Object[]&gt; instead of an Object[][]. <br/>\n<br/>\n<br/>\n3) TestNG reports the results of tests on a data point basis instead of on a method basis, and does not terminate the test method as soon as it fails on a particular data point. This functionality is not available (yet) in JUnit. <br/>\n<br/>\n<br/>\n4) If there are multiple test methods, It is straightforward to specify the desired number of runs for each method: <br/>\n<br/>\n@DataProvider (name = &quot;dataProvider&quot;)<br/>\npublic Object[][] dataProvider (Method method) {<br/>\n\t\t<br/>\n\tint nbRuns = 1000;<br/>\n<br/>\n\tif (method.getName().equals(&quot;testMethodRequiringEvenMoreRuns&quot;))) <br/>\n\t\tnbRuns = 10000;<br/>\n\t<br/>\n\treturn new Object [nbRuns][];<br/>\n}<br/>\n<br/>\n<br/>\n5) Needless to say, TestNG works without bugs when the test method does take in parameters (contrary to JUnit). But you have to manually build the corresponding Object[][] in the DataProvider, while JUnit attempts to automate that for you (and currently fails to do so due to a bug). <br/>\n<br/>\n<br/>\nThe only problem I have with TestNG at this point is that the Eclipse plugin is painfully slow and a bit buggy. But this is a problem with the plugin itself, not with TestNG. <br/>\n<br/>\nSo, until JUnit meets my needs, I am going to go with TestNG. <br/>\n<br/>\nThanks again for your support <br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 22772, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1276527278", 
+    "canDelete": false, 
+    "nextInTopic": 22775, 
+    "prevInTopic": 22772, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGltckIwWEkxb0NVZ0VqanNWR0tpQWJwNnBvWTRRTDdGTU9lMERnWkBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PEUyNTU1MzZFLUNDNEYtNEE4NC1CMjY0LTE2RDU5NjkwRjcxNUBtYWMuY29tPg==", 
+        "referencesHeader": "PDBDMTk3RUM0LTM3QzgtNDM3NS05MjM1LTkzQzU0MjI5REM5OEBtYWMuY29tPiA8QUFOTGtUaWtHOERldUtrVGcxbjBpaHZJTXhscGRHa0pQVjM0QlFIVjAzWENNQG1haWwuZ21haWwuY29tPiA8NTI1NTg3MUQtQzY0NC00QzA4LTkyRjEtRDBDRjc0MjM4MDY5QG1hYy5jb20+IDxBQU5Ma1RpbXJCMFhJMW9DVWdFampzVkdLaUFicDZwb1k0UUw3Rk1PZTBEZ1pAbWFpbC5nbWFpbC5jb20+"
+    }
+}

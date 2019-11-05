@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 81, 
+    "nextInTime": 13700, 
+    "senderId": "5mVpXsdgYt7sEA7MwwN7NEgv2I2qE1hkv6_vLNG1ALJCqOgnBnZhjz_xbwdjc7Jaj_aNSxT-EBbmirI6xrP_7UzdHZ4zC_u5LMLJYuAAyQ", 
+    "systemMessage": false, 
+    "subject": "Fake or real?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... This is an interesting statement, because I don t think it s true. Unless you are writing Xerces, your code does not parse XML, but it /does/ interpret the", 
+    "msgId": 13699, 
+    "profile": "nails762", 
+    "topicId": 13634, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1755495434\">Cedric Beust wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  &gt; If you don&#39;t want to test the XML to object mapping, then why<br/>\n&gt;  &gt; bother with XML at all in the test?<br/>\n&gt; <br/>\n&gt; Because my production code parses this XML, so I want my test to do the<br/>\n&gt; same.<br/>\n<br/>\n </span></blockquote>This is an interesting statement, because I don&#39;t think it&#39;s true. <br/>\nUnless you are writing Xerces, your code does not parse XML, but it <br/>\n/does/ interpret the XML once it has been parsed.<br/>\n<br/>\nI know it&#39;s easy just to use an XML parser to read the files from disk, <br/>\nbut something very interesting happens when you try to write those tests <br/>\nwithout actually parsing XML....<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  &gt; Just create a bunch of objects to play with and skip the XML part.<br/>\n&gt; <br/>\n&gt; And then one day, an XML driver is missing on my production code but my<br/>\n&gt; tests are still all happily green because they are using mock objects.<br/>\n<br/>\n </span></blockquote>One test somewhere tries to use the real XML driver. That test will fail.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Why is it so hard to understand that I want my tests to be as close to my<br/>\n&gt; production code as possible?!?<br/>\n<br/>\n </span></blockquote>We understand it, Cedric; we just don&#39;t necessarily do it ourselves. :)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  &gt; Please give an example where it does affect your test results<br/>\n&gt;  &gt; if the setup code runs for each test and where you still<br/>\n&gt;  &gt; claim that the tests are independent.<br/>\n&gt; <br/>\n&gt; How about the example I just gave?<br/>\n&gt; <br/>\n&gt; Hint:  imagine the XML file is several megabytes big.  It&#39;s not that far<br/>\n&gt; fetched, really.<br/>\n<br/>\n </span></blockquote>Why do we need to parse a file that big? I&#39;ll assume a well-known case <br/>\nI&#39;ve worked with: I&#39;m using XStream to provide persistence for an <br/>\napplication.<br/>\n<br/>\nWell, in that case, I need these tests:<br/>\n<br/>\n1. A test or two to verify that I can properly write a simple object <br/>\ngraph to XML and read it back using XStream. (Uses XStream and something <br/>\nlike StringReader/StringWriter. Notice that there are no mock objects <br/>\nhere -- only taking advantage of interface-based dependency.)<br/>\n<br/>\n2. A few tests for each kind of object I need to read and write to <br/>\nXStream, because I need to know that XStream maps properties correctly. <br/>\nThese tests are the same as #1, I guess.<br/>\n<br/>\nThen, after extracting a Repository interface that hides the rest of my <br/>\napplication from XStream...<br/>\n<br/>\n3. Tests for any business logic that requires the Repository, using a <br/>\n&quot;recording and verifying test double&quot; version of Repository (commonly <br/>\ncalled &quot;mock&quot;) that helps me know that I&#39;m invoking the Repository properly.<br/>\n<br/>\n4. Contract Tests for the XStream-based implementation of the Repository <br/>\nthat mostly make sure that I read XML properly on startup and write XML <br/>\nproperly on commit().<br/>\n<br/>\nI can be very confident that these tests cover me even though the vast <br/>\nmajority of them (those in category #3) don&#39;t talk to the XStream-based <br/>\nRepository. If any of my end-to-end tests fail, then I know I missed a <br/>\nContract Test (#4), but since we integrate every two weeks, I&#39;ll know <br/>\nabout that quickly enough.<br/>\n<br/>\nThe bottom line is that I don&#39;t need to read/write a several MB XML <br/>\ndocument for any of these tests. Hm. That&#39;s a Bad Thing. Let&#39;s add a few <br/>\nstress tests to #4. I feel better now.<br/>\n<br/>\nIf you&#39;re going to read/write such a large file, I recommend only doing <br/>\nit in Stress Tests.<br/>\n<br/>\nBut remember, these are only recommendations.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 13698, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1117482599", 
+    "canDelete": false, 
+    "nextInTopic": 13700, 
+    "prevInTopic": 13698, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTI3MDQ0OC5qNFI0bVFNWjAyNDg3MEAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQyOUI2RTY3LjMwMjAwMDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDUwNTI3MDQ0OC5qNFI0bVFNWjAyNDg3MEAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 125, 
+    "nextInTime": 14705, 
+    "senderId": "TgOq6Q_eDYqcPtVqF3B5aWHMoHbCNj6iNHoR0SmHzW4_5FrkvcR3QPVFwOVL9gQO-sQ6rco9Ig8lr7hcL6KJW5q5hSzTxxyr146OImWiR-uYy30", 
+    "systemMessage": false, 
+    "subject": "Re: How to test private methods in a class.", 
+    "from": "&quot;Jim Cakalic&quot; &lt;james.p.cakalic@...&gt;", 
+    "authorName": "Jim Cakalic", 
+    "msgSnippet": "... private ... find that ... Sounds more like speculative design and/or rearranging the chairs without any clear immediate benefit. Ron Jeffries C#", 
+    "msgId": 14704, 
+    "profile": "jim_cakalic", 
+    "topicId": 14490, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 226509834, 
+    "messageBody": "<div id=\"ygrps-yiv-1127123545\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Ilja Preuss&quot; &lt;preuss@d...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; A public method is the core responsibility of a class. If we extract a<br/>\n&gt; private method, that private method basically provides a service to the<br/>\n&gt; public method.<br/>\n&gt; <br/>\n&gt; It&#39;s true that we can remove duplication in a class by extracting<br/>\n </span></blockquote>private<br/>\n<blockquote><span title=\"ireply\"> &gt; methods. Often, though, if we introduce the right abstraction, we<br/>\n </span></blockquote>find that<br/>\n<blockquote><span title=\"ireply\"> &gt; the service provided can suddenly be used by other classes, too.<br/>\n&gt; <br/>\n&gt; Does that sound reasonable?<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>Sounds more like speculative design and/or rearranging the chairs<br/>\nwithout any clear immediate benefit. <br/>\n<br/>\nRon Jeffries C# implementation (or one of them) of the Bowling Game<br/>\nproblem contains several private methods:<br/>\n<br/>\n    private int PinCount(int pinPosition) {<br/>\n        return (int) rolls[pinPosition];<br/>\n    }<br/>\n    <br/>\n    private bool Strike(int rollIndex) {<br/>\n        return PinCount(rollIndex) == 10;<br/>\n    }<br/>\n    <br/>\n    private bool Spare(int rollIndex) {<br/>\n        return PinCount(rollIndex) + PinCount(rollIndex+1) == 10;<br/>\n    }<br/>\n    <br/>\n    private int FrameSize(int rollIndex) {<br/>\n        if (Strike(rollIndex)) return 1;<br/>\n        return 2;<br/>\n    }<br/>\n    <br/>\nIgnoring the constructor of the class, there appear to be two public<br/>\nmethods and four private methods. Here&#39;s his Score method:<br/>\n<br/>\n    public int Score() {<br/>\n        int rollIndex = 0;<br/>\n        int total = 0;<br/>\n        for (int frame = 0; frame &lt; 10; frame++, rollIndex +=<br/>\nFrameSize(rollIndex)){<br/>\n            if ( Strike(rollIndex) ) {<br/>\n                total += 10 + PinCount(rollIndex+1) +<br/>\nPinCount(rollIndex+2);<br/>\n            } else if ( Spare(rollIndex) ) {<br/>\n                total += 10 + PinCount(rollIndex+2);<br/>\n            } else {<br/>\n                total += PinCount(rollIndex) + PinCount(rollIndex+1);<br/>\n            }<br/>\n      }<br/>\n      return total;<br/>\n    }<br/>\n    <br/>\nI&#39;d probably choose to refactor even further, adding at least one if<br/>\nnot more private methods to, in Ron&#39;s words, &quot;improve expressiveness&quot;.<br/>\nBut limiting it to just what is here, I&#39;m curious how you&#39;d choose to<br/>\nrefactor this, what tests you would need to add, a comparison of the<br/>\namount of code and number of classes a developer would have to sift<br/>\nthrough to understand the this vs. your ideal implementation.<br/>\n<br/>\nJim</div>", 
+    "prevInTime": 14703, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1126027656", 
+    "canDelete": false, 
+    "nextInTopic": 14707, 
+    "prevInTopic": 14703, 
+    "headers": {
+        "inReplyToHeader": "PDAwMzYwMWM1YjMwMCRkOGM3ZWNjMCQ3MDY0YThjMEBkaXN5Lm5ldD4=", 
+        "messageIdInHeader": "PGRma2ppOCtpNTdvQGVHcm91cHMuY29tPg=="
+    }
+}

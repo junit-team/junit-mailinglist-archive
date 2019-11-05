@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 23933, 
+    "senderId": "80knsc3y-GGBbYkwb6UclAaxW_IVin_up6KWWHWX5wCqTtw4jRxYvYlf-1rTbTRYU0jN5Tm-jzhgAiuc6j8VTAbQ", 
+    "systemMessage": false, 
+    "subject": "Re: Splitting up and parameterizing &quot;common&quot; tests", 
+    "from": "&quot;hkaipe&quot; &lt;hkaipe@...&gt;", 
+    "authorName": "hkaipe", 
+    "msgSnippet": "... To solve your problem is one of the major purposes of CallbackParams: http://callbackparams.org With CallbackParams you can have enum-classes provide", 
+    "msgId": 23932, 
+    "profile": "hkaipe", 
+    "topicId": 23926, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 478409128, 
+    "messageBody": "<div id=\"ygrps-yiv-1067089814\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &lt;org.junit@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hello.<br/>\n&gt; <br/>\n&gt; I have a set of packages, let&#39;s call them &quot;database-core&quot;,<br/>\n&gt; &quot;database-sqlite&quot;, &quot;database-postgres&quot;. The database-core<br/>\n&gt; package exposes an interface type DB, and the database-sqlite and<br/>\n&gt; database-postgres packages both expose types that implement the DB<br/>\n&gt; interface: DBSqlite and DBPostgres, respectively. I have a huge pile<br/>\n&gt; of tests in the database-sqlite package, and a huge pile of tests in<br/>\n&gt; the database-postgres package.<br/>\n&gt; <br/>\n&gt; Now here&#39;s the problem: These enormous piles of tests that exercise<br/>\n&gt; these two types are basically identical bar the different specific<br/>\n&gt; DB implementation type.<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>To solve your problem is one of the major purposes of CallbackParams: <a rel=\"nofollow\" target=\"_blank\" href=\"http://callbackparams.org\">http://callbackparams.org</a><br/>\n<br/>\nWith CallbackParams you can have enum-classes provide parameter-values. In your case I can suggest an enum-class &quot;DBFactory&quot;, which has one constant &quot;POSTGRES&quot; to provide the DBPostgres implementation and another constant &quot;SQLITE&quot; to provide the DBSqlite implementation:<br/>\n<br/>\npublic enum DBFactory {<br/>\n<br/>\n    POSTGRES(new DBPostgres()),<br/>\n    SQLITE(new DBSqlite());<br/>\n<br/>\n    private DB db;<br/>\n<br/>\n    private DBFactory(DB db) { this.db = db; }<br/>\n<br/>\n    public DB getDB() { return this.db; }<br/>\n}<br/>\n<br/>\nYou can then have your test-classes use the JUnit-runner CallbackParamsRunner ...<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://callbackparams.org/project/api-javadoc/org/callbackparams/junit4/CallbackParamsRunner.html\">http://callbackparams.org/project/api-javadoc/org/callbackparams/junit4/CallbackParamsRunner.html</a><br/>\n<br/>\n... and the field-annotation @ParameterizedValue ...<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://callbackparams.org/project/api-javadoc/org/callbackparams/ParameterizedValue.html\">http://callbackparams.org/project/api-javadoc/org/callbackparams/ParameterizedValue.html</a><br/>\n<br/>\n... to parameterize your &quot;common&quot; test-classes:<br/>\n<br/>\n@RunWith(CallbackParamsRunner.class)<br/>\npublic ACommonTest {<br/>\n<br/>\n    @ParameterizedValue public DBFactory database;<br/>\n<br/>\n    final private DB db = database.getDB();<br/>\n<br/>\n    @Test public void testMethod() { /* test-code */ }<br/>\n}<br/>\n<br/>\nThe test-class ACommonTest will be run twice - once for each constant in DBFactory. The field database will be injected with the enum-constant POSTGRES on the first run and SQLITE on the second run.<br/>\n<br/>\nYour tests will get proper names:<br/>\n<br/>\n - testMethod[database=POSTGRES]<br/>\n - testMethod[database=SQLITE]<br/>\n<br/>\nOne of the major objectives for CallbackParams is to simplify future maintenance, such as when you decide to support another database, such as Oracle. All you need to do for the tests is to add another constant &quot;ORACLE&quot; to your enum-class - and all of your test-classes will suddenly test Oracle as well.<br/>\n<br/>\nGood luck /Henrik</div>", 
+    "prevInTime": 23931, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1342871279", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 23929, 
+    "headers": {
+        "messageIdInHeader": "PGp1ZTR0ZitxZ2Z1QGVHcm91cHMuY29tPg=="
+    }
+}

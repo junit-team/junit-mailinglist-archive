@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4991, 
+    "senderId": "zcjaajfAxoSRKr6Qf9KhmClWj4VrCAzngp9QICXdGDzYjIiuPirlMHdQ8SiI7s0uG2zzxrefj8s8OrQGSH4mlnzaKEK22S9witUKkHy9H1o", 
+    "systemMessage": false, 
+    "subject": "Question on Junit Source code", 
+    "from": "&quot;Chesterxgchen&quot; &lt;chesterxgchen@...&gt;", 
+    "authorName": "Chesterxgchen", 
+    "msgSnippet": "Hi, I am trying to understand the design patterns used in the JUnit code. I noticed following piece of codes, which I am not quite sure why it is written in", 
+    "msgId": 4990, 
+    "rawEmail": "Return-Path: &lt;chesterxgchen@...&gt;\r\nReceived: (qmail 50214 invoked from network); 19 May 2002 23:40:43 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m14.grp.scd.yahoo.com with QMQP; 19 May 2002 23:40:43 -0000\r\nReceived: from unknown (HELO n6.grp.scd.yahoo.com) (66.218.66.90)\n  by mta3.grp.scd.yahoo.com with SMTP; 19 May 2002 23:40:43 -0000\r\nX-eGroups-Return: chesterxgchen@...\r\nReceived: from [66.218.67.182] by n6.grp.scd.yahoo.com with NNFMP; 19 May 2002 23:40:41 -0000\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 19 May 2002 23:40:38 -0000\r\nX-Sender: chesterxgchen@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 19 May 2002 23:30:37 -0000\r\nReceived: (qmail 38652 invoked from network); 19 May 2002 23:30:37 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m15.grp.scd.yahoo.com with QMQP; 19 May 2002 23:30:37 -0000\r\nReceived: from unknown (HELO n20.grp.scd.yahoo.com) (66.218.66.76)\n  by mta3.grp.scd.yahoo.com with SMTP; 19 May 2002 23:30:37 -0000\r\nReceived: from [66.218.67.168] by n20.grp.scd.yahoo.com with NNFMP; 19 May 2002 23:30:37 -0000\r\nDate: Sun, 19 May 2002 23:30:36 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Question on Junit Source code\r\nMessage-ID: &lt;ac9cit+s86t@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1513\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;Chesterxgchen&quot; &lt;chesterxgchen@...&gt;\r\nX-Yahoo-Group-Post: member; u=64831815\r\nX-Yahoo-Profile: Chesterxgchen\r\n\r\nHi, \n  I am trying to understand the design patterns used in the JUnit \ncode. I noticed following piece of codes, which I am not quite sure \nwhy it is written in such way. I hope some one can help me to explain \nit. \n\n  So the TestRunner.java Run() ... cals TestSuite.java &#39;s Run() which \nin turns calls TestResult&#39;s method. \n\n\n   Notice that Run() does not directly call\n    test.RunBare() but instead, using anynomous class\nand defined a protect() method in the class. And using  runProtected\n() method to invoked this method .\n\n\t\tProtectable p= new Protectable() {\n\t\t\tpublic void protect() throws Throwable {\n\t\t\t\ttest.runBare();\n\t\t\t}\n\t\t};\n\t\trunProtected(test, p);\n\n  My question is why this written in such way ? Why not call \ntest.RunBare() directly ? \n\n  This does not same to have the reason to use Adaptor pattern \nexplained in the CookBook ? \n\n  \n  Can some show me some insight on this ? Thank you.\n\nChester\n\n\nin TestResult.java\n\n\n\t/**\n\t * Runs a TestCase.\n\t */\n\tprotected void run(final TestCase test) {\n\t\tstartTest(test);\n\t\tProtectable p= new Protectable() {\n\t\t\tpublic void protect() throws Throwable {\n\t\t\t\ttest.runBare();\n\t\t\t}\n\t\t};\n\t\trunProtected(test, p);\n\n\t\tendTest(test);\n\t}\n\t/**\n\t * Runs a TestCase.\n\t */\n\tpublic void runProtected(final Test test, Protectable p) {\n\t\ttry {\n\t\t\tp.protect();\n\t\t} \n\t\tcatch (AssertionFailedError e) {\n\t\t\taddFailure(test, e);\n\t\t}\n\t\tcatch (ThreadDeath e) { // don&#39;t catch ThreadDeath by \naccident\n\t\t\tthrow e;\n\t\t}\n\t\tcatch (Throwable e) {\n\t\t\taddError(test, e);\n\t\t}\n\t}\n\n\n\n\n\n\n\n\n", 
+    "profile": "Chesterxgchen", 
+    "topicId": 4990, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64831815, 
+    "prevInTime": 4989, 
+    "contentTrasformed": false, 
+    "postDate": "1021851036", 
+    "canDelete": false, 
+    "nextInTopic": 5008, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFjOWNpdCtzODZ0QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 1171, 
+    "senderId": "hHKPQrHfyEPTQNxQ9xO3HSB7zlMrAX9Kb6yfORl2k7MJjQXxEbfUZrlmzDMzJTlCf1wCqfO20iy60y1d-srA-eZ-e1UIwUTcxw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing stochastic (random) methods", 
+    "from": "Joshua Levy &lt;joshualevy@...&gt;", 
+    "authorName": "Joshua Levy", 
+    "msgSnippet": "... What random number generator are you using?  My understanding is that there are at least two in java (java.util.Random and java.math.Random), and that at", 
+    "msgId": 1170, 
+    "topicId": 1167, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1487811162\">--- <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mcphee@...\">mcphee@...</a> wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Writing unit tests for the deterministic parts of the system is<br/>\n&gt; pretty<br/>\n&gt; standard fare, but it&#39;s not obvious how to reasonably test the<br/>\n&gt; stochastic parts of the system.  At some level stochastic methods<br/>\n&gt; just<br/>\n&gt; aren&#39;t testable in the same way that deterministic methods are.  <br/>\n<br/>\n </span></blockquote>What random number generator are you using?  My understanding<br/>\nis that there are at least two in java (java.util.Random and<br/>\njava.math.Random), and that at least one of these can be seeded<br/>\nin such a way as to always generate the same string of numbers,<br/>\nafter the seed.  I don&#39;t remember the detail off the top of my<br/>\nhead, but it is something like this:<br/>\n      random.seed(1L) ;<br/>\n      do_testing() ;<br/>\n      random.seed(1L) ;<br/>\n      do_testing() ;<br/>\nThe two calls to do_testing will do exactly the same thing,<br/>\neven if they use the random number generator, because the random<br/>\nnumber generator will do the same thing, because you seeded it<br/>\nthe same way.<br/>\n<br/>\nNow, it sounds to me like you are a math focused dude, so you <br/>\nmay be using a custom random number generator.  If so, I would <br/>\nsee if it has the repeatable behavior described above (for any<br/>\nseed at all).  If so, use it, as above.  If not, consider stubbing<br/>\nit out with a routine which has a file full of numbers.  Maybe<br/>\n10,000 numbers.  The stub routine just reads the numbers out of <br/>\nthe file and returns them, starting over as required.  Your<br/>\ntests would look something like this:<br/>\n     my_random.useLibraryFile(&quot;file_full_of_numbers&quot;) ;<br/>\n     do_your_test() ;<br/>\n<br/>\nThe result of either of these plans, is a reproducable test<br/>\ncase.  Each time it runs, you will get the exact same result.<br/>\nThis will work well for regression tests.   For other sorts of<br/>\ntesting, I think your current plan (of measuring the randomness<br/>\nof the results) is the right thing to do, even if it takes a <br/>\nwhile.<br/>\n<br/>\nI can describe these in more detail if you want.  I have used<br/>\nthe file trick (a decade ago), but I think the seed trick is<br/>\nmuch better, if it will work.<br/>\n<br/>\nJoshua Levy<br/>\n<br/>\n__________________________________________________<br/>\nDo You Yahoo!?<br/>\nYahoo! Auctions - buy the things you want at great prices<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://auctions.yahoo.com/\">http://auctions.yahoo.com/</a></div>", 
+    "prevInTime": 1169, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "989598550", 
+    "canDelete": false, 
+    "nextInTopic": 1171, 
+    "prevInTopic": 1169, 
+    "headers": {
+        "inReplyToHeader": "PDlkaDI5ait0MzYzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDEwNTExMTYyOTEwLjgyODE2LnFtYWlsQHdlYjEzMzAzLm1haWwueWFob28uY29tPg=="
+    }
+}

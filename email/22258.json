@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 22259, 
+    "senderId": "Eq38Q4r7c6rriUzbkfKg-bpVuKnz6400mZdkoBIvqzV78dY7y8vilXiyXr2UB4aJyWhucmyNJaBCb96kqG1IEWJd", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Order of execution for tests", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... I m not sure whether to classify this as a bug or a feature.  Do you have a real-world example of a three-or-more-level-deep dependency graph to look at?", 
+    "msgId": 22258, 
+    "profile": "dsaff", 
+    "topicId": 22219, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1529746274\">On Sat, Jan 2, 2010 at 11:45 AM, adrian.kuhn &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:akuhn@...\">akuhn@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;<br/>\n&gt; Theories are indeed awesome!<br/>\n&gt;<br/>\n&gt; What I like most is that they open up the door for dynamic n:n dependencies<br/>\n&gt;  between tests. That is something I never liked wrt JExample: dependencies are<br/>\n&gt;  limited to hardwired declarations in the code.<br/>\n&gt;<br/>\n&gt; My concern with the theories of JUnit 4.4  is that they introduce two<br/>\n&gt;  abstractions, @DataPoint and @Theory, and that none of these two abstractions<br/>\n&gt;  returns reusable instances of the class under tests. To speak in JExample<br/>\n&gt;  lingo you got pure producers and pure consumers only (with more flexible<br/>\n&gt;  links between both though!) As a consequence, theories are limited to<br/>\n&gt;  dependency hierarchies of two levels only, while JExample can be used to<br/>\n&gt;  express dependency graphs of any depth.<br/>\n<br/>\n </span></blockquote>I&#39;m not sure whether to classify this as a bug or a feature.  Do you<br/>\nhave a real-world example of a three-or-more-level-deep dependency<br/>\ngraph to look at?<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; (Furthermore, of the two abstractions only theories are tests, so we cannot<br/>\n&gt;  assert the validity of data points before returning them. This should be<br/>\n&gt;  fairly simple to solve though.)<br/>\n&gt;<br/>\n&gt; Imagine that @Theory were able to return reusable instances of the class under<br/>\n&gt;  tests, then @DataPoint would become a theory without input. Then we could<br/>\n&gt;  rewrite our working example as<br/>\n&gt;<br/>\n&gt;  @RunWith(Examples.class)<br/>\n&gt;  public class ExampleStack {<br/>\n&gt;    @Example public Stack empty() {<br/>\n&gt;      Stack s = new Stack();<br/>\n&gt;      assertEquals(true, s.isEmpty());<br/>\n&gt;      return s;<br/>\n&gt;    }<br/>\n&gt;    @Example public Object FOO = &quot;Foo&quot;;<br/>\n&gt;    @Example public Object BAR = &quot;Bar&quot;;<br/>\n&gt;    @Example public Stack shouldPushItemToTheTop(Stack s, Object item) {<br/>\n&gt;      s.push(item);<br/>\n&gt;      assertEquals(false, s.isEmpty());<br/>\n&gt;      assertEquals(item, s.top());<br/>\n&gt;      assertEquals(false, s.isEmpty());<br/>\n&gt;      return s;<br/>\n&gt;    }<br/>\n&gt;    @Example public Stack shouldPopPushedItem(Stack s, Object item) {<br/>\n&gt;      assumeFalse(s.isEmpty());<br/>\n&gt;      stack.push(item);<br/>\n&gt;      assertEquals(item, s.pop());<br/>\n&gt;      return s;<br/>\n&gt;    }<br/>\n&gt;    @Example public Stack shouldPopTopItem(Stack s) {<br/>\n&gt;      assumeFalse(s.isEmpty());<br/>\n&gt;      Object item = s.top();<br/>\n&gt;      assertEquals(item, s.pop());<br/>\n&gt;      return s;<br/>\n&gt;    }<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt; Running this will start without available input and thus run all theories<br/>\n&gt;  (above called @Example so users dont attempt to run this code in JUnit)<br/>\n&gt;  without input, once inputs are available we can run turn by turn all theories<br/>\n&gt;  on all input. In fact, what we got now is a grammar for the creation of valid<br/>\n&gt;  instances of the class under test.<br/>\n&gt;<br/>\n&gt; However, since the number of valid stack instances is infinite (as is the case<br/>\n&gt;  for any non-trivial class) we have to stop somewhere if the test shall not<br/>\n&gt;  run forever.<br/>\n&gt;<br/>\n&gt; What I&#39;d like to emphasize is that JExample is not about dependencies only,<br/>\n&gt;  its other major focus is *composable tests*. When writing tests (or<br/>\n&gt;  experimenting on a REPL, alas we have none in Java...) you should be able to<br/>\n&gt;  just say &quot;gimme a valid instance of a stack with 3 elements&quot; and the<br/>\n&gt;  framework goes and creates one for you. So the above example is maybe even<br/>\n&gt;  closer to my initial vision of JExample than what we have now. Using an<br/>\n&gt;  assumptions to express that condition seems more flexile, whereas in JExample<br/>\n&gt;  you would need to depend by name on another test that explicitly creates an<br/>\n&gt;  elements with three instances. So that seems to confirm your &quot;assumption<br/>\n&gt;  sufficiency&quot; hypothesis, given there were composable theories.<br/>\n&gt;<br/>\n&gt; Personally I do not consider dependencies the major contribution of JExample<br/>\n&gt;  (even though it is a nice selling point) but *composable tests* thanks to<br/>\n&gt;  return values. The very idea that tests produce valid instances of the class<br/>\n&gt;  under tests and that these instances should be reused by other tests. (Which<br/>\n&gt;  of course opens up the Pandora&#39;s box of having to clone examples to avoid<br/>\n&gt;  quadratic runtime and side-effects.)<br/>\n&gt;<br/>\n&gt; cheers,<br/>\n&gt; AA<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22257, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1262708862", 
+    "canDelete": false, 
+    "nextInTopic": 22259, 
+    "prevInTopic": 22257, 
+    "headers": {
+        "inReplyToHeader": "PGhobnQ4MStjbjlrQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MTAwMTA1MDgyN24xMmE3ODA1Znc3ZDAzZGYzNGFhMDNjY2ZjQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRmN2RhNmI5MTAwMTAxMTg1MWc1MmI5YmRlOWczYzYxZjhlMzY0NDExNTI1QG1haWwuZ21haWwuY29tPgkgPGhobnQ4MStjbjlrQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11106, 
+    "senderId": "B4FZmsMtozG-omfuHZQIPb_HxhQeE-S-kZ2Jva2tGJfvmW6rp54KGgAbxGcz_CWENPJjufAAf7GRRGN9j533Rzc7UvcMtQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit on large scale", 
+    "from": "Steve Freeman &lt;steve@...&gt;", 
+    "authorName": "Steve Freeman", 
+    "msgSnippet": "... If you mean lots of mocks with complicated set up, then I agree there s a problem, but there are other ways to look at it. ... The problem here is not the", 
+    "msgId": 11105, 
+    "profile": "smg_freeman", 
+    "topicId": 11060, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30618548, 
+    "messageBody": "<div id=\"ygrps-yiv-981033648\">Mike Clark wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;One of the concerns that I (and<br/>\n&gt;&gt;developers) have is that we will end up with thousands of test cases, <br/>\n&gt;&gt;many<br/>\n&gt;&gt;of which will involve using substantial amounts of MockObjects to set <br/>\n&gt;&gt;up<br/>\n&gt;&gt;test cases and that all this will become too much of an overhead to <br/>\n&gt;&gt;manage &<br/>\n&gt;&gt;maintain.<br/>\n&gt; <br/>\n&gt; Substantial amounts of MockObjects raises a red flag for me.  It means <br/>\n&gt; that there may be areas where an object needing to be mocked has taken <br/>\n&gt; too much control in the system.  I can&#39;t speak to your system of <br/>\n&gt; course, but here&#39;s something I see regularly:<br/>\n<br/>\n </span></blockquote>If you mean lots of mocks with complicated set up, then I agree there&#39;s <br/>\na problem, but there are other ways to look at it.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Say we have a method that takes a BigObject and does something with a <br/>\n&gt; subset of the data in that object:<br/>\n&gt; <br/>\n&gt;     public void doSomething(BigObject o) {<br/>\n&gt;        String s = o.getStringValue();<br/>\n&gt;        int i = o.getIntValue();<br/>\n&gt;        // do something with &#39;s&#39; and &#39;i&#39;<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; There are several other methods like doSomething() in the system, so <br/>\n&gt; the initial reaction is to mock BigObject so that we can pass it into <br/>\n&gt; doSomething() and the other methods.  BigObject has a lot of setup <br/>\n&gt; involved to put it into a test state, but with some effort we can <br/>\n&gt; create a MockBigObject.<br/>\n<br/>\n </span></blockquote>The problem here is not the mocking of BigObject, but the complex setup <br/>\nthat requires, because it&#39;s doing too much work or is too tightly <br/>\ncoupled, or something. What if BigObject were an interface which would <br/>\nmake mocking up trivial?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; But the doSomething() method is really trying to tell us that it <br/>\n&gt; doesn&#39;t want a BigObject.  It just wants a String and an int:<br/>\n&gt; <br/>\n&gt;     public void doSomething(String s, int i) {<br/>\n&gt;        // do something with &#39;s&#39; and &#39;i&#39;<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; OK, now we only have to initialize a String and an int to pass into <br/>\n&gt; doSomething() during the test.  Can we do the same thing with other <br/>\n&gt; methods that take a BigObject?  Or do those methods share the need for <br/>\n&gt; a subset of data we can package in a SmallerObject?<br/>\n<br/>\n </span></blockquote>Extracting subtypes is exactly the right thing to do, normally I&#39;d <br/>\nprefer to do this with an interface. I have doubts about unpacking <br/>\nindividual fields because that&#39;s a loss of information. The type system <br/>\nno longer tells us about the relationships between whatever the string <br/>\nand int represent, and I find myself increasingly distrusting the use of <br/>\nbasic types in Java.<br/>\n<br/>\nAgain, once you have an interface, mocking becomes trivial.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I would suggest mocking as a last resort as often times it&#39;s a band-aid <br/>\n &gt; for what the system really wants. I find that if I reach for mocking<br/>\n &gt; first, then I miss those design opportunities.<br/>\n<br/>\n </span></blockquote>That makes sense to me only if you&#39;re talking about mocking unpleasant <br/>\nexisting featuers. On the other hand, struggling to do so often <br/>\nhighlights the dependencies you need to untangle.<br/>\n<br/>\nS</div>", 
+    "prevInTime": 11104, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1086266502", 
+    "canDelete": false, 
+    "nextInTopic": 11133, 
+    "prevInTopic": 11099, 
+    "headers": {
+        "inReplyToHeader": "PDVGMzZCNzQ4LUI0QTktMTFEOC1CNDJBLTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "messageIdInHeader": "PDQwQkYxQzg2LjkwODA0MDBAbTNwLmNvLnVrPg==", 
+        "referencesHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VBQkNNQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPiA8NUYzNkI3NDgtQjRBOS0xMUQ4LUI0MkEtMDAwQTk1QTU0N0JDQGNsYXJrd2FyZS5jb20+"
+    }
+}

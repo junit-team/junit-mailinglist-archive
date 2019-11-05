@@ -1,0 +1,29 @@
+{
+    "topicId": 1378, 
+    "postDate": "991507637", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "hFxPWXS1NMmFGe0KsmO18mT4lRraLbNj77YAxECBfK-GLsUsDnpmq2dgmWXIPm0wubCCEoZUAM3ik8EKQSfbySrf2Q2OGg", 
+    "nextInTime": 1382, 
+    "userId": 0, 
+    "prevInTime": 1380, 
+    "prevInTopic": 1380, 
+    "headers": {
+        "messageIdInHeader": "PDNCMTkzNEI1LjYwNjA4MDBAY2xhcmt3YXJlLmNvbT4=", 
+        "referencesHeader": "PDQxNjBFNkZDMDhBQkQyMTE5MUYwMDA4MDVGODU3RTkzMDFCN0NEOThAbWFpbC5pbnN5c3RlbXMuY2E+"
+    }, 
+    "authorName": "Mike Clark", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "Just to rule out the possibility that another thread is removing the last element from the vector in between the isEmpty() and remove() statements, you could", 
+    "contentTrasformed": false, 
+    "msgId": 1381, 
+    "nextInTopic": 1384, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 2 Jun 2001 18:47:48 -0000\r\nReceived: (qmail 50329 invoked from network); 2 Jun 2001 18:47:47 -0000\r\nReceived: from unknown (10.1.10.27) by l9.egroups.com with QMQP; 2 Jun 2001 18:47:47 -0000\r\nReceived: from unknown (HELO wren.mail.pas.earthlink.net) (207.217.121.64) by mta2 with SMTP; 2 Jun 2001 18:47:46 -0000\r\nReceived: from clarkware.com (dialup-209.245.12.77.Dial1.Denver1.Level3.net [209.245.12.77]) by wren.mail.pas.earthlink.net (8.9.3/8.9.3) with ESMTP id LAA20438 for &lt;junit@yahoogroups.com&gt;; Sat, 2 Jun 2001 11:47:54 -0700 (PDT)\r\nMessage-ID: &lt;3B1934B5.6060800@...&gt;\r\nDate: Sat, 02 Jun 2001 12:47:17 -0600\r\nOrganization: Clarkware Consulting\r\nUser-Agent: Mozilla/5.0 (Windows; U; WinNT4.0; en-US; m18) Gecko/20010131 Netscape6/6.01\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Off-topic: How is ArrayIndexOutOfBounds possible?\r\nReferences: &lt;4160E6FC08ABD21191F000805F857E9301B7CD98@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Mike Clark &lt;mike@...&gt;\r\n\r\nJust to rule out the possibility that another thread is removing the \nlast element from the vector in between the isEmpty() and remove() \nstatements, you could explicitly synchronize the steps, as in\n\n     synchronized(inMsgQueue) {\n         if(!inMsgQueue.isEmpty()) {\n             msg = (SimpleMsg) inMsgQueue.remove(0);\n         }\n     }\n\nJust something to try...\n\nMike\n\n-- \nMike Clark\nClarkware Consulting, Inc.\nCustom Software Architecture, Design,\nDevelopment, and Performance Consulting\nhttp://www.clarkware.com\n\nPeter Spitz wrote:\n\n&gt; The only thing I can think of is that the isEmpty() function is returning a\n&gt; value of &quot;false&quot; even if the array is empty. I&#39;d put in a test for that.\n&gt; This sounds silly to me even as I&#39;m typing it, but it&#39;s the best I can do\n&gt; and maybe it will trigger some other helpful thoughts.  \n&gt; \n&gt; Peter\n&gt; \n&gt; -----Original Message-----\n&gt; From: James Sinnamon\n&gt; To: junit@yahoogroups.com\n&gt; Sent: 6/2/2001 6:13 AM\n&gt; Subject: [junit] Off-topic: How is ArrayIndexOutOfBounds possible?\n&gt; \n&gt; Dear Junit Users,\n&gt; \n&gt; Sorry for this off-topic message, but it is posible tah someone may be\n&gt; able\n&gt; to offer\n&gt; some useful advice:\n&gt; \n&gt; When I tested a program recently,  I got the error:\n&gt; \n&gt; java.lang.ArrayIndexOutOfBoundsException: Array index out of range: 0\n&gt;         at java.util.Vector.remove(Vector.java:806)\n&gt;         at org.multipi.ActorMailSorter.run(ActorMailSorter.java:33)\n&gt;         at java.lang.Thread.run(Thread.java:484)\n&gt; \n&gt; ... it seems to be telling me that an attempt to remove element 0\n&gt; of a vector, is causing a fatal error.  The code which triggered this\n&gt; error\n&gt; is:\n&gt; \n&gt;       if(!inMsgQueue.isEmpty()) {\n&gt;         msg = (SimpleMsg) inMsgQueue.remove(0);\n&gt;         ...\n&gt; \n&gt; .... where inMsgQueue is a Vector.  Now assuming that there are no other\n&gt; Thread\n&gt; processes trying to remove elements from the vector (and I believe this\n&gt; to\n&gt; be the\n&gt; case), should it be possible for this error to occur?  From my\n&gt; understanding\n&gt; of  Vector\n&gt; objects, this should not be possible.\n&gt; \n&gt; TIA.\n&gt; \n&gt; regards,\n&gt; \n&gt; James\n&gt; \n&gt; \n&gt; \n&gt; --\n&gt; James Sinnamon  sinnamon@...\n&gt; \n&gt; ph 07 46315566,  0412 319669\n&gt; PO Box 517 Darling Heights QLD 4350\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; Yahoo! Groups Sponsor\t \n&gt;  \n&gt; &lt;http://rd.yahoo.com/M=202225.1433492.3029752.1269402/D=egroupmail/S=170\n&gt; 0007181:N/A=675622/*http://altfarm.mediaplex.com/ad/ck/1177-3936-1039-2?\n&gt; mpt=991476798&gt; []\t \n&gt;  \n&gt; &lt;http://us.adserver.yahoo.com/l?M=202225.1433492.3029752.1269402/D=egrou\n&gt; pmail/S=1700007181:N/A=675622/rand=592905096&gt; \t\n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt; \n&gt; \n&gt; Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service\n&gt; &lt;http://docs.yahoo.com/info/terms/&gt; . \n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;  \n&gt; \n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "Re: [junit] Off-topic: How is ArrayIndexOutOfBounds possible?"
+}

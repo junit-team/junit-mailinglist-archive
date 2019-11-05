@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 23193, 
+    "senderId": "pwWZ2Ti2RN_IRXTaLx56bwPpj5BhMiRKb_uzhTOdTJjDo_Psj6_yyxJA4Y-Ie1Fr5JAit1-QzMlt6gKoEroFkcGA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: accessing JUnit runner/suite objects at runtime (or... rule for a suite)", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Ah, I meant a custom suite runner.  Here s something you could do: @IncludeCategory(FailingTests.class) @RunWith(MyCategories.class) ", 
+    "msgId": 23192, 
+    "profile": "dsaff", 
+    "topicId": 23179, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-726820445\">Ah, I meant a custom suite runner.  Here&#39;s something you could do:<br/>\n<br/>\n@IncludeCategory(FailingTests.class)<br/>\n@RunWith(MyCategories.class)<br/>\n@SuiteClasses(AllTests.class)<br/>\npublic class FailingTests {<br/>\n  public static class MyCategories extends Categories {<br/>\n    public MyCategories(Class&lt;?&gt; klass, final RunnerBuilder builder)<br/>\nthrows InitializationError {<br/>\n      super(klass, new RunnerBuilder() {<br/>\n        public Runner runnerForClass(Class&lt;?&gt; testClass) throws Throwable {<br/>\n           if (somethingIsWrongWithYourAnnotations(testClass))<br/>\n              throw InitializationError(&quot;Fix your annotations!&quot;);<br/>\n           else<br/>\n              return builder.runnerForClass(testClass);<br/>\n        }<br/>\n      });<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\nIt could be prettier, but this should work.<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Tue, Jan 25, 2011 at 3:02 PM, sdrothco &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:steve.roth@...\">steve.roth@...</a>&gt; wrote:<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@...&gt; wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt; Steve,<br/>\n&gt;&gt;<br/>\n&gt;&gt; Do you have a custom Suite class?  You could use that to loop through<br/>\n&gt;&gt; the included test cases and validate each one.<br/>\n&gt;&gt;<br/>\n&gt;&gt;    David Saff<br/>\n&gt;<br/>\n&gt; Yes, I have a custom Suite class.  That approach sounds great.<br/>\n&gt;<br/>\n&gt; But how can I access the test cases within the suite?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; This is my Suite class:<br/>\n&gt;<br/>\n&gt; /**<br/>\n&gt;  * Test suite to run all tests annotated with<br/>\n&gt;  * @Category(FailingTests.class)<br/>\n&gt;  */<br/>\n&gt; @IncludeCategory(FailingTests.class)<br/>\n&gt; @RunWith(Categories.class)<br/>\n&gt; @SuiteClasses(AllTests.class)<br/>\n&gt; public class FailingTests { }<br/>\n&gt;<br/>\n&gt; and the AllTests Suite is:<br/>\n&gt;<br/>\n&gt; @RunWith(ClasspathSuite.class)<br/>\n&gt; public class AllTests { }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23191, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1295987410", 
+    "canDelete": false, 
+    "nextInTopic": 23209, 
+    "prevInTopic": 23190, 
+    "headers": {
+        "inReplyToHeader": "PGlobmE4ZytsNjRlQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGlrenktMlMtVGtPZ3ctMThHaWRKS3gwZXdTd1FGUVd5UGt4eWd4U0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PEFBTkxrVGluSDJLMFRyS3BWQjhYZENqUWVaSzdSanZwRGIxcXdMdVRuSGJOYUBtYWlsLmdtYWlsLmNvbT4JPGlobmE4ZytsNjRlQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 944, 
+    "postDate": "987004569", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "knvms@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "0_h8Yiqy8OVDHni_tHU5Mid-UXByGt2mkEZT_abuA5poPRksOGG2qShaN9EC229sqUQbpQczKPE", 
+    "nextInTime": 949, 
+    "userId": 0, 
+    "prevInTime": 947, 
+    "prevInTopic": 947, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDEwNDExMTQzMDM5LjYxNDEzLnFtYWlsQHdlYjEwNTA0Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDliMXVxcSs0dXZwQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "knvms@hotmail.com", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "Hi Mike First thanx for mail. Exactly I ve used the way u suggested with different load conditions for each test before trying explicity with ThreadedTest. ", 
+    "contentTrasformed": false, 
+    "msgId": 948, 
+    "nextInTopic": 950, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;knvms@...&gt;\r\nX-Sender: knvms@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_1); 11 Apr 2001 15:56:11 -0000\r\nReceived: (qmail 91093 invoked from network); 11 Apr 2001 15:56:11 -0000\r\nReceived: from unknown (10.1.10.26) by l10.egroups.com with QMQP; 11 Apr 2001 15:56:11 -0000\r\nReceived: from unknown (HELO c9.egroups.com) (10.1.2.66) by mta1 with SMTP; 11 Apr 2001 15:56:10 -0000\r\nX-eGroups-Return: knvms@...\r\nReceived: from [10.1.2.27] by c9.egroups.com with NNFMP; 11 Apr 2001 15:56:10 -0000\r\nDate: Wed, 11 Apr 2001 15:56:09 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: JunitPerf ThreadedTest\r\nMessage-ID: &lt;9b1uqq+4uvp@...&gt;\r\nIn-Reply-To: &lt;20010411143039.61413.qmail@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3100\r\nX-Mailer: eGroups Message Poster\r\nFrom: knvms@...\r\n\r\nHi Mike\nFirst thanx for mail.\nExactly I&#39;ve used the way u suggested with different load conditions \nfor each test before trying explicity with ThreadedTest. \n\nPlease observe the scenario:\n\nI&#39;ve have a single test case with three tests: TransTx1(create and \ntest a XXBean),TransTx2(Create and test a YYBean),TransTx2(Create and \nRemove XXBean).Conditions for tests are : Concurrent users for \nTx1 :20 Tx2:20 and Tx3: 10; Load Profile should be sleeping for 10 \nsecs and over 15 minutes. My measurement should be Total Quantity of \neach transaction type, avg xact time of each transaction type.\nCould u help me to implement this?\n\nAdvance thanx.\nMadhu\n\n--- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:\n&gt; When you construct a LoadTest, a ThreadedTest and its associated\n&gt; ThreadBarrier are used by default, so there&#39;s no need to decorate \nthe\n&gt; LoadTest instance as a ThreadedTest.  Here&#39;s an example suite() \nmethod\n&gt; that adds two LoadTest instances to the suite, each with different \nload\n&gt; testing parameters:\n&gt; \n&gt;     public static Test suite() {\n&gt;         TestSuite suite = new TestSuite();\n&gt; \n&gt;         Timer timer = new ConstantTimer(0);\n&gt; \n&gt;         int maxUsers = 1;\n&gt;         int iterations = 50;\n&gt;         long maxElapsedTime = 60000;\n&gt; \n&gt;         Test testCase1 = new ExampleTestCase(&quot;testFoo&quot;);\n&gt;         Test loadTest1 = new LoadTest(testCase1, maxUsers, \niterations,\n&gt; timer);\n&gt;         Test timedTest1 = new TimedTest(loadTest1, maxElapsedTime);\n&gt; \n&gt;         maxUsers = 10;\n&gt;         iterations = 100;\n&gt;         maxElapsedTime = 120000;\n&gt; \n&gt;         Test testCase2 = new ExampleTestCase(&quot;testBar&quot;);\n&gt;         Test loadTest2 = new LoadTest(testCase2, maxUsers, \niterations,\n&gt; timer);\n&gt;         Test timedTest2 = new TimedTest(loadTest2, maxElapsedTime);\n&gt; \n&gt;         suite.addTest(timedTest1);\n&gt;         suite.addTest(timedTest2);\n&gt; \n&gt;         return suite;\n&gt;     }\n&gt; \n&gt; Mike\n&gt; \n&gt; --- knvms@h... wrote:\n&gt; &gt; Hi All\n&gt; &gt; pl go through the code:\n&gt; &gt;       {\n&gt; &gt;       .....\n&gt; &gt; \n&gt; &gt;       TestSuite suite = new TestSuite();\n&gt; &gt;       ThreadBarrier barrier = new ThreadBarrier(3);\n&gt; &gt;       Timer timer  = new ConstantTimer(10000);\n&gt; &gt; \n&gt; &gt;       PerfTestCaseABC testCase = new PerfTestCaseABC(testName);\n&gt; &gt; \n&gt; &gt;       Test loadTest1 = new LoadTest(testCase, noUsers, iter, \ntimer);\n&gt; &gt; \n&gt; &gt;       Test threadTest1 = new ThreadedTest(loadTest1);\n&gt; &gt;       \n&gt; &gt;       suite.addTest(threadTest1);\n&gt; &gt;       junit.textui.TestRunner.run(suite);\n&gt; &gt;       }\n&gt; &gt; 1) Is it the way to run the ThreadedTest class?\n&gt; &gt; 2) My requirement is to test some test cases with different\n&gt; &gt; parameters\n&gt; &gt; (like no of users, iterations..)How can I do it??\n&gt; &gt; \n&gt; &gt; Thanx to all\n&gt; &gt; Madhu\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; ------------------------ Yahoo! Groups Sponsor\n&gt; &gt; \n&gt; &gt; To unsubscribe from this group, send an email to:\n&gt; &gt; junit-unsubscribe@y...\n&gt; &gt;  \n&gt; &gt; \n&gt; &gt; Your use of Yahoo! Groups is subject to\n&gt; &gt; http://docs.yahoo.com/info/terms/ \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; \n&gt; \n&gt; __________________________________________________\n&gt; Do You Yahoo!?\n&gt; Get email at your own domain with Yahoo! Mail. \n&gt; http://personal.mail.yahoo.com/\n\n\n", 
+    "subject": "Re: JunitPerf ThreadedTest"
+}

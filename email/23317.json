@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 23318, 
+    "senderId": "MhxWhdWr3dpvNB_n_HJX3DAivbSpuKcupgfbkXtYIN644muFmxPIPiT3S_iM2c9XhSmQ6FCpsBwiB8yjMRZHjy9DSOOF3EvhEbdEbgOgaxmwrA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Mark failed assumptions as ignored?", 
+    "from": "Joakim Ohlrogge &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Thanks for the update (and the welcome back). Yes, it seems like there is a bit of a problem that eclipse has gone a bit stale. I can imagine that it puts", 
+    "msgId": 23317, 
+    "profile": "j0hlrogge", 
+    "topicId": 23297, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-21839390\">Thanks for the update (and the welcome back).<br/>\n<br/>\nYes, it seems like there is a bit of a problem that eclipse has gone a bit<br/>\nstale. I can imagine that it puts constraints on the JUnit development. I am<br/>\ncurrently loosing myself in Ensime-land (silly I know) so it will be a while<br/>\nbefore I come to my senses and decide that it&#39;s a good idea to make stuff<br/>\nwork in eclipse.<br/>\n<br/>\nMeanwhile, here is my latest yak-shaving effort related to JUnit. Poju4s:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://johlrogge.wordpress.com/2011/03/11/poju4s-an-attempt-to-make-junit-a-bit-more-scala-friendly/\">http://johlrogge.wordpress.com/2011/03/11/poju4s-an-attempt-to-make-junit-a-bit-more-scala-friendly/</a><br/>\n<br/>\nEnjoy! :)<br/>\n<br/>\n/J<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, Mar 2, 2011 at 5:51 PM, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:david@...\">david@...</a>&gt; wrote:<br/>\n<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Joakim,<br/>\n&gt;<br/>\n&gt; Welcome back. :-)<br/>\n&gt;<br/>\n&gt; The idea always was to have assumption failures be treated the same as<br/>\n&gt; ignored tests. Unfortunately, there was no way to make that happen in<br/>\n&gt; Eclipse without changing Eclipse, and we lost momentum on the feature.<br/>\n&gt; If you have some energy to push matters forward, or patience to wait<br/>\n&gt; until I do, or tenacity to keep reminding me, I&#39;d appreciate any or<br/>\n&gt; all.<br/>\n&gt;<br/>\n&gt; David Saff<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; On Sat, Feb 26, 2011 at 10:30 AM, Joakim Ohlrogge<br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a>&gt; wrote:<br/>\n&gt; &gt; Hi I have not followed JUnit for a while. I have mostly been using<br/>\n&gt; &gt; ScalaTest and Midje. Today I felt that using JUnit with scala might<br/>\n&gt; &gt; not be the worst idea. I feel that the scala tools are lacking in...<br/>\n&gt; &gt; inderstanding of the TDD/BDD approach (which is just a feeling). Long<br/>\n&gt; &gt; story short, I want to do something like scalaTests pendingUntliFixed<br/>\n&gt; &gt; which basically makrs a failing test as ignored until it stops failing<br/>\n&gt; &gt; where pendingUntilFixed will start failing the test saying that &quot;test<br/>\n&gt; &gt; was marked as pending but did not throw an exception&quot;  (so that you<br/>\n&gt; &gt; will not accidentally leave pendingUntilFixed in for code tests that<br/>\n&gt; &gt; work.<br/>\n&gt; &gt;<br/>\n&gt; &gt; I realized that this is very easy to do in JUnit from scala. Something<br/>\n&gt; &gt; like this:<br/>\n&gt; &gt;<br/>\n&gt; &gt;  def pendingUntilFixed(body: =&gt; Unit) = {<br/>\n&gt; &gt;    (try {<br/>\n&gt; &gt;      body<br/>\n&gt; &gt;      false<br/>\n&gt; &gt;    }<br/>\n&gt; &gt;    catch {<br/>\n&gt; &gt;      case e:Throwable =&gt; true<br/>\n&gt; &gt;    }) match {<br/>\n&gt; &gt;      case false =&gt; error(&quot;Test was marked as pending but did not fail&quot;)<br/>\n&gt; &gt;      case true =&gt; ()<br/>\n&gt; &gt;    }<br/>\n&gt; &gt;  }<br/>\n&gt; &gt;<br/>\n&gt; &gt;  @Test<br/>\n&gt; &gt;  def someFailingTest = pendingUntilFixed {<br/>\n&gt; &gt;    assertThat(true, is(false))<br/>\n&gt; &gt;  }<br/>\n&gt; &gt;<br/>\n&gt; &gt;  @Test<br/>\n&gt; &gt;  def someFixedTest = pendingUntilFixed {<br/>\n&gt; &gt;    assertThat(true, is(true))<br/>\n&gt; &gt;  }<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; The problem is that pending tests are marked as succeding when they<br/>\n&gt; &gt; fail. It would be cool if I could somehow mark them as Ignored<br/>\n&gt; &gt; instead. Is there some exception I could throe that would accomplish<br/>\n&gt; &gt; this? I sort of thought that AssmptionError would be logical to be<br/>\n&gt; &gt; displayed as ignored instead of succeeding hence the title.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Ideas?<br/>\n&gt; &gt; -----------------------------------------------------<br/>\n&gt; &gt; Joakim Ohlrogge<br/>\n&gt; &gt; Agical AB<br/>\n&gt; &gt; V�sterl�nggatan 79, 2 tr<br/>\n&gt; &gt; 111 29 Stockholm, SWEDEN<br/>\n&gt; &gt;<br/>\n&gt; &gt; Mobile: +46-708-754004<br/>\n&gt; &gt; Blog: johlrogge.wordpress.com<br/>\n&gt; &gt; E-mail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a><br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; ------------------------------------<br/>\n&gt; &gt;<br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 23316, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1299869652", 
+    "canDelete": false, 
+    "nextInTopic": 23318, 
+    "prevInTopic": 23303, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGk9di15dENIVXRHSDQ2PXhVU2ZBRC1zb3p4VzFVb3FRU2JiMTUyWkBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PEFBTkxrVGluY0U2bU1ONW9GdWpjU3RabnpKRHpLZnpzMml6OEFHeTViREFSUUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PEFBTkxrVGluS0xVVUh3Q2V4MUc5UV9oWFY0SFN2MTIrWTc3OFFucnh2dmFva0BtYWlsLmdtYWlsLmNvbT4gPEFBTkxrVGk9di15dENIVXRHSDQ2PXhVU2ZBRC1zb3p4VzFVb3FRU2JiMTUyWkBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

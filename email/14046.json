@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 14047, 
+    "senderId": "SqlztX2JY8bGLCLa-3GcQCXZIH-ZqMiXnJXQLem_k79Tc18e2OT1hgahSPqhOuIHKbjek2iYbEmnVpB7lCcVgVxGISjz0Q5bhsTD", 
+    "systemMessage": true, 
+    "subject": "Using a Special Class Loader to test a Singleton", 
+    "from": "&quot;raycclough&quot; &lt;ray@...&gt;", 
+    "authorName": "raycclough", 
+    "msgSnippet": "I know that the JUnit community frowns on Singletons.  However I have a piece of code which uses a singleton, and I want to test it.  The singleton takes a", 
+    "msgId": 14046, 
+    "profile": "raycclough", 
+    "topicId": 14046, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 228922213, 
+    "messageBody": "<div id=\"ygrps-yiv-934285439\">I know that the JUnit community frowns on Singletons.  However I have<br/>\na piece of code which uses a singleton, and I want to test it.  The<br/>\nsingleton takes a &quot;Reader&quot; in it&#39;s constructor (which may be null, and<br/>\nthen it uses a properties file to create its data).  I want to test it<br/>\nusing various different data sets.  In line with that, I created a<br/>\ncustom Class Loader, and use Reflection to create the object.  It<br/>\nworks great (except, of course, where it doesn&#39;t).  The reflexively<br/>\nobtained constructor returns an object of type &#39;Object&#39;, which the<br/>\ndebugger says has the correct underlying type, and it contains the<br/>\ncorrect data, but I cannot Cast it to the type it needs to be.  Any<br/>\nhint to what I&#39;m doing wrong?  Thanks for any advice you can give me<br/>\non this.<br/>\n<br/>\nHere&#39;s the relevant code from the JUnit &#39;setUp()&#39; method:<br/>\n\t<br/>\n//////// start code\t<br/>\ntry {<br/>\n    // since the Controller is a singleton, and may have been loaded<br/>\n    // before with different set-up data, use a ClassLoader to<br/>\n    // create a new instance of it.  This requires using Java<br/>\n    // Reflection to instantiate the object.  If we just called<br/>\n    // &quot;classForName()&quot;, the system class loader would be asked to<br/>\n    // return any previously loaded instance of the class.  Since<br/>\n    // this is what we want to avoid, a special ClassLoader returns<br/>\n    // a new instance of the class.<br/>\n    SpecialClassLoader loader = new SpecialClassLoader();<br/>\n    Class ctlrClass = loader.findClass(\t\t\t<br/>\n&quot;rdyne_rdcs.comm_gateway.controller.DefaultGatewayController&quot;);<br/>\n\t\t\t\t\t\t\t\t<br/>\n    // instantiate the controller using reflection<br/>\n    Class[] paramTypes = { Reader.class };<br/>\n    Object[] args = {reader};    // contains the &quot;test data&quot;<br/>\n\t\t\t<br/>\n    Constructor constructor = <br/>\nctlrClass.getDeclaredConstructor(paramTypes);<br/>\n    constructor.setAccessible(true);<br/>\n    Object o = constructor.newInstance(args);<br/>\n\t\t\t<br/>\n    //Method m = ctlrClass.getMethod(&quot;getController&quot;,paramTypes);<br/>\n    //m.setAccessible(true);<br/>\n    //Object o = m.invoke(null,args);<br/>\n\t\t\t<br/>\n// TODO  - Figure this out!!!!!!!!!!!!!!!!!!<br/>\n// unfortunately somehow the Object may not be cast to the required<br/>\n// class &quot;DefaultGatewayController&quot;, or even to its interface.<br/>\n// This is true whether the &quot;Constructor&quot; method or the &quot;Method&quot;<br/>\n// method is used.  <br/>\n<br/>\n    if ( DefaultGatewayController.class.isInstance(o) ) {<br/>\n        // &quot;o&quot; may safely be cast as a &quot;DefaultGatewayController&quot;<br/>\n\tSystem.out.println(&quot;YOWSA&quot;);<br/>\n\tctlr = (DefaultGatewayController)o;<br/>\n    } else {<br/>\n\tSystem.out.println(&quot;OHNO&quot;);<br/>\n\tSystem.out.println(&quot;Class: &quot; + o.getClass().getName());<br/>\n    }<br/>\n<br/>\n} catch (ClassNotFoundException cnfe) {<br/>\n\tcnfe.printStackTrace();<br/>\n} catch (NoSuchMethodException nsme) {<br/>\n\tnsme.printStackTrace();<br/>\n} catch (IllegalAccessException iae) {<br/>\n\tiae.printStackTrace();<br/>\n} catch (InvocationTargetException ite) {<br/>\n\tite.printStackTrace();<br/>\n} catch (InstantiationException ie) {<br/>\n\tie.printStackTrace(); <br/>\n} catch (ClassCastException cce) {<br/>\n\tcce.printStackTrace();<br/>\n}<br/>\n<br/>\n//////// end code<br/>\n<br/>\nThis always goes thru the &quot;OHNO&quot; branch, although the output of the<br/>\nclass name is what it should be to allow me to cast it.  I&#39;m fairly<br/>\nnew to JUnit, and I&#39;m really new to custom Class Loaders, but it seems<br/>\nto me that this should work easily and well.  Thanks,<br/>\n- Ray Clough<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:ray@...\">ray@...</a></div>", 
+    "prevInTime": 14045, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1119918063", 
+    "canDelete": false, 
+    "nextInTopic": 14051, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGQ5cTU1Zis3NjVrQGVHcm91cHMuY29tPg=="
+    }
+}

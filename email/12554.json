@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12555, 
+    "senderId": "RJVZ2UC6ducPOLl93_6CclIsn9M1OdAoF1knipkHr7eSm0VWRK97zcifqDudZulq-uZjH79kCjagBy_ulZN3LwZE00NO", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Multithreading: Testing scheduled method invocation?!", 
+    "from": "Brett Neumeier &lt;random@...&gt;", 
+    "authorName": "Brett Neumeier", 
+    "msgSnippet": "... I have done that as well.  My Clock interface encapsulates System.currentTimeMillis(), new Date(), Calendar.getInstance(), and Thread.sleep().  There may", 
+    "msgId": 12554, 
+    "profile": "xptlq", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 122508602, 
+    "messageBody": "<div id=\"ygrps-yiv-1557821921\">On Mon, 2004-12-27 at 10:07 -0700, Mike Clark wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I tried writing some learning tests for Quartz a couple months back.  <br/>\n&gt; For what it&#39;s worth, I ran into the same timing issues.<br/>\n&gt; <br/>\n&gt; Before reaching for sleep(), I tried to refactor Quartz innards so that <br/>\n&gt; the internal clock could be programmatically advanced.  Unfortunately, <br/>\n&gt; a direct call to System.currentTimeMillis() was duplicated in many <br/>\n&gt; places and even after consolidating all those calls through an <br/>\n&gt; interface I was unable to mock the clock.<br/>\n<br/>\n </span></blockquote>I have done that as well.  My Clock interface encapsulates<br/>\nSystem.currentTimeMillis(), new Date(), Calendar.getInstance(), and<br/>\nThread.sleep().  There may be other standard API mechanisms that operate<br/>\non the current system time, but those were the only ones in use in the<br/>\ncode I was refactoring.<br/>\n<br/>\nMost of those were no problem, but pause (the method that encapsulates<br/>\nThread.sleep()) was very difficult to fake.  The problem is that when<br/>\nthread A calls pause, all other threads have to be given a chance to<br/>\ncall pause before thread A is woken up.  This is tricky because thread<br/>\nscheduling in Java is inherently unpredictable, and in Java 1.4 and<br/>\nearlier there is no way to determine whether any given thread is<br/>\nrunnable or not.  As a result the FakeClock is as reliable as most<br/>\nmechanisms for testing multi-threaded code: not perfectly.  <br/>\n<br/>\nBut the tests are an order of magnitude faster than they were when they<br/>\njust used Thread.sleep(), and they are as reliable as they were before,<br/>\nso that&#39;s good enough for me.<br/>\n<br/>\n(Incidentally, in Java 1.5, you can call getState() on a Thread and<br/>\nthereby determine whether it is currently runnable, blocked, waiting, in<br/>\na timed wait, etc.  But I&#39;m stuck with Java 1.4 at the moment.)<br/>\n<br/>\nThe code for my Clock interface, and the SystemClock and FakeClock<br/>\nimplementations, isn&#39;t currently online anywhere, but if anyone is<br/>\ninterested let me know and I&#39;ll send it over.<br/>\n<br/>\nI don&#39;t think there are any really good solutions to testing<br/>\nmultithreaded code in Java at the moment.  The only general approach<br/>\nI&#39;ve thought of that SHOULD work properly is to use JDI to launch a<br/>\nseparate JVM, and execute the test in that other JVM.  (JDI can be used<br/>\nto set breakpoints and method entry watchers, and thereby control<br/>\nscheduling absolutely in the test VM.)  But that&#39;s a lot of work, and I<br/>\nhaven&#39;t yet been sufficiently motivated to build such a facility.<br/>\n<br/>\nCheers,<br/>\n<br/>\nbn<br/>\n<br/>\n-- <br/>\nBrett Neumeier &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:random@...\">random@...</a>&gt;</div>", 
+    "prevInTime": 12553, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1104198336", 
+    "canDelete": false, 
+    "nextInTopic": 12555, 
+    "prevInTopic": 12553, 
+    "headers": {
+        "inReplyToHeader": "PEJGRkNDODgxLTU4MjktMTFEOS05ODM5LTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "messageIdInHeader": "PDExMDQxOTgzMzcuMTAzMDEuNDcuY2FtZWxAYW5vbWUucm5kLmN4Pg==", 
+        "referencesHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPgkgPEJGRkNDODgxLTU4MjktMTFEOS05ODM5LTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg=="
+    }
+}

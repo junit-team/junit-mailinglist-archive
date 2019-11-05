@@ -1,0 +1,28 @@
+{
+    "topicId": 1258, 
+    "postDate": "990606872", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Ghielli Patrick &lt;Patrick.Ghielli@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "KhLoODclwhNveeulg5H2kn0QLPuz4tTJTkJworX-bIQ6eQke-JYZyQqioWdaypI8PL6pwewuyYRevXDnfYAxABxEZcU2HqzzpkLhc-ZTAFpOdmpenz-2xg", 
+    "nextInTime": 1266, 
+    "userId": 0, 
+    "prevInTime": 1264, 
+    "prevInTopic": 1259, 
+    "headers": {
+        "messageIdInHeader": "PEU3NkY3MTVDMDQyOUQ1MTE4RjIxMDA1MDhCQjlFREVFMTE4RUFGQGhydGFkZXM3LmF0ZWEuYmU+"
+    }, 
+    "authorName": "Ghielli Patrick", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "Hi, I m back with my AllTests class. I made the suggested changes and I did some extensive testing. First, I tried to do the test with", 
+    "contentTrasformed": false, 
+    "msgId": 1265, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;Patrick.Ghielli@...&gt;\r\nX-Sender: Patrick.Ghielli@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 23 May 2001 08:34:47 -0000\r\nReceived: (qmail 24990 invoked from network); 23 May 2001 08:34:47 -0000\r\nReceived: from unknown (10.1.10.142) by l8.egroups.com with QMQP; 23 May 2001 08:34:47 -0000\r\nReceived: from unknown (HELO hrtades6.atea.be) (194.78.143.126) by mta3 with SMTP; 23 May 2001 08:34:46 -0000\r\nReceived: from hrtades3.atea.be (siemens.atea.be [139.10.143.68]) by hrtades6.atea.be with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13) id LFPS6R25; Wed, 23 May 2001 10:33:44 +0200\r\nReceived: by siemens.atea.be with Internet Mail Service (5.5.2653.19) id &lt;LN11NS53&gt;; Wed, 23 May 2001 10:34:00 +0200\r\nMessage-ID: &lt;E76F715C0429D5118F2100508BB9EDEE118EAF@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Testing all\r\nDate: Wed, 23 May 2001 10:34:32 +0200\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: Ghielli Patrick &lt;Patrick.Ghielli@...&gt;\r\n\r\nHi,\n\nI&#39;m back with my AllTests class. I made the suggested changes and I did some\nextensive testing.\nFirst, I tried to do the test with junit.servletui.TestRunner and I get the\nsame errors as before, even with the sample I got those errors.\nExecuting it from the commandline with junit.ui.TestRunner works fine.\nHowever using the same with the sample creates the following errors:\nExceptions in the junit.samples.AllTests:\nexecuting java junit.samples.AllTests\nException in thread &quot;main&quot; java.lang.NoSuchMethodError\n\tat junit.tests.AllTests.suite(AllTests.java:18)\n\tat junit.samples.AllTests.suite(AllTests.java:18)\n\tat junit.samples.AllTests.main(AllTests.java:12)\njava junit.textui.TestRunner junit.samples.AllTests\nCould not invoke the suite() method\n\nIt is essential for us to make it work from a servlet. Does the servletui\nwork different from the others and if so, how can we make this work or is\nthere an example that can point us to the right direction?\n\nthanx,\nPatrick.\n\n-----Original Message-----\nFrom: Mike Clark [mailto:mike@...]\nSent: dinsdag 22 mei 2001 16:36\nTo: junit@yahoogroups.com\nSubject: Re: [junit] Testing all\n\n\n--- Ghielli Patrick &lt;Patrick.Ghielli@...&gt; wrote:\n&gt; Hi all,\n&gt; \n&gt; I have written the following class to execute all my tests (only a\n&gt; few since\n&gt; we&#39;re just starting). I copied most of it from some example. It does\n&gt; not\n&gt; really work, however. If I include the constructor I get the error\n&gt; that\n&gt; there are no tests in AllTest. When I exclude the constructor I get\n&gt; the\n&gt; error that the class has no public constructor. Is there anyone that\n&gt; can\n&gt; shed a light on this problem.\n&gt; \n&gt; thanx and greetz,\n&gt; Patrick.\n&gt; \n&gt; \n&gt; import junit.framework.*;\n&gt; \n&gt; public class AllTests {\n&gt; \n&gt;     public AllTests(String testname){\n&gt; \t//super(testname);\n&gt;     }\n&gt;     \n&gt;     public static void main(String args[]){\n&gt; \tjunit.textui.TestRunner.run(suite());\n&gt;     }\n&gt; \n&gt;     public static Test suite(){\n&gt;     \tTestSuite t_suite= new TestSuite(&quot;All User tests&quot;);\n&gt; \tt_suite.addTest( UserServletTests.suite());\n&gt; \tt_suite.addTest( new TestSuite(UserServletTests.class));\n&gt; \tt_suite.addTest( UserTests.suite());\n&gt; \tt_suite.addTest( TestUserLogon.suite());\n&gt; \tt_suite.addTest( RegisterTest.suite());\n&gt; \tt_suite.addTest( junit.tests.AllTests.suite());\n&gt; \treturn t_suite;\n&gt;     }\n&gt; }\n&gt; \n\nIn the sample AllTests.java, the intent of the line\n\n    suite.addTest(junit.tests.AllTests.suite());\n\nis to add the AllTests class in a *different* package.  Notice that the\nsample is in the junit.samples packages, rather than the junit.tests\npackage.\n\nIn your case, you&#39;ll either want to remove this line or redefine it to\nadd an AllTests class from another package.\n\nMike\n\n\n=====\nMike Clark\nClarkware Consulting, Inc.\nCustom Software Architecture, Design, \nDevelopment, and Performance Consulting\nhttp://www.clarkware.com\n\n__________________________________________________\nDo You Yahoo!?\nYahoo! Auctions - buy the things you want at great prices\nhttp://auctions.yahoo.com/\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "RE: [junit] Testing all"
+}

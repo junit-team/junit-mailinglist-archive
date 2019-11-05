@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 23370, 
+    "senderId": "rcpCp2dz_a0lG8ez9pOfE6v2PC4VlDd-JNGqvtBUKl0Vc9jsLRtHZLqpYgO3OpF2yuKc0ktfzetVL7l2uZaiwyUPvs5LDJq6XJ-_BxEwHdYmk32RaZyZdiG5Nw7y7w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Is Reflection The best way of accessing private member variables and methods?", 
+    "from": "=?UTF-8?B?Q8OpZHJpYyBCZXVzdCDimZQ=?= &lt;cedric@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "To add to the good advice that s been given so far: you might also want to consider making your method more visible for testing and use an annotation or a", 
+    "msgId": 23369, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 33333 invoked from network); 31 Mar 2011 22:10:33 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m4.grp.sp2.yahoo.com with QMQP; 31 Mar 2011 22:10:33 -0000\r\nX-Received: from unknown (HELO mail-fx0-f45.google.com) (209.85.161.45)\n  by mta1.grp.sp2.yahoo.com with SMTP; 31 Mar 2011 22:10:32 -0000\r\nX-Received: by fxm2 with SMTP id 2so2591052fxm.4\n        for &lt;junit@yahoogroups.com&gt;; Thu, 31 Mar 2011 15:10:31 -0700 (PDT)\r\nX-Received: by 10.223.66.69 with SMTP id m5mr3416816fai.14.1301609430083; Thu,\n 31 Mar 2011 15:10:30 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.223.143.83 with HTTP; Thu, 31 Mar 2011 15:10:10 -0700 (PDT)\r\nIn-Reply-To: &lt;AANLkTik_NrkM_RTQpPaV9GfWQ9+mSAMT8pnHKx3Stm2S@...&gt;\r\nReferences: &lt;AANLkTinFFtyze91EqMOv__GXvZfc3HiqM7f=tA05O4iM@...&gt;\n &lt;AANLkTikNP3D6dt48Odwgc4xDYDJfRmzb1bN0==f=oLHm@...&gt; &lt;AANLkTik_NrkM_RTQpPaV9GfWQ9+mSAMT8pnHKx3Stm2S@...&gt;\r\nDate: Thu, 31 Mar 2011 15:10:10 -0700\r\nX-Google-Sender-Auth: XRRlhj4gN6pumUHo26YKh1GCg5Y\r\nMessage-ID: &lt;AANLkTin+GykkXzNPnUSXgw1X+y-t2Vxfr79cDUSr-cht@...&gt;\r\nTo: junit@yahoogroups.com\r\nCc: Bill Venners &lt;bill@...&gt;\r\nX-eGroups-Msg-Info: 2:4:8:0:2\r\nFrom: =?UTF-8?B?Q8OpZHJpYyBCZXVzdCDimZQ=?= &lt;cedric@...&gt;\r\nSubject: Re: [junit] Is Reflection The best way of accessing private member\n variables and methods?\r\nX-Yahoo-Group-Post: member; u=31449770; y=y6yKtBymP-bjtkp6TSv7nyPENNNtRXoayF8pXBbOBDhk\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nTo add to the good advice that&#39;s been given so far: you might also want to\n=\r\nconsider making your method more visible for testing and use an annotation\n=\r\nor a comment to say so (e.g. Google uses an annotation called\n@VisibleForTe=\r\nsting).\n\n-- \nC=E9dric\n\n\nOn Thu, Mar 31, 2011 at 1:20 PM, Bill Venners &lt;bill=\r\n@...&gt; wrote:\n\n&gt; Hi Malte,\n&gt;\n&gt; ScalaTest also has a PrivateMethodTest=\r\ner trait:\n&gt;\n&gt; http://scalatest.org/scaladoc-1.3/org/scalatest/PrivateMethod=\r\nTester.html\n&gt;\n&gt; I agree private methods rarely need to be tested directly, =\r\nbut sometimes it\n&gt; is more practical to do so. An specific example is in Sc=\r\nalaTest I have a\n&gt; private method that parses command line arguments to the=\r\n Runner\n&gt; application&#39;s main method into a nice data structure. This method=\r\n is used\n&gt; by\n&gt; main only, so I stuck it in the same &quot;class&quot; (actually an o=\r\nbject in Scala).\n&gt; To test that method through the public interface, I&#39;d ne=\r\ned to invoke main\n&gt; and figure out if arguments had their intended effect b=\r\ny capturing all\n&gt; kinds\n&gt; of side effects. That wasn&#39;t worth it to me, and =\r\nthat method really feels\n&gt; like a private helper method of the Runner class=\r\n, not some general utility\n&gt; I&#39;d factor out into its own class. Being marke=\r\nd private communicates\n&gt; something important about the programmer&#39;s intent =\r\nto later readers of the\n&gt; code. So rather than make it package access or fa=\r\nctor it out to make it\n&gt; more\n&gt; easily testable by giving it in my view a l=\r\ness appropriate design, I just\n&gt; tested it via PrivateMethodTester.\n&gt;\n&gt; Bil=\r\nl\n&gt;\n&gt; On Thu, Mar 31, 2011 at 11:56 AM, Malte Finsterwalder &lt;\n&gt; malte@finst=\r\nerwalder.name&gt; wrote:\n&gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; On 31 March 2011 18:04, Gabriele Kahlou=\r\nt &lt;gabriele@...&gt;\n&gt; wrote:\n&gt; &gt; &gt; maybe you are thinking of dp4j.=\r\ncom , also listed  in junit&#39;s tools\n&gt; &gt; &gt; page&lt;http://www.junit.org/taxonom=\r\ny/term/7&gt;.\n&gt; &gt; &gt; With it the reflection api is injected for you at compile-=\r\ntime, seeing\n&gt; &gt; that\n&gt; &gt; &gt; you are using JUnit&#39;s 4 @Test annotation.\n&gt; &gt;\n&gt;=\r\n &gt; Yes, that was the tool that I was thinking of.\n&gt; &gt; Thanks!\n&gt; &gt;\n&gt; &gt; Greet=\r\nings,\n&gt; &gt; Malte\n&gt; &gt;\n&gt; &gt;\n&gt;\n&gt;\n&gt;\n&gt; --\n&gt; Bill Venners\n&gt; Artima, Inc.\n&gt; http://w=\r\nww.artima.com\n&gt;\n&gt;\n&gt; [Non-text portions of this message have been removed]\n&gt;=\r\n\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;=\r\n\n\n\n-- \nC=E9dric\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 23362, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 31449770, 
+    "prevInTime": 23368, 
+    "contentTrasformed": false, 
+    "postDate": "1301609410", 
+    "canDelete": false, 
+    "nextInTopic": 23370, 
+    "prevInTopic": 23368, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGlrX05ya01fUlRRcFBhVjlHZldROSttU0FNVDhwbkhLeDNTdG0yU0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PEFBTkxrVGluK0d5a2tYek5QblVTWGd3MVgreS10MlZ4ZnI3OWNEVVNyLWNodEBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PEFBTkxrVGluRkZ0eXplOTFFcU1Pdl9fR1h2WmZjM0hpcU03Zj10QTA1TzRpTUBtYWlsLmdtYWlsLmNvbT4gPEFBTkxrVGlrTlAzRDZkdDQ4T2R3Z2M0eERZREpmUm16YjFiTjA9PWY9b0xIbUBtYWlsLmdtYWlsLmNvbT4gPEFBTkxrVGlrX05ya01fUlRRcFBhVjlHZldROSttU0FNVDhwbkhLeDNTdG0yU0BtYWlsLmdtYWlsLmNvbT4="
+    }
+}

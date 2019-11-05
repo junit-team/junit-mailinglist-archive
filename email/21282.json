@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 21283, 
+    "senderId": "KICQppreAV-KrfQ8OcALpvqTlWX7Q-XHzW_1Lbgdobwy5dQzrWlv1RaFbZG2R1tZUfMLv41LPUt3IR4xcJAqaFcumTJTqFl7AJI9xuiABQ", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Wrapping external tests within JUnit 4", 
+    "from": "&quot;Arnaud Bailly&quot; &lt;arnaud.oqube@...&gt;", 
+    "authorName": "Arnaud Bailly", 
+    "msgSnippet": "done. http://sourceforge.net/tracker/index.php?func=detail&aid=2503995&group_id=15278&atid=365278", 
+    "msgId": 21282, 
+    "profile": "arnaud.baillly", 
+    "topicId": 21199, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 371972262, 
+    "messageBody": "<div id=\"ygrps-yiv-1858282567\">done.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://sourceforge.net/tracker/index.php?func=detail&aid=2503995&group_id=15278&atid=365278\">http://sourceforge.net/tracker/index.php?func=detail&aid=2503995&group_id=15278&atid=365278</a><br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Tue, Jan 13, 2009 at 2:33 AM, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:david@...\">david@...</a>&gt; wrote:<br/>\n&gt; I meant expanding the visibility of getParametersList.<br/>\n&gt;<br/>\n&gt; David Saff<br/>\n&gt;<br/>\n&gt; On Mon, Jan 12, 2009 at 8:26 PM, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:david@...\">david@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;&gt; Arnaud,<br/>\n&gt;&gt;<br/>\n&gt;&gt; That sounds like an excellent feature request. Can you add it to<br/>\n&gt;&gt; SourceForge? Thanks,<br/>\n&gt;&gt;<br/>\n&gt;&gt; David Saff<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; On Mon, Jan 12, 2009 at 8:17 AM, Arnaud Bailly<br/>\n&gt;&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:arnaud.oqube@...\">arnaud.oqube@...</a>&gt;wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt;&gt; Hello,<br/>\n&gt;&gt;&gt; Following this list&#39;s advices, I have rewritten my forme JUnit3 tests<br/>\n&gt;&gt;&gt; using JUnit 4. What I did was creating a subclass of Paramaterized<br/>\n&gt;&gt;&gt; with a special annotation and a method load() that actually runs the<br/>\n&gt;&gt;&gt; HtmlUnit tests, constructs the results and returns a collection of<br/>\n&gt;&gt;&gt; JQTest that can later be used as parameters with Parameterized<br/>\n&gt;&gt;&gt; annotaion.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; The abridged runner code is:<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; public class JQUnitRunner extends Parameterized {<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; private static String testPagePath;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; @Retention(RetentionPolicy.RUNTIME)<br/>\n&gt;&gt;&gt; public static @interface Page {<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; String value();<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; public JQUnitRunner(Class&lt;?&gt; clazz) throws Exception {<br/>\n&gt;&gt;&gt; super(clazz);<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; public static class JQTest { ... }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; private static HtmlUnitDriver driver;<br/>\n&gt;&gt;&gt; private static final String basedir = System.getProperty(&quot;basedir&quot;, &quot;.&quot;);<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; public static List&lt;JQTest[]&gt; load(Class&lt;?&gt; clazz) { ... }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; It is used by test class instances using the following idiom:<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; @RunWith(JQUnitRunner.class)<br/>\n&gt;&gt;&gt; @...(&quot;test-etatflash&quot;)<br/>\n&gt;&gt;&gt; public class EtatFlashTest {<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; private JQTest jqTest;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; @Parameters<br/>\n&gt;&gt;&gt; public static Collection&lt;JQTest[]&gt; jqtests() {<br/>\n&gt;&gt;&gt; return JQUnitRunner.load(EtatFlashTest.class);<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; public EtatFlashTest(JQTest test) {<br/>\n&gt;&gt;&gt; this.jqTest = test;<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; @Test<br/>\n&gt;&gt;&gt; public void test() {<br/>\n&gt;&gt;&gt; jqTest.assertPass();<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; I am not entirely satisfied with this, as there is still boilerplate<br/>\n&gt;&gt;&gt; code in the test classes. I would have liked to override the following<br/>\n&gt;&gt;&gt; method from Parameterized but it is private:<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; private List&lt;Object[]&gt; getParametersList(TestClass klass)<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Overriding would have allowed to remove entirely the jqtests method<br/>\n&gt;&gt;&gt; from test classes.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; regards<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Arnaud Bailly<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; ------------------------------------<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Yahoo! Groups Links<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21281, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1231837882", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 21281, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDkwMTEyMTczM2w3MzgxZDc4YXAxYjRlYTZmNTY3NDQ1ZGEyQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGZmN2NhYzBjMDkwMTEzMDExMXY0ZDFhZWM1M2o2YTQ2OGMxNDVlNWM1OTIyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGdpNjFlbCtiMGVyQGVHcm91cHMuY29tPgkgPDRmN2RhNmI5MDgxMjE1MTgzNG81Y2QxN2I1M3AxZTUzZGQxZDkyYTI5ZTc2QG1haWwuZ21haWwuY29tPgkgPGZmN2NhYzBjMDgxMjE2MDgwOG81YmQ2NTg4M241NTA5OTk5NDVjYzg2NjBlQG1haWwuZ21haWwuY29tPgkgPDRmN2RhNmI5MDgxMjE3MDk1NmgzNTdhNTI4MGdmNWQ5OGMxMjIwZTgyZDhmQG1haWwuZ21haWwuY29tPgkgPGZmN2NhYzBjMDgxMjE3MTEyNnYzNjJhOTU0OW9lZjI3Y2E0ZWIwNTU5M2VlQG1haWwuZ21haWwuY29tPgkgPGZmN2NhYzBjMDkwMTEyMDUxN3QyYjVkYmQ3N3QyNjZhNDE0OThmZjI4MWJAbWFpbC5nbWFpbC5jb20+CSA8NGY3ZGE2YjkwOTAxMTIxNzI2aDEyNjUxY2Y4c2Q5YzZjNGVjNTlmYzFmYzZAbWFpbC5nbWFpbC5jb20+CSA8NGY3ZGE2YjkwOTAxMTIxNzMzbDczODFkNzhhcDFiNGVhNmY1Njc0NDVkYTJAbWFpbC5nbWFpbC5jb20+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 21715, 
+    "senderId": "UuxwHx5rINfBvx1_EbwVdFCrXTeK9zvSprGAHMUnQGI_2K9L8FF1jiOjsojdpsf3679mlMS5XwAEDY3z0RCFY3do", 
+    "systemMessage": false, 
+    "subject": "Latest JUnit 4.7 snapshot, includes Interceptors for temporary files, \texternal resources, multiple failures, verification", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Hey, all. The latest SNAPSHOT build of JUnit 4.7 is up on github: http://github.com/KentBeck/junit/downloads If you ve been waiting until the new features were", 
+    "msgId": 21714, 
+    "profile": "dsaff", 
+    "topicId": 21714, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1442710809\">Hey, all.<br/>\n<br/>\nThe latest SNAPSHOT build of JUnit 4.7 is up on github:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/KentBeck/junit/downloads\">http://github.com/KentBeck/junit/downloads</a><br/>\n<br/>\nIf you&#39;ve been waiting until the new features were almost complete to<br/>\njump in and give them a try, this about the right time.  We will be<br/>\nfreezing features very soon, and sliding into release-candidate stage.<br/>\n<br/>\n   David Saff<br/>\n<br/>\nNew and updated:<br/>\n<br/>\n### Interceptors ###<br/>\n<br/>\n- Interceptors allow very flexible addition or redefinition of the behavior<br/>\n  of each test method in a test class.  Testers can reuse or extend one of the<br/>\n  provided Interceptors below, or write their own.<br/>\n<br/>\n- The TemporaryFolder Interceptor allows creation of files and folders<br/>\n  that are guaranteed to be deleted when the test method finishes<br/>\n  (whether it passes or fails):<br/>\n<br/>\n  \tpublic static class HasTempFolder {<br/>\n\t\t@Interceptor<br/>\n\t\tpublic TemporaryFolder folder= new TemporaryFolder();<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void testUsingTempFolder() throws IOException {<br/>\n\t\t\tFile createdFile= folder.newFile(&quot;myfile.txt&quot;);<br/>\n\t\t\tFile createdFolder= folder.newFolder(&quot;subfolder&quot;);<br/>\n\t\t\t// ...<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n- ExternalResource is a base class for Interceptors (like TemporaryFolder)<br/>\n  that set up an external resource before a test (a file, socket, server,<br/>\n  database connection, etc.), and tear it down afterward:<br/>\n<br/>\n  \tpublic static class UsesExternalResource {<br/>\n\t\t@Interceptor public ExternalResource resource = new ExternalResource() {<br/>\n\t\t\t@Override<br/>\n\t\t\tprotected void before() throws Throwable {<br/>\n\t\t\t\tcallSequence += &quot;before &quot;;<br/>\n\t\t\t};<br/>\n\t\t\t<br/>\n\t\t\t@Override<br/>\n\t\t\tprotected void after() {<br/>\n\t\t\t\tcallSequence += &quot;after &quot;;<br/>\n\t\t\t};<br/>\n\t\t};<br/>\n\t\t<br/>\n\t\t@Test public void testFoo() {<br/>\n\t\t\tcallSequence += &quot;test &quot;;<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n- The ErrorCollector Interceptor allows execution of a test to continue<br/>\n  after the first problem is found (for example, to collect _all_ the<br/>\n  incorrect rows in a table, and report them all at once):<br/>\n<br/>\n\tpublic static class UsesErrorCollectorTwice {<br/>\n\t\t@Interceptor<br/>\n\t\tpublic ErrorCollector collector= new ErrorCollector();<br/>\n\t\t<br/>\n\t\t@Test public void example() {<br/>\n\t\t\tcollector.addError(new Throwable(&quot;first thing went wrong&quot;));<br/>\n\t\t\tcollector.addError(new Throwable(&quot;second thing went wrong&quot;));<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n- Verifier is a base class for Interceptors like ErrorCollector, which<br/>\n  can turn otherwise passing test methods into failing tests if a verification<br/>\n  check is failed<br/>\n<br/>\n    public static class ErrorLogVerifier() {<br/>\n       private ErrorLog errorLog = new ErrorLog();<br/>\n<br/>\n       @Interceptor<br/>\n       public Verifier verifier = new Verifier() {<br/>\n          @Override public void verify() {<br/>\n             assertTrue(errorLog.isEmpty());<br/>\n          }<br/>\n       }<br/>\n<br/>\n       @Test public void testThatMightWriteErrorLog() {<br/>\n          // ...<br/>\n       }<br/>\n    }<br/>\n<br/>\n- TestWatchman is a base class for Interceptors that take note<br/>\n  of the testing action, without modifying it.<br/>\n  For example, this class will keep a log of each passing and failing<br/>\n  test:<br/>\n<br/>\n\tpublic static class WatchmanTest {<br/>\n\t\tprivate static String watchedLog;<br/>\n<br/>\n\t\t@Interceptor<br/>\n\t\tpublic StatementInterceptor watchman= new TestWatchman() {<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic void failed(Throwable e, FrameworkMethod method) {<br/>\n\t\t\t\twatchedLog+= method.getName() + &quot; &quot;<br/>\n\t\t\t\t\t\t+ e.getClass().getSimpleName() + &quot;&#92;n&quot;;<br/>\n\t\t\t}<br/>\n<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic void succeeded(FrameworkMethod method) {<br/>\n\t\t\t\twatchedLog+= method.getName() + &quot; &quot; + &quot;success!&#92;n&quot;;<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void fails() {<br/>\n\t\t\tfail();<br/>\n\t\t}<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void succeeds() {<br/>\n\t\t}<br/>\n\t}</div>", 
+    "prevInTime": 21713, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1244091853", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNjAzMjIwNG8yMmIzZGNkZHJmZTIwODQ3MTViYWM1NDFkQG1haWwuZ21haWwuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 19083, 
+    "senderId": "7_TWebzZg5RjilpMRKwYwXgk8ro88R65ldgDeV6jhZ5r29sUQLOX8Z-H9Z98c9M5iR_yON6TGu0W9b1bWif-SQHn", 
+    "systemMessage": false, 
+    "subject": "Custom runner in a creation loop", 
+    "from": "Dani Zweig &lt;dani@...&gt;", 
+    "authorName": "Dani Zweig", 
+    "msgSnippet": "I m trying to adapt the custom filter runner posted by David Saff, but when I try to run a test the runner seems to be caught in an infinite instantiation ", 
+    "msgId": 19082, 
+    "profile": "danizweig", 
+    "topicId": 19082, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 28278056, 
+    "messageBody": "<div id=\"ygrps-yiv-788724158\">I&#39;m trying to adapt the custom filter runner posted by David Saff, but when I<br/>\ntry to run a test the runner seems to be caught in an infinite instantiation<br/>\nloop.  (The behavior is the same whether I am running from ant 1.7 or<br/>\nEclipse 3.2)  Here&#39;s a stripped-down example of the code that is causing<br/>\nthis to happen.  What am I doing wrong?<br/>\n<br/>\ntnx.<br/>\n<br/>\n- Dani Zweig<br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dani@...\">dani@...</a><br/>\n<br/>\n// The Runner:<br/>\n<br/>\npackage com.designadvance.test;<br/>\n<br/>\nimport org.junit.runner.Description;<br/>\nimport org.junit.runner.Request;<br/>\nimport org.junit.runner.Runner;<br/>\nimport org.junit.runner.notification.RunNotifier;<br/>\n<br/>\n/**<br/>\n * Trivial runner with console trace.<br/>\n */<br/>\npublic class VerboseRunner extends Runner {<br/>\nprivate final Runner delegate;<br/>\n<br/>\npublic VerboseRunner(Class&lt;?&gt; testClass) throws Exception {<br/>\nRequest classRequest = Request.aClass(testClass);<br/>\ndelegate = classRequest.getRunner();<br/>\nSystem.out.println(&quot;Created VerboseRunner with testClass &quot; +<br/>\n        testClass);<br/>\n}<br/>\n<br/>\n@ Override<br/>\npublic Description getDescription() {<br/>\n    System.out.println(&quot;Description=&quot; + delegate.getDescription());<br/>\nreturn delegate.getDescription();<br/>\n}<br/>\n<br/>\n@ Override<br/>\npublic void run(RunNotifier notifier) {<br/>\n    System.out.println(&quot;Running...&quot;);<br/>\ndelegate.run(notifier);<br/>\n}<br/>\n}<br/>\n<br/>\n<br/>\n// The Test<br/>\n<br/>\n<br/>\npackage com.designadvance.test;<br/>\n<br/>\nimport static org.junit.Assert.assertEquals;<br/>\n<br/>\nimport org.junit.Test;<br/>\nimport org.junit.runner.RunWith;<br/>\n<br/>\n<br/>\n/**<br/>\n * Invoke JUnit4 with trivial customer runner.<br/>\n */<br/>\n@ RunWith(VerboseRunner.class)<br/>\npublic class FilterTest2 {<br/>\n    <br/>\n    public FilterTest2() {<br/>\n        // required<br/>\n    }<br/>\n    <br/>\n    @Test<br/>\n    public void atest() {<br/>\n        int a = 1;<br/>\n        assertEquals(1, a);<br/>\n    }<br/>\n    @Test<br/>\n    public void btest1() {<br/>\n        int b = 2;<br/>\n        assertEquals(2, b);<br/>\n    }<br/>\n    @Test<br/>\n    public void btest2() {<br/>\n        int b = 1;<br/>\n        assertEquals(1, b);<br/>\n    }<br/>\n}<br/>\n<br/>\n// The Console output:<br/>\n<br/>\nCreated VerboseRunner with testClass class<br/>\ncom.designadvance.test.FilterTest2<br/>\nCreated VerboseRunner with testClass class<br/>\ncom.designadvance.test.FilterTest2<br/>\nCreated VerboseRunner with testClass class<br/>\ncom.designadvance.test.FilterTest2<br/>\nCreated VerboseRunner with testClass class<br/>\ncom.designadvance.test.FilterTest2<br/>\nCreated VerboseRunner with testClass class<br/>\ncom.designadvance.test.FilterTest2<br/>\n... until terminated manually<br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\nView this message in context: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/Custom-runner-in-a-creation-loop-tf3376116.html#a9395825\">http://www.nabble.com/Custom-runner-in-a-creation-loop-tf3376116.html#a9395825</a><br/>\nSent from the JUnit - User mailing list archive at Nabble.com.</div>", 
+    "prevInTime": 19081, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1173452245", 
+    "canDelete": false, 
+    "nextInTopic": 19087, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDkzOTU4MjUucG9zdEB0YWxrLm5hYmJsZS5jb20+"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 7621, 
+    "senderId": "7DZ4NcRCfHg9AsS5MkDnKcYnw1i626kaPmmPeCCzAKJIw7VW2tz5d98k5RiKmlJOVjxK5K8NmS-INVFbvlZ6QbeaoRXBLWSdJSP7CQMppg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] [OT] DBC semantics (was Re: About the value of  JUnit)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "I suppose that contract could be: 0 ", 
+    "msgId": 7620, 
+    "profile": "nails762", 
+    "topicId": 7610, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-870625343\">I suppose that contract could be:<br/>\n<br/>\n0 &lt;= newCollection.size - oldCollection.size &lt;= 1<br/>\n<br/>\nbut that&#39;s not legal Java.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;So said J. B. Rainsberger on 4/8/2003 --------------------<br/>\n&gt;Be careful. Your test is broken. List allows duplicate entries. It&#39;s Set<br/>\n&gt;you&#39;re thinking of.<br/>\n&gt;<br/>\n&gt;Neither test below for Collection makes sense, because Collection makes no<br/>\n&gt;warranty about whether duplicate entries are permitted. List allows them,<br/>\n&gt;but Set does not. The strongest contract for Collection.add that you can<br/>\n&gt;write with rewriting the algorithm appears to be &quot;newCollection.size &gt;=<br/>\n&gt;oldCollection.size&quot;.<br/>\n&gt;<br/>\n&gt;[None of this affects the points made about DBC. I merely comment on the<br/>\n&gt;correctness of the code.]<br/>\n&gt;<br/>\n&gt;Take care.<br/>\n&gt;<br/>\n&gt;So said Paul Christmann on 4/8/2003 --------------------<br/>\n&gt;Here I digress into more of a DBC-specific question, recognizing that <br/>\n&gt;this is not a DBC mailing list...<br/>\n&gt;<br/>\n&gt;javainsel wrote:<br/>\n&gt;&gt; Consider the examples at the JUnit site:<br/>\n&gt;&gt; <br/>\n&gt;&gt;     Collection collection = new ArrayList();<br/>\n&gt;&gt;     collection.add(&quot;itemA&quot;);<br/>\n&gt;&gt;     assertEquals(1, collection.size());<br/>\n&gt;&gt;     collection.add(&quot;itemB&quot;);<br/>\n&gt;&gt;     assertEquals(2, collection.size());<br/>\n&gt;&gt;     <br/>\n&gt;&gt; As a postcondition it would maybe look like &quot;AFTER:size() == <br/>\n&gt;&gt; BEFORE:size()++&quot; (pseudo code). This is very readable, natural and <br/>\n&gt;&gt; of much greater use for testing and documenting than JUnit/TDD.<br/>\n&gt;<br/>\n&gt;This &quot;Contract&quot; is actually not complete.  Nor is the JUnit test. <br/>\n&gt;Neither shows the expectation of what should happen when you re-add an <br/>\n&gt;equal entry.  I know how I&#39;d do it with JUnit:<br/>\n&gt;<br/>\n&gt;     String entry = &quot;itemA&quot;;<br/>\n&gt;     collection.add(entry);<br/>\n&gt;     assertEquals(1, collection.size());<br/>\n&gt;     collection.add(entry);<br/>\n&gt;     assertEquals(1, collection.size());<br/>\n&gt;     collection.add(new String(entry));<br/>\n&gt;     assertEquals(1, collection.size());<br/>\n&gt;<br/>\n&gt;How would you capture that in a contract without re-implementing the <br/>\n&gt;method itself?  Something like this, I guess?<br/>\n&gt;<br/>\n&gt;if ( collection.contains(obj) ) AFTER:size() == BEFORE.size()<br/>\n&gt;else AFTER.size() == BEFORE.size()++;<br/>\n&gt;<br/>\n&gt;Its just that I&#39;m now starting to rewrite what&#39;s in the method itself as <br/>\n&gt;part of the contract definition.  Hence it seems that I&#39;m dangerously <br/>\n&gt;close to code duplication for one method.<br/>\n&gt;<br/>\n&gt;NOTE: This isn&#39;t meant to question the value of DBC; I like what DBC <br/>\n&gt;seems to offer.  I just don&#39;t see how to write useable post-conditions <br/>\n&gt;for non-trivial methods.  And this case (Collection.add(Object)) is <br/>\n&gt;actually a fairly trivial method.<br/>\n&gt;<br/>\n&gt;PC<br/>\n&gt;<br/>\n&gt;Paul Christmann<br/>\n&gt;Prior Artisans, LLC<br/>\n&gt;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:paul@...\">paul@...</a><br/>\n&gt;504-587-9072<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Yahoo! Groups Sponsor<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;To unsubscribe from this group, send an email to:<br/>\n&gt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service. <br/>\n&gt;J. B. Rainsberger,<br/>\n&gt;President, Diaspar Software Services<br/>\n&gt;Let&#39;s write software that people understand.<br/>\n&gt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\n&gt;telephone: +1 416 791-8603<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;[Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Yahoo! Groups Sponsor<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;To unsubscribe from this group, send an email to:<br/>\n&gt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service.<br/>\n </span></blockquote>J. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 7619, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049831918", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 7619, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNDA4MTM1MTM1MDQzMi4wMTM5MzM1MEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNDA4MTM1ODM4MDI3MC4wMTNGQTcwNkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDY3Nzc2MTRELTY2QzEtMTFENy05QUIxLTAwMDM5M0MzMEVDRUBxbHVlLmNvbT4gPGI2a21kZStwbjloQGVHcm91cHMuY29tPiA8M0U5MkYwNjMuODAwMDAwNkBwcmlvcmFydGlzYW5zLmNvbT4gPDIwMDMwNDA4MTM1MTM1MDQzMi4wMTM5MzM1MEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4="
+    }
+}

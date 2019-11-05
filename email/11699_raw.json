@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 11700, 
+    "senderId": "hRxhg966TwE_S2D784mZzsr6CwEK-ckKnoFLE6NXTVz8CkpAa2xtBkleSLQz83tJfMYtm65KzXTxeuzEFXBw6hCwW_jWrcwJ2lrrLnYfSlJOCPHy", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Functionality Tests", 
+    "from": "&quot;Kevin O&#39;Sullivan&quot; &lt;kosullivan@...&gt;", 
+    "authorName": "Kevin O&#39;Sullivan", 
+    "msgSnippet": "Hi -I ve recently worked on a project where the developers were using junit to write end-to-end tests and unless the DB was setup and the webservices were up", 
+    "msgId": 11699, 
+    "rawEmail": "Return-Path: &lt;kosullivan@...&gt;\r\nReceived: (qmail 96686 invoked from network); 30 Jul 2004 15:23:58 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m4.grp.scd.yahoo.com with QMQP; 30 Jul 2004 15:23:58 -0000\r\nReceived: from unknown (HELO n21.grp.scd.yahoo.com) (66.218.66.77)\n  by mta1.grp.scd.yahoo.com with SMTP; 30 Jul 2004 15:23:57 -0000\r\nReceived: from [66.218.66.112] by n21.grp.scd.yahoo.com with NNFMP; 30 Jul 2004 15:23:52 -0000\r\nX-Sender: kosullivan@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 67558 invoked from network); 28 Jul 2004 15:31:08 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m23.grp.scd.yahoo.com with QMQP; 28 Jul 2004 15:31:08 -0000\r\nReceived: from unknown (HELO ukbtne01.elandtech.co.uk) (217.8.27.115)\n  by mta5.grp.scd.yahoo.com with SMTP; 28 Jul 2004 15:31:08 -0000\r\nReceived: from BTNPC05 ([57.6.88.85]) by ukbtne01.elandtech.co.uk with Microsoft SMTPSVC(5.0.2195.6713);\n\t Wed, 28 Jul 2004 16:31:06 +0100\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 28 Jul 2004 16:31:06 +0100\r\nMessage-ID: &lt;NEBBIKBMILEEMNGFDNNIOEIPCPAA.kosullivan@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441\r\nIn-reply-to: &lt;OF1D9692AC.DA774F79-ON42256EDF.004C642F-42256EDF.004D4802@...&gt;\r\nImportance: Normal\r\nX-OriginalArrivalTime: 28 Jul 2004 15:31:06.0759 (UTC) FILETIME=[E676A970:01C474B7]\r\nX-eGroups-Remote-IP: 217.8.27.115\r\nFrom: &quot;Kevin O&#39;Sullivan&quot; &lt;kosullivan@...&gt;\r\nSubject: RE: [junit] Functionality Tests\r\nX-Yahoo-Group-Post: member; u=42238173\r\nX-Yahoo-Profile: kosullivan_eland\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 30 Jul 2004 15:23:50 -0000\r\nX-eGroups-Remote-IP: 66.218.66.77\r\n\r\nHi -I&#39;ve recently worked on a project where the developers were using junit\nto write end-to-end tests and unless the DB was setup and the webservices\nwere up and running the tests would fail.  My only problem with this was\nthey were stored in a source subdirectory called &#39;junit&#39; implying that they\nwere actual unit tests.\nI simply renamed the directory &#39;junit&#39; to &#39;systemtest&#39;, and changed the\ntarget names in ant&#39;s build.xml and everyone was happy - as far as I&#39;m\nconcerned it does not make any difference that junit is being used to drive\nsystem tests as long as its clear that they are system tests.\n\nIn your case, just keep what you have (system tests are as important as unit\ntests) and start writing unit tests. Realistically you can&#39;t retro fit unit\ntests to an existing project (time constraints), so just start adding unit\ntests for any code you modify, bug fix etc.\n\nRgds,\nKevin.\n\n-----Original Message-----\nFrom: jsa@... [mailto:jsa@...]\nSent: Wednesday, July 28, 2004 15:04\nTo: junit@yahoogroups.com\nSubject: [junit] Functionality Tests\n\n\nHy,\n\nafter some lurking on this list and following the discussions that happen\nhere I&#39;ve come to the conclusion that the tests I&#39;m currently running on\nmy project(s) are not really unit tests, although they use JUnit. As far\nas I can tell they can be more accurately described as beeing\nfunctionality tests as they usually test one use case end-to-end. That\ncame into beeing, since when I joined the project there were no tests at\nall (aside from a few bit-rotted functionallity tests) and I started\nwriting what I thought at that time to be unit tests.\n\nFor example there are several tests that define a query (defined in OQL\n(similar to SQL, but working on an object level)) that get&#39;s converted to\nSQL, run on the database, the result retrieved, converted to java objects\nand then my test checks wether the objects are exactly the objects that\nwere expected. I think I do have a rather clean idea how this could be\nsplit into unit tests, only the system I&#39;m testing is not modular enough\nto allow this. (And to refactor it I&#39;d need more tests, that I can&#39;t write\n&#39;till it&#39;s refactored ... a classical catch-22).\n\nFortunately there is some heavy refactoring in the future of this project\nthat will allow me to introduce more &quot;real&quot; unit tests ...\n\nThe reason I write all this down is that I&#39;d like to hear wether anyone of\nyou has any experience/good advice for this kind of unit-test-free legacy\nsystem. I&#39;d be interested how you use functionality tests (in addition to\nunit tests?) and wether anyone knows any tools that are better suited for\nthis kind of job than JUnit.\n\nregards\nJoachim Sauer\n\n[Non-text portions of this message have been removed]\n\n\n\n\n\n\nYahoo! Groups Links\n\n\n\n\n\n\n\n\n", 
+    "profile": "kosullivan_eland", 
+    "topicId": 11677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 42238173, 
+    "prevInTime": 11698, 
+    "contentTrasformed": false, 
+    "postDate": "1091028666", 
+    "canDelete": false, 
+    "nextInTopic": 11703, 
+    "prevInTopic": 11686, 
+    "headers": {
+        "inReplyToHeader": "PE9GMUQ5NjkyQUMuREE3NzRGNzktT040MjI1NkVERi4wMDRDNjQyRi00MjI1NkVERi4wMDRENDgwMkBzaWxiZXJncmF1LmNvbT4=", 
+        "messageIdInHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VJUENQQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPg=="
+    }
+}

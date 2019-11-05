@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19744, 
+    "senderId": "WNthPzQM9gNF0CgnlXsi65vdlhgHqONkd9MS2AOru4GbpowuxfEpFVy9vRo2kFLZuJkMvX417KheLH1ZZtlIu8mA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Help: How to derive your own runner from JUnit4ClassRunner", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Scott, I ll first answer your direct question, and then bump the discussion up a level. To answer your direct question, better support for custom runners that ", 
+    "msgId": 19743, 
+    "profile": "dsaff", 
+    "topicId": 19742, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-552293164\">Scott,<br/>\n<br/>\nI&#39;ll first answer your direct question, and then bump the discussion up a level.<br/>\n<br/>\nTo answer your direct question, better support for custom runners that<br/>\nare really just additions to the JUnit 4 default behavior, like the<br/>\none you describe, is still a feature in progress.  The class design<br/>\nsimply hasn&#39;t calmed down enough to move the classes out of &quot;internal&quot;<br/>\nand start making iron-clad promises to future extenders.<br/>\n<br/>\nThat said, if you&#39;re willing to be flexible, it&#39;s not that bad--the<br/>\nfinal published interface is likely to be very similar to what&#39;s in<br/>\nJUnit 4.4.  You want to extend JUnit4ClassRunner, and probably<br/>\noverride:<br/>\n<br/>\n- getTestMethods: to pick up @Integration methods as well as @Test methods<br/>\n- validate: so that a class with only @Integration methods doesn&#39;t get<br/>\nmarked as malformed<br/>\n- wrapMethod: to change method running behavior.<br/>\n<br/>\nIn wrapMethod, you&#39;ll want to conditionally return a subclass of<br/>\nTestMethod, with your behavior inserted.  It may be sufficient to<br/>\noverride TestMethod.isIgnored, based on your description.<br/>\n<br/>\nTo bump the discussion up a level, the support for assumptions in<br/>\nJUnit 4.4 was supposed to handle situations very similar to what<br/>\nyou&#39;re describing:<br/>\n<br/>\n@Test public void integrationWorks() {<br/>\n   assumeTrue(runningIntegrationTests());<br/>\n   // rest of test<br/>\n}<br/>\n<br/>\nThis test will stop at the first line unless runningIntegrationTests<br/>\nreturns true.  If this facility doesn&#39;t handle your need, please let<br/>\nus know, so that we can improve it in future releases.  Thanks,<br/>\n<br/>\n   David<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 8/14/07, Scott Zou &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:zou0s1@...\">zou0s1@...</a>&gt; wrote:<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; All I want to do is this: I want to mark some of my test methods with my<br/>\n&gt; own annotation (e.g. @integration) instead of @test.  Then when this test<br/>\n&gt; case runs, these methods will check something like an environment<br/>\n&gt; variable to determine whether it should run (like @test) or do nothing (like<br/>\n&gt; @ignore).<br/>\n&gt;<br/>\n&gt; I figure I have to derive my own test runners to do this (@runWith<br/>\n&gt; (myTest.class)).  However, since JUnit4ClassRunner is internal and it&#39;s<br/>\n&gt; not documented, where can I find instructions/documents on what and how<br/>\n&gt; to derive from it?  Or is there a better way to achieve what we need here?<br/>\n&gt;<br/>\n&gt; Thanks!<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19742, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1187177829", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19742, 
+    "headers": {
+        "inReplyToHeader": "PGY5dDlyYytxdWoxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwODE1MDQzN3M1MDQwNWMyMG5hZWFhMGJhZDE4MDlkMDE1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGY5dDlyYytxdWoxQGVHcm91cHMuY29tPg=="
+    }
+}

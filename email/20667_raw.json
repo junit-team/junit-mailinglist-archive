@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20668, 
+    "senderId": "KS8mLpne2CyEVIcKkE6Kce0Zp3EdeJ-FNAJXgaPzt8IfCLwCcO8zypPEoflj1L5VffrIyW6rQlG23rUJ4qxZbhrgivRKIReErvn2PDaWWxDj88je5Q", 
+    "systemMessage": true, 
+    "subject": "Parameterized Tests, a proposal", 
+    "from": "Malte Finsterwalder &lt;malte@...&gt;", 
+    "authorName": "Malte Finsterwalder", 
+    "msgSnippet": "Hi, I just got around to looking into parameterized tests a little more. But it confirmed the impression I got when they came out with JUnit 4. They are sooo", 
+    "msgId": 20667, 
+    "rawEmail": "Return-Path: &lt;malte@...&gt;\r\nReceived: (qmail 99071 invoked from network); 9 Jul 2008 11:39:21 -0000\r\nReceived: from unknown (66.218.67.94)\n  by m57.grp.scd.yahoo.com with QMQP; 9 Jul 2008 11:39:21 -0000\r\nReceived: from unknown (HELO n30a.bullet.scd.yahoo.com) (66.94.237.33)\n  by mta15.grp.scd.yahoo.com with SMTP; 9 Jul 2008 11:39:21 -0000\r\nReceived: from [209.73.164.83] by n30.bullet.scd.yahoo.com with NNFMP; 09 Jul 2008 11:39:21 -0000\r\nReceived: from [66.218.66.88] by t7.bullet.scd.yahoo.com with NNFMP; 09 Jul 2008 11:39:21 -0000\r\nX-Sender: malte@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 34883 invoked from network); 9 Jul 2008 07:00:37 -0000\r\nX-Received: from unknown (66.218.67.95)\n  by m55.grp.scd.yahoo.com with QMQP; 9 Jul 2008 07:00:37 -0000\r\nX-Received: from unknown (HELO mail.gmx.net) (213.165.64.20)\n  by mta16.grp.scd.yahoo.com with SMTP; 9 Jul 2008 07:00:37 -0000\r\nX-Received: (qmail invoked by alias); 09 Jul 2008 07:00:35 -0000\r\nX-Received: from unknown (EHLO [127.0.0.1]) [145.253.187.146]\n  by mail.gmx.net (mp035) with SMTP; 09 Jul 2008 09:00:35 +0200\r\nX-Authenticated: #23855592\r\nX-Provags-ID: V01U2FsdGVkX1+adBJSTnOavOe9/2m2B6STd8Y+kJDnMZjmjG8w+x\n\tpJc5VSr1vVnFJN\r\nMessage-ID: &lt;48746211.3060100@...&gt;\r\nDate: Wed, 09 Jul 2008 09:00:33 +0200\r\nUser-Agent: Thunderbird 2.0.0.14 (Windows/20080421)\r\nMIME-Version: 1.0\r\nTo: junit YahooGroup &lt;junit@yahoogroups.com&gt;\r\nX-Enigmail-Version: 0.95.6\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Y-GMX-Trusted: 0\r\nX-FuHaFi: 0.53\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Malte Finsterwalder &lt;malte@...&gt;\r\nSubject: Parameterized Tests, a proposal\r\nX-Yahoo-Group-Post: member; u=199072473; y=VxzTglgOGlGPKq94jC39sRZLCzlUingKghVntQLrdPUnUI-riYodRQP0hQ1G\r\nX-Yahoo-Profile: maltefinsterwalder\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 09 Jul 2008 11:39:20 -0000\r\n\r\nHi,\n\nI just got around to looking into parameterized tests a little more.\nBut it confirmed the impression I got when they came out with JUnit 4.\nThey are sooo clunky, that I rather write a test that calls a \nhelper-method with parameters instead.\n\nBut this time I had time to ask myself: Why is it so clunky?\nIn what way could it be better.\n\nSo I came up with an idea, how I would like it to be.\nAnd here is an example:\n\n@RunWith(Parameterized.class)\npublic class MyParameterizedTest {\n\n\tprivate Object[] data = new Object[][] {\n\t\t{&quot;param1&quot;, 2, 3},\n\t\t{&quot;other&quot;, 5, 99},\n\t\t{&quot;more&quot;, 234, 5875727343}\n\t};\n\t\n\t// The parameter given as &quot;data&quot; here, specifies that\n\t// attribute, that contains the parameters for the test\n\t@ParameterizedTest(&quot;data&quot;)\n\tpublic void testWhatever(String str, int i, long j) {\n\t\t// This method gets called 3 times\n\t\t// once for each line in the above Object[]\n\n\t\t// do whatever here\n\t}\n\n\t@Test\n\tpublic void plainNonParameterizedTest() {\n\t\t// this is a normal unit test that is\n\t\t// called just once\n\t}\n}\t\n\nI think it&#39;s a lot easier this way.\nIt allows mixing of parameterized tests and non parameterized tests, if \nyou like.\nI allows for several parameterized tests in a single class.\nAnd I don&#39;t see disadvantages.\n\nIt could be even simpler, if it were incorporated into the existing \nJUnit Test-annotation, like so:\n\n// no @RunWith-Annotation here\npublic class MyParameterizedTest {\n\n\tprivate Object[] data = new Object[][] {\n\t\t{&quot;param1&quot;, 2, 3},\n\t\t{&quot;other&quot;, 5, 99},\n\t\t{&quot;more&quot;, 234, 5875727343}\n\t};\n\t\n\t// The parameter given as &quot;data&quot; here, specifies that\n\t// attribute, that contains the parameters for the test\n\t// Use of standard Test-annotation with a new parameter\n\t@Test(parameterized=&quot;data&quot;)\n\tpublic void testWhatever(String str, int i, long j) {\n\t\t// This method gets called 3 times\n\t\t// once for each line in the above Object[]\n\n\t\t// do whatever here\n\t}\n}\n\nWhat do you think?\n\nI already tried to implement the first version, since it&#39;s non \nintrusive, but looking into extending JUnit, I found that it&#39;s a pain in \nthe behind, if you don&#39;t want to extends internals-stuff.\nBut maybe I&#39;m just misunderstanding or missing things.\nBut that&#39;s another story for another post... shortly...\n\nGreetings,\n    Malte\n\n", 
+    "profile": "maltefinsterwalder", 
+    "topicId": 20667, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199072473, 
+    "prevInTime": 20666, 
+    "contentTrasformed": false, 
+    "postDate": "1215586833", 
+    "canDelete": false, 
+    "nextInTopic": 20677, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQ4NzQ2MjExLjMwNjAxMDBAZmluc3RlcndhbGRlci5uYW1lPg=="
+    }
+}

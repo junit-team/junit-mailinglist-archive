@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19757, 
+    "senderId": "rQVDti9BhZicgaYxXEE-q7c1mOULX-l0yQYirBTL0zvek89ZJX5QrQJNeCDWID2KcRdsHs1H_znRy9rPZORurUJW8ycE", 
+    "systemMessage": true, 
+    "subject": "Junit 4 and Ant", 
+    "from": "gommo &lt;colin.goudie@...&gt;", 
+    "authorName": "gommo", 
+    "msgSnippet": "I ve been using TestNG for more unit and integration tests. However, I ve found that JUnit 4 and its eclipse plugin works faster and nicer. So I ve decided", 
+    "msgId": 19756, 
+    "rawEmail": "Return-Path: &lt;colin.goudie@...&gt;\r\nReceived: (qmail 72680 invoked from network); 19 Aug 2007 17:28:20 -0000\r\nReceived: from unknown (66.218.66.71)\n  by m47.grp.scd.yahoo.com with QMQP; 19 Aug 2007 17:28:20 -0000\r\nReceived: from unknown (HELO n9b.bullet.sp1.yahoo.com) (69.147.64.101)\n  by mta13.grp.scd.yahoo.com with SMTP; 19 Aug 2007 17:28:20 -0000\r\nReceived: from [216.252.122.218] by n9.bullet.sp1.yahoo.com with NNFMP; 19 Aug 2007 17:24:16 -0000\r\nReceived: from [66.218.69.4] by t3.bullet.sp1.yahoo.com with NNFMP; 19 Aug 2007 17:24:16 -0000\r\nReceived: from [66.218.66.85] by t4.bullet.scd.yahoo.com with NNFMP; 19 Aug 2007 17:24:16 -0000\r\nX-Sender: colin.goudie@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 55643 invoked from network); 19 Aug 2007 11:49:13 -0000\r\nReceived: from unknown (66.218.66.72)\n  by m48.grp.scd.yahoo.com with QMQP; 19 Aug 2007 11:49:13 -0000\r\nReceived: from unknown (HELO kuber.nabble.com) (216.139.236.158)\n  by mta14.grp.scd.yahoo.com with SMTP; 19 Aug 2007 11:49:13 -0000\r\nReceived: from isper.nabble.com ([192.168.236.156])\n\tby kuber.nabble.com with esmtp (Exim 4.63)\n\t(envelope-from &lt;colin.goudie@...&gt;)\n\tid 1IMjFo-00023X-OY\n\tfor junit@yahoogroups.com; Sun, 19 Aug 2007 04:47:36 -0700\r\nMessage-ID: &lt;12212626.post@...&gt;\r\nDate: Sun, 19 Aug 2007 04:47:36 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nX-Nabble-From: colin.goudie@...\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: gommo &lt;colin.goudie@...&gt;\r\nSubject: Junit 4 and Ant\r\nX-Yahoo-Group-Post: member; u=315126122; y=PnksoKJj9yiVobKDD17lZ9ljToh7BTA0k4VXuf1h9WwhcesW\r\nX-Yahoo-Profile: gommo.geo\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: dsaff &lt;saff@...&gt; via web; 19 Aug 2007 17:24:15 -0000\r\n\r\n\nI&#39;ve been using TestNG for more unit and integration tests. However, I&#39;ve\nfound that JUnit 4 and its eclipse plugin works faster and nicer. So I&#39;ve\ndecided change all my unit tests to JUnit. \n\nI have a runUnitTests ant target that is used to run (previously) the\ntest-ng tests that are marked as &quot;UnitTests&quot;\n\nAs a start, I have changed this ant target to run all tests in my tests\ntarget directory (i.e. using **/*.class)\n\nWhat I thought would happen was that JUnit would look at these classes, find\nthe ones that are marked with the JUnit 4 @Test annotation and run them.\n\nWhat I&#39;m finding however is that it is attempting to run EVERY class in that\nfolder as a test and they are either Test-NG tests or just other utility\nclasses. As a result, JUnit is throwing errors\n\ne.g.\nRunning au.tributech.tuxedo.beans.entity.PermissionTest$1\n    [junit] Tests run: 2, Failures: 0, Errors: 2, Time elapsed: 0.017 sec\n    [junit] Test au.tributech.tuxedo.beans.entity.PermissionTest$1 FAILED\n    [junit] Running\nau.tributech.tuxedo.beans.entity.PermissionTest$PermissionDescendant\n    [junit] Tests run: 2, Failures: 0, Errors: 2, Time elapsed: 0.018 sec\n    [junit] Test\nau.tributech.tuxedo.beans.entity.PermissionTest$PermissionDescendant FAILED\n\nIs there any way out of the box to make Junit just run the tests that use\norg.junit.Test annoations ??\n\nWhat I have got working (but its slow) is to write a custom ANT selector. \n&lt;batchtest fork=&quot;yes&quot; todir=&quot;${test.report.dir}&quot;&gt;\n  &lt;fileset dir=&quot;${test.fixtures.dir}&quot; includes=&quot;**/*.class&quot;&gt;\n    &lt;custom classname=&quot;au.tributech.ant.JUnit4Selector&quot;\nclasspathref=&quot;project.test.run.classpath&quot;/&gt;\n  &lt;/fileset&gt;\n&lt;/batchtest&gt;\n\nThe JUnit4Selector class I wrote simply reads in each file processed and\nuses ASM-3.0 to look for JUnit4 annotations (@Test, @RunsWith etc..). If\nthey exist it processes that file otherwise skips it.\n\nThis works but it is pretty slow and I can see it being painfully slow when\nthere are hundreds of unit tests.\n\nSurely I&#39;m missing something here and JUnit&#39;s ANT task is smarter than what\nit is appearing. I don&#39;t want to have to specify EVERY unit test when I add\nthem. That is just a maintenance nightmare.\n\nThanks for any pointers\n-- \nView this message in context: http://www.nabble.com/Junit-4-and-Ant-tf4289986.html#a12212626\nSent from the JUnit - User mailing list archive at Nabble.com.\n\n\n", 
+    "profile": "gommo.geo", 
+    "topicId": 19756, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 315126122, 
+    "prevInTime": 19755, 
+    "contentTrasformed": false, 
+    "postDate": "1187524056", 
+    "canDelete": false, 
+    "nextInTopic": 19759, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDEyMjEyNjI2LnBvc3RAdGFsay5uYWJibGUuY29tPg=="
+    }
+}

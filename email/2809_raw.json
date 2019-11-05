@@ -1,0 +1,29 @@
+{
+    "topicId": 2801, 
+    "postDate": "1002050708", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Eric Vought &lt;evought@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "ztux_N1njfsdXvhQEarz3iKFiV1HVFvP2Wg5wIT-R9394-rIAYioJHaP581xY1Fac895L67zVwiQxeY2SPX1z5bYRVnh", 
+    "nextInTime": 2810, 
+    "userId": 0, 
+    "prevInTime": 2808, 
+    "prevInTopic": 2808, 
+    "headers": {
+        "inReplyToHeader": "PDNCQkExNTRBLjZFREE4QUZFQGFwYWNoZS5vcmc+", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMzAuMDExMDAyMTUyNDIwMC44NzQ3LTEwMDAwMEBicmFpbi5xbHVlLWxhbj4="
+    }, 
+    "authorName": "Eric Vought", 
+    "numMessagesInTopic": 12, 
+    "msgSnippet": "Ah. So these are actually (more or less) functional tests, where you have separate lighter-weight unit tests. ... -- Eric Vought Chief Technical Officer - QLUE", 
+    "contentTrasformed": false, 
+    "msgId": 2809, 
+    "nextInTopic": 2810, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;evought@...&gt;\r\nX-Sender: evought@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_4_1); 2 Oct 2001 19:33:03 -0000\r\nReceived: (qmail 22041 invoked from network); 2 Oct 2001 19:33:02 -0000\r\nReceived: from unknown (10.1.10.27)\n  by l10.egroups.com with QMQP; 2 Oct 2001 19:33:02 -0000\r\nReceived: from unknown (HELO ral.qlue.com) (65.201.137.7)\n  by mta2 with SMTP; 2 Oct 2001 19:33:02 -0000\r\nReceived: from brain.qlue-lan (brain.qlue-lan [192.168.1.28])\n\tby ral.qlue.com (Postfix) with ESMTP id EB9471CE58\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  2 Oct 2001 15:30:35 -0400 (EDT)\r\nDate: Tue, 2 Oct 2001 15:25:08 -0400 (EDT)\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: Re: [junit] Tangled design (Re: Test framework improvement)\r\nIn-Reply-To: &lt;3BBA154A.6EDA8AFE@...&gt;\r\nMessage-ID: &lt;Pine.LNX.4.30.0110021524200.8747-100000@...-lan&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: Eric Vought &lt;evought@...&gt;\r\n\r\nAh. So these are actually (more or less) functional tests, where you have\nseparate lighter-weight unit tests.\n\nOn Tue, 2 Oct 2001, Berin Loritsch wrote:\n\n&gt; Eric Vought wrote:\n&gt; &gt;\n&gt; &gt; I&#39;m not sure what Kent had in mind, but:\n&gt; &gt;\n&gt; &gt; In the first set of situations you mention (Logger hierarchies, config\n&gt; &gt; files, etc), these can often be dealt with by stubbing out these\n&gt; &gt; components.\n&gt; &gt;\n&gt; &gt; For example, although an application may use a complex logging\n&gt; &gt; hierarchy which routes different classes of messages to different files or\n&gt; &gt; hosts, the testcases are handed a Logger with a single listener which\n&gt; &gt; sends output to a single local file which is appropriately labelled and\n&gt; &gt; filed. Having this setup run for each test method does not slow my\n&gt; &gt; testcases down appreciably. It doesn&#39;t matter to the testcases where the\n&gt; &gt; Logger actually sends its output to- just that there is something there to\n&gt; &gt; accept events. I have a LoggerTestCase which performs this setup for me\n&gt; &gt; and I just don&#39;t worry about it.\n&gt; &gt;\n&gt; &gt; The issue is similar with config files. Most testcases don&#39;t care where\n&gt; &gt; the configuration data comes from. I just create a Map as a fixture which\n&gt; &gt; contains exactly what is needed for particular testcases. My code doesn&#39;t\n&gt; &gt; care what mechanism was used to populate the Map or what 10 gazillion\n&gt; &gt; other values might be available. The actual process of interpreting the\n&gt; &gt; config files or database or whatever is in a separate package and\n&gt; &gt; independently tested.\n&gt; &gt;\n&gt; &gt; I think the design issue is making your classes much less dependent on the\n&gt; &gt; global state. Singletons are just one aspect of that. If these components\n&gt; &gt; are hidden behind nice interfaces, then you have a lot of freedom to\n&gt; &gt; decide just how much initialization is needed and can dumnmy out a lot of\n&gt; &gt; extra complexity.\n&gt;\n&gt; The thing to reiterate is that we are testing Components that live in a\n&gt; specific environment, and we must make sure they play nice in that environment.\n&gt; This makes sure that changes to the environment don&#39;t break the Components,\n&gt; and vice versa.  You can&#39;t test that with dummy stuff.\n&gt;\n&gt; Not all our testcases use this heavy process--Only the testcases that test\n&gt; Components.  We have a lot of helper classes that we test individually--without\n&gt; the extra bulk.\n&gt;\n&gt; Sometime during the test cycle we need to perform the environment tests, so\n&gt; I would rather do it with JUnit than with a production system ;).\n&gt;\n&gt; &gt; RMI *is* an issue and is one of the places I have had significant problems\n&gt; &gt; with per-testcase fixtures. This and other testing issues led to me\n&gt; &gt; dramatically reducing my use of RMI.\n&gt;\n&gt; I don&#39;t typically use RMI in most cases, however we do have a component that\n&gt; exposes an RMI interface, so we need to test it.\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n&gt;\n\n-- \nEric Vought\nChief Technical Officer - QLUE Consulting, Inc.\n\nevought@... toll-free: 888-771-3538  RTP area: 919-816-9901\n\n\n", 
+    "subject": "Re: [junit] Tangled design (Re: Test framework improvement)"
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21492, 
+    "senderId": "GOV-81p-d-vcfnzKHFYNW1HjnmNkhfvgsM3221cMdery4C5BmxAdAozhUs61HPv6e9cUv3D0CFA3NJYfXN92CE_OE7whlg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Race condition with timeouts", 
+    "from": "Nat Pryce &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "A timeout of 10ms is very small, too close to the granularity of the OS clock for me to feel comfortable. How does the behaviour change as you change the", 
+    "msgId": 21491, 
+    "rawEmail": "Return-Path: &lt;nat.pryce@...&gt;\r\nX-Sender: nat.pryce@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 55228 invoked from network); 9 Apr 2009 21:43:21 -0000\r\nX-Received: from unknown (69.147.108.201)\n  by m3.grp.sp2.yahoo.com with QMQP; 9 Apr 2009 21:43:21 -0000\r\nX-Received: from unknown (HELO mail-bw0-f168.google.com) (209.85.218.168)\n  by mta2.grp.re1.yahoo.com with SMTP; 9 Apr 2009 21:43:20 -0000\r\nX-Received: by bwz12 with SMTP id 12so802979bwz.21\n        for &lt;junit@yahoogroups.com&gt;; Thu, 09 Apr 2009 14:42:20 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.204.60.133 with SMTP id p5mr2622096bkh.143.1239313340215; Thu, \n\t09 Apr 2009 14:42:20 -0700 (PDT)\r\nIn-Reply-To: &lt;CFB57F117CE94B0196CD8BF65B8F70DE@kentspavilion&gt;\r\nReferences: &lt;CFB57F117CE94B0196CD8BF65B8F70DE@kentspavilion&gt;\r\nDate: Thu, 9 Apr 2009 22:42:20 +0100\r\nMessage-ID: &lt;17fa53d0904091442n5e58ca24t2ebb8d91c562a1e@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Nat Pryce &lt;nat.pryce@...&gt;\r\nSubject: Re: [junit] Race condition with timeouts\r\nX-Yahoo-Group-Post: member; u=216973656; y=bCoMOMoyglnpuh2LtBN03CgP2XVw-mQthnFqwMAYXEouSlOv\r\nX-Yahoo-Profile: nat_pryce\r\n\r\nA timeout of 10ms is very small, too close to the granularity of the\nOS clock for me to feel comfortable.\n\nHow does the behaviour change as you change the timeout durations?\n\n--Nat\n\nOn 09/04/2009, kentb &lt;kentb@...&gt; wrote:\n&gt; All,\n&gt;\n&gt; This is a test of the &quot;with enough eyeballs, all bugs are shallow&quot;\n&gt; hypothesis.\n&gt;\n&gt; I am experiencing a race condition with timeouts. Say I have a test like\n&gt; this:\n&gt;\n&gt; \tpublic class WaitTooLong {\n&gt; \t\t@Test(timeout=10) public void ripVanWinkle() throws\n&gt; InterruptedException {\n&gt; \t\t\tThread.sleep(100);\n&gt; \t\t}\n&gt; \t}\n&gt;\n&gt; When I run this I get one of two errors, non-deterministically:\n&gt;\n&gt; java.lang.InterruptedException: sleep interrupted\n&gt; \tat java.lang.Thread.sleep(Native Method)\n&gt; \tat UnpredictableTest.takeTen(UnpredictableTest.java:5)\n&gt; \t...\n&gt;\n&gt; or\n&gt;\n&gt; java.lang.Exception: test timed out after 10 milliseconds\n&gt; \tat\n&gt; org.junit.internal.runners.statements.FailOnTimeout.evaluate(FailOnTimeout.j\n&gt; ava:48)\n&gt; \t...\n&gt;\n&gt; Here&#39;s the relevant code in JUnit (FailOnTimeout):\n&gt;\n&gt; \tpublic void evaluate() throws Throwable {\n&gt; \t\tExecutorService service=\n&gt; Executors.newSingleThreadExecutor();\n&gt; \t\tCallable&lt;Object&gt; callable= new Callable&lt;Object&gt;() {\n&gt; \t\t\tpublic Object call() throws Exception {\n&gt; \t\t\t\ttry {\n&gt; \t\t\t\t\tfNext.evaluate();\n&gt; \t\t\t\t} catch (Throwable e) {\n&gt; \t\t\t\t\tthrow new ExecutionException(e);\n&gt; \t\t\t\t}\n&gt; \t\t\t\treturn null;\n&gt; \t\t\t}\n&gt; \t\t};\n&gt; \t\tFuture&lt;Object&gt; result= service.submit(callable);\n&gt; \t\tservice.shutdown();\n&gt; \t\ttry {\n&gt; \t\t\tboolean terminated=\n&gt; service.awaitTermination(fTimeout, TimeUnit.MILLISECONDS);\n&gt; \t\t\tif (!terminated)\n&gt; \t\t\t\tservice.shutdownNow();\n&gt; \t\t\tresult.get(0, TimeUnit.MILLISECONDS); // throws the\n&gt; exception if one occurred during the invocation\n&gt; \t\t} catch (TimeoutException e) {\n&gt; \t\t\tthrow new Exception(String.format(&quot;test timed out\n&gt; after %d milliseconds&quot;, fTimeout));\n&gt; \t\t} catch (ExecutionException e) {\n&gt; \t\t\tthrow unwrap(e);\n&gt; \t\t}\n&gt; \t}\n&gt;\n&gt; It seems that sometimes the TimeoutException gets thrown and caught and the\n&gt; Exception thrown. Sometimes, though, the InterruptedException that is\n&gt; terminating the test-running thread gets thrown/caught first. I&#39;ve stared at\n&gt; this enough minutes to be ready for help.\n&gt;\n&gt; One strangeness is that if I run the test programmatically\n&gt; (&quot;JUnitCore.runClass(WaitTooLong.class)&quot;) the Exception is always thrown. If\n&gt; I run the test with the Eclipse JUnit runner or with JUnit Max, the results\n&gt; are non-deterministic.\n&gt;\n&gt; Any ideas for making this deterministic? I would prefer the second result\n&gt; above, if I can get it.\n&gt;\n&gt; Regards,\n&gt;\n&gt; Kent Beck\n&gt; Three Rivers Institute\n&gt;\n&gt;\n\n\n-- \nhttp://www.natpryce.com\n\n", 
+    "profile": "nat_pryce", 
+    "topicId": 21487, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "prevInTime": 21490, 
+    "contentTrasformed": false, 
+    "postDate": "1239313340", 
+    "canDelete": false, 
+    "nextInTopic": 21492, 
+    "prevInTopic": 21490, 
+    "headers": {
+        "inReplyToHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PDE3ZmE1M2QwOTA0MDkxNDQybjVlNThjYTI0dDJlYmI4ZDkxYzU2MmExZUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+"
+    }
+}

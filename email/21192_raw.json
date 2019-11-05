@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21193, 
+    "senderId": "x0ik9JTobgEjn84S5J7dm8Cnt4xsCtIK3EZ4SpdzVUuZxBttnYtktXJp5ZJ5rV8YQomxoM8pQjEPiv51v_EQS32Mj2_0h2BYH6xA0ELMhtSISltrGwajFJoE3dThL4xS_XFy", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Re: One test for all implementors of an interface", 
+    "from": "&quot;=?ISO-8859-1?Q?Fr=E9d=E9ric_Camblor?=&quot; &lt;fcamblor@...&gt;", 
+    "authorName": "Frédéric Camblor", 
+    "msgSnippet": "John, What you can do is to rely on spring and AbstractDependencyInjectionSpringContextTest (ugh !) in order to inject, via spring, your interface s", 
+    "msgId": 21192, 
+    "rawEmail": "Return-Path: &lt;fcamblor@...&gt;\r\nReceived: (qmail 87682 invoked from network); 13 Dec 2008 16:18:48 -0000\r\nReceived: from unknown (66.218.67.95)\n  by m42.grp.scd.yahoo.com with QMQP; 13 Dec 2008 16:18:48 -0000\r\nReceived: from unknown (HELO n46d.bullet.mail.sp1.yahoo.com) (66.163.169.172)\n  by mta16.grp.scd.yahoo.com with SMTP; 13 Dec 2008 16:18:48 -0000\r\nReceived: from [69.147.65.150] by n46.bullet.mail.sp1.yahoo.com with NNFMP; 13 Dec 2008 16:18:48 -0000\r\nReceived: from [66.218.66.79] by t7.bullet.mail.sp1.yahoo.com with NNFMP; 13 Dec 2008 16:18:48 -0000\r\nX-Sender: fcamblor@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 55813 invoked from network); 11 Dec 2008 22:15:34 -0000\r\nX-Received: from unknown (66.218.67.95)\n  by m51.grp.scd.yahoo.com with QMQP; 11 Dec 2008 22:15:34 -0000\r\nX-Received: from unknown (HELO mu-out-0910.google.com) (209.85.134.190)\n  by mta16.grp.scd.yahoo.com with SMTP; 11 Dec 2008 22:15:34 -0000\r\nX-Received: by mu-out-0910.google.com with SMTP id w9so723390mue.4\n        for &lt;junit@yahoogroups.com&gt;; Thu, 11 Dec 2008 14:15:33 -0800 (PST)\r\nX-Received: by 10.103.252.5 with SMTP id e5mr1608375mus.54.1229033733153;\n        Thu, 11 Dec 2008 14:15:33 -0800 (PST)\r\nX-Received: by 10.103.218.4 with HTTP; Thu, 11 Dec 2008 14:15:33 -0800 (PST)\r\nMessage-ID: &lt;b1c52b470812111415y18b04e97he7e39180a8e1193a@...&gt;\r\nDate: Thu, 11 Dec 2008 23:15:33 +0100\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;ghs2d6+dl4p@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;ghs14k+a3es@...&gt; &lt;ghs2d6+dl4p@...&gt;\r\nX-eGroups-Msg-Info: 2:2:2:0:0\r\nFrom: &quot;=?ISO-8859-1?Q?Fr=E9d=E9ric_Camblor?=&quot; &lt;fcamblor@...&gt;\r\nSubject: Re: [junit] Re: One test for all implementors of an interface\r\nX-Yahoo-Group-Post: member; u=332031081; y=9J6Idn8qTWVAV_Ee3zho8cqxO04NamYONOamXEUrL8rEyf9-\r\nX-Yahoo-Profile: f.camblor\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Yahoo-Marked-Not-Spam: \r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via web; 13 Dec 2008 16:18:48 -0000\r\n\r\nJohn,\n\nWhat you can do is to rely on spring and\nAbstractDependencyInjection=\r\nSpringContextTest (ugh !) in order to inject, via\nspring, your interface&#39;s =\r\nimplementation.\n\nA piece of example (let&#39;s assume MyConcreteClass implement=\r\ns MyInterface) :\n\npublic class MyTest extends AbstractDependencyInjectionSp=\r\nringContextTest {\n\n    private MyInterface foo;\n\n    public void MyTest(Str=\r\ning name){\n        super(name);\n        setAutowireMode(AUTOWIRE_BY_NAME); =\r\n// Activating spring autowiring :\nfoo will be automatically injected via sp=\r\nring before test is run\n    }\n\n    // provide a &quot;public&quot; foo setter, in ord=\r\ner to allow spring to autowire\nit\n    public void setFoo(MyInterface foo){ =\r\nthis.foo =3D foo; }\n\n    public void testInjection(){\n        assertNotNull=\r\n(foo);\n        assertEquals(0, foo.size());\n        foo.add(&quot;Hello&quot;);\n     =\r\n   assertEquals(1, foo.size());\n    }\n}\n\nYour spring xml file will be like =\r\nthe following :\n&lt;beans&gt;\n    &lt;bean id=3D&quot;foo&quot; class=3D&quot;MyConcreteClass&quot; /&gt;\n&lt;=\r\n/beans&gt;\n\nHope this helps\nFr=E9d=E9ric\n\n2008/12/11 John &lt;john_roshi@...=\r\nm&gt;\n\n&gt;   --- In junit@yahoogroups.com &lt;junit%40yahoogroups.com&gt;, &quot;lancezant&quot;=\r\n\n&gt; &lt;lance.zant@...&gt; wrote:\n&gt;\n&gt; &gt; The crux of the problem is that the base t=\r\nests need a way to\n&gt; &gt; instantiate the class under test without knowing wha=\r\nt class that is.\n&gt;\n&gt; That&#39;s EXACTLY where I was stuck.\n&gt;\n&gt; &gt; To do this, th=\r\ne base test class relied on an abstract factory method\n&gt; &gt; implemented in e=\r\nach concrete test class according to the target\n&gt; &gt; implementation.\n&gt;\n&gt; Aha=\r\n! Let me try that, thanks.\n&gt;\n&gt; --john\n&gt;\n&gt;  \n&gt;\n\n\n\n-- \nFr=E9d=E9ric Camblor\n\n=\r\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "f.camblor", 
+    "topicId": 21184, 
+    "spamInfo": {
+        "reason": "2", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 332031081, 
+    "prevInTime": 21191, 
+    "contentTrasformed": false, 
+    "postDate": "1229033733", 
+    "canDelete": false, 
+    "nextInTopic": 21193, 
+    "prevInTopic": 21190, 
+    "headers": {
+        "inReplyToHeader": "PGdoczJkNitkbDRwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGIxYzUyYjQ3MDgxMjExMTQxNXkxOGIwNGU5N2hlN2UzOTE4MGE4ZTExOTNhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGdoczE0aythM2VzQGVHcm91cHMuY29tPiA8Z2hzMmQ2K2RsNHBAZUdyb3Vwcy5jb20+"
+    }
+}

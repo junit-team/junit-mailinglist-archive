@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 16712, 
+    "senderId": "196QlRYYJ9HT98GmBrcCg6vGmiMPytqCJCbq4n8UXrqx6MdOds0RB2DmZil3MaovvIJYSmFgotq016I2pIc-57DFUfd_Gwk9hUi6-Fo-wg49BtxjDlHh", 
+    "systemMessage": true, 
+    "subject": "Re: Comparing two files on runtime", 
+    "from": "&quot;whitworthjanet&quot; &lt;janet.e.whitworth@...&gt;", 
+    "authorName": "whitworthjanet", 
+    "msgSnippet": "Like you our project has the need to compare files and large XML documents and elements. The system is about 95% batch. Several other posts have submitted", 
+    "msgId": 16711, 
+    "profile": "whitworthjanet", 
+    "topicId": 16669, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 247009288, 
+    "messageBody": "<div id=\"ygrps-yiv-482444593\">Like you our project has the need to compare files and large XML <br/>\ndocuments and elements. The system is about 95% batch. Several other <br/>\nposts have submitted ideas on how you might do this. I wish I had <br/>\nrealized that there were tools out there to do this because I wrote it <br/>\nall myself. As you can see there are options, so hopefully you will <br/>\nnot need to do all the work that I did.<br/>\n<br/>\nHowever, I did come up with a few techniques that you might find <br/>\nhelpful. I keep all of the input files in a directory called TestData. <br/>\nThe structure of this directory is identical to my source directory. <br/>\nTherefore any test input files required by a.b.c.TestCase1 will be <br/>\nfound in the TestData/a/b/c/TestCase1 directory.<br/>\n<br/>\nI have a BaseTestCase that has a number of methods that will return <br/>\nthe handle to afile from the current TestCase directory, in the form <br/>\nof a fileNameString, File, InputStream, etc. to the satisfy the input <br/>\nrequirements of the methods that I am testing. To access the file, you <br/>\ncall the appropriate method and give it the file name (without the <br/>\ndirectory structure). The beauty of this approach is that you always <br/>\nknow where you data is and if you refactor your class and move it to <br/>\nanother package, you simply move you TestData directory to the <br/>\ndirectory that corresponds to your new package name.<br/>\n<br/>\nFor comparison purposes, I have the identical structure in a directory <br/>\ncalled TestResults. Since typically only one file or XML would be <br/>\ncompared per test method, I store the test results in a file with the <br/>\nsame name as the test method, followed by either .txt or .xml. I came <br/>\nup with the following little trick to get the test method name:<br/>\n<br/>\n    String testMethodName = new Exception().getStackTrace()<br/>\n[0].getMethodName();<br/>\n    System.out.println(testMethodName);<br/>\n<br/>\nThe first two lines of all of our test methods are always these two <br/>\nlines. It is very helpful to display the test method name in the <br/>\nsystem.out so you figure out which test method sys prints that must be <br/>\nadded from time-to-time to a test method came from. We pass the <br/>\ntestMethodName to the methods in our BaseTestCase that do the file and <br/>\nXML compares. This class figures out the directory from the class name <br/>\nand we keep the root directory, which changes dependent upon <br/>\nenvironment, in a properties file.<br/>\n<br/>\nI also added an option in the constructor of the BaseTestCase to <br/>\nindicate when the compare methods are executed whether they should do <br/>\none of the following:<br/>\n1. compare the files and fail if the prior results not found<br/>\n2. compare the files if the prior results found, otherwise write the <br/>\nnew results to the file<br/>\n3. write the new results to the file.<br/>\n<br/>\nWe almost always have option 2 turned on. When the results change and <br/>\nwe verify that the change is valid, we simply delete the old file and <br/>\nrun the test again. It is working very well for us.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;kavithask_98&quot; &lt;kavithask_98@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Hi,<br/>\n&gt; After running unit test, the output generates an xml file which has <br/>\n&gt; say more than 300 lines.<br/>\n&gt; Now, I need to verify this with the expected xml file. Since, I have <br/>\n&gt; lot of testcases like this it is not possible to verify manually.<br/>\n&gt; Does Junit support this feature like comparing any two files <br/>\nchecking <br/>\n&gt; for the difference and then if something is not matching, showing me <br/>\n&gt; the testcase and the lines due to which has failed.<br/>\n&gt; <br/>\n&gt; If yes, how to do the same.<br/>\n&gt; <br/>\n&gt; Thanks in adavance,<br/>\n&gt; Kavitha<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 16710, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1148412041", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16677, 
+    "headers": {
+        "inReplyToHeader": "PGU0OW5kYytybDU4QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGU0dm5hOSt0NmdkQGVHcm91cHMuY29tPg=="
+    }
+}

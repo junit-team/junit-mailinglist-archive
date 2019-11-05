@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11099, 
+    "senderId": "r4IynFwEP57DEa2ZiurDBa4H2UY7QjWdru2MVwA8GkkOBZ69RikOQNbpgUa8DYcuqw0yftP80zFOJCNIZ6pWcr6e_dzW28ItWs0", 
+    "systemMessage": false, 
+    "subject": "Re: junit on large scale", 
+    "from": "Thomas L Roche &lt;tlroche@...&gt;", 
+    "authorName": "Thomas L Roche", 
+    "msgSnippet": "Kevin O Sullivan Tue, 1 Jun 2004 09:42:50 +0100 ... More on maintenance below. Regarding thousands of test cases : * Some test coverage is better than none.", 
+    "msgId": 11098, 
+    "rawEmail": "Return-Path: &lt;tlroche@...&gt;\r\nX-Sender: tlroche@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 91079 invoked from network); 2 Jun 2004 22:11:17 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m14.grp.scd.yahoo.com with QMQP; 2 Jun 2004 22:11:17 -0000\r\nReceived: from unknown (HELO e35.co.us.ibm.com) (32.97.110.133)\n  by mta6.grp.scd.yahoo.com with SMTP; 2 Jun 2004 22:11:17 -0000\r\nReceived: from westrelay04.boulder.ibm.com (westrelay04.boulder.ibm.com [9.17.193.32])\n\tby e35.co.us.ibm.com (8.12.10/8.12.2) with ESMTP id i52MA1qF296108\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 2 Jun 2004 18:10:01 -0400\r\nReceived: from d03nm120.boulder.ibm.com (d03av04.boulder.ibm.com [9.17.195.170])\n\tby westrelay04.boulder.ibm.com (8.12.10/NCO/VER6.6) with ESMTP id i52M9nfF164124\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 2 Jun 2004 16:10:00 -0600\r\nIn-Reply-To: &lt;1086211478.835.27954.m12@yahoogroups.com&gt;\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nX-Mailer: Lotus Notes Release 6.0.2CF1 June 9, 2003\r\nMessage-ID: &lt;OFA5DB1737.A0F6F916-ON85256EA7.0076A970-85256EA7.0079C009@...&gt;\r\nDate: Wed, 2 Jun 2004 18:09:50 -0400\r\nX-MIMETrack: Serialize by Router on D03NM120/03/M/IBM(Release 6.0.2CF2HF259 | March 11, 2004) at\n 06/02/2004 16:10:00,\n\tSerialize complete at 06/02/2004 16:10:00\r\nContent-Type: text/plain; charset=&quot;US-ASCII&quot;\r\nX-eGroups-Remote-IP: 32.97.110.133\r\nFrom: Thomas L Roche &lt;tlroche@...&gt;\r\nSubject: Re: junit on large scale\r\nX-Yahoo-Group-Post: member; u=112010592\r\nX-Yahoo-Profile: tlroche\r\n\r\n&quot;Kevin O&#39;Sullivan&quot; Tue, 1 Jun 2004 09:42:50 +0100\n&gt;&gt;&gt; One of the concerns that I (and developers) have is that we will\n&gt;&gt;&gt; end up with thousands of test cases, many of which will involve\n&gt;&gt;&gt; using substantial amounts of MockObjects to set up test cases and\n&gt;&gt;&gt; that all this will become too much of an overhead to manage &\n&gt;&gt;&gt; maintain. \n\nMore on maintenance below. Regarding &quot;thousands of test cases&quot;:\n\n* Some test coverage is better than none. Don&#39;t &quot;let the perfect be\n  the enemy of the good&quot;: write some testcases now! &quot;A journey of a\n  thousand testcases&quot; :-)\n\n* I&#39;m suspecting that you are equating testing with unit testing:\n  since you have thousands of methods you must therefore have\n  thousands of testcases. Again, some testing is better than none; but\n  also, consider writing a few functional &quot;scenario&quot; suites that\n  cover high-value, must-not-break usecases. They will tend to\n  exercise a lotta underlying code, and they can be written so as to\n  &quot;spread the cost&quot; of creating real (as opposed to mock) objects. Use\n  TestSetup to wrapper your suite, create your BigRealObject&#39;s in a\n  onetime setUp() (or &quot;along the way&quot; during your scenario&#39;s\n  execution), and each testcase in the suite can use them.\n\nA single functional &quot;scenario&quot; will not, of course, be as\ndiagnostically useful as many unit tests, but at least you will get\nthat immediate red/green, un/broken feedback:\n\n&gt;&gt;&gt; changing code in the future will involve analysis of not only the\n&gt;&gt;&gt; project code but also the junit test code\n\n&quot;J. B. Rainsberger&quot; Wed, 02 Jun 2004 00:54:11 -0400\n&gt;&gt; Tests are not overhead; they are the safety net that /enables/ you\n&gt;&gt; to make changes confidently. They /save/ you time & effort. Without\n&gt;&gt; tests, how do you know that a change you made didn&#39;t break\n&gt;&gt; something?\n\nHear, hear! But you probably already, deep down inside, know that ...\nwhich is why you are currently probably testing MANUALLY. So when\nyou are comparing relative to the status quo, shouldn&#39;t you be\nincluding your current test costs? Or are you really not testing AT\nALL now?\n\n&gt;&gt; Bottom line: do you want it to work or not? If you want it to work,\n&gt;&gt; you have to test it.\n\nHear, hear! But note he does *not* say &quot;unit test&quot;: don&#39;t forget the\nother types of testing you need to do, and don&#39;t forget that you can\n\n&quot;Chappell, Simon P&quot; Wed, 2 Jun 2004 13:59:30 -0500\n&gt; use JUnit for unit tests and to drive both functional and load tests\n&gt; (a little pragmatic automation in action! :-)\n\nCorrect! Which is why ...\n\n&gt; Here are my thoughts on the pros and cons of using unit tests:\n\n&gt; cons:\n\n&gt; 1. You actually have to write unit test code.\n&gt; 2. You have to maintain unit test code.\n\n* s/unit//. Don&#39;t get hung up on the &quot;Unit&quot; part of &quot;JUnit&quot;--you can\n  indeed use it to drive many other types of testing.\n\n* consider tool assist. Several IDEs, notably Eclipse (and those based\n  upon it), now provide excellent support for both JUnit and\n  refactoring. These can take much of the drudgery out of both writing\n  and maintaining testcases.\n\n\n", 
+    "profile": "tlroche", 
+    "topicId": 11060, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112010592, 
+    "prevInTime": 11097, 
+    "contentTrasformed": false, 
+    "postDate": "1086214190", 
+    "canDelete": false, 
+    "nextInTopic": 11099, 
+    "prevInTopic": 11097, 
+    "headers": {
+        "inReplyToHeader": "PDEwODYyMTE0NzguODM1LjI3OTU0Lm0xMkB5YWhvb2dyb3Vwcy5jb20+", 
+        "messageIdInHeader": "PE9GQTVEQjE3MzcuQTBGNkY5MTYtT044NTI1NkVBNy4wMDc2QTk3MC04NTI1NkVBNy4wMDc5QzAwOUB1cy5pYm0uY29tPg=="
+    }
+}

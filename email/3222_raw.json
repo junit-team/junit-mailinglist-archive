@@ -1,0 +1,29 @@
+{
+    "topicId": 3199, 
+    "postDate": "1005240247", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Z3meaLB37geAreN5BAol-uW_Sr_FbLsoNzOHTsXUk7TPBPAS6jHpYhhw2GAXMbB30smpwVORa0jv7PRkHe-kX-bIJom89InjhAy84vjV", 
+    "nextInTime": 3223, 
+    "userId": 0, 
+    "prevInTime": 3221, 
+    "prevInTopic": 3199, 
+    "headers": {
+        "messageIdInHeader": "PE9FNzFBUnpkczNSMDI1OWZmMGkwMDAwZTU1YkBob3RtYWlsLmNvbT4=", 
+        "referencesHeader": "PDI5Qzg0Q0YyNUQwM0Q1MTE5RkNGMDA5MDI3QjY3QjVBNzQwQUU4QEVYQ0hBTkdFMT4="
+    }, 
+    "authorName": "Mathieu Gervais", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "... it to you... I am interested :) mathieu ... From: Matt Caswell To: junit@yahoogroups.com Sent: Wednesday, November 07, 2001 1:58 PM Subject: [junit]", 
+    "contentTrasformed": false, 
+    "msgId": 3222, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;egoine_@...&gt;\r\nX-Sender: egoine_@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 8 Nov 2001 17:24:09 -0000\r\nReceived: (qmail 73379 invoked from network); 8 Nov 2001 17:24:08 -0000\r\nReceived: from unknown (216.115.97.171)\n  by m3.grp.snv.yahoo.com with QMQP; 8 Nov 2001 17:24:08 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.236.210)\n  by mta3.grp.snv.yahoo.com with SMTP; 8 Nov 2001 17:24:08 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Thu, 8 Nov 2001 09:24:08 -0800\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;29C84CF25D03D5119FCF009027B67B5A740AE8@EXCHANGE1&gt;\r\nSubject: Re: [junit] JUnit patch for Mock objects\r\nDate: Thu, 8 Nov 2001 12:24:07 -0500\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.50.4133.2400\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nMessage-ID: &lt;OE71ARzds3R0259ff0i0000e55b@...&gt;\r\nX-OriginalArrivalTime: 08 Nov 2001 17:24:08.0695 (UTC) FILETIME=[2C9E3870:01C1687A]\r\nFrom: &quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;\r\n\r\n&gt; If anyone is interested in receiving it, just send me a mail and I&#39;ll send\nit to you...\n\nI am interested :)\n\nmathieu\n\n----- Original Message -----\nFrom: Matt Caswell\nTo: &#39;junit@yahoogroups.com&#39;\nSent: Wednesday, November 07, 2001 1:58 PM\nSubject: [junit] JUnit patch for Mock objects\n\n\nI have knocked together a patch for JUnit 3.7 which enables you to - in\neffect - pick up mock objects from your CLASSPATH - i.e. you do not need to\ndo anything special to get mock objects to be used by the code - it just\nworks. The patch enables you to specify which mock objects are loaded on a\nper Test class basis. E.g. if in TestA, you want the code to use a mock &quot;C&quot;\nimplementation, but in TestB you want to use a real &quot;C&quot; implementation then\nthis can be achieved with the patch.\n\nThis works without having to write your &quot;real&quot; code in any special way -\ni.e. you don&#39;t have to write the code to support the tests.\n\nBelow is a description of how to set up and use the patch to give you a\nflavour of how it works. If anyone is interested in receiving it, just send\nme a mail and I&#39;ll send it to you...\n\n\n\nPatch instructions:\n\nIn your junit3.7 directory replace the existing junit.jar with the patched\none.\n\nSome notes:\n\n1) This only works if you have dynamic reloading switched on (which\nshould be default anyway)\n2) To use, add the directory where you mock objects are as a -D\nparameter, i.e.\n\njava\n-Djunit.mockpath=c:&#92;path-to-my-mock-objects junit.swingui.TestRunner\n\n3) The mock objects directory should *not* be in your CLASSPATH\n4) In the directory where you keep your tests create a properties file\nfor each test, e.g. if you have a class called TestB, then you have a\nproperties file called TestB.properties. Each line in the file looks like\nthis:\n\nincluded.&lt;n&gt;=&lt;class name&gt;\n\nWhere &lt;n&gt; is a unique integer (make sure it is unique or you&#39;ll get\nstrange results!), and &lt;class name&gt; is the name of a class that you want\nloaded from the mock objects directory.\n5) Make sure that you have the directory containing the head of the\npackage structure that contains your properties file in your CLASSPATH,\ne.g. if you have a properties file for class mypackage.TestMyClass\nstored in the following file:\nc:&#92;javadev&#92;mypackage&#92;TestMyClass.properties\n\nThen you should have the following in your CLASSPATH:\nc:&#92;javadev\n\nThats all\n\nMatt\n\n\n_____\nThis email and any attachments are confidential and are intended only for\nthe addressee. If you are not the intended recipient of this email and have\nreceived it in error, please notify the sender immediately by reply email\nand then delete it from your system.\n\nYahoo! Groups Sponsor\nADVERTISEMENT\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service.\n\n", 
+    "subject": "Re: [junit] JUnit patch for Mock objects"
+}

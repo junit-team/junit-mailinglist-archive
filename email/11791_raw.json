@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 11792, 
+    "senderId": "rzdvp_SiwaDzLQvqX7GIPPrdst-02tiqQDIIsZak8_wLMnTCBHvEl2V_r2mZX7YPBkB2eIaw4wMD2ixlABcK1rlQhbPwOX8JVXFf1G6xry91ti_G1TNhxIk", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to test XML file processing?", 
+    "from": "Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;", 
+    "authorName": "Mark Van Peteghem", 
+    "msgSnippet": "... You might want to test two things here: 1) if the code correctly checks whether the file exists, 2) whether the file is parsed correctly. To test these", 
+    "msgId": 11791, 
+    "rawEmail": "Return-Path: &lt;Mark.Van.Peteghem@...&gt;\r\nReceived: (qmail 23241 invoked from network); 17 Aug 2004 16:42:57 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m16.grp.scd.yahoo.com with QMQP; 17 Aug 2004 16:42:57 -0000\r\nReceived: from unknown (HELO n1.grp.scd.yahoo.com) (66.218.66.64)\n  by mta2.grp.scd.yahoo.com with SMTP; 17 Aug 2004 16:42:57 -0000\r\nReceived: from [66.218.67.252] by n1.grp.scd.yahoo.com with NNFMP; 17 Aug 2004 16:41:50 -0000\r\nX-Sender: Mark.Van.Peteghem@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 32549 invoked from network); 17 Aug 2004 08:19:02 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m5.grp.scd.yahoo.com with QMQP; 17 Aug 2004 08:19:02 -0000\r\nReceived: from unknown (HELO poros.telenet-ops.be) (195.130.132.44)\n  by mta1.grp.scd.yahoo.com with SMTP; 17 Aug 2004 08:19:01 -0000\r\nReceived: from localhost (localhost.localdomain [127.0.0.1])\n\tby poros.telenet-ops.be (Postfix) with SMTP id 1BCBE3BC19D\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 17 Aug 2004 10:18:51 +0200 (MEST)\r\nReceived: from q-mentum.com (D5763A2F.kabel.telenet.be [213.118.58.47])\n\tby poros.telenet-ops.be (Postfix) with ESMTP id C18A73BC144\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 17 Aug 2004 10:18:50 +0200 (MEST)\r\nMessage-ID: &lt;4121C017.7030704@...&gt;\r\nDate: Tue, 17 Aug 2004 10:21:43 +0200\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6) Gecko/20040113\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cfpb23+155t@...&gt;\r\nIn-Reply-To: &lt;cfpb23+155t@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 195.130.132.44\r\nFrom: Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;\r\nSubject: Re: [junit] How to test XML file processing?\r\nX-Yahoo-Group-Post: member; u=184823457\r\nX-Yahoo-Profile: mvp_be\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 17 Aug 2004 16:41:47 -0000\r\nX-eGroups-Remote-IP: 66.218.66.64\r\n\r\njxingtang wrote:\n\n&gt; I have a method to read an XML file and then use DOM to extract the\n&gt; data. Can anyone recommend a good way to unit test this method? The\n&gt; code snippet is blow:\n&gt;\n&gt;       public void processConfigFile( String fileNameArg )\n&gt;             throws IllegalArgumentException\n&gt;       {\n&gt;             File configFile = new File( fileNameArg );\n&gt;             if( configFile.exists() == false )\n&gt;             {\n&gt;                   String msg = &quot;Failed to locate the specified\n&gt; configuration file &#92;&quot;&quot; +\n&gt;                                     fileNameArg + &quot;&#92;&quot;&quot;;\n&gt;                   throw new IllegalArgumentException( msg );\n&gt;             }\n&gt;            \n&gt;             DocumentBuilderFactory factory =\n&gt;                   DocumentBuilderFactory.newInstance();\n&gt;            \n&gt;             try\n&gt;             {\n&gt;                DocumentBuilder builder =\n&gt; factory.newDocumentBuilder();\n&gt;                configDoc = builder.parse( configFile );\n&gt;             }\n&gt;                 ....\n\nYou might want to test two things here: 1) if the code correctly checks \nwhether the file exists, 2) whether the file is parsed correctly. To \ntest these two, it&#39;s better to refactor your code to\n\n\n      public void processConfigFile( String fileNameArg )\n            throws IllegalArgumentException\n      {\n            File configFile = new File( fileNameArg );\n            if( configFile.exists() == false )\n            {\n                  String msg = &quot;Failed to locate the specified\nconfiguration file &#92;&quot;&quot; +\n                                    fileNameArg + &quot;&#92;&quot;&quot;;\n                  throw new IllegalArgumentException( msg );\n            }\n            FileReader reader = new FileReader(configFile);\n            processConfigFile(reader);\n      }\n           \n      public void processConfigFile( Reader reader )\n            throws IllegalArgumentException\n      {\n            DocumentBuilderFactory factory =\n                  DocumentBuilderFactory.newInstance();\n           \n            try\n            {\n               DocumentBuilder builder =\nfactory.newDocumentBuilder();\n               configDoc = builder.parse( reader );\n            }\n       }\n\nNow you can test the second method (which is more important, I think) \nwith a StringReader, which you can fill with data in your junit tests as \nyou like, by giving it a String in its constructor. The first method can \nbe easily tested with two tests, one with a (simple) existing file and \none with a non-existing file.\n\nThe advantage of this refactoring is not only easier testing, but also \nmakes your code more flexible.\n\n-- \n  Mark Van Peteghem\n  http://www.q-mentum.com -- easier and more powerful unit testing\n\n\n\n", 
+    "profile": "mvp_be", 
+    "topicId": 11782, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 184823457, 
+    "prevInTime": 11790, 
+    "contentTrasformed": false, 
+    "postDate": "1092730903", 
+    "canDelete": false, 
+    "nextInTopic": 11793, 
+    "prevInTopic": 11789, 
+    "headers": {
+        "inReplyToHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxMjFDMDE3LjcwMzA3MDRAcS1tZW50dW0uY29tPg==", 
+        "referencesHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg=="
+    }
+}

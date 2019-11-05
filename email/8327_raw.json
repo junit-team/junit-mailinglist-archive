@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 51, 
+    "nextInTime": 8328, 
+    "senderId": "E_1xxjLgqMqHRgPhp2p5168sBdc1oHuUmGFVWf2b1BAT-u8dZFjWTLBtFfssrXddyuD4ZjqczSI2LIljpm4WTZoFKR2CcGcKCD3vjR5CvQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Methods that does not return value", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "...  ...  You could also try reading the question. :) :) :)  That looks suspiciously like using a get method. To the OP, there are a number of", 
+    "msgId": 8327, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 42681 invoked from network); 11 Jun 2003 22:26:18 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m7.grp.scd.yahoo.com with QMQP; 11 Jun 2003 22:26:18 -0000\r\nReceived: from unknown (HELO fep03-mail.bloor.is.net.cable.rogers.com) (66.185.86.73)\n  by mta2.grp.scd.yahoo.com with SMTP; 11 Jun 2003 22:26:18 -0000\r\nReceived: from quincy ([24.156.43.226])\n          by fep03-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030611222617.OXTT305125.fep03-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Wed, 11 Jun 2003 18:26:17 -0400\r\nMessage-ID: &lt;200306111826200795.01A74111@...&gt;\r\nIn-Reply-To: &lt;1055271128.3371.9.camel@Rhino&gt;\r\nReferences: &lt;20030610165856.12665.qmail@...&gt;\n &lt;1055271128.3371.9.camel@Rhino&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Wed, 11 Jun 2003 18:26:20 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Methods that does not return value\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep03-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Wed, 11 Jun 2003 18:26:17 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt;So said Jason Rogers on 2003-06-10 --------------------\n&gt;On Tue, 2003-06-1=\r\n0 at 12:58, balakrishnan sengodan wrote:\n&gt;&gt; With out using GET method, how =\r\ndo we test the method\n&gt;&gt; that does not return value. Please give me an exam=\r\nple. \n&gt;\n&gt;First of all, there is a wealth of knowledge to be found in the\n&gt;a=\r\nrchives.  You should try looking there before posting.\n&lt;snip /&gt;\n\n&gt;    publi=\r\nc void testIncrementBy() {\n&gt;        Counter counter =3D new Counter();\n&gt;   =\r\n     assertEquals(&quot;initial value&quot;, 0, counter.getCount());\n&gt;        \n&gt;     =\r\n   counter.incrementBy(5);\n&gt;        assertEquals(&quot;incremented value&quot;, 5, co=\r\nunter.getCount());\n&gt;    }\n&lt;snip /&gt;\n\nYou could also try reading the question=\r\n. :) :) :)  That looks suspiciously like using a get method.\n\nTo the OP, th=\r\nere are a number of ways to answer that question, depending on the actual d=\r\nesign under test. If you can give us some information on what the &#39;void&#39; me=\r\nthod does, we may have a suggestion for you.\n\nConsider the event/listener d=\r\nesign in Java. An event source exposes &#39;addXXXListener&#39; and &#39;removeXXXListe=\r\nner&#39;, but no methods to query the list of listeners. After all, only the ev=\r\nent source needs to know who the listeners are at any given moment.\n\nYou wa=\r\nnt to test &#39;addXXXListener&#39; to see whether it really does add the listener.=\r\n You have two choices.\n\n1. Add &#39;containsXXXListener&#39; to the event source an=\r\nd use it in your tests. This is essentially the &#39;get&#39; method you don&#39;t want=\r\n to use.\n\n2. Add a listener to the event source, tell the event source to f=\r\nire an event, then check that the listener heard the event.\n\nOption #1 is c=\r\nleaner, although it adds a method &#39;just for testing&#39;. Rather than drag up m=\r\ny past comments in that direction, I suggest searching this group for the p=\r\nhrase &quot;just for testing&quot; and read the messages you find.\n\nOption #2 avoids =\r\nthe extra method, but relies on knowing how to fire an event, which kind of=\r\n event is fired and building a listener that listens for that kind of event=\r\n *and* can tell you whether it heard that event. That was a lot to type: th=\r\ne code must be more work! Also if the event source changes its internal wor=\r\nkings, your test may no longer work. With Option #1, there&#39;s not much dange=\r\nr in the event source changing in a way that might break your test.\n\nFor de=\r\ntails, look for &quot;JUnit Cookbook&quot; from Manning publications, although you&#39;ll=\r\n have to be patient -- it may not be on the shelf until early 2004.\n\nTake c=\r\nare.\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write =\r\nsoftware that people understand.\nhttp://www.diasparsoftware.com/\ntelephone:=\r\n +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 8301, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 8326, 
+    "contentTrasformed": false, 
+    "postDate": "1055370380", 
+    "canDelete": false, 
+    "nextInTopic": 8328, 
+    "prevInTopic": 8326, 
+    "headers": {
+        "inReplyToHeader": "PDEwNTUyNzExMjguMzM3MS45LmNhbWVsQFJoaW5vPg==", 
+        "messageIdInHeader": "PDIwMDMwNjExMTgyNjIwMDc5NS4wMUE3NDExMUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDMwNjEwMTY1ODU2LjEyNjY1LnFtYWlsQHdlYjQwMzEyLm1haWwueWFob28uY29tPiA8MTA1NTI3MTEyOC4zMzcxLjkuY2FtZWxAUmhpbm8+"
+    }
+}

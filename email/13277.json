@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 13278, 
+    "senderId": "egwkD0hn2IZv1YJ59VvvfMWbI4iwOqERtb3okxWoAcgW7WfuTYm3OXZmTbPjnY6RKmoOw6RisAXqv75wqB6KRpXVtoTmxw55CqFQhuhv", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Object equality", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... I use something of this sort... All my objects dump off to an EqualityStrategy class that first determines whether or not 2 objects can be compared for", 
+    "msgId": 13277, 
+    "profile": "jacaetev", 
+    "topicId": 13272, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "messageBody": "<div id=\"ygrps-yiv-1338195993\">On Mon, 2005-04-11 at 04:57, umciggy2000 wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; Hi!<br/>\n&gt; <br/>\n&gt; One way to test if two objects have tha same data in a test is to use<br/>\n&gt; the assertEquals(Object a, Object b) method and then implement<br/>\n&gt; equals() and hashCode() in the tested classes. This seems like<br/>\n&gt; simplest and most elegant solution to me.<br/>\n&gt; <br/>\n&gt; The problem though is when a test fails, you don&#39;t get any<br/>\n&gt; informartion about what field(s) that actually differed between the<br/>\n&gt; two objects. You could also implement a toString() method, but for<br/>\n&gt; large classes it&#39;s still quite hard see in the test output where the<br/>\n&gt; mismatch is.<br/>\n&gt; <br/>\n&gt; Because of this I usually write a series assertEquals(a.getFoo(),<br/>\n&gt; b.getFoo()) statements in my test case instead, event though I would<br/>\n&gt; prefer the equals() way of doing it. <br/>\n&gt; <br/>\n&gt; Does anyone have a neat solution to using the equals() method in tests<br/>\n&gt; and still get good output from the tests when something fails? <br/>\n<br/>\n </span></blockquote>I use something of this sort...<br/>\n<br/>\nAll my objects dump off to an EqualityStrategy class that first<br/>\ndetermines whether or not 2 objects can be compared for equality (eg.<br/>\nnull checks, class/subclass comparisons) then checks for the equality of<br/>\nmembers.  The EqualityStrategy accepts an EqualityEventListener which<br/>\nwill be notified at each member equality check.  For tests I register an<br/>\nEqualityEventListenerSupport instance with the objects being compared<br/>\n(see code below).  A failure at a particular member will generate an<br/>\nEqualityEvent which the listener will receive and cause the test to fail<br/>\nwith the description of the event (which is usually the name of the<br/>\nmember that was not equal between the two objects).<br/>\n<br/>\nThis use of the EqualityStrategy was a design decision made very early<br/>\non in the project so leveraging its use of EqualityEvents in tests was a<br/>\nno-brainer.  If you had to retrofit your system with this it might not<br/>\nbe so easy, depending on the number of classes your system contained --<br/>\nbut you could always do it bit by bit.<br/>\n<br/>\nI hope this helps at least to start the creative juices flowing.<br/>\n<br/>\nCode:<br/>\n***************<br/>\npublic class EqualityEventListenerSupport implements<br/>\nEqualityEventListener {<br/>\n<br/>\n    private boolean failOnUnEqualEvents;<br/>\n<br/>\n    public EqualityEventListenerSupport() {<br/>\n    }<br/>\n<br/>\n    public EqualityEventListenerSupport(boolean failOnUnEqualEvents) {<br/>\n        failOnUnEqualEvents(failOnUnEqualEvents);<br/>\n    }<br/>\n<br/>\n    public boolean failOnUnEqualEvents() {<br/>\n        return failOnUnEqualEvents;<br/>\n    }<br/>\n<br/>\n    public EqualityEventListenerSupport failOnUnEqualEvents(boolean<br/>\nfailOnUnEqualEvents) {<br/>\n        this.failOnUnEqualEvents = failOnUnEqualEvents;<br/>\n        return this;<br/>\n    }<br/>\n<br/>\n    public void notify(EqualityEvent event) {<br/>\n        if (!event.objectsAreEqual() && failOnUnEqualEvents()) {<br/>\n            Assert.fail(event.describe());<br/>\n        }<br/>\n    }<br/>\n}<br/>\n<br/>\n***************<br/>\npublic interface EqualityEventListener {<br/>\n<br/>\n    public final static EqualityEventListener NULL_INSTANCE = new<br/>\nEqualityEventListener() {<br/>\n<br/>\n        public void notify(EqualityEvent event) {<br/>\n        }<br/>\n    };<br/>\n<br/>\n    public void notify(EqualityEvent event);<br/>\n}<br/>\n<br/>\n***************<br/>\npublic interface EqualityEvent {<br/>\n<br/>\n    public boolean objectsAreEqual();<br/>\n<br/>\n    public String describe();<br/>\n<br/>\n    public Object first();<br/>\n<br/>\n    public Object second();<br/>\n}<br/>\n<br/>\n  * -- <br/>\n    Jason Rogers<br/>\n    <br/>\n    &quot;I am crucified with Christ: nevertheless I live; yet not I,<br/>\n    but Christ liveth in me: and the life which I now live in <br/>\n    the flesh I live by the faith of the Son of God, who loved <br/>\n    me, and gave himself for me.&quot;<br/>\n        Galatians 2:20</div>", 
+    "prevInTime": 13276, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1113255876", 
+    "canDelete": false, 
+    "nextInTopic": 13282, 
+    "prevInTopic": 13272, 
+    "headers": {
+        "inReplyToHeader": "PGQzZGU2YytpM3VzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDExMTMyNTU4NzUuMTc4MTguMzMuY2FtZWxAZWFudXMucmlza21ldHJpY3MtYWEucmlza21ldHJpY3MuY29tPg==", 
+        "referencesHeader": "PGQzZGU2YytpM3VzQGVHcm91cHMuY29tPg=="
+    }
+}

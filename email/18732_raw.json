@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 18733, 
+    "senderId": "Xyw7tIcg7rFAqCLTmz0H-UIVqreXse0V0tXtEUDxiSkHsArhEVSk_sJrhmsqMaDMmaj8H2Sb-K4fSw_KzA9x4tIOhkdhWcpSnYXDpw", 
+    "systemMessage": false, 
+    "subject": "Re: Thinking of improving the auto generation of test cases", 
+    "from": "&quot;albsavoia&quot; &lt;albsavoia@...&gt;", 
+    "authorName": "albsavoia", 
+    "msgSnippet": "... Hi Saldin, You should really be using the Eclipse plug-in to take full advantage of JUnitFactory, but you can still get a flavor of what it can do ", 
+    "msgId": 18732, 
+    "rawEmail": "Return-Path: &lt;albsavoia@...&gt;\r\nX-Sender: albsavoia@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 73200 invoked from network); 13 Jan 2007 23:55:04 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m32.grp.scd.yahoo.com with QMQP; 13 Jan 2007 23:55:04 -0000\r\nReceived: from unknown (HELO n4c.bullet.sp1.yahoo.com) (69.147.64.184)\n  by mta3.grp.scd.yahoo.com with SMTP; 13 Jan 2007 23:55:04 -0000\r\nReceived: from [216.252.122.216] by n4.bullet.sp1.yahoo.com with NNFMP; 13 Jan 2007 23:54:57 -0000\r\nReceived: from [66.218.69.6] by t1.bullet.sp1.yahoo.com with NNFMP; 13 Jan 2007 23:54:57 -0000\r\nReceived: from [66.218.66.76] by t6.bullet.scd.yahoo.com with NNFMP; 13 Jan 2007 23:54:57 -0000\r\nDate: Sat, 13 Jan 2007 23:54:57 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;eobrgh+oetb@...&gt;\r\nIn-Reply-To: &lt;20070113181456.91877.qmail@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0\r\nFrom: &quot;albsavoia&quot; &lt;albsavoia@...&gt;\r\nSubject: Re: Thinking of improving the auto generation of test cases\r\nX-Yahoo-Group-Post: member; u=174158319; y=TJ1I_M5MoBvgj83KKa5aFY1skAdTNpqkXVjVyppwPh8E6mcA\r\nX-Yahoo-Profile: albsavoia\r\n\r\n--- In junit@yahoogroups.com, saldin samuel &lt;saldin_s@...&gt; wrote:\n&gt;\n&gt; Hi Ke=\r\nvin,\n&gt; \n&gt; I have just gone through the demo and it is impressive\n&gt; with the=\r\n parameters of primitive data types such as\n&gt; int, String, etc. How about g=\r\nenerating the unit tests\n&gt; for Objects such as class instances ?\n&gt; \n&gt; For i=\r\nnstance, if my method is:\n&gt; \n&gt; public Student getFirstStudent(School school=\r\n)\n&gt; {\n&gt; }\n&gt; \n&gt; How do we generate the test data for the classes\n&gt; Student a=\r\nnd School ? Is there any such kind of demos\n&gt; that I can refer to ?\n&gt; \n&gt; Th=\r\nanks and Regards,\n&gt; Saldin\n\nHi Saldin,\n\nYou should really be using the Ecli=\r\npse plug-in to take full advantage\nof JUnitFactory, but you can still get a=\r\n flavor of what it can do\nnon-primitives by cutting and pasting the followi=\r\nng code into the web\ndemo window.  It&#39;s one java file with a School and a S=\r\ntudent class. \nThe School class has a method addStudent() that takes a Stud=\r\nent object.\n\nNote that we also generate a bunch of tests for Student.  Why =\r\nso many\ntests for Student? Well, in order to construct the Student object\nJ=\r\nUnitFactory has to create both a valid and invalid social security\nnumbers =\r\n(SSN) and age parameters.  For example, since the age\nparameter has a set o=\r\nf conditions (e.g. age &gt; 12) the test generator\nwill create values for 12 a=\r\ns well as invalid values such as 11.\n\nHave fun with it:\n\n----- CUT AND PAST=\r\nE INTO JUNITFACTORY DEMO WINDOW ----------------\n\npackage school;\n\nimport j=\r\nava.util.ArrayList;\nimport java.util.List;\n\npublic class School {\n\n\tList st=\r\nudents;\n\tpublic School() {\n\t\tstudents =3D new ArrayList();\n\t}\n\t\n\tpublic voi=\r\nd addStudent(Student newStudent) {\n\t\tif (students.contains(newStudent))\n\t\t\t=\r\nthrow new IllegalArgumentException(&quot;Student already enrolled&quot;);\n\t\tstudents.=\r\nadd(newStudent);\n\t}\n\t\n\tpublic int getEnrollment() {\n\t\treturn students.size(=\r\n);\n\t}\n}\n\nclass Student {\n\t\n\tString name;\n\tString SSN;\n\t\n\tpublic Student(Str=\r\ning name, String SSN, int age) {\n\t\tvalidateSSN(SSN);\n\t\tvalidateAge(age);\n\t\t=\r\nthis.name =3D name;\n\t\tthis.SSN =3D SSN;\n\t}\n\t\n\tprivate void validateSSN(Stri=\r\nng SSN) {\n\t\tif (!SSN.matches(&quot;[0-9]{3}-[0-9]{2}-[0-9]{4}&quot;))\n\t\t\tthrow new Il=\r\nlegalArgumentException(&quot;Invalid SSN&quot;);\n\t}\n\n\tprivate void validateAge(int ag=\r\ne) {\n\t\tif (age &lt; 12 || age &gt; 20)\n\t\t\tthrow new IllegalArgumentException(&quot;Wro=\r\nng age);\n\t}\n\n}\n\n-----------------------  END OF CUT AND PASTE -------------=\r\n----\n\n\n\n", 
+    "profile": "albsavoia", 
+    "topicId": 18582, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 174158319, 
+    "prevInTime": 18731, 
+    "contentTrasformed": false, 
+    "postDate": "1168732497", 
+    "canDelete": false, 
+    "nextInTopic": 18745, 
+    "prevInTopic": 18731, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDcwMTEzMTgxNDU2LjkxODc3LnFtYWlsQHdlYjMzMDE0Lm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PGVvYnJnaCtvZXRiQGVHcm91cHMuY29tPg=="
+    }
+}

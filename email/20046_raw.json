@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20047, 
+    "senderId": "wlMdwR808XnwdZNEFbGWlQmM1litJfz-DMTc4Hod4T2dHAIPt46aXlxNxgiYlU3QY-HJvyTDROvoowsKh44JK2Wz", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: dynamically add tests to test suite in JUnit 4", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Patrick, In JUnit 4, a skeleton for that might look like this: @RunWith(Parameterized.class) public class InputOutput { private String inputFile, outputFile; ", 
+    "msgId": 20046, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 37797 invoked from network); 1 Nov 2007 20:58:12 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m46.grp.scd.yahoo.com with QMQP; 1 Nov 2007 20:58:12 -0000\r\nX-Received: from unknown (HELO rn-out-0102.google.com) (64.233.170.187)\n  by mta17.grp.scd.yahoo.com with SMTP; 1 Nov 2007 20:58:11 -0000\r\nX-Received: by rn-out-0102.google.com with SMTP id e23so330029rng\n        for &lt;junit@yahoogroups.com&gt;; Thu, 01 Nov 2007 13:58:11 -0700 (PDT)\r\nX-Received: by 10.142.52.9 with SMTP id z9mr349940wfz.1193950691191;\n        Thu, 01 Nov 2007 13:58:11 -0700 (PDT)\r\nX-Received: by 10.143.163.20 with HTTP; Thu, 1 Nov 2007 13:58:10 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90711011358r2a48b13r44bbaa8f3b0a787b@...&gt;\r\nDate: Thu, 1 Nov 2007 16:58:10 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;fgcu7e+ffe6@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;23fce8e60711010301p564f1e2cvf672b3cfc45c5008@...&gt;\n\t &lt;fgcu7e+ffe6@...&gt;\r\nX-Google-Sender-Auth: ce728665896b71d5\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Re: dynamically add tests to test suite in JUnit 4\r\nX-Yahoo-Group-Post: member; u=139771899; y=DceknwCtCUaTVR49LJBPbHZ3iQo7oVJz_FqdUK2o5IQ\r\nX-Yahoo-Profile: dsaff\r\n\r\nPatrick,\n\nIn JUnit 4, a skeleton for that might look like this:\n\n@RunWith(Parameterized.class)\npublic class InputOutput {\n\n  private String inputFile, outputFile;\n\n  public InputOutput(String inputFile, String outputFile) {\n    this.inputFile = inputFile;\n    this.outputFile = outputFile;\n  }\n\n  @Test\t\n  public void io() {\n    assertResultOfInputIsOutput(inputFile, outputFile);\n  }\n\n  @Parameters\n  public static List&lt;Object[]&gt; files() {\n    return allFilesInTestFileDirectory();\n  }\n}\n\nDoes that help?\n\n   David Saff\n\nOn 11/1/07, pmcevoy12 &lt;pmcevoy12@...&gt; wrote:\n&gt; James,\n&gt;\n&gt; I use the Java code as an algorithm and I put the actual parameters\n&gt; into files on the file system.\n&gt;\n&gt; For example, I might have these files\n&gt; .../testdata/test1/input.xml\n&gt; .../testdata/test1/output.xml\n&gt; .../testdata/test2/input.xml\n&gt; .../testdata/test2/output.xml\n&gt; ... and so on...\n&gt;\n&gt; The TestSuite knows about the &quot;testdata&quot; directory.  It loads a\n&gt; TestCase for each &quot;testX&quot; directory (test1, test2, etc.). The TestCase\n&gt; expects in the input and output files.\n&gt;\n&gt; So, to add a new test, I just add a test3/input.xml and\n&gt; test3/output.xml and I don&#39;t have to touch any Java code.\n&gt;\n&gt; --- Patrick\n&gt;\n&gt;\n&gt; --- In junit@yahoogroups.com, &quot;James Abley&quot; &lt;james.abley@...&gt; wrote:\n&gt; &gt;\n&gt; &gt; On 31/10/2007, pmcevoy12 &lt;pmcevoy12@...&gt; wrote:\n&gt; &gt; &gt;\n&gt; &gt; &gt; Hi,\n&gt; &gt; &gt;\n&gt; &gt; &gt;  Is there a way to dynamically add tests to a test suite in JUnit 4?\n&gt; &gt; &gt;\n&gt; &gt; &gt;  Maybe I am misunderstanding something, but it seems like the only way\n&gt; &gt; &gt;  to add tests is via the @...{} annotation.\n&gt; &gt; &gt;\n&gt; &gt; &gt;  In JUnit 3 I could do something like this\n&gt; &gt; &gt;\n&gt; &gt; &gt;  public static Test suite() {\n&gt; &gt; &gt;      TestSuite suite = new TestSuite();\n&gt; &gt; &gt;      for (int i = 0; i &lt; 100; i++) {\n&gt; &gt; &gt;          suite.addTest(new MyTestCase(i));\n&gt; &gt; &gt;      }\n&gt; &gt; &gt;      return suite;\n&gt; &gt; &gt;  }\n&gt; &gt; &gt;\n&gt; &gt; &gt;  --- PM\n&gt; &gt;\n&gt; &gt; Could you give us some more background on why you would want to do\n&gt; &gt; this? I think I only ever used this feature for doing Parameterized\n&gt; &gt; Tests, and JUnit 4 offers a different way of doing this, so I&#39;d like\n&gt; &gt; to understand a bit more about your use case before suggesting ways to\n&gt; &gt; proceed.\n&gt; &gt;\n&gt; &gt; Cheers,\n&gt; &gt;\n&gt; &gt; James\n&gt; &gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 20038, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 20045, 
+    "contentTrasformed": false, 
+    "postDate": "1193950690", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20044, 
+    "headers": {
+        "inReplyToHeader": "PGZnY3U3ZStmZmU2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcxMTAxMTM1OHIyYTQ4YjEzcjQ0YmJhYThmM2IwYTc4N2JAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDIzZmNlOGU2MDcxMTAxMDMwMXA1NjRmMWUyY3ZmNjcyYjNjZmM0NWM1MDA4QG1haWwuZ21haWwuY29tPgkgPGZnY3U3ZStmZmU2QGVHcm91cHMuY29tPg=="
+    }
+}

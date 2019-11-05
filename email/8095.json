@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 8096, 
+    "senderId": "C41OdagSX57P-AXbbwo9FQ19jf-Zs6CFdxRG_lUXOuuxUJIEU54VzVIZ708q7yseX4Eq--nHl7hcA9dHmrIYqhmiND9P", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] OT: final", 
+    "from": "Eric Vought &lt;evought@...&gt;", 
+    "authorName": "Eric Vought", 
+    "msgSnippet": "Just to step back in this thread a bit and perhaps bring it nearer to on-topic. ... There are a number of places where I think the use of final makes for ", 
+    "msgId": 8095, 
+    "profile": "eric_vought", 
+    "topicId": 7948, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 77258944, 
+    "messageBody": "<div id=\"ygrps-yiv-598031207\">Just to step back in this thread a bit and perhaps bring it nearer to <br/>\non-topic.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Friday, May 9, 2003, at 13:07 US/Eastern, J. B. Rainsberger wrote:<br/>\n<br/>\n&gt; I need to re-read this when I have more time. Still, I find that <br/>\n&gt; treating most object references as immutable makes for better code. <br/>\n&gt; Again, I can&#39;t adequately express why, but I feel it.<br/>\n&gt;<br/>\nThere are a number of places where I think the use of final makes for <br/>\nbetter code and either reduces the number of unit tests necessary or <br/>\nmakes it possible to test certain conditions that would otherwise not. <br/>\nI agree that the use of final for performance reasons is seldom <br/>\neffective and often overused.<br/>\n<br/>\nOne particular use is cleaning up and solidifying the number/type of <br/>\ninterfaces a class presents:<br/>\n<br/>\nAll extensible subclasses have two distinct interfaces. They present <br/>\none interface to outside callers and one to subclasses. Thorough <br/>\ntesting requires testing both interface and making sure that a subclass <br/>\nis not able to violate the base class contracts. One uses private <br/>\nfields/methods and final to enforce this.<br/>\n<br/>\nOne rule of thumb I have found quite useful is that only abstract <br/>\nclasses should be extended. Providing an API to a subclass can be a <br/>\ncomplex thing which should not be done by accident. Following this rule <br/>\nmeans that each class has only one API; they may either be subclassed <br/>\nor instantiated but not both. Often, when one wants to subclass a <br/>\nconcrete type, one is changing behavior that is specified in the <br/>\nconcrete base class and the subclass is not really a type-of the <br/>\nsuperclass. Instead, there is an abstract class where that behavior is <br/>\nleft unspecified from which both classes inherit. This is often <br/>\npainfully obvious when one goes back to the base class to update <br/>\ntests/documentation/contracts to test/demonstrate its use in the <br/>\nsuperclass. Unfortunately, this is seldom ever done. Declaring concrete <br/>\nclasses final pushes one in the direction of doing appropriate <br/>\nrefactoring instead of blind subclassing as well as appropriately <br/>\ntesting the APIs of the classes one really wants to be extensible.<br/>\n<br/>\nGiven an abstract baseclass, using private and final liberally <br/>\ndocuments and enforces the ways that a class may be safely extended. As <br/>\na simple example, it is very common to have a method like this:<br/>\n<br/>\n/** Opens a connection. Override this in a subclass and call the base <br/>\nclass method<br/>\n   * before doing your own initialization. */<br/>\npublic void openConnection()<br/>\n{<br/>\n\t// initialize data stored in the base class<br/>\n}<br/>\n<br/>\n// in subclass:<br/>\npublic void openConnection()<br/>\n{<br/>\n     inherited::openConnection();<br/>\n     // do my own thing<br/>\n}<br/>\n<br/>\nThe problem with this is that it is very easy to screw this up in the <br/>\nsubclass. One my forget to override the method (since it is not <br/>\nabstract), one may not call the superclass method, or one may call the <br/>\nsuperclass method at the wrong time. A quick test case can create a <br/>\nsubclass which violates any number of parent contracts. A safer way is <br/>\nto combine an abstract method and a final one to enforce the proper <br/>\ncontract:<br/>\n<br/>\n// in baseclass:<br/>\n<br/>\npublic final void openConnection()<br/>\n{<br/>\n     // Do base class stuff<br/>\n<br/>\n     // Call subclass method to do subclass stuff<br/>\n     i_openConnection()<br/>\n<br/>\n     // Do more base class stuff<br/>\n}<br/>\n<br/>\nprotected abstract void i_openConnection();<br/>\n<br/>\nNow the subclass *must* override i_openConnection(), since it is <br/>\nabstract. The subclass can no longer prevent the base class code from <br/>\nbeing run at the appropriate time. The parent class cannot be gotten <br/>\naround because openConnection() is final. Now testcases can be written <br/>\nto make sure that subclasses obey the parent&#39;s contracts.<br/>\n<br/>\nOne can take the stand that methods in abstract classes should either <br/>\nbe protected/abstract, private or final. I seldom go quite that far, <br/>\nbut it is a useful point of view. </span></blockquote></div>", 
+    "prevInTime": 8094, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1053114144", 
+    "canDelete": false, 
+    "nextInTopic": 8097, 
+    "prevInTopic": 8025, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNTA5MTMwNzI0MDY5Ni4wMDlGNzU4MkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDg0NENDMEMxLTg3RDYtMTFENy04QUY2LTAwMDM5M0MzMEVDRUBxbHVlLmNvbT4="
+    }
+}

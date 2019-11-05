@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 7540, 
+    "senderId": "sEeFb9nHt9ZEQlCVxppBMPmzAucsmTKJbdCL9cXTPWcmIL3pxUn5XssZ2jNivdQR3W2Q7zDVhEkf8ub0JJwyZL2VfBNRqWpUAkhFDGLpZ5ImLOyaRV30", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Simplified exception handling in tests", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... you should only catch exceptions that you expect.  For example if a method has to throw a CreateException , then catchin gthis exception: catch", 
+    "msgId": 7539, 
+    "profile": "vbossica", 
+    "topicId": 7526, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "messageBody": "<div id=\"ygrps-yiv-929866145\"><blockquote><span title=\"ireply\">&gt; Here&#39;s a snippet of code from one of our unit tests:<br/>\n&gt;  <br/>\n&gt;         try {<br/>\n&gt;             ClientSBHome home = (ClientSBHome) getEJBHome( jndiName, ClientSBHome.class );<br/>\n&gt;             sessionBean = home.create();<br/>\n&gt;         } catch( NamingException e ) {<br/>\n&gt;             fail( &quot;Cannot get Client session bean from server: &quot; + e.toString() );<br/>\n&gt;         } catch( CreateException e ) {<br/>\n&gt;             fail( &quot;Cannot get Client session bean from server: &quot; + e.toString() );<br/>\n&gt;         } catch( RemoteException e ) {<br/>\n&gt;             fail( &quot;Cannot get Client session bean from server: &quot; + e.toString() );<br/>\n&gt;         }<br/>\n&gt; <br/>\n&gt; All three exceptions are considered failures -- no special handling of any.  My inclination is to simplify this code by collapsing the catch blocks into one.  Comments?<br/>\n&gt;  <br/>\n&gt;         try {<br/>\n&gt;             ClientSBHome home = (ClientSBHome) getEJBHome( jndiName, ClientSBHome.class );<br/>\n&gt;             sessionBean = home.create();<br/>\n&gt;         } catch( Exception e ) {<br/>\n&gt;             fail( &quot;Cannot get Client session bean from server: &quot; + e.toString() );<br/>\n&gt;         }<br/>\n<br/>\n </span></blockquote>you should only catch exceptions that you expect.  For example if a <br/>\nmethod has to throw a &quot;CreateException&quot;, then catchin gthis exception:<br/>\n<br/>\n    catch (CreateException e) {<br/>\n       return;<br/>\n    }<br/>\n<br/>\nwill solve the problem.  The other exceptions are simply caught by the <br/>\nframework.<br/>\n<br/>\nThe easiest thing to do is add a &quot;throw Exception&quot; to the method <br/>\nsignature.  Read the JUnit FAQ, it&#39;s explained in detail.<br/>\n<br/>\nanother thing:<br/>\ncatch (Exception e) {<br/>\n    fail(&quot;blah&quot; + e.toString())<br/>\n}<br/>\n<br/>\nwon&#39;t give you any detail about the stacktrace.  So go figure out where <br/>\nthe NullPointerException was thrown!  To solve this, you can either <br/>\nmodify the signature (see above) or use the <br/>\njunitx.f.AssertionFailedError of the JUnit-addons package.  This <br/>\nexception accepts a Throwable as attribute and is 100% compatible with <br/>\nJUnit.<br/>\n<br/>\n-Vladimir<br/>\n<br/>\n-- <br/>\nVladimir R. Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 7538, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049473798", 
+    "canDelete": false, 
+    "nextInTopic": 7549, 
+    "prevInTopic": 7538, 
+    "headers": {
+        "inReplyToHeader": "PEIxNUY1QkY1NUIwOEQ1MTFCQjE3MDBCMEQwNjg3QjQ2MDEzRUVDNzJAeGlmaW5lMDEueGlmaW4uY29tPg==", 
+        "messageIdInHeader": "PDNFOERCMzA2LjcwODAxMDRAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PEIxNUY1QkY1NUIwOEQ1MTFCQjE3MDBCMEQwNjg3QjQ2MDEzRUVDNzJAeGlmaW5lMDEueGlmaW4uY29tPg=="
+    }
+}

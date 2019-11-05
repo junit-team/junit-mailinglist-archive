@@ -1,0 +1,29 @@
+{
+    "topicId": 2070, 
+    "postDate": "996070282", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "dfw1@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "iIVoihNsmSIf67JWQJlaiNHxuEBcWyZR4E84VivcKoBHIGtoldqp2g1SzMcTcFO9k8lJdiTVsg", 
+    "nextInTime": 2102, 
+    "userId": 0, 
+    "prevInTime": 2100, 
+    "prevInTopic": 2075, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDEwNzI0MTU1MTM3LjcxMzk2LnFtYWlsQHdlYjE0OTExLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDlqbWsyYStxbzF2QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "dfw1@cornell.edu", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "... Hi Mike, My team at a previous job tried just adding throws Exception to all our test method footprints. The problem we hit was that other developers", 
+    "contentTrasformed": false, 
+    "msgId": 2101, 
+    "nextInTopic": 2104, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;dfw1@...&gt;\r\nX-Sender: dfw1@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 25 Jul 2001 14:11:45 -0000\r\nReceived: (qmail 68945 invoked from network); 25 Jul 2001 14:11:24 -0000\r\nReceived: from unknown (10.1.10.26) by l7.egroups.com with QMQP; 25 Jul 2001 14:11:24 -0000\r\nReceived: from unknown (HELO n18.groups.yahoo.com) (10.1.1.37) by mta1 with SMTP; 25 Jul 2001 14:11:24 -0000\r\nX-eGroups-Return: dfw1@...\r\nReceived: from [10.1.2.33] by mr.egroups.com with NNFMP; 25 Jul 2001 14:11:23 -0000\r\nDate: Wed, 25 Jul 2001 14:11:22 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Errors and Exceptions\r\nMessage-ID: &lt;9jmk2a+qo1v@...&gt;\r\nIn-Reply-To: &lt;20010724155137.71396.qmail@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3355\r\nX-Mailer: eGroups Message Poster\r\nFrom: dfw1@...\r\n\r\n--- In junit@y..., Mike Duffy &lt;mduffy_lists@y...&gt; wrote:\n&gt; I have only been using JUnit for a few months and I am focusing on\n&gt; creating &quot;best practices&quot; templates for our development team.\n&gt; \n&gt; I would greatly appreciate the insight of more experienced users on\n&gt; the following issue.\n&gt; \n&gt; Because an exception caught by the JUnit framework is an error, when\n&gt; testing a method that throws exceptions, it is best to include those\n&gt; exceptions in the throws clause of the test method (or even add a\n&gt; &quot;throws Exception&quot; to most test methods).  \n\nHi Mike,\n\nMy team at a previous job tried just adding &quot;throws Exception&quot; to all\nour test method footprints. The problem we hit was that other\ndevelopers down the line would use our test code as example code when\nthey reused the code we were testing. (Unit test code makes poor\nexample code in so many ways, but was consistenty what the developers\ndown line tried to use. That continued even when we provided example\ncode.)\n\nI found it much better to list out all the exceptions that a test\ncould possibly throw in the throws clause. It adds a tiny amount of\noverhead to writing the test code, but adds greatly to the awareness\nof just what can go wrong. Otherwise, people who use your code down\nline are likely to include &quot;throws Exception&quot; (or worse,\ncatch(Exception ex)) in everything that uses your code. Also, it will\ntip you off to changes in the throws clauses in your code at compile\ntime.\n\nSince then, I&#39;ve added a patch to junit that adds a fail(Exception)\nmethod to Assert. See\nhttp://sourceforge.net/tracker/index.php?func=detail&aid=435699&group_id=15278&atid=315278\n(I feel like I&#39;m plugging a book in a talk show interview. :) )\n\nI personally prefer having try-catch-finally blocks in my tests, and\nthis patch lets me do it. That reserves junit errors for\nRuntimeExceptions and Errors, and still gives me a full stack trace. \n\nNot everyone will want to run a patched junit 3.7, so listing out each\nexception seems a reasonable technique.\n\n&gt; public void testMethod() throws Exception {\n&gt; \n&gt;     returnValue = methodCall(args);\n&gt; \n&gt;     assertTrue(some condition);\n&gt; }\n&gt; \n&gt; The following template would be less correct:\n&gt; \n&gt; public void testMethod() {\n&gt; \n&gt;     try {\n&gt;         returnValue = methodCall(args);\n&gt; \n&gt;     } catch (Exception e){\n&gt; \n&gt;         fail(&quot;Exception should not be thrown: &quot; + e);\n&gt;     }\n&gt;      \n&gt;     assertTrue(some condition);\n&gt; }\n\nDon&#39;t forget that your assertTrue(some condition); can also throw\nexceptions, so these two blocks are not interchangable.\n\nI prefer\n\npublic void testMethod() throws SomeExceptionThatMethodCallThrows\n{\n\ttry\n\t{\n\t\treturnValue = methodCall(args);\n\t\tassertTrue(some condition);\n\t}\n\tfinally\n\t{\n\t\t//any code to clean up the mess\n\t}\n}\n\nor (even better)\n\npublic void testMethod()\n{\n\ttry\n\t{\n\t\treturnValue = methodCall(args);\n\t\tassertTrue(some condition);\n\t}\n\tcatch(SomeExceptionThatMethodCallThrows setmct)\n\t{\n\t\tfail(setmct);\n\t}\n\tfinally\n\t{\n\t\t//any code to clean up the mess\n\t}\n}\n\n&gt; In general, test methods should be very lean and focus specifically\n&gt; on the condition being tested; let the framework handle the rest.\n\nso long as the code is easy to read, and encourages good practices\ndown the line. I discourage &quot;throws Exception&quot;s anywhere I see them.\n\nAnyway, that&#39;s how I do it. Others take different approaches, and have\nreasons for it.\n\nDave\n\n\n\n\n", 
+    "subject": "Re: Errors and Exceptions"
+}

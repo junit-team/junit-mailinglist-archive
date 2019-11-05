@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 22246, 
+    "senderId": "ZyLlepruptscovbNiu6tuq9NTaK3CfrEKqv_zLTTtAUph1AEZGH6KT3Xl5Xx66PZR6nm-GOqnHuU4mfGOxZ1qwqdOllF4W3W20E", 
+    "systemMessage": true, 
+    "subject": "Timeout tests and thread-local dependencies", 
+    "from": "&quot;Berin&quot; &lt;berin.loritsch@...&gt;", 
+    "authorName": "Berin", 
+    "msgSnippet": "I m trying to test some behavior using Hibernate/Spring transactional support, but I m running into a particular snag.  By default, the transaction manager is", 
+    "msgId": 22245, 
+    "profile": "bloritsch", 
+    "topicId": 22245, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 428096731, 
+    "messageBody": "<div id=\"ygrps-yiv-72788185\">I&#39;m trying to test some behavior using Hibernate/Spring transactional support, but I&#39;m running into a particular snag.  By default, the transaction manager is bound to the current thread.<br/>\n<br/>\nProblem is that with tests that have the &quot;timeout&quot; attribute specified, JUnit creates a new thread to ensure the timeout is enforced.  For example:<br/>\n<br/>\n@Test(timeout=100)<br/>\npublic void makeSureActionHappenedRecently() {<br/>\n    AuditLog.get().logEvent(EventType.TestEvent, &quot;Foo&quot;);<br/>\n<br/>\n    Collection&lt;AuditEvent&gt; log = <br/>\n        AuditLog.get().findEventsFor(EventType.TestEvent);<br/>\n<br/>\n   assertNotEmpty(log);<br/>\n   // make sure timestamp is within X ms<br/>\n   assertRecent(100, log.iterator().next().getTimestamp());<br/>\n}<br/>\n<br/>\nThis works without the (timeout=100) qualification because Hibernate is set up in the @BeforeClass.<br/>\n<br/>\nTechnically I could put the set up in an @Before method, but that becomes rather expensive (setting up Spring, Hibernate, connecting to database).<br/>\n<br/>\nAny clues on how to make this work?</div>", 
+    "prevInTime": 22244, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1262282046", 
+    "canDelete": false, 
+    "nextInTopic": 22246, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGhoaW9mdSt0MWw2QGVHcm91cHMuY29tPg=="
+    }
+}

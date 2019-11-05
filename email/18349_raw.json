@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 18350, 
+    "senderId": "4cpDhF2EVwVZMvbJ-OFRZv0ygRg5cNSR-cNUbJ8gGfXkvokIf05vOb2NIne4ry5cMl9w803uHl7pxJ_a7AXrnLN0Rkm4a6768yqLxVAtlHY", 
+    "systemMessage": true, 
+    "subject": "Promlem in writing Test case", 
+    "from": "avinash anand &lt;avinash_anand@...&gt;", 
+    "authorName": "avinash anand", 
+    "msgSnippet": "Hi All I am writing a test case in JUnit. The original class GetInfo.java has a method. String getSystemVersion(String str) which is under test. This method is", 
+    "msgId": 18349, 
+    "rawEmail": "Return-Path: &lt;avinash_anand@...&gt;\r\nReceived: (qmail 28332 invoked from network); 14 Nov 2006 08:00:29 -0000\r\nReceived: from unknown (66.218.67.34)\n  by m39.grp.scd.yahoo.com with QMQP; 14 Nov 2006 08:00:29 -0000\r\nReceived: from unknown (HELO n17c.bullet.sp1.yahoo.com) (69.147.64.126)\n  by mta8.grp.scd.yahoo.com with SMTP; 14 Nov 2006 08:00:29 -0000\r\nReceived: from [216.252.122.217] by n17.bullet.sp1.yahoo.com with NNFMP; 14 Nov 2006 07:59:16 -0000\r\nReceived: from [66.218.69.3] by t2.bullet.sp1.yahoo.com with NNFMP; 14 Nov 2006 07:59:16 -0000\r\nReceived: from [66.218.66.85] by t3.bullet.scd.yahoo.com with NNFMP; 14 Nov 2006 07:59:16 -0000\r\nX-Sender: avinash_anand@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 60737 invoked from network); 14 Nov 2006 07:19:24 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m33.grp.scd.yahoo.com with QMQP; 14 Nov 2006 07:19:24 -0000\r\nReceived: from unknown (HELO web26714.mail.ukl.yahoo.com) (217.146.177.71)\n  by mta4.grp.scd.yahoo.com with SMTP; 14 Nov 2006 07:19:23 -0000\r\nReceived: (qmail 13611 invoked by uid 60001); 14 Nov 2006 07:07:18 -0000\r\nMessage-ID: &lt;20061114070718.13609.qmail@...&gt;\r\nReceived: from [198.152.12.67] by web26714.mail.ukl.yahoo.com via HTTP; Tue, 14 Nov 2006 07:07:18 GMT\r\nDate: Tue, 14 Nov 2006 07:07:18 +0000 (GMT)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: avinash anand &lt;avinash_anand@...&gt;\r\nSubject: Promlem in writing Test case\r\nX-Yahoo-Group-Post: member; u=242433434; y=BepxXR_i_0xxG4NF97YA9HY5dfrkEQ6pKTfgmaAge8aonxQblhiftg\r\nX-Yahoo-Profile: avinash_anand\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: shanemingins &lt;shane.mingins@...&gt; via web; 14 Nov 2006 07:59:15 -0000\r\n\r\nHi All\n           I am writing a test case in JUnit. The original class Get=\r\nInfo.java has a method. String getSystemVersion(String str) which is under =\r\ntest. This method is supplied with path variable in form of string from whe=\r\nre it reads a xml file to get certain data and return back to the user.\n\nTh=\r\ne point of confussion for me is to how to test the method. What should be t=\r\nhe actual and expected result. Meaning for getting the expected result I wi=\r\nll have to use the same logic as it is in the main code, if I use the same =\r\nlogic to read the xml file then the assert statement would not be meaningfu=\r\nl as then the expected and actual results would be same. \n\nFind the code sn=\r\nippet below\n\n&lt;snippet&gt;\n\npublic String getVersion(String path) throws Except=\r\nion\n{\nString verFolder =3D &quot;&quot;;\nString sPathTemp =3D &quot;&quot;;\nString sPrevVersion=\r\n =3D &quot;&quot;;\nString currVersion =3D &quot;&quot;;\n/* Return version computed previously. =\r\nNo need to compute it again*/\nif(version !=3D null)\n{\nreturn version;\n}\nStr=\r\ning oldConfigFile =3D path;\nconfig =3D new XMLHelper();\noldConfigFile +=3D =\r\nfilesep + &quot;ICServicePacks&quot;;\nFile fe =3Dnew File(oldConfigFile);\nif(!fe.exis=\r\nts())\n{\nversion=3D&quot;0&quot;;\nreturn version;\n}\nString sDirList[]=3Dfe.list();\n/*\n=\r\n* As per the architecture of PI there will only be one directory inside ICS=\r\nervicePacks folder\n* with other two files install.log and version.xml\n* Hen=\r\nce cheking for the folder inside ICServicePacks folder\n*/\nfor(int counter =\r\n=3D 0;counter &lt; sDirList.length; counter++)\n{\nfe =3D new File(oldConfigFile=\r\n + filesep + sDirList[counter]);\nif(fe.isDirectory()=3D=3D true)\n{\nverFolde=\r\nr =3D sDirList[counter];\nsPathTemp =3D oldConfigFile + filesep + verFolder =\r\n+ filesep + &quot;Record&quot; + filesep + &quot;config.xml&quot;;\nif(new File(sPathTemp).exist=\r\ns())\n{\nif(config.init(sPathTemp)=3D=3D true)\n{\ncurrVersion =3D config.getVa=\r\nlueFromNodenameAndAttrib(&quot;System&quot;,&quot;Version&quot;);\nif(sPrevVersion.compareToIgno=\r\nreCase(currVersion) &lt; 0)\n{\nsPrevVersion =3D config.getValueFromNodenameAndA=\r\nttrib(&quot;System&quot;,&quot;Version&quot;);\nversion =3D sPrevVersion;\n} \n}\n}\n}\n}\nif(version =\r\n=3D=3D null)\n{\nversion =3D &quot;0&quot;;\n}\nreturn version;\n}\n}\n\n&lt;/snippet&gt;\n\nThanks i=\r\nn Advance\n\n-Avinash\n\n\n\t\t\n__________________________________________________=\r\n_________ \nTry the all-new Yahoo! Mail. &quot;The New Version is radically easie=\r\nr to use&quot; =96 The Wall Street Journal \nhttp://uk.docs.yahoo.com/nowyoucan.h=\r\ntml\n\n[Non-text portions of this message have been removed]\n\n\n\n", 
+    "profile": "avinash_anand", 
+    "topicId": 18349, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 242433434, 
+    "prevInTime": 18348, 
+    "contentTrasformed": false, 
+    "postDate": "1163488038", 
+    "canDelete": false, 
+    "nextInTopic": 18350, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDYxMTE0MDcwNzE4LjEzNjA5LnFtYWlsQHdlYjI2NzE0Lm1haWwudWtsLnlhaG9vLmNvbT4="
+    }
+}

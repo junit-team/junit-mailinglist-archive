@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 52, 
+    "nextInTime": 4557, 
+    "senderId": "Dmz4AYwE7qwAZK_yUV7RVuCcVOMoczrkTANPAJHqgh3R2YrwpFTNx6wSaJU67EcXb18vHqvSdXhv7RD-XtSRHeNyOohkgEXPGeQruOVOlcljECpc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] testing private methods", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... [Not a reply to the poster, but to the group.] OK, folks. I have never given a satisfactory reason why you should listen to JUnit when it tells you that it", 
+    "msgId": 4556, 
+    "rawEmail": "Return-Path: &lt;diaspar762@...&gt;\r\nX-Sender: diaspar762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_1); 2 Apr 2002 18:54:57 -0000\r\nReceived: (qmail 28072 invoked from network); 2 Apr 2002 18:54:56 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m6.grp.scd.yahoo.com with QMQP; 2 Apr 2002 18:54:56 -0000\r\nReceived: from unknown (HELO hotmail.com) (64.4.37.85)\n  by mta3.grp.scd.yahoo.com with SMTP; 2 Apr 2002 18:54:56 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Tue, 2 Apr 2002 10:54:56 -0800\r\nReceived: from 207.61.57.100 by pv2fd.pav2.hotmail.msn.com with HTTP;\n\tTue, 02 Apr 2002 18:54:56 GMT\r\nTo: junit@yahoogroups.com\r\nBcc: \r\nSubject: Re: [junit] testing private methods\r\nDate: Tue, 02 Apr 2002 13:54:56 -0500\r\nMime-Version: 1.0\r\nContent-Type: text/plain; format=flowed\r\nMessage-ID: &lt;F85C9s7RoyT5BDoXhrS0000a7d1@...&gt;\r\nX-OriginalArrivalTime: 02 Apr 2002 18:54:56.0848 (UTC) FILETIME=[E1DE2500:01C1DA77]\r\nX-eGroups-From: &quot;J. B. Rainsberger&quot; &lt;diaspar762@...&gt;\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\n\n&gt;Ives Aerts wrote:\n&gt;\n&gt; &gt; On Fri, Mar 29, 2002 at 01:37:41PM -0600, David Stagner wrote:\n&gt; &gt;\n&gt; &gt;&gt;If you want to test private methods directly, you must run your\n&gt; &gt;&gt;tests as inner classes.\n&gt; &gt;&gt;\n&gt; &gt;\n&gt; &gt; Not entirely true.\n&gt; &gt;\n&gt; &gt; Since JDK1.2, reflection can be used to circumvent the\n&gt; &gt; protected/private/package private access control mechanism; provided\n&gt; &gt; that the client wishing to do so has a\n&gt; &gt; ReflectPermission(&quot;suppressAccessChecks&quot;) permission.\n&gt; &gt;\n&gt; &gt; See java.lang.class.getDeclaredMethods(),\n&gt; &gt;     java.lang.reflect.Method and\n&gt; &gt;     java.lang.reflect.AccessibleObject.\n&gt;\n&gt;From: David Stagner &lt;dstagner@...&gt;\n&gt;\n&gt;Does this solve the problem, though? &lt;snip /&gt;\n&gt;It still smells to me. It just changes the smell of wanting to violate\n&gt;object access controls rules to the smell of a bunch of complex\n&gt;indirection for a simple method call. Of course, one could argue that\n&gt;i&#39;m being fundamentalist and preoccupied with methodology rather than\n&gt;JUnit. But a How without a Why is a smell too, and a horribly common\n&gt;smell in programming.\n\n[Not a reply to the poster, but to the group.]\n\nOK, folks. I have never given a satisfactory reason why you should listen to \nJUnit when it tells you that it wants your methods to be public, rather than \nprivate. Try this explanation on for size:\n\nYou have a class Outer with about three or four private methods. The methods \nhave arisen from some coding activity -- perhaps refactoring, perhaps a \ndesire to keep implementation details hidden. Now you have found a bug in \nyour code, so you&#39;d like to test a private method on its own. Surely *it* is \nthe source of your problems.\n\nWell, since the main behavior of Outer is correct, but some implementation \ndetail has a problem, likely your private method doesn&#39;t quite fit inside \nOuter. If it were truly meant to be in Outer, the fact that it fails would \nmean that Outer is intrinsically broken; however, you feel like Outer \nessentially works, except for this little detail.\n\nSince the private method doesn&#39;t really fit in Outer, you imagine that it&#39;s \npart of a small class Inner &quot;hiding inside&quot; Outer. Create the class Inner, \nmove the private method into it and now the method is either package-scope \nor public. If it is package scope, then put tests into the same package \nusing the parallel source tree technique people around here suggest. (I&#39;ve \nnever used it before, so I&#39;ll have to try it out to see whether I like it.) \nIf it is public scope, then put the tests anywhere you like.\n\nIn summary, by wanting to test an implementation detail on its own, you are \nidentifying a part of the class that really represents a very lightweight \ncollaborator of that class. (Think about it for a while.) At that moment, \nyou have made the implicit design decision that the method belongs \nelsewhere. As soon as you do that, it becomes easier to test. Notice that \n&quot;easier to test&quot; and &quot;feature envy&quot; are mutually opposing forces.\n\nComments?\n\nJ. B. Rainsberger\nPresident, Diaspar Software Services\nhttp://www.diasparsoftware.com\nLet&#39;s build software that people understand\n\n\n_________________________________________________________________\nGet your FREE download of MSN Explorer at http://explorer.msn.com/intl.asp.\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 3179, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 4555, 
+    "contentTrasformed": false, 
+    "postDate": "1017773696", 
+    "canDelete": false, 
+    "nextInTopic": 4558, 
+    "prevInTopic": 4553, 
+    "headers": {
+        "messageIdInHeader": "PEY4NUM5czdSb3lUNUJEb1hoclMwMDAwYTdkMUBob3RtYWlsLmNvbT4="
+    }
+}

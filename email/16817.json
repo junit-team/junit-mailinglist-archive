@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 16818, 
+    "senderId": "QpIHjxf9p-KGeK9hXsGiv1TsK-7ofGMp7Y2SPnngeKPR2_frlLJTYpMBUNd_MGXOyeHWcOWRU2uIUhwlFuXLfjiOMV4GG6Jx", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: How to comment test methods in Junit 4?", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Dear VGReddy, The new filter support gives you programmable control over what tests are run. For example: public class FilterTest { public static class Example", 
+    "msgId": 16817, 
+    "profile": "kentlbeck", 
+    "topicId": 16698, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-384854252\">Dear VGReddy,<br/>\n<br/>\nThe new filter support gives you programmable control over what tests are<br/>\nrun. For example:<br/>\n<br/>\npublic class FilterTest {<br/>\n\tpublic static class Example {<br/>\n\t\t@Test public void one() {}<br/>\n\t\t@Test public void two() {}<br/>\n\t\t@Test public void three() {}<br/>\n\t}<br/>\n<br/>\n\t@Test public void filter() {<br/>\n\t\tRequest request= Request.aClass(Example.class);<br/>\n\t\tFilter filter= new Filter() {<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic boolean shouldRun(Description description) {<br/>\n\t\t\t\treturn<br/>\ndescription.getDisplayName().startsWith(&quot;t&quot;);<br/>\n\t\t\t}<br/>\n<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic String describe() {<br/>\n\t\t\t\tthrow new UnsupportedOperationException();<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n\t\tRequest filtered= request.filterWith(filter);<br/>\n\t\tResult result= new JUnitCore().run(filtered);<br/>\n\t\tassertEquals(2, result.getRunCount());<br/>\n\t}<br/>\n}<br/>\n<br/>\nIt seems to me like this will solve your problem, although it may be too<br/>\ngeneral for your purposes.<br/>\n<br/>\nSincerely yours,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of vgreddy43<br/>\n&gt; Sent: Tuesday, May 30, 2006 6:20 PM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] Re: How to comment test methods in Junit 4?<br/>\n&gt; <br/>\n&gt; Can anybody help me on how to solve this?<br/>\n&gt; <br/>\n&gt; Thanks.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;vgreddy43&quot; &lt;vgreddy43@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hello friends,<br/>\n&gt; &gt; <br/>\n&gt; &gt; I have a test case with some testmethods which are written in <br/>\n&gt; &gt; junit 4 style. As showsn below.<br/>\n&gt; &gt; <br/>\n&gt; &gt; public Class MyTestCase{<br/>\n&gt; &gt; <br/>\n&gt; &gt; @Before<br/>\n&gt; &gt; public void mysetup(){<br/>\n&gt; &gt;  //some code<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; @Test<br/>\n&gt; &gt; public void mytest1(){<br/>\n&gt; &gt; //some code<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; @Test<br/>\n&gt; &gt; public void mytest2(){<br/>\n&gt; &gt; //some code<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; @After<br/>\n&gt; &gt; <br/>\n&gt; &gt; public void myteardown(){<br/>\n&gt; &gt; //some code<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; public static junit.framework.Test suite() {<br/>\n&gt; &gt;   return new JUnit4TestAdapter(MyTestCase.class);    <br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; When we run this it will test mytest1 and mytest2 methods.<br/>\n&gt; &gt; But if I want only mytest1 to run how do I do that. Using @Ignore <br/>\n&gt; we <br/>\n&gt; &gt; can comment other tests but I want to do this in junit3.8 style, <br/>\n&gt; like<br/>\n&gt; &gt; <br/>\n&gt; &gt; Public static Test suite() {<br/>\n&gt; &gt; TestSuite suite = new TestSuite(&quot;TestSuite&quot;);<br/>\n&gt; &gt; suite.addTest(new MyTestCase(&quot;mytest1&quot;));<br/>\n&gt; &gt; //suite.addTest(new OIDBHelperTest(&quot;myttest2&quot;));<br/>\n&gt; &gt; //suite.addTest(new OIDBHelperTest(&quot;myttest3&quot;));<br/>\n&gt; &gt; <br/>\n&gt; &gt; return suite;<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; Any ideas on this, how to acheive this type of functionality in <br/>\n&gt; &gt; junit4?<br/>\n&gt; &gt; <br/>\n&gt; &gt; thanks. </span></blockquote></div>", 
+    "prevInTime": 16816, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1149280744", 
+    "canDelete": false, 
+    "nextInTopic": 16819, 
+    "prevInTopic": 16780, 
+    "headers": {
+        "inReplyToHeader": "PGU1aXIwNStxb21qQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwNjQwMWM2ODY4NCQ5OWQ1MzY1MCQ2NDAxYThjMEBUNDI+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12405, 
+    "senderId": "sWogqbES5n0qUNODzw9rE4wx16S8Sw-xkAqn7YMjSnKQxev_afAOM_KuvDOErkr4bXSMHWmjcmpa2fGX_7GC57vcaXQd6cUGdSWBnXGE7Xa8", 
+    "systemMessage": true, 
+    "subject": "Reusable TestSuite facilities.", 
+    "from": "&quot;mark_l_salter&quot; &lt;marksalter@...&gt;", 
+    "authorName": "mark_l_salter", 
+    "msgSnippet": "I am attempting to construct a test suite that has a common component referenced and used from within tests in the suite, which is set-up once. The common", 
+    "msgId": 12404, 
+    "profile": "mark_l_salter", 
+    "topicId": 12404, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 180351433, 
+    "messageBody": "<div id=\"ygrps-yiv-1377599475\">I am attempting to construct a test suite that has a common component<br/>\nreferenced and used from within tests in the suite, which is set-up<br/>\nonce.<br/>\n<br/>\nThe &#39;common&#39; component is a network connection to a remote server<br/>\n(under test).  The important aspect (to me) for the majority of tests<br/>\nis not the connection, but getting a number of messages into and back<br/>\nfrom the remote system.  I am in the position of being able to predict<br/>\nwhat response the remote system should give for a particular request.<br/>\nI feel the connection establishment and management can (and should?)<br/>\nbe tested separately.<br/>\n<br/>\nWhat I can&#39;t see is where to put the &#39;common&#39; object and how to<br/>\nreference it from a test level.  I feel like I am missing the obvious,<br/>\nand probably it&#39;s java rather than JUnit related!<br/>\n<br/>\nThe FAQ holds some guidance, and I have attempted to add some code to<br/>\nillustrate my non-conception...<br/>\n<br/>\nimport junit.framework.*;<br/>\nimport junit.extensions.TestSetup;<br/>\n<br/>\npublic class AllTestsOneTimeSetup {<br/>\n<br/>\n    Connection c = null;<br/>\n<br/>\n    public static Test suite() {<br/>\n<br/>\n        TestSuite suite = new TestSuite();<br/>\n<br/>\n        suite.addTest(SomeTest.suite());<br/>\n        suite.addTest(AnotherTest.suite());<br/>\n<br/>\n        TestSetup wrapper = new TestSetup(suite) {<br/>\n<br/>\n            protected void setUp() {<br/>\n                oneTimeSetUp();<br/>\n            }<br/>\n<br/>\n            protected void tearDown() {<br/>\n                oneTimeTearDown();<br/>\n            }<br/>\n        };<br/>\n<br/>\n        return wrapper;<br/>\n    }<br/>\n<br/>\n    public static void oneTimeSetUp() {<br/>\n        // one-time initialization code<br/>\n<br/>\n        c = new Connection(&quot;remoteIP&quot;);<br/>\n        c.open();<br/>\n    }<br/>\n<br/>\n    public static void oneTimeTearDown() {<br/>\n        // one-time cleanup code<br/>\n        c.close();<br/>\n    }<br/>\n}<br/>\n<br/>\nWithin SomeTest and AnotherTest I hope to use c.send(msg), but do not<br/>\nknow how to qualify or resolve c within SomeTest.<br/>\n<br/>\n--Mark</div>", 
+    "prevInTime": 12403, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1101858361", 
+    "canDelete": false, 
+    "nextInTopic": 12410, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGNvajBucCtvcWFnQGVHcm91cHMuY29tPg=="
+    }
+}

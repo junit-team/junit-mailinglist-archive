@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 7951, 
+    "senderId": "4Jlu5vLKX7nCrs9ycpeyloPY_q-dODEpDUdCY91iyIF2-wGoMiuuXxS6LwaYBhxITuajEJ6g0KD7rtjrOR6M4A3jT2eSaycAYlJNKKTFIQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] question about Assert.assertEquals", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... This is not overriding Object#equals, because that method s parameter is Object and not Point. When assertEquals() is called, it s calling Object#equals", 
+    "msgId": 7950, 
+    "profile": "nails762", 
+    "topicId": 7948, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1119645318\"><blockquote><span title=\"ireply\">&gt;So said cyril3b2 on 2003-05-06 --------------------<br/>\n&gt;Hi,<br/>\n&gt;<br/>\n&gt;I&#39;ve got a problem with the method assertEquals.<br/>\n&gt;<br/>\n&gt;I&#39;ve got the following very simple class Point:<br/>\n&gt;public class Point {<br/>\n&gt;      <br/>\n&gt;      public Point (int x, int y) {<br/>\n&gt;            this.x = x;<br/>\n&gt;            this.y =y;<br/>\n&gt;      }<br/>\n&gt;    <br/>\n&gt;       <br/>\n&gt;      public boolean equals(Point pt){<br/>\n&gt;                        return  (x== pt.x && y == pt.y);<br/>\n&gt;                    }<br/>\n<br/>\n </span></blockquote>This is not overriding Object#equals, because that method&#39;s parameter is Object and not Point. When assertEquals() is called, it&#39;s calling Object#equals and not Point#equals.<br/>\n<br/>\nAdd this method.<br/>\n<br/>\npublic boolean equals(Object other) {<br/>\n    if (other != null && getClass() == other.getClass()) {<br/>\n        return equals((Point) other);<br/>\n    }<br/>\n    else {<br/>\n        return false;<br/>\n    }<br/>\n}<br/>\n<br/>\nYour equals implementation had another bug: if pt == null then your method blows up. It should just return false.<br/>\n<br/>\nSome people will suggest using an instanceof check in your equals method. This fails if you subclass Point. I&#39;ll leave it to you to figure out why. A Point could be equal to a PointSubclass, but not the other way around, which violates the symmetric property. (How?)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;And I don&#39;t understand why. Given the class assertEquals, we use <br/>\n&gt;polymorphism applied to p1, and so the overriden method equals from <br/>\n&gt;class Point should be used, no?<br/>\n<br/>\n </span></blockquote>No. Java is a single-dispatch language. You get polymorphism when you invoke a method on an object, but not when you pass the object as a parameter. The binding for method parameters occurs at compile time, while the binding for method calls occurs at runtime.<br/>\n<br/>\nTake care.<br/>\n<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 7949, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1052257693", 
+    "canDelete": false, 
+    "nextInTopic": 7952, 
+    "prevInTopic": 7949, 
+    "headers": {
+        "inReplyToHeader": "PGI5OTBncytjZzg0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwNTA2MTc0ODEzMDg1Mi4wMDE5Q0YzMkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGI5OTBncytjZzg0QGVHcm91cHMuY29tPg=="
+    }
+}

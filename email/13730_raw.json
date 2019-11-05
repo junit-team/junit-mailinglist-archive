@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 52, 
+    "nextInTime": 13731, 
+    "senderId": "ckoRszeZ7GOAm6J9pzR2beNC8kMku5H8lTIS89OPymh8nec3KBdu3NGi2BIceMuPgPI185eRGXW2C6SxVINFrA-i-FXcm-fyXz3LStgn", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] assertTrue(true)", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... Not in the case of a subclass of the exception your catch clause catches. ... Sometimes, perhaps.  But, I don t really care one way or another. Unless my", 
+    "msgId": 13730, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 49307 invoked from network); 31 May 2005 20:49:28 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m23.grp.scd.yahoo.com with QMQP; 31 May 2005 20:49:28 -0000\r\nReceived: from unknown (HELO out3.smtp.messagingengine.com) (66.111.4.27)\n  by mta6.grp.scd.yahoo.com with SMTP; 31 May 2005 20:49:27 -0000\r\nReceived: from frontend2.messagingengine.com (frontend2.internal [10.202.2.151])\n\tby frontend1.messagingengine.com (Postfix) with ESMTP id 7E256C95437\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 31 May 2005 16:49:05 -0400 (EDT)\r\nX-Sasl-enc: Tf8PsNt2xzsNeVYJkcUCrBmsiTlfEbH3KWbtA7l155s+ 1117572544\r\nReceived: from fast-mail.org (w018.z064003232.det-mi.dsl.cnc.net [64.3.232.18])\n\tby frontend2.messagingengine.com (Postfix) with ESMTP id 71E3F57030B\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 31 May 2005 16:49:04 -0400 (EDT)\r\nMessage-ID: &lt;429CCCD3.9010101@...&gt;\r\nDate: Tue, 31 May 2005 16:45:07 -0400\r\nUser-Agent: Mozilla Thunderbird 0.5 (X11/20040208)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20050531185412.52668.qmail@...&gt;\r\nIn-Reply-To: &lt;20050531185412.52668.qmail@...&gt;\r\nX-Enigmail-Version: 0.83.4.0\r\nX-Enigmail-Supports: pgp-inline, pgp-mime\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Jason Rogers &lt;jacaetevha@...&gt;\r\nSubject: Re: [junit] assertTrue(true)\r\nX-Yahoo-Group-Post: member; u=109352929; y=8Umx6YMdCx4lYFDfgqZH73j6Qc0HWNVKmSsUE5qVG5gUSeE\r\nX-Yahoo-Profile: jacaetev\r\n\r\nJohn Smith wrote:\n\n&gt; --- Jason Rogers &lt;jacaetevha@...&gt; wrote:\n&gt; &gt; I prefer:\n&gt; &gt;\n&gt; &gt; try {\n&gt; &gt;     articleProvider.findArticleById(&quot;foobar&quot;);\n&gt; &gt;     fail(&quot;Expected NoObjectFoundException);\n&gt; &gt; } catch (Exception e) {\n&gt; &gt;     assertSame(e.getClass(),\n&gt; &gt; NoObjectFoundException.class);\n&gt; &gt;     // or whatever else seems appropriate (eg.\n&gt; &gt; testing getMessage() or\n&gt; &gt; other attribute)\n&gt; &gt; }\n&gt;\n&gt; With my solution (just a comment in the catch block),\n&gt; the test would count an error if another Exception\n&gt; instead of NoObjectFoundException is thrown.\n\nNot in the case of a subclass of the exception your catch clause catches.\n\n&gt;\n&gt; With your solution, it would result in counting a\n&gt; failure instead of an error.\n&gt;\nSometimes, perhaps.  But, I don&#39;t really care one way or another.  \nUnless my runner distinguishes from errors and failures with a different \ncolor bar (a la some SUnit runners) all I *really* care about is \nred-bar.  I hardly ever notice the counts of errors, failures, and \npasses.  I only look at those numbers when I want some statistical \ninformation.\n\n&gt; In both cases, the test becomes red, which is what we\n&gt; want. My solution is easier to implement and easier to\n&gt; read.\n\nIn what way.  Easier to implement because it&#39;s fewer key strokes?  I can \nassure you that I don&#39;t expend a lot of effort in writing asserts in the \ncatch block.  They are very simple and straight-forward.\n\n&gt; Besides this, if another Exception instead of\n&gt; NoObjectFoundException is thrown, it indicates that\n&gt; something is terribly wrong with the system, and thus\n&gt; an error is appropriate in my eyes.\n\n\nNot necessarily.  For instance, some of my current tests are SOAP \nclients.  Calls on the SOAP object (mock or real) can result in throwing \na java.rmi.RemoteException for several reasons, each of which is \nimpemented in a particular subclass of RemoteException.  I don&#39;t want to \nworry about which type of RemoteException is thrown, so I just catch the \ngeneric RemoteException.  Then I test the exception&#39;s message.  I don&#39;t \ncare to know which particular exception instance is thrown, I just want \nto know that what&#39;s in the message is what I think should be in there.  \nI don&#39;t get to control which instance is thrown, that&#39;s an \nimplementation detail which changes from time to time (eg. when a new \nRemoteException subclass is created)-- but I know that the exception \nshould reference my inputs.\n\nYour mileage may vary.  But as the OP asked &quot;which do you prefer&quot;, I \nresponded with my preference. ;)\n\n-- \nJason Rogers\n\n&quot;I am crucified with Christ: nevertheless I live; yet not I,\nbut Christ liveth in me: and the life which I now live in \nthe flesh I live by the faith of the Son of God, who loved \nme, and gave himself for me.&quot;\n    Galatians 2:20\n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 13707, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 13729, 
+    "contentTrasformed": false, 
+    "postDate": "1117572307", 
+    "canDelete": false, 
+    "nextInTopic": 13732, 
+    "prevInTopic": 13729, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTMxMTg1NDEyLjUyNjY4LnFtYWlsQHdlYjYwMDE2Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDQyOUNDQ0QzLjkwMTAxMDFAZmFzdC1tYWlsLm9yZz4=", 
+        "referencesHeader": "PDIwMDUwNTMxMTg1NDEyLjUyNjY4LnFtYWlsQHdlYjYwMDE2Lm1haWwueWFob28uY29tPg=="
+    }
+}

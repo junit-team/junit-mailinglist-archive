@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 4078, 
+    "senderId": "7g2oRZeMPd47wwOmeQ_7SgA3UTOE1L4AgGYFmaI11u78MtJ2Zs92QEhXEJTeheOiFWi3G9teyelc6o8lL3XpYNoOWF3JPLpBtv3Wp3IFCJ4dBQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] remove test from suite?", 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "... If I read between the lines I can imagine that the only problem you may have is that a run failes and the error message is No tests found in ... (if", 
+    "msgId": 4077, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_2); 15 Feb 2002 02:59:08 -0000\r\nReceived: (qmail 50177 invoked from network); 15 Feb 2002 02:59:08 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m8.grp.snv.yahoo.com with QMQP; 15 Feb 2002 02:59:08 -0000\r\nReceived: from unknown (HELO c003.snv.cp.net) (209.228.32.218)\n  by mta1.grp.snv.yahoo.com with SMTP; 15 Feb 2002 02:59:08 -0000\r\nReceived: (cpmta 22409 invoked from network); 14 Feb 2002 18:59:07 -0800\r\nReceived: from 64.79.2.4 (HELO bossicard.com)\n  by smtp.telocity.com (209.228.32.218) with SMTP; 14 Feb 2002 18:59:07 -0800\r\nX-Sent: 15 Feb 2002 02:59:07 GMT\r\nMessage-ID: &lt;3C6C791D.90908@...&gt;\r\nDate: Thu, 14 Feb 2002 18:57:33 -0800\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.7) Gecko/20011221\r\nX-Accept-Language: en-us\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] remove test from suite?\r\nReferences: &lt;5.1.0.14.2.20020213220116.0236d5f0@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Vladimir Bossicard &lt;vladimir@...&gt;\r\nX-Yahoo-Group-Post: member; u=43178095\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; hi, is there any easy way to remove a test from a suite? i am fooling \n&gt; around with cactus and some of the tests are not implemented yet.\n\n\nIf I read between the lines I can imagine that the only problem you may \nhave is that a run failes and the error message is &quot;&quot;No tests found in \n...&quot; (if it&#39;s not the problem, please give more infos)\n\ncause of this problem: classes that extend TestCase _must_ have at least \none valid test method (public, void return, no arg and beginning with \n&quot;test&quot;).\n\nSeveral solutions:\n\n- create an empty dummy test method:\n     public void testDummy () {}\n- find the testsuite that includes this class and remove the \naddTestSuite(myFaultyClass.class) call\n- modify JUnit to implement a soft-error handling: if an error message \nstarts with &quot;xyz&quot;, consider this as a warning and not as an error (in \nTestResult).\n\n   public void runProtected(final Test test, Protectable p) {\n     try {\n       p.protect();\n     } catch (AssertionFailedError e) {\n       if (e.getMessage().startsWith(&quot;No tests found in&quot;)) {\n          System.out.println(&quot;warning &quot; + e.getMessage());\n       } else {\n         addFailure(test, e);\n       }\n     } catch (ThreadDeath e) { // don&#39;t catch ThreadDeath by accident\n       throw e;\n     } catch (Throwable e) {\n       addError(test, e);\n     }\n   }\n\nDid I mentioned that it was ugly? :-)\n\n-Vladimir\n\n-- \nVladimir Bossicard\nwww.bossicard.com\n\n\n", 
+    "profile": "vbossica", 
+    "topicId": 4062, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "prevInTime": 4076, 
+    "contentTrasformed": false, 
+    "postDate": "1013741853", 
+    "canDelete": false, 
+    "nextInTopic": 4080, 
+    "prevInTopic": 4062, 
+    "headers": {
+        "messageIdInHeader": "PDNDNkM3OTFELjkwOTA4QGJvc3NpY2FyZC5jb20+", 
+        "referencesHeader": "PDUuMS4wLjE0LjIuMjAwMjAyMTMyMjAxMTYuMDIzNmQ1ZjBAcG9wLndlLm1lZGlhb25lLm5ldD4="
+    }
+}

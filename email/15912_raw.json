@@ -1,0 +1,28 @@
+{
+    "topicId": 15910, 
+    "postDate": "1138811979", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Kamal Ahmed &lt;KAhmed@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "AHz2rLTaCKpDuiifI1QrbiEMHZ4QVIacVeZXDeewFTVsBMJKQxHAqURaTqhcQRT_qJJPM_OW_FUPGU7RM57C_UvrmwBUDSDFieM", 
+    "nextInTime": 15913, 
+    "userId": 253370470, 
+    "prevInTime": 15911, 
+    "prevInTopic": 15911, 
+    "headers": {
+        "messageIdInHeader": "PDVCMTBFNTBFMTRBNDU5NEVCMUI1NTY2QjY5QUQ5NDA3MENCREM4NzJAbWFpbGVhc3Q+"
+    }, 
+    "authorName": "Kamal Ahmed", 
+    "numMessagesInTopic": 10, 
+    "msgSnippet": "David, Thank for your response, I have just read the cookbook: I think you are referring to: public void testMoneyMoneyBag() { // [12 CHF] + [14 CHF] + [28", 
+    "contentTrasformed": false, 
+    "msgId": 15912, 
+    "nextInTopic": 15913, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;KAhmed@...&gt;\r\nX-Sender: KAhmed@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 3335 invoked from network); 1 Feb 2006 16:42:51 -0000\r\nReceived: from unknown (66.218.67.34)\n  by m29.grp.scd.yahoo.com with QMQP; 1 Feb 2006 16:42:51 -0000\r\nReceived: from unknown (HELO smtpeast.webmethods.com) (208.234.160.230)\n  by mta8.grp.scd.yahoo.com with SMTP; 1 Feb 2006 16:42:51 -0000\r\nReceived: from EXEAST1.webmethods.com (Not Verified[10.1.1.20]) by smtpeast.webmethods.com with NetIQ MailMarshal 6.0 Service Pack 1a (v6,0,3,33)\n\tid &lt;B43e0e4eb0000&gt;; Wed, 01 Feb 2006 11:42:19 -0500\r\nReceived: by exeast1 with Internet Mail Service (5.5.2655.55)\n\tid &lt;1BDCDW9C&gt;; Wed, 1 Feb 2006 11:39:40 -0500\r\nMessage-ID: &lt;5B10E50E14A4594EB1B5566B69AD94070CBDC872@maileast&gt;\r\nTo: junit@yahoogroups.com\r\nDate: Wed, 1 Feb 2006 11:39:39 -0500 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2655.55)\r\nContent-Type: text/plain\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Kamal Ahmed &lt;KAhmed@...&gt;\r\nSubject: RE: [junit] unit test for decide(LoggingEvent inEvent)\r\nX-Yahoo-Group-Post: member; u=253370470\r\n\r\nDavid,\n\nThank for your response, I have just read the cookbook:\nI think you are referring to:\n\npublic void testMoneyMoneyBag() { \n    // [12 CHF] + [14 CHF] + [28 USD] == {[26 CHF][28 USD]} \n    Money bag[]= { f26CHF, f28USD }; \n    MoneyBag expected= new MoneyBag(bag); \n    assertEquals(expected, f12CHF.add(f28USD.add(f14CHF)));\n}\n\nWhich means: \n\nThe General form of Junit test follows the following steps:\n\n1. Create an object and put it in a known state\n2. Invoke a method which returns the &quot;actual result&quot;\n3. Create the &quot;expected result&quot; which may be a primitive value or a more\ncomplex object.\n4. Invoke &quot;assertEquals(expectedResult,actualResult)\n\nAm I correct? \n\nNow how do I fake the assert for the case when I need an argument of type\nLoggingEvent in the decide method. Since LoggingEvent is internal and it\nseems, it cannot be generated explicitly. \n\nassertEquals(Filter.DENY, subjectWmLoggerFilter.decide(&lt;LoggingEvent type\nobject&gt;));\n\n\nThanks again,\n-Kamal.\n\n-----Original Message-----\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nDavid Saff\nSent: Wednesday, February 01, 2006 11:00 AM\nTo: junit@yahoogroups.com\nSubject: Re: [junit] unit test for decide(LoggingEvent inEvent)\n\nKamal,\n\nWelcome.\n\nKamal Ahmed wrote:\n&gt; Hi,\n&gt;\n&gt; Could you please give me some CLUE, on how to proceed to test the \n&gt; following\n&gt; method:  \n&gt;\n&gt;     public int decide(LoggingEvent inEvent) {\n&gt;\n&gt;\n&gt;\n&gt;             boolean retCode = false;\n&gt;\n&gt;\n&gt;\n&gt;             if (inEvent != null) {\n&gt;\n&gt;\n&gt;\n&gt;                 Matcher matcher =\n&gt; targetPattern.matcher(inEvent.getLoggerName());\n&gt;\n&gt;\n&gt;\n&gt;                 retCode = (matcher.find() == acceptMatch);\n&gt;\n&gt;\n&gt;\n&gt;             }\n&gt;\n&gt;\n&gt;\n&gt;             return (retCode) ? Filter.NEUTRAL : Filter.DENY;\n&gt;\n&gt;\n&gt;\n&gt;         }\n&gt;\n&gt;\n&gt;\n&gt; Now i need to write a junit test for this, but I am not sure WHERE to \n&gt; start?\n&gt;\n&gt;\n&gt;\n&gt; 1. Should i create a NEW instance of the class this method belongs to?\nYes.\n&gt; 2. How do i get an &quot;inEvent&quot; of type LoggingEvent?\nHow do you create LoggingEvents elsewhere?  Is it as simple as new \nLoggingEvent(some parameters)?  If so, that&#39;s how I&#39;d proceed\n&gt; 3. So this is how i have started writing test case for the method, \n&gt; decide(),\n&gt; based on:\n&gt;\n&gt;   \n&gt;\n&gt;     public int testdecide() {\n&gt;\n&gt;                    int result=0;\n&gt;\n&gt;\n&gt;\n&gt;                    // WmLoggerFilter subjectWmLoggerFilter = new\n&gt; WmLoggerFilter();\n&gt;\n&gt;\n&gt;\n&gt;                    return result;\n&gt;\n&gt;           }\nMy _first_ test for this method might be the simplest I could imagine:\n\npublic void testDecideIsDenyForNullEvents() {\n    WmLoggerFilter subjectWmLoggerFilter = new WmLoggerFilter();\n   assertEquals(Filter.DENY, subjectWmLoggerFilter.decide(null));\n}\n\nThe method must be void, and should contain at least one assert* \nmethod.  Have you read the JUnit cookbook yet?  Good luck,\n\n    David Saff\n\n\n \nYahoo! Groups Links\n\n\n\n \n\n\n", 
+    "subject": "RE: [junit] unit test for decide(LoggingEvent inEvent)"
+}

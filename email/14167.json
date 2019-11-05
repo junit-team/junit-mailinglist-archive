@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 14168, 
+    "senderId": "3BgOJUDhi2F7eV8UPCCjH3yGPHNnqWs_M_2MnCr3bMFYHBg0itvgOkL_1ZUCJ6TivC6DDy1Tg7TMHcCsk7fVsHSi6aZnkE5Gekxvi6QQBg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing a method that contains objects", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Since fetchSomething() creates an instance of SomeClass, there is no easy way to substitute a test double for SomeClass in your tests. I would certainly", 
+    "msgId": 14167, 
+    "profile": "nails762", 
+    "topicId": 14150, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-78896764\">lzhao75 wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi All,<br/>\n&gt; <br/>\n&gt; I just got started with TDD and would like seek help you from the<br/>\n&gt; experts in this mailing-list.<br/>\n&gt; <br/>\n&gt; I have a business service layer that calls a third party application:<br/>\n&gt; <br/>\n&gt; public Object fetchSomething() {<br/>\n&gt; <br/>\n&gt;   SomeClass obj = new SomeClasss();<br/>\n&gt; <br/>\n&gt;   obj.set(...);<br/>\n&gt; <br/>\n&gt;   Object returnObj = obj.retrieveSomething();<br/>\n&gt; <br/>\n&gt;   return Obj;<br/>\n&gt; <br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; When writing a test case, I don&#39;t know how to mock the third party<br/>\n&gt; object to return data for testing purposes. Could someone gives let me<br/>\n&gt; know what is the best approach to test the above code using JUnit?<br/>\n&gt; <br/>\n&gt; Thank you in advance for your help.<br/>\n<br/>\n </span></blockquote>Since fetchSomething() creates an instance of SomeClass, there is no <br/>\neasy way to substitute a test double for SomeClass in your tests. I <br/>\nwould certainly change fetchSomething()--or the class it belongs to--so <br/>\nthat I could pass a SomeClass instance as a parameter to it. There is a <br/>\ngreat example of this in the April 2004 issue of &quot;Better Software&quot; <br/>\nmagazine. You can Google the term &quot;Dependency Injection&quot; for more <br/>\ninformation on the topic.<br/>\n<br/>\nOne simple way to do it is to change fetchSomething() so that it takes a <br/>\nSomeClass as a parameter...<br/>\n<br/>\n// Backwards compatible with the old version, probably remains untested<br/>\npublic Object fetchSomething() {<br/>\n     return fetchSomething(new SomeClass());<br/>\n}<br/>\n<br/>\n// New version that you test<br/>\npublic Object fetchSomething(SomeClass someClass) {<br/>\n     ....<br/>\n}<br/>\n<br/>\nThe &quot;old version&quot; is not tested directly, but it&#39;s so small that it&#39;s <br/>\nnot likely to break.<br/>\n<br/>\nIf you can move all clients away from fetchSomething() towards <br/>\nfetchSomething(SomeClass), then you can remove the last line of untested <br/>\ncode.<br/>\n<br/>\nGood luck.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 14166, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1121712518", 
+    "canDelete": false, 
+    "nextInTopic": 14168, 
+    "prevInTopic": 14163, 
+    "headers": {
+        "inReplyToHeader": "PGRiY21rMStjN2E4QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyREJGOTg2LjgwNDAyMDJAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGRiY21rMStjN2E4QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 10223, 
+    "senderId": "n33p9XpNoIxKvWvt7ryCuBvLdzqiZZBoGG4IYbrBt-sJLVGdz6G-vPGaYEg7BO2RYGMZ4jJXYVnsW5ugeIuKojhV69XnnCdITLpIhptSTg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Universal Parameterized Test Suite", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... You are most welcome. ... Correct on single set of data ; incorrect on single test method. The Parameterized Test Case pattern works best for a single", 
+    "msgId": 10222, 
+    "profile": "nails762", 
+    "topicId": 9906, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-963114248\">Bert wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Let me begin by thanking you J.B. for all the time and effort you put<br/>\n&gt; into this discussion group.<br/>\n<br/>\n </span></blockquote>You are most welcome.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; As for this parameterized testing, I think this is a brilliant<br/>\n&gt; concept.  However, I&#39;m seeing that all the examples deal with a single<br/>\n&gt; set of data and a single test method.<br/>\n<br/>\n </span></blockquote>Correct on &quot;single set of data&quot;; incorrect on &quot;single test method.&quot; The <br/>\nParameterized Test Case pattern works best for a single test method, <br/>\nbecause it recommends implementing runTest(). The Parameterized Test <br/>\nSuite pattern is meant to go further: it combines parameterization with <br/>\ncollecting the test*() methods into a default test suite.<br/>\n<br/>\nReferring to the example, ComparabilityTestCase defines a handful of <br/>\ntest methods, and not just one.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Take your example below.  You pass 4 parameters to the constructor of<br/>\n&gt; your test class and then execute testReturnValues for the number of<br/>\n&gt; fixtures you&#39;ve set up (5 in the example).<br/>\n&gt; <br/>\n&gt; Now take my example below.  I have 3 distinct test methods.   Each of<br/>\n&gt; the 3 methods requires a different set of parameters.  <br/>\n<br/>\n </span></blockquote>&quot;different set of parameters&quot; =&gt; different fixtures, using the <br/>\ndefinition of &quot;fixture&quot;.<br/>\n<br/>\nIn general, if you have two tests that operate on different objects, <br/>\nthen they should use different fixtures. That means one of two things:<br/>\n<br/>\n  * Put them in separate TestCase classes, *or*<br/>\n  * Put them in the same TestCase class, but /do not/ extract fixture <br/>\nsetup code into setUp()<br/>\n<br/>\nAs a result, I would implement your hypothetical example as three <br/>\nseparate Parameterized Test Case classes.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; class MyClassTest extends TestCase {<br/>\n&gt; RealClass realClase;<br/>\n&gt; <br/>\n&gt; public MyClassTest(String testCaseName) {<br/>\n&gt;    super(testCaseName);<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public void setUp() throws Exception {<br/>\n&gt;    realClass = new RealClass();<br/>\n&gt;    // Do some setup<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public testGetStuff() {<br/>\n&gt;     realClass.getStuff(param1, param2);<br/>\n&gt;     // Do your asserts, etc.<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public testUpdateStuff() {<br/>\n&gt;     realClass.getStuff(param1, param2, param3);<br/>\n&gt;     // Do your asserts, etc.<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public testDeleteStuff() {<br/>\n&gt;     realClass.getStuff(param1, param2, param3, param4);<br/>\n&gt;     // Do your asserts, etc.<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>Looking on these tests, there is no gain to using Parameterized Test <br/>\nCase/Suite. The whole point of the parameterized test patterns is to <br/>\nmake it easier to write data-driven tests where you&#39;re executing the <br/>\nsame set of tests on multiple rows of data, much like a FIT test.<br/>\n<br/>\nA simple example is a calculation rule that you want to check on ten <br/>\nbase cases and twelve boundary cases. Your options are:<br/>\n<br/>\n  * Write one test method that loops on 22 rows of data and executes the <br/>\ntest for each row<br/>\n  * Write 22 test methods, each of which invokes doTest() with the <br/>\ndifferent parameters<br/>\n  * Write a Parameterized Test Case (one test method) or Suite (many <br/>\ntest methods on the same row of data)<br/>\n<br/>\nOption #1 gives you the wrong test count, and I care about getting that <br/>\nright. It also means that if row #4 fails, then you won&#39;t know whether <br/>\nrows #5-22 fail. Some people don&#39;t care about that; but I do.<br/>\n<br/>\nOption #2 means I have to write code to add more tests, rather than <br/>\npossibly add data to a file.<br/>\n<br/>\nOption #3 allows me to add tests without adding code, it reports each <br/>\nrow of data as its own test (which is logically correct) and stops the <br/>\nfailure of one test from affecting the others.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 10221, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1074271270", 
+    "canDelete": false, 
+    "nextInTopic": 10223, 
+    "prevInTopic": 10220, 
+    "headers": {
+        "inReplyToHeader": "PGJ1N2NudiszNm9sQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwMDgxNDI2LjMwODA0MDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGJ1N2NudiszNm9sQGVHcm91cHMuY29tPg=="
+    }
+}

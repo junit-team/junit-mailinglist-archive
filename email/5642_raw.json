@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 5643, 
+    "senderId": "37knTGsFk6z5RdPo1NH02p2k0iURN9N9bbB-VYVkBo1ehLUaJbRjYSIECGXNVS9D2OW1gNZGcbkYDbihCNGNqksySQqidaFS-vBLyGHP0RvOOhk", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Standalone or &quot;requires environment&quot; information", 
+    "from": "&quot;Vladimir Bossicard&quot; &lt;vbossica@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "... -- Vladimir Bossicard www.bossicard.com", 
+    "msgId": 5642, 
+    "rawEmail": "Return-Path: &lt;vbossica@...&gt;\r\nX-Sender: vbossica@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_0_1); 22 Aug 2002 22:53:37 -0000\r\nReceived: (qmail 18105 invoked from network); 22 Aug 2002 22:53:37 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m15.grp.scd.yahoo.com with QMQP; 22 Aug 2002 22:53:37 -0000\r\nReceived: from unknown (HELO c003.snv.cp.net) (209.228.32.214)\n  by mta1.grp.scd.yahoo.com with SMTP; 22 Aug 2002 22:53:37 -0000\r\nReceived: (cpmta 10005 invoked from network); 22 Aug 2002 15:53:36 -0700\r\nReceived: from 209.228.32.220 (HELO mail.telocity.com.criticalpath.net)\n  by smtp.telocity.com (209.228.32.214) with SMTP; 22 Aug 2002 15:53:36 -0700\r\nX-Sent: 22 Aug 2002 22:53:36 GMT\r\nReceived: from [63.161.242.34] by mail.telocity.com with HTTP;\n    Thu, 22 Aug 2002 15:53:35 -0700 (PDT)\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Disposition: inline\r\nContent-Transfer-Encoding: 7bit\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReturn-Path: vbossica@...\r\nSubject: Re: [junit] Standalone or &quot;requires environment&quot; information\r\nX-Sent-From: vbossica@...\r\nDate: Thu, 22 Aug 2002 15:53:35 -0700 (PDT)\r\nX-Mailer: Web Mail 5.0.11-9\r\nMessage-Id: &lt;20020822155336.23555.h006.c003.wm@...&gt;\r\nX-eGroups-From: &quot;Vladimir Bossicard&quot; &lt;vladimir@...&gt;\r\nFrom: &quot;Vladimir Bossicard&quot; &lt;vbossica@...&gt;\r\nX-Yahoo-Group-Post: member; u=112965394\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; I had similar thoughts to David. My motivation was working from home \n&gt; when I didn&#39;t have access to the database but would still like to \n&gt; execute as many tests as possible.\n\nI don&#39;t know if this already exists but it could be interesting to develop a\nrecorder/player wrapper mock object.  You can set up the mock object to save\ninto a file the response it receives via the wrapped object.  You can then\nreset the mock object to replay (without the wrapped object) from a file.  If\nthis is done automatically, it can really be very handy to test databases.\n\nI don&#39;t know if this is obvious but there&#39;s a simple way to share a connection\nbetween multiple tests (if you don&#39;t have static variables) to speed up your\ntests:\n\npublic void MyTestCase {\n\n   public static Test suite() {\n      return new TestSetup( new TestSuite(MyTestCase.class) {\n         private Connection conn;\n         setUp() {\n            conn = new Connection(...);\n            for ( int i = 0; i &lt; suite.countTestCases(); i++ ) {\n               MyTestCase test = ( MyTestCase ) suite.testAt( i );\n               test.setConnection(conn);\n            }\n         }\n         tearDown() {\n            conn.close();\n         }\n      };\n   }\n\n   Connection connection;\n\n   public void setConnection(Connectio connection) {\n      this.connection = connection;\n   }\n\n}\n\nSo you don&#39;t have to open/close a connection before/after each test.\n\nhth\n\n-Vladimir\n\r\n--\nVladimir Bossicard\nwww.bossicard.com\n\n", 
+    "profile": "vbossica", 
+    "topicId": 5636, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "prevInTime": 5641, 
+    "contentTrasformed": false, 
+    "postDate": "1030056815", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 5640, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDIwODIyMTU1MzM2LjIzNTU1LmgwMDYuYzAwMy53bUBtYWlsLnRlbG9jaXR5LmNvbS5jcml0aWNhbHBhdGgubmV0Pg=="
+    }
+}

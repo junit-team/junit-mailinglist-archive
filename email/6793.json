@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 6794, 
+    "senderId": "UoDpdGtvVwAM6PoiUZEfarbo4YNpP1k9r6dEoCcIsLX6CCiRm-SNwdN-cIx_-3pqamcaTYxfQzFscP8sfr_GnbGu8mFC0uT7J-xEByKcWBXUUtxwC5jhqIOlfrAx6UngkjoMfO4D", 
+    "systemMessage": false, 
+    "subject": "Re: ** How to test objects that depend on other objects with mock objects **", 
+    "from": "&quot;tobemligado &lt;jasbell@...&gt;&quot; &lt;jasbell@...&gt;", 
+    "authorName": "tobemligado &lt;jasbell@consultant.com&gt;", 
+    "msgSnippet": "Ok.  I see what you are saying.  I can make a Factory which assures the existance of one instance of my ConfigManager object.  This will probably solve the", 
+    "msgId": 6793, 
+    "profile": "tobemligado", 
+    "topicId": 6743, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 48242015, 
+    "messageBody": "<div id=\"ygrps-yiv-2029084813\">Ok.  I see what you are saying.  I can make a &quot;Factory&quot; which assures <br/>\nthe existance of one instance of my &quot;ConfigManager&quot; object.  This <br/>\nwill probably solve the problem since I can &quot;substitute&quot; (make a mock <br/>\nobject) for the &quot;ConfigManager&quot;, or for whatever objects it uses.  <br/>\nThe factory is now the singleton that I must call like so: <br/>\n<br/>\nMyFactory.getInstance().getConfigManager();<br/>\n<br/>\nwhere the returned &quot;ConfigManager&quot; is now an interface or abstract <br/>\nclass, whose concrete instance may be either a real or mock object.<br/>\n<br/>\nIs this correct?<br/>\n<br/>\nI liked your article &quot;Use your singletons wisely&quot;, however I did not <br/>\nfully grasp the &quot;three questions&quot;:<br/>\n<br/>\n1)Will every application use this class exactly the same way? <br/>\n(exactly is the key word) <br/>\n2)Will every application ever need only one instance of this class? <br/>\n(ever and one are the key words) <br/>\n3)Should the clients of this class be unaware of the application they <br/>\nare part of? <br/>\n<br/>\nWhat is being assumed about the classes use when you ask these three <br/>\nquestions?<br/>\n<br/>\nThanks again, and great article!<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;J. B. Rainsberger&quot; &lt;jbr@d...&gt; wrote:<br/>\n&gt; So said  tobemligado &lt;jasbell@c...&gt;  on  2003-01-26<br/>\n&gt; --------------------<br/>\n&gt; <br/>\n&gt; &gt;I have a singleton called &quot;ConfigManager&quot;, where in its <br/>\nconstructor <br/>\n&gt; &gt;it reads in a bunch of files from a directory and creates <br/>\nobjectsfrom <br/>\n&gt; &gt;the files.  I am doing this because I want to say &quot;ConfigManager <br/>\nis <br/>\n&gt; &gt;not valid until these other objects have also been successfully <br/>\n&gt; &gt;created&quot;.  <br/>\n&gt; &gt;<br/>\n&gt; &gt;I want the &quot;ConfigManager&quot; to be able to read a directory full <br/>\n&gt; &gt;of &quot;bad files&quot; in some test scenarios, a directory full of &quot;good <br/>\n&gt; &gt;files&quot; in other test scenarios, and a directory full of &quot;good and <br/>\nbad <br/>\n&gt; &gt;files&quot; in yet other test scenarios.  Ultimately, the program will <br/>\n&gt; &gt;have to handle &quot;good and bad files&quot;,<br/>\n&gt; &gt;<br/>\n&gt; &gt;My problem is that I need to &quot;trick&quot; the &quot;ConfigManager&quot; into <br/>\nusing <br/>\n&gt; &gt;the three directories in different test scenarios, but I dont want <br/>\nto <br/>\n&gt; &gt;alter the fact that all objects are created in &quot;ConfigManager&#39;s&quot; <br/>\n&gt; &gt;constructor.  Here is what is in the constructor for the <br/>\n&gt; &gt;singleton &quot;ConfigManager&quot;:<br/>\n&gt; &gt;----------------------------------------------------<br/>\n&gt; &gt;String basePath = ServiceResources.CONFIG_FILE_DIRECTORY;<br/>\n&gt; &gt;setBaseDirectory(basePath);<br/>\n&gt; &gt;loadAllFilesFound(getBaseDirectory());<br/>\n&gt; &gt;loadConfigFilesFound(getAllFilesFoundList());<br/>\n&gt; &gt;ArrayList configList = createConfigurations(getConfigFilesFound());<br/>\n&gt; &gt;TriggerManager tm = TriggerManager.getInstance();<br/>\n&gt; &gt;ArrayList triggerList = tm.createTriggers(configList);<br/>\n&gt; &gt;tm.registerTriggers(triggerList);<br/>\n&gt; &gt;----------------------------------------------------<br/>\n&gt; &gt;<br/>\n&gt; &gt;How can I switch the CONFIG_FILE_DIRECTORY value for testing when <br/>\nits <br/>\n&gt; &gt;in the constructor? <br/>\n&gt; <br/>\n&gt; 1. Create a new, public constructor. Make the value a constructor<br/>\n&gt; parameter.<br/>\n&gt; 2. Have the private/protected no-argument constructor delegate to <br/>\nthe<br/>\n&gt; new constructor passing in the default (production) values.<br/>\n&gt; 3. Test through the new constructor.<br/>\n&gt; <br/>\n&gt; If people ask for the singleton instance, then they get the <br/>\nproduction<br/>\n&gt; instance. If people use the other constructor, then they have to<br/>\n&gt; provide the necessary data for the ConfigManager to work on.<br/>\n&gt; <br/>\n&gt; Done.<br/>\n&gt; <br/>\n&gt; Q: Why is ConfigManager a singleton?<br/>\n&gt; <br/>\n&gt; Google &quot;Use your singletons wisely&quot;. Read it and let me know if it<br/>\n&gt; changes your mind to use a singleton.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; J. B. Rainsberger,<br/>\n&gt; President, Diaspar Software Services<br/>\n&gt; Let&#39;s write software that people understand.<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\n&gt; telephone: +1 416 791-8603<br/>\n&gt; All correspondence (c) 2002 Diaspar Software Services.<br/>\n&gt; If you want to use it, just ask; don&#39;t steal. </span></blockquote></div>", 
+    "prevInTime": 6792, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1043629434", 
+    "canDelete": false, 
+    "nextInTopic": 6811, 
+    "prevInTopic": 6792, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwMTI2MTUwNzI4MDI1OS4wMDgyMTgyM0BzbXRwLnltLnBodWIubmV0LmNhYmxlLnJvZ2Vycy5jb20+", 
+        "messageIdInHeader": "PGIxMjBocSsycHU1QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 14350, 
+    "senderId": "cLgCwevlQhAbG_7NDwNCEGFH2D8ggBw8KHkdP4peJD61nnxC0F3nCy_vY09CeyFkjqR-nkb9vqtMtyvZgzQXz9p_42ctDT6DcMzY52M", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Writing a test for a PrintStream and for a log rotation method", 
+    "from": "Kevin Lawrence &lt;kevin@...&gt;", 
+    "authorName": "Kevin Lawrence", 
+    "msgSnippet": "1. Why is createLogFile() private static ? If it were a public non-static method called create() in a class called, say, LogFile, you could separate the file", 
+    "msgId": 14349, 
+    "profile": "kevinwilliamlawrence", 
+    "topicId": 14345, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 81949451, 
+    "messageBody": "<div id=\"ygrps-yiv-1171227141\">1. Why is createLogFile() private static ?<br/>\n<br/>\nIf it were a public non-static method called create() in a class called, <br/>\nsay, LogFile, you could separate the file creation from the stream <br/>\nhandling and test each independently.<br/>\n<br/>\n2. A common technique is to wrap the date handling in a class which you <br/>\ncan then manipulate in your test.<br/>\n<br/>\nKevin<br/>\n<br/>\n<br/>\nAsif Sattar wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; Hi everyone,<br/>\n&gt; <br/>\n&gt; Two questions:<br/>\n&gt; <br/>\n&gt; 1. I&#39;m trying to write a test for a method that does not<br/>\n&gt; return anything.  It creates a printstream for writing to a<br/>\n&gt; log file.  I&#39;ve included the code below.  How do I go about<br/>\n&gt; writing a test for this?<br/>\n&gt; <br/>\n&gt;     private static void createLogFile() {<br/>\n&gt; <br/>\n&gt;         Date currentDate = new Date();<br/>\n&gt;         if (logFilePrintStream == null || logFileDate ==<br/>\n&gt; null || currentDate.after(logFileDate)) {<br/>\n&gt;             String logFileInstanceName = logFileDirectory +<br/>\n&gt; &#39;&#92;&#92;&#39; + logFilePrefix<br/>\n&gt;                     +<br/>\n&gt; logFileNameDateFormat.format(logFileDate) + &quot;.log&quot;;<br/>\n&gt;             logFileDate = currentDate;<br/>\n&gt; <br/>\n&gt;             try {<br/>\n&gt;                 logFilePrintStream = new PrintStream(new<br/>\n&gt; FileOutputStream(logFileInstanceName, true));<br/>\n&gt;                 System.setErr(logFilePrintStream);<br/>\n&gt;                 System.setOut(logFilePrintStream);<br/>\n&gt;             } catch (IOException ioe) {<br/>\n&gt;                 ioe.printStackTrace();<br/>\n&gt;             } catch (SecurityException e) {<br/>\n&gt;                 e.printStackTrace();<br/>\n&gt;             }<br/>\n&gt;             <br/>\n&gt;             logRotation();<br/>\n&gt;         }<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; 2. The logrotation method above basically rotates log files<br/>\n&gt; based on dates and deletes files if they are more than 7<br/>\n&gt; days old.  Any ideas on how to write a test for this? <br/>\n&gt; Again, code attached below:<br/>\n&gt; <br/>\n&gt;     private static void logRotation() {<br/>\n&gt;         LinkedList logFilesInLogDirectory = new<br/>\n&gt; LinkedList();     <br/>\n&gt;         <br/>\n&gt;         // Populate logFilesInLogDirectory with files in<br/>\n&gt; logFileDirectory<br/>\n&gt;         File logFilesInDirectory = new<br/>\n&gt; File(logFileDirectory);<br/>\n&gt;         String[] logFilesArray =<br/>\n&gt; logFilesInDirectory.list();<br/>\n&gt;         logFilesInLogDirectory = new<br/>\n&gt; LinkedList(Arrays.asList(logFilesArray));<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;         <br/>\n&gt;         // Remove files that are not smart card log files<br/>\n&gt; from file list<br/>\n&gt;         for (int i = 0; i &lt; logFilesInLogDirectory.size();<br/>\n&gt; i++) {<br/>\n&gt;            <br/>\n&gt; if(!((String)logFilesInLogDirectory.get(i)).startsWith(logFilePrefix))<br/>\n&gt; {<br/>\n&gt;                 logFilesInLogDirectory.remove(i);<br/>\n&gt;             }<br/>\n&gt;         }<br/>\n&gt;         <br/>\n&gt;         // Delete oldest files if there are more than<br/>\n&gt; noOfPreviousLogFiles files  <br/>\n&gt;         if (logFilesInLogDirectory.size() &gt;<br/>\n&gt; noOfPreviousLogFiles) {<br/>\n&gt;             Collections.sort(logFilesInLogDirectory);<br/>\n&gt;             for (int i = (noOfPreviousLogFiles-1); i &lt;<br/>\n&gt; logFilesInLogDirectory.size(); i++) {<br/>\n&gt;                 new<br/>\n&gt; File((String)logFilesInLogDirectory.remove(i)).delete();<br/>\n&gt;             }<br/>\n&gt;         }<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; Regards<br/>\n&gt; <br/>\n&gt; Asif<br/>\n&gt; <br/>\n&gt; __________________________________________________<br/>\n&gt; Do You Yahoo!?<br/>\n&gt; Tired of spam?  Yahoo! Mail has the best spam protection around <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://mail.yahoo.com\">http://mail.yahoo.com</a> <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 14348, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1123781223", 
+    "canDelete": false, 
+    "nextInTopic": 14351, 
+    "prevInTopic": 14348, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwODExMDkxOTIyLjc2MDE1LnFtYWlsQHdlYjMwMDA4Lm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDQyRkI4QTY3LjEwNTA0MDlAZGlhbW9uZC1za3kuY29tPg==", 
+        "referencesHeader": "PDIwMDUwODExMDkxOTIyLjc2MDE1LnFtYWlsQHdlYjMwMDA4Lm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

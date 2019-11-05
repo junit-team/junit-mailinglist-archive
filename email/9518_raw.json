@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 9519, 
+    "senderId": "YA4fBgmgs53LlSGLQl3NC3VXpy55bI_zQ-uHedG3uR1wSNF581IdtbgL6-uRgerlrctiggCj3tIwoBZ4conX280r80YZCg0H", 
+    "systemMessage": false, 
+    "subject": "Re: How to test threaded method?", 
+    "from": "&quot;russh347&quot; &lt;russh347@...&gt;", 
+    "authorName": "russh347", 
+    "msgSnippet": "... Is there some reason you can t test the run() method separately from the threading?  I don t see anything in the snippets provided that would prevent this.", 
+    "msgId": 9518, 
+    "rawEmail": "Return-Path: &lt;russh347@...&gt;\r\nReceived: (qmail 71616 invoked from network); 26 Sep 2003 21:43:37 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m10.grp.scd.yahoo.com with QMQP; 26 Sep 2003 21:43:37 -0000\r\nReceived: from unknown (HELO n5.grp.scd.yahoo.com) (66.218.66.89)\n  by mta6.grp.scd.yahoo.com with SMTP; 26 Sep 2003 21:43:37 -0000\r\nX-eGroups-Return: russh347@...\r\nReceived: from [66.218.67.138] by n5.grp.scd.yahoo.com with NNFMP; 26 Sep 2003 21:43:24 -0000\r\nX-Sender: russh347@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 77657 invoked from network); 26 Sep 2003 19:24:49 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m16.grp.scd.yahoo.com with QMQP; 26 Sep 2003 19:24:49 -0000\r\nReceived: from unknown (HELO n31.grp.scd.yahoo.com) (66.218.66.99)\n  by mta6.grp.scd.yahoo.com with SMTP; 26 Sep 2003 19:24:49 -0000\r\nReceived: from [66.218.67.162] by n31.grp.scd.yahoo.com with NNFMP; 26 Sep 2003 19:24:49 -0000\r\nDate: Fri, 26 Sep 2003 19:24:47 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: How to test threaded method?\r\nMessage-ID: &lt;bl23pv+auoo@...&gt;\r\nIn-Reply-To: &lt;F7B16EB8984B14409ACB015F1326BB661FF2A8@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1469\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;russh347&quot; &lt;russh347@...&gt;\r\nX-Yahoo-Group-Post: member; u=90891710\r\nX-Yahoo-Profile: russh347\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 26 Sep 2003 21:43:22 -0000\r\n\r\n--- In junit@yahoogroups.com, &quot;Kris Henderson&quot; &lt;khenderson@p...&gt; wrote:\n&gt; I have a method that when called creates a thread and does all its work\n&gt; in the new thread.  It looks kind of like this:\n&gt; \n&gt; public void doSomething()\n&gt; {\n&gt;     Thread requestThread = new Thread()\n&gt;     {\n&gt;         public void run()\n&gt;         {\n&gt;             fireStartEvent();\n&gt; \n&gt;             //do some stuff that takes a long time\n&gt; \n&gt;             fireDoneEvent();\n&gt;         }\n&gt;     };\n&gt;     requestThread.start();\n&gt; }\n\nIs there some reason you can&#39;t test the run() method separately from\nthe threading?  I don&#39;t see anything in the snippets provided that\nwould prevent this. Is OperationAdapter dependent on having events\nfired from an active thread?  \n\nYou&#39;d have to extract a named class to hold the run method.  Then your\ntest would look something like:\n\npublic void testRun()\n{\n    m_eventCount = 0;\n    final MockService service = new MockService();\n    DoSomthingRunner runner(service);\n    service.addOperationListener(new OperationAdapter()\n    {\n        public void operationUpdate(OperationEvent event)\n        {\n            m_eventCount += 1;\n        }\n    });\n        \n    runner.run();\n            \n    assertEquals(2, m_eventCount);\n}\n\nQuestions: \nDo you trust Thread?\nIf run() is tested separately, can you trust service.doSomething() to\nstart the thread?\n\nYou could give the service a RunnerFactory (and a MockRunnerFactory\nfor testing) if you feel it is worth the effort.\n\n\n\n\n", 
+    "profile": "russh347", 
+    "topicId": 9506, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90891710, 
+    "prevInTime": 9517, 
+    "contentTrasformed": false, 
+    "postDate": "1064604287", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 9517, 
+    "headers": {
+        "inReplyToHeader": "PEY3QjE2RUI4OTg0QjE0NDA5QUNCMDE1RjEzMjZCQjY2MUZGMkE4QEFUTDFWRVhDMDA1LnVzZG9tMDA0LnRjby50Yz4=", 
+        "messageIdInHeader": "PGJsMjNwdithdW9vQGVHcm91cHMuY29tPg=="
+    }
+}

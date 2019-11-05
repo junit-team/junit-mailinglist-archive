@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 14485, 
+    "senderId": "KLvBu4lo9SchLrnSQTDK_-NY3M9X6prQHBIzHj10OK0KPp-pmRUPifVpAUAVijDziV3PnU4iouMYx39iVSSQqlZQzBeoBhvw0HbJdj6psA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing Exception classes", 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "authorName": "Elliotte Harold", 
+    "msgSnippet": "... That s not quite what s going on. getCause() Returns the cause of this throwable or null if the cause is nonexistent or unknown. (The cause is the", 
+    "msgId": 14484, 
+    "topicId": 14443, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 12653864, 
+    "messageBody": "<div id=\"ygrps-yiv-1598276420\">J. B. Rainsberger wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Incidentally, I just learned that, by default, an exception /is/ its own <br/>\n&gt; cause in JDK 1.4, so are you sure you want to stop people from doing that?<br/>\n<br/>\n </span></blockquote>That&#39;s not quite what&#39;s going on. getCause() &quot;Returns the cause of this <br/>\nthrowable or null if the cause is nonexistent or unknown. (The cause is <br/>\nthe throwable that caused this throwable to get thrown.)&quot; Further <br/>\ninitCause is specified to throw an IllegalArgumentException &quot;if cause is <br/>\nthis throwable. (A throwable cannot be its own cause.)&quot; The getCause <br/>\nmethod works like this:<br/>\n<br/>\n     public Throwable getCause() {<br/>\n         return (cause==this ? null : cause);<br/>\n     }<br/>\n<br/>\nThe intiCause method looks like this:<br/>\n<br/>\n     public synchronized Throwable initCause(Throwable cause) {<br/>\n         if (this.cause != this)<br/>\n             throw new IllegalStateException(&quot;Can&#39;t overwrite cause&quot;);<br/>\n         if (cause == this)<br/>\n             throw new IllegalArgumentException(&quot;Self-causation not <br/>\npermitted&quot;);<br/>\n         this.cause = cause;<br/>\n         return this;<br/>\n     }<br/>\n<br/>\nI don&#39;t know why internally the default cause is set to this. I suspect <br/>\nit&#39;s some sort of optimization, but this is purely a private <br/>\nimplementation detail. It is never exposed through the public API.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; This I understand. I guess I&#39;ve just never seen that level of <br/>\n&gt; sophistication in exception classes before. It looks like unnecessary <br/>\n&gt; complexity to me, but then I don&#39;t understand the problems you&#39;re trying <br/>\n&gt; to solve. I&#39;m sure that if you explained it to me over beer, I would see <br/>\n&gt; it differently. :)<br/>\n<br/>\n </span></blockquote>It&#39;s implementation complexity, but it results in less API complexity. <br/>\nBetter to reuse the existing, standard API than to invent something new. <br/>\nIf you want chained exception handling that&#39;s compatible across <br/>\nversions, this is what you need.<br/>\n<br/>\n<br/>\n-- <br/>\n﻿Elliotte Rusty Harold  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:elharo@...\">elharo@...</a><br/>\nXML in a Nutshell 3rd Edition Just Published!<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.cafeconleche.org/books/xian3/\">http://www.cafeconleche.org/books/xian3/</a><br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim\">http://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim</a></div>", 
+    "prevInTime": 14483, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1125310817", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 14476, 
+    "headers": {
+        "inReplyToHeader": "PDQzMTIyMjRCLjkwODA1MDBAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzMTJFMTYxLjIwMjA4MDlAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "referencesHeader": "PGRlaG85ZysyZmlzQGVHcm91cHMuY29tPiA8NDMwRDJBNDYuMzA1MDUwM0Byb2dlcnMuY29tPiA8NDMwRDg0MkEuMTA0MDcwNUBtZXRhbGFiLnVuYy5lZHU+IDw0MzBFNzRGMS4xMDUwMTA5QHJvZ2Vycy5jb20+IDw0MzBFRjBERS4xMDQwOEBtZXRhbGFiLnVuYy5lZHU+IDw0MzEyMjI0Qi45MDgwNTAwQHJvZ2Vycy5jb20+"
+    }
+}

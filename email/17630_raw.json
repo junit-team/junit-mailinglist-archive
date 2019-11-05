@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 17631, 
+    "senderId": "akYlTr9aXk2y5LemkgN4p9XTjtcbi_1ZRhmMq6fRAh16QlUT_Kyu7r4E1R2PfqWGff3RphiZXN7yogVrCgHwY_W7bgk3ZyZSwYpu6ZLEwg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to decouple classes for unit testing", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... That sounds like it s the principle of the thing , and kinda feels like a theological rant in the same way you accused us. :) ... We do that. ... I think", 
+    "msgId": 17630, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 29566 invoked from network); 25 Aug 2006 04:50:49 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m36.grp.scd.yahoo.com with QMQP; 25 Aug 2006 04:50:49 -0000\r\nReceived: from unknown (HELO chilco.textdrive.com) (207.7.108.242)\n  by mta4.grp.scd.yahoo.com with SMTP; 25 Aug 2006 04:50:49 -0000\r\nReceived: from [192.168.1.113] (unknown [70.24.207.92])\n\tby chilco.textdrive.com (Postfix) with ESMTP id 5CBFEDBC8E\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 25 Aug 2006 04:50:46 +0000 (UTC)\r\nMessage-ID: &lt;44EE81A5.3070605@...&gt;\r\nDate: Fri, 25 Aug 2006 00:50:45 -0400\r\nUser-Agent: Thunderbird 1.5.0.5 (Macintosh/20060719)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;44ECF015.3000300@...&gt;\r\nIn-Reply-To: &lt;44ECF015.3000300@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] How to decouple classes for unit testing\r\nX-Yahoo-Group-Post: member; u=127224993; y=XIahLwOKKeMUhzNL_x2ZHftIXTm039tnn12UYFBGpeammtk\r\nX-Yahoo-Profile: nails762\r\n\r\nPat Farrell wrote:\n&gt; J. B. Rainsberger wrote:\n&gt;  &gt; Pat Farrell wrote:\n&gt;  &gt;&gt; The signal to noise ratio of this mailing list is very low. Some\n&gt;  &gt;&gt; people believe in testing, some don&#39;t. There is zero chance that\n&gt;  &gt;&gt; minds will be changed.\n&gt; \n&gt;  &gt; I respect your opinion, but when you complain about the noise on\n&gt;  &gt; such a low-traffic list, I find it difficult to take you seriously.\n&gt; \n&gt; I&#39;m complaining about the ratio of noise to valueable content. The ratio\n&gt; is the same whether it is a 10 message a day or 1000 message a day list.\n\nThat sounds like &quot;it&#39;s the principle of the thing&quot;, and kinda feels like \na theological rant in the same way you accused us. :)\n\n&gt;  &gt; So many of the questions on this list are from beginners too lazy to\n&gt;  &gt; use Google that, as a balance, I like these discussions (not\n&gt;  &gt; theological rants, by the way--no need to insult--I, for one, am\n&gt;  &gt; pragmatic in my discussion, so would that be applied theology?).\n&gt; \n&gt; The only sane response to people too lazy to RTFAQ is to give them\n&gt; a pointer to the faq.\n\nWe do that.\n\n&gt; But the &quot;Test Everything no matter&quot; subject itself is an invitation to\n&gt; flame, not a basis for rational discussion.\n\nI think the discussion&#39;s been mainly rational, and when it hasn&#39;t been...\n\n&gt; Let alone this wonderful exchange:\n&gt;  &gt; &gt; So you&#39;re recommending 100% code coverage?\n&gt;  &gt; So you&#39;re recommending 0% code coverage?\n\n...like this, I think we&#39;ve broken it up fairly well. We&#39;re human; we&#39;ll \nslip up.\n------\n&gt; I&#39;ve written a few over 300 tests, according to JUnit that are executed\n&gt; by NetBeans for my small project. Most are literally unit tests.\n&gt; For example, the code that reads configuration files can be tested by\n&gt; getting the values read.\n&gt; \n&gt; But other classes are &#39;controllers&#39; for finite state machines.\n&gt; The member functions such as process() read input, feed it to the FSA,\n&gt; and trigger state changes.\n&gt; \n&gt; What test design approach can decouple the Controller class from the FSA\n&gt; implementation class?\n&gt; \n&gt; Similarly, the FSA class calls a &#39;scribe&#39; class to record significant\n&gt; events to a database. So the FSA is coupled to the persistance layer,\n&gt; which is coupled to the JDBC driver.\n&gt; \n&gt; Clearly one could implement a dummy JDBC driver, but that would most\n&gt; likely generated more bugs that just using an existing production JDBC\n&gt; driver.\n&gt; \n&gt; So how do folks decouple?\n\nThe simplest technique I know is to make the FSA engine a parameter to \nthe constructor of the class that uses it. The next step is to extract \nan interface from the FSA engine, if it isn&#39;t one already. This allows \nme to simulate the FSA engine in tests.\n\nYou&#39;re right: simulating the JDBC driver is not a wise move, given the \ncomplexity, verbosity and size of the JDBC API. I have tended to go one \nlevel of abstraction higher, then simulate /that/. Instead of talking \ndirectly to the JDBC API, I encapsulate those operations into methods \nthat have business meaning, then simulate /those/ instead. Implementing \nthose methods by talking to a real database, such as HSQLDB, seems to \nprovide better ROI than trying to simulate the JDBC API. The good news \nis that I can test those methods without worrying about how they are \nused in my application.\n\nI hope that helps.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.ca\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 17612, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 17629, 
+    "contentTrasformed": false, 
+    "postDate": "1156481445", 
+    "canDelete": false, 
+    "nextInTopic": 17634, 
+    "prevInTopic": 17612, 
+    "headers": {
+        "inReplyToHeader": "PDQ0RUNGMDE1LjMwMDAzMDBAcGZhcnJlbGwuY29tPg==", 
+        "messageIdInHeader": "PDQ0RUU4MUE1LjMwNzA2MDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDQ0RUNGMDE1LjMwMDAzMDBAcGZhcnJlbGwuY29tPg=="
+    }
+}

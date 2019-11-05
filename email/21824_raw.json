@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 21825, 
+    "senderId": "AoNI5-E0o2kIEYRgJiBiys4XM0r_5kjCHX8frxotoByBFivkxLktaPRaHpJmGyrHmz5rvKB_0-_c-xLF23GXQE_X_0M4", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Can I capture Stdandard Output of a test", 
+    "from": "Mike Forsberg &lt;bigmike@...&gt;", 
+    "authorName": "Mike Forsberg", 
+    "msgSnippet": "The thing to think about is, with what is the class really collaborating.  If a class requires to dump something to standard out, you might think about the", 
+    "msgId": 21824, 
+    "rawEmail": "Return-Path: &lt;bigmike.f@...&gt;\r\nReceived: (qmail 59705 invoked from network); 18 Jul 2009 14:01:39 -0000\r\nReceived: from unknown (69.147.108.201)\n  by m1.grp.sp2.yahoo.com with QMQP; 18 Jul 2009 14:01:39 -0000\r\nReceived: from unknown (HELO n38b.bullet.mail.sp1.yahoo.com) (66.163.168.152)\n  by mta2.grp.re1.yahoo.com with SMTP; 18 Jul 2009 14:01:39 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1247925652; bh=NrtxT7XASsTMZduEbsYxoXX5J6jsIkOq52rlzHc87Xc=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:MIME-Version:X-Received:In-Reply-To:References:Date:X-Google-Sender-Auth:Message-ID:To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:X-eGroups-Msg-Info:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:X-YGroups-SubInfo:Sender:X-Yahoo-Newman-Property:X-eGroups-Approved-By:X-eGroups-Auth; b=iIqyZWDrSDWEl5aHVmj0PcHVsOMIGHCWikMUp3cp+CpMzfBO1oxAmjSkAfcMTpI/0+4YH8rHHkh5wB69KHGmA+Av4R+H1einhEuscYBVb7ipHlZtCLKO+qbi5ddTLCo/\r\nReceived: from [69.147.65.149] by n38.bullet.mail.sp1.yahoo.com with NNFMP; 18 Jul 2009 14:00:52 -0000\r\nReceived: from [98.137.35.12] by t9.bullet.mail.sp1.yahoo.com with NNFMP; 18 Jul 2009 14:00:52 -0000\r\nX-Sender: bigmike.f@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 37421 invoked from network); 18 Jul 2009 12:35:57 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m2.grp.sp2.yahoo.com with QMQP; 18 Jul 2009 12:35:57 -0000\r\nX-Received: from unknown (HELO mail-gx0-f218.google.com) (209.85.217.218)\n  by mta3.grp.re1.yahoo.com with SMTP; 18 Jul 2009 12:35:56 -0000\r\nX-Received: by gxk18 with SMTP id 18so1020868gxk.5\n        for &lt;junit@yahoogroups.com&gt;; Sat, 18 Jul 2009 05:34:56 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.150.219.4 with SMTP id r4mr3619895ybg.43.1247920496787; Sat, \n\t18 Jul 2009 05:34:56 -0700 (PDT)\r\nIn-Reply-To: &lt;h3qisd+r2vn@...&gt;\r\nReferences: &lt;h3qisd+r2vn@...&gt;\r\nDate: Sat, 18 Jul 2009 07:34:56 -0500\r\nX-Google-Sender-Auth: 8d17787a6a8676d7\r\nMessage-ID: &lt;a527fddf0907180534r4ebb4b24uf71b80892bacf682@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Mike Forsberg &lt;bigmike@...&gt;\r\nSubject: Re: [junit] Can I capture Stdandard Output of a test\r\nX-Yahoo-Group-Post: member; u=89428055; y=vwlZ6oiHodFg_jBm2O5bp7mDGP_JTY2SVT_iJCNpe-dreF2B\r\nX-Yahoo-Profile: bigmike_f\r\nX-YGroups-SubInfo: t=0;f=16;g=none;\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 18 Jul 2009 14:00:51 -0000\r\n\r\nThe thing to think about is, with what is the class &quot;really&quot;\ncollaborating.=\r\n  If a class requires to dump something to standard out,\nyou might think ab=\r\nout the following pattern.\n\nclass Foz {\n\npublic Foz (..., PrintStream out) =\r\n{\n// link in collaborators but do no work.\n}\n\npublic void methodThatDoesWor=\r\nk() {\n// do the work.\n}\n\npublic static final void main(String[] args) {\n   =\r\nFoz theFoz =3D new Foz(..., System.out);\n   theFoz.methodThatDoesWork();\n}\n=\r\n\n}\n\nAs you can see, this leads to much more testable code.  You now can,\nin=\r\n your tests, insert your own PrintStream that records all the\noutput.  The =\r\nparse and verify as needed.  It also cleans up the test\noutput, which shoul=\r\nd not be polluted with stray System.out calls.\n\nHope I helped,\n\nBig Mike\n\nP=\r\n.S. I learned this from http://misko.hevery.com/code-reviewers-guide/\n\nOn F=\r\nri, Jul 17, 2009 at 2:19 PM, cant_jim&lt;jimcant@...&gt; wrote:\n&gt; How can I c=\r\napture the standard output of test? =A0I need to check that the messages fr=\r\nom the class I&#39;m testing are correct. =A0For example if my class class call=\r\ns a parser that print &quot;invalid input at line xx&quot; when it fails, I want to b=\r\ne able go catch that output and compare it to the expected value. =A0If it =\r\ncould be directed to a file on a per-test basis, I could do a diff to check=\r\n it.\n&gt;\n&gt; Any suggestions would be appreciated.\n&gt;\n&gt; Thanks,\n&gt;\n&gt; Jim Cant\n&gt;\n&gt;=\r\n\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "bigmike_f", 
+    "topicId": 21819, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89428055, 
+    "prevInTime": 21823, 
+    "contentTrasformed": false, 
+    "postDate": "1247920496", 
+    "canDelete": false, 
+    "nextInTopic": 21825, 
+    "prevInTopic": 21819, 
+    "headers": {
+        "inReplyToHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGE1MjdmZGRmMDkwNzE4MDUzNHI0ZWJiNGIyNHVmNzFiODA4OTJiYWNmNjgyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg=="
+    }
+}

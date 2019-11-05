@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19744, 
+    "senderId": "_wggQEYpdHcw6hjZgzjpJTws9DCCUG0RCetifqL_PsVKTbay-Q8NLbcwFChKW8-UjRunPmjhWWWS9Ur6zvOGLR7Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Help: How to derive your own runner from JUnit4ClassRunner", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Scott, I ll first answer your direct question, and then bump the discussion up a level. To answer your direct question, better support for custom runners that ", 
+    "msgId": 19743, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 80537 invoked from network); 15 Aug 2007 11:37:43 -0000\r\nReceived: from unknown (66.218.66.68)\n  by m54.grp.scd.yahoo.com with QMQP; 15 Aug 2007 11:37:43 -0000\r\nReceived: from unknown (HELO wr-out-0506.google.com) (64.233.184.226)\n  by mta11.grp.scd.yahoo.com with SMTP; 15 Aug 2007 11:37:43 -0000\r\nReceived: by wr-out-0506.google.com with SMTP id c46so477540wra\n        for &lt;junit@yahoogroups.com&gt;; Wed, 15 Aug 2007 04:37:09 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;\n        b=NrD5Y6mx4C79K0oWKKixmk/rD4Vb0/Yj38bf1BjcgsTgKnQUCcHbag8lisNYN6zyXd73dw2i4Y0ofA2+WcsPOSVZGqPuJXvVb9URPOkbvNZU1yxFTUrCYirnRRzgm3aTlEk5CZeurrL1Mz41V6mBRiuiKN+xv/gyzdbXGnH2j60=\r\nReceived: by 10.90.51.17 with SMTP id y17mr410517agy.1187177829548;\n        Wed, 15 Aug 2007 04:37:09 -0700 (PDT)\r\nReceived: by 10.90.93.19 with HTTP; Wed, 15 Aug 2007 04:37:09 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90708150437s50405c20naeaa0bad1809d015@...&gt;\r\nDate: Wed, 15 Aug 2007 07:37:09 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;f9t9rc+quj1@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;f9t9rc+quj1@...&gt;\r\nX-Google-Sender-Auth: aa00708184e0c8e6\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Help: How to derive your own runner from JUnit4ClassRunner\r\nX-Yahoo-Group-Post: member; u=139771899; y=dJmEfj-2QJzzpLNVrrj9S11EAu9XP3HIgMGLggNzL20\r\nX-Yahoo-Profile: dsaff\r\n\r\nScott,\n\nI&#39;ll first answer your direct question, and then bump the discussion up a level.\n\nTo answer your direct question, better support for custom runners that\nare really just additions to the JUnit 4 default behavior, like the\none you describe, is still a feature in progress.  The class design\nsimply hasn&#39;t calmed down enough to move the classes out of &quot;internal&quot;\nand start making iron-clad promises to future extenders.\n\nThat said, if you&#39;re willing to be flexible, it&#39;s not that bad--the\nfinal published interface is likely to be very similar to what&#39;s in\nJUnit 4.4.  You want to extend JUnit4ClassRunner, and probably\noverride:\n\n- getTestMethods: to pick up @Integration methods as well as @Test methods\n- validate: so that a class with only @Integration methods doesn&#39;t get\nmarked as malformed\n- wrapMethod: to change method running behavior.\n\nIn wrapMethod, you&#39;ll want to conditionally return a subclass of\nTestMethod, with your behavior inserted.  It may be sufficient to\noverride TestMethod.isIgnored, based on your description.\n\nTo bump the discussion up a level, the support for assumptions in\nJUnit 4.4 was supposed to handle situations very similar to what\nyou&#39;re describing:\n\n@Test public void integrationWorks() {\n   assumeTrue(runningIntegrationTests());\n   // rest of test\n}\n\nThis test will stop at the first line unless runningIntegrationTests\nreturns true.  If this facility doesn&#39;t handle your need, please let\nus know, so that we can improve it in future releases.  Thanks,\n\n   David\n\nOn 8/14/07, Scott Zou &lt;zou0s1@...&gt; wrote:\n&gt; Hi,\n&gt;\n&gt; All I want to do is this: I want to mark some of my test methods with my\n&gt; own annotation (e.g. @integration) instead of @test.  Then when this test\n&gt; case runs, these methods will check something like an environment\n&gt; variable to determine whether it should run (like @test) or do nothing (like\n&gt; @ignore).\n&gt;\n&gt; I figure I have to derive my own test runners to do this (@runWith\n&gt; (myTest.class)).  However, since JUnit4ClassRunner is internal and it&#39;s\n&gt; not documented, where can I find instructions/documents on what and how\n&gt; to derive from it?  Or is there a better way to achieve what we need here?\n&gt;\n&gt; Thanks!\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19742, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19742, 
+    "contentTrasformed": false, 
+    "postDate": "1187177829", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19742, 
+    "headers": {
+        "inReplyToHeader": "PGY5dDlyYytxdWoxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwODE1MDQzN3M1MDQwNWMyMG5hZWFhMGJhZDE4MDlkMDE1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGY5dDlyYytxdWoxQGVHcm91cHMuY29tPg=="
+    }
+}

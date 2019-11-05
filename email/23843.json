@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 23844, 
+    "senderId": "WxzGCxxaPqCNn7Cr0Gd7upO_C1NNVbrXZeXzZ_2YtSvLrVQt45RQXP8_xEawUgANjm9e-S7y5Qd_n2dhQQMXKIvfkggkZijS", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] The order of default builders.", 
+    "from": "Kevin Cooney &lt;kcooney@...&gt;", 
+    "authorName": "Kevin Cooney", 
+    "msgSnippet": "Not a perfect solution, but you could add your own custom annotation for this purpose. Your custom runner would check if the target class has this annotation,", 
+    "msgId": 23843, 
+    "profile": "kevincooney2000", 
+    "topicId": 23837, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 475263748, 
+    "messageBody": "<div id=\"ygrps-yiv-95250224\">Not a perfect solution, but you could add your own custom annotation for<br/>\nthis purpose. Your custom runner would check if the target class has this<br/>\nannotation, and if so, return child runners that do nothing but the<br/>\nreporting.<br/>\n<br/>\n-- Kevin<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, Apr 18, 2012 at 3:54 PM, Dawid Weiss &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dawid.weiss@...\">dawid.weiss@...</a>&gt; wrote:<br/>\n<br/>\n&gt; **<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; This would be Situation 2. I have a custom runner (not descending from<br/>\n&gt; JUnit) specifically to target things like reporting (that is -- I would<br/>\n&gt; like to know which tests were ignored if a suite is ignored, not just skip<br/>\n&gt; them silently). This is possible if somebody explicitly creates my runner<br/>\n&gt; with a suite class but not via factory (JUnitCore or Request) because then<br/>\n&gt; Ignore takes precedence over RunWith.<br/>\n&gt;<br/>\n&gt; Dawid<br/>\n&gt;<br/>\n&gt; On Wed, Apr 18, 2012 at 8:24 PM, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt; &gt; **<br/>\n&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Dawid,<br/>\n&gt; &gt;<br/>\n&gt; &gt; Which of these situations are you targeting?<br/>\n&gt; &gt;<br/>\n&gt; &gt; Situation 1:<br/>\n&gt; &gt;<br/>\n&gt; &gt; @RunWith(MyCustomSuite.class)<br/>\n&gt; &gt; @SuiteClasses({A.class, B.class, ...})<br/>\n&gt; &gt; public class Suite { ... }<br/>\n&gt; &gt;<br/>\n&gt; &gt; @Ignore<br/>\n&gt; &gt; public class A { ... }<br/>\n&gt; &gt;<br/>\n&gt; &gt; Situation 2:<br/>\n&gt; &gt;<br/>\n&gt; &gt; @Ignore<br/>\n&gt; &gt; @RunWith(MyCustomRunner.class)<br/>\n&gt; &gt; public class A { ... }<br/>\n&gt; &gt;<br/>\n&gt; &gt; Thanks,<br/>\n&gt; &gt;<br/>\n&gt; &gt; David Saff<br/>\n&gt; &gt;<br/>\n&gt; &gt; On Wed, Apr 18, 2012 at 4:19 AM, Dawid Weiss &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dawid.weiss@...\">dawid.weiss@...</a>&gt;<br/>\n&gt; &gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt; **<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Hi everyone,<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; So, AllDefaultPossibilitiesBuilder has ignoredBuilder() before<br/>\n&gt; &gt; &gt; annotated builder as shown here:<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; @Override<br/>\n&gt; &gt; &gt; public Runner runnerForClass(Class&lt;?&gt; testClass) throws Throwable {<br/>\n&gt; &gt; &gt; List&lt;RunnerBuilder&gt; builders= Arrays.asList(<br/>\n&gt; &gt; &gt; ignoredBuilder(),<br/>\n&gt; &gt; &gt; annotatedBuilder(),<br/>\n&gt; &gt; &gt; ...<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I understand this was done to enforce consistent handling of @Ignore<br/>\n&gt; &gt; &gt; at class level but it sucks if you want to have a custom runner that<br/>\n&gt; &gt; &gt; wishes to handle @Ignore on class in a different manner. In<br/>\n&gt; &gt; &gt; particular, I&#39;m looking to report the descriptions of all ignored unit<br/>\n&gt; &gt; &gt; tests (rather than just skipping the entire class).<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Changing the order above will most likely break annotated runners that<br/>\n&gt; &gt; &gt; are not prepared to handle class-level @Ignore. Any other suggestions/<br/>\n&gt; &gt; &gt; options how this could be solved? This could be a tweak to<br/>\n&gt; &gt; &gt; IgnoredBuilder to delegate to a sub-runner if it sees @RunWith and<br/>\n&gt; &gt; &gt; then just fire ignore events for each individual test?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Dawid<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; [Non-text portions of this message have been removed]<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 23842, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1334961198", 
+    "canDelete": false, 
+    "nextInTopic": 23844, 
+    "prevInTopic": 23842, 
+    "headers": {
+        "inReplyToHeader": "PENBTTIxUnQ5b0I1b3MzVUs9OEI4aEFTenAySy1LYUpDSnBpaTM4dFFVc1FFVXlPNXY2Z0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBQTNFK2VVTTlGaUwrZkMtSnBqM3ZYV3hDb1U2X1Z6eUE5LWhkYWZBVVp4d2lrPWQ5Z0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBTTIxUnRfOVZmbXlxVUdubnh0QkdaTmgxRjM0Mzg1VHJPS1VweFlIOTRncHJ3SDdqZ0BtYWlsLmdtYWlsLmNvbT4gPENBTHJ3LVB4UTljZDNoenM5RnBaNGMwZEF4N0ZrVjk4PTFablViYT1NeUpVd0Y9Q1FEQUBtYWlsLmdtYWlsLmNvbT4gPENBTTIxUnQ5b0I1b3MzVUs9OEI4aEFTenAySy1LYUpDSnBpaTM4dFFVc1FFVXlPNXY2Z0BtYWlsLmdtYWlsLmNvbT4="
+    }
+}

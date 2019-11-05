@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 3939, 
+    "senderId": "r3CinYmCubzcZHV3PjLrxqp-D785UTp_Jyfy8NBx7PFbV7RbZYJXcNE3S48L5yjLHdqlxrigiSwXIPiP49rqCMbCpOstaafF4a8aUw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] finally", 
+    "from": "Berin Loritsch &lt;bloritsch@...&gt;", 
+    "authorName": "Berin Loritsch", 
+    "msgSnippet": "... Actually, both can be of interest.  If I can see both the exceptions reported, I can fix both issues at the same time.  Sometimes the exception thrown in ", 
+    "msgId": 3938, 
+    "rawEmail": "Return-Path: &lt;bloritsch@...&gt;\r\nX-Sender: bloritsch@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_1_3); 1 Feb 2002 17:52:58 -0000\r\nReceived: (qmail 52712 invoked from network); 1 Feb 2002 17:52:58 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m3.grp.snv.yahoo.com with QMQP; 1 Feb 2002 17:52:58 -0000\r\nReceived: from unknown (HELO scodev.infoplanning.com) (209.8.58.131)\n  by mta1.grp.snv.yahoo.com with SMTP; 1 Feb 2002 17:52:55 -0000\r\nReceived: from apache.org ([192.168.0.189]) by scodev.infoplanning.com (8.8.5/SCO5) with ESMTP id MAA07272 for &lt;junit@yahoogroups.com&gt;; Fri, 1 Feb 2002 12:42:41 -0500 (EST)\r\nMessage-ID: &lt;3C5AD696.6090103@...&gt;\r\nDate: Fri, 01 Feb 2002 12:55:35 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.7) Gecko/20011221\r\nX-Accept-Language: en-us\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] finally\r\nReferences: &lt;20020201154659.76716.qmail@...&gt; &lt;3C5AC875.7010205@...&gt; &lt;3C5ACEC2.7050605@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Berin Loritsch &lt;bloritsch@...&gt;\r\nX-Yahoo-Group-Post: member; u=64910131\r\nX-Yahoo-Profile: bloritsch\r\n\r\nVladimir Bossicard wrote:\n\n&gt;&gt;&gt;The only problem I have with the way JUnit is setup right now is that an\n&gt;&gt;&gt;Exception (even a failed assertion) will mask any Exception in the test case.\n&gt;&gt;&gt;\n&gt;&gt;&gt;\n&gt;&gt;I don&#39;t understand.  Can you explain your complaint in more detail?\n&gt;&gt;\n&gt; \n&gt; \n&gt; If an exception (1) is thrown during the normal execution of the test, \n&gt; the framework executes the tearDown method (because the tearDown method \n&gt; is always executed).  If tearDown() throws another exception (2), JUnit \n&gt; will only report the exception (2) and the (1) is lost into the great \n&gt; void.  It doesn&#39;t help much because what does interest you is really the \n&gt;   first exception.\n&gt; \n&gt; The solution is trivial: store any exception that was thrown during the \n&gt; execution of the &#39;runTest&#39; method, then execute tearDown and if an \n&gt; exception is caught, resend the first one.\n\n\nActually, both can be of interest.  If I can see both the exceptions reported,\nI can fix both issues at the same time.  Sometimes the exception thrown in\ntearDown is unrelated to the runTest exception.  I would adjust the Exception type\nthrown to have an interface like this:\n\npublic class TestException extends Exception\n{\n     private final String    m_message;\n     private final Throwable m_runTest;\n     private final Throwable m_tearDown;\n\n     TestException( String message, Throwable runTest )\n     {\n         this( message, runTest, null );\n     }\n\n     TestException( String message, Throwable runTest, Throwable tearDown)\n     {\n         m_message = (null == message) ? &quot;Exception thrown during test&quot; : message;\n         m_runTest = runTest;\n         m_tearDown = tearDown;\n     }\n\n     Throwable getRunTestThrowable()\n     {\n         return m_runTest;\n     }\n\n     Throwable getTearDownThrowable()\n     {\n         return m_tearDown;\n     }\n\n     void printStackTrace()\n     {\n         printStackTrace( System.err );\n     }\n\n     void printStackTrace( PrintWriter pw )\n     {\n         pw.println( m_message );\n         pw.println(&quot;Contains runTest() exception&quot;);\n         m_runTest.printStackTrace( pw );\n\n         if ( null != m_tearDown )\n         {\n             System.err.println(&quot;Contains tearDown() exception&quot;);\n             m_tearDown.printStackTrace( pw );\n         }\n     }\n}\n\n\n\n\n\n-- \n\n&quot;They that give up essential liberty to obtain a little temporary safety\n  deserve neither liberty nor safety.&quot;\n                 - Benjamin Franklin\n\n\n", 
+    "profile": "bloritsch", 
+    "topicId": 3932, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64910131, 
+    "prevInTime": 3937, 
+    "contentTrasformed": false, 
+    "postDate": "1012586135", 
+    "canDelete": false, 
+    "nextInTopic": 3940, 
+    "prevInTopic": 3937, 
+    "headers": {
+        "messageIdInHeader": "PDNDNUFENjk2LjYwOTAxMDNAYXBhY2hlLm9yZz4=", 
+        "referencesHeader": "PDIwMDIwMjAxMTU0NjU5Ljc2NzE2LnFtYWlsQHdlYjIwODA4Lm1haWwueWFob28uY29tPiA8M0M1QUM4NzUuNzAxMDIwNUBpbXBlcml0ZWsuY29tPiA8M0M1QUNFQzIuNzA1MDYwNUBib3NzaWNhcmQuY29tPg=="
+    }
+}

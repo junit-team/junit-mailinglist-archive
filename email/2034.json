@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 2035, 
+    "senderId": "ehbaaY7etH40g9JFhmB3Mva3t-7s2lOGEDojjZeprdaxnCpdLc8dIirbXkGa93BLjIp0G-HwpZHVOTCVeMT7rWk", 
+    "systemMessage": false, 
+    "subject": "Junit manipulating exceptions?", 
+    "from": "Frank Enos &lt;fenos@...&gt;", 
+    "authorName": "Frank Enos", 
+    "msgSnippet": "I ve provided coded examples below. My basic question is this: Does Junit (3.7) manipulate exceptions in some way that would prevent an exception from being", 
+    "msgId": 2034, 
+    "topicId": 2034, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1583509427\">I&#39;ve provided coded examples below. My basic question is this: Does Junit <br/>\n(3.7) manipulate exceptions in some way that would prevent an exception <br/>\nfrom being caught in a normal try/catch block? The behavior I&#39;m seeing is <br/>\nthat if I attempt to catch the specific exception thrown by a method (e.g. <br/>\ncatch (java.sql.SQLException e), the catch block fails to catch it and <br/>\nJunit logs it as an error. If I use catch (Exception e), the exception is <br/>\ncaught as I would expect. I find that I can call getClass() on the caught <br/>\nException and that it returns the expected SQLException, whereas using <br/>\ninstanceof fails.<br/>\n<br/>\nExamples (behaves the same using other methods throwing other exception types)<br/>\nmethods are from:<br/>\npublic class PersistenceTest extends TestCase {...}<br/>\n<br/>\n   public static void main(String[] args) {<br/>\n\ttry {<br/>\n       PersistenceManager.singleton().write(&quot;insert into noSuchTable <br/>\nvalues(&#39;junk&#39;)&quot;);<br/>\n\t  System.out.println(&quot;No exception writing to non-existent table&quot;);<br/>\n\t} catch (SQLException e) {<br/>\n\t  System.out.println(e.getClass().toString());<br/>\n\t}<br/>\n   }<br/>\n<br/>\nIf I simply invoke this main()  method which I have added to the test <br/>\nclass, it behaves as expected, printing the expected name of the class and <br/>\nexiting normally.<br/>\n<br/>\n   public void testBadWrite() {<br/>\n\ttry {<br/>\n       \t\tPersistenceManager.singleton().write(&quot;insert into noSuchTable <br/>\nvalues(&#39;hey&#39;)&quot;);<br/>\n\t  \tfail(&quot;No exception writing to non-existent table&quot;);<br/>\n\t} catch (SQLException e) {<br/>\n\t  assertTrue(e.toString().indexOf(&quot;ORA-00942&quot;) &gt; -1);<br/>\n\t}<br/>\n   }<br/>\n<br/>\nThis test method fails to catch the SQLException, passing it upwards and <br/>\nlogging an error.<br/>\n<br/>\nThe following test passes, however:<br/>\n<br/>\n   public void testBadWrite2() {<br/>\n\ttry {<br/>\n       \t\tPersistenceManager.singleton().write(&quot;insert into noSuchTable <br/>\nvalues(&#39;hey&#39;)&quot;);<br/>\n\t  \tfail(&quot;No exception writing to non-existent table&quot;);<br/>\n\t} catch (Exception e) {<br/>\n\t  assertEquals(&quot;java.sql.SQLException&quot;, e.getClass().getName())<br/>\n\t  assertTrue(e.toString().indexOf(&quot;ORA-00942&quot;) &gt; -1);<br/>\n\t}<br/>\n   }<br/>\n<br/>\nWhat am I missing?<br/>\nThanks,<br/>\nFrank</div>", 
+    "prevInTime": 2033, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "995656359", 
+    "canDelete": false, 
+    "nextInTopic": 2035, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDUuMS4wLjE0LjAuMjAwMTA3MjAxNTExMTkuMDM1MzI5MjhAcG9wLm1pbmRzcHJpbmcuY29tPg=="
+    }
+}

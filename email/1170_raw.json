@@ -1,0 +1,29 @@
+{
+    "topicId": 1167, 
+    "postDate": "989598550", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Joshua Levy &lt;joshualevy@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "WjMPyLQfP5V85JaOLmTmQIHR3Pqa-dYwVDcPf0ZV-yIiqBNoyo7WCnWGxd-x1Qm9iNfqWQZyY_whjTIkcprfbUHPQXSCGYP7Xw", 
+    "nextInTime": 1171, 
+    "userId": 0, 
+    "prevInTime": 1169, 
+    "prevInTopic": 1169, 
+    "headers": {
+        "inReplyToHeader": "PDlkaDI5ait0MzYzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDEwNTExMTYyOTEwLjgyODE2LnFtYWlsQHdlYjEzMzAzLm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "Joshua Levy", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "... What random number generator are you using?  My understanding is that there are at least two in java (java.util.Random and java.math.Random), and that at", 
+    "contentTrasformed": false, 
+    "msgId": 1170, 
+    "nextInTopic": 1171, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;joshualevy@...&gt;\r\nX-Sender: joshualevy@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 11 May 2001 16:29:11 -0000\r\nReceived: (qmail 33024 invoked from network); 11 May 2001 16:29:11 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 11 May 2001 16:29:11 -0000\r\nReceived: from unknown (HELO web13303.mail.yahoo.com) (216.136.175.39) by mta3 with SMTP; 11 May 2001 16:29:11 -0000\r\nMessage-ID: &lt;20010511162910.82816.qmail@...&gt;\r\nReceived: from [209.249.149.77] by web13303.mail.yahoo.com; Fri, 11 May 2001 09:29:10 PDT\r\nDate: Fri, 11 May 2001 09:29:10 -0700 (PDT)\r\nReply-To: joshualevy@...\r\nSubject: Re: [junit] Unit testing stochastic (random) methods\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;9dh29j+t363@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Joshua Levy &lt;joshualevy@...&gt;\r\n\r\n\n--- mcphee@... wrote:\n&gt; Writing unit tests for the deterministic parts of the system is\n&gt; pretty\n&gt; standard fare, but it&#39;s not obvious how to reasonably test the\n&gt; stochastic parts of the system.  At some level stochastic methods\n&gt; just\n&gt; aren&#39;t testable in the same way that deterministic methods are.  \n\nWhat random number generator are you using?  My understanding\nis that there are at least two in java (java.util.Random and\njava.math.Random), and that at least one of these can be seeded\nin such a way as to always generate the same string of numbers,\nafter the seed.  I don&#39;t remember the detail off the top of my\nhead, but it is something like this:\n      random.seed(1L) ;\n      do_testing() ;\n      random.seed(1L) ;\n      do_testing() ;\nThe two calls to do_testing will do exactly the same thing,\neven if they use the random number generator, because the random\nnumber generator will do the same thing, because you seeded it\nthe same way.\n\nNow, it sounds to me like you are a math focused dude, so you \nmay be using a custom random number generator.  If so, I would \nsee if it has the repeatable behavior described above (for any\nseed at all).  If so, use it, as above.  If not, consider stubbing\nit out with a routine which has a file full of numbers.  Maybe\n10,000 numbers.  The stub routine just reads the numbers out of \nthe file and returns them, starting over as required.  Your\ntests would look something like this:\n     my_random.useLibraryFile(&quot;file_full_of_numbers&quot;) ;\n     do_your_test() ;\n\nThe result of either of these plans, is a reproducable test\ncase.  Each time it runs, you will get the exact same result.\nThis will work well for regression tests.   For other sorts of\ntesting, I think your current plan (of measuring the randomness\nof the results) is the right thing to do, even if it takes a \nwhile.\n\nI can describe these in more detail if you want.  I have used\nthe file trick (a decade ago), but I think the seed trick is\nmuch better, if it will work.\n\nJoshua Levy\n\n__________________________________________________\nDo You Yahoo!?\nYahoo! Auctions - buy the things you want at great prices\nhttp://auctions.yahoo.com/\n\n", 
+    "subject": "Re: [junit] Unit testing stochastic (random) methods"
+}

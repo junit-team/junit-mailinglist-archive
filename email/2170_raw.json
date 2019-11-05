@@ -1,0 +1,29 @@
+{
+    "topicId": 2072, 
+    "postDate": "996020994", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "IxugxOlVtoNwkxWS0RL3d8S72y921eyIvIWejyNYdgGnLNX1QsOHiJj7-IhfloFQSLe9nRISrC6FU3wkrMn3gJmPIgBJ5XwFa-RGRzxZ", 
+    "nextInTime": 2171, 
+    "userId": 0, 
+    "prevInTime": 2169, 
+    "prevInTopic": 2148, 
+    "headers": {
+        "messageIdInHeader": "PE9FNzM3WDlFZkpRWDlRWVZJZGIwMDAwMjQ0Y0Bob3RtYWlsLmNvbT4=", 
+        "referencesHeader": "PDIwMDEwNzI0MjM1NjQ4LjQ2MzI4LnFtYWlsQHdlYjExNjAxLm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "Mathieu Gervais", 
+    "numMessagesInTopic": 48, 
+    "msgSnippet": "... If I wanted this to work, I would code a utility method that does the comparaison: public void assertArraysEquals(Objectp[] excepected, Object[] actual)", 
+    "contentTrasformed": false, 
+    "msgId": 2170, 
+    "nextInTopic": 2177, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;egoine_@...&gt;\r\nX-Sender: egoine_@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 28 Jul 2001 04:05:48 -0000\r\nReceived: (qmail 39631 invoked from network); 28 Jul 2001 04:05:48 -0000\r\nReceived: from unknown (10.1.10.27) by m8.onelist.org with QMQP; 28 Jul 2001 04:05:48 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.236.57) by mta2 with SMTP; 28 Jul 2001 04:05:47 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC; Tue, 24 Jul 2001 17:31:00 -0700\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;20010724235648.46328.qmail@...&gt;\r\nSubject: Re: [junit] Reporting more then 1 failed assertion per test\r\nDate: Tue, 24 Jul 2001 20:29:54 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.50.4133.2400\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nMessage-ID: &lt;OE737X9EfJQX9QYVIdb0000244c@...&gt;\r\nX-OriginalArrivalTime: 25 Jul 2001 00:31:00.0236 (UTC) FILETIME=[1415FCC0:01C114A1]\r\nFrom: &quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;\r\n\r\n&gt;Another example:\n&gt;// For two arrays: expected, actual\n\nIf I wanted this to work, I would code a utility method that does the\ncomparaison:\n\npublic void assertArraysEquals(Objectp[] excepected, Object[] actual) throws\nException{\n    boolean notEquals = false;\n    String msg =null;\n     if (expected.length != actual.length) {\n        notEquals = true; msg = &quot;Lenght not equals&quot;;\n    }else {\n          for (int i = Math.min(expected.length-1, actual.length-1); i &gt;=\n0;i--)\n          {\n            if (!expected[i].euqals( actual[i])) {\n                    notEquals=true;\n                    msg=&quot;Values for index &quot; + i + &quot; aren&#39;t equals&quot;;\n            }\n          }\n    }\n    if (notEquals) {  fail(msg + &quot;actual array values are....&quot; +\narrayToString(actual) )  };\n}\n\nThis gives you, in that particular case, what you said you wanted, i.e. the\ninformation to be able to debug the problem without going into the debugger.\nIt&#39;s a little bit more work, but you sort of get what you want.\n\nMathieu\n\n----- Original Message -----\nFrom: Robert Sartin\nTo: junit@yahoogroups.com\nSent: Tuesday, July 24, 2001 7:56 PM\nSubject: RE: [junit] Reporting more then 1 failed assertion per test\n\n\n\n--- Vladimir Bossicard &lt;vladimir@...&gt; wrote:\n&gt; To &quot;correct&quot; that, you have to change the framework (record the\n&gt; errors and throw an exception at the end of the test method).  But I\n&gt; really don&#39;t think that this will solve problems:\n\nYes, changing that aspect of the framework would be a very significant,\nand challenging, change. It&#39;d be interesting to see how well it could\nbe done without having to change other interfaces or any existing\ntests. Perhaps by having the assert* methods find the test context (a\nslightly new/changed concept) in which they are running and logging the\nfailure there.\n\n&gt;    assertTrue(obj != null);\n&gt;    assertTrue(obj.status() == 3);\n\nThis would throw a NullPointerException (we really can&#39;t change the\nbehavior of the JVM) in the second assertTrue. The framework might deal\nwith an Exception from a test that had already failed an assertion as\nmeaningless and not to be recorded, or might be clever about what\nshould be recorded.\n\nAnother example:\n\n  // For two arrays: expected, actual\n  assertEquals(expected.length, actual.length);\n  for (int i = Math.min(expected.length-1, actual.length-1); i &gt;= 0;\ni--)\n  {\n    assertEquals(expected[i], actual[i]);\n  }\n\nThis would log a complete list of incorrect elements in addition to the\nsize being wrong. So, this example just goes to show that multiple\nreporting might be helpful in some circumstances. Obviously not all,\nand quite possibly not useful enough for the sizeable and challenging\nframework change required to support it.\n\nRegards,\n\nRob\n\n\n__________________________________________________\nDo You Yahoo!?\nMake international calls for as low as $.04/minute with Yahoo! Messenger\nhttp://phonecard.yahoo.com/\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service.\n\n", 
+    "subject": "Re: [junit] Reporting more then 1 failed assertion per test"
+}

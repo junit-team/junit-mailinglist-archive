@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 23208, 
+    "senderId": "2-d_r--GfbEo4tgfWTp4p4Z8I-HPdpjHEQ5ypc6TT0dzaUHhc5YvXUiS9TgWW1Ljk1jw3kjWiJ8FTqi3fhRPUL4JoBgM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to avoid running a test class multiple times", 
+    "from": "Bill Venners &lt;bill@...&gt;", 
+    "authorName": "Bill Venners", 
+    "msgSnippet": "Hi John, I doubt you ll want to add another dependency, but were you to use a ScalaTest Suite of some kind with an @RunWith(classOf[JUnitRunner]) annotation on", 
+    "msgId": 23207, 
+    "rawEmail": "Return-Path: &lt;bill@...&gt;\r\nReceived: (qmail 21073 invoked by uid 7800); 27 Jan 2011 21:00:19 -0000\r\nX-Sender: bill@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 4588 invoked from network); 27 Jan 2011 20:55:37 -0000\r\nX-Received: from unknown (66.196.94.107)\n  by m17.grp.re1.yahoo.com with QMQP; 27 Jan 2011 20:55:37 -0000\r\nX-Received: from unknown (HELO mail-iy0-f172.google.com) (209.85.210.172)\n  by mta3.grp.re1.yahoo.com with SMTP; 27 Jan 2011 20:55:37 -0000\r\nX-Received: by iyi42 with SMTP id 42so2066326iyi.31\n        for &lt;junit@yahoogroups.com&gt;; Thu, 27 Jan 2011 12:55:37 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.231.14.139 with SMTP id g11mr1595082iba.51.1296161735964; Thu,\n 27 Jan 2011 12:55:35 -0800 (PST)\r\nX-Received: by 10.231.14.129 with HTTP; Thu, 27 Jan 2011 12:55:35 -0800 (PST)\r\nIn-Reply-To: &lt;AANLkTi=dECLWoNH0tbd_OHPG_=MtwD5xPQxswmrMXdbk@...&gt;\r\nReferences: &lt;ihq795+9sit@...&gt;\n\t&lt;AANLkTikZrV2stG6NUigNw4EtYEOGQccVQaK-6L6wK6vi@...&gt;\n\t&lt;AANLkTi=dECLWoNH0tbd_OHPG_=MtwD5xPQxswmrMXdbk@...&gt;\r\nDate: Thu, 27 Jan 2011 12:55:35 -0800\r\nMessage-ID: &lt;AANLkTimpUTKGBbtq3TUd7Py7SerR9tL=KGUE9SbNOb2z@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=windows-1252\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: Bill Venners &lt;bill@...&gt;\r\nSubject: Re: [junit] How to avoid running a test class multiple times\r\nX-Yahoo-Group-Post: member; u=416990097; y=Q1leENILSiof0WJLJ18mGY7xn4RjaVXgQiAl1D02jRmA5x1e4nQ\r\nX-Yahoo-Profile: billvenners\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 27 Jan 2011 21:00:19 -0000\r\n\r\nHi John,\n\nI doubt you&#39;ll want to add another dependency, but were you to us=\r\ne a\nScalaTest Suite of some kind with an @RunWith(classOf[JUnitRunner])\nann=\r\notation on it, JUnit would ask ScalaTest to run those test classes.\nIn Scal=\r\naTest, you could override the run method such that it would\nonly run the cl=\r\nass if it hadn&#39;t been run before. The good thing is it\nwould solve your pro=\r\nblem. The bad thing is you&#39;d need to add the Scala\njar and ScalaTest jar on=\r\n your class path, and that may not be possible\nor desirable for you. Moreov=\r\ner, you&#39;d need to write the runOnlyOnce\ntest classes in Scala.\n\nActually it=\r\n occurs to me just now that you should be able to create a\nJUnit runner in =\r\nJava that does what you want: just executing each test\nclass only once. The=\r\nn annotate your test classes with your own runner:\n@RunWith(RunOnlyOnceRunn=\r\ner.class). I think that should be a possible\nway to do what you want.\n\nIf y=\r\nou want to try the ScalaTest way, let me know and I can help further.\n\nBill=\r\n\n\nOn Thu, Jan 27, 2011 at 12:07 PM, John Cortell &lt;john.cortell@...&gt; w=\r\nrote:\n&gt;\n&gt;\n&gt;\n&gt; I set out to give Categories a shot, and ran into issues usin=\r\ng them in\n&gt; Eclipse/JUnit. Wouldn&#39;t you know it...I ran into a post from yo=\r\nu in bugzilla\n&gt; that knocked the wind out of that sail.\n&gt;\n&gt; https://bugs.ec=\r\nlipse.org/bugs/show_bug.cgi?id=3D318299\n&gt;\n&gt; John\n&gt;\n&gt; On Wed, Jan 26, 2011 a=\r\nt 7:12 PM, David Saff &lt;david@...&gt; wrote:\n&gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; Not as simply a=\r\ns you might think. Could you achieve what you want\n&gt; &gt; with Categories (fro=\r\nm 4.8?)\n&gt; &gt;\n&gt; &gt; David Saff\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; On Wed, Jan 26, 2011 at 5:29 PM, joh=\r\nncortell &lt;john.cortell@...&lt;john.cortell%40gmail.com&gt;&gt;\n&gt; &gt; wrote:\n&gt; &gt; =\r\n&gt; Is there a way to tell JUnit to execute a class only once no matter how\n&gt;=\r\n &gt; many times it appears in an invoked test suite?\n&gt; &gt; &gt;\n&gt; &gt; &gt; E.g., say So=\r\nmeTestClass.java is included in both test suite &#39;A&#39;\n&gt; &gt; &gt; and test suite &#39;B=\r\n&#39;. But I have a higher-level suite call &#39;All&#39; which\n&gt; &gt; includes both &#39;A&#39; a=\r\nnd &#39;B&#39;. Running &#39;All&#39; will thus run SomeTestClass.java\n&gt; &gt; twice. Is there =\r\na way to prevent that?\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt; ----------------------------=\r\n--------\n&gt; &gt; &gt;\n&gt; &gt; &gt; Yahoo! Groups Links\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt;\n=\r\n&gt; [Non-text portions of this message have been removed]\n&gt;\n&gt; \n\n\n--\nBill Venn=\r\ners\nArtima, Inc.\nhttp://www.artima.com\n\n", 
+    "profile": "billvenners", 
+    "topicId": 23199, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 416990097, 
+    "prevInTime": 23206, 
+    "contentTrasformed": false, 
+    "postDate": "1296161735", 
+    "canDelete": false, 
+    "nextInTopic": 23208, 
+    "prevInTopic": 23206, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGk9ZEVDTFdvTkgwdGJkX09IUEdfPU10d0Q1eFBReHN3bXJNWGRia0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PEFBTkxrVGltcFVUS0dCYnRxM1RVZDdQeTdTZXJSOXRMPUtHVUU5U2JOT2IyekBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGlocTc5NSs5c2l0QGVHcm91cHMuY29tPgk8QUFOTGtUaWtaclYyc3RHNk5VaWdOdzRFdFlFT0dRY2NWUWFLLTZMNndLNnZpQG1haWwuZ21haWwuY29tPgk8QUFOTGtUaT1kRUNMV29OSDB0YmRfT0hQR189TXR3RDV4UFF4c3dtck1YZGJrQG1haWwuZ21haWwuY29tPg=="
+    }
+}

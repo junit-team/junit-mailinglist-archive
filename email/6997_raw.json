@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 6998, 
+    "senderId": "bvLTIarHIXsLkSoJrDpBA7tgUQKGGHqbYuyKRwickQic4pa1-zNnvceL97P5gjjO8-CDUnlGTZOr6IGPwKmeZsX1ZGVu0x9Im98kcoIAMYnNW1zJcGE9", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing multi-threads access to one database", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... It s one solution.  It has the drawback that you can t use the reflection mechanism to create your TestSuite.  If you want to do so, you ll have to do", 
+    "msgId": 6997, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 19 Feb 2003 16:50:46 -0000\r\nReceived: (qmail 85422 invoked from network); 19 Feb 2003 16:48:49 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m11.grp.scd.yahoo.com with QMQP; 19 Feb 2003 16:48:49 -0000\r\nReceived: from unknown (HELO unet.scdi.org) (66.93.79.215)\n  by mta3.grp.scd.yahoo.com with SMTP; 19 Feb 2003 16:48:49 -0000\r\nReceived: from bossicard.com (adnovum.ch [193.192.235.3])\n\t(authenticated bits=0)\n\tby unet.scdi.org (8.12.3/8.12.3/Debian -4) with ESMTP id h1JGmjj2019589\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 19 Feb 2003 08:48:46 -0800\r\nMessage-ID: &lt;3E53B568.2040406@...&gt;\r\nDate: Wed, 19 Feb 2003 08:48:40 -0800\r\nUser-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2) Gecko/20021126\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Unit testing multi-threads access to one database\r\nReferences: &lt;1e8.23cb0b0.2b847897@...&gt;\r\nIn-Reply-To: &lt;1e8.23cb0b0.2b847897@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Spam-Status: No\r\nX-Scanned-By: MIMEDefang 2.21 (www . roaringpenguin . com / mimedefang)\r\nFrom: &quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;\r\nX-Yahoo-Group-Post: member; u=43178095\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; Now the test is successful, however, I have very skeptical about it.  I\n&gt; don&#39;t know if it&#39;s ok to pass the\n&gt;     testDatabase to the test case like this\n\nIt&#39;s one solution.  It has the drawback that you can&#39;t use the \nreflection mechanism to create your TestSuite.  If you want to do so, \nyou&#39;ll have to do something like this (in the suite() method of your \nHelper):\n\nsuite = new TestSuite(DataLockTestHelper.class);\nreturn new TestSetup(suite) {\n   Database database;\n   public void setUp() {\n      // start the database\n      for (int ii = 0; ii &lt; fTests.testCount(); ii++) {\n          MyTestCase test = (FilerTestCase) fTests.testAt(ii);\n          test.setDatabase(database);\n       }\n   }\n   public void tearDown() {\n      // stop the database\n   }\n};\n\nAnother solution is to use a static variable to hold your database.  You \ncan use the ResourceManager of the JUnit-addons package for this purpose.\n\nhth\n\n-Vladimir\n\n-- \nVladimir R. Bossicard\nwww.bossicard.com\n\n\n", 
+    "profile": "vbossica", 
+    "topicId": 6994, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "prevInTime": 6996, 
+    "contentTrasformed": false, 
+    "postDate": "1045673320", 
+    "canDelete": false, 
+    "nextInTopic": 7002, 
+    "prevInTopic": 6994, 
+    "headers": {
+        "inReplyToHeader": "PDFlOC4yM2NiMGIwLjJiODQ3ODk3QGFvbC5jb20+", 
+        "messageIdInHeader": "PDNFNTNCNTY4LjIwNDA0MDZAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PDFlOC4yM2NiMGIwLjJiODQ3ODk3QGFvbC5jb20+"
+    }
+}

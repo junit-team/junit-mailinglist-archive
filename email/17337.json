@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 17338, 
+    "senderId": "2xWgfo_3h5PtikF7Y0ozDb-NNG-FtN7i683gyj0020oNlx9zcDPwFGNrgC8VDdIae3ATGLVum2X4v29ytyXHBb-ZJf7DRN-0AxRIHk_kF8c", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing Contexts", 
+    "from": "&quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt;", 
+    "authorName": "Lasse Koskela", 
+    "msgSnippet": "Hi Danno, ... I m not sure what you mean by VelocityContext relying on an underlying classloader(?) but I d like to add a little something about mocking the", 
+    "msgId": 17337, 
+    "profile": "lassekoskela", 
+    "topicId": 17327, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190530936, 
+    "messageBody": "<div id=\"ygrps-yiv-868696215\">Hi Danno,<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 8/4/06, DanHinojosa &lt;newsreader@...&gt; wrote:<br/>\n&gt;  VelocityContext context = new VelocityContext();<br/>\n&gt;              context.put(&quot;requestMap&quot;, requestMap);<br/>\n&gt;              StringWriter w = new StringWriter();<br/>\n&gt;              Velocity.mergeTemplate(&quot;mytemplate.vm&quot;, &quot;UTF-8&quot;, context, w);<br/>\n&gt;              String text = w.toString();<br/>\n&gt;<br/>\n&gt;  InitialContext ic = new InitialContext();<br/>\n&gt;              Session session = (Session) ic.find(&quot;mail/MailSource&quot;);<br/>\n&gt;              Message msg = new MimeMessage(session);<br/>\n&gt;              msg.setContent(text, &quot;text/plain&quot;);<br/>\n&gt;<br/>\n&gt;  If I create a testFoo method to test this I am out of luck.   This is<br/>\n&gt;  because the Velocity Context relies on an underlying classloader.  The<br/>\n&gt;   InitialContext relies on an underlying Java EE context. Again, this<br/>\n&gt;  is a UNIT TEST, and not an integration or system test.  So what is the<br/>\n&gt;  best way to do get good test coverage on this?  Shall I extract the<br/>\n&gt;  code into another class that I can inject my InitialContext mocks and<br/>\n&gt;  my VelocityContext mocks through there?<br/>\n<br/>\nI&#39;m not sure what you mean by VelocityContext relying on an underlying<br/>\nclassloader(?) but I&#39;d like to add a little something about mocking<br/>\nthe InitialContext to Joakim&#39;s points about abstracting things a bit.<br/>\n<br/>\nThe open source MockEJB project (http://www.mockejb.org) includes a<br/>\nhandy little class named &quot;MockContextFactory&quot;. With that, you can do<br/>\nsomething like this:<br/>\n<br/>\nimport org.mockejb.jndi.MockContextFactory;<br/>\n<br/>\npublic class TestingJndiStuffWithMockContextFactory {<br/>\n    @Before<br/>\n    public void initializeMockInitialContext() {<br/>\n        MockContextFactory.setAsInitial();<br/>\n<br/>\n        // bind whatever objects you want into the JNDI tree<br/>\n        InitialContext context = new InitialContext();<br/>\n        context.bind(&quot;whatever&quot;, new MockWhatever());<br/>\n    }<br/>\n<br/>\n    @After<br/>\n    public void resetInitialContext() {<br/>\n         MockContextFactory.revertSetAsInitial();<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\n-Lasse- </span></blockquote></div>", 
+    "prevInTime": 17336, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1154989693", 
+    "canDelete": false, 
+    "nextInTopic": 17369, 
+    "prevInTopic": 17330, 
+    "headers": {
+        "inReplyToHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDM5NzVlMmQxMDYwODA3MTUyOGc0YTkyZDEyZmllYWI3OTVkY2VjYTMwZmVkQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg=="
+    }
+}

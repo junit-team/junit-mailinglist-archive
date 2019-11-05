@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 12826, 
+    "senderId": "bEc989sKzoLOTNKRyX5blaMsKVYBL_enQhDtgGycTIW8rzVvRm5T0oZy-Odga-M5WxVupMuhdZDPIOXZE1TpWcNgaMJq8NmcsFuKTBhl", 
+    "systemMessage": true, 
+    "subject": "Re: Testing exceptions", 
+    "from": "&quot;lranatunga&quot; &lt;lranatun@...&gt;", 
+    "authorName": "lranatunga", 
+    "msgSnippet": "... time you ... messages. ... I ve received both your original post and a number of replies to it (the latest being your own). ... You can also view all posts", 
+    "msgId": 12825, 
+    "profile": "lranatunga", 
+    "topicId": 12807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 118806566, 
+    "messageBody": "<div id=\"ygrps-yiv-714846934\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Pico Geyer&quot; &lt;picog@s...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; ...<br/>\n&gt; Previous replies to my question???<br/>\n&gt;<br/>\n&gt; This is the first reply I get to my question so either their must be<br/>\n&gt; something wrong with my mailbox or there is a delay between the<br/>\n </span></blockquote>time you<br/>\n<blockquote><span title=\"ireply\"> &gt; register for the mailing list and the time you start receiving<br/>\n </span></blockquote>messages.<br/>\n<blockquote><span title=\"ireply\"> &gt; I did not even receive the question that I posted.<br/>\n </span></blockquote>I&#39;ve received both your original post and a number of replies to it<br/>\n(the latest being your own).<br/>\n <br/>\n<blockquote><span title=\"ireply\"> &gt; Would someone please be so kind as to repost those replies?<br/>\n </span></blockquote>You can also view all posts online. Try:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/message/12807?threaded=1\">http://groups.yahoo.com/group/junit/message/12807?threaded=1</a><br/>\nThis is probably a better alternative than having these reposted.<br/>\n <br/>\n<blockquote><span title=\"ireply\"> &gt; I basically only used checked exceptions because the way I <br/>\n&gt; understand it: runtime exceptions are for circumstances that you<br/>\n </span></blockquote>can <br/>\n<blockquote><span title=\"ireply\"> &gt; not foresee and therefore can not handle.<br/>\n </span></blockquote>This appears to be conventional wisdom, as you&#39;ve noticed from the<br/>\njava tutorial.  I disagree wholeheartedly - whether an exception is<br/>\nforeseable has nothing to do with whether it should be &#39;checked&#39;; in<br/>\nfact no api has any business /forcing/ client code to handle a given<br/>\nexception.  Instead an api should document the exceptions it may<br/>\ngenerate and let the client decide whether/where to deal with it.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; To extend the example below with the FileNotFoundException, What is<br/>\n&gt; the effect of throwing a runtime exception? Will the program <br/>\n&gt; terminate with this exception? Also if the name of the file was <br/>\n&gt; chosen by the user instead, would it be better to use a checked <br/>\n&gt; exception?<br/>\n </span></blockquote>The only practical difference with using a runtime exception is that<br/>\nit doesn&#39;t force clients to code a catch for it.  For example, assume<br/>\nthe code in question was within the method:<br/>\n<br/>\n    public InputStream open() throws FileNotFoundException<br/>\n<br/>\nThis forces all users of the method to write catch blocks.  If we<br/>\nconvert the exception to a RuntimeException, say:<br/>\n<br/>\n    class RuntimeFileNotFoundException extends RuntimeException {...<br/>\n<br/>\nAnd we change openFileInputStream() to:<br/>\n    public InputStream open() throws RuntimeFileNotFoundException()<br/>\n<br/>\nNow, client code has a choice: if they are actually going to do<br/>\nsomething about the exception, they can catch<br/>\nRuntimeFileNotFoundException; otherwise, they can just let it<br/>\npropogate up the call stack (the compiler doesn&#39;t force a catch block<br/>\nfor RTEs).<br/>\n<br/>\nTo answer your question about whether your system will terminate<br/>\nbecause you used a RTE:  all programs should have some top-level<br/>\nexception handling code.  The nature of this handler depends on your<br/>\ncontext - a web application will respond differently to a batch<br/>\nprocessing app.  If a RTE propogates all the way up your callstack, it<br/>\nshould be caught by this handler.<br/>\n<br/>\nWould i use a checked exception if the user chose the name of the<br/>\nfile? No. Consider two scenarios:<br/>\n1. The user expected the file to be there: in this case, something has<br/>\n/already/ gone wrong if the file doesn&#39;t exist - find /that/ bug and<br/>\nfix it instead.  Coding a catch block for something that shouldn&#39;t<br/>\nhappen is like lying to cover an earlier lie.<br/>\n2. The file may or may not exist: this means there are two predictable<br/>\noutcomes we have to code for.  We should be using an if/else to code<br/>\nfor them.  Using exceptions to control predictable program flow is a<br/>\ncomom code smell and should be avoided.<br/>\n<br/>\nNeither of the scenarios above requires any exception handling (except<br/>\nof course the top-level handler).<br/>\n<br/>\nI suspect we are getting of topic - particularly for a junit mailing<br/>\nlist.  Lets take this discussion offline if you&#39;d like to continue...<br/>\n<br/>\nCheers, lasitha.</div>", 
+    "prevInTime": 12824, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1107805369", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12822, 
+    "headers": {
+        "inReplyToHeader": "PEFEREYzRkUxOUQ2NDIxNDJBQjBGMDk4NzYxQUEwQ0U5MDhFNzcxQHNzbWFpbi5zb2Z0c3RhcnQuY28uemE+", 
+        "messageIdInHeader": "PGN1OGdicCtyaGhjQGVHcm91cHMuY29tPg=="
+    }
+}

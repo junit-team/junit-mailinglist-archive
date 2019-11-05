@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 41, 
+    "nextInTime": 6790, 
+    "senderId": "cKgzBC6uDk058vkieZrm9S01fT30EmjzbwTzOZ9J3lkn7ZrupSpQJvs3xxouwwQhOFVwIBVZBP1GlIpA-j6rMnBoijM8z5QkNrbI", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Websphere Connection Pool", 
+    "from": "Curt Sampson &lt;yahoo_sucks@...&gt;", 
+    "authorName": "Curt Sampson", 
+    "msgSnippet": "... True. The above code is easily testable by simply passing in a mock connection factory, and asserting that getConnection() was invoked with whatever", 
+    "msgId": 6789, 
+    "rawEmail": "Return-Path: &lt;yahoo_sucks@...&gt;\r\nReceived: (qmail 46449 invoked from network); 30 Jan 2003 22:27:56 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m13.grp.scd.yahoo.com with QMQP; 30 Jan 2003 22:27:56 -0000\r\nReceived: from unknown (HELO n28.grp.scd.yahoo.com) (66.218.66.84)\n  by mta3.grp.scd.yahoo.com with SMTP; 30 Jan 2003 22:27:56 -0000\r\nX-eGroups-Return: yahoo_sucks@...\r\nReceived: from [66.218.67.163] by n28.grp.scd.yahoo.com with NNFMP; 30 Jan 2003 22:27:55 -0000\r\nX-Sender: yahoo_sucks@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 26 Jan 2003 23:31:53 -0000\r\nReceived: (qmail 62808 invoked from network); 26 Jan 2003 23:31:53 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m3.grp.scd.yahoo.com with QMQP; 26 Jan 2003 23:31:53 -0000\r\nReceived: from unknown (HELO platonic.cynic.net) (204.80.150.245)\n  by mta1.grp.scd.yahoo.com with SMTP; 26 Jan 2003 23:31:52 -0000\r\nReceived: from angelic.cynic.net (angelic-platonic.cvpn.cynic.net [198.73.220.226])\n\tby platonic.cynic.net (Postfix) with ESMTP id 96D2FC003\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 26 Jan 2003 23:31:48 +0000 (UTC)\r\nReceived: from localhost (localhost [127.0.0.1])\n\tby angelic.cynic.net (Postfix) with ESMTP id E37B68736\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 27 Jan 2003 08:31:22 +0900 (JST)\r\nDate: Mon, 27 Jan 2003 08:31:22 +0900 (JST)\r\nX-X-Sender: cjs@...\r\nTo: junit@yahoogroups.com\r\nSubject: RE: [junit] Websphere Connection Pool\r\nIn-Reply-To: &lt;KIEHIBIOBAELJAHIPNHDEEGICOAA.scottstirling@...&gt;\r\nMessage-ID: &lt;Pine.NEB.4.51.0301270822220.596@...&gt;\r\nReferences: &lt;KIEHIBIOBAELJAHIPNHDEEGICOAA.scottstirling@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: Curt Sampson &lt;yahoo_sucks@...&gt;\r\nX-Yahoo-Group-Post: member; u=110189933\r\nX-Yahoo-Profile: cjstokyo\r\nX-eGroups-Approved-By: nails762 &lt;jbr@...&gt; via web; 30 Jan 2003 22:27:55 -0000\r\n\r\nOn Sat, 25 Jan 2003, Scott Stirling wrote:\n\n&gt; &gt; -----Original Message-----\n&gt; &gt; From: Curt Sampson [mailto:yahoo_sucks@...]\n&gt; &gt;     public Object doMyThing(ConnectionFactory factory, String something)\n&gt; &gt;     {\n&gt; &gt; \tConnection con = factory.getConnection();\n&gt; &gt; \treturn doMyThing(con, something);\n&gt; &gt; \tcon.close();\n&gt; &gt;     }\n&gt;\n&gt; But then if you&#39;re catching unit bugs bubbling up at functional test scope\n&gt; (usually done at a higher scope than unit, such as subsystem or system test,\n&gt; and a later phase in the development cycle), they are more expensive to\n&gt; debug and fix than if you could just come up with a better way to test the\n&gt; real code at the unit level.\n\nTrue. The above code is easily testable by simply passing in a mock\nconnection factory, and asserting that getConnection() was invoked with\nwhatever information was necessary, and that close() was called on the\nconnection. I don&#39;t generally find this worth the effort because this\nroutine is so simple. (The point of unit testing is to save you time\nand money; if you write a test case for everything that could ever\nconceivably go wrong in any way, you&#39;re goinng to spend a lot of time\nand money on tests that never fail.)\n\n&gt; I would predict that the strategy listed above, while good intentioned, on a\n&gt; project of any size would wind up with lots of extra code throughout added\n&gt; just for testability.\n\nYes.\n\n&gt; The whole doMyThing method is very general, but we can work with it.  I\n&gt; would argue that rather than modify the class and adding code that,\n&gt; ironically, is added for unit level testability but can&#39;t be unit tested,\n&gt; one should use 2 mock objects here.\n\nErr...if you&#39;re creating new classes for the mock objects, aren&#39;t you\nadding extra code just for testability?\n\n&gt; You&#39;d need a ConnectionFactory mock object that could return a\n&gt; Connection mock object. You create the mock object in the TestCase,\n&gt; and you pass it to doMyThing.\n\nRight. But if you don&#39;t already have such mock objects, you&#39;d have to\ncreate them, which is a lot more work that just doing what I did above.\nI expect it will also make the tests longer, too, such you have to set\nup these mock objects appropriately.\n\nWhat does all the extra code buy you? Just saving one method declaration\nand one extra line of code to invoke a second method?\n\ncjs\n-- \nCurt Sampson  &lt;cjs@...&gt;   +81 90 7737 2974   http://www.netbsd.org\n    Don&#39;t you know, in this new Dark Age, we&#39;re all light.  --XTC\n\n\n", 
+    "profile": "cjstokyo", 
+    "topicId": 6711, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 110189933, 
+    "prevInTime": 6788, 
+    "contentTrasformed": false, 
+    "postDate": "1043623882", 
+    "canDelete": false, 
+    "nextInTopic": 6815, 
+    "prevInTopic": 6737, 
+    "headers": {
+        "inReplyToHeader": "PEtJRUhJQklPQkFFTEpBSElQTkhERUVHSUNPQUEuc2NvdHRzdGlybGluZ0ByY24uY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNTEuMDMwMTI3MDgyMjIyMC41OTZAYW5nZWxpYy5jeW5pYy5uZXQ+", 
+        "referencesHeader": "PEtJRUhJQklPQkFFTEpBSElQTkhERUVHSUNPQUEuc2NvdHRzdGlybGluZ0ByY24uY29tPg=="
+    }
+}

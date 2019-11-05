@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 17012, 
+    "senderId": "oE8kIvQnJDkZn9OZrl9Fq1RStKnka8L-u8pHZlgjsY3k1aJWh4sZyG_mp7E3GzpHM8axVrvwFPuOmoacGK31e_PJ7yyglEx9nDQrdWBh8eUfjgowJ-VLpQ", 
+    "systemMessage": true, 
+    "subject": "RE: [junit] javax.naming.ConfigurationException: Malformed provider URL: corbaloc:iiop:localhost", 
+    "from": "&quot;Andreas Guther&quot; &lt;Andreas.Guther@...&gt;", 
+    "authorName": "Andreas Guther", 
+    "msgSnippet": "Hi swetha yalamanchili, The error stack reports that you have a  Malformed provider URL: corbaloc:iiop:localhost . I would look into that direction.  It does", 
+    "msgId": 17011, 
+    "profile": "andreasguther", 
+    "topicId": 17009, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 266288058, 
+    "messageBody": "<div id=\"ygrps-yiv-309967255\">Hi swetha yalamanchili,<br/>\n<br/>\nThe error stack reports that you have a &quot; Malformed provider URL: corbaloc:iiop:localhost&quot;. I would look into that direction.  It does not look to me like a JUnit related problem.<br/>\n<br/>\nOne suggestion:  all JUnit assertEquals methods have the following order:<br/>\n<br/>\n1. expected value<br/>\n2. actual value  <br/>\n<br/>\nFrom what I understand reading your code you are calling assertEquals in the opposite order.  If the test fails, you will get a confusing response from JUnit.  This will not fix your problem but is something to keep in mind.<br/>\n<br/>\nAndreas<br/>\n<br/>\n<br/>\n________________________________________<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of swetha yalamanchili<br/>\nSent: Friday, June 23, 2006 3:27 AM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] javax.naming.ConfigurationException: Malformed provider URL: corbaloc:iiop:localhost<br/>\n<br/>\nhi folks,<br/>\nwhen i run this test case on ibmwebserver i am getting error.I am getting the same error since 4days<br/>\nplease help me<br/>\n<br/>\n<br/>\npackage com.ibm.ejb;<br/>\nimport junit.framework.TestCase;<br/>\nimport java.util.Hashtable;<br/>\nimport java.util.Properties;<br/>\nimport junit.framework.*;<br/>\nimport java.rmi.RemoteException;<br/>\nimport javax.naming.Context;<br/>\nimport javax.naming.InitialContext;<br/>\nimport javax.naming.NameNotFoundException;<br/>\nimport javax.naming.NamingException;<br/>\nimport javax.rmi.PortableRemoteObject;<br/>\nimport java.util.Collection;<br/>\npublic class SampleEJBBeanTest extends TestCase {<br/>\nprivate SampleEJB sample;<br/>\n/**<br/>\n* Constructor for SampleEJBBeanTest.<br/>\n* @param arg0<br/>\n*/<br/>\npublic SampleEJBBeanTest(String arg0) {<br/>\nsuper(arg0);<br/>\n}<br/>\npublic static void main(String[] args) {<br/>\njunit.textui.TestRunner.run(SampleEJBBeanTest.class);<br/>\n}<br/>\n/**<br/>\n* @see TestCase#setUp()<br/>\n*/<br/>\nprotected void setUp() throws Exception {<br/>\n{<br/>\njava.util.Hashtable env = new Hashtable(); <br/>\nenv.put(Context.INITIAL_CONTEXT_FACTORY,&quot;com.ibm.websphere.naming.WsnInitialContextFactory&quot;); <br/>\nenv.put(Context.PROVIDER_URL,&quot;iiop://localhost:2809&quot;); <br/>\nContext jndiContext = new InitialContext();<br/>\nObject objRef = jndiContext.lookup(&quot;ejb/com/ibm/ejb/SampleEJB&quot;);<br/>\nSampleEJBHome home = (SampleEJBHome)PortableRemoteObject.narrow(objRef,SampleEJBHome.class);<br/>\nthis.sample= home.create();<br/>\n}<br/>\n}<br/>\npublic void testAdd() {<br/>\nSampleEJBBean sam=new SampleEJBBean();<br/>\nint c = sam.add(10,15);<br/>\nassertEquals(c,25);<br/>\n}<br/>\n}<br/>\n<br/>\n--------------------------------------------ERROR-----------------------------<br/>\njavax.naming.ConfigurationException: Malformed provider URL: corbaloc:iiop:localhost<br/>\nat com.ibm.ws.naming.util.WsnInitCtxFactory.parseBootstrapURL(WsnInitCtxFactory.java:1422)<br/>\nat com.ibm.ws.naming.util.WsnInitCtxFactory.getInitialContextInternal(WsnInitCtxFactory.java:368)<br/>\nat com.ibm.ws.naming.util.WsnInitCtx.getContext(WsnInitCtx.java:102)<br/>\nat com.ibm.ws.naming.util.WsnInitCtx.getContextIfNull(WsnInitCtx.java:408)<br/>\nat com.ibm.ws.naming.util.WsnInitCtx.lookup(WsnInitCtx.java:131)<br/>\nat javax.naming.InitialContext.lookup(InitialContext.java:359)<br/>\nat com.ibm.ejb.SampleEJBBeanTest.setUp(SampleEJBBeanTest.java:48)<br/>\nat junit.framework.TestCase.runBare(TestCase.java:125)<br/>\nat junit.framework.TestResult$1.protect(TestResult.java:106)<br/>\nat junit.framework.TestResult.runProtected(TestResult.java:124)<br/>\nat junit.framework.TestResult.run(TestResult.java:109)<br/>\nat junit.framework.TestCase.run(TestCase.java:118)<br/>\nat junit.framework.TestSuite.runTest(TestSuite.java:208)<br/>\nat junit.framework.TestSuite.run(TestSuite.java:203)<br/>\nat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:329)<br/>\nat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:218)<br/>\nat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:151)<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n---------------------------------<br/>\nTalk is cheap. Use Yahoo! Messenger to make PC-to-Phone calls. Great rates starting at 1¢/min.<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 17010, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1151071702", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 17009, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDYwNjIzMTAyNjQ5Ljg4MTI0LnFtYWlsQHdlYjU1NDAzLm1haWwucmU0LnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDNGQjA4RDZBMjFCM0VDNEQ4NzQ5RUY2RDlFNjI2Mjc4MzRDOEJEQFdEQ0NQTUFJTDAxLm1hcmtldHRvb2xzLmNvbT4="
+    }
+}

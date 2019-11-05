@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 4078, 
+    "senderId": "Ceax8KNuU5I_YcvOCS6QB6r9KkPXrT-psFrCd6pKFl3jozBRR2wJDooR3Y8vTfSlEpnAe5m6OYJpSJtC0HuCjKfH6E45iBuAf4xre7DfVE2fOQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] remove test from suite?", 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "... If I read between the lines I can imagine that the only problem you may have is that a run failes and the error message is No tests found in ... (if", 
+    "msgId": 4077, 
+    "profile": "vbossica", 
+    "topicId": 4062, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "messageBody": "<div id=\"ygrps-yiv-603849362\"><blockquote><span title=\"ireply\">&gt; hi, is there any easy way to remove a test from a suite? i am fooling <br/>\n&gt; around with cactus and some of the tests are not implemented yet.<br/>\n<br/>\n<br/>\n </span></blockquote>If I read between the lines I can imagine that the only problem you may <br/>\nhave is that a run failes and the error message is &quot;&quot;No tests found in <br/>\n...&quot; (if it&#39;s not the problem, please give more infos)<br/>\n<br/>\ncause of this problem: classes that extend TestCase _must_ have at least <br/>\none valid test method (public, void return, no arg and beginning with <br/>\n&quot;test&quot;).<br/>\n<br/>\nSeveral solutions:<br/>\n<br/>\n- create an empty dummy test method:<br/>\n     public void testDummy () {}<br/>\n- find the testsuite that includes this class and remove the <br/>\naddTestSuite(myFaultyClass.class) call<br/>\n- modify JUnit to implement a soft-error handling: if an error message <br/>\nstarts with &quot;xyz&quot;, consider this as a warning and not as an error (in <br/>\nTestResult).<br/>\n<br/>\n   public void runProtected(final Test test, Protectable p) {<br/>\n     try {<br/>\n       p.protect();<br/>\n     } catch (AssertionFailedError e) {<br/>\n       if (e.getMessage().startsWith(&quot;No tests found in&quot;)) {<br/>\n          System.out.println(&quot;warning &quot; + e.getMessage());<br/>\n       } else {<br/>\n         addFailure(test, e);<br/>\n       }<br/>\n     } catch (ThreadDeath e) { // don&#39;t catch ThreadDeath by accident<br/>\n       throw e;<br/>\n     } catch (Throwable e) {<br/>\n       addError(test, e);<br/>\n     }<br/>\n   }<br/>\n<br/>\nDid I mentioned that it was ugly? :-)<br/>\n<br/>\n-Vladimir<br/>\n<br/>\n-- <br/>\nVladimir Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 4076, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1013741853", 
+    "canDelete": false, 
+    "nextInTopic": 4080, 
+    "prevInTopic": 4062, 
+    "headers": {
+        "messageIdInHeader": "PDNDNkM3OTFELjkwOTA4QGJvc3NpY2FyZC5jb20+", 
+        "referencesHeader": "PDUuMS4wLjE0LjIuMjAwMjAyMTMyMjAxMTYuMDIzNmQ1ZjBAcG9wLndlLm1lZGlhb25lLm5ldD4="
+    }
+}

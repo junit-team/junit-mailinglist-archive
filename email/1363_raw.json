@@ -1,0 +1,29 @@
+{
+    "topicId": 1308, 
+    "postDate": "991402865", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "ghouston@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "S7c1R9mq3fCYb42Sdr0cYaPouR-hOz-y8JblMulkoEAM27YApuiPSWs7d7vXs0kyKNCp1UQs1Q", 
+    "nextInTime": 1364, 
+    "userId": 0, 
+    "prevInTime": 1362, 
+    "prevInTopic": 1359, 
+    "headers": {
+        "inReplyToHeader": "PDAwMWEwMWMwZWEzMCRkNDUxNDZjMCRmNGUyN2JkNUBnYXRld2F5Pg==", 
+        "messageIdInHeader": "PDlmODYxaCt1Zm5lQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "ghouston@iss.net", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "There are several was to get Mock objects into your production code: 1. Parameters As Mr Freeman shows, you use parameters to pass the Mock into the class that", 
+    "contentTrasformed": false, 
+    "msgId": 1363, 
+    "nextInTopic": 1364, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;ghouston@...&gt;\r\nX-Sender: ghouston@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 1 Jun 2001 13:41:11 -0000\r\nReceived: (qmail 51063 invoked from network); 1 Jun 2001 13:41:10 -0000\r\nReceived: from unknown (10.1.10.26) by l7.egroups.com with QMQP; 1 Jun 2001 13:41:10 -0000\r\nReceived: from unknown (HELO hn.egroups.com) (10.1.2.221) by mta1 with SMTP; 1 Jun 2001 13:41:10 -0000\r\nX-eGroups-Return: ghouston@...\r\nReceived: from [10.1.2.4] by hn.egroups.com with NNFMP; 01 Jun 2001 13:41:10 -0000\r\nDate: Fri, 01 Jun 2001 13:41:05 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Method Chains, was Re: Testing private methods\r\nMessage-ID: &lt;9f861h+ufne@...&gt;\r\nIn-Reply-To: &lt;001a01c0ea30$d45146c0$f4e27bd5@gateway&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2061\r\nX-Mailer: eGroups Message Poster\r\nFrom: ghouston@...\r\n\r\n\nThere are several was to get Mock objects into your production code:\n\n1. Parameters \n\nAs Mr Freeman shows, you use parameters to pass the Mock into the \nclass that calls it.\n\n2 Reflection\n\nIf B is referenced in a field of A, you can use reflection to modify \nA and replace B with it&#39;s Mock.\n\n3 Mole Pattern\n\nSubclass A, and use the subclass to setup the Mock.  [I call this \ndesign the &quot;Mole Pattern&quot;]\n\n4 Strategy Pattern\n\nUse a Strategy design pattern.\n\n5 Dynamic Proxy\n\nIf the B is an implementation of an Interface, you can use a Dynamic \nProxy (new feature of Java 1.3b).  The Mock would be an \nInvocationHandler, instead of a twin of B.\n\n6 Classloader\n\nUse a classloader to load the Mock instead of the real class.\n\n---\n\nThere may be other options, but these are the ones I&#39;ve heard of.  \nPersonally, I&#39;ve used everything except #6.  Options #1 (parameters) \nand #2 (reflection) are my favorites.  They are usually the easiest \nto implement and understand.  For #2, I&#39;ve used the \nPrivilegedAccessor.java [posted by Mr DiIorio] to make the reflection \nwork simple.\n\nI&#39;ve never seen anyone use #6 (classloaders), I think it would be fun \nto try.\n\n- Greg\n\n\n--- In junit@y..., &quot;Steve Freeman&quot; &lt;steve@m...&gt; wrote:\n&gt; RE: Method Chains, was Re: Testing private methodsAlternatively, \n&gt; change from:\n&gt; \n&gt; public class A {\n&gt;   public void f() {\n&gt;     b = new B();\n&gt;     b.doSomething();\n&gt;   }\n&gt; }\n&gt; \n&gt; to:\n&gt; \n&gt; public class A {\n&gt;   public void f(B b) {\n&gt;     b.doSomething(aValue());\n&gt;   }\n&gt; }\n&gt; \n&gt; The test then becomes:\n&gt; \n&gt; public class TestA {\n&gt;   public void testF() {\n&gt;     A anA = new A(aValue);\n&gt;     MockB mockB = new MockB();\n&gt;     mockB.setExpectedSomething(aValue);\n&gt; \n&gt;     a.f(mockB);\n&gt; \n&gt;     mockB.verify();\n&gt;   }\n&gt; }\n&gt; \n&gt; We have found that changing to a style where you pass behaviours \naround, rather than data, avoids things like subclassing production \ncode in a test and pushes the code to flexing in the &#39;right&#39; kinda \nways. If you can figure out what to pass in and what to verify, then \nthe rest of the test usually falls out.\n&gt; \n&gt; Steve\n\n\n", 
+    "subject": "Method Chains, was Re: Testing private methods"
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 26, 
+    "nextInTime": 22519, 
+    "senderId": "MVSeQxXJfK3jXpYDARPGRpA4cMwJXTfxS3rSrAYW_wZFNsM4wKW6K8cMLLEjEZ3soI3JgPNViakKf_fs7AtLiKAm6oyIf_71zqX0SqhXNv0", 
+    "systemMessage": false, 
+    "subject": "Re: Using @Rule TemporaryFolder in @BeforeClass", 
+    "from": "&quot;yme0987654321&quot; &lt;yme0987654321@...&gt;", 
+    "authorName": "yme0987654321", 
+    "msgSnippet": "I m all for a Rule before the class is run, but I think it is way to gimmicky and obscure to hang that on if the variable is declared static. I would instead", 
+    "msgId": 22518, 
+    "rawEmail": "Return-Path: &lt;yme0987654321@...&gt;\r\nX-Sender: yme0987654321@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 5819 invoked from network); 10 Mar 2010 00:02:22 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m3.grp.sp2.yahoo.com with QMQP; 10 Mar 2010 00:02:22 -0000\r\nX-Received: from unknown (HELO n44d.bullet.mail.sp1.yahoo.com) (66.163.169.158)\n  by mta3.grp.sp2.yahoo.com with SMTP; 10 Mar 2010 00:02:22 -0000\r\nX-Received: from [69.147.65.173] by n44.bullet.mail.sp1.yahoo.com with NNFMP; 09 Mar 2010 23:02:42 -0000\r\nX-Received: from [98.137.34.184] by t15.bullet.mail.sp1.yahoo.com with NNFMP; 09 Mar 2010 23:02:42 -0000\r\nDate: Tue, 09 Mar 2010 23:02:40 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;hn6k2g+f5c5@...&gt;\r\nIn-Reply-To: &lt;E68DAA7E-6405-4E49-B99F-026EF362F895@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;yme0987654321&quot; &lt;yme0987654321@...&gt;\r\nSubject: Re: Using @Rule TemporaryFolder in @BeforeClass\r\nX-Yahoo-Group-Post: member; u=386557907; y=bzKpaWc_PNNGv87FJuzA7ridD2O5HCyyWgTjroWPRbbh3ucIe_WUoQ\r\nX-Yahoo-Profile: yme0987654321\r\n\r\nI&#39;m all for a Rule before the class is run, but I think it is way to gimmic=\r\nky and obscure to hang that on if the variable is declared static.\n\nI would=\r\n instead think that the @Rule should have a method which indicates if it is=\r\n before the class or before the test, and then have it validated if the @Ru=\r\nle is on a static or instance variable, as appropriate.\n\nSomething like:\n\n\n=\r\n    @Rule(beforeClass =3D true)\n    public static TemporaryFolder testFolde=\r\nr =3D new TemporaryFolder();\n\n\n\n--- In junit@yahoogroups.com, Kent Beck &lt;ke=\r\nntb@...&gt; wrote:\n&gt;\n&gt; Hmmm... I don&#39;t think we ever tried @Rule on a static v=\r\nariable before. I&#39;m not even sure what they mean. Rules are inserted before=\r\n an individual test is run. Should static rules be inserted before the clas=\r\ns is run or before each individual test? Before the class is run, I&#39;m think=\r\ning. Opinions?\n&gt; \n&gt; Kent\n&gt; \n&gt; On Mar 9, 2010, at 9:43 AM, gary_d_gregory wr=\r\note:\n&gt; \n&gt; &gt; @Rule objects are not initialized before @BeforeClass methods a=\r\nre called. Is this by design or a bug? \n&gt; &gt; \n&gt; &gt; For example:\n&gt; &gt; \n&gt; &gt; pack=\r\nage test;\n&gt; &gt; \n&gt; &gt; import java.io.File;\n&gt; &gt; import java.io.IOException;\n&gt; &gt;=\r\n \n&gt; &gt; import junit.framework.Assert;\n&gt; &gt; \n&gt; &gt; import org.junit.BeforeClass;=\r\n\n&gt; &gt; import org.junit.Rule;\n&gt; &gt; import org.junit.Test;\n&gt; &gt; import org.junit=\r\n.rules.TemporaryFolder;\n&gt; &gt; \n&gt; &gt; public class TemporaryFolderRuleBeforeClas=\r\ns {\n&gt; &gt; @Rule\n&gt; &gt; public static TemporaryFolder testFolder =3D new Temporar=\r\nyFolder();\n&gt; &gt; \n&gt; &gt; @BeforeClass\n&gt; &gt; public static void testInTempFolder() =\r\nthrows IOException {\n&gt; &gt; File tempFile =3D testFolder.newFile(&quot;file.txt&quot;);\n=\r\n&gt; &gt; File tempFolder =3D testFolder.newFolder(&quot;folder&quot;);\n&gt; &gt; System.out.prin=\r\ntln(&quot;Test folder: &quot; + testFolder.getRoot());\n&gt; &gt; // test\n&gt; &gt; Assert.assertN=\r\notNull(testFolder.getRoot());\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; @Test\n&gt; &gt; public void test() {=\r\n\n&gt; &gt; // noop\n&gt; &gt; }\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; Having the TemporaryFolder Rule declared =\r\nas static is OK as this example test shows:\n&gt; &gt; \n&gt; &gt; public class TestTempo=\r\nraryFolderRuleStatic {\n&gt; &gt; @Rule\n&gt; &gt; public static TemporaryFolder testFold=\r\ner =3D new TemporaryFolder();\n&gt; &gt; \n&gt; &gt; @Test\n&gt; &gt; public void testInTempFold=\r\ner() throws IOException {\n&gt; &gt; File tempFile =3D testFolder.newFile(&quot;file.tx=\r\nt&quot;);\n&gt; &gt; File tempFolder =3D testFolder.newFolder(&quot;folder&quot;);\n&gt; &gt; System.out=\r\n.println(&quot;Test folder: &quot; + testFolder.getRoot());\n&gt; &gt; // test\n&gt; &gt; Assert.as=\r\nsertNotNull(testFolder.getRoot());\n&gt; &gt; }\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; How can @Rules be u=\r\nsed from @BeforeClass? \n&gt; &gt; \n&gt; &gt; Calling TemporaryFolder.create() would wor=\r\nk only for TemporaryFolder and not Rules in general but would be against th=\r\ne advice of create method Javadoc.\n&gt; &gt; \n&gt; &gt; \n&gt; \n&gt; \n&gt; \n&gt; [Non-text portions =\r\nof this message have been removed]\n&gt;\n\n\n\n", 
+    "profile": "yme0987654321", 
+    "topicId": 22516, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 386557907, 
+    "prevInTime": 22517, 
+    "contentTrasformed": false, 
+    "postDate": "1268175760", 
+    "canDelete": false, 
+    "nextInTopic": 22519, 
+    "prevInTopic": 22517, 
+    "headers": {
+        "inReplyToHeader": "PEU2OERBQTdFLTY0MDUtNEU0OS1COTlGLTAyNkVGMzYyRjg5NUBlYXJ0aGxpbmsubmV0Pg==", 
+        "messageIdInHeader": "PGhuNmsyZytmNWM1QGVHcm91cHMuY29tPg=="
+    }
+}

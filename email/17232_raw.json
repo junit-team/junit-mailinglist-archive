@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 17233, 
+    "senderId": "XgVa32C0-7py08woojIn9b4m7K5ftr7-vc2-btEqOXmEwoIJyRNeK_juD9SQf3rQq41K82rTcZv7vaMaWxintZ4GvIiSd_c8pI5D_IaEOHAqqpH9", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] OT: Streams / Readers/ Writers or files, what do you use and how do you test?", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Hi Cédric, ... I cooked up a small program to get a feeling for the difference. I assumed that the method would be called something like readLines and return", 
+    "msgId": 17232, 
+    "rawEmail": "Return-Path: &lt;joakim.ohlrogge@...&gt;\r\nX-Sender: joakim.ohlrogge@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 38686 invoked from network); 27 Jul 2006 08:02:58 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m25.grp.scd.yahoo.com with QMQP; 27 Jul 2006 08:02:58 -0000\r\nReceived: from unknown (HELO ug-out-1314.google.com) (66.249.92.170)\n  by mta4.grp.scd.yahoo.com with SMTP; 27 Jul 2006 08:02:58 -0000\r\nReceived: by ug-out-1314.google.com with SMTP id u2so130909uge\n        for &lt;junit@yahoogroups.com&gt;; Thu, 27 Jul 2006 01:02:52 -0700 (PDT)\r\nReceived: by 10.78.193.5 with SMTP id q5mr3698384huf;\n        Thu, 27 Jul 2006 01:02:52 -0700 (PDT)\r\nReceived: by 10.78.170.13 with HTTP; Thu, 27 Jul 2006 01:02:52 -0700 (PDT)\r\nMessage-ID: &lt;b9ee5e410607270102t54b874acwe561da560af7a735@...&gt;\r\nDate: Thu, 27 Jul 2006 10:02:52 +0200\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;b86b6a9c0607261301p732ca809gcaf21847fcd40bb8@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;b9ee5e410607260813q2b6cc9afr5cad582fc5a909d3@...&gt;\n\t &lt;b86b6a9c0607260936p4b8e9994u4c234b8c1726b9df@...&gt;\n\t &lt;b9ee5e410607261256o779bc983wb9e400b4e4be4a8a@...&gt;\n\t &lt;b86b6a9c0607261301p732ca809gcaf21847fcd40bb8@...&gt;\r\nX-Google-Sender-Auth: e6dc36db89433194\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nX-eGroups-From: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nFrom: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nReply-To: joakim.ohlrogge@...\r\nSubject: Re: [junit] OT: Streams / Readers/ Writers or files, what do you use and how do you test?\r\nX-Yahoo-Group-Post: member; u=261856052; y=Q43Nh-dGdnNedz-kQLOlr1D6522hX_VzPxxEmjOe6UkfDgIY\r\nX-Yahoo-Profile: j0hlrogge\r\n\r\nHi C=E9dric,\n\n&gt;  It&#39;s convenient when you want to do line-oriented filterin=\r\ng (e.g. regexp,\n&gt;  parsing logs, etc...).  You can always use a BufferedRea=\r\nder + readLine(),\n&gt;  but it&#39;s still more tedious to write than just having =\r\nan String[] returned\n&gt;  from a public method.\n&gt;\n&gt;  It&#39;s admittedly not as e=\r\nffective memory-wise, but when you&#39;re dealing with\n&gt;  text files that are i=\r\nn the tens of k&#39;s, it doesn&#39;t really matter.\n\nI cooked up a small program t=\r\no get a feeling for the difference.\nI assumed that the method would be call=\r\ned something like readLines and\nreturn a string array. I also assumed that =\r\nthe method would throw an\nIOException to indicate when there was a problem.=\r\n\n\n\tpublic void processReader(Reader reader) throws IOException {\n\t\tBuffered=\r\nReader bufferedReader =3D new BufferedReader(reader);\n\t\tString line;\n\t\t\n\t\tw=\r\nhile( (line =3D bufferedReader.readLine()) !=3D null ) {\n\t\t\tprocessLine(lin=\r\ne);\n\t\t}\n\t}\n\n\tpublic void processFile(File file) throws IOException {\n\t\tStri=\r\nng [] lines =3D file.readLines();\n\t\tfor(String line : lines) {\n\t\t\tprocessLi=\r\nne(line);\n\t\t}\n\t}\n\t\n\t\n\tprivate void processLine(String line) {\n\t\t// TODO Aut=\r\no-generated method stub\n\t}\n\n\nConclusions about the implemengtation:\n\nIn the=\r\n implementation files with the suggested extension or using a\nbuffered read=\r\ner is similarily complex.\n\nBut there is still one aspect that has not yet b=\r\neen addressed. Using the method:\n\n\tpublic void useReader(String name) throw=\r\ns IOException {\n\t\tReader reader =3D new FileReader(name);\n\t\ttry {\n\t\t\tproces=\r\nsReader(reader);\n\t\t}\n\t\tfinally {\n\t\t\treader.close();\n\t\t}\n\t}\n\t\n\tpublic void u=\r\nseFile(String name) throws IOException {\n\t\tFile file =3D new File(name);\n\t\t=\r\nprocessFile(file);\n\t}\n\n\nConclusion about usage:\n\nIt is more tedious to use =\r\na reader since you have to remeber that you\nshould close it and decide who =\r\ncloses it (I assume readLines takes\ncare of that in the file example). If y=\r\nou don&#39;t close it you can leak\nresources.\n\nSo I would have to agree with yo=\r\nu about tediousness. Summing it all\nup, implementation, usage, testability,=\r\n consistency and flexibility I\nwould still go for the stream option but it =\r\nis clearer to me now that\nit is a less obvious choice.\n\nI have a nice patte=\r\nrn to deal with streams so that you cannot leak\nresources but that is a dif=\r\nferent topic and it would have to be used\nin a few places to make sense.\n\nI=\r\nnteresting...\n/Joakim Ohlrogge\n\n", 
+    "profile": "j0hlrogge", 
+    "topicId": 17215, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "prevInTime": 17231, 
+    "contentTrasformed": false, 
+    "postDate": "1153987372", 
+    "canDelete": false, 
+    "nextInTopic": 17238, 
+    "prevInTopic": 17230, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYwNzI2MTMwMXA3MzJjYTgwOWdjYWYyMTg0N2ZjZDQwYmI4QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwNzI3MDEwMnQ1NGI4NzRhY3dlNTYxZGE1NjBhZjdhNzM1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGI5ZWU1ZTQxMDYwNzI2MDgxM3EyYjZjYzlhZnI1Y2FkNTgyZmM1YTkwOWQzQG1haWwuZ21haWwuY29tPgkgPGI4NmI2YTljMDYwNzI2MDkzNnA0YjhlOTk5NHU0YzIzNGI4YzE3MjZiOWRmQG1haWwuZ29vZ2xlLmNvbT4JIDxiOWVlNWU0MTA2MDcyNjEyNTZvNzc5YmM5ODN3YjllNDAwYjRlNGJlNGE4YUBtYWlsLmdtYWlsLmNvbT4JIDxiODZiNmE5YzA2MDcyNjEzMDFwNzMyY2E4MDlnY2FmMjE4NDdmY2Q0MGJiOEBtYWlsLmdvb2dsZS5jb20+"
+    }
+}

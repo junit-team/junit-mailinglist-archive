@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 21756, 
+    "senderId": "839pkchsnMdWpap0Rezq5KEyh_5QypqYdaLST1OOKIKDSm6j3MSt2Dltow60PCbbvyoRYEbd95V4SIR4iA2UaW-XqIclLp1XGbh7Z9pN2zJYomF8Yg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Is it possible to mix junit4 tests with legacy junit3 \ttests", 
+    "from": "Malte Finsterwalder &lt;malte@...&gt;", 
+    "authorName": "Malte Finsterwalder", 
+    "msgSnippet": "What you can do is mix JUnit4 and JUnit3 test classes in a single test suite. You can t mix JUnit3 and JUnit4 test methods in a single class. To mix JUnit3", 
+    "msgId": 21755, 
+    "rawEmail": "Return-Path: &lt;malte@...&gt;\r\nX-Sender: malte@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 87470 invoked from network); 17 Jun 2009 14:43:47 -0000\r\nX-Received: from unknown (69.147.108.201)\n  by m3.grp.sp2.yahoo.com with QMQP; 17 Jun 2009 14:43:47 -0000\r\nX-Received: from unknown (HELO mail.gmx.net) (213.165.64.20)\n  by mta2.grp.re1.yahoo.com with SMTP; 17 Jun 2009 14:43:46 -0000\r\nX-Received: (qmail invoked by alias); 17 Jun 2009 14:42:45 -0000\r\nX-Received: from unknown (EHLO [127.0.0.1]) [145.253.187.146]\n  by mail.gmx.net (mp042) with SMTP; 17 Jun 2009 16:42:45 +0200\r\nX-Authenticated: #23855592\r\nX-Provags-ID: V01U2FsdGVkX1/KxZpqyPXK7Z4aFXvIx2p8+zsTo2IJoRyRjxewSt\n\tLjx0yYzjvEaFS/\r\nMessage-ID: &lt;4A3900E5.7040609@...&gt;\r\nDate: Wed, 17 Jun 2009 16:42:45 +0200\r\nUser-Agent: Thunderbird 2.0.0.21 (Windows/20090302)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;h18p6k+31ig@...&gt; &lt;fba296970906170725n30aedfb0ma0c18b04b636863b@...&gt;\r\nIn-Reply-To: &lt;fba296970906170725n30aedfb0ma0c18b04b636863b@...&gt;\r\nX-Enigmail-Version: 0.95.7\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nX-Y-GMX-Trusted: 0\r\nX-FuHaFi: 0.5600000000000001\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Malte Finsterwalder &lt;malte@...&gt;\r\nSubject: Re: [junit] Is it possible to mix junit4 tests with legacy junit3\n \ttests\r\nX-Yahoo-Group-Post: member; u=199072473; y=4IJs0Ad-1kfuNRVV4Qnh32y-_H3VeqEKZWaZxyBgTo9VkFTGIIg4E1c6OBWu\r\nX-Yahoo-Profile: maltefinsterwalder\r\n\r\n\nWhat you can do is mix JUnit4 and JUnit3 test classes in a single test\nsuite. You can&#39;t mix JUnit3 and JUnit4 test methods in a single class.\nTo mix JUnit3 test classes with JUnit4 test classes you need to wrap the\nJUnit3 test classes or test suite in a JUnit4TestAdapter, I think.\nI only run my test with Eclipse or Ant and they discover all the test\nclasses by themselves and sort out the details, so I&#39;m not sure, whether\nthere is an easier way.\n\nGreetings,\n   Malte\n\nIlja Preu� wrote:\n&gt; Today we are not using (explicite) suites anymore, but I remember that\n&gt; when we did, we didn&#39;t have any problems mixing JUnit 4 and JUnit 3\n&gt; style classes in a (JUnit 4) suite.\n&gt; \n&gt; Cheers, Ilja\n&gt; \n&gt; 2009/6/16 cwwojcik &lt;cwwojcik@...&gt;:\n&gt;&gt; Hi All -\n&gt;&gt;\n&gt;&gt; I am finally moving to junit4 and would like to keep my old tests (in junit3) while adding new tests using junit4 annotations. Here is an example of my old tests:\n&gt;&gt;\n&gt;&gt; package com.test.libraries;\n&gt;&gt;\n&gt;&gt; import junit.framework.*;\n&gt;&gt; import org.apache.log4j.*;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt; public class AllTests {\n&gt;&gt;\n&gt;&gt;    public static final Logger _logger = Logger.getLogger(AllTests.class);\n&gt;&gt;\n&gt;&gt;    public static Test suite() {\n&gt;&gt;        TestSuite suite = new TestSuite(&quot;Test for com.clinworx.libraries&quot;);\n&gt;&gt;        _logger.debug(&quot;Beginning unit testing for com.clinworx.libraries&quot;);\n&gt;&gt;        //add JUnit Tests below  suite.addTestSuite(Class.class);\n&gt;&gt;        suite.addTestSuite(StandardLibrariesTest.class);\n&gt;&gt;        _logger.debug(&quot;Ending unit testing for com.clinworx.libraries&quot;);\n&gt;&gt;        return suite;\n&gt;&gt;    }\n&gt;&gt; }\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt; package com.test.libraries;\n&gt;&gt;\n&gt;&gt; import junit.framework.*;\n&gt;&gt; import org.apache.log4j.*;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt; public class StandardLibrariesTest extends TestCase {\n&gt;&gt;\n&gt;&gt;    public static final Logger _logger = Logger.getLogger(StandardLibrariesTest.class);\n&gt;&gt;\n&gt;&gt;    public StandardLibrariesTest (String name) {\n&gt;&gt;                super(name);\n&gt;&gt;        }\n&gt;&gt;\n&gt;&gt;    public void testNumberOne() {\n&gt;&gt;                assertTrue(true);\n&gt;&gt;        }\n&gt;&gt; }\n&gt;&gt;\n&gt;&gt; Is it possible to add the following to StandardLibrariesTest.java and have it run?\n&gt;&gt;\n&gt;&gt; @Test\n&gt;&gt; public void numberTwo() {\n&gt;&gt;     assertTrue(true);\n&gt;&gt; }\n&gt;&gt;\n&gt;&gt; Thanks for the help.\n&gt;&gt;\n&gt;&gt; Carter\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt; ------------------------------------\n&gt;&gt;\n&gt;&gt; Yahoo! Groups Links\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt; \n&gt; \n&gt; ------------------------------------\n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n\n\n", 
+    "profile": "maltefinsterwalder", 
+    "topicId": 21751, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199072473, 
+    "prevInTime": 21754, 
+    "contentTrasformed": false, 
+    "postDate": "1245249765", 
+    "canDelete": false, 
+    "nextInTopic": 21756, 
+    "prevInTopic": 21754, 
+    "headers": {
+        "inReplyToHeader": "PGZiYTI5Njk3MDkwNjE3MDcyNW4zMGFlZGZiMG1hMGMxOGIwNGI2MzY4NjNiQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRBMzkwMEU1LjcwNDA2MDlAZmluc3RlcndhbGRlci5uYW1lPg==", 
+        "referencesHeader": "PGgxOHA2ayszMWlnQGVHcm91cHMuY29tPiA8ZmJhMjk2OTcwOTA2MTcwNzI1bjMwYWVkZmIwbWEwYzE4YjA0YjYzNjg2M2JAbWFpbC5nbWFpbC5jb20+"
+    }
+}

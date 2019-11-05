@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 16941, 
+    "senderId": "bVqDUwFK-1EMkwKXKj_N35sMvlhZehJB2_UXchC1OJlLOmimQb4ZvFiT-yOiCMTAOJptnzXQE5VHSf6PhW4HN4JrMFK5PIm8SbOteIkckA", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Re: Deep Equals of two JavaBeans", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Have you looked at commons-beanutils? They have a great thing called the BeanUtils class. It has this magical method describe() that returns a Map of", 
+    "msgId": 16940, 
+    "profile": "nails762", 
+    "topicId": 16890, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1963871654\">wheelerpoker wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Thanks Joe. I think it&#39;s wise to implement the equals method properly<br/>\n&gt; if that&#39;s what you&#39;re saying, but I am interested in externalizing a<br/>\n&gt; deep comparison to relieve myself of having to do property-by-property<br/>\n&gt; comparisons in unit tests--so far, mainly DbUnit tests. I&#39;m happy with<br/>\n&gt; what I&#39;ve got for the most part, I&#39;m just not completely satisfied<br/>\n&gt; with the error messages it generates on failure.<br/>\n<br/>\n </span></blockquote>Have you looked at commons-beanutils? They have a great thing called the <br/>\nBeanUtils class. It has this magical method describe() that returns a <br/>\nMap of property names to values, using the Java Bean naming conventions <br/>\nto determine properties.<br/>\n<br/>\nWith this, I can write standard Java Bean methods for equals(), <br/>\nhashCode() and toString() and not need to test them.<br/>\n<br/>\npublic boolean equals(Object other) {<br/>\n     return BeanUtils.describe(this).equals(BeanUtils.describe(other));<br/>\n}<br/>\n<br/>\npublic int hashCode() {<br/>\n     return BeanUtils.describe(this).hashCode();<br/>\n}<br/>\n<br/>\npublic String toString() {<br/>\n     return BeanUtils.describe(this).toString();<br/>\n}<br/>\n<br/>\nNow, the /bad/ news is that describe() throws a checked exception <br/>\n(naughty API), so I usually have to write a &quot;safe&quot; version of describe() <br/>\nthat isn&#39;t such a loudmouth.<br/>\n<br/>\npublic class Beans {<br/>\n     public static Map describeSafely(Object bean) {<br/>\n         try {<br/>\n             return BeanUtils.describe(bean);<br/>\n         }<br/>\n         catch (Exception wrapped) {<br/>\n             throw new RuntimeException(<br/>\n                 &quot;Unable to describe bean of type &quot; + bean.getClass(),<br/>\n                 wrapped);<br/>\n         }<br/>\n     }<br/>\n}<br/>\n<br/>\nNow I can do Bean.describeSafely(this) everywhere, but of course, that&#39;s <br/>\nduplication, so I usually end up with this:<br/>\n<br/>\npublic class Beans {<br/>\n     ...<br/>\n<br/>\n     public static boolean equals(Object lhs, Object rhs) {<br/>\n         return describeSafely(lhs).equals(describeSafely(rhs));<br/>\n     }<br/>\n<br/>\n     public static int hashCode(Object bean) {<br/>\n         return describeSafely(bean).hashCode();<br/>\n     }<br/>\n<br/>\n     public static String toString(Object bean) {<br/>\n         return describeSafely(bean).toString();<br/>\n     }<br/>\n}<br/>\n<br/>\nso each Java Bean has:<br/>\n<br/>\npublic boolean equals(Object other) {<br/>\n     return Beans.equals(this, other);<br/>\n}<br/>\n<br/>\npublic int hashCode() {<br/>\n     return Beans.hashCode(this);<br/>\n}<br/>\n<br/>\npublic String toString() {<br/>\n     return Beans.toString(this);<br/>\n}<br/>\n<br/>\n...which I then turn into a code template in Eclipse and never have to <br/>\nworry about getting wrong again.<br/>\n<br/>\nWould that help you?<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 16939, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1150393812", 
+    "canDelete": false, 
+    "nextInTopic": 17007, 
+    "prevInTopic": 16917, 
+    "headers": {
+        "inReplyToHeader": "PGU2bjFkaSs4YTkzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ0OTE5REQ0LjIwOTAxQHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PGU2bjFkaSs4YTkzQGVHcm91cHMuY29tPg=="
+    }
+}

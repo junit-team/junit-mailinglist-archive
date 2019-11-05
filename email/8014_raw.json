@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8015, 
+    "senderId": "fm4bvMKRlz4_Bx-eJa3xzZGLtkVpZduhBeoyIJ4f-inqUKUUz3_kzbmCs1apTlgpiPfvlfLc-_y1BtSwnML_a88xSkRXLKzx1-dZTUcprAX702tiCydy", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does Static Invocation call setUp()/tearDown()?", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... very interesting indeed.  For the DOMAssert class of you-know-what-package I ended up using the variant #2.  It would be interesting to compare the", 
+    "msgId": 8014, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 9 May 2003 22:16:55 -0000\r\nReceived: (qmail 76739 invoked from network); 9 May 2003 22:16:53 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m7.grp.scd.yahoo.com with QMQP; 9 May 2003 22:16:53 -0000\r\nReceived: from unknown (HELO unet.scdi.org) (66.93.79.215)\n  by mta3.grp.scd.yahoo.com with SMTP; 9 May 2003 22:16:52 -0000\r\nReceived: from unet.scdi.org (localhost [127.0.0.1])\n\tby unet.scdi.org (8.12.3/8.12.3/Debian-6.3) with ESMTP id h49MGoRf015802\n\t(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO)\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 9 May 2003 15:16:50 -0700\r\nReceived: (from www-data@localhost)\n\tby unet.scdi.org (8.12.3/8.12.3/Debian-6.3) id h49MGoPK015800\n\tfor junit@yahoogroups.com; Fri, 9 May 2003 15:16:50 -0700\r\nX-Authentication-Warning: unet.scdi.org: www-data set sender to vladimir@... using -f\r\nReceived: from 63.161.242.34 ( [63.161.242.34])\n\tas user vbossica@localhost by mail.scdi.org with HTTP;\n\tFri,  9 May 2003 15:16:50 -0700\r\nMessage-ID: &lt;1052518610.3ebc28d260e36@...&gt;\r\nDate: Fri,  9 May 2003 15:16:50 -0700\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Does Static Invocation call setUp()/tearDown()?\r\nReferences: &lt;3EBB142E.1080808@...&gt; &lt;3EBB1FF1.3050303@...&gt; &lt;200305091301530099.009A6635@...&gt; &lt;3EBBE1C4.1080403@...&gt; &lt;200305091728050036.018E1C96@...&gt;\r\nIn-Reply-To: &lt;200305091728050036.018E1C96@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nUser-Agent: Internet Messaging Program (IMP) 3.0\r\nX-Spam-Status: No\r\nX-Scanned-By: MIMEDefang 2.21 (www . roaringpenguin . com / mimedefang)\r\nFrom: &quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;\r\nX-Yahoo-Group-Post: member; u=43178095\r\nX-Yahoo-Profile: vbossica\r\n\r\n\n&gt; public static Test suite() {\n&gt;     TestSuite suite = new TestSuite();\n&gt; \n&gt;     Set dataSets = getDataSets(somewhereOnTheFileSystem);\n&gt;     for (Iterator i = dataSets.iterator(); i.hasNext(); ) {\n&gt;         final DataSet each = (DataSet) i.next();\n&gt;         suite.addTest(new MyTestCase(&quot;DataTest&quot; + each.toString()) {\n&gt;             protected void runTest() {\n&gt;                 // Use &#39;each&#39; here.\n&gt;             }\n&gt;         }\n&gt;     }\n&gt;     return suite;\n&gt; }\n\nvery interesting indeed.  For the DOMAssert class of you-know-what-package I\nended up using the variant #2.  It would be interesting to compare the different\nimplementations.\n\npublic class DomAssertTest extends TestCase {\n\n    private static final String XHTML_DOCTYPE = &quot;&lt;!DOCTYPE html PUBLIC\n&#92;&quot;-//W3C//DTD XHTML 1.0 Strict//EN&#92;&quot; &#92;&quot;test/dtd/xhtml1-strict.dtd&#92;&quot;&gt;&quot;;\n\n    private boolean success;\n    private String expected;\n    private String actual;\n    private String message;\n\n    public DomAssertTest(boolean success, String message, String expected,\nString actual) {\n        super(&quot;execute&quot;);\n\n        this.success = success;\n        this.message = message;\n        this.expected = expected;\n        this.actual = actual;\n    }\n\n    public static Test suite() {\n        TestSuite suite = new TestSuite();\n\n        suite.addTest(new DomAssertTest(true, &quot;empty expected (long/long\nforms)&quot;, &quot;&lt;el&gt;&lt;/el&gt;&quot;, &quot;&lt;el&gt;&lt;/el&gt;&quot;));\n\n        // about 60 other boring tests to write....\n\n        return suite;\n    }\n\n    public void execute() throws Exception {\n        if (this.success) {\n            DomAssert.assertEquals(this.message,\nDomUtil.asDocument(this.expected), DomUtil.asDocument(this.actual));\n        } else {\n            try {\n                DomAssert.assertEquals(this.message,\nDomUtil.asDocument(this.expected), DomUtil.asDocument(this.actual));\n            } catch (AssertionFailedError expected) {\n                return;\n            }\n            fail();\n        }\n    }\n\n    public String getName() {\n        if (this.message != null) {\n            if (success) {\n                return &quot;success &quot; + this.message;\n            } else {\n                return &quot;fail &quot; + this.message;\n            }\n        } else {\n            return super.getName();\n        }\n    }\n\n}\n\n-Vladimir\n\n-- \nVladimir R. Bossicard\nwww.bossicard.com\n\n", 
+    "profile": "vbossica", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "prevInTime": 8013, 
+    "contentTrasformed": false, 
+    "postDate": "1052518610", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 8012, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNTA5MTcyODA1MDAzNi4wMThFMUM5NkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDEwNTI1MTg2MTAuM2ViYzI4ZDI2MGUzNkBtYWlsLnNjZGkub3JnPg==", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4gPDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4gPDIwMDMwNTA5MTMwMTUzMDA5OS4wMDlBNjYzNUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4gPDNFQkJFMUM0LjEwODA0MDNAYm9zc2ljYXJkLmNvbT4gPDIwMDMwNTA5MTcyODA1MDAzNi4wMThFMUM5NkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4="
+    }
+}

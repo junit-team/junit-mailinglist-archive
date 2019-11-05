@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20299, 
+    "senderId": "_ZlYY0rvWuHs_qfSAN59HAREJjfQGy4sfuV7TRzRx9970jMa4YyDbJwHdpf3E7XlrAMLIYGSs7rnl6dJysB2WQ8J9t1NhmEM", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Bug in org.junit.Assert", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Walter, Thanks for the report. I finally fixed it in head. Cheers, Kent Beck Three Rivers Institute _____ From: junit@yahoogroups.com", 
+    "msgId": 20298, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 96198 invoked from network); 5 Feb 2008 22:34:34 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m52.grp.scd.yahoo.com with QMQP; 5 Feb 2008 22:34:34 -0000\r\nX-Received: from unknown (HELO elasmtp-mealy.atl.sa.earthlink.net) (209.86.89.69)\n  by mta17.grp.scd.yahoo.com with SMTP; 5 Feb 2008 22:34:34 -0000\r\nX-Received: from [67.131.9.243] (helo=kentspavilion)\n\tby elasmtp-mealy.atl.sa.earthlink.net with asmtp (Exim 4.34)\n\tid 1JMWN3-00071K-Vl\n\tfor junit@yahoogroups.com; Tue, 05 Feb 2008 17:34:30 -0500\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;fkh808+493m@...&gt;\r\nDate: Tue, 5 Feb 2008 14:34:04 -0800\r\nMessage-ID: &lt;051d01c86847$36c0a260$6701a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;fkh808+493m@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3198\r\nThread-Index: AchERBYk+6o9e0tvSiOtuqtBGWN8KgkAwi7g\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d4784fa47ccf6d9520e49b6bc048e8748e51acbf16d82a9a6728350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] Bug in org.junit.Assert\r\nX-Yahoo-Group-Post: member; u=173198504; y=7HiERdysufiWJcyZ1wJB0G_Z9hFgFx0F0M53bwXJYFMFwGx6\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nWalter,\n \nThanks for the report. I finally fixed it in head.\n \nCheers,\n \nKent Beck\nThree Rivers Institute\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nWalter Gildersleeve\nSent: Friday, December 21, 2007 12:34 PM\nTo: junit@yahoogroups.com\nSubject: [junit] Bug in org.junit.Assert\n\n\n\nHi,\n\nI searched around to see if anyone&#39;s submitted this bug. I didn&#39;t\nfind a dupe, so I&#39;ll go ahead and post; apologies if it&#39;s already known.\n\nIn Assert#format(String, Object, Object), a NullPointerException is\nthrown if either param &quot;expected&quot; or &quot;actual&quot; is null and the other is\n*the string* &quot;null&quot;. Here are a couple test cases demonstrating this:\n\n@Test(expected=NullPointerException.class)\npublic void confirmError() {\nassertEquals(null, &quot;null&quot;);\n}\n\n@Test(expected=NullPointerException.class)\npublic void confirmErrorToo() {\nassertEquals(&quot;null&quot;, null);\n}\n\nThis is because Assert#format is trying to print extended information\nwhen two objects are visually identical but semantically different;\nnamely, it wants to display the class names as well as the values,\ndoing a Object#getClass() without checking if the object is null.\n\nHere&#39;s a possible fix:\n\nstatic String format(String message, Object expected, Object actual) {\nString formatted = &quot;&quot;;\nif (message != null && !message.equals(&quot;&quot;)) {\nformatted = message + &quot; &quot;;\n}\n\nString expectedString = String.valueOf(expected);\nString actualString = String.valueOf(actual);\n\nif (expected == null) {\nreturn formatted + &quot;expected: &lt;null&gt; but was: &quot;\n+ actual.getClass().getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;\n} else if (actual == null) {\nreturn formatted + &quot;expected: &quot; + expected.getClass().getName()\n+ &quot;&lt;&quot; + expectedString + &quot;&gt; but was: &lt;null&gt;&quot;;\n} else if (expectedString.equals(actualString)) {\nreturn formatted + &quot;expected: &quot; + expected.getClass().getName()\n+ &quot;&lt;&quot; + expectedString + &quot;&gt; but was: &quot;\n+ actual.getClass().getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;\n} else {\nreturn formatted + &quot;expected:&lt;&quot; + expectedString + &quot;&gt; but was:&lt;&quot;\n+ actualString + &quot;&gt;&quot;;\n}\n}\n\nThe assumption here is that actual and expected will never *both* be\nnull. Right?\n\nWalter Gildersleeve\nPortland, OR\n\n\n\n \n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 20186, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 20297, 
+    "contentTrasformed": false, 
+    "postDate": "1202250844", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20189, 
+    "headers": {
+        "inReplyToHeader": "PGZraDgwOCs0OTNtQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDA1MWQwMWM4Njg0NyQzNmMwYTI2MCQ2NzAxYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PGZraDgwOCs0OTNtQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19506, 
+    "senderId": "4uT1N3dKOcD9ziJNHItELpC1mlW2r9vUgg7e7jfsjXF-1EyrF6UBYA6jVGZasvhtlXdo9Rod19U31w3MFbVsrxw7", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit4 @After method not called after my test timeout", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Qian, Are you using JUnit 4.3.1?  If so, please log a bug on SourceForge, and we ll get to it as quick as we can.  Thanks, David Saff", 
+    "msgId": 19505, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 25846 invoked from network); 28 Jun 2007 14:54:41 -0000\r\nReceived: from unknown (66.218.66.70)\n  by m55.grp.scd.yahoo.com with QMQP; 28 Jun 2007 14:54:41 -0000\r\nReceived: from unknown (HELO nz-out-0506.google.com) (64.233.162.230)\n  by mta12.grp.scd.yahoo.com with SMTP; 28 Jun 2007 14:54:41 -0000\r\nReceived: by nz-out-0506.google.com with SMTP id s18so119399nze\n        for &lt;junit@yahoogroups.com&gt;; Thu, 28 Jun 2007 07:54:36 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;\n        b=gc5SwRN5I+9/F/R0d7qJXA/KfMiTmloZFEUbBbYWXMRH7NPHtB+8ZSBsQKqbDApYcJ36LV9U4iphrWpA0ENPLLwqLlmN/8NXgv0Bz75c9TT1u9kbVcQMRAuK26tqVeVpyrTrE8nW2URJgwAu/K83Adu8s7WWyMLQQ0tCmixz4D0=\r\nReceived: by 10.114.157.1 with SMTP id f1mr1646863wae.1183042476631;\n        Thu, 28 Jun 2007 07:54:36 -0700 (PDT)\r\nReceived: by 10.114.134.7 with HTTP; Thu, 28 Jun 2007 07:54:36 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90706280754n6061c693n5023cc4c13ec8567@...&gt;\r\nDate: Thu, 28 Jun 2007 10:54:36 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20070627201033.72641.qmail@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;20070627201033.72641.qmail@...&gt;\r\nX-Google-Sender-Auth: 96db717c0798d03c\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Junit4 @After method not called after my test timeout\r\nX-Yahoo-Group-Post: member; u=139771899; y=V1UoTfkuRxOmzCVRUzhwl3CZhTY4u1iRhH57X2ko_Gc\r\nX-Yahoo-Profile: dsaff\r\n\r\nQian,\n\nAre you using JUnit 4.3.1?  If so, please log a bug on SourceForge,\nand we&#39;ll get to it as quick as we can.  Thanks,\n\n   David Saff\n\nOn 6/27/07, Qian Wang &lt;jane6210@...&gt; wrote:\n&gt; Hi,\n&gt;      I have a question regarding the timeout\n&gt; exception. whenever my test throw timeout exception,\n&gt; it will not execute the @After method I specified. Any\n&gt; idea on this?\n&gt; Here&#39;s the src code.\n&gt;\n&gt; thanks\n&gt;\n&gt;\n&gt; ====================================================\n&gt;\n&gt; import static org.junit.Assert.*;\n&gt;\n&gt; import java.sql.Connection;\n&gt; import java.sql.Date;\n&gt; import java.sql.SQLException;\n&gt;\n&gt; import java.sql.Timestamp;\n&gt; import java.util.Iterator;\n&gt; import java.util.List;\n&gt; import java.util.Map;\n&gt;\n&gt; import org.junit.After;\n&gt; import org.junit.AfterClass;\n&gt; import org.junit.Before;\n&gt; import org.junit.BeforeClass;\n&gt; import org.junit.Test;\n&gt; /*qianwang\n&gt;  Jun 26, 2007\n&gt;  */\n&gt; public class QianTest {\n&gt;         @BeforeClass\n&gt;         public static void beforeClass(){\n&gt;                 System.out.println(&quot;beforeClass&quot;);\n&gt;         }\n&gt;         @AfterClass\n&gt;         public static void afterClass(){\n&gt;                 System.out.println(&quot;afterclass&quot;);\n&gt;         }\n&gt;         @Before\n&gt;         public  void before(){\n&gt;                 System.out.println(&quot;before&quot;);\n&gt;         }\n&gt;         @After\n&gt;         public  void after(){\n&gt;                 System.out.println(&quot;after&quot;);\n&gt;         }\n&gt;         @Test(timeout = 2)\n&gt;         public void testA(){\n&gt;                 try{\n&gt;                         while(getNumber() != 1);\n&gt;                         assertEquals(1, 1);\n&gt;                 }catch(Exception ex){\n&gt;                         if(ex.getMessage().startsWith(&quot;test timed out&quot;))\n&gt;                                 System.out.println(&quot;damn&quot;);\n&gt;                 }\n&gt;\n&gt;                 System.out.println(&quot;test&quot;);\n&gt;         }\n&gt;         public int getNumber(){\n&gt;                 return 2;\n&gt;         }\n&gt;\n&gt; }\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; ____________________________________________________________________________________\n&gt; Sick sense of humor? Visit Yahoo! TV&#39;s\n&gt; Comedy with an Edge to see what&#39;s on, when.\n&gt; http://tv.yahoo.com/collections/222\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19504, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19504, 
+    "contentTrasformed": false, 
+    "postDate": "1183042476", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19504, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDcwNjI3MjAxMDMzLjcyNjQxLnFtYWlsQHdlYjM0MjExLm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwNjI4MDc1NG42MDYxYzY5M241MDIzY2M0YzEzZWM4NTY3QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDcwNjI3MjAxMDMzLjcyNjQxLnFtYWlsQHdlYjM0MjExLm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

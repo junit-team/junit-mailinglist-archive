@@ -1,0 +1,28 @@
+{
+    "topicId": 985, 
+    "postDate": "987685165", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Ralf Krakowski &lt;ralf.krakowski@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "JHsmIbADnziMzTfr8ZECf26FKW-52LSa6JiAZ6_QgIsR9BB2YM80Ko7WmRRUi5w5ensBwP6LaeUrvi6qnWc-XjyNODwJZ7p3iAG3wUNA_7gH3HjfOA", 
+    "nextInTime": 990, 
+    "userId": 0, 
+    "prevInTime": 988, 
+    "prevInTopic": 988, 
+    "headers": {
+        "messageIdInHeader": "PDcwMEVBMTdBMTQyQUQzMTE4QTFFMDAwOEM3MjRCQ0I0QjcyQTUyQGFnYmdudHMwMy5hZ2JnLmludHJhbmV0Pg=="
+    }, 
+    "authorName": "Ralf Krakowski", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "Ok, just looking at the source gave me this idea: public static void main(String args[]) { //\tjunit.textui.TestRunner.run(FooStatelessTest.class); //", 
+    "contentTrasformed": false, 
+    "msgId": 989, 
+    "nextInTopic": 990, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;ralf.krakowski@...&gt;\r\nX-Sender: ralf.krakowski@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 19 Apr 2001 13:03:36 -0000\r\nReceived: (qmail 20643 invoked from network); 19 Apr 2001 13:03:35 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 19 Apr 2001 13:03:35 -0000\r\nReceived: from unknown (HELO tops.adera.se) (195.198.74.10) by mta1 with SMTP; 19 Apr 2001 13:03:34 -0000\r\nReceived: from gbgnts03.intranet (mail.adera.se [192.168.1.27]) by tops.adera.se (Postfix) with ESMTP id 08D3D4AF9A for &lt;junit@yahoogroups.com&gt;; Thu, 19 Apr 2001 15:54:56 +0200 (CEST)\r\nReceived: from agbgnts03.agbg.intranet ([192.168.14.22]) by gbgnts03.intranet with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13) id 2SXCJW1L; Thu, 19 Apr 2001 15:06:15 +0200\r\nReceived: by agbgnts03.agbg.intranet with Internet Mail Service (5.5.2653.19) id &lt;2LD9DJLZ&gt;; Thu, 19 Apr 2001 14:59:27 +0200\r\nMessage-ID: &lt;700EA17A142AD3118A1E0008C724BCB4B72A52@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com &#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] textui vs swingui\r\nDate: Thu, 19 Apr 2001 14:59:25 +0200\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nList-Unsubscribe: &lt;mailto:junit-unsubscribe@yahoogroups.com&gt;\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: Ralf Krakowski &lt;ralf.krakowski@...&gt;\r\n\r\n Ok, just looking at the source gave me this idea:\n\npublic static void main(String args[]) {\n\t//\tjunit.textui.TestRunner.run(FooStatelessTest.class);\n\t//\tjunit.swingui.TestRunner.run(FooStatelessTest.class);\n\tString apa [] = {&quot;-noloading&quot;, FooStatelessTest.class.getName()};\n\tjunit.swingui.TestRunner.main(apa);\n\nThat did it, but i don&#39;t know if it&#39;s &quot;nice&quot;..\n\n\nThanks\n\nRalf\n\n-----Original Message-----\nFrom: Brian Button\nTo: junit@yahoogroups.com\nSent: 2001-04-19 13:59\nSubject: Re: [junit] textui vs swingui\n\n&gt;&gt;&gt;&gt;&gt; &quot;Ralf&quot; == Ralf Krakowski &lt;ralf.krakowski@...&gt; writes:\n\nHi, Ralf,\n\nI think may I know what may be causing this problem. You don&#39;t say which\nversion of junit you&#39;re using, but I suspect it is not 3.6.\n\nI believe what is happening is that you are seeing the different\nbehaviors associated with the different ClassLoaders used by the\ntextui and swingui front ends. The textui uses the standard system\nClassLoader to create all classes. The swingui gives you the option of \nusing JUnit&#39;s own custom ClassLoader to reload classes that have\nchanged between invocations of the test.\n\nThe ClassCastException you&#39;re seeing could be due attempting to cast\nan object that has been loaded through the custom ClassLoader to a\nreference to an object that was created through a different\nClassLoader. This would cause this exact outcome.\n\nTo fix this, try starting junit with the -noloading flag from the\ncommand line. If this fixes your behavior, then you can continue doing \nthis, but you have to restart junit every time you change your\ncode. Or you can search in the archives for this group for\nexcluded.properties. There have been several messages sent that\ndescribe how to use this file to tell the custom ClassLoader to ignore \ncertain package hierarchies and let the system ClassLoader deal with\nthem. That is probably a better long term solution.\n\nbab\n\n    Ralf&gt;  I have two test that I run with\n    Ralf&gt; junit.textui.TestRunner.run(FooStatelessTest.class);\n\n    &gt;&gt; from my main method.\n    Ralf&gt; The output is like this(which is ok):\n\n    Ralf&gt; .F.  Time: 2,284 There was 1 failure:\n    Ralf&gt; 1) testSayGoodbye(FooStatelessTest) &quot;expected:&lt;Goodbye&gt; but\n    Ralf&gt;    was:&lt;Que&gt;&quot;\n\n    Ralf&gt; FAILURES!!!  Tests run: 2, Failures: 1, Errors: 0\n\n    Ralf&gt; When I run\n    Ralf&gt; junit.swingui.TestRunner.run(FooStatelessTest.class);\n\n    Ralf&gt; I get the following:\n\n    Ralf&gt; java.lang.ClassCastException:\n    Ralf&gt; Any thoughts? Why does it work with one but not the other?\n\n\n\n\n-- \nBrian Button            bbutton@...\nSenior Consultant       Object Mentor, Inc\nSt. Louis, MO\t\thttp://www.objectmentor.com\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "RE: [junit] textui vs swingui"
+}

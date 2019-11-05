@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 15170, 
+    "senderId": "lOnLbYMk7jp3d-5SLcls7ZCHm8L41bVhQdX4UggvibeLH-0PML19ggfwn49_MX154Fen8quXodiBNYqES8sPvS8QWko", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Counting assertions", 
+    "from": "Eugene Kuleshov &lt;eu@...&gt;", 
+    "authorName": "Eugene Kuleshov", 
+    "msgSnippet": "... Cedric, I actually thought you d suggest aspect for this. :-) Anyways, here is my version for JUnit3. It should only need user s testcases to be", 
+    "msgId": 15169, 
+    "profile": "ekuleshov", 
+    "topicId": 2160, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150395705, 
+    "messageBody": "<div id=\"ygrps-yiv-1724070905\">Cédric Beust ? wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;Ooh look, I figured it out:<br/>\n&gt;&gt;<br/>\n&gt;&gt;find /c/project/ -name &#92;*.java | xargs grep assert |<br/>\n&gt;&gt;wc<br/>\n&gt;&gt;    <br/>\n&gt;&gt;<br/>\n&gt;This won&#39;t tell you how many asserts have been invoked at runtime.<br/>\n&gt;  <br/>\n&gt;<br/>\n </span></blockquote>  Cedric, I actually thought you&#39;d suggest aspect for this. :-)<br/>\n<br/>\n  Anyways, here is my version for JUnit3. It should only need user&#39;s <br/>\ntestcases to be instrumented and not junit framework. Though things like <br/>\njMock doing their own assertions and need to be instrumented too. <br/>\nAnyway, in Eclipse you just need to add AJDT nature to the project and <br/>\nwhen running junit from Ant ajdt adapter for javac should be used to <br/>\ncompile project.<br/>\n<br/>\npublic aspect AssertionCounter {<br/>\n  private ThreadLocal counts = new ThreadLocal();<br/>\n<br/>\n  public pointcut testMethodExecution() :<br/>\n    execution(void Test+.test*());<br/>\n<br/>\n  public pointcut assertCall() :<br/>\n    cflow(testMethodExecution()) && call(void Assert+.assert*(..));<br/>\n <br/>\n  void around() : testMethodExecution() {<br/>\n    counts.set( new Counter());<br/>\n    proceed();<br/>\n    if(((Counter) counts.get()).getCount()==0) {<br/>\n      throw new AssertionFailedError(&quot;No assertions had been called&quot;);<br/>\n    }<br/>\n  }<br/>\n<br/>\n  before() : assertCall() {<br/>\n    ((Counter) counts.get()).inc();<br/>\n  }<br/>\n <br/>\n}<br/>\n<br/>\n  It is easy to add support for anotation-driven JUnit4 or TestNG to the <br/>\ntestMethodExecution pointcut definition...<br/>\n<br/>\n  regards,<br/>\n  Eugene<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 15168, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1129519991", 
+    "canDelete": false, 
+    "nextInTopic": 15170, 
+    "prevInTopic": 15168, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDUxMDE2MTgxMGc3YzVjNTExNG9kY2M0NjdhYzJiOTRkZTUzQG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQzNTMxQjc3LjMwNTAxQG1kLnBwLnJ1Pg==", 
+        "referencesHeader": "PDIzZmNlOGU2MDUxMDE2MDY1NWsxYzM4NjY3ZmxAbWFpbC5nbWFpbC5jb20+CSA8MjAwNTEwMTYxNDQ5MTYuNTgyOTYucW1haWxAd2ViMzU2MTAubWFpbC5tdWQueWFob28uY29tPiA8Yjg2YjZhOWMwNTEwMTYxODEwZzdjNWM1MTE0b2RjYzQ2N2FjMmI5NGRlNTNAbWFpbC5nb29nbGUuY29tPg=="
+    }
+}

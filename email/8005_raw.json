@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8006, 
+    "senderId": "iMJZmooV2VTncpBsD6XKcbuI4sPpN5bHVvHDDS3qmPy_hKLnp68kPDUnvhRvWC3f1mGRkjiA93Q0z6C-UbJBhDNGgdSftn5st9trOxU9X7g3YWc", 
+    "systemMessage": false, 
+    "subject": "Re: Does Static Invocation call setUp()/tearDown()?", 
+    "from": "&quot;QuikDraw&quot; &lt;quikdraw@...&gt;", 
+    "authorName": "QuikDraw", 
+    "msgSnippet": "... Thanks for the suggestion. Once again, it was so obvious I didn t see it. Doh! ... I m all for that! ... That s what I meant. Sorry I wasn t clearer. ... ", 
+    "msgId": 8005, 
+    "rawEmail": "Return-Path: &lt;quikdraw@...&gt;\r\nReceived: (qmail 23846 invoked from network); 9 May 2003 15:18:51 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m11.grp.scd.yahoo.com with QMQP; 9 May 2003 15:18:51 -0000\r\nReceived: from unknown (HELO n2.grp.scd.yahoo.com) (66.218.66.75)\n  by mta2.grp.scd.yahoo.com with SMTP; 9 May 2003 15:18:51 -0000\r\nX-eGroups-Return: quikdraw@...\r\nReceived: from [66.218.67.145] by n2.grp.scd.yahoo.com with NNFMP; 09 May 2003 15:18:50 -0000\r\nX-Sender: quikdraw@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 9 May 2003 15:10:04 -0000\r\nReceived: (qmail 99040 invoked from network); 9 May 2003 15:10:01 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m10.grp.scd.yahoo.com with QMQP; 9 May 2003 15:10:01 -0000\r\nReceived: from unknown (HELO samsara.kgbinternet.com) (24.72.2.198)\n  by mta1.grp.scd.yahoo.com with SMTP; 9 May 2003 15:09:56 -0000\r\nReceived: from gunslingersoftware.com (samsara [127.0.0.1])\n\tby samsara.kgbinternet.com (8.11.6/8.11.6) with ESMTP id h49F9tJ11469\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 9 May 2003 09:09:55 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Does Static Invocation call setUp()/tearDown()?\r\nDate: Fri, 9 May 2003 09:09:54 -0600\r\nMessage-Id: &lt;20030509150954.M1319@...&gt;\r\nIn-Reply-To: &lt;3EBBC0B4.1010002@...&gt;\r\nReferences: &lt;3EBB142E.1080808@...&gt; &lt;3EBB1FF1.3050303@...&gt; &lt;3EBB9127.9080603@...&gt; &lt;3EBBC0B4.1010002@...&gt;\r\nX-Mailer: Open WebMail 1.70 20020712\r\nX-OriginatingIP: 65.216.227.62 (quikdraw@...)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nFrom: &quot;QuikDraw&quot; &lt;quikdraw@...&gt;\r\nX-Yahoo-Group-Post: member; u=126432822\r\nX-Yahoo-Profile: quikdraw2700\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 09 May 2003 15:18:50 -0000\r\n\r\n&gt; &gt; It does not keep them from being invoked, but they only get invoked\n&gt; &gt; once per TestCase, not before and after each test method. Perhaps I\n&gt; &gt; was not clear when I stated what I was looking for. I want the behavior\n&gt; &gt; that is:\n&gt; &gt; \n&gt; &gt; setUp() -&gt; first test -&gt; tearDown()\n&gt; &gt; setUp() -&gt; next test -&gt; tearDown()\n&gt; &gt; ...\n&gt; &gt; setUp() -&gt; last test -&gt; tearDown()\n&gt; &gt; \n&gt; &gt; But overriding runTest() produces:\n&gt; &gt; \n&gt; &gt; setUp() -&gt; first test -&gt; next test -&gt; last test -&gt; tearDown()\n&gt; \n&gt; STOOOOOOOOOP!  What you have to do is really simple:\n&gt; \n&gt; - forget everything you know about runTest\n&gt; \n&gt; - write your TestCases the old fashion way:\n&gt; \n&gt;      public void MyTest extends TestCase {\n&gt;          protected void setUp() { /* ... */ }\n&gt;          protected void tearDown() { /* ... */ }\n&gt; \n&gt;          public void testFirst() { /* ... */ }\n&gt;          public void testSecond() { /* ... */ }\n&gt;      }\n\nThanks for the suggestion. Once again, it was so obvious I\ndidn&#39;t see it. Doh!\n\n&gt; keep it simple :-)\n\nI&#39;m all for that!\n\n&gt; &gt; Only calling setUp() once before all testXXX() methods, and\n&gt; &gt; tearDown() once after all testXXX() methods.\n&gt; \n&gt; You don&#39;t have to call anything, the framework does it for you.\n\nThat&#39;s what I meant. Sorry I wasn&#39;t clearer.\n\n&gt; &gt; As far as the name passed to the TestCase not being the test method\n&gt; &gt; name, that does work as in my example, if you override runTest().\n&gt; \n&gt; yes, if you overwrite runTest().  But this is not how JUnit is \n&gt; supposed to work (well AFAIK).\n\nAs previously stated, I am aware it is rarely used this way, but\nthis was a question for understanding, not necessarily practicality.\n\n&gt; &gt; Once again, lest y&#39;all think I&#39;m completely nuts, I wasn&#39;t advocating\n&gt; &gt; this approach, just trying to understand the behavior since it is\n&gt; &gt; both possible and documented in the JUnit files.\n&gt; \n&gt; I see what you mean.  The &quot;problem&quot; is that the documentation \n&gt; presents how the framework was developed (from day one) and it also \n&gt; presents options that IMO make little sense with the finished \n&gt; framework (like overwriting the runTest method) but not when the \n&gt; framework was young and immature.\n\nI guess the historical angle had not occurred to me. That&#39;s an\ninteresting point of view. I will try to &quot;refactor&quot; my thinking\nwith this in mind and see if that changes my mind about how\nstatic invocation works.\n\n&gt; Ok, don&#39;t start flaming me and presenting 10,000 good resons to \n&gt; overwrite runTest, please :-)\n\nNever! You&#39;ve been very insightful.\n\nThanks, Derek\n=====================================\n--- The Gunslinger\nquikdraw@...\n\n\n", 
+    "profile": "quikdraw2700", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126432822, 
+    "prevInTime": 8004, 
+    "contentTrasformed": false, 
+    "postDate": "1052492994", 
+    "canDelete": false, 
+    "nextInTopic": 8007, 
+    "prevInTopic": 8004, 
+    "headers": {
+        "inReplyToHeader": "PDNFQkJDMEI0LjEwMTAwMDJAYm9zc2ljYXJkLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNTA5MTUwOTU0Lk0xMzE5QGd1bnNsaW5nZXJzb2Z0d2FyZS5jb20+", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4gPDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4gPDNFQkI5MTI3LjkwODA2MDNAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4gPDNFQkJDMEI0LjEwMTAwMDJAYm9zc2ljYXJkLmNvbT4="
+    }
+}

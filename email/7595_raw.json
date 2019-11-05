@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 7596, 
+    "senderId": "E83yWbrlb2cWyZeZsDRqd6IyaK41odNwDhzV0GB4ddjUywRZgBMkrJp0cnh38BXMF1X7h5fFGwHdz9Ts3QgPkcIRiGX4bQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] problem reusing fixtures", 
+    "from": "Levi Cook &lt;levicook@...&gt;", 
+    "authorName": "Levi Cook", 
+    "msgSnippet": "All the classic OO tricks still apply... For instance, if you have relatively few (or stable) anA scenarios, template method could works ok. ie. abstract", 
+    "msgId": 7595, 
+    "rawEmail": "Return-Path: &lt;levicook@...&gt;\r\nX-Sender: levicook@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 8 Apr 2003 04:18:04 -0000\r\nReceived: (qmail 13478 invoked from network); 8 Apr 2003 04:18:03 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m3.grp.scd.yahoo.com with QMQP; 8 Apr 2003 04:18:03 -0000\r\nReceived: from unknown (HELO relay.pulsity.com) (63.136.2.20)\n  by mta2.grp.scd.yahoo.com with SMTP; 8 Apr 2003 04:18:02 -0000\r\nReceived: from salesoutsourcing.com ([63.136.2.18]) by relay.pulsity.com with Microsoft SMTPSVC(5.0.2195.5329);\n\t Mon, 7 Apr 2003 23:18:02 -0500\r\nReceived: from papajo.com [68.114.212.217] by salesoutsourcing.com with ESMTP\n  (SMTPD32-7.07) id AD79582F001E; Mon, 07 Apr 2003 23:18:01 -0500\r\nDate: Mon, 7 Apr 2003 23:18:01 -0500\r\nSubject: Re: [junit] problem reusing fixtures\r\nContent-Type: text/plain; delsp=yes; charset=US-ASCII; format=flowed\r\nMime-Version: 1.0 (Apple Message framework v551)\r\nTo: junit@yahoogroups.com\r\nContent-Transfer-Encoding: 7bit\r\nIn-Reply-To: &lt;NFBBJDPLEDHLCHAJOFMMIEOMDBAA.adelbert.groebbens@...&gt;\r\nMessage-Id: &lt;161758A9-6979-11D7-8F4E-000393AD2732@...&gt;\r\nX-Mailer: Apple Mail (2.551)\r\nReturn-Path: levicook@...\r\nX-OriginalArrivalTime: 08 Apr 2003 04:18:02.0284 (UTC) FILETIME=[D8660EC0:01C2FD85]\r\nFrom: Levi Cook &lt;levicook@...&gt;\r\nX-Yahoo-Group-Post: member; u=72977190\r\nX-Yahoo-Profile: lcook53703\r\n\r\nAll the classic OO tricks still apply...\n\nFor instance, if you have relatively few (or stable) &quot;anA&quot; scenarios,  \ntemplate method could works ok.\n\nie.\n\nabstract class BaseTest extends TestCase\n{\n\tprivate A aUT;\n\tprivate B bUT;\n\n\tprotected abstract A newATestScenario();\n\tprotected abstract B newBTestScenario();\n\t\n\tprotected void setUpDerivedFixture(){}\n\n\tpublic final void setUp()\n\t{\n\t\taUT = newATestScenario();\n\t\tbUT = newBTestScenario();\n\t\tsetUpDerivedFixture();\n\t}\n\n\tpublic final void test1() {}\n\t...\n\tpublic final void testN() {}\n}\n\npublic final Case1Test extends BaseTest\n{\n\tprotected final A newATestScenario()\n\t{\n\t\treturn new Case1AImpl();\n\t}\n\tprotected final B newBTestScenario()\n\t{\n\t\treturn new Case1BImpl();\n\t}\t\n}\n\npublic final Case2Test extends BaseTest\n{\n\tprotected final A newATestScenario()\n\t{\n\t\treturn new Case2AImpl();\n\t}\n\tprotected final B newBTestScenario()\n\t{\n\t\treturn new Case2BImpl();\n\t}\t\n}\n\netc...\n\nStrategy could work fine too...\n\n\npublic final ATest extends TestCase\n{\n\tprivate A aUT;\n\tprivate B bUT;\n\n\tpublic ATest(A theAUT, B theBUT)\n\t{\n\t\taUT = theAUT;\n\t\tbUT = theBUT;\n\t}\n\n\tpublic final void test1() {}\n\t...\n\tpublic final void testN() {}\n}\n\nThis approach would probably affect your suite construction, but can  \nsave you pain in other ways...\n\nRegards,\n-- Levi\n\nPS&gt; suite construction could look something like this (you mentioned  \nints?):\n\t\npublic final class AllTests\n{\n\tpublic Test suite()\n\t{\n\t\tTestSuite suite = new TestSuite();\n\t\t\n\t\tfor(int i = 0; i &lt; 100; i++)\n\t\t{\n\t\t\tsuite.addTest(new ATest(i));\n\t\t}\n\t\treturn suite\n\t}\n}\n\n\nOn Thursday, April 3, 2003, at 08:02  AM, Adelbert Groebbens wrote:\n\n&gt; Hi,\n&gt;\n&gt; I have a TestCase that uses following fixtures and setUp :\n&gt;\n&gt; protecte A anA;\n&gt; protected B aB;\n&gt;\n&gt; public void\tsetUp() {\n&gt; \t// set up of anA\n&gt; \t// set up of aB based on anA\n&gt; }\n&gt;\n&gt; Then, I have a **bunch** of test methods (tests).\n&gt;\n&gt; Now, I want reuse these for different kinds of anA.\n&gt;\n&gt; For, example anA is an int and I want to run\n&gt; test for 10 random or specified integers.\n&gt;\n&gt; What is the simplest way to achieve this ?\n&gt;\n&gt; I don&#39;t find a simple solution.\n&gt; Maybe I&#39;m missing something ?\n&gt;\n&gt; Thanks for any help,\n&gt; AG\n&gt;\n&gt;\n&gt;\n&gt; ------------------------ Yahoo! Groups Sponsor  \n&gt; ---------------------~--&gt;\n&gt; Get 128 Bit SSL Encryption!\n&gt; http://us.click.yahoo.com/xaxhjB/hdqFAA/VygGAA/5cFolB/TM\n&gt; --------------------------------------------------------------------- \n&gt; ~-&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to  \n&gt; http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "profile": "lcook53703", 
+    "topicId": 7486, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 72977190, 
+    "prevInTime": 7594, 
+    "contentTrasformed": false, 
+    "postDate": "1049775481", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 7486, 
+    "headers": {
+        "inReplyToHeader": "PE5GQkJKRFBMRURITENIQUpPRk1NSUVPTURCQUEuYWRlbGJlcnQuZ3JvZWJiZW5zQGludGVjLnJ1Zy5hYy5iZT4=", 
+        "messageIdInHeader": "PDE2MTc1OEE5LTY5NzktMTFENy04RjRFLTAwMDM5M0FEMjczMkBwYXBham8uY29tPg=="
+    }
+}

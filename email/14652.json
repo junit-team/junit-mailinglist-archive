@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14653, 
+    "senderId": "cbr3thqpVl9EMbIEepJ5kBr5v_WV1e-Bz4DJ85RQiYWRUr3-g6G3reTCJVbSV2PNSG6CVK7eiGh4OtQRhGiy_J_P9Q", 
+    "systemMessage": false, 
+    "subject": "Re: Testing with various log levels", 
+    "from": "&quot;Robert&quot; &lt;yahoo@...&gt;", 
+    "authorName": "Robert", 
+    "msgSnippet": "... Here s another one (which has bitten me before): classes that, during initialisation, have an invalid hashcode, which are populated via the Apache Commons", 
+    "msgId": 14652, 
+    "profile": "robertdw26", 
+    "topicId": 14648, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "messageBody": "<div id=\"ygrps-yiv-1205263377\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;javayoffe&quot; &lt;javayoffe@y...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I want to execute my unit tests with both logging set to DEBUG and <br/>\n&gt; then execute them again with logging set to FATAL.   This is to <br/>\n&gt; ensure that no bugs exist/are introduced that will be exhibited only <br/>\n&gt; when logging is set to a certain level.   An example of such a bug <br/>\n&gt; might be:<br/>\n<br/>\n </span></blockquote>Here&#39;s another one (which has bitten me before): classes that, during<br/>\ninitialisation, have an invalid hashcode, which are populated via the<br/>\nApache Commons BeanUtils - at a low enough log level, it tries to<br/>\nprint the hashcode, causing NullPointerExceptions.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Either way, is there something more clever that I can do to <br/>\n&gt; accomplish my goal of testing min/max logging levels?<br/>\n<br/>\n </span></blockquote>Try this: create your test class as normal, then give it a suite()<br/>\nmethod that does this:<br/>\n<br/>\npublic static Test suite() {<br/>\n  TestSuite suite = new TestSuite();<br/>\n  suite.add(LoggingTestSetup.decorate(ThisTest.class, Level.DEBUG));<br/>\n  suite.add(LoggingTestSetup.decorate(ThisTest.class, Level.FATAL));<br/>\n}<br/>\n<br/>\n<br/>\nLoggingTestSetup looks like this:<br/>\n<br/>\nimport junit.extensions.TestSetup;<br/>\npublic class LoggingTestSetup extends TestSetup {<br/>\n  private Level logLevel;<br/>\n  private Level oldLogLevel;<br/>\n  <br/>\n  private LoggingTestSetup(Test test, Level level) {<br/>\n    super(test);<br/>\n    logLevel = level;<br/>\n  }<br/>\n<br/>\n  protected void setUp() {<br/>\n    oldLogLevel = ...; // lookup the current log level.<br/>\n    // set the log level<br/>\n  }<br/>\n  <br/>\n  protected void tearDown() {<br/>\n    // reset the log level.<br/>\n  }<br/>\n<br/>\n  public static Test decorate(Class&lt;? extends TestCase&gt; test, Level<br/>\nlevel) {<br/>\n    return new LoggingTestSetup(new TestSuite(test), level);<br/>\n  }<br/>\n}<br/>\n<br/>\n<br/>\nYou&#39;ll get two passes over the code base - once with the DEBUG level,<br/>\nand again with the FATAL level.</div>", 
+    "prevInTime": 14651, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1125917829", 
+    "canDelete": false, 
+    "nextInTopic": 14683, 
+    "prevInTopic": 14648, 
+    "headers": {
+        "inReplyToHeader": "PGRmZ2sxNit0a3NmQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGRmaDhhNStpc2loQGVHcm91cHMuY29tPg=="
+    }
+}

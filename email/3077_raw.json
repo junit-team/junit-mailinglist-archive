@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 3078, 
+    "senderId": "1uOCzdfMBAgX3PCLjYjRoyerCwx9edpi9UH_lOoVHLvQ4xKidBrUaHJmXXcce7iLWLtgH0H5A0bAP0Cee1pPiAwF_ApgEw", 
+    "systemMessage": false, 
+    "subject": "Re: assertEquals", 
+    "from": "benjamin@...", 
+    "authorName": "benjamin@hille.fsbusiness.co.uk", 
+    "msgSnippet": "I have tried without reload class it does not make any difference. I have tested the code outside JUnit and got the same. So I still think JUnit is clear on", 
+    "msgId": 3077, 
+    "rawEmail": "Return-Path: &lt;benjamin@...&gt;\r\nX-Sender: benjamin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 23 Oct 2001 15:15:35 -0000\r\nReceived: (qmail 20452 invoked from network); 23 Oct 2001 15:15:33 -0000\r\nReceived: from unknown (10.1.10.26)\n  by 10.1.1.224 with QMQP; 23 Oct 2001 15:15:33 -0000\r\nReceived: from unknown (HELO n13.groups.yahoo.com) (10.1.10.91)\n  by mta1 with SMTP; 23 Oct 2001 15:15:32 -0000\r\nX-eGroups-Return: benjamin@...\r\nReceived: from [10.1.10.109] by n13.groups.yahoo.com with NNFMP; 23 Oct 2001 15:13:46 -0000\r\nDate: Tue, 23 Oct 2001 15:15:22 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: assertEquals\r\nMessage-ID: &lt;9r41ia+11fqd@...&gt;\r\nIn-Reply-To: &lt;4C74FA5B110FD5119E9200D0B7912F0A019921BA@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3234\r\nX-Mailer: eGroups Message Poster\r\nFrom: benjamin@...\r\nX-Yahoo-Profile: cisbrh\r\n\r\nI have tried without reload class it does not make any difference. \nI have tested the code outside JUnit and got the same. So I still \nthink JUnit is clear on that one ;-)\n\nBenjamin \n--- In junit@y..., &quot;Pritchard, Sean&quot; &lt;sean.pritchard@n...&gt; wrote:\n&gt; It is possible that you have a classloader problem.  The \nclassloader is\n&gt; &quot;secretly&quot; prepended to the fully qualified class name of an \nobject.  This\n&gt; will generally result in an instaceof call returning false.  Most\n&gt; object.equals() methods first do an instance of check and return \nfalse if\n&gt; the objects are not of the same class type.  \n&gt; \tWe have had cases where a JUnit test puts an object on a JMS \nmessage\n&gt; queue, then retrieves it and check it for equality.  This test \nfails when\n&gt; JUnit&#39;s class reloading is turned on, but succeeds when class \nreloading is\n&gt; disabled.  \n&gt; \t\n&gt; Sean\n&gt; \n&gt; -----Original Message-----\n&gt; From: benjamin@h...\n&gt; [mailto:benjamin@h...]\n&gt; Sent: Tuesday, October 23, 2001 9:54 AM\n&gt; To: junit@y...\n&gt; Subject: [junit] Re: assertEquals\n&gt; \n&gt; \n&gt; The message is absolutly right.\n&gt; copying again from an other run:\n&gt; \n&gt; junit.framework.AssertionFailedError: Wrong country \n&gt; expected:&lt;com.notuskey.persistence.whoWhere.CountryPK@e0&gt; but \n&gt; was:&lt;com.notuskey.persistence.whoWhere.CountryPK@e0&gt;\n&gt; \n&gt; I don&#39;t think it is coming from JUnit though. If I do the following:\n&gt; \n&gt; System.out.println(aCountry.isIdentical(aJurisdiction.getCountry\n()));\n&gt; \n&gt; I got a &quot;false&quot;.\n&gt; The following:\n&gt; System.out.println(aCountry+ &quot; &quot;+aJurisdiction.getCountry());\n&gt; \n&gt; I got:\n&gt; ethenticate/Country:com.notuskey.persistence.whoWhere.CountryPK@e0 \n&gt; ethenticate/Country:com.notuskey.persistence.whoWhere.CountryPK@e0\n&gt; \n&gt; I wonder if JBoss is not to blame. I&#39;ll send them a mail\n&gt; \n&gt; --- In junit@y..., Jason Rogers &lt;jacaetev@y...&gt; wrote:\n&gt; &gt; This seems highly unlikely.  Two objects pointing to the same \n&gt; reference are\n&gt; &gt; absolutely equal.  Are you sure you copied the message properly?\n&gt; &gt; \n&gt; &gt; -jason\n&gt; &gt; \n&gt; &gt; --- benjamin@h... wrote:\n&gt; &gt; &gt; Hello,\n&gt; &gt; &gt; I am testing a EJB with an assertEquals and I get the following:\n&gt; &gt; &gt; \n&gt; &gt; &gt; junit.framework.AssertionFailedError: Wrong country \n&gt; &gt; &gt; \n&gt; \nexpected:&lt;ethenticate/Country:com.notuskey.persistence.whoWhere.Countr\n&gt; &gt; &gt; yPK@e0&gt; but \n&gt; &gt; &gt; \n&gt; \nwas:&lt;ethenticate/Country:com.notuskey.persistence.whoWhere.CountryPK@e\n&gt; &gt; &gt; 0&gt;\n&gt; &gt; &gt; \n&gt; &gt; &gt; which puzzles me, because it looks like they are equal. But I \nam \n&gt; new \n&gt; &gt; &gt; to JUnit and I might not get it.\n&gt; &gt; &gt; \n&gt; &gt; &gt; Thank you,\n&gt; &gt; &gt;    Benjamin\n&gt; &gt; &gt; \n&gt; &gt; &gt; \n&gt; &gt; &gt; \n&gt; &gt; &gt; \n&gt; &gt; &gt; To unsubscribe from this group, send an email to:\n&gt; &gt; &gt; junit-unsubscribe@y...\n&gt; &gt; &gt;  \n&gt; &gt; &gt; \n&gt; &gt; &gt; Your use of Yahoo! Groups is subject to \n&gt; http://docs.yahoo.com/info/terms/ \n&gt; &gt; &gt; \n&gt; &gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; =====\n&gt; &gt; Jason Rogers\n&gt; &gt; [mailto: jacaetev@y...]\n&gt; &gt; ------------------------------\n&gt; &gt; Keep it simple...\n&gt; &gt; (1 Corinthians 2:2, Galatians 2:20, 6:14)\n&gt; &gt; \n&gt; &gt; __________________________________________________\n&gt; &gt; Do You Yahoo!?\n&gt; &gt; Make a great connection at Yahoo! Personals.\n&gt; &gt; http://personals.yahoo.com\n&gt; \n&gt; \n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@y...\n&gt;  \n&gt; \n&gt; Your use of Yahoo! Groups is subject to \nhttp://docs.yahoo.com/info/terms/\n\n\n", 
+    "profile": "cisbrh", 
+    "topicId": 3060, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3076, 
+    "contentTrasformed": false, 
+    "postDate": "1003850122", 
+    "canDelete": false, 
+    "nextInTopic": 3078, 
+    "prevInTopic": 3076, 
+    "headers": {
+        "inReplyToHeader": "PDRDNzRGQTVCMTEwRkQ1MTE5RTkyMDBEMEI3OTEyRjBBMDE5OTIxQkFAc3VzZGF5MjAzLmRheXRvbm9oLm5jci5jb20+", 
+        "messageIdInHeader": "PDlyNDFpYSsxMWZxZEBlR3JvdXBzLmNvbT4="
+    }
+}

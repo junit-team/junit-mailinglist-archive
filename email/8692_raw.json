@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 8693, 
+    "senderId": "LFTKFW-T897TxCdUtxQDF8Be06RES5F_gqqhmJxt-4GzyO-A8DETflNf-D2XxbTCh5PGBFcU_fuwGfXLYIXDKeYOLB3ejxYBCJ9Arx1C", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit, Ant and databases", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... The answer can change depending on the needs of the specific test (actually the object under test). If you are testing business rules and don t want to", 
+    "msgId": 8692, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 26589 invoked from network); 17 Jul 2003 22:12:22 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m3.grp.scd.yahoo.com with QMQP; 17 Jul 2003 22:12:22 -0000\r\nReceived: from unknown (HELO mail.messagingengine.com) (66.111.4.26)\n  by mta1.grp.scd.yahoo.com with SMTP; 17 Jul 2003 22:12:22 -0000\r\nReceived: from mail.messagingengine.com (localhost [127.0.0.1])\n\tby localhost.localdomain (Postfix) with ESMTP id 45FE1371B8\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 17 Jul 2003 18:11:36 -0400 (EDT)\r\nReceived: from 10.202.2.150 ([10.202.2.150] helo=mail.messagingengine.com) by messagingengine.com\n  with SMTP; Thu, 17 Jul 2003 18:11:36 -0400\r\nX-Epoch: 1058479896\r\nX-Sasl-enc: lFVdf45PhNNBE5wdyEKS4w\r\nReceived: from host-24.subnet-156.med.umich.edu (host-24.subnet-156.med.umich.edu [141.214.156.24])\n\tby www.fastmail.fm (Postfix) with ESMTP id 79B4237841\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 17 Jul 2003 18:09:44 -0400 (EDT)\r\nSubject: Re: [junit] JUnit, Ant and databases\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;4CB01A036067954EB23058C149488EB4013E356A@mpntho06&gt;\r\nReferences: &lt;4CB01A036067954EB23058C149488EB4013E356A@mpntho06&gt;\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Ximian Evolution 1.0.5 \r\nDate: 17 Jul 2003 18:06:36 -0400\r\nMessage-Id: &lt;1058479597.2126.27.camel@Rhino&gt;\r\nMime-Version: 1.0\r\nFrom: Jason Rogers &lt;jacaetevha@...&gt;\r\nX-Yahoo-Group-Post: member; u=109352929\r\nX-Yahoo-Profile: jacaetev\r\n\r\nOn Thu, 2003-07-17 at 12:47, Patel, Rakesh wrote:\n&gt; Hi,\n&gt; \n&gt; what is the best way to verify database updates in the db? I really do not\n&gt; want to write jdbc code in the the JUnit cases if i can avoid it.\n&gt; \n&gt; We got round the issue of running specific sql scripts in the\n&gt; setUp()/tearDown() methods by calling Ant programmatically with a buildfile\n&gt; containing the required code. Works really well and means we can use Ant\n&gt; functionality in our test cases.\n&gt; \n&gt; Thanks\n&gt; \n&gt; Rakesh\n\nThe answer can change depending on the needs of the specific test\n(actually the object under test).\n\nIf you are testing business rules and don&#39;t want to burden your tests\ndown by writing to the database (who would want to) you can use mocks. \nWe have a factory for getting connections to the database.  These\nconnections are homebrews which hold on to JDBC connections.  For\ntesting we get a MockDatabaseConnection and assert for updates, inserts,\ndeletes, table creations, table drops, etc. on the mock connection.\n\nIf you are testing that your SQL statements work (reading from this\ntable, writing to that table, etc.) and that the underlying assumptions\nof the tables/views in question are valid, then you probably need real\naccess to the database.  We have these kinds of tests as well.  They\ntest our Query classes to make sure they can read the database --\nselects are correct, joins, unions, etc.  We have Record classes that\nknow how to write themselves to the database, so we have them write to a\ntest bed and assert on the shape of the data pre- and post- write.\n\nWe also have our own system for pooling and clearing connections.  So,\nto test these mechanisms we use mocks where possible and allow for real\ndatabase access to a test bed where mocks will not suffice.\n\nI hope that helps.\n\nJason\n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 8689, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 8691, 
+    "contentTrasformed": false, 
+    "postDate": "1058479596", 
+    "canDelete": false, 
+    "nextInTopic": 8694, 
+    "prevInTopic": 8691, 
+    "headers": {
+        "inReplyToHeader": "PDRDQjAxQTAzNjA2Nzk1NEVCMjMwNThDMTQ5NDg4RUI0MDEzRTM1NkFAbXBudGhvMDY+", 
+        "messageIdInHeader": "PDEwNTg0Nzk1OTcuMjEyNi4yNy5jYW1lbEBSaGlubz4=", 
+        "referencesHeader": "PDRDQjAxQTAzNjA2Nzk1NEVCMjMwNThDMTQ5NDg4RUI0MDEzRTM1NkFAbXBudGhvMDY+"
+    }
+}

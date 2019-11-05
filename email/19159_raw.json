@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 19160, 
+    "senderId": "LqinNCmGLRMXORm6CvKVS6XOmlP1LDgT-rWJDllyQOCsmUzqntzvMAS6qsQOyOXAZFVCG_XDiCwCBgEQbELuYe4E", 
+    "systemMessage": false, 
+    "subject": "Run class on one instance (was: Re: [junit] Request features)", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... This is possible with a custom runner I posted to the list some months ago (sorry about the formatting.  Yahoo seems to have squashed it): package", 
+    "msgId": 19159, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 82949 invoked from network); 28 Mar 2007 20:03:01 -0000\r\nReceived: from unknown (66.218.66.70)\n  by m50.grp.scd.yahoo.com with QMQP; 28 Mar 2007 20:03:01 -0000\r\nReceived: from unknown (HELO ik-out-1112.google.com) (66.249.90.182)\n  by mta12.grp.scd.yahoo.com with SMTP; 28 Mar 2007 20:03:01 -0000\r\nReceived: by ik-out-1112.google.com with SMTP id b35so2715343ika\n        for &lt;junit@yahoogroups.com&gt;; Wed, 28 Mar 2007 13:03:01 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition:x-google-sender-auth;\n        b=nsFwGpLPQnSVN37TiYhUW52YdgrHv/82JhVdSRNOy1oRklUpq/Nc31Y36SBG2IE1525gN2PLhrVln3NuvNqo3tZF5i6umOPqIoGHrzc+M9avgliO6SIFiPYm/+2Qj5//gtZu6A5/9PXNGqvBEQ+xR9hXQHQBN7at/v64o1MGZtU=\r\nReceived: by 10.115.93.16 with SMTP id v16mr3911471wal.1175110724338;\n        Wed, 28 Mar 2007 12:38:44 -0700 (PDT)\r\nReceived: by 10.114.135.19 with HTTP; Wed, 28 Mar 2007 12:38:44 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90703281238k5e3339e0w5c3cbe23e6f32dc@...&gt;\r\nDate: Wed, 28 Mar 2007 15:38:44 -0400\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nX-Google-Sender-Auth: 510b7a92d650468e\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Run class on one instance (was: Re: [junit] Request features)\r\nX-Yahoo-Group-Post: member; u=139771899; y=SrDDwCitGaRWIYrUKh50XEa-7UJc49ZUMiR3AQDFn9Y\r\nX-Yahoo-Profile: dsaff\r\n\r\nOn 3/27/07, BrianHks &lt;Brianhks@...&gt; wrote:\n&gt; There are two things I would like to do with JUnit.\n&gt; 1.  Run a bunch of tests on a class without junit creating a new\n&gt; instance of the class for each test.  I know you can use the\n&gt; BeforeClass and AfterClass methods to set static data but that is so ugly.\n\nThis is possible with a custom runner I posted to the list some months\nago (sorry about the formatting.  Yahoo seems to have squashed it):\n\npackage constructonce;\n\nimport static org.junit.Assert.*;\n\nimport org.junit.Test;\nimport org.junit.internal.runners.InitializationError;\nimport org.junit.internal.runners.TestClassMethodsRunner;\nimport org.junit.internal.runners.TestClassRunner;\nimport org.junit.runner.JUnitCore;\nimport org.junit.runner.Result;\nimport org.junit.runner.RunWith;\n\npublic class ConstructOnceTest {\npublic static class OneInstance extends TestClassRunner {\npublic OneInstance(Class&lt;?&gt; klass) throws InitializationError {\nsuper(klass, new OneInstanceMethodsRunner(klass));\n}\n\nprivate static class OneInstanceMethodsRunner extends TestClassMethodsRunner {\nprivate Object fInstance;\n\npublic OneInstanceMethodsRunner(Class&lt;?&gt; klass) {\nsuper(klass);\nfInstance = null;\n}\n\n@Override\nprotected Object createTest() throws Exception {\nif (fInstance == null)\nfInstance = super.createTest();\nreturn fInstance;\n}\n}\n}\n\n@RunWith(OneInstance.class)\npublic static class RunWithOneInstance {\nprivate static boolean constructed = false;\n\npublic RunWithOneInstance() {\nif (constructed)\nthrow new IllegalStateException(&quot;Only construct me once!&quot;);\nconstructed = true;\n}\n\n@Test\npublic void firstTest() {\n}\n\n@Test\npublic void secondTest() {\n}\n}\n\n@Test\npublic void runWithOneInstance() {\nResult result = JUnitCore.runClasses(RunWithOneInstance.class);\nassertEquals(0, result.getFailureCount());\n}\n}\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19159, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19158, 
+    "contentTrasformed": false, 
+    "postDate": "1175110724", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwMzI4MTIzOGs1ZTMzMzllMHc1YzNjYmUyM2U2ZjMyZGNAbWFpbC5nbWFpbC5jb20+"
+    }
+}

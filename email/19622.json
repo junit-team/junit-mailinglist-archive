@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 19623, 
+    "senderId": "L6IYd8xewhXsLgkNJgZKbbHmSxTwOTGteL-wtJGrZxKoJY8xN1u99Qeozq5Vq-fkh4DmcB-Ty4l9Ifh5IoRmIF2FFTrh5L4J", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to automatically verify state of fixture after test run", 
+    "from": "&quot;Nat Pryce&quot; &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "I worked that out.  I ve just released jMock 2.3.0-RC2 that supports JUnit 4.4 and above.  We ll track JUnit 4 releases from now on to ensure the latest", 
+    "msgId": 19622, 
+    "profile": "nat_pryce", 
+    "topicId": 19603, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "messageBody": "<div id=\"ygrps-yiv-1203007570\">I worked that out.  I&#39;ve just released jMock 2.3.0-RC2 that supports JUnit<br/>\n4.4 and above.  We&#39;ll track JUnit 4 releases from now on to ensure the<br/>\nlatest versions are compatible.<br/>\n<br/>\n--Nat<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 26/07/07, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;   Oops. That code will only work in the current 4.5-snapshot. This<br/>\n&gt; will work in 4.4, 4.5, and beyond:<br/>\n&gt;<br/>\n&gt; public static class Mocks extends JUnit4ClassRunner {<br/>\n&gt; public Mocks(Class&lt;?&gt; klass) throws InitializationError {<br/>\n&gt; super(klass);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Override<br/>\n&gt; protected TestMethod wrapMethod(Method method) {<br/>\n&gt; return new TestMethod(method, getTestClass()) {<br/>\n&gt; @Override<br/>\n&gt; protected void invoke(Object test)<br/>\n&gt; throws IllegalArgumentException,<br/>\n&gt; IllegalAccessException,<br/>\n&gt; InvocationTargetException {<br/>\n&gt; super.invoke(test);<br/>\n&gt; verifyMocks();<br/>\n&gt; }<br/>\n&gt; };<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Thanks,<br/>\n&gt;<br/>\n&gt; David Saff<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; On 7/23/07, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a> &lt;saff%40mit.edu&gt;&gt; wrote:<br/>\n&gt; &gt; Nat,<br/>\n&gt; &gt;<br/>\n&gt; &gt; Extending internals of your dependencies in order to give your users a<br/>\n&gt; &gt; better experience is a fact of life. With 4.4, we took one step<br/>\n&gt; &gt; toward a more extensible design for JUnit4ClassRunner. In the next<br/>\n&gt; &gt; version, we hope to finish, and stabilize, the object structure, so<br/>\n&gt; &gt; that extenders can depend on it. The way to do what you want in JUnit<br/>\n&gt; &gt; 4.4 and beyond should look like this:<br/>\n&gt; &gt;<br/>\n&gt; &gt; public static class Mocks extends JUnit4ClassRunner {<br/>\n&gt; &gt; public Mocks(Class&lt;?&gt; klass) throws InitializationError {<br/>\n&gt; &gt; super(klass);<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; @Override<br/>\n&gt; &gt; protected TestMethod wrapMethod(Method method) {<br/>\n&gt; &gt; return new TestMethod(method, getTestClass()) {<br/>\n&gt; &gt; @Override<br/>\n&gt; &gt; protected void invoke(Roadie context)<br/>\n&gt; &gt; throws IllegalArgumentException,<br/>\n&gt; &gt; IllegalAccessException, InvocationTargetException {<br/>\n&gt; &gt; super.invoke(context);<br/>\n&gt; &gt; verifyMocks();<br/>\n&gt; &gt; }<br/>\n&gt; &gt; };<br/>\n&gt; &gt; }<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; The Roadie class is new in 4.4: it sets up for the test, tears down<br/>\n&gt; &gt; after the test, and records what&#39;s going on while the test is<br/>\n&gt; &gt; performing. (For cultural background to the metaphor, see:<br/>\n&gt; &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://en.wikipedia.org/wiki/Roadie)\">http://en.wikipedia.org/wiki/Roadie)</a><br/>\n&gt; &gt;<br/>\n&gt; &gt; Thanks,<br/>\n&gt; &gt;<br/>\n&gt; &gt; David Saff<br/>\n&gt; &gt;<br/>\n&gt; &gt; On 7/23/07, Nat Pryce &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:nat.pryce@...\">nat.pryce@...</a> &lt;nat.pryce%40gmail.com&gt;&gt;<br/>\n&gt; wrote:<br/>\n&gt; &gt; &gt; Hi all.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; It&#39;s our own fault I know, but the new JUnit 4.4 release breaks jMock<br/>\n&gt; &gt; &gt; 2 because we extended the internal runner classes to verify mock<br/>\n&gt; &gt; &gt; objects at the end of the test but before the @After methods are<br/>\n&gt; &gt; &gt; called to tear down the fixtures.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; The classes we extended no longer exist. What&#39;s the new, approved way<br/>\n&gt; &gt; &gt; of doing this?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; --Nat<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 19621, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1185481398", 
+    "canDelete": false, 
+    "nextInTopic": 19635, 
+    "prevInTopic": 19620, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwNzI2MTI1MnkyNjQzMTE1MHg1ZWIwOThmMDhmMDhlYTYzQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDE3ZmE1M2QwNzA3MjYxMzIzazNmNzZmZDg0dDcyYTI2NjEyNTU3ZTJlMTlAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDE3ZmE1M2QwNzA3MjMwNTAwdjRjNzEwYjlkeTgyNGQ4NjhlNTViOGFhZjRAbWFpbC5nbWFpbC5jb20+CSA8NGY3ZGE2YjkwNzA3MjMwNjMwazdiZDQ1Nzg4aWFmZTFjYzU4OTc5NDQ1ODlAbWFpbC5nbWFpbC5jb20+CSA8NGY3ZGE2YjkwNzA3MjYxMjUyeTI2NDMxMTUweDVlYjA5OGYwOGYwOGVhNjNAbWFpbC5nbWFpbC5jb20+"
+    }
+}

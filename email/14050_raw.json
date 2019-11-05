@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 14051, 
+    "senderId": "K8BtMkohrEboGMQNI4lU9w-w9ATudSuNCeJVs1nxNF3s0N4Q755mNC2N3EllYrxRzEwWd5J3zGeAwrBlF0zTJtyQtXaYUDTDgzw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing API where order in which methods are invoked matters", 
+    "from": "Chris Dollin &lt;kers@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... Yes, the methods in your test class are not (necessarily) called in any particular order. This is a feature. Each test method should be unrelated to the", 
+    "msgId": 14050, 
+    "rawEmail": "Return-Path: &lt;kers@...&gt;\r\nX-Sender: kers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 90712 invoked from network); 28 Jun 2005 08:54:28 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m25.grp.scd.yahoo.com with QMQP; 28 Jun 2005 08:54:28 -0000\r\nReceived: from unknown (HELO gort.hpl.hp.com) (192.6.10.17)\n  by mta4.grp.scd.yahoo.com with SMTP; 28 Jun 2005 08:54:28 -0000\r\nReceived: from timmay.hpl.hp.com (timmay-hb.hpl.hp.com [15.144.59.39])\n\tby gort.hpl.hp.com (8.12.10/8.12.10) with ESMTP id j5S8qtBn024838\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 28 Jun 2005 09:52:55 +0100 (BST)\r\nReceived: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [15.144.90.22])\n\tby timmay.hpl.hp.com (8.13.2/8.13.2) with ESMTP id j5S8qonh013130\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 28 Jun 2005 09:52:50 +0100 (BST)\r\nOrganization: HPLB\r\nTo: junit@yahoogroups.com\r\nDate: Tue, 28 Jun 2005 09:52:50 +0100\r\nUser-Agent: KMail/1.5\r\nReferences: &lt;d9gu1h+55md@...&gt;\r\nIn-Reply-To: &lt;d9gu1h+55md@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200506280952.50498.kers@...&gt;\r\nX-HPLB-IMAP-MailScanner-Information: Please contact the Helpdesk for more information\r\nX-HPLB-IMAP-MailScanner: Found to be clean\r\nX-HPLB-IMAP-MailScanner-SpamCheck: not spam, SpamAssassin (score=0,\n\trequired 5)\r\nX-HPL-MailScanner-Information: Please contact the Helpdesk for more information\r\nX-HPL-MailScanner: Found to be clean\r\nX-HPL-MailScanner-SpamCheck: not spam (whitelisted),\n\tSpamAssassin (score=-3.743, required 5, autolearn=not spam,\n\tALL_TRUSTED -3.30, AWL 2.16, BAYES_00 -2.60)\r\nX-MailScanner-From: kers@...\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Chris Dollin &lt;kers@...&gt;\r\nSubject: Re: [junit] Testing API where order in which methods are invoked matters\r\nX-Yahoo-Group-Post: member; u=88056088; y=W4BLT5UpUgpSaBmmDeB_-c5l7umhjfZe8O5BaKK7SSgRx88VueDE\r\nX-Yahoo-Profile: anover_alias\r\n\r\nOn Friday 24 June 2005 13:24, arnabgupta2000 wrote:\n&gt; Hello,\n&gt;\n&gt; I am new to JUnit and in need for a solution. I have written a\n&gt; library\n&gt; of which I need to test one class. The methods exposed by this class\n&gt; cannot be called randomly but by following some rules. For example,\n&gt; there is a method &quot;Connect&quot; which must be invoked before any other\n&gt; method is called. There are additional calls that are related. For\n&gt; example &quot;ChangeHeaders&quot; makes temporary change to some data (after\n&gt; some business logic verification), however this must be followed by a\n&gt; call to &quot;SaveChanges&quot; to persist this data. Whatever I have read\n&gt; about\n&gt; JUnit seems to indicate that the test methods in my test class can be\n&gt; called in any order by the JUnit framework. Is there any way (a\n&gt; pattern) to get around this issue ? Thanks much in advance..\n\nYes, the methods in your test class are not (necessarily) called\nin any particular order. This is a feature. Each test method should\nbe unrelated to the others - otherwise it&#39;s too hard to eg move\nthem around for greater expressivity, call only the failing when\nwhen you want to isolate a problem, &co.\n\nThere are at least two things you can do:\n\n(a) Ensure that each test uses its own object (easy) and that it\n    runs the piece of lifecycle you&#39;re interested in to \n    completion.\n\n(b) Refactor so that this object-state dependency is reduced\n    (preferably to zero).\n\nFor (b) I&#39;d start by fixing the `connect` problem: if nothing\ncan be done withotu a connection, I&#39;d have a more factory-like\nobject with a `connect` method; calling this delivers a connected\nobject.\n\nFor Change/Save, I&#39;d just have the test do the Change and then\nthe Save in the same testXXX() method.\n\n-- \nChris &quot;electric hedgehog&quot; Dollin\nIt&#39;s called *extreme* programming, not *stupid* programming.\n\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 14044, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88056088, 
+    "prevInTime": 14049, 
+    "contentTrasformed": false, 
+    "postDate": "1119948770", 
+    "canDelete": false, 
+    "nextInTopic": 14055, 
+    "prevInTopic": 14044, 
+    "headers": {
+        "inReplyToHeader": "PGQ5Z3UxaCs1NW1kQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDUwNjI4MDk1Mi41MDQ5OC5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "referencesHeader": "PGQ5Z3UxaCs1NW1kQGVHcm91cHMuY29tPg=="
+    }
+}

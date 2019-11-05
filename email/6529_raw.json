@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 6530, 
+    "senderId": "VI4yZoVrrDBzr7yYRmMDkztQhC_C4mhMUb3uh8gm2AIUKjJo6drIxHFm0DjsyD8IM_lsxnD5J0CFz-bQ0oUzvA7fthauJlg_K-UO5mh0LI75Xf5zcicyVKhh4by0", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Swing Testing", 
+    "from": "&quot;Paris, Nathan          x66165&quot; &lt;nathan_paris@...&gt;", 
+    "authorName": "Paris, Nathan          x66165", 
+    "msgSnippet": "On way is to create a MockActionListener and have it so that when it recieves the event is sets some type of a flag: public class MockActionListener implements", 
+    "msgId": 6529, 
+    "rawEmail": "Return-Path: &lt;Nathan_Paris@...&gt;\r\nReceived: (qmail 19718 invoked from network); 20 Dec 2002 16:02:58 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m5.grp.scd.yahoo.com with QMQP; 20 Dec 2002 16:02:58 -0000\r\nReceived: from unknown (HELO n21.grp.scd.yahoo.com) (66.218.66.77)\n  by mta2.grp.scd.yahoo.com with SMTP; 20 Dec 2002 16:02:57 -0000\r\nX-eGroups-Return: Nathan_Paris@...\r\nReceived: from [66.218.67.248] by n21.grp.scd.yahoo.com with NNFMP; 20 Dec 2002 16:02:49 -0000\r\nX-Sender: Nathan_Paris@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 20 Dec 2002 16:00:37 -0000\r\nReceived: (qmail 48231 invoked from network); 20 Dec 2002 16:00:37 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 20 Dec 2002 16:00:37 -0000\r\nReceived: from unknown (HELO mtlsmtp1.bis.adp.com) (66.150.41.148)\n  by mta2.grp.scd.yahoo.com with SMTP; 20 Dec 2002 16:00:37 -0000\r\nReceived: from hubimc07.bis.adp.com ([66.150.41.137]) by mtlsmtp1.bis.adp.com with Microsoft SMTPSVC(5.0.2195.5329);\n\t Fri, 20 Dec 2002 11:00:23 -0500\r\nReceived: by HUBIMC07 with Internet Mail Service (5.5.2653.19)\n\tid &lt;Y59PFGTZ&gt;; Fri, 20 Dec 2002 10:57:31 -0500\r\nMessage-ID: &lt;DA5E76C21FEA85459B0E959CFAC2378202039522@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Swing Testing\r\nDate: Fri, 20 Dec 2002 11:00:34 -0500\r\nX-MS-TNEF-Correlator: &lt;DA5E76C21FEA85459B0E959CFAC2378202039522@...&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nX-OriginalArrivalTime: 20 Dec 2002 16:00:23.0281 (UTC) FILETIME=[E75D2610:01C2A840]\r\nFrom: &quot;Paris, Nathan          x66165&quot; &lt;nathan_paris@...&gt;\r\nX-Yahoo-Group-Post: member; u=129870493\r\nX-Yahoo-Profile: nsparis\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 20 Dec 2002 16:02:48 -0000\r\n\r\nOn way is to create a MockActionListener and have it so that when it\nrecieves the event is sets some type of a flag:\n \npublic class MockActionListener implements ActionListener\n{\n    private boolean receivedEvent = false ;\n \n    public void actionPerformed( ActionEvent e )\n    {\n        receivedEvent = true;               \n    } \n \n    boolean hasEventBeenRecieved()\n    {\n        return receivedEvent ;\n    }\n}\n \nFrom there just register your object and do whatever the action is and test\nif the event was recieved:\n \nassertTrue( mockListener.hasEventBeenRecieved() );\n \nYou could also just do the same with an anonymous class, but a bit more\nreusable with the MockActionListener.\n \nHope this helps.\n \nNathan\n \n\n-----Original Message-----\nFrom: Bob Koss [mailto:koss@...]\nSent: Friday, December 20, 2002 8:29 AM\nTo: junit@yahoogroups.com\nSubject: Re: [junit] Swing Testing\n\n\nOn 12/20/02 1:28 AM, &quot;Arvind Sharma&quot; &lt;mailtoarvind@...&gt; wrote:\n\n&gt; Hi,\n&gt;     I am new to junit framework. I want to know what\n&gt; will be the best way to write test classes for Action\n&gt; Listeners of a Swing GUI. I mean how do we to test the\n&gt; objects of Action Listener Classes.\n&gt; \n\nWhat I do is to have the action listener delegate to a class that I can unit\ntest.\n\n\n-- \nRobert Koss, Ph.D.     | Training, Mentoring, Contract Development\nSenior Consultant      | Object Oriented Design, C++, Java\nwww.objectmentor.com   | Extreme Programming\n\n\n\n\nYahoo! Groups Sponsor\t\n\nADVERTISEMENT\n \n&lt;http://rd.yahoo.com/M=242716.2759770.4138320.2225243/D=egroupweb/S=17050069\n05:HM/A=1321406/R=0/*http://www.e-dealsdaily.com/soundbug/&gt; \t\n \n&lt;http://us.adserver.yahoo.com/l?M=242716.2759770.4138320.2225243/D=egroupmai\nl/S=:HM/A=1321406/rand=587264860&gt; \t\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service\n&lt;http://docs.yahoo.com/info/terms/&gt; . \n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n\n", 
+    "profile": "nsparis", 
+    "topicId": 6521, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 129870493, 
+    "prevInTime": 6528, 
+    "contentTrasformed": false, 
+    "postDate": "1040400034", 
+    "canDelete": false, 
+    "nextInTopic": 6530, 
+    "prevInTopic": 6527, 
+    "headers": {
+        "messageIdInHeader": "PERBNUU3NkMyMUZFQTg1NDU5QjBFOTU5Q0ZBQzIzNzgyMDIwMzk1MjJAc2lzZXhwbzAxLnNpcz4="
+    }
+}

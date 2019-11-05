@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 21836, 
+    "senderId": "uXN-dc_ZypFwJwX96EdL7tf2Fz1e_qtkn54b6zVpkniUKpDAoitG7wyGXwzTBqlTSMWKF1ygYWz2nVR04fjzOxurzg", 
+    "systemMessage": true, 
+    "subject": "Re: Producing a diff report after comparing two junit results?", 
+    "from": "&quot;cant_jim&quot; &lt;jimcant@...&gt;", 
+    "authorName": "cant_jim", 
+    "msgSnippet": "Hi, Maybe this may be of use.  Below is a routine, DIFFIT, which I call within JUnit tests to see of file written by the test is correct; it calls the system", 
+    "msgId": 21835, 
+    "profile": "cant_jim", 
+    "topicId": 21815, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 290822666, 
+    "messageBody": "<div id=\"ygrps-yiv-2087868851\">Hi,<br/>\n<br/>\nMaybe this may be of use.  Below is a routine, DIFFIT, which I call within JUnit tests to see of file written by the test is correct; it calls the system diff to compare the files and catches the stdout and stderr.<br/>\n<br/>\nIf all you need is a shell script, can&#39;t you just call the diff utility and examine the exit code?<br/>\n<br/>\n<br/>\nHope it helps.<br/>\njim<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;rohitkulkarni15&quot; &lt;rohitkulkarni15@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Thanks Jim,<br/>\n&gt; <br/>\n&gt; Yes - the problem is that I need to incorporate this in a script and produce a diff file as a output of this script.<br/>\n&gt; <br/>\n&gt; Thanks,<br/>\n&gt; Rohit<br/>\n&gt;<br/>\n<br/>\n    /** <br/>\n        Does a diff between two files by exec&#39;ing a new process to run the <br/>\n        system &#39;diff&#39; utility.  Saves the result in a third file<br/>\n        @return the return value of the diff<br/>\n    */  <br/>\n    static public int DIFFIT( String testFile, String goodFile, String diffFile,<br/>\n                String stderrFile )<br/>\n    {   <br/>\n        Runtime runtime = Runtime.getRuntime();<br/>\n        int exitValue = -1; <br/>\n<br/>\n        try<br/>\n        {   <br/>\n            Process proc = runtime.exec( &quot;diff &quot; + goodFile +&quot; &quot;+ testFile );<br/>\n            try <br/>\n            {<br/>\n                java.io.InputStream  stdoutStream = proc.getInputStream();<br/>\n                java.io.InputStream  stderrStream = proc.getErrorStream();<br/>\n<br/>\n                proc.waitFor();<br/>\n                exitValue = proc.exitValue();<br/>\n<br/>\n                // Save the outputs of the exec&#39;d process.<br/>\n                streamToFile( stdoutStream, diffFile );<br/>\n                streamToFile( stderrStream, stderrFile );<br/>\n            }<br/>\n            &lt; snip catch block deleted.   <br/>\n<br/>\n        }   <br/>\n        &lt; snip catch blocks deleted&gt;<br/>\n<br/>\n        return exitValue;<br/>\n    }<br/>\n    static void streamToFile( InputStream inStream, String filename )<br/>\n    {<br/>\n        try<br/>\n        {<br/>\n            FileOutputStream fos = new FileOutputStream( new File( filename) );<br/>\n<br/>\n            while( true )<br/>\n            {<br/>\n<br/>\n            final int numBytes = 1000;<br/>\n            byte[] bytes = new byte[numBytes ];<br/>\n            int numRead = inStream.read( bytes, 0, numBytes  );<br/>\n<br/>\n<br/>\n                if ( numRead == -1 )<br/>\n                {<br/>\n                    break;<br/>\n                }<br/>\n                fos.write( bytes, 0, numRead );<br/>\n            };<br/>\n            fos.close();<br/>\n            }<br/>\n            &lt; snip catch blocks deleted &gt;<br/>\n    } </span></blockquote></div>", 
+    "prevInTime": 21834, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1248210144", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 21833, 
+    "headers": {
+        "inReplyToHeader": "PGg0MHNxZytuYzBvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGg0NWFkMCs3MGFzQGVHcm91cHMuY29tPg=="
+    }
+}

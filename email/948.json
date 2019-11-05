@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 949, 
+    "senderId": "9osR8eZycZreQPgWY4veJqb0fzso9U_flK6j7d_1Qe0JPgPxdfuXHDfISlHZm2VBcPzYEBdHKpY", 
+    "systemMessage": false, 
+    "subject": "Re: JunitPerf ThreadedTest", 
+    "from": "knvms@...", 
+    "authorName": "knvms@hotmail.com", 
+    "msgSnippet": "Hi Mike First thanx for mail. Exactly I ve used the way u suggested with different load conditions for each test before trying explicity with ThreadedTest. ", 
+    "msgId": 948, 
+    "topicId": 944, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1131855914\">Hi Mike<br/>\nFirst thanx for mail.<br/>\nExactly I&#39;ve used the way u suggested with different load conditions <br/>\nfor each test before trying explicity with ThreadedTest. <br/>\n<br/>\nPlease observe the scenario:<br/>\n<br/>\nI&#39;ve have a single test case with three tests: TransTx1(create and <br/>\ntest a XXBean),TransTx2(Create and test a YYBean),TransTx2(Create and <br/>\nRemove XXBean).Conditions for tests are : Concurrent users for <br/>\nTx1 :20 Tx2:20 and Tx3: 10; Load Profile should be sleeping for 10 <br/>\nsecs and over 15 minutes. My measurement should be Total Quantity of <br/>\neach transaction type, avg xact time of each transaction type.<br/>\nCould u help me to implement this?<br/>\n<br/>\nAdvance thanx.<br/>\nMadhu<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:<br/>\n&gt; When you construct a LoadTest, a ThreadedTest and its associated<br/>\n&gt; ThreadBarrier are used by default, so there&#39;s no need to decorate <br/>\nthe<br/>\n&gt; LoadTest instance as a ThreadedTest.  Here&#39;s an example suite() <br/>\nmethod<br/>\n&gt; that adds two LoadTest instances to the suite, each with different <br/>\nload<br/>\n&gt; testing parameters:<br/>\n&gt; <br/>\n&gt;     public static Test suite() {<br/>\n&gt;         TestSuite suite = new TestSuite();<br/>\n&gt; <br/>\n&gt;         Timer timer = new ConstantTimer(0);<br/>\n&gt; <br/>\n&gt;         int maxUsers = 1;<br/>\n&gt;         int iterations = 50;<br/>\n&gt;         long maxElapsedTime = 60000;<br/>\n&gt; <br/>\n&gt;         Test testCase1 = new ExampleTestCase(&quot;testFoo&quot;);<br/>\n&gt;         Test loadTest1 = new LoadTest(testCase1, maxUsers, <br/>\niterations,<br/>\n&gt; timer);<br/>\n&gt;         Test timedTest1 = new TimedTest(loadTest1, maxElapsedTime);<br/>\n&gt; <br/>\n&gt;         maxUsers = 10;<br/>\n&gt;         iterations = 100;<br/>\n&gt;         maxElapsedTime = 120000;<br/>\n&gt; <br/>\n&gt;         Test testCase2 = new ExampleTestCase(&quot;testBar&quot;);<br/>\n&gt;         Test loadTest2 = new LoadTest(testCase2, maxUsers, <br/>\niterations,<br/>\n&gt; timer);<br/>\n&gt;         Test timedTest2 = new TimedTest(loadTest2, maxElapsedTime);<br/>\n&gt; <br/>\n&gt;         suite.addTest(timedTest1);<br/>\n&gt;         suite.addTest(timedTest2);<br/>\n&gt; <br/>\n&gt;         return suite;<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; Mike<br/>\n&gt; <br/>\n&gt; --- knvms@h... wrote:<br/>\n&gt; &gt; Hi All<br/>\n&gt; &gt; pl go through the code:<br/>\n&gt; &gt;       {<br/>\n&gt; &gt;       .....<br/>\n&gt; &gt; <br/>\n&gt; &gt;       TestSuite suite = new TestSuite();<br/>\n&gt; &gt;       ThreadBarrier barrier = new ThreadBarrier(3);<br/>\n&gt; &gt;       Timer timer  = new ConstantTimer(10000);<br/>\n&gt; &gt; <br/>\n&gt; &gt;       PerfTestCaseABC testCase = new PerfTestCaseABC(testName);<br/>\n&gt; &gt; <br/>\n&gt; &gt;       Test loadTest1 = new LoadTest(testCase, noUsers, iter, <br/>\ntimer);<br/>\n&gt; &gt; <br/>\n&gt; &gt;       Test threadTest1 = new ThreadedTest(loadTest1);<br/>\n&gt; &gt;       <br/>\n&gt; &gt;       suite.addTest(threadTest1);<br/>\n&gt; &gt;       junit.textui.TestRunner.run(suite);<br/>\n&gt; &gt;       }<br/>\n&gt; &gt; 1) Is it the way to run the ThreadedTest class?<br/>\n&gt; &gt; 2) My requirement is to test some test cases with different<br/>\n&gt; &gt; parameters<br/>\n&gt; &gt; (like no of users, iterations..)How can I do it??<br/>\n&gt; &gt; <br/>\n&gt; &gt; Thanx to all<br/>\n&gt; &gt; Madhu<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; ------------------------ Yahoo! Groups Sponsor<br/>\n&gt; &gt; <br/>\n&gt; &gt; To unsubscribe from this group, send an email to:<br/>\n&gt; &gt; junit-unsubscribe@y...<br/>\n&gt; &gt;  <br/>\n&gt; &gt; <br/>\n&gt; &gt; Your use of Yahoo! Groups is subject to<br/>\n&gt; &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; __________________________________________________<br/>\n&gt; Do You Yahoo!?<br/>\n&gt; Get email at your own domain with Yahoo! Mail. <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://personal.mail.yahoo.com/\">http://personal.mail.yahoo.com/</a> </span></blockquote></div>", 
+    "prevInTime": 947, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987004569", 
+    "canDelete": false, 
+    "nextInTopic": 950, 
+    "prevInTopic": 947, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDEwNDExMTQzMDM5LjYxNDEzLnFtYWlsQHdlYjEwNTA0Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDliMXVxcSs0dXZwQGVHcm91cHMuY29tPg=="
+    }
+}

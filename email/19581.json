@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19582, 
+    "senderId": "l7rFDcCsvPCjIUJHcEp8xFUayQxpICP81vXfXQ6AxSne61rN39Y0jmhHK14U_q9uFjH5rmqgksWtIDhnz9GNdEgwIF3Y_K5Z", 
+    "systemMessage": true, 
+    "subject": "Problem with Request.method() and filtering classes with suite() method", 
+    "from": "&quot;magbard23&quot; &lt;magbard23@...&gt;", 
+    "authorName": "magbard23", 
+    "msgSnippet": "Hi all, I wondered if I m doing something wrong (most likely :) ) or whether there is some design bug in the current 4.3.1 code: I have a bunch of testcases", 
+    "msgId": 19581, 
+    "profile": "magbard23", 
+    "topicId": 19581, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 266544995, 
+    "messageBody": "<div id=\"ygrps-yiv-38469081\">Hi all,<br/>\n<br/>\nI wondered if I&#39;m doing something wrong (most likely :) ) or whether<br/>\nthere is some design bug in the current 4.3.1 code:<br/>\n<br/>\nI have a bunch of testcases (JUnit4 with annotations) flying around but<br/>\nI just want to run only a subset of those tests and decide (at runtime)<br/>\nwhich ones I want to run (e.g. reading a config file etc and<br/>\ninstantiating the according Requests and passing them to eg the<br/>\nJUnitCore)<br/>\nMore precisely, I wanted to run just one method at a time.<br/>\n<br/>\nFrom what I understand I need to create a Request that I can pass into<br/>\nthe JUnitCore in order to have it run.<br/>\n<br/>\nSo I discovered that there is the option to create a Request that should<br/>\nbe filtered already by using Request.method() which says that it &quot;will<br/>\nrun a single test. This is done by filtering out all other tests.&quot;<br/>\n<br/>\nNow when I do that and pass that to the JUnitCore it still runs all<br/>\ntests/methods in that class :( .. am I missing something?<br/>\n(I suspect its related to the problem further down.. which in essence<br/>\nwould be that I cannot filter testcases that have a suite() method)<br/>\n<br/>\nFurthermore I tried to implement my own Filter which would just filter<br/>\nout all unwanted methods using a Description.<br/>\nNow there it seems that JUnit currently doesnt allow me to filter test<br/>\nclasses that contain the pre-v4 suite() methods<br/>\n(unless I explicitly create the Request using<br/>\nRequest.classWithoutSuiteMethod())<br/>\n<br/>\nIf I create the Request as ususal (Request.aClass()) the Runner that<br/>\ngets created internally is a AllTests Runner which doesnt implement<br/>\nFilterable.  As a result any filter.apply(Runner runner) calls have no<br/>\neffect and the test is executed according to the suite() method.<br/>\nSo effectively I cannot filter test classes that have a suite() method.<br/>\n<br/>\nIs that a desired behavior?<br/>\nShould this be documented?<br/>\n<br/>\n<br/>\nThis is some sample code to illustrate what I need to do to have a<br/>\nFilter actually be applied to my Test class (i.e. with that code I get<br/>\njust the testMethodName method invoked on the test class clazz ).<br/>\n<br/>\n// make a description with the methodname string<br/>\nfinal Description d2 = Description.createTestDescription(clazz,<br/>\ntestMethodName);<br/>\n<br/>\n// anonymous inner class filtering out all tests where the description<br/>\n// differs from this methodnames description<br/>\nf = new Filter(){<br/>\n     /** run only the test where the description matches */<br/>\n     public boolean shouldRun(Description d) {<br/>\n         return d2.equals(d);<br/>\n     }<br/>\n     public String describe() {<br/>\n         return &quot;allows only methodname = &quot;+ testMethodName;<br/>\n     }<br/>\n};<br/>\n<br/>\n// weird hack: because most of our test cases have a suite method<br/>\n// junit creates a AllTests runner which does not implement Filterable<br/>\n// and hence the filter has no effect (and all methods are invoked)<br/>\n// so as a fix we create a request for a class without suite() method<br/>\nrequest = Request.classWithoutSuiteMethod(clazz);<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n  Thanks,<br/>\n<br/>\nSebastian<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 19580, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1184711551", 
+    "canDelete": false, 
+    "nextInTopic": 19634, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGY3amcxdit0ZHFrQGVHcm91cHMuY29tPg=="
+    }
+}

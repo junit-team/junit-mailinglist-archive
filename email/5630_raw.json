@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 25, 
+    "nextInTime": 5631, 
+    "senderId": "uFFJMZ3yvsVqMwKwu4kcDD1HDt9-QpZUlQXS0c-YG2RR8TIkMVrgfN-RiX-ZWNt075kh1M_EStUC3Do2eCmSmfUJrcE", 
+    "systemMessage": false, 
+    "subject": "Re: A Growing Problem", 
+    "from": "&quot;dhemeryy&quot; &lt;dale@...&gt;", 
+    "authorName": "dhemeryy", 
+    "msgSnippet": "Hi Parag, ... Consider extracting the repeated code into a separate method, somehing like this: private void checkCreate_Label(String date, String lot, String", 
+    "msgId": 5630, 
+    "rawEmail": "Return-Path: &lt;dale@...&gt;\r\nReceived: (qmail 76130 invoked from network); 21 Aug 2002 20:07:25 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 21 Aug 2002 20:07:25 -0000\r\nReceived: from unknown (HELO n24.grp.scd.yahoo.com) (66.218.66.80)\n  by mta2.grp.scd.yahoo.com with SMTP; 21 Aug 2002 20:07:25 -0000\r\nX-eGroups-Return: dale@...\r\nReceived: from [66.218.67.140] by n24.grp.scd.yahoo.com with NNFMP; 21 Aug 2002 20:07:24 -0000\r\nX-Sender: dale@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_0_1); 21 Aug 2002 19:54:54 -0000\r\nReceived: (qmail 54862 invoked from network); 21 Aug 2002 19:54:54 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m9.grp.scd.yahoo.com with QMQP; 21 Aug 2002 19:54:54 -0000\r\nReceived: from unknown (HELO n21.grp.scd.yahoo.com) (66.218.66.77)\n  by mta2.grp.scd.yahoo.com with SMTP; 21 Aug 2002 19:54:56 -0000\r\nReceived: from [66.218.67.169] by n21.grp.scd.yahoo.com with NNFMP; 21 Aug 2002 19:54:56 -0000\r\nDate: Wed, 21 Aug 2002 19:54:56 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: A Growing Problem\r\nMessage-ID: &lt;ak0r6g+9n5r@...&gt;\r\nIn-Reply-To: &lt;3B81EBAF.2C9EE31D@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2050\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;dhemeryy&quot; &lt;dale@...&gt;\r\nX-Yahoo-Group-Post: member; u=5352550\r\nX-Yahoo-Profile: dhemeryy\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 21 Aug 2002 20:07:24 -0000\r\n\r\nHi Parag,\n\n&gt; You might work around this limitation by placing all test cases and\n&gt; assert statements sequentially inside a single method. This\n&gt; approachsuffers from two limitations. The first limitation is the\n&gt; need to replicate the test code for every test case. Even if you\n&gt; have only two or three lines of code per test case, the size of the\n&gt; method will mushroom and become hard to maintain (and read). See\n&gt; example below\n\nConsider extracting the repeated code into a separate method, somehing\nlike this:\n\n\nprivate void checkCreate_Label(String date, String lot,              \n                                   \n                               String parm3, String expectedLabel)\n{\n    try {\n        BatchLabel aBatchLabel = new BatchLabel(date, lot, parm3);\n        assert ( aBatchLabel.getBatchLabel().equals(expectedLabel)) ;\n    } catch (Exception e) {\n        assert ( &quot;Exception:&quot; + e, false );\n    }\n}\n\nprivate void checkCreate_Exception(String date, String lot,\n                                   String parm3,\n                                   Class expectedException)\n{\n    try {\n        BatchLabel aBatchLabel = new BatchLabel(date, lot, parm3);\n    } catch (Exception e) {\n        assert(&quot;Wrong Exception thrown: &quot; + e,\n               e.getClass().equals(expectedException)) ;\n    }\n}\n\npublic void testCreateBatchLabelNoInnerClass()\n{\n    checkCreate_Label(&quot;20010530&quot;, &quot;A13&quot;, &quot;1&quot;, &quot;A13-1 EXP. 05/01&quot;);\n    checkCreate_Label(&quot;20010530&quot;, &quot;A13&quot;, &quot;&quot;, &quot;A13 EXP. 05/01&quot;);\n    checkCreate_Label(&quot;20011231&quot;, &quot;A13&quot;, &quot;1&quot;, &quot;A13-1 EXP. 12/01&quot;);\n    checkCreate_Label(&quot;20010101&quot;, &quot;A13&quot;, &quot;1&quot;, &quot;A13-1 EXP. 01/01&quot;);\n    checkCreate_Label(&quot;20010101&quot;, &quot;A123&quot;, &quot;99&quot;, &quot;A123-99 EXP. 01/01&quot;);\n\n    checkCreate_Exception(&quot;2001530&quot;, &quot;A999&quot;, &quot;&quot;, BadDateException.class);\n    checkCreate_Exception(&quot;20010530&quot;, &quot;913&quot;, &quot;1&quot;, BadLotException.class);\n\n// etc\n\n}\n\nI&#39;ve just done that for a bunch of my own tests.  The one drawback is\nthat I have to scan more the stack trace to identify the actual test,\nbut so far I haven&#39;t found that to be a problem.\n\nDale\n\n\n\n\n", 
+    "profile": "dhemeryy", 
+    "topicId": 5610, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 5352550, 
+    "prevInTime": 5629, 
+    "contentTrasformed": false, 
+    "postDate": "1029959696", 
+    "canDelete": false, 
+    "nextInTopic": 5633, 
+    "prevInTopic": 5629, 
+    "headers": {
+        "inReplyToHeader": "PDNCODFFQkFGLjJDOUVFMzFEQHNhdnZpb24uY29tPg==", 
+        "messageIdInHeader": "PGFrMHI2Zys5bjVyQGVHcm91cHMuY29tPg=="
+    }
+}

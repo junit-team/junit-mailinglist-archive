@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 15652, 
+    "senderId": "S1vf9Vnm73B5ykBAWZYwuM9pDm4aFSmZ4J9AXP2ejSsHlOgpeufHKXLXNnoM4s7Q_Yy6qi6-nBr8LHPoq1-5b-r0pUblMozYas1jX1rNNFKU8xNpXHcyLnmabtviqzjt51is", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Clarifying how to use unit tests", 
+    "from": "=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "... Interface:  absolutely. Implementation:  depends. Ideally, the business logic of your test should run against the interface exclusively and which", 
+    "msgId": 15651, 
+    "profile": "cbeust", 
+    "topicId": 15467, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-714495193\">On 12/8/05, Rakesh Patel &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rakesh.mailgroups@...\">rakesh.mailgroups@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;<br/>\n&gt; So here&#39;s my initial design.<br/>\n&gt;<br/>\n&gt; public interface PostcodeService {<br/>\n&gt;     public String getAddressAsXML(String postcode);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; now, should I write a test class against the<br/>\n&gt; interface(PostcodeServiceTest) or against the implementation<br/>\n&gt; class(PostcodeServiceImplTest)?<br/>\n<br/>\n<br/>\n </span></blockquote>Interface:  absolutely.<br/>\nImplementation:  depends.<br/>\n<br/>\nIdeally, the business logic of your test should run against the interface<br/>\nexclusively and which implementation is being used can then be decided at<br/>\nsetUp time, via dependency injection or data providers:<br/>\n<br/>\nprivate PostCodeService m_postCodeService;<br/>\n<br/>\n@Configuration(beforeTestClass = true)<br/>\npublic void classSetUp() {<br/>\n  m_postCodeService = new PostCodeServiceImpl();<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void verifyAddressAsXml(String postCode) {<br/>\n  m_postCodeService.foo(postCode);<br/>\n  // assert<br/>\n}<br/>\n<br/>\nIn this example, classSetUp() hardcodes the implementation to be used but<br/>\nyou could imagine making this more flexible (depending on a parameter, a<br/>\ntest group, etc...).  Also, separating your tests from your set up (e.g.<br/>\nbase class / child class) will give you even more flexibility to switch<br/>\nimplementations at runtime without altering the business logic that tests<br/>\nyour interface.<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I am spending way too long thinking about this rather than writing code<br/>\n&gt; which has me a bit worried.<br/>\n<br/>\n<br/>\n </span></blockquote>Sometimes, spending a lot of time thinking about a problem causes you to<br/>\nwrite less code in the end.  Hopefully, this is one of these cases :-)<br/>\n<br/>\n--<br/>\nCédric<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://testng.org\">http://testng.org</a><br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 15650, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1134058857", 
+    "canDelete": false, 
+    "nextInTopic": 15653, 
+    "prevInTopic": 15647, 
+    "headers": {
+        "inReplyToHeader": "PDQzOTg0MkM0LjgwOTA3MDBAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDUxMjA4MDgyMHY1M2VjNjE2NGdiYTRlNTdmNzJhMDA3OWU5QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PDQzODBDRUM5LjYwMDA3MDRAZ21haWwuY29tPgkgPDExMzI1ODMxOTMuNDM4MWQ5MTljZWYxMEBpbWFwLmNzYWlsLm1pdC5lZHU+CSA8NDM5ODQyQzQuODA5MDcwMEBnbWFpbC5jb20+"
+    }
+}

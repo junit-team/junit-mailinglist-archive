@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 24, 
+    "nextInTime": 23483, 
+    "senderId": "wUmqLQK1CSgI2hWJQYcnPmzPythidYrzVlRsnYgEqefIhJf2j9XdcFfr2geK6ImPQVT33Ps0C8yFRIy-31tLR5Hb9dwqeewMa0oZS4ST", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Not knowing the tests in advance when providing a test runner", 
+    "from": "Esko Luontola &lt;esko.luontola@...&gt;", 
+    "authorName": "Esko Luontola", 
+    "msgSnippet": "... I ll look into it. I think Jumi should be able to find out to some degree that what are the dependencies between classes. I ve got an idea that while", 
+    "msgId": 23482, 
+    "profile": "egeluontola", 
+    "topicId": 23466, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 395435659, 
+    "messageBody": "<div id=\"ygrps-yiv-229715181\">Joakim Ohlrogge wrote on 23.6.2011 17:12:<br/>\n<blockquote><span title=\"ireply\"> &gt; Sounds awesome. Will be following your progress with interest. Regarding<br/>\n&gt; SBT, there is the ~test-quick action that attempts to run only the tests<br/>\n&gt; relevant for what you have changed (my interpretation from using it, don&#39;t<br/>\n&gt; know /exactly/ how it optimizes). It seems SBT has quite excellent<br/>\n&gt; dependency analysis that allows for these kinds of features.<br/>\n<br/>\n </span></blockquote>I&#39;ll look into it. I think Jumi should be able to find out to some <br/>\ndegree that what are the dependencies between classes. I&#39;ve got an idea <br/>\nthat while idling Jumi would analyze the classes and do experimental <br/>\ntest runs. For example it&#39;s possible to find out what classes a test <br/>\ndepends on by running that test in a fresh class loader and monitoring <br/>\nthat which classes get loaded.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Also, SBT&#39;s console really is such an obvious thing to do given hot spot<br/>\n&gt; optimizers etc so it&#39;s almost weird that maven, ant et al did not do this.<br/>\n&gt; Why wouldn&#39;t one keep the build/test-tool running? (given how long it takes<br/>\n&gt; to start a JVM and how much things can accelerate once the hotspot kicks in<br/>\n&gt; and does it&#39;s magic; usually several seconds into execution if I understand<br/>\n&gt; things correctly). I<br/>\n&gt; s this what you are after with class loader caching? to be able to keep a<br/>\n&gt; JVM-instance running over time and just swap in changed classes?<br/>\n<br/>\n </span></blockquote>Yes. The class loader caching has two benefits:<br/>\n<br/>\n1. The overhead of class loading of external libraries goes away. This <br/>\nis expected to speed up the test run by hundreds of milliseconds - maybe <br/>\neven a couple of seconds if there are lots of big libraries being used.<br/>\n<br/>\n2. The JVM&#39;s is able to do JIT optimizations on the external libraries, <br/>\nand they will persists between test runs. This should speed up <br/>\nconsistently by some percentage.<br/>\n<br/>\nApplication code&#39;s class loaders will need to be thrown away between <br/>\ntest runs [1], so those won&#39;t benefit from this optimization. Though it <br/>\nmight be possible to keep some optimizations of the application code <br/>\nwhen working on a multi-module project and changing only some of the <br/>\nmodules.<br/>\n<br/>\nMy plan is that each module will have its own class loaders; one for <br/>\nproduction and one for test classes. This is also to make sure that the <br/>\nmodules don&#39;t access classes to which they don&#39;t have access, and to <br/>\nallow different modules to use different versions of external libraries. <br/>\nIf necessary, Jumi will launch one JVM per module - that would also <br/>\nenable module-specific working directories, to improve compatibility <br/>\nwith Maven.<br/>\n<br/>\n[1] Unless doing something like JRebel and patching the classes on the <br/>\nfly, but I think that is a bit too risky. I value reliability more than <br/>\nperformance.<br/>\n<br/>\n-- <br/>\nEsko Luontola<br/>\nwww.orfjackal.net</div>", 
+    "prevInTime": 23481, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1308849948", 
+    "canDelete": false, 
+    "nextInTopic": 23484, 
+    "prevInTopic": 23481, 
+    "headers": {
+        "inReplyToHeader": "PEJBTkxrVGluPU5EWVZtc0VkMVhfRHFGQ25mUlNTVlJ1dktRQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRFMDM3NzFDLjgwMTA4MDZAZ21haWwuY29tPg==", 
+        "referencesHeader": "PGl0Zmk1YSt1NTJjQGVHcm91cHMuY29tPiA8NEUwMjE0RDQuMjA0MDUwNEBnbWFpbC5jb20+IDxCQU5Ma1RpbWFibU9LUnZDNmpQTjdEYlBTMjdmS3plVkpUZ0BtYWlsLmdtYWlsLmNvbT4gPDRFMDJGNDRBLjYwMjA1MDhAZ21haWwuY29tPiA8QkFOTGtUaWtUdG5tbVktMmEyM0dFMkMzLU1CdHZialpTc3dAbWFpbC5nbWFpbC5jb20+IDw0RTAzMjUzMS44MDMwMkBnbWFpbC5jb20+IDxCQU5Ma1Rpbj1ORFlWbXNFZDFYX0RxRkNuZlJTU1ZSdXZLUUBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

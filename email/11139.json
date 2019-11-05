@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 11140, 
+    "senderId": "_YNv3sxSFgUsAxxvXqTZCloHkwk4lDg83qGmKZmirF2zPjj_AVX1avcQpfSpL-IDYgZXaU0_XcFeyjEzfqLsFwrI9vpwf7fGow", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Perform something before and after a complete test", 
+    "from": "David Plass &lt;dplass@...&gt;", 
+    "authorName": "David Plass", 
+    "msgSnippet": "If you re relying on the GC to finalize your non-reachable classes so they release their valuable resource, you might want to change your design. In the case", 
+    "msgId": 11139, 
+    "profile": "dplass", 
+    "topicId": 11100, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 179102530, 
+    "messageBody": "<div id=\"ygrps-yiv-641404430\">If you&#39;re relying on the GC to finalize your non-reachable classes so they<br/>\nrelease their valuable resource, you might want to change your design.<br/>\n <br/>\nIn the case where SomeClass does NOT hold a valuable resource, I have to<br/>\nagree with JB : my tearDown is just smelly.<br/>\n <br/>\n <br/>\n <br/>\nThanks<br/>\n--DP<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: J. B. Rainsberger [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>] <br/>\nSent: Saturday, June 05, 2004 3:50 PM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: Re: [junit] Perform something before and after a complete test<br/>\n<br/>\n<br/>\nNeil Swingler wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  &gt; What is the advantage of the above code over the below code:<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;     private SomeClass thingBeingTested = new ThingBeingTested();<br/>\n&gt;  &gt;<br/>\n&gt; setUp is called when that test is run. All the TestCase class instances<br/>\n </span></blockquote>are<br/>\n<blockquote><span title=\"ireply\"> &gt; constructed when the suite is created so if you have 20 test methods, you<br/>\n&gt; will end up with 20 instances of ThingBeingTested existing concurrently<br/>\n&gt; which could be a problem if ThingBeingTested uses some valuable resource.<br/>\n<br/>\n </span></blockquote>This is a great point, and it goes to show you that I never thought of <br/>\nit because I&#39;m able to avoid testing against such valuable resources <br/>\nmuch of the time. Perhaps I need to test more legacy code. :)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  &gt; In other words, do we EVER really need &#39;tearDown&#39;?  I do see the need<br/>\n </span></blockquote>for<br/>\n<blockquote><span title=\"ireply\"> &gt;  &gt; setUp, especially if you need to construct (horror) interlinked mock<br/>\n&gt;  &gt; objects.  But why bother &#39;nulling&#39; out your locals? They&#39;ll be GC&#39;ed<br/>\n&gt; anyway,<br/>\n&gt;  &gt; right?<br/>\n&gt;  &gt;<br/>\n&gt; tearDown is analagous to finalize. You probably only need to use it to<br/>\n&gt; release some non memory resource e.g. close a connection, rollback a<br/>\n&gt; transaction., delete some temporary files<br/>\n<br/>\n </span></blockquote>Yes. The only difference is that someone actually /invokes/ <br/>\ntearDown()... and you know /when/ it&#39;ll happen, especially if you use <br/>\nthe JUnit-addons test runner. :)<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a>&gt;  :: +1 416<br/>\n791-8603<br/>\nLet&#39;s write software that people understand<br/>\n<br/>\n<br/>\nYahoo! Groups Sponsor\t<br/>\n<br/>\nADVERTISEMENT<br/>\n <br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://rd.yahoo.com/SIG=129hqrtha/M=298184.5022502.6152625.3001176/D=groups\">http://rd.yahoo.com/SIG=129hqrtha/M=298184.5022502.6152625.3001176/D=groups</a><br/>\n/S=1705006905:HM/EXP=1086551415/A=2164331/R=0/SIG=11eaelai9/*<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.netf\">http://www.netf</a><br/>\nlix.com/Default?mqso=60183351&gt; click here\t<br/>\n <br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://us.adserver.yahoo.com/l?M=298184.5022502.6152625.3001176/D=groups/S=\">http://us.adserver.yahoo.com/l?M=298184.5022502.6152625.3001176/D=groups/S=</a><br/>\n:HM/A=2164331/rand=736959304&gt; \t<br/>\n<br/>\n<br/>\n  _____  <br/>\n<br/>\nYahoo! Groups Links<br/>\n<br/>\n<br/>\n*\tTo visit your group on the web, go to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/\">http://groups.yahoo.com/group/junit/</a> &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/\">http://groups.yahoo.com/group/junit/</a>&gt; <br/>\n  <br/>\n<br/>\n*\tTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&lt;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a>?subject=Unsubscribe&gt; <br/>\n  <br/>\n<br/>\n*\tYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a>&gt; . <br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 11138, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1086615955", 
+    "canDelete": false, 
+    "nextInTopic": 11287, 
+    "prevInTopic": 11129, 
+    "headers": {
+        "messageIdInHeader": "PEI2NDQ0RDBFNDA2QUQ1MTFBREZCMDBEMEI3ODkzQTY5MDE0M0ZDQkVARVhDSEFOR0U+"
+    }
+}

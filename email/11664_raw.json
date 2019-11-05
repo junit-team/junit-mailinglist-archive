@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 11665, 
+    "senderId": "3U9u9L6aKsPFtwgFluv3aPbr_4srsx-NL3TtxwGs041KkK4xrygl1B5MUHNmD_69MKJmHDAoiu2v4oEajFj8aDIBJgbDtFjGBwqn6zQC4A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Testing async calls", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Is this right? 1. The server talks to the database synchronously, the database responds. 2. The server formats the response into a message, then puts the", 
+    "msgId": 11664, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 95806 invoked from network); 26 Jul 2004 16:50:19 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m13.grp.scd.yahoo.com with QMQP; 26 Jul 2004 16:50:19 -0000\r\nReceived: from unknown (HELO smtp105.rog.mail.re2.yahoo.com) (206.190.36.83)\n  by mta2.grp.scd.yahoo.com with SMTP; 26 Jul 2004 16:50:19 -0000\r\nReceived: from unknown (HELO ?192.168.1.112?) (jbrains@24.156.43.226 with plain)\n  by smtp105.rog.mail.re2.yahoo.com with SMTP; 26 Jul 2004 16:50:01 -0000\r\nMessage-ID: &lt;41053613.7000009@...&gt;\r\nDate: Mon, 26 Jul 2004 12:49:23 -0400\r\nUser-Agent: Mozilla Thunderbird 0.7.2 (Windows/20040707)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ce36gv+58ml@...&gt;\r\nIn-Reply-To: &lt;ce36gv+58ml@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.83\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Re: Testing async calls\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nKalyan Kumar M wrote:\n\n&gt; There is one db sitting behind the server. The server would execute\n&gt; the query (mostly stored procs) on the db would get the result,\n&gt; convert it to markup and sends it to the client. So, if I understand\n&gt; you correctly, you are asking me to separate the testing work for\n&gt; both the server and the db. How can I do that? What will the server\n&gt; query then?\n\nIs this right?\n\n1. The server talks to the database synchronously, the database responds.\n\n2. The server formats the response into a message, then puts the message \non a queue.\n\n3. The client receives the queued message.\n\nHere&#39;s my plan of attack:\n\n  * Write one set of tests for interaction #1: check the database \ncontents for each query the server executes.\n\n  * Write a small set of tests for #2: verify that the server can format \neach kind of database response correctly as a message.\n\n  * Write /one/ more test for #2: verify that whenever the server \nexecutes a query, it also puts a message on a queue. (The preceding \ntests verify that it&#39;s the correct message, because the preceding tests \nverify that the message matches the database response.)\n\n  * Write a set of tests on the client for #3: verify that for each \ndifferent kind of message the client could receive--just invoke \nonMessage()--the client reacts correctly.\n\nThat&#39;s the whole thing.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11653, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11663, 
+    "contentTrasformed": false, 
+    "postDate": "1090860563", 
+    "canDelete": false, 
+    "nextInTopic": 11665, 
+    "prevInTopic": 11663, 
+    "headers": {
+        "inReplyToHeader": "PGNlMzZndis1OG1sQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxMDUzNjEzLjcwMDAwMDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNlMzZndis1OG1sQGVHcm91cHMuY29tPg=="
+    }
+}

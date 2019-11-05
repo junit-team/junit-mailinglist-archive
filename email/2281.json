@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 2282, 
+    "senderId": "w_cpbCnLsNfBZxaz6MezsFEOsMUVlsz0Vfyt1y9S6-afceaXk2Z1ChFIFCYmrzVzFXrMlnXNWaMHq07Z4DRVwpYWhoUGAnz_PK2PHG1j4nVMvQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] novice QA", 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "If you refactor your class to have this template: public class validator () { protected List validate (Class cls) { ... } protected PrintStream print", 
+    "msgId": 2281, 
+    "topicId": 2267, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-2080037218\">If you refactor your class to have this template:<br/>\n<br/>\n   public class validator () {<br/>\n      protected List validate (Class cls) { ... }<br/>\n      protected PrintStream print (SpecificError error) { ...}<br/>\n   }<br/>\n<br/>\nit is then really easy to test.  Your class can implement other methods that use these two methods for testing.<br/>\n<br/>\nYou have two possibilities:<br/>\n - test for all errors in one test<br/>\n - test for one error in each test<br/>\n<br/>\nI would first test the most global case and then, if you found problems (or if you want to be more confident) you can write more specific tests.<br/>\n<br/>\nDefine an inner class that fires all possible errors.  Your test method looks like:<br/>\n<br/>\n   public void testFireAllErrors () {<br/>\n      ClassFiresAllErrors temp = new ClassFiresAllError();<br/>\n      List result = myValidator.validate(ClassErrorX);<br/>\n      assertTrue(result.size() == X /* number of possible errors */);<br/>\n      assertTrue(result.contains(new ErrorX());<br/>\n      assertTrue(result.contains(new ErrorY());<br/>\n      ...<br/>\n\u0003  }<br/>\n<br/>\nNow to test the print method: list all errors that can be reported.  For each error, write a test method<br/>\n<br/>\n   public void testPrintErrorX () {<br/>\n      PrintStream stream = myValidator.print(new SpecificError(X));<br/>\n      assertEquals(stream.toString(), &quot;...what the error should print...&quot;);<br/>\n   }<br/>\n   public void testPrintErrorY () {...}<br/>\n<br/>\nMy 2 cents<br/>\n<br/>\n-Vladimir</div>", 
+    "prevInTime": 2280, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "997207854", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 2273, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDEwODA3MTgxMDU0LjUzNjIuY3BtdGFAYzAwNy5zbnYuY3AubmV0Pg=="
+    }
+}

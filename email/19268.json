@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19269, 
+    "senderId": "6ay7Q17zlZjdypi1N0RQsXqwbo0zAwy1nmE54sWIoBGARslWMuUgBHh7tUCyamqEHydV_Idg8xILv8EqzWhhvOmO3q6Jbx7eWBCwzUtpfNKvypz_O19YbJBXC5toiQCUNU_PjHPiWJbypPuQTjCO5cHP5lzXBA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit behaviour", 
+    "from": "&quot;=?UTF-8?Q?Alexandru_Popescu_=E2=98=80?=&quot; &lt;the.mindstorm.mailinglist@...&gt;", 
+    "authorName": "Alexandru Popescu ☀", 
+    "msgSnippet": "... Yep... a lot of sense (otherwise I would have said it is a quite a bug :-) ). ./alex -- .w( the_mindstorm )p. TestNG co-founder EclipseTestNG Creator", 
+    "msgId": 19268, 
+    "profile": "alexpopescu70000", 
+    "topicId": 19243, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 233049053, 
+    "messageBody": "<div id=\"ygrps-yiv-52725273\">On 09 Apr 2007 07:04:16 -0700, Ilja Preuss &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:it@...\">it@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Seems I failed to make myself clear.<br/>\n&gt;<br/>\n&gt;  Imagine two classes<br/>\n&gt;<br/>\n&gt;  class Super {<br/>\n&gt;     @Before void beforeSuper() ..<br/>\n&gt;  ]<br/>\n&gt;<br/>\n&gt;  class Sub extends Super {<br/>\n&gt;     @Before void beforeSub1() ...<br/>\n&gt;     @Before void beforeSub2() ...<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt;  My educated guess is that beforeSuper will always be executed first, but<br/>\n&gt;  that there is no guarantee whatsoever in which order beforeSub1 and<br/>\n&gt;  beforeSub2 will be executed.<br/>\n&gt;<br/>\n&gt;  Does that make sense?<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>Yep... a lot of sense (otherwise I would have said it is a quite a bug :-) ).<br/>\n<br/>\n./alex<br/>\n--<br/>\n.w( the_mindstorm )p.<br/>\n  TestNG co-founder<br/>\nEclipseTestNG Creator<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt;  Cheers, Ilja<br/>\n&gt;<br/>\n&gt;  Alexandru Popescu ☀ schrieb:<br/>\n&gt;<br/>\n&gt;  &gt; On 09 Apr 2007 05:09:30 -0700, Ilja Preuss &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:it@...\">it@...</a>&gt; wrote:<br/>\n&gt;  &gt;&gt; My first guess without a closer look at the code would be that it&#39;s done<br/>\n&gt;  &gt;&gt;  so that @Before(Class) methods in subclasses are run before those in<br/>\n&gt;  &gt;&gt;  superclasses.<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt;  I don&#39;t think there is any guarantee on the order of methods inside one<br/>\n&gt;  &gt;&gt;  class. I could be wrong, though.<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; If so, then I would say that this is a possible problem. The<br/>\n&gt;  &gt; invocation order should follow the one of initialization and TestNG is<br/>\n&gt;  &gt; trying to guarantee this rule (where the superclass is firstly<br/>\n&gt;  &gt; initialized), otherwise this is quite a limitation (imagine a scenario<br/>\n&gt;  &gt; where the parent class initializes some test data, and the child will<br/>\n&gt;  &gt; need to customize it - this will never work).<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; bests,<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; ./alex<br/>\n&gt;  &gt; --<br/>\n&gt;  &gt; .w( the_mindstorm )p.<br/>\n&gt;  &gt;   TestNG co-founder<br/>\n&gt;  &gt; EclipseTestNG Creator<br/>\n&gt;  &gt;&gt;  Cheers, Ilja<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt;  jonhnnyweslley schrieb:<br/>\n&gt;  &gt;&gt;  &gt; I was creating tests, when in any test I dont understand a behaviour<br/>\n&gt;  &gt;&gt;  &gt; of the framework. The Junit framework executes Before and BeforeClass<br/>\n&gt;  &gt;&gt;  &gt; test methods in reverse order. Why?<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt; In TestIntrospector I find the below code, but I dont understand the<br/>\n&gt;  &gt;&gt;  &gt; cause.<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt; public List&lt;Method&gt; getTestMethods(<br/>\n&gt;  &gt;&gt;  &gt;      Class&lt;? extends Annotation&gt; annotationClass) {<br/>\n&gt;  &gt;&gt;  &gt;     ...<br/>\n&gt;  &gt;&gt;  &gt;     if (runsTopToBottom(annotationClass))<br/>\n&gt;  &gt;&gt;  &gt;         Collections.reverse(results);<br/>\n&gt;  &gt;&gt;  &gt;     return results;<br/>\n&gt;  &gt;&gt;  &gt; }<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt; private boolean runsTopToBottom(<br/>\n&gt;  &gt;&gt;  &gt;         Class&lt; ? extends Annotation&gt; annotation) {<br/>\n&gt;  &gt;&gt;  &gt;     return annotation.equals(Before.class) ||<br/>\n&gt;  &gt;&gt;  &gt;          annotation.equals(BeforeClass.class);<br/>\n&gt;  &gt;&gt;  &gt; }<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt; Yahoo! Groups Links<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;  &gt;<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; Yahoo! Groups Links<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19267, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1176129283", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19267, 
+    "headers": {
+        "inReplyToHeader": "PDQ2MUE0MERBLjUwMDAwMDJAaWxqYXByZXVzcy5kZT4=", 
+        "messageIdInHeader": "PGM2ZjQwMDQ2MDcwNDA5MDczNG0yODEwNGM1YXBiNmM1MzA0Mzg5MzIwMmVhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGV2Mmptcitqcm9pQGVHcm91cHMuY29tPiA8NDYxQTJCOTAuNDA0MDUwMEBpbGphcHJldXNzLmRlPgkgPGM2ZjQwMDQ2MDcwNDA5MDUzMWkxN2Y4NTI4ZGc4NDRjYWMxODExMTRkNmMwQG1haWwuZ21haWwuY29tPgkgPDQ2MUE0MERBLjUwMDAwMDJAaWxqYXByZXVzcy5kZT4="
+    }
+}

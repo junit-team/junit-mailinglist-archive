@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 9642, 
+    "senderId": "K2-torz4r-x7A5sHPK9UE-ZkfgisQNu-iKOjjOMVMz6MzEHAupaSiWzQ2s47uLmQokll25nVePSQGQP_sM6RkmlavXbPro3UI0pU", 
+    "systemMessage": false, 
+    "subject": "How would you test a code which is used in Multi-threaded context", 
+    "from": "&quot;shailesh401&quot; &lt;skadam@...&gt;", 
+    "authorName": "shailesh401", 
+    "msgSnippet": "Guys, Testing the following code in 1 thread is easy, but in multiple thread is confusing... 1st test passes, 2nd one fail. Any suggestions or help. Thanks Sal", 
+    "msgId": 9641, 
+    "profile": "shailesh401", 
+    "topicId": 9641, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112334565, 
+    "messageBody": "<div id=\"ygrps-yiv-975426750\">Guys,<br/>\n  Testing the following code in 1 thread is easy, but<br/>\nin multiple thread is confusing...<br/>\n<br/>\n1st test passes, 2nd one fail.<br/>\n<br/>\nAny suggestions or help.<br/>\n<br/>\nThanks<br/>\n Sal<br/>\n<br/>\n<br/>\n--------------  SynchronizedQueue.java ----------------<br/>\n<br/>\nimport java.util.Vector;<br/>\n<br/>\npublic class SynchronizedQueue {<br/>\n    private Vector elements = new Vector(10,10);<br/>\n<br/>\n    public synchronized Object get() {<br/>\n        while (elements.isEmpty()) {<br/>\n            try {<br/>\n                wait();<br/>\n            } catch (InterruptedException e) {<br/>\n            }<br/>\n        }<br/>\n        notifyAll();<br/>\n        Object anElement = elements.remove(0);<br/>\n        return anElement;<br/>\n    }<br/>\n<br/>\n    public synchronized void put(Object anElement) {<br/>\n        elements.add(anElement);<br/>\n        notifyAll();<br/>\n    }<br/>\n}<br/>\n<br/>\n------------------ SynchronizedQueueTest ----------------------------<br/>\nimport junit.framework.TestCase;<br/>\n<br/>\nimport java.util.Vector;<br/>\n<br/>\npublic class SynchronizedQueueTest extends TestCase {<br/>\n<br/>\n        public void testGetAndPutWithoutThreads() throws Exception {<br/>\n        final SynchronizedQueue synchronizedQueue = new <br/>\nSynchronizedQueue();<br/>\n        synchronizedQueue.put(&quot;111&quot;);<br/>\n        synchronizedQueue.put(&quot;222&quot;);<br/>\n        synchronizedQueue.put(&quot;333&quot;);<br/>\n        assertEquals(&quot;111&quot;, synchronizedQueue.get());<br/>\n        assertEquals(&quot;222&quot;, synchronizedQueue.get());<br/>\n        assertNotSame(&quot;444&quot;, synchronizedQueue.get());<br/>\n    }<br/>\n<br/>\n    public void testGetAndPutWithThread() throws Exception {<br/>\n        Vector elements = new Vector();<br/>\n        SynchronizedQueue synchronizedQueue = new SynchronizedQueue();<br/>\n        new Thread() {<br/>\n            public void run() {<br/>\n                elements.add(synchronizedQueue.get());<br/>\n                elements.add(synchronizedQueue.get());<br/>\n            }<br/>\n        };<br/>\n        synchronizedQueue.put(&quot;FirstElement&quot;);<br/>\n        synchronizedQueue.put(&quot;SecondElement&quot;);<br/>\n        elements.add(synchronizedQueue.get());<br/>\n        synchronizedQueue.put(&quot;ThirdElement&quot;);<br/>\n        elements.toString();<br/>\n    }<br/>\n}</div>", 
+    "prevInTime": 9640, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1065454377", 
+    "canDelete": false, 
+    "nextInTopic": 9643, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJsczF2OSttNGhnQGVHcm91cHMuY29tPg=="
+    }
+}

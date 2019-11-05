@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 21357, 
+    "senderId": "iwot4SlpxydOJDq6eLwKBjkrRZ33SGiNqLGkkqZhJPIV6rhiyy9cAx2_T7O7-1QikbB7WP9pLUyEEIMRIbHe070YkVtsj7An4ADjhmWb9mg", 
+    "systemMessage": true, 
+    "subject": "Conditionally running tests", 
+    "from": "&quot;yme0987654321&quot; &lt;yme0987654321@...&gt;", 
+    "authorName": "yme0987654321", 
+    "msgSnippet": "Hi, I ve tried looking around the group but I haven t seen an answer to this. I m trying to set up a group of tests that runs only under certain circumstances.", 
+    "msgId": 21356, 
+    "profile": "yme0987654321", 
+    "topicId": 21356, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 386557907, 
+    "messageBody": "<div id=\"ygrps-yiv-373395493\">Hi,<br/>\n<br/>\nI&#39;ve tried looking around the group but I haven&#39;t seen an answer to<br/>\nthis. I&#39;m trying to set up a group of tests that runs only under<br/>\ncertain circumstances. Because they are database tests, they have<br/>\nexpensive setup and teardown procedures (via DBUnit), so they are<br/>\nsegregated to run separately. The way to get that done seems to be via<br/>\na separate runner, so I hacked up a class that looks like this:<br/>\n(Inspiration from here:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://schuchert.wikispaces.com/CustomJunit4RunnerJUnit4_4\">http://schuchert.wikispaces.com/CustomJunit4RunnerJUnit4_4</a> but that<br/>\nexample no longer applies to the 4.5 API):<br/>\n<br/>\npublic class SlowTestRunner extends Runner {<br/>\n<br/>\n    private Runner runner;<br/>\n    private Class&lt;?&gt; klass;<br/>\n<br/>\n    public SlowTestRunner(Class&lt;?&gt; klass, RunnerBuilder builder)<br/>\nthrows Throwable {<br/>\n        this.klass = klass;<br/>\n        if (Boolean.getBoolean(&quot;RunSlowTests&quot;)) {<br/>\n            runner = getAppropriateRunner(builder);<br/>\n        } else {<br/>\n            runner = new IgnoredClassRunner(klass);<br/>\n        }<br/>\n    }<br/>\n<br/>\n    private Runner getAppropriateRunner(RunnerBuilder builder) {<br/>\n        List&lt;RunnerBuilder&gt; builders = Arrays.asList(<br/>\n                new IgnoredBuilder(),<br/>\n                new AnnotatedBuilder(builder),<br/>\n                new SuiteMethodBuilder(),<br/>\n                new JUnit3Builder(),<br/>\n                new JUnit4Builder());<br/>\n<br/>\n        for (RunnerBuilder each : builders) {<br/>\n            Runner runner = each.safeRunnerForClass(klass);<br/>\n            if (runner != null && runner.getClass() != this.getClass())<br/>\n                return runner;<br/>\n        }<br/>\n        //this is actually never going to happen, at least in the<br/>\ncurrent implementation because the JUnit4Builder is the Builder of<br/>\nlast resort.<br/>\n        return new ErrorReportingRunner(klass, new<br/>\nInitializationError(&quot;Unable to find suitable runner to delegate for &quot;<br/>\n+ klass.getName()));<br/>\n    }<br/>\n<br/>\n    public Description getDescription() {<br/>\n        return runner.getDescription();<br/>\n    }<br/>\n<br/>\n    public void run(RunNotifier notifier) {<br/>\n        runner.run(notifier);<br/>\n    }<br/>\n}<br/>\n<br/>\nThe method getAppropriateRunner is basically a copy/paste from<br/>\nAllDefaultPossibilitiesBuilder. I had to copy paste because the<br/>\nprotected method forced a return of an AnnotatedBuilder, instead of<br/>\njust a RunnerBuilder, so overriding wasn&#39;t working well. Note the case<br/>\nhere is that I&#39;m not sure if the class is a JUnit3 or 4 class, and I<br/>\nwant to support both with one runner.<br/>\n<br/>\nAt first I tried to just do a runnerForClass on builder passed to the<br/>\nconstructor, but that causes an infinite loop, because the class has<br/>\nthe RunWith annotation on it that references the very same Runner.<br/>\n<br/>\nAm I correct that the API isn&#39;t naturally supporting what I am trying<br/>\nto do, or is there another way to accomplish this?</div>", 
+    "prevInTime": 21355, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1234842870", 
+    "canDelete": false, 
+    "nextInTopic": 21357, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGduZGNkbSttYWw0QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7781, 
+    "senderId": "C0GuuHKOl-o_aFEmBH9M4DtwNm2yAyo-xORHfB2V2JGEBfVsZrTE-Llog4D80lA2SPIJxae1uXHT4OGec5JLdia8qK_huA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] A test to verify that an event is generated", 
+    "from": "Steve Freeman &lt;steve@...&gt;", 
+    "authorName": "Steve Freeman", 
+    "msgSnippet": "Almost right. Try the following: class MockListener implements DeviceListListener { public ExpectationCounter additions = new ExpectationCounter( additions ); ", 
+    "msgId": 7780, 
+    "rawEmail": "Return-Path: &lt;steve@...&gt;\r\nReceived: (qmail 59808 invoked by uid 7800); 18 Apr 2003 18:47:20 -0000\r\nX-Sender: steve@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 18 Apr 2003 18:40:41 -0000\r\nReceived: (qmail 25093 invoked from network); 18 Apr 2003 18:40:41 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m5.grp.scd.yahoo.com with QMQP; 18 Apr 2003 18:40:41 -0000\r\nReceived: from unknown (HELO rs2.luxsci.com) (209.61.189.139)\n  by mta2.grp.scd.yahoo.com with SMTP; 18 Apr 2003 18:40:41 -0000\r\nReceived: from m3p.co.uk (host217-39-146-248.in-addr.btopenworld.com [217.39.146.248])\n\t(authenticated bits=0)\n\tby rs2.luxsci.com (8.12.9/8.12.9) with ESMTP id h3IIecGT002123\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 18 Apr 2003 13:40:40 -0500\r\nMessage-ID: &lt;3EA046E2.8050809@...&gt;\r\nDisposition-Notification-To: Steve Freeman &lt;steve@...&gt;\r\nDate: Fri, 18 Apr 2003 19:41:38 +0100\r\nOrganization: M3P\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.3) Gecko/20030312\r\nX-Accept-Language: en-gb, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] A test to verify that an event is generated\r\nReferences: &lt;4A798B3E3B58794FB40A47DFCE728BA80914BA@...&gt;\r\nIn-Reply-To: &lt;4A798B3E3B58794FB40A47DFCE728BA80914BA@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Steve Freeman &lt;steve@...&gt;\r\nX-Yahoo-Group-Post: member; u=30618548\r\nX-Yahoo-Profile: smg_freeman\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 18 Apr 2003 18:47:20 -0000\r\n\r\nAlmost right. Try the following:\n\nclass MockListener implements DeviceListListener\n{\n   public ExpectationCounter additions =\n       new ExpectationCounter(&quot;additions&quot;);\n   public ExpectationCounter removals =\n       new ExpectationCounter(&quot;removals&quot;);\n\n   public void deviceAdded(DeviceListEvent event)  {\n     additions.inc();\n     assertEquals(event.getDevice(), device);\n   }\n\n   public void deviceRemoved(DeviceListEvent event) {\n     removals.inc();\n     assertEquals(event.getDevice(), device);\n   }\n}\n\n   RealService service = new RealService();\n   MockListener listener = new MockListener();\n\n   service.addDeviceListListener(listener);\n\n   listener.additions.setExpected(1);\n   listener.removals.setExpectNothing();\n\n   service.addDevice(device);\n\n   Verifier.verify(listener);\n\n   // repeat for removal.\n\n\nPoints of interest:\n- you need a real, not a mock, service. That&#39;s the object under test.\n- if you add the assertions to the listener, the code will explode in \nthe right place, when the mistake occurs, not after the fact at the end \nof the test.\n- ExpectationCounter is a utility class from the mockobjects library. \nThe inc() will fail if it&#39;s called too many times. You can do something \nsimilar with EasyMock or with the mockobjects dynamic library.\n- Verifier is a helper class that checks all the expectations set in an \nobject. In this case it will fail if inc() is called too few times.\n\nS.\n\n-- \n&quot;A LISP programmer knows the value of everything but the cost of nothing.\n  A C programmer knows the cost of everything but the value of nothing.&quot;\n(Todd Proebsting)\n\n\n\n", 
+    "profile": "smg_freeman", 
+    "topicId": 7751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30618548, 
+    "prevInTime": 7779, 
+    "contentTrasformed": false, 
+    "postDate": "1050691298", 
+    "canDelete": false, 
+    "nextInTopic": 7782, 
+    "prevInTopic": 7779, 
+    "headers": {
+        "inReplyToHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJBQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4=", 
+        "messageIdInHeader": "PDNFQTA0NkUyLjgwNTA4MDlAbTNwLmNvLnVrPg==", 
+        "referencesHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJBQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4="
+    }
+}

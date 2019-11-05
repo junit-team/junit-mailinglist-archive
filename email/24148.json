@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 24149, 
+    "senderId": "gS_M2b3hekyP_GJ_SDJoBTUfsMBGcowQKPA-N4UYCxBgTIk7Mw_Fd2fBfvzstWypMxdzSZ2ark8tZBzaQ65G79Qhkg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Custom MethodSorter", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Sorry to skip back to the top question. As many people point out, if you re doing this because test B only operates as expected if test A runs first, don t do", 
+    "msgId": 24148, 
+    "profile": "saffatgoogle", 
+    "topicId": 24135, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 525765722, 
+    "messageBody": "<div id=\"ygrps-yiv-105446797\">Sorry to skip back to the top question.<br/>\n<br/>\nAs many people point out, if you&#39;re doing this because test B only operates<br/>\nas expected if test A runs first, don&#39;t do that.  There are lots of ways to<br/>\navoid that, and I&#39;m happy to talk about it.<br/>\n<br/>\nOn the other hand, if the reason you&#39;re doing this is to order independent<br/>\ntests in a way that puts fast or often-failing tests near the beginning of<br/>\na run in order to enhance feedback time, I totally understand what you&#39;re<br/>\ngoing for, so let&#39;s pretend that&#39;s why you want to do it.<br/>\n<br/>\nDon&#39;t use MethodSorter.  It&#39;s at a lower implementation level than you<br/>\nlikely want.<br/>\n<br/>\nInstead, write a custom runner:<br/>\n<br/>\npublic class Sorted extends Runner {<br/>\n  final Runner mDelegate;<br/>\n<br/>\n  public SortedRunner(Class&lt;?&gt; testClass) {<br/>\n    mDelegate = createDelegate(testClass);<br/>\n    mDelegate.sort(createSorter(testClass));<br/>\n  }<br/>\n<br/>\n  public Description getDescription() {<br/>\n     return mDelegate.getDescription():<br/>\n  }<br/>\n<br/>\n  public void run(RunNotifier notifier) {<br/>\n     mDelegate.run(notifier);<br/>\n  }<br/>\n<br/>\n  // ...<br/>\n}<br/>\n<br/>\nNow, you just have to define createDelegate(...) and createSorter(...).<br/>\n For a fully general solution, you could make new annotations, to enable:<br/>\n<br/>\n@RunWith(Sorted.class)<br/>\n@SortedRunWith(JUnit4.class)<br/>\npublic class MyTest {<br/>\n  @Sorter public static final Sorter mySorter = new MyCustomSorter();<br/>\n}<br/>\n<br/>\nIf you (or anyone listening) wanted to take a go at making a pull request<br/>\nto add something like that to the core, I think it would be useful.<br/>\n<br/>\nHowever, to just get your job done, you might go ahead and hard-code the<br/>\nparticular Runner and Sorter that you want.<br/>\n<br/>\nGood luck,<br/>\n<br/>\n   David<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, Dec 5, 2012 at 7:27 AM, Eirik Lygre &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:eirik.lygre@...\">eirik.lygre@...</a>&gt; wrote:<br/>\n<br/>\n&gt; **<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; I&#39;m looking at creating my own MethodSorter. Is there documentation on how<br/>\n&gt; to do that, and is it even possible?<br/>\n&gt;<br/>\n&gt; --<br/>\n&gt; Eirik<br/>\n&gt;<br/>\n&gt; There is no high like a tango high<br/>\n&gt; There is no low like a tango low<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 24147, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1354808419", 
+    "canDelete": false, 
+    "nextInTopic": 24149, 
+    "prevInTopic": 24147, 
+    "headers": {
+        "inReplyToHeader": "PENBSEptU1ZfQz1Id1lZdFpNQVlUNXE5T2tvPTZtLWd2VlRaTWk5bnlCb3NURHJ2UT0zZ0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBTHJ3LVB6Y3lvQWgrRW5iTVZUdGV5eUYzekZDOT11MD1tTU5oPUFUb3Fia0F4VE9FUUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBSEptU1ZfQz1Id1lZdFpNQVlUNXE5T2tvPTZtLWd2VlRaTWk5bnlCb3NURHJ2UT0zZ0BtYWlsLmdtYWlsLmNvbT4="
+    }
+}

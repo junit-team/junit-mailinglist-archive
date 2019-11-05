@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20319, 
+    "senderId": "1Ye7-79gLmgK68HyyOvcWFcF9s4QZQHadgn1mg4XOybT8i1PTdHmPjuMfQVW9Y2ro0qey1FHn0tqpUuLCnai4lvZ1Mz5pdIRIlHf", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Sharing tests in a superclass", 
+    "from": "Robert Wenner &lt;robert.wenner@...&gt;", 
+    "authorName": "Robert Wenner", 
+    "msgSnippet": "... I think you re doing it the right way, and it works for me. Maybe try running your tests on the shell as below? If that works, Eclipse may be the culprit. ", 
+    "msgId": 20318, 
+    "profile": "robertwenner", 
+    "topicId": 20317, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 115089258, 
+    "messageBody": "<div id=\"ygrps-yiv-1975257740\">On Saturday 16 February 2008 12:42, Srinivas Visvanathan wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I have a couple of similar classes A, B, C, that implement the same<br/>\n&gt; interface. So I create test classes TestA, TestB and TestC. But all<br/>\n&gt; the tests in these are really the same, with just different setup. So<br/>\n&gt; I&#39;d like to create a base test class, BaseTest. I&#39;ll put all my @Test<br/>\n&gt; methods here. In TestA, TestB and TestC, I&#39;ll just have my @Before<br/>\n&gt; methods. When I try to get junit to run my TestA/TestB/TestC, it<br/>\n&gt; doesn&#39;t find any tests, because it appears to be looking for tests in<br/>\n&gt; those classes only and not any superclasses. The best I&#39;ve been able<br/>\n&gt; to do is to override the same test methods in TestA, TestB and TestC,<br/>\n&gt; where each method simply calls the corresponding superclass method.<br/>\n<br/>\n </span></blockquote>I think you&#39;re doing it the right way, and it works for me.<br/>\nMaybe try running your tests on the shell as below? If that works, Eclipse <br/>\nmay be the culprit.<br/>\n<br/>\nRobert<br/>\n<br/>\n<br/>\nrobert@tiamat:~&gt; cat BaseTest.java<br/>\nimport org.junit.*;<br/>\n<br/>\npublic class BaseTest {<br/>\n    @Test<br/>\n    public void theTest() {<br/>\n        assert(true);<br/>\n    }<br/>\n}<br/>\n<br/>\nrobert@tiamat:~&gt; cat DerivedTest.java<br/>\nimport org.junit.*;<br/>\n<br/>\npublic class DerivedTest extends BaseTest {<br/>\n    @Before<br/>\n    public void setUp() {<br/>\n        System.err.println(&quot;set up&quot;);<br/>\n    }<br/>\n}<br/>\n<br/>\nrobert@tiamat:~&gt; javac -cp junit-4.4.jar:. DerivedTest.java<br/>\n<br/>\nrobert@tiamat:~&gt; java -cp junit-4.4.jar:. org.junit.runner.JUnitCore <br/>\nDerivedTest<br/>\nJUnit version 4.4<br/>\n.set up<br/>\n<br/>\nTime: 0.04<br/>\n<br/>\nOK (1 test)</div>", 
+    "prevInTime": 20317, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1203198187", 
+    "canDelete": false, 
+    "nextInTopic": 20319, 
+    "prevInTopic": 20317, 
+    "headers": {
+        "inReplyToHeader": "PDdEQTczRkQxLUJEQzMtNDE1RS05RjBGLTk3QkI1NkM0QTM5MkBnbWFpbC5jb20+", 
+        "messageIdInHeader": "PDIwMDgwMjE2MTU0My4wODkyMy5yb2JlcnQud2VubmVyQGdteC5kZT4=", 
+        "referencesHeader": "PDdEQTczRkQxLUJEQzMtNDE1RS05RjBGLTk3QkI1NkM0QTM5MkBnbWFpbC5jb20+"
+    }
+}

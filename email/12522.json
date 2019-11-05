@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12523, 
+    "senderId": "1GsVZih0V2p2yv9dNrnKKwaVGwEp_yTQNUDMK5CaWaCef7cmJNjrCi9fG7VC7Cn5pv8JoDd9kV5WZP-uH_1jdjwago7A5eMSka1ayTcMJaI", 
+    "systemMessage": false, 
+    "subject": "Re: Multithreading: Testing scheduled method invocation?!", 
+    "from": "&quot;Neil Swingler&quot; &lt;neil@...&gt;", 
+    "authorName": "Neil Swingler", 
+    "msgSnippet": "Michael, sounds like a variation on what I have done. Check out the Channel and FutureResult classes if you want to pass something back to the main thread", 
+    "msgId": 12522, 
+    "profile": "neil_swingler", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 117993331, 
+    "messageBody": "<div id=\"ygrps-yiv-400168540\">Michael,<br/>\n<br/>\nsounds like a variation on what I have done. Check out the Channel and<br/>\nFutureResult classes if you want to pass something back to the main<br/>\nthread (e.g. an event object) in order to assert something.<br/>\n<br/>\nNevertheless, multithreaded testing is a pain in the neck and I have<br/>\nsince converted these tests to be single threaded.<br/>\n<br/>\n- Neil Swingler<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Michael Schuerig &lt;michael@s...&gt; wrote:<br/>\n&gt; <br/>\n&gt; I&#39;m working on a class that interacts with the Spring framework&#39;s <br/>\n&gt; application context and the Quartz scheduler. I&#39;m pretty new to the <br/>\n&gt; latter, thus I&#39;m testing my understanding of Quartz just as much as I&#39;m <br/>\n&gt; testing my code. In effect, I can&#39;t (yet) build the fixture for my code <br/>\n&gt; completely with mocks as I have to ascertain what these mocks are <br/>\n&gt; supposed to do first.<br/>\n&gt; <br/>\n&gt; The complication here is that Quartz uses its own &quot;hidden&quot; thread(s) to <br/>\n&gt; fulfill its duties. It is such a thread that effects the change that I <br/>\n&gt; need to check for. As I don&#39;t want to test Quartz, of course, I&#39;m <br/>\n&gt; content with checking that my scheduled job is executed at all. Thus I <br/>\n&gt; schedule it for immediate execution, wait for 2 secs to give Quartz <br/>\n&gt; some time before the fixture is torn down again.<br/>\n&gt; <br/>\n&gt; Now, all this works surprisingly well. Still, I don&#39;t like the part of <br/>\n&gt; waiting some arbitrary time.<br/>\n&gt; <br/>\n&gt; (Thinking break)<br/>\n&gt; <br/>\n&gt; After getting this far, I remembered that Doug Lea&#39;s concurrency utils <br/>\n&gt; have made their way into J2SE 5.0 and there I found just what I needed: <br/>\n&gt; java.util.concurrent.CountDownLatch<br/>\n&gt; <br/>\n&gt; Now I have a TestCase that looks in outline like this<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; public class MultiThreadedTest extends TestCase {<br/>\n&gt;     private static CountDownLatch latch;<br/>\n&gt;     private MyMock mock;<br/>\n&gt; <br/>\n&gt;     protected void setUp() {<br/>\n&gt;         latch = new CountDownLatch(1);<br/>\n&gt;         mock = new MyMock();<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public void testMe() throws Exception {<br/>\n&gt;         startSomeWorkInAnotherThread(mock);<br/>\n&gt;         latch.await(); // some timeout might be prudent<br/>\n&gt;         mock.verify();<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;     private static class MyMock implements Whatever {<br/>\n&gt;         private boolean wasCalled = false;<br/>\n&gt; <br/>\n&gt;         public void methodCalledFromOtherThread() {<br/>\n&gt;             wasCalled = true;<br/>\n&gt;             latch.countDown();<br/>\n&gt;         }<br/>\n&gt; <br/>\n&gt;         public void verify() {<br/>\n&gt;             assertTrue(wasCalled);<br/>\n&gt;         }<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 12521, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1103706045", 
+    "canDelete": false, 
+    "nextInTopic": 12553, 
+    "prevInTopic": 12521, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg==", 
+        "messageIdInHeader": "PGNxYmQzdCtsbnFxQGVHcm91cHMuY29tPg=="
+    }
+}

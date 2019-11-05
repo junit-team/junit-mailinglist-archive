@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 5562, 
+    "senderId": "SYzmEHtwoOGaTD3KCVrxKfAlh-TWl4N6_AyxmyKHj33f1XsphGJokYwZaW93hFNpGQBaXTo8tRXoahPEhv8G2rs0ujxKvNN6RGa8qUna5Sb-UYWp", 
+    "systemMessage": false, 
+    "subject": "Re: [junit]", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "I say AbstractTestCase is your best bet. It removes the pain of calling addTestSuite(Class), from what I can see. You could always use Ruby to generate the", 
+    "msgId": 5561, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_7_4); 8 Aug 2002 05:52:07 -0000\r\nReceived: (qmail 11995 invoked from network); 8 Aug 2002 05:52:00 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m11.grp.scd.yahoo.com with QMQP; 8 Aug 2002 05:52:00 -0000\r\nReceived: from unknown (HELO s-utl03-slc-rw1.stsn.com) (12.23.74.19)\n  by mta3.grp.scd.yahoo.com with SMTP; 8 Aug 2002 05:52:00 -0000\r\nReceived: from slc02.smtp.stsn.com ([172.16.3.26])\n by s-utl03-slc-rw1.stsn.com (NAVGW 2.5.1.18) with SMTP id M2002080723535109783\n for &lt;junit@yahoogroups.com&gt;; Wed, 07 Aug 2002 23:53:51 -0600\r\nReceived: from siferra ([10.1.203.16]) by slc02.smtp.stsn.com with Microsoft SMTPSVC(5.0.2195.3779);\n\t Wed, 7 Aug 2002 23:51:21 -0600\r\nMessage-ID: &lt;200208080150430787.0022ACBF@...&gt;\r\nIn-Reply-To: &lt;1711DF686EA0D5119F0D00508BE988FB12E3AA@...&gt;\r\nReferences: &lt;1711DF686EA0D5119F0D00508BE988FB12E3AA@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Thu, 08 Aug 2002 01:50:43 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit]\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nReturn-Path: jbr@...\r\nX-OriginalArrivalTime: 08 Aug 2002 05:51:21.0125 (UTC) FILETIME=[9F302550:01C23E9F]\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nI say AbstractTestCase is your best bet. It removes the pain of calling\naddTestSuite(Class), from what I can see. You could always use Ruby to\ngenerate the test classes...\n\nGood luck.\n\n*********** REPLY SEPARATOR  ***********\n\nOn 2002-08-07 at 12:27 james.dobson@... wrote:\n\n&gt;Hi Everyone, \n&gt;\n&gt;Is it possible to automatically add all the tests of a test class to a\n&gt;suite\n&gt;without using &#39;suite.addTestSuite(MyTest.class)&#39;?\n&gt;\n&gt;I have a test class that can test a number of classes from the same\n&gt;hierarchy.  Let&#39;s say for arguments sake that I have created two child\n&gt;classes (ChildA and ChildB) of type JTextComponent and both of them\n&gt;override\n&gt;a number of methods such as setText.  I have a number of tests that\ntest\n&gt;the\n&gt;newly overridden methods.  I have created a constructor for the class\nthat\n&gt;looks something like this:\n&gt;\n&gt;\tpublic MyTest(String name, JTextComponent component)\n&gt;\t{\n&gt;\t\tsuper(name);\n&gt;\t\tthis.component = component;\n&gt;\t}\t\n&gt;\n&gt;My problem is this: I want to run this test twice, once for childA and\nonce\n&gt;for childB.  But I don&#39;t want to type in the tests individually e.g.\n&gt;\n&gt;\tpublic class MyTestClient\n&gt;\t{\n&gt;\t\tpublic static Test suite()\n&gt;\t\t{\n&gt;\t\t\tTestSuite suite = new TestSuite();\n&gt;\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;test1&quot;, new ChildA()));\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;test2&quot;, new ChildA()));\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;test3&quot;, new ChildA()));\n&gt;\t\t\t........\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;testN&quot;, new ChildA()));\n&gt;\n&gt;\t\t\t// Then the same for childB\t\t\t\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;test1&quot;, new ChildB()));\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;test2&quot;, new ChildB()));\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;test3&quot;, new ChildB()));\n&gt;\t\t\t........\n&gt;\t\t\tsuite.addTest(new MyTest(&quot;testN&quot;, new ChildB()));\n&gt;\t\t\treturn suite;\n&gt;\t\t}\n&gt;\t\t  public static void main(String[] args)\n&gt;\t\t  {\n&gt;\t\t    junit.swingui.TestRunner.run(MyTestClient.class);\t\n&gt;\t\t  }\t\n&gt;\t}\n&gt;\n&gt;How I would like to write the suite method is something like this:\n&gt;\n&gt;\tpublic static Test suite()\n&gt;\t{\n&gt;\t\tTestSuite suite = new TestSuite();\n&gt;\n&gt;\t\tsuite.addTest(MyTest.class /** Parameter here to indicate I\n&gt;want to test ChildA */)\n&gt;\t\tsuite.addTest(MyTest.class /** Parameter here to indicate I\n&gt;want to test ChildB */)\n&gt;\t}\n&gt;\n&gt;Hope this is a sensible question!\n&gt;\n&gt;James\n&gt;\n&gt;\n&gt;------------------------ Yahoo! Groups Sponsor\n---------------------~--&gt;\n&gt;Free $5 Love Reading\n&gt;Risk Free!\n&gt;http://us.click.yahoo.com/09Lw8C/PfREAA/Ey.GAA/5cFolB/TM\n&gt;---------------------------------------------------------------------~-\n&gt;\n&gt;\n&gt;To unsubscribe from this group, send an email to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt; \n&gt;\n&gt;Your use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\nAll correspondence (c) 2002 Diaspar Software Services.\nIf you want to use it, just ask; don&#39;t steal.\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 5545, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 5560, 
+    "contentTrasformed": false, 
+    "postDate": "1028785843", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 5545, 
+    "headers": {
+        "inReplyToHeader": "PDE3MTFERjY4NkVBMEQ1MTE5RjBEMDA1MDhCRTk4OEZCMTJFM0FBQENvbmNvcmRlLnJvdHRlcmRhbT4=", 
+        "messageIdInHeader": "PDIwMDIwODA4MDE1MDQzMDc4Ny4wMDIyQUNCRkBzbXRwLnltLnBodWIubmV0LmNhYmxlLnJvZ2Vycy5jb20+", 
+        "referencesHeader": "PDE3MTFERjY4NkVBMEQ1MTE5RjBEMDA1MDhCRTk4OEZCMTJFM0FBQENvbmNvcmRlLnJvdHRlcmRhbT4="
+    }
+}

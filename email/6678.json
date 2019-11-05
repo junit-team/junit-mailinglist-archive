@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 6679, 
+    "senderId": "zvANDi9GSCwA2CHZy9eQRlKmLI5vOT-Qkq9E8-h6mF6e_-suQKPKeT8ZQb10_OFTEcmWuPhARIlhc6d7jaWTOCGeHRZcIFGMi9OSOPudfIo", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] tearDown() even if setUp() throws unexpected exception?", 
+    "from": "&quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "Personally, I d wrap it in a try{}catch{} in the setUp, close the connection and then throw the exception back out. =jason [:question | ^One] ... From: Paul", 
+    "msgId": 6678, 
+    "profile": "jacaetev", 
+    "topicId": 6677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "messageBody": "<div id=\"ygrps-yiv-1737117558\">Personally, I&#39;d wrap it in a try{}catch{} in the setUp, close the<br/>\nconnection and then throw the exception back out.<br/>\n<br/>\n=jason<br/>\n[:question | ^One] <br/>\n<br/>\n-----Original Message-----<br/>\nFrom: Paul Holser &lt;pholser@...&gt; [mailto:pholser@...] <br/>\nSent: Tuesday, January 21, 2003 1:09 PM<br/>\nTo: junit@yahoogroups.com<br/>\nSubject: [junit] tearDown() even if setUp() throws unexpected exception?<br/>\n<br/>\n<br/>\nimagine the following test class:<br/>\n<br/>\n---<br/>\nimport java.sql.*;<br/>\nimport junit.framework.*;<br/>\n<br/>\npublic class FooTest extends TestCase {<br/>\n  private Connection dbConnection;<br/>\n  private Foo aFoo;<br/>\n<br/>\n  protected void setUp() throws Exception {<br/>\n    this.dbConnection = getConnection();  // from somewhere<br/>\n    this.aFoo = new Foo( 23 );  // could throw an exception<br/>\n  }<br/>\n<br/>\n  protected void tearDown() throws Exception {<br/>\n    try {<br/>\n      dbConnection.close();<br/>\n    }<br/>\n    finally {<br/>\n      super.tearDown();<br/>\n    }<br/>\n  }<br/>\n<br/>\n  // test methods here...<br/>\n}<br/>\n---<br/>\n<br/>\nif Foo&#39;s ctor starts throwing exceptions, all of a sudden the test <br/>\nclass is leaking connections, since tearDown() is not called if setUp<br/>\n() throws an unexpected exception.<br/>\n<br/>\nshould the developer exercise extra caution in such circumstances, <br/>\nperhaps by wrapping the remainder of the fixture set up thusly:<br/>\n<br/>\n  try {<br/>\n    // remainder of set up<br/>\n  }<br/>\n  catch ( Exception ex ) {<br/>\n    dbConnection.close();<br/>\n    throw ex;<br/>\n  }<br/>\n<br/>\nor, subclass TestCase and override runBare() to call setUp() in the <br/>\nsame try block as runTest()?<br/>\n<br/>\nhow best to handle this situation?  (let&#39;s suppose for the sake of <br/>\nargument that i&#39;m doing functional testing against a real DBMS and am <br/>\nthus not mocking the connection.)<br/>\n<br/>\nthanks for your guidance.<br/>\n<br/>\ncheers,<br/>\np<br/>\n<br/>\n<br/>\n<br/>\nYahoo! Groups Sponsor<br/>\nADVERTISEMENT<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\njunit-unsubscribe@yahoogroups.com<br/>\n<br/>\n<br/>\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. <br/>\n<br/>\n---<br/>\nOutgoing mail is certified Virus Free.<br/>\nChecked by AVG anti-virus system (http://www.grisoft.com).<br/>\nVersion: 6.0.438 / Virus Database: 246 - Release Date: 1/7/2003</div>", 
+    "prevInTime": 6677, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1043178832", 
+    "canDelete": false, 
+    "nextInTopic": 6681, 
+    "prevInTopic": 6677, 
+    "headers": {
+        "inReplyToHeader": "PGIwazJjais5cjhvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwMDAwMWMyYzE4NiRkNWE1MTcyMCQ5MTljZDY4ZEBSSElOTz4="
+    }
+}

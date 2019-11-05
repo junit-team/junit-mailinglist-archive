@@ -1,0 +1,29 @@
+{
+    "topicId": 262, 
+    "postDate": "981569723", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "kevinb@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "yxKKw9hYeEDiGCjNVQpRTmvXCpUTGFYoNcbRGzokMhgwGYsUgIRCFzubZgxDrrWUUUbA9H7L480", 
+    "nextInTime": 408, 
+    "userId": 0, 
+    "prevInTime": 406, 
+    "prevInTopic": 291, 
+    "headers": {
+        "inReplyToHeader": "PDU5Mzk2QTYzMjJBN0Q0MTFBNDUxMDAwMkIzMEExMjJBNTcwMUJBQGVtYWlsLm1vZGVsdDEuY29tPg==", 
+        "messageIdInHeader": "PDk1czNicithY2FhQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "kevinb@modeln.com", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "Guess what, I finally figured out the problem on my own.  ActiveTestSuite does not *have* the behavior I was describing--it s all in the way I was *using* it! ", 
+    "contentTrasformed": false, 
+    "msgId": 407, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;kevinb@...&gt;\r\nX-Sender: kevinb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_3); 7 Feb 2001 18:16:07 -0000\r\nReceived: (qmail 95333 invoked from network); 7 Feb 2001 18:15:28 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 7 Feb 2001 18:15:28 -0000\r\nReceived: from unknown (HELO jk.egroups.com) (10.1.10.92) by mta1 with SMTP; 7 Feb 2001 18:15:27 -0000\r\nX-eGroups-Return: kevinb@...\r\nReceived: from [10.1.2.117] by jk.egroups.com with NNFMP; 07 Feb 2001 18:15:26 -0000\r\nDate: Wed, 07 Feb 2001 18:15:23 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: ActiveTestSuite confusion - no more!\r\nMessage-ID: &lt;95s3br+acaa@...&gt;\r\nIn-Reply-To: &lt;59396A6322A7D411A4510002B30A122A5701BA@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1741\r\nX-Mailer: eGroups Message Poster\r\nFrom: kevinb@...\r\n\r\nGuess what,\n\nI finally figured out the problem on my own.  ActiveTestSuite does\nnot *have* the behavior I was describing--it&#39;s all in the way I was \n*using* it!\n\nHere&#39;s what I was doing (slightly simplified):\n\n    TestSuite ts = new TestSuite(Foo.class);\n    TestSuite ats = new ActiveTestSuite();\n    for (int i = 0; i &lt; numThreads; i++)\n        ats.addTest(ts);\n\nThis had the undesired effect of having multiple threads share the \nsame TestCase instances.  But all I had to do was change to this:\n\n    TestSuite ats = new ActiveTestSuite();\n    for (int i = 0; i &lt; numThreads; i++)\n        ats.addTest(new TestSuite(Foo.class));\n\n(again, simplified)--and it behaves just like I wanted.\n\nOf *course*.  Now that I&#39;ve found the answer, it seems so obvious!\n\nAttention authors: Can these alternate usage examples be added to the \nActiveTestSuite javadocs?\n\nKevin\n\n\n--- In junit@y..., Kevin Bourrillion &lt;kevinb@m...&gt; wrote:\n&gt; I don&#39;t think I understand ActiveTestSuite.\n&gt; \n&gt; The best I can tell, I should be able to run the same suite\n&gt; simultaneously in multiple threads by doing this:\n&gt; \n&gt;     static Test createThreadedTest(Test test, int numThreads) {\n&gt;         TestSuite ats = new ActiveTestSuite();\n&gt;         for (int i = 0; i &lt; numThreads; i++)\n&gt;             ats.addTest(test);\n&gt;         return ats;\n&gt;     }\n&gt; \n&gt; And this does basically that.  But the problem is, all the threads\n&gt; are acting on the same actual TestCase instances.  Meaning that my\n&gt; test case &quot;firmament&quot; becomes pretty much useless--an object I\n&gt; initialize in setUp() might have been mucked with by another thread\n&gt; by the time I use it!\n&gt; \n&gt; ...\n&gt; \n&gt; So, anyone know how ActiveTestSuite was intended to be used?\n&gt; Documentation is very slight.\n&gt; \n&gt; Thanks!\n&gt; Kevin\n\n\n\n", 
+    "subject": "Re: ActiveTestSuite confusion - no more!"
+}

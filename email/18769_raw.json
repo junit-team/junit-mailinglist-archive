@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 18770, 
+    "senderId": "P_ZMbGLL0VAy9o80RjbrZFhnW4_HHVHoSXlIHxXGul_FqaDj0kytrLPOqcExx8Phab-OnGfPuo7yuE60Di96EZOMO9NVAwXtXTT2HB7ZJjM", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Our tests are not compatibel with JUnit 3.8.1, why?", 
+    "from": "Hans Schwaebli &lt;hans_schwaebli@...&gt;", 
+    "authorName": "Hans Schwaebli", 
+    "msgSnippet": "I try to explain it in a different way. Please look at this: import junit.framework.TestCase; import org.junit.Test; public class MyTest extends TestCase { ", 
+    "msgId": 18769, 
+    "rawEmail": "Return-Path: &lt;hans_schwaebli@...&gt;\r\nReceived: (qmail 48766 invoked from network); 24 Jan 2007 16:01:15 -0000\r\nReceived: from unknown (66.218.67.34)\n  by m39a.grp.scd.yahoo.com with QMQP; 24 Jan 2007 16:01:15 -0000\r\nReceived: from unknown (HELO n5c.bullet.sp1.yahoo.com) (69.147.64.187)\n  by mta8.grp.scd.yahoo.com with SMTP; 24 Jan 2007 16:01:14 -0000\r\nReceived: from [216.252.122.217] by n5.bullet.sp1.yahoo.com with NNFMP; 24 Jan 2007 15:59:42 -0000\r\nReceived: from [66.218.69.6] by t2.bullet.sp1.yahoo.com with NNFMP; 24 Jan 2007 15:59:42 -0000\r\nReceived: from [66.218.66.89] by t6.bullet.scd.yahoo.com with NNFMP; 24 Jan 2007 15:59:42 -0000\r\nX-Sender: hans_schwaebli@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 26375 invoked from network); 24 Jan 2007 14:32:15 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m39a.grp.scd.yahoo.com with QMQP; 24 Jan 2007 14:32:15 -0000\r\nReceived: from unknown (HELO web39714.mail.mud.yahoo.com) (209.191.106.60)\n  by mta9.grp.scd.yahoo.com with SMTP; 24 Jan 2007 14:32:15 -0000\r\nReceived: (qmail 52790 invoked by uid 60001); 24 Jan 2007 14:32:08 -0000\r\nX-YMail-OSG: kdLDkdYVM1n5k4YvvTp6IzvT4XssUj_kbYHgKJw3Ofyu6ozQh3YUrLkKNbYViXBy2GPsFey8A7a6lcCJdg_kGxLMPw--\r\nReceived: from [193.0.248.132] by web39714.mail.mud.yahoo.com via HTTP; Wed, 24 Jan 2007 06:32:07 PST\r\nDate: Wed, 24 Jan 2007 06:32:07 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;4f7da6b90701231051g21ed0f40jaed1ef5e64ecc7df@...&gt;\r\nMIME-Version: 1.0\r\nMessage-ID: &lt;955637.52652.qm@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Hans Schwaebli &lt;hans_schwaebli@...&gt;\r\nSubject: Re: [junit] Our tests are not compatibel with JUnit 3.8.1, why?\r\nX-Yahoo-Group-Post: member; u=296033251; y=lurpbL0YwvqVIZODKHqiH_2ks2NKO8ethQArssgT-Kck4EocznB1gdw\r\nX-Yahoo-Profile: hans_schwaebli\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: copabella &lt;joe@...&gt; via web; 24 Jan 2007 15:59:40 -0000\r\n\r\nI try to explain it in a different way. Please look at this:\n   \n  import junit.framework.TestCase;\n  import org.junit.Test;\n  \n  public class MyTest extends TestCase {\n  @Test\n  public void foo() {\n  }\n  \n  }\n   \n  When I start this test, I get this error message: junit.framework.AssertionFailedError: No tests found in MyTest\n   \n  I run it on Eclipse 3.3 M4 with JUnit 4.2 in classpath.\n\n  As soon as I remove &quot;extends TestCase&quot;, the test runs with no error! But this behaviour is deadly for migrating from JUnit 3 to JUnit 4!\n   \n  I don&#39;t believe that Beck and Gamma did cause such migration problems. Or did they? If not, what is the solution?\n   \n  \nDavid Saff &lt;saff@...&gt; wrote:\n          Hans,\n\nThere may be ways to do what you want. I&#39;d like to be sure I know\nwhat that is, though. It sounds like you&#39;d like to use JUnit 4 to run\nJUnit 3 tests, but having the @Ignore annotation observed. Is this\ntrue? Are there other features you&#39;d like to be able to use? Thanks,\n\nDavid Saff\n\nOn 1/23/07, hans_schwaebli &lt;hans_schwaebli@...&gt; wrote:\n&gt; Our old JUnit tests are written for JUnit 3.8.1.\n&gt;\n&gt; They first extended TestCase. After we introduced JMock, all our\n&gt; TestCases extend MockObjectTestCase.\n&gt;\n&gt; This is because we extend from our own JUnit test helper class which\n&gt; extends from MockObjectTestCase.\n&gt;\n&gt; Now we use the .jar file from JUnit 4.2 and JMock 1.1.\n&gt;\n&gt; But only if we write new tests, which don&#39;t extend MockObjectTestCase\n&gt; and TestCase and insert the method below for Eclipse 3.1.2, the tests\n&gt; are run as JUnit 4 tests. Otherwise they are run as JUnit 3 tests.\n&gt;\n&gt; public static junit.framework.Test suite()\n&gt; {\n&gt; return new JUnit4TestAdapter(MyTest.class);\n&gt; }\n&gt;\n&gt; It would be much work to refactor our old test. I thought it would be\n&gt; easy to use the new JUnit 4 features on them like @Ignore.\n&gt;\n&gt; Why are our tests always run as JUnit 3 tests if they extend from\n&gt; TestCase? Does anyone has a solution for us for using the new JUnit 4\n&gt; features without refactoring our tests very much?\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n         \n\n \n---------------------------------\nTV dinner still cooling?\nCheck out &quot;Tonight&#39;s Picks&quot; on Yahoo! TV.\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "hans_schwaebli", 
+    "topicId": 18760, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 296033251, 
+    "prevInTime": 18768, 
+    "contentTrasformed": false, 
+    "postDate": "1169649127", 
+    "canDelete": false, 
+    "nextInTopic": 18771, 
+    "prevInTopic": 18761, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwMTIzMTA1MWcyMWVkMGY0MGphZWQxZWY1ZTY0ZWNjN2RmQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDk1NTYzNy41MjY1Mi5xbUB3ZWIzOTcxNC5tYWlsLm11ZC55YWhvby5jb20+"
+    }
+}

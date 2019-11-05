@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5214, 
+    "senderId": "rQcWTocjeP12uggUl9GZNhhV__AsN5gUOf5fiKSQivQuiGnDDx7_YKCt9C1FwtAZycDczE33dC8e6G8dPHh9ZeMpSqo", 
+    "systemMessage": false, 
+    "subject": "Re: distinguishing between failures and errors", 
+    "from": "&quot;pholser&quot; &lt;pholser@...&gt;", 
+    "authorName": "pholser", 
+    "msgSnippet": "... good. ... simplifying (the ctor that takes an int kind of misdirects): public void testExceptionExpected() { try { new ArrayList().get( 23 ); fail( Should", 
+    "msgId": 5213, 
+    "profile": "pholser", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 66805313, 
+    "messageBody": "<div id=\"ygrps-yiv-2130938286\">--- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Q: What&#39;s the difference between a failure and an error?<br/>\n&gt; <br/>\n&gt; A:<br/>\n&gt; <br/>\n&gt; Assertions are used to check for the possibility of failures,<br/>\n&gt; therefore failures are anticipated.<br/>\n<br/>\n </span></blockquote>good.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; In the following example, the IndexOutOfBoundsException is expected<br/>\n&gt; and checked with an assertion.  If the expected exception is not<br/>\n&gt; raised, then a failure is produced.  <br/>\n<br/>\n </span></blockquote>simplifying (the ctor that takes an int kind of misdirects):<br/>\n<br/>\npublic void testExceptionExpected() {<br/>\n  try {<br/>\n    new ArrayList().get( 23 );<br/>\n    fail( &quot;Should have thrown IndexOutOfBoundsException&quot; );<br/>\n  }<br/>\n  catch ( IndexOutOfBoundsException success ) {<br/>\n  }<br/>\n}<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Errors are unanticipated problems resulting in uncaught exceptions<br/>\n&gt; being propagated from a test method.  In the following example, the<br/>\n&gt; IndexOutOfBoundsException is not expected. The JUnit framework<br/>\n&gt; produces an error if the IndexOutOfBoundsException, or any other<br/>\n&gt; unchecked exception, is raised.  <br/>\n<br/>\n </span></blockquote>how about changing the example so that IndexOutOfBoundsException<br/>\nshouldn&#39;t be thrown.  plus, IndexOutOfBoundsException is an unchecked<br/>\nexception, so don&#39;t bother with adding it to the throws clause:<br/>\n<br/>\n  public void testExceptionUnexpected() {<br/>\n    List list = new ArrayList();<br/>\n    list.add( &quot;blah&quot; );<br/>\n    assertEquals( &quot;0th element&quot;, &quot;blah&quot;, list.get( 0 ) );<br/>\n  }<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Both failures and errors will cause the test to fail.  However, it<br/>\n&gt; is useful to differentiate between failures and errors because the<br/>\n&gt; debugging process is slightly different.  <br/>\n&gt; <br/>\n&gt; In the first example, the use of fail() will not generate a<br/>\n&gt; complete stack trace including the method that raised the<br/>\n&gt; exception.  In this case that&#39;s sufficient since we anticipate that<br/>\n&gt; the exception will be raised.  If it&#39;s not raised, then it&#39;s a<br/>\n&gt; problem with the test itself.  <br/>\n&gt; <br/>\n&gt; In the second example,  the JUnit framework catches the exception<br/>\n&gt; and generates an error with a complete stack trace for the<br/>\n&gt; exception.  Since we don&#39;t expect this exception to be raised, a<br/>\n&gt; complete stack trace is useful in debugging why it was raised.<br/>\n<br/>\n </span></blockquote>golden.<br/>\n<br/>\ni was struggling with whether checked exceptions advertised in the<br/>\n&quot;throws&quot; clause of a method being tested represented &quot;anticipated&quot;<br/>\nfaults that merited catching and failing the test if caught.<br/>\nafter reading all the discussion here and at the wiki, i&#39;m inclined<br/>\nonly to catch the exception that should be thrown during the course<br/>\nof a test (if any), letting the others propagate out as errors.<br/>\n<br/>\nif that&#39;s the majority opinion of the user community, then i&#39;d go so<br/>\nfar as to mention it in the FAQ...that this leads to test methods<br/>\nthat themselves advertise &quot;throws Exception&quot;, allowing checked<br/>\nexceptions which aren&#39;t anticipated in a given test to be treated as<br/>\nerrors rather than failures, resulting in cleaner code:<br/>\n<br/>\n  public void testReflectiveInstantiation() throws Exception {<br/>\n    MyClass instance = (MyClass) MyClass.class.newInstance();<br/>\n    assertNotNull( instance );<br/>\n  }<br/>\n<br/>\nversus:<br/>\n<br/>\n  public void testReflectiveInstantiation() {<br/>\n    try {<br/>\n      MyClass instance = (MyClass) MyClass.class.newInstance();<br/>\n      assertNotNull( instance );<br/>\n    }<br/>\n    catch ( IllegalAccessException ex ) {<br/>\n      fail( &quot;threw: &quot; + ex );<br/>\n    }<br/>\n    catch ( InvocationTargetException ex ) {<br/>\n      fail( &quot;ctor threw: &quot; + ex.getTargetException() );<br/>\n    }<br/>\n    catch ( ExceptionInInitializerError error ) {<br/>\n      fail( &quot;threw: &quot; + error );<br/>\n    }<br/>\n    catch ( SecurityException ex ) {<br/>\n      fail( &quot;threw: &quot; + ex );<br/>\n    }<br/>\n  }<br/>\n<br/>\nthanks for the enlightenment!<br/>\n<br/>\n--p</div>", 
+    "prevInTime": 5212, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1024499911", 
+    "canDelete": false, 
+    "nextInTopic": 5215, 
+    "prevInTopic": 5212, 
+    "headers": {
+        "inReplyToHeader": "PDNEMEY0NzRGLjYwNDA1MDFAY2xhcmt3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PGFlcTdjNytwODd2QGVHcm91cHMuY29tPg=="
+    }
+}

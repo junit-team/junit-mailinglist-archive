@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8001, 
+    "senderId": "QjMJFS3-85RZrwxnhftV-FyBQDBKc1PJ8es136ojGNLW5yv_mq9GXw23Mxc7y3Yr3-2zWuZAEOCi5fJRaWEDfAjssPwPF7nnRTDJsx6k7yjEXwGAPAdu", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does Static Invocation call setUp()/tearDown()?", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... I don t see why on earth you would write a test by overwriting runTest, but let s take that as an example. If you take a look at the TestCase class, you ll", 
+    "msgId": 8000, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 9 May 2003 03:27:22 -0000\r\nReceived: (qmail 46965 invoked from network); 9 May 2003 03:27:22 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m8.grp.scd.yahoo.com with QMQP; 9 May 2003 03:27:22 -0000\r\nReceived: from unknown (HELO unet.scdi.org) (66.93.79.215)\n  by mta1.grp.scd.yahoo.com with SMTP; 9 May 2003 03:27:22 -0000\r\nReceived: from bossicard.com (adsl-67-116-239-245.dsl.pltn13.pacbell.net [67.116.239.245])\n\t(authenticated bits=0)\n\tby unet.scdi.org (8.12.3/8.12.3/Debian-6.3) with ESMTP id h493RJRe025462\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 8 May 2003 20:27:19 -0700\r\nMessage-ID: &lt;3EBB1FF1.3050303@...&gt;\r\nDate: Thu, 08 May 2003 20:26:41 -0700\r\nUser-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.3) Gecko/20030312\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Does Static Invocation call setUp()/tearDown()?\r\nReferences: &lt;3EBB142E.1080808@...&gt;\r\nIn-Reply-To: &lt;3EBB142E.1080808@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Spam-Status: No\r\nX-Scanned-By: MIMEDefang 2.21 (www . roaringpenguin . com / mimedefang)\r\nFrom: &quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;\r\nX-Yahoo-Group-Post: member; u=43178095\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; However a question came up recently that if you specify the\n&gt; tests by overriding the runTest() method as below (static\n&gt; invocation), that setUp() and tearDown() do not get called\n&gt; for every method, but only get called once.\n\nI don&#39;t see why on earth you would write a test by overwriting runTest, \nbut let&#39;s take that as an example.\n\nIf you take a look at the TestCase class, you&#39;ll notice that it&#39;s in \nfact runBare that calls setUp/tearDown:\n\n\tpublic void runBare() throws Throwable {\n\t\tsetUp();\n\t\ttry {\n\t\t\trunTest();\n\t\t}\n\t\tfinally {\n\t\t\ttearDown();\n\t\t}\n\t}\n\nrunTest is only executing _one single_ method of the TestCase object. \nCreating a TestCase like you do [new MyTest(&quot;Testing runTest()&quot;)] is \nwrong (in a normal case).  The name passed to the TestCase is originally \nthe name of the test method that will be executed.\n\nso you see that overwriting runTest will not prevent the setUp and \ntearDown methods to be invoked.\n\nhth\n\n-Vladimir\n\n-- \nVladimir R. Bossicard\nwww.bossicard.com\n\n\n", 
+    "profile": "vbossica", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "prevInTime": 7999, 
+    "contentTrasformed": false, 
+    "postDate": "1052450801", 
+    "canDelete": false, 
+    "nextInTopic": 8002, 
+    "prevInTopic": 7999, 
+    "headers": {
+        "inReplyToHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4="
+    }
+}

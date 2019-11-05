@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 15437, 
+    "senderId": "QRwBmjDZbeuWuCn5RWKar6sEngtmIEte2LsjpQz5JTEY22Jyl4Bgf51mwFIEeChjNIDXTTjABXgqpc8yOWjEDZHZ_7xa3mlUJtgVpQ", 
+    "systemMessage": true, 
+    "subject": "RE: [junit] Junit NOT failing on fail()", 
+    "from": "Vesa T Vainio &lt;vainio@...&gt;", 
+    "authorName": "Vesa T Vainio", 
+    "msgSnippet": "... Thanks for the answers. I managed to trace the problem to my tearDown() method. The fail() causes teadDown() to be called before it prints its output. In", 
+    "msgId": 15436, 
+    "topicId": 15403, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 245042662, 
+    "messageBody": "<div id=\"ygrps-yiv-546319057\">On Mon, 14 Nov 2005, Bradley, Todd wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Vesa, if what you&#39;re expecting to happen is for a<br/>\n&gt; fail() method (or some assert* method) in your<br/>\n&gt; Runnable to cause a failure to be printed, then<br/>\n&gt; it&#39;s never going to happen.  Short answer is that<br/>\n&gt; assertion (exceptions) can&#39;t get out of the run()<br/>\n&gt; method.  See the JUnit email list archives for<br/>\n&gt; more on this.  Or read a good JUnit book.<br/>\n<br/>\n </span></blockquote>Thanks for the answers. I managed to trace the problem to my tearDown()<br/>\nmethod. The fail() causes teadDown() to be called before it prints its<br/>\noutput. In tearDown() I called the setVisible(false) on a JFrame object,<br/>\nand this call shouldn&#39;t be made from outside the event queue thread, and<br/>\nnow it caused an Exception. So, it was a threading issue.<br/>\n<br/>\nWhat is very counter-intuitive here is that if you get an exception in<br/>\ntearDown method, you don&#39;t get any output at all. Your Ant build thinks<br/>\nthe tests passed. Unless I was misunderstanding something, it would<br/>\nbe another refactoring suggestion to make sure an error is reported when<br/>\nan exception is thrown from tearDown().<br/>\n<br/>\nAs for the fact that you can&#39;t get the _original_ exception out from your<br/>\nRunnable, it&#39;s true, but it&#39;s not the whole truth. I think the important<br/>\npoint here is that as long as my tearDown method works OK, I am able to<br/>\nget _some_ exception out from the Runnable, and thus make my Ant build<br/>\nfail if the test fails.<br/>\n<br/>\nAlso, it&#39;s possible to call the fail() method from inside the Runnable,<br/>\nas long as it is an inner class of TestCase. This is how it looks when I <br/>\ndo that:<br/>\n<br/>\njava.lang.reflect.InvocationTargetException<br/>\n        at java.awt.EventQueue.invokeAndWait(EventQueue.java:851)<br/>\n       ...<br/>\nCaused by: junit.framework.AssertionFailedError<br/>\n       ...<br/>\n<br/>\nSo, I don&#39;t directly get the AssertionFailedError out from Runnable, but I<br/>\ndo get some exception anyway. If I needed the original exception, I could<br/>\nunwrap it from the InvocationTargetException, but I don&#39;t need that here,<br/>\nas the InvocationTargetException is enough to make my build fail<br/>\nappropriately.<br/>\n<br/>\nCurrently it seems that I&#39;m able to handle my simple need with plain<br/>\nJUnit, but I will consider those GUI testing frameworks for more<br/>\ncomprehensive testing.<br/>\n<br/>\nThanks,<br/>\nVesa</div>", 
+    "prevInTime": 15435, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1132006462", 
+    "canDelete": false, 
+    "nextInTopic": 15440, 
+    "prevInTopic": 15433, 
+    "headers": {
+        "inReplyToHeader": "PDc0Mjk3QzVBNkY5MzBCNENCNDBEMzNCRDEyN0U4ODJBNzdFRDI1QFdTVEVYQ0gwMC53ZXN0bWluc3Rlci5wb2x5Y29tLmNvbT4=", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuNTguMDUxMTE1MDAwOTEzMC4xNjAyNEBzYnotMzAuY3MuSGVsc2lua2kuRkk+", 
+        "referencesHeader": "PDc0Mjk3QzVBNkY5MzBCNENCNDBEMzNCRDEyN0U4ODJBNzdFRDI1QFdTVEVYQ0gwMC53ZXN0bWluc3Rlci5wb2x5Y29tLmNvbT4="
+    }
+}

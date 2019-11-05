@@ -1,0 +1,28 @@
+{
+    "topicId": 10334, 
+    "postDate": "1075376355", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Bauduin Raphael &lt;raphael.bauduin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "d1CWvnXtUN8rA2TV8k8awVFhKGKZc_lLsfnlhEUxUsM6I0r-Jlivf2ZGfAA6eJG1WhPkPH1K-jVdP30MVhzgmXH6ohdv8xNZsuGg2CJUazvjpiajvruE", 
+    "nextInTime": 10335, 
+    "userId": 109309043, 
+    "prevInTime": 10333, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDQwMTI5MTEzOTE1LkdBNTI3MEByYXBoYWVsPg=="
+    }, 
+    "authorName": "Bauduin Raphael", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "Hi, I am now developing the tests to validate a database migration. My main class is this one : class TestDatabaseMigration { public static Test suite() { ", 
+    "contentTrasformed": false, 
+    "msgId": 10334, 
+    "nextInTopic": 10337, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;raphael.bauduin@...&gt;\r\nReceived: (qmail 21248 invoked by uid 7800); 29 Jan 2004 22:25:54 -0000\r\nX-Sender: raphael.bauduin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 86531 invoked from network); 29 Jan 2004 11:39:44 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m14.grp.scd.yahoo.com with QMQP; 29 Jan 2004 11:39:44 -0000\r\nReceived: from unknown (HELO smtp3.mail.be.easynet.net) (212.100.160.67)\n  by mta5.grp.scd.yahoo.com with SMTP; 29 Jan 2004 11:39:43 -0000\r\nReceived: from bidibule.office.be.easynet.net ([212.100.163.150])\n\tby smtp3.mail.be.easynet.net with esmtp (Exim 4.22)\n\tid 1AmAWB-0001NS-RA\n\tfor junit@yahoogroups.com; Thu, 29 Jan 2004 12:39:31 +0100\r\nReceived: from rb by bidibule.office.be.easynet.net with local (Exim 3.35 #1 (Debian))\n\tid 1AmAVv-0001Ry-00\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 29 Jan 2004 12:39:15 +0100\r\nDate: Thu, 29 Jan 2004 12:39:15 +0100\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;20040129113915.GA5270@raphael&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.4i\r\nX-eGroups-Remote-IP: 212.100.160.67\r\nFrom: Bauduin Raphael &lt;raphael.bauduin@...&gt;\r\nSubject: database migration: tests organisation\r\nX-Yahoo-Group-Post: member; u=109309043\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 29 Jan 2004 22:25:54 -0000\r\n\r\nHi,\n\nI am now developing the tests to validate a database migration.\n\nMy main class is this one :\n\nclass TestDatabaseMigration {\n\n    public static Test suite() {\n        TestSuite suite= new TestSuite();\n        suite.addTest(CustomersTest.suite());\n        return suite;\n        \n    }\n    public static void main (String[] arg){\n\n        junit.textui.TestRunner.run(suite());\n\n    } \n}\n\nIn the CustomersTest class, I add several tests for each customer, so\nthe number of tests added is growing enormously, all in the same suite.\nI&#39;m afraid I won&#39;t be able to add test indefinitively like that (I juste\nhad a Exception in thread &quot;main&quot; java.lang.OutOfMemoryError, and\nwondered if any of you had any suggestions on how to organise tests.\n\nI&#39;m working with Hibernate. For the last test (with CustomerOrdersQuantity)\nI need to get the orders of the customer that is tested, meaning even\nmore memory consumption.\n\nAnd here is the interesting par of the class CustomersTest.suite():\n    \n\n            //Iterate on source database \n            Iterator iterator = session.iterate(&quot;from Customer&quot;);\n            custdb.hibernate.Customer customerPg;\n            while (iterator.hasNext())\n            {\n                customer=(Customer) iterator.next();\n                //get corresponding customer in destination database\n                customerPg=( custdb.hibernate.Customer) sessionPg.load(custdb.hibernate.Customer.class, customer.getCustomerId());\n                \n                //Test customer name\n                customerSuite.addTest(new CustomerCompanyName(&quot;customer_name_&quot;+customer.getCustomerId(),customer, customerPg));\n                //Test customer VAT\n                customerSuite.addTest(new CustomerVat(&quot;customer_vat_&quot;+customer.getCustomerId(),customer, customerPg));\n                //Test customer description\n                customerSuite.addTest(new CustomerDescription(&quot;customer_description_&quot;+customer.getCustomerId(),customer, customerPg));\n                //Test that both customers have the same amount of orders defined\n                customerSuite.addTest(new CustomerOrdersQuantity(&quot;customer_orders_quantity&quot;+customer.getCustomerId(),customer, customerPg));\n                //i++;\n            }                       \n\n\nThanks for your help!\n\nraph\n\n", 
+    "subject": "database migration: tests organisation"
+}

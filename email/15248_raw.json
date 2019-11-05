@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 79, 
+    "nextInTime": 15249, 
+    "senderId": "eiPokBYhEwqeztBBi_AgLPYdwngMsrSsiLb7S6E4qbz0MJx3_h8ukNFbhUXALvecAtlId0UDYSTopicPyUj9U8XtwLSz0xQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit 4 restructuring", 
+    "from": "Neil Swingler &lt;neil@...&gt;", 
+    "authorName": "Neil Swingler", 
+    "msgSnippet": "... Hi Kent, I have made invokeTestMethod protected in my version of junit. It enables me to introduce the classloader. Here is my code: public class", 
+    "msgId": 15248, 
+    "rawEmail": "Return-Path: &lt;neil@...&gt;\r\nX-Sender: neil@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 52595 invoked from network); 23 Oct 2005 21:38:22 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m31.grp.scd.yahoo.com with QMQP; 23 Oct 2005 21:38:22 -0000\r\nReceived: from unknown (HELO serv01.swingler.ch) (217.162.53.43)\n  by mta5.grp.scd.yahoo.com with SMTP; 23 Oct 2005 21:38:21 -0000\r\nReceived: from notebook.swingler.ch ([192.168.2.101])\n\tby serv01.swingler.ch with esmtp (Exim 3.35 #1 (Debian))\n\tid 1ETnXY-0004tt-00\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 23 Oct 2005 23:38:04 +0200\r\nMessage-ID: &lt;435C02AE.2020709@...&gt;\r\nDate: Sun, 23 Oct 2005 23:37:50 +0200\r\nUser-Agent: Thunderbird 1.4.1 (Windows/20051006)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;E1ET8iS-000234-Dr@...&gt;\r\nIn-Reply-To: &lt;E1ET8iS-000234-Dr@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 2:12:4:0\r\nFrom: Neil Swingler &lt;neil@...&gt;\r\nSubject: Re: [junit] JUnit 4 restructuring\r\nX-Yahoo-Group-Post: member; u=230174996; y=sNp3K_YYhvj3hDce1TSEithP4e6yRTlmcPYbY6vc3P7_GTuHQe4a0A\r\nX-Yahoo-Profile: neil_swingler\r\n\r\n\n\nKent Beck wrote:\n&gt; Neil,\n&gt;\n&gt; Thank you for the example. Would it be sufficient to make\n&gt; invokeTestMethod(Method method) protected so you could subclass\n&gt; TestClassRunner?\n&gt;\n&gt;   \n&gt;&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt;&gt; Behalf Of Neil Swingler\n&gt;&gt;     \n&gt;&gt; decorating a test class TestSuite in JUnit3 but does not offer a \n&gt;&gt; solution to decorating the individual test methods.\n&gt;&gt;\n&gt;&gt; Lets say I code a custom Runner to run each test in it&#39;s own \n&gt;&gt; classloader \n&gt;&gt; but otherwise I want all the other standard JUnit4 annotations to be \n&gt;&gt; respected. I can reuse the TestIntrospector and \n&gt;&gt; TestMethodRunner classes \n&gt;&gt; (although they are in an internal package). But there is \n&gt;&gt; still code in \n&gt;&gt; TestClassRunner to do with exception handling that I will \n&gt;&gt; have to duplicate.\n&gt;&gt;\n&gt;&gt;     \nHi Kent, I have made invokeTestMethod protected in my version of junit. \nIt enables me to introduce the classloader. Here is my code:\n\npublic class ReloadingTestClassRunner extends TestClassRunner {\n    private TestNotifier notifier;\n    private Class&lt;?&gt; testClass;\n\n    public void initialize(TestNotifier notifier,\n            Class&lt;? extends Object&gt; testClass) {\n        super.initialize(notifier, testClass);\n        this.notifier = notifier;\n        this.testClass = testClass;\n    }\n\n    protected void invokeTestMethod(Method method) throws Exception {\n        ClassReloader classReloader = new ClassReloader(\n                (URLClassLoader) testClass\n                        .getClassLoader());\n        Class&lt;?&gt; reloadedClass = classReloader\n                .reload(testClass);\n        Method reloadedMethod = reloadedClass.getMethod(method\n                .getName(), (Class[]) method\n                .getParameterTypes());\n        new TestMethodRunner(reloadedClass.newInstance(),\n                reloadedMethod, this.notifier).run();\n    }\n}\n\n- Neil\n\n", 
+    "profile": "neil_swingler", 
+    "topicId": 15154, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 230174996, 
+    "prevInTime": 15247, 
+    "contentTrasformed": false, 
+    "postDate": "1130103470", 
+    "canDelete": false, 
+    "nextInTopic": 15252, 
+    "prevInTopic": 15247, 
+    "headers": {
+        "inReplyToHeader": "PEUxRVQ4aVMtMDAwMjM0LURyQHNtdHBhdXRoMDYubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4=", 
+        "messageIdInHeader": "PDQzNUMwMkFFLjIwMjA3MDlAc3dpbmdsZXIuY2g+", 
+        "referencesHeader": "PEUxRVQ4aVMtMDAwMjM0LURyQHNtdHBhdXRoMDYubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

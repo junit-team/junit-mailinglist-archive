@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 14126, 
+    "senderId": "jT3ZP1tMVi_JbfNCmGXxLWaQrDq5Aq4kUJcfe0Bl7o00mK01HZ4WBO1VT-nNQRQuuA8iciVfRyMCYA-W3EJhn6oGA-jlyk1C", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] &quot;Bug in JUnit MoneyBag.java example?&quot; found by Jamie Andrews", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Jeff, Thank you for the note. I agree with Jamie Andrews observation. appendTo() in an implementation detail. It needs to be public because it is used ", 
+    "msgId": 14125, 
+    "profile": "kentlbeck", 
+    "topicId": 14067, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-820890150\">Jeff,<br/>\n<br/>\nThank you for the note. I agree with Jamie Andrews&#39; observation. appendTo()<br/>\nin an implementation detail. It needs to be public because it is used<br/>\npolymorphically. It should not be part of the API. One fix is to create a<br/>\nseparate interface just for that one method. Another is to add a warning to<br/>\nthe javadoc.<br/>\n<br/>\nTake care,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute <br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of Jeff Grigg<br/>\n&gt; Sent: Thursday, June 30, 2005 6:52 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] &quot;Bug in JUnit MoneyBag.java example?&quot; found <br/>\n&gt; by Jamie Andrews<br/>\n&gt; <br/>\n&gt; In news:comp.software.extreme-programming, Jamie Andrews reports <br/>\n&gt; finding a possible bug in the MoneyBag example that comes with <br/>\n&gt; JUnit.  See messages with subject &quot;Bug in JUnit MoneyBag.java <br/>\n&gt; example?&quot;.  She found it with the aid of a tool, &quot;RUTE-J&quot; <br/>\n&gt; (Randomized Unit Testing Engine for Java), programmed by her <br/>\n&gt; research group.<br/>\n&gt; <br/>\n&gt; In essence, the &#39;appendTo()&#39; method, in the IMoney interface, as <br/>\n&gt; implemented in the MoneyBag class does not (and cannot) return a new <br/>\n&gt; Money instance if doing appendTo results in a MoneyBag with only one <br/>\n&gt; currency in it.  And in the &#39;equals()&#39; methods of both classes, <br/>\n&gt; Money and MoneyBag objects are considered equal only if both are <br/>\n&gt; zero.  The possiblity of a MoneyBag with only one currency in it is <br/>\n&gt; not considered -- possibly because calling &#39;appendTo()&#39; to put the <br/>\n&gt; object in that state is not considered valid usage.<br/>\n&gt; <br/>\n&gt; I think that &#39;appendTo()&#39; is intended to be an implementation <br/>\n&gt; detail, not a method in a general purpose public interface, but it <br/>\n&gt; is implemented as a public method in the IMoney interface.<br/>\n&gt; <br/>\n&gt; Tests:<br/>\n&gt; <br/>\n&gt;     public void testMoneyBagToMoneyComparison() {<br/>\n&gt;         MoneyBag moneyBagTarget = (MoneyBag)<br/>\n&gt;           MoneyBag.create(new Money(5, &quot;CHF&quot;),  new Money<br/>\n&gt; (5, &quot;USD&quot;)); <br/>\n&gt;         Money minusFiveFrancs = new Money(-5, &quot;CHF&quot;); <br/>\n&gt;         Money fiveBucks = new Money(5, &quot;USD&quot;); <br/>\n&gt;         minusFiveFrancs.appendTo(moneyBagTarget); <br/>\n&gt; <br/>\n&gt;         assertEquals(fiveBucks, moneyBagTarget);  // This fails.<br/>\n&gt;     }<br/>\n&gt;     public void testMoneyBagToMoneyComparison2() {<br/>\n&gt;         MoneyBag moneyBagTarget = (MoneyBag)<br/>\n&gt;           MoneyBag.create(new Money(5, &quot;CHF&quot;),  new Money<br/>\n&gt; (5, &quot;USD&quot;)); <br/>\n&gt;         Money minusFiveFrancs = new Money(-5, &quot;CHF&quot;); <br/>\n&gt;         Money fiveBucks = new Money(5, &quot;USD&quot;); <br/>\n&gt;         minusFiveFrancs.appendTo(moneyBagTarget); <br/>\n&gt; <br/>\n&gt;         assertEquals(moneyBagTarget, fiveBucks);  // This fails.<br/>\n&gt;     }<br/>\n&gt;     public void testMoneyBagToMoneyComparison_add() {<br/>\n&gt;         MoneyBag moneyBagTarget = (MoneyBag)<br/>\n&gt;           MoneyBag.create(new Money(5, &quot;CHF&quot;),  new Money<br/>\n&gt; (5, &quot;USD&quot;)); <br/>\n&gt;         Money minusFiveFrancs = new Money(-5, &quot;CHF&quot;); <br/>\n&gt;         Money fiveBucks = new Money(5, &quot;USD&quot;); <br/>\n&gt; <br/>\n&gt;         IMoney fiveUSD = moneyBagTarget.add(minusFiveFrancs);<br/>\n&gt;         assertEquals(fiveBucks, fiveUSD);<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; A possible &quot;fix:&quot;    ;-&gt;<br/>\n&gt; Add to the FAQ:<br/>\n&gt;  &quot;Q: Is there a bug in the Money sample code?&quot;<br/>\n&gt;  &quot;A: Yes.  See if you can find it.  ;-&gt;&quot;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 14124, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1121359782", 
+    "canDelete": false, 
+    "nextInTopic": 14130, 
+    "prevInTopic": 14069, 
+    "headers": {
+        "inReplyToHeader": "PGRhMHRkcytxZnRpQGVHcm91cHMuY29tPg=="
+    }
+}

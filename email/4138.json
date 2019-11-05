@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 4139, 
+    "senderId": "DgoUV5K8XWs3gbzA3DJZPQDN8d5z0T01lqDaQFlZpsGHbpRVHLKZBL2rSmWrrrMBtel6EzfsyVkqCDBFYvoUhVAmYA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] understanding junit", 
+    "from": "Jim Cheesman &lt;jchees@...&gt;", 
+    "authorName": "Jim Cheesman", 
+    "msgSnippet": "At 09:52 AM 20/02/02, you wrote: 1. It seems all the method names should start with test . Can the method name be testX, where X can be anything? or X", 
+    "msgId": 4138, 
+    "profile": "mogrim", 
+    "topicId": 4116, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 1929146, 
+    "messageBody": "<div id=\"ygrps-yiv-699987113\">At 09:52 AM 20/02/02, you wrote:<br/>\n1. It seems all the method names should start with<br/>\n&quot;test&quot;. Can the method name be testX, where X can be<br/>\nanything? or X necessarily has to be a method of my<br/>\nclass being tested.<br/>\n<br/>\n<br/>\nX can be anything. I usually use something like<br/>\n<br/>\nin the class to be tested:<br/>\nString foo(Object in1, Object in2){...}<br/>\n<br/>\n<br/>\nin the test class:<br/>\npublic void testFooNormalInputs() {}<br/>\npublic void testFooIn1Null() {}<br/>\npublic void testFooIn2Null() {}<br/>\npublic void testFooBothInputsNull() {}<br/>\netc.<br/>\n<br/>\nSome people combine these into one method. That&#39;s more a matter of style <br/>\nthan anything else. (Some of us have it, and some... ;)<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n2. It is not uncommon that the methods of a class<br/>\nrequire a &#39;state&#39; in order for them to be called.<br/>\nand coming to this &#39;state&#39; is often not an easy task.<br/>\nIs the method setUp meant for this purpose? But<br/>\nthen, different methods require a different setup.<br/>\nWhat does junit framework suggest on this issue of<br/>\nhaving setUps and tearDowns for each method?<br/>\n<br/>\nsetUp is guaranteed to be called before each and every test, with tearDown <br/>\ncalled after. The usual thing I do is set up a test instance of the object <br/>\nin setUp, and set it to null in tearDown. (This doesn&#39;t always work, for <br/>\nexample in testing singletons.) Further setup to reach the state ready for <br/>\ntesting would be done in the test method.<br/>\n<br/>\nFor example:<br/>\npublic class Bar {<br/>\n   public Bar(int importantValue) { ... }<br/>\n<br/>\n   public void setImportantValue(int newValue) { ... }<br/>\n   public String foo(Object o1, Object o2) { ... }<br/>\n}<br/>\n<br/>\nin the test class:<br/>\n<br/>\n   private Bar bar;<br/>\n<br/>\n   protected void setUp() {<br/>\n    bar = new Bar(1);<br/>\n   }<br/>\n<br/>\n   public void testFooNormalValues() {<br/>\n     // we know that bar here is clean and fresh:<br/>\n     assertEquals(&quot;foo!&quot;, bar.foo(new Object(), new Object()));<br/>\n   }<br/>\n<br/>\n   public void testFooNullValues() {<br/>\n     // still fresh here:<br/>\n     assertEquals(&quot;Oof!&quot;, bar.foo(null, null));<br/>\n   }<br/>\n<br/>\n   public void testFooNegativeImportantValue() {<br/>\n     // fresh, but not as fresh as we want it:<br/>\n     bar.setImportantValue(-1);<br/>\n     assertEquals(&quot;Oof!&quot;, bar.foo(null, null));<br/>\n   }<br/>\n<br/>\nThe setUp method is more for convenience that anything else: you don&#39;t have <br/>\nto type in/cut &#39;n paste the set up code for your test object in all the <br/>\ntest methods. There&#39;s nothing to stop you from doing so, however, and in <br/>\nsome cases you may need to: for example if you&#39;re testing the constructor.<br/>\n\t<br/>\n<br/>\n<br/>\n3. I do not really think I have understood what<br/>\njunit is. Is the junit framework a spec? Does this<br/>\nreally require a seperate software? I mean, calling<br/>\na sequence of methods of a class is not that non-<br/>\ntrivial. Can somebody explain to me why I should use<br/>\njunit?<br/>\n<br/>\nJUnit helps to test methods, and the state of the tested object after... <br/>\nWhen you have to test a sequence of methods you&#39;re moving into functional <br/>\ntesting - though the boundary is by no means clearly defined.<br/>\nThat said, to test a sequence of methods:<br/>\n1. Test the individual methods<br/>\n2. Test the sequence<br/>\n3. Test calling the object out of sequence: is it unstable after? Perhaps <br/>\nthat indicates that your design is wrong.<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nHTH,<br/>\nJim</div>", 
+    "prevInTime": 4137, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1014206719", 
+    "canDelete": false, 
+    "nextInTopic": 4139, 
+    "prevInTopic": 4135, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwMjIwMDg1MjMxLjEwNjE1LnFtYWlsQHdlYjEzNzAzLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDQuMy4xLjIuMjAwMjAyMjAxMzA1MTAuMDQyYTg4YzhAbHVjYXM+", 
+        "referencesHeader": "PDI5ODhDNTY0MEFFQzJCNDM5QzBGQTZGMkE2MTZCQzRBMTFERUY3QE1BSUwuZnJlbW9udC5jb3JwLnRlcnJhc3ByaW5nLmNvbT4="
+    }
+}

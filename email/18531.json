@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 18532, 
+    "senderId": "7CJGxXsUhbJ6Xf9ofdKrHjAAyyNXF485wlVpUVKRXpqN9VXqwNf08tQ2QgIHxx-9zChPZcXJTMW8ln7CAGVADlYG", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Converting custom TestCase to JUnit 4.0", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "R, I m glad you asked.  There s support for this built right in to JUnit 4.  I d code it as below.  Good luck, David Saff package scratch; import static", 
+    "msgId": 18531, 
+    "profile": "dsaff", 
+    "topicId": 18526, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-814265408\">R,<br/>\n<br/>\nI&#39;m glad you asked.  There&#39;s support for this built right in to JUnit<br/>\n4.  I&#39;d code it as below.  Good luck,<br/>\n<br/>\n   David Saff<br/>\n<br/>\npackage scratch;<br/>\n<br/>\nimport static org.junit.Assert.*;<br/>\n<br/>\nimport java.util.ArrayList;<br/>\nimport java.util.Collection;<br/>\nimport java.util.List;<br/>\n<br/>\nimport org.junit.Test;<br/>\nimport org.junit.runner.RunWith;<br/>\nimport org.junit.runners.Parameterized;<br/>\nimport org.junit.runners.Parameterized.Parameters;<br/>\n<br/>\n@RunWith(Parameterized.class)<br/>\npublic class AccuracyTest {<br/>\n\tprivate final double result, expected;<br/>\n<br/>\n\tpublic AccuracyTest(double result, double expected) {<br/>\n\t\tthis.result = result;<br/>\n\t\tthis.expected = expected;<br/>\n\t}<br/>\n<br/>\n\t@Parameters<br/>\n\tpublic static Collection&lt;Object[]&gt; parameters() {<br/>\n\t\tDatabase db = getDb(); // impl. omitted<br/>\n\t\tfinal double[] results = codeToBeTested(db); // impl. omitted<br/>\n\t\tfinal double[] expected = getResults(db); // impl. omitted<br/>\n\t\tList&lt;Object[]&gt; params = new ArrayList&lt;Object[]&gt;();<br/>\n\t\tfor (int i = 0; i &lt; expected.length; i++) {<br/>\n\t\t\tparams.add(new Object[] { results[i], expected[i] });<br/>\n\t\t}<br/>\n\t\treturn params;<br/>\n\t}<br/>\n<br/>\n\t@Test<br/>\n\tpublic void equalEnough() {<br/>\n\t\tassertEquals(result, expected, 0.01);<br/>\n\t}<br/>\n\t<br/>\n\tpublic static class Database {<br/>\n<br/>\n\t}<br/>\n<br/>\n\tprivate static Database getDb() {<br/>\n\t\treturn null;<br/>\n\t}<br/>\n<br/>\n\tprivate static double[] getResults(Database db) {<br/>\n\t\treturn new double[] { 1.0, 2.0, 3.0 };<br/>\n\t}<br/>\n<br/>\n\tprivate static double[] codeToBeTested(Database db) {<br/>\n\t\treturn new double[] { 1.0, 2.0, 3.2 };<br/>\n\t}<br/>\n}<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 12/11/06, robbiexgibson &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:robbiexgibson@...\">robbiexgibson@...</a>&gt; wrote:<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; I have a functional test which looks roughly like this:<br/>\n&gt;<br/>\n&gt; public class FunctionalTest extends TestCase {<br/>\n&gt;     public static Test suite () throws Exception {<br/>\n&gt;         Database db = getDb(); // impl. omitted<br/>\n&gt;         TestSuite suite = new TestSuite ();<br/>\n&gt;         final double[] results = codeToBeTested(db); // impl. omitted<br/>\n&gt;         final double[] expected = getResults(db); // impl. omitted<br/>\n&gt;         for (int i = 0; i&lt;results.length; i++) {<br/>\n&gt;             suite.addTest(new AccuracyTest(results[i], expected[i]));<br/>\n&gt;         }<br/>\n&gt;         return suite;<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; class AccuracyTest extends TestCase {<br/>\n&gt;     private final double result, expected;<br/>\n&gt;     public AccuracyTest(double result, double expected) {<br/>\n&gt;         this.result = result;<br/>\n&gt;         this.expected = expected;<br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt;     @Override<br/>\n&gt;     protected void runTest() {<br/>\n&gt;         assertEquals(result, expected, 0.01);<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; I understand that I can do my database setup in a method tagged<br/>\n&gt; @BeforeClass. But what about the rest? I don&#39;t understand how I&#39;m<br/>\n&gt; supposed to create tests about which I don&#39;t know everything at<br/>\n&gt; compile time (principally, I don&#39;t know the length of the results<br/>\n&gt; arrays). Am I supposed to create a custom Runner? Custom Description?<br/>\n&gt; Note that I want to have one test per element of the array, not to<br/>\n&gt; fail on the first mismatch between &quot;result&quot; and &quot;expected&quot;.<br/>\n&gt;<br/>\n&gt; Hope you can help!<br/>\n&gt; R<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 18530, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1165934577", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18526, 
+    "headers": {
+        "inReplyToHeader": "PGVsazYzYStvbTFuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDYxMjEyMDY0MnczZTUxMDM5NnYzOWZkNzNkNzI4NmUzNEBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGVsazYzYStvbTFuQGVHcm91cHMuY29tPg=="
+    }
+}

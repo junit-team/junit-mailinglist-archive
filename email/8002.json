@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8003, 
+    "senderId": "UeugPBt5z65PDcyZ1c82syHsGH45owkaST1wW_35PbYr0zEKYN8hQrxRiNBsLztoQVCEm9fJGj7_SpG4fHZzcYI5RPQB9g", 
+    "systemMessage": false, 
+    "subject": "Re: Does Static Invocation call setUp()/tearDown()?", 
+    "from": "quikdraw@...", 
+    "authorName": "quikdraw@GunslingerSoftware.com", 
+    "msgSnippet": "... It does not keep them from being invoked, but they only get invoked once per TestCase, not before and after each test method. Perhaps I was not clear when", 
+    "msgId": 8002, 
+    "profile": "quikdraw2700", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126432822, 
+    "messageBody": "<div id=\"ygrps-yiv-1280664900\">Vladimir R. Bossicard wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;However a question came up recently that if you specify the<br/>\n&gt;&gt;tests by overriding the runTest() method as below (static<br/>\n&gt;&gt;invocation), that setUp() and tearDown() do not get called<br/>\n&gt;&gt;for every method, but only get called once.<br/>\n&gt; <br/>\n&gt; I don&#39;t see why on earth you would write a test by overwriting runTest, <br/>\n&gt; but let&#39;s take that as an example.<br/>\n&gt; <br/>\n&gt; If you take a look at the TestCase class, you&#39;ll notice that it&#39;s in <br/>\n&gt; fact runBare that calls setUp/tearDown:<br/>\n&gt; <br/>\n&gt; \tpublic void runBare() throws Throwable {<br/>\n&gt; \t\tsetUp();<br/>\n&gt; \t\ttry {<br/>\n&gt; \t\t\trunTest();<br/>\n&gt; \t\t}<br/>\n&gt; \t\tfinally {<br/>\n&gt; \t\t\ttearDown();<br/>\n&gt; \t\t}<br/>\n&gt; \t}<br/>\n&gt; <br/>\n&gt; runTest is only executing _one single_ method of the TestCase object. <br/>\n&gt; Creating a TestCase like you do [new MyTest(&quot;Testing runTest()&quot;)] is <br/>\n&gt; wrong (in a normal case).  The name passed to the TestCase is originally <br/>\n&gt; the name of the test method that will be executed.<br/>\n&gt; <br/>\n&gt; so you see that overwriting runTest will not prevent the setUp and <br/>\n&gt; tearDown methods to be invoked.<br/>\n<br/>\n </span></blockquote>It does not keep them from being invoked, but they only get invoked<br/>\nonce per TestCase, not before and after each test method. Perhaps I<br/>\nwas not clear when I stated what I was looking for. I want the behavior<br/>\nthat is:<br/>\n<br/>\nsetUp() -&gt; first test -&gt; tearDown()<br/>\nsetUp() -&gt; next test -&gt; tearDown()<br/>\n...<br/>\nsetUp() -&gt; last test -&gt; tearDown()<br/>\n<br/>\nBut overriding runTest() produces:<br/>\n<br/>\nsetUp() -&gt; first test -&gt; next test -&gt; last test -&gt; tearDown()<br/>\n<br/>\nOnly calling setUp() once before all testXXX() methods, and<br/>\ntearDown() once after all testXXX() methods. The JUnit 3.8.1<br/>\nJavaDoc for TestCase shows the overriding of runTest(), as well<br/>\nas at least one of the other HTML files in the doc/ directory<br/>\nof the 3.8.1 download (I don&#39;t remember which one off hand).<br/>\n<br/>\nI did see the TestCase source you mention above for runBare(),<br/>\nbut as usual it didn&#39;t register to me quite the way it did when<br/>\nyou put it here, isolated from the rest of the class. Don&#39;t you<br/>\njust love pair programming? &lt;G&gt;<br/>\n<br/>\nI think I have figured out how this is supposed to work regarding<br/>\noverriding runTest(). To get setUp()/tearDown() called once per test<br/>\nmethod, only one test method should be added to runTest(), but use<br/>\nof suite() is required to make this behavior fluid.<br/>\n<br/>\nAs far as the name passed to the TestCase not being the test method<br/>\nname, that does work as in my example, if you override runTest().<br/>\nThe test method name can be passed to the constructor to invoke a<br/>\nsingle test method by the programmer, or by the framework when it<br/>\nis executing a TestSuite. At least that&#39;s what I see in the source<br/>\nand when running in the debugger.<br/>\n<br/>\nOnce again, lest y&#39;all think I&#39;m completely nuts, I wasn&#39;t advocating<br/>\nthis approach, just trying to understand the behavior since it is<br/>\nboth possible and documented in the JUnit files.<br/>\n<br/>\nThanks for all the help. Sorry for bogging things down with this<br/>\nsomewhat off the wall question.<br/>\n-- <br/>\nThanks,<br/>\nDerek Lane<br/>\n=====================================<br/>\n--- The Gunslinger<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:quikdraw@...\">quikdraw@...</a></div>", 
+    "prevInTime": 8001, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1052479783", 
+    "canDelete": false, 
+    "nextInTopic": 8004, 
+    "prevInTopic": 8000, 
+    "headers": {
+        "messageIdInHeader": "PDNFQkI5MTI3LjkwODA2MDNAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4=", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4gPDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4="
+    }
+}

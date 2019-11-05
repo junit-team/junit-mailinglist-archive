@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12521, 
+    "senderId": "61bzAytl6W7fgqzlETg4Z4nolmPc0qMs4-_1YEz0KCngwaVtW8BIhk-ED_XykCeGBtaNALiBpQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Multithreading: Testing scheduled method invocation?!", 
+    "from": "&lt;berndq@...&gt;", 
+    "authorName": "berndq@gmx.net", 
+    "msgSnippet": "Hi, as a waring: I am not familiar with the framworks you use. I assume you are waiting for Quartz to call a method in one of your tested code, right? In cases", 
+    "msgId": 12520, 
+    "profile": "bernd_q", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106754364, 
+    "messageBody": "<div id=\"ygrps-yiv-309314873\">Hi, <br/>\n<br/>\nas a waring: I am not familiar with the framworks you use.<br/>\nI assume you are waiting for Quartz to call a method <br/>\nin one of your tested code, right? <br/>\nIn cases like this I call the method directly from the test code.<br/>\n<br/>\nHTH<br/>\n<br/>\nBernd<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: Michael Schuerig [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:michael@...\">michael@...</a>] <br/>\n&gt; Sent: Wednesday, December 22, 2004 1:31 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] Multithreading: Testing scheduled method invocation?!<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I&#39;m working on a class that interacts with the Spring framework&#39;s <br/>\n&gt; application context and the Quartz scheduler. I&#39;m pretty new to the <br/>\n&gt; latter, thus I&#39;m testing my understanding of Quartz just as <br/>\n&gt; much as I&#39;m <br/>\n&gt; testing my code. In effect, I can&#39;t (yet) build the fixture <br/>\n&gt; for my code <br/>\n&gt; completely with mocks as I have to ascertain what these mocks are <br/>\n&gt; supposed to do first.<br/>\n&gt; <br/>\n&gt; The complication here is that Quartz uses its own &quot;hidden&quot; <br/>\n&gt; thread(s) to <br/>\n&gt; fulfill its duties. It is such a thread that effects the <br/>\n&gt; change that I <br/>\n&gt; need to check for. As I don&#39;t want to test Quartz, of course, I&#39;m <br/>\n&gt; content with checking that my scheduled job is executed at <br/>\n&gt; all. Thus I <br/>\n&gt; schedule it for immediate execution, wait for 2 secs to give Quartz <br/>\n&gt; some time before the fixture is torn down again.<br/>\n&gt; <br/>\n&gt; Now, all this works surprisingly well. Still, I don&#39;t like <br/>\n&gt; the part of <br/>\n&gt; waiting some arbitrary time.<br/>\n&gt; <br/>\n&gt; (Thinking break)<br/>\n&gt; <br/>\n&gt; After getting this far, I remembered that Doug Lea&#39;s <br/>\n&gt; concurrency utils <br/>\n&gt; have made their way into J2SE 5.0 and there I found just what <br/>\n&gt; I needed: <br/>\n&gt; java.util.concurrent.CountDownLatch<br/>\n&gt; <br/>\n&gt; Now I have a TestCase that looks in outline like this<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; public class MultiThreadedTest extends TestCase {<br/>\n&gt;     private static CountDownLatch latch;<br/>\n&gt;     private MyMock mock;<br/>\n&gt; <br/>\n&gt;     protected void setUp() {<br/>\n&gt;         latch = new CountDownLatch(1);<br/>\n&gt;         mock = new MyMock();<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public void testMe() throws Exception {<br/>\n&gt;         startSomeWorkInAnotherThread(mock);<br/>\n&gt;         latch.await(); // some timeout might be prudent<br/>\n&gt;         mock.verify();<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;     private static class MyMock implements Whatever {<br/>\n&gt;         private boolean wasCalled = false;<br/>\n&gt; <br/>\n&gt;         public void methodCalledFromOtherThread() {<br/>\n&gt;             wasCalled = true;<br/>\n&gt;             latch.countDown();<br/>\n&gt;         }<br/>\n&gt; <br/>\n&gt;         public void verify() {<br/>\n&gt;             assertTrue(wasCalled);<br/>\n&gt;         }<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I appreciate your comments.<br/>\n&gt; <br/>\n&gt; Michael<br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt; Michael Schuerig                            This is not a false alarm<br/>\n&gt; mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:michael@...\">michael@...</a>                         This is not a test<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.schuerig.de/michael/\">http://www.schuerig.de/michael/</a>                      --Rush, Red Tide<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------ Yahoo! Groups Sponsor <br/>\n&gt; --------------------~--&gt; <br/>\n&gt; Make a clean sweep of pop-up ads. Yahoo! Companion Toolbar.<br/>\n&gt; Now with Pop-Up Blocker. Get it for free!<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/L5YrjA/eSIIAA/yQLSAA/5cFolB/TM\">http://us.click.yahoo.com/L5YrjA/eSIIAA/yQLSAA/5cFolB/TM</a><br/>\n&gt; --------------------------------------------------------------<br/>\n&gt; ------~-&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 12519, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1103698632", 
+    "canDelete": false, 
+    "nextInTopic": 12521, 
+    "prevInTopic": 12519, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg=="
+    }
+}

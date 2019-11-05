@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 882, 
+    "senderId": "pH0xwMlf7N8cTM37TkQGtwyysoINqM0II_u5scAe7rEq2NqldVkM4wrGlerAd4d-5rpq9C2ZCBwSbsqYIzH_T3ZeqHFnPoandSaCG1Tmcw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Best practice with EJB", 
+    "from": "Robert Watkins &lt;robertw@...&gt;", 
+    "authorName": "Robert Watkins", 
+    "msgSnippet": "... This is a nice aim, but it s not always possible. That said, it s still worth striving for. The main problem area is when you want your EJB to leverage the", 
+    "msgId": 881, 
+    "topicId": 870, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1608586175\">\n<html>\n<head>\n \n \n<title>RE: [junit] Best practice with EJB</title>\n</head>\n \n\n<p><font SIZE=\"2\">Vera Peeters writes:</font>\n<br><font SIZE=\"2\">&gt; Implement the important things in normal java classes. You </font>\n<br><font SIZE=\"2\">&gt; can test those easily with JUnit.</font>\n<br><font SIZE=\"2\">&gt; The EJB should be only a very THIN facade into this java </font>\n<br><font SIZE=\"2\">&gt; package. The EJB doesn&#39;t do anything by itself, it only </font>\n<br><font SIZE=\"2\">&gt; redirects the client requests. </font>\n<br><font SIZE=\"2\">&gt; This way, it&#39;s still important that you test the EJBs, </font>\n<br><font SIZE=\"2\">&gt; preferebly in such a way as Robert describes, but you can do</font>\n<br><font SIZE=\"2\">&gt; most of the work by simply running simple JUnit tests on </font>\n<br><font SIZE=\"2\">&gt; normal classes, without having to deploy anything.&nbsp; </font>\n</p>\n\n<p><font SIZE=\"2\">This is a nice aim, but it&#39;s not always possible. That said, it&#39;s still worth striving for.</font>\n</p>\n\n<p><font SIZE=\"2\">The main problem area is when you want your EJB to leverage the container in some way. For example, you might want to lookup another EJB.</font></p>\n\n<p><font SIZE=\"2\">A proto-pattern I&#39;m using for this is to implement a hierarchy like this:</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp;&nbsp; --- BaseRemote</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; /</font>\n<br><font SIZE=\"2\">Base &lt;-- BaseImpl &lt;-- BaseEJB</font>\n</p>\n\n<p><font SIZE=\"2\">BaseHome</font>\n</p>\n<br>\n\n<p><font SIZE=\"2\">The BaseImpl has all the business logic in it, and stub methods to handle EJB services. It&#39;s instantiable and can be used in the test cases (which look at instances of Base, not BaseRemote or BaseImpl). The stub methods don&#39;t do much.</font></p>\n\n<p><font SIZE=\"2\">BaseEJB extends BaseImpl, and overrides the methods where the service hook-ins are needed.</font>\n</p>\n\n<p><font SIZE=\"2\">Please note that it is _very_ important to run your unit tests in the &#39;live&#39; EJB mode as well as the local mode. The behaviour changes can get you in really subtle ways otherwise. Your acceptance tests should probably only run in &#39;live&#39; mode. The aim here is not to abandon testing in the live mode; it&#39;s merely to get enough confidence, for a while, that your code works to let you get along. I personally find it&#39;s okay to have about 80% confidence for a few hours, periodically resetting back to the 99% confidence that the full live tests give me. The increased confidence that running in a live mode all the time is offset by the sheer pain and inconvenience of it. YMMV.</font></p>\n\n<p><font SIZE=\"2\">Robert.</font>\n</p>\n<br>\n\n \n</html></div>", 
+    "prevInTime": 880, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "986281165", 
+    "canDelete": false, 
+    "nextInTopic": 903, 
+    "prevInTopic": 880, 
+    "headers": {
+        "messageIdInHeader": "PDMzQTVFNjk5REFDNEQ0MTE5N0MyMDA1MDhCQUY1MjE3MkE1N0JFQGF1Ym5tc3gwMS5xc2kuY29tLmF1Pg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 3033, 
+    "senderId": "XslFLAQNID33YRylMigxxNqcG6oTbGwZnF5fEt9S85kRpbXx0kUlNUtR2fZX_BNa5yBb-yhtQpbF9Frl8H8UAUQRve0f", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit test for infinite loop", 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "authorName": "Robert Sartin", 
+    "msgSnippet": "... How about taking a little Design by Contract, a little bit of John Carter s suggestions about writing tests and code that are integrated and write a loop", 
+    "msgId": 3032, 
+    "profile": "robert_sartin", 
+    "topicId": 3029, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-572582865\">--- David Corbin &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dcorbin@...\">dcorbin@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; How does one write a unit test that exposes an infinte loop?  Well,<br/>\n&gt; writing one that exposes it isn&#39;t hard.  How do you expose it with <br/>\n&gt; out the test hanging?<br/>\n<br/>\n </span></blockquote>How about taking a little Design by Contract, a little bit of John<br/>\nCarter&#39;s suggestions about writing tests and code that are integrated<br/>\nand write a loop variant, including an assertion that it always<br/>\ndecreases? Having done that to the production code, write a unit test<br/>\nthat exposes the infinite loop. It should be exposed by a violation of<br/>\none of the loop variant assertions causing an Exception (or Error) to<br/>\nbe thrown.<br/>\n<br/>\nA loop variant is usually an expression that results in a non-negative<br/>\ninteger and the assertion is that the loop invariant on pass n through<br/>\na loop must be less than the loop invariant on pass n-1.<br/>\n<br/>\nExample (no compiler check, sorry) assumes assertTrue is available in<br/>\nthe production class, which may or may not be appropriate:<br/>\n<br/>\n  // ...<br/>\n  public void doStuffToElements(final Collection elements) {<br/>\n    int loopVariantNow = elements.size();<br/>\n    int loopVariantBefore = loopInvariantNow + 1;<br/>\n    final Iterator iterator = elements.iterator();<br/>\n    while (iterator.hasNext()) {<br/>\n      assertTrue(&quot;negative loop variant not allowed&quot;, <br/>\n                 loopVariantNow &gt;= 0);<br/>\n      assertTrue(&quot;loop variant must be monotonically decreasing&quot;,<br/>\n                 loopVariantNow &lt; loopVariantBefore);<br/>\n      doStuff(iterator.next());<br/>\n      loopVariantBefore = loopVariantNow;<br/>\n      loopVariantNow--;<br/>\n    }<br/>\n  }<br/>\n  // ...<br/>\n<br/>\nEiffel includes loop variants in the language<br/>\n(<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.eiffel.com/doc/questions/variant.html)\">http://www.eiffel.com/doc/questions/variant.html)</a>. I&#39;m sure someone<br/>\ncould write a decent loop variant class that would better encapsulate<br/>\nthe variants than the code above.<br/>\n<br/>\nThe interesting thing is that I can&#39;t recall ever having written and<br/>\nrun an infinite loop when I make a variant. Of course, having said<br/>\nthat, the above code probably loops infinitely.... I always seem to<br/>\ndiscover the infinite loop while writing the variant and fix it before<br/>\never running the code. Despite that, I don&#39;t usually write variants. I<br/>\nwonder why (seriously) I don&#39;t write them more often.<br/>\n<br/>\nRegards,<br/>\n<br/>\nRob<br/>\n<br/>\n<br/>\n__________________________________________________<br/>\nDo You Yahoo!?<br/>\nMake a great connection at Yahoo! Personals.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://personals.yahoo.com\">http://personals.yahoo.com</a></div>", 
+    "prevInTime": 3031, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1003622256", 
+    "canDelete": false, 
+    "nextInTopic": 3033, 
+    "prevInTopic": 3031, 
+    "headers": {
+        "inReplyToHeader": "PDAzOTkwMWMxNTlhZCQxNjYzYWQ1MCQyN2EzZTljN0BnYXRlcz4=", 
+        "messageIdInHeader": "PDIwMDExMDIwMjM1NzM2LjMyMjgucW1haWxAd2ViMTE2MDMubWFpbC55YWhvby5jb20+"
+    }
+}

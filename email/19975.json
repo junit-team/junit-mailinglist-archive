@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19976, 
+    "senderId": "hkpVTH0mwiYSg8ecmcnB4QTNopwQXKbZhmuSR6vCZmeGr-pWlQ2ZG_-BmXrFW6J1ipkh6UtveBuIMrS5cTpQD-bo30mQMsImqg", 
+    "systemMessage": true, 
+    "subject": "Re: Why does BaseTestRunner require TestCase class rather than the Test interfac", 
+    "from": "&quot;Bruno Felaco&quot; &lt;cfelaco@...&gt;", 
+    "authorName": "Bruno Felaco", 
+    "msgSnippet": "Hi, Rather than explain, I ll let the test case speak for itself: public class CastToTestTest extends TestCase { // Simple concrete extension of BaseTestRunner", 
+    "msgId": 19975, 
+    "profile": "cfelaco", 
+    "topicId": 19971, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106938749, 
+    "messageBody": "<div id=\"ygrps-yiv-1832142976\">Hi,<br/>\n<br/>\nRather than explain, I&#39;ll let the test case speak for itself:<br/>\n<br/>\npublic class CastToTestTest extends TestCase {<br/>\n    // Simple concrete extension of BaseTestRunner<br/>\n    private final class BaseTestRunnerExtension<br/>\n        extends BaseTestRunner <br/>\n    {<br/>\n        protected void runFailed(String message) {}<br/>\n        public void testEnded(String testName) {}<br/>\n        public void testFailed(int status, Test test, Throwable t) {}<br/>\n        public void testStarted(String testName) {}<br/>\n    }<br/>\n<br/>\n    public static class Example implements junit.framework.Test {<br/>\n        public int countTestCases() {return 0;}<br/>\n<br/>\n        public void run(TestResult result) {}<br/>\n        <br/>\n        public static Test suite() {<br/>\n            TestSuite result= new TestSuite();<br/>\n            result.addTest(new Example());<br/>\n            return result;<br/>\n        }<br/>\n    }<br/>\n<br/>\n    public void testRunTestWhichIsNotATestCase() {<br/>\n        Test myTest = new BaseTestRunnerExtension()<br/>\n            .getTest(Example.class.getName());<br/>\n        <br/>\n        // This fails using JUnit 4.4:<br/>\n        assertNotNull(myTest);<br/>\n        assertTrue(myTest instanceof TestSuite);<br/>\n    }<br/>\n}<br/>\n<br/>\n- Bruno<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Kent Beck&quot; &lt;kentb@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Dear Bruno,<br/>\n&gt;  <br/>\n&gt; Thank you for the defect report. I wasn&#39;t able to reproduce exactly<br/>\nthe same<br/>\n&gt; behavior you describe, but JUnit 3 tests don&#39;t work exactly the same<br/>\nas they<br/>\n&gt; did before. For example:<br/>\n&gt;  <br/>\n&gt; public class CastToTestTest {<br/>\n&gt;     public static class Example implements junit.framework.Test {<br/>\n&gt;         public int countTestCases() {<br/>\n&gt;             return 0;<br/>\n&gt;         }<br/>\n&gt;         public void run(TestResult result) {<br/>\n&gt;             // do nothing<br/>\n&gt;         }<br/>\n&gt;         public static junit.framework.Test suite() {<br/>\n&gt;             TestSuite result= new TestSuite();<br/>\n&gt;             result.addTest(new Example());<br/>\n&gt;             return result;<br/>\n&gt;         }<br/>\n&gt;     }<br/>\n&gt;     @Test public void runTestWhichIsNotATestCase() {<br/>\n&gt;         // Doesn&#39;t compile: TestRunner.run(Example.class);<br/>\n&gt;         TestResult result= TestRunner.run(Example.suite());<br/>\n&gt;         assertTrue(result.wasSuccessful());<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; The first line of the test doesn&#39;t compile, which seems like an<br/>\nerror to me,<br/>\n&gt; but the test itself passes without a class cast exception. Did I<br/>\n&gt; misunderstand your report?<br/>\n&gt; <br/>\n&gt; Regards,<br/>\n&gt; <br/>\n&gt; Kent Beck<br/>\n&gt; Three Rivers Institute </span></blockquote></div>", 
+    "prevInTime": 19974, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1192189870", 
+    "canDelete": false, 
+    "nextInTopic": 19976, 
+    "prevInTopic": 19974, 
+    "headers": {
+        "inReplyToHeader": "PDAxMjkwMWM4MGJiMiQ2OTBlMmNjMCQ2ODAxYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "messageIdInHeader": "PGZlbm4zZStpdmNnQGVHcm91cHMuY29tPg=="
+    }
+}

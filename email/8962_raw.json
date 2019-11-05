@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 106, 
+    "nextInTime": 8963, 
+    "senderId": "dGwAfFXZIwHp7Y_6okBZ2klb3Z3eTbwwLd4I1ahgorUuT0L4JinF25K_GrehqWgqkyG-bFQaEvVqC5KrzFvZuDb58bDqcj5jJM7NSmfkog", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ClasspathWalker (even better)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... It occurs to me that to test the second behavior does not require mocking the classpath. We can have a degenerate event/listener design. As the", 
+    "msgId": 8962, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 91041 invoked from network); 1 Aug 2003 16:06:45 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m9.grp.scd.yahoo.com with QMQP; 1 Aug 2003 16:06:45 -0000\r\nReceived: from unknown (HELO fep01-mail.bloor.is.net.cable.rogers.com) (66.185.86.71)\n  by mta3.grp.scd.yahoo.com with SMTP; 1 Aug 2003 16:06:47 -0000\r\nReceived: from barney ([24.156.43.226])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030801160602.BEGV268566.fep01-mail.bloor.is.net.cable.rogers.com@barney&gt;\n          for &lt;junit@yahoogroups.com&gt;; Fri, 1 Aug 2003 12:06:02 -0400\r\nMessage-ID: &lt;200308021206390327.007F1AE5@...&gt;\r\nIn-Reply-To: &lt;200308021150590456.0070C386@...&gt;\r\nReferences: &lt;007e01c357cb$1d56c7f0$2878160a@...&gt;\n &lt;1059742497.2163.85.camel@localhost&gt;\n &lt;200308021121480678.00560C8C@...&gt;\n &lt;3F2A8817.2000006@...&gt;\n &lt;200308021150590456.0070C386@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Sat, 02 Aug 2003 12:06:39 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] ClasspathWalker (even better)\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep01-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Fri, 1 Aug 2003 12:06:02 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt;So said J. B. Rainsberger on 2003-08-02 --------------------\n&gt;I re-read wh=\r\nat I wrote and it was garbage. Let me try again.\n&gt;\n&gt;We have a ClasspathWalk=\r\ner that generates events that some\n&gt;ClasspathwalkerListener consumes and op=\r\nerates on.\n&gt;\n&gt;I suggest testing each of these behaviors in isolation.\n&gt;\n&gt;* =\r\nThe ClasspathWalker correctly walks the classpath.\n&gt;* The ClasspathWalker c=\r\norrectly generates events as it walks the classpath.\n&gt;* The ClasspathWalker=\r\nListener correctly handles the various kinds of\n&gt;ClasspathWalker events\n&gt;\n&gt;=\r\nTo test the first and second behavior, mock the classpath. To test the\n&gt;thi=\r\nrd behavior, simply create events and send them to the listener. No\n&gt;mockin=\r\ng required.\n&gt;\n&gt;That was what I was trying to say. I hope this is clearer an=\r\nd actually\n&gt;makes sense.\n\nIt occurs to me that to test the second behavior =\r\ndoes not require mocking the classpath. We can have a degenerate event/list=\r\nener design.\n\nAs the ClasspathWalker walks the classpath, it calls a method=\r\n to signal that it found something on the classpath. (event source)\n\nThis s=\r\nignal handling method (event listener) then decides which kind of Classpath=\r\nEvent to create and send to the registered ClasspathEventListeners.\n\nIn thi=\r\ns case, you can test the second behavior above without having to actually w=\r\nalk the classpath. Much nicer.\n\nSo the basic design is this:\n\nClasspathWalk=\r\ner\n    walkClasspath(classpathRoot):\n        // iterate over classpath item=\r\ns under the root\n        // invoke foundSomething() with each thing you fin=\r\nd\n\n    ClasspathEvent makeClasspathEvent(foundThing):\n        // decide whi=\r\nch kind of ClasspathEvent to generate\n  \n    foundSomething(foundThing):\n  =\r\n      classpathEvent =3D makeClasspathEvent(foundThing);\n        notifyList=\r\neners(classpathEvent);\n\nClasspathWalkerListener\n    onClasspathEvent(classp=\r\nathEvent)\n\nMy tests would be like this.\n\n* One TestCase class to verify Cla=\r\nsspathWalker.walkClasspath that tries various cases of classpath data; prob=\r\nably a parameterized test case -- however many special cases there are\n\n* O=\r\nne TestCase class to verify ClasspathWalker.makeClasspathEvent for each dif=\r\nferent kind of thing I&#39;d find on the classpath\n\n* foundSomething is too sim=\r\nple to break\n\n* Tests for my implementation of ClasspathWalkerListener: eac=\r\nh test simply sends a ClasspathEvent and verifies the behavior of the liste=\r\nner\n\nThe walkClasspath tests probably need a MockClasspath to walk. Other t=\r\nhan that, no mocks required.\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Softwa=\r\nre Services\nLet&#39;s write software that people understand.\nhttp://www.diaspar=\r\nsoftware.com/\ntelephone: +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 8807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 8961, 
+    "contentTrasformed": false, 
+    "postDate": "1059840399", 
+    "canDelete": false, 
+    "nextInTopic": 8963, 
+    "prevInTopic": 8961, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwODAyMTE1MDU5MDQ1Ni4wMDcwQzM4NkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwODAyMTIwNjM5MDMyNy4wMDdGMUFFNUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDAwN2UwMWMzNTdjYiQxZDU2YzdmMCQyODc4MTYwYUBzeWJhc2UuY29tPiA8MTA1OTc0MjQ5Ny4yMTYzLjg1LmNhbWVsQGxvY2FsaG9zdD4gPDIwMDMwODAyMTEyMTQ4MDY3OC4wMDU2MEM4Q0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4gPDNGMkE4ODE3LjIwMDAwMDZAdGVhbWRla2FkZS5jb20+IDwyMDAzMDgwMjExNTA1OTA0NTYuMDA3MEMzODZAc3NtdHAuYmxvb3IuaXMubmV0LmNhYmxlLnJvZ2Vycy5jb20+"
+    }
+}

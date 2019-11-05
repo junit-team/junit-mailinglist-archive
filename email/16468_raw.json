@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 16469, 
+    "senderId": "mBfM-151gITF7fl7zSH4An3qu1_qdpqCjolYx_jb1vLJ6bnFuhzRYKoAnEOz-pZW5ls6aT1_R37eMpreeqQ93GA2RJBIw7U5UmGRz3BXvw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] help with test methods", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Typically, no. Tests do not invoke other tests. Instead, simply refactor. Start here, with duplication in the tests: public void testAddBookOk() { ", 
+    "msgId": 16468, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 77462 invoked from network); 10 Apr 2006 23:23:37 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m33.grp.scd.yahoo.com with QMQP; 10 Apr 2006 23:23:37 -0000\r\nReceived: from unknown (HELO chilco.textdrive.com) (207.7.108.242)\n  by mta4.grp.scd.yahoo.com with SMTP; 10 Apr 2006 23:23:37 -0000\r\nReceived: from [172.17.198.244] (unknown [208.255.117.67])\n\tby chilco.textdrive.com (Postfix) with ESMTP id 85AEDDBEDE\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 10 Apr 2006 23:24:23 +0000 (UTC)\r\nMessage-ID: &lt;443AE8F9.4010305@...&gt;\r\nDate: Mon, 10 Apr 2006 19:23:37 -0400\r\nUser-Agent: Thunderbird 1.5 (Macintosh/20051201)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20060406173300.11754.qmail@...&gt;\r\nIn-Reply-To: &lt;20060406173300.11754.qmail@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:10:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] help with test methods\r\nX-Yahoo-Group-Post: member; u=127224993; y=BRnLIWN8J1jSXuYAtKPmsJpqSWnT4JaFMU8KmsWpiHfAIS4\r\nX-Yahoo-Profile: nails762\r\n\r\nguilherme mello wrote:\n&gt; Hi...\n&gt;   \n&gt;   I have this method to add a book in library:\n&gt;   \n&gt;   public void testAddBookOk() {\n&gt;         book.setTitleBook(&quot;The lord of rings&quot;);\n&gt;         library.addBook(book);\n&gt; }\n&gt;   \n&gt;   And i have this method to listAllBooks:\n&gt;   \n&gt;       public void testListAllBooks() {\n&gt;         testAddBookOk();\n&gt;         books = library.listAllBooks();\n&gt;        \n&gt;         assertEquals(books.get(0), &quot;The lord of rings&quot;);\n&gt;     }\n&gt;   \n&gt;   is correct I to call the method  testAddBookOk() in the body of \n&gt; testListAllBooks ?\n\nTypically, no. Tests do not invoke other tests. Instead, simply refactor.\n\nStart here, with duplication in the tests:\n\npublic void testAddBookOk() {\n     book.setTitleBook(&quot;The lord of rings&quot;);\n     library.addBook(book);\n}\n\npublic void testListAllBooks() {\n     book.setTitleBook(&quot;The lord of rings&quot;);\n     library.addBook(book);\n     books = library.listAllBooks();\n     assertEquals(books.get(0), &quot;The lord of rings&quot;);\n}\n\nNow we have duplication at the beginning of these tests. Extract this \ncode to setUp():\n\nprotected void setUp() {\n     book.setTitleBook(&quot;The lord of rings&quot;);\n     library.addBook(book);\n}\n\npublic void testAddBookOk() {\n     // what do we assert here?\n}\n\npublic void testListAllBooks() {\n     books = library.listAllBooks();\n     assertEquals(books.get(0), &quot;The lord of rings&quot;);\n}\n\nWhen I do this, I notice that one tests no longer has any code in it. \nThere is usually an assertion in every test. What can we assert here?\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.info\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 16457, 
+    "spamInfo": {
+        "reason": "10", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 16467, 
+    "contentTrasformed": false, 
+    "postDate": "1144711417", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16461, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDYwNDA2MTczMzAwLjExNzU0LnFtYWlsQHdlYjM4MDAxLm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDQ0M0FFOEY5LjQwMTAzMDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDYwNDA2MTczMzAwLjExNzU0LnFtYWlsQHdlYjM4MDAxLm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

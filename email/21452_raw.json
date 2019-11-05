@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 21453, 
+    "senderId": "sKA1feDesaMfVTQsUxzvfll7oYvxYTOQetvxJhev2F4BlCCvz0HaRZAqokaAcEHcl5mluTfrPeo4qlNSzAu5odtq", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ClasspathSuite, JUnit 3.8 mixed with 4.5, big suites and \tmemory leaks", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Giuliano, Let me see if I have the situation clear: Using all 3.8 tests joined in a 3.8 AllTests suite, there are no problems. Using the same tests, with some", 
+    "msgId": 21452, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 46336 invoked from network); 27 Mar 2009 13:04:33 -0000\r\nX-Received: from unknown (69.147.108.200)\n  by m7.grp.re1.yahoo.com with QMQP; 27 Mar 2009 13:04:33 -0000\r\nX-Received: from unknown (HELO mail-qy0-f132.google.com) (209.85.221.132)\n  by mta1.grp.re1.yahoo.com with SMTP; 27 Mar 2009 13:04:32 -0000\r\nX-Received: by qyk38 with SMTP id 38so1825907qyk.16\n        for &lt;junit@yahoogroups.com&gt;; Fri, 27 Mar 2009 06:04:32 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.220.72.139 with SMTP id m11mr569771vcj.32.1238158753077; Fri, \n\t27 Mar 2009 05:59:13 -0700 (PDT)\r\nIn-Reply-To: &lt;gqg9n7+19p7@...&gt;\r\nReferences: &lt;gqg9n7+19p7@...&gt;\r\nDate: Fri, 27 Mar 2009 08:59:12 -0400\r\nX-Google-Sender-Auth: f53dda5859fa5ee7\r\nMessage-ID: &lt;4f7da6b90903270559w6ea40ea8x37f45fb9a04c1c85@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] ClasspathSuite, JUnit 3.8 mixed with 4.5, big suites and \n\tmemory leaks\r\nX-Yahoo-Group-Post: member; u=341876227; y=JYcu-PhwclUBIpqs6HrW9YjGBHRDuLn_SfI666kISus\r\nX-Yahoo-Profile: dsaff\r\n\r\nGiuliano,\n\nLet me see if I have the situation clear:\n\nUsing all 3.8 tests j=\r\noined in a 3.8 AllTests suite, there are no problems.\nUsing the same tests,=\r\n with some converted to 4.5, joined with\nClasspathSuite, you run out of mem=\r\nory.\n\nIs that right?  If so, it&#39;s certainly troubling.  Some questions to\nh=\r\nelp identify a potential JUnit bug:\n\n1) Do you run out of memory if you use=\r\n ClasspathSuite, but skip the 4.5 tests?\n2) Do you run out of memory if you=\r\n replace your AllTests suite with a\n4.5-style Suite?\n\nThanks,\n\n   David\n\nOn=\r\n Thu, Mar 26, 2009 at 12:15 PM, pgbossi &lt;pgbossi@...&gt; wrote:\n&gt; Hi all=\r\n,\n&gt;\n&gt; We are in the process of building/modifying some suites on top of a l=\r\negacy test collections, mostly written with JUnit 3.8. The test code is org=\r\nanized such that every package has an AllTests suite, including all the tes=\r\nts and suites below it.\n&gt;\n&gt; This has the obvious disadvantage of requiring =\r\nmanual maintenance every time you add a new test.\n&gt;\n&gt; I&#39;d say that the rati=\r\no between JUnit 3.8 vs 4.5 tests is 5:1\n&gt;\n&gt; Because of the mixed environmen=\r\nt, we have decided to use excellent ClasspathSuite from Johannes Link: http=\r\n://www.johanneslink.net/projects/cpsuite.html\n&gt;\n&gt; The goal is to get rid of=\r\n AllTests suites.\n&gt;\n&gt; At the root of the system we have a big bang suite, r=\r\nunning 3 sub-suites of roughly 500 tests each (so roughly 1500 tests in tot=\r\nal, half of them are unit tests and the other half are acceptance tests bas=\r\ned on HttpUnit). The big suite runs fine with 196 MB of heap.\n&gt;\n&gt; We have s=\r\ntarted the conversion of one of such suites using ClasspathSuite and it wor=\r\nked fine in isolation, but not as part of the big suite: we consistently ge=\r\nt an OutOfMemory exception indicating saturation of heap space. That happen=\r\ns even increasing the memory available to JUnit.\n&gt;\n&gt; We think that this may=\r\n be caused by JUnit 3.8 runner holding onto every tests until the end. This=\r\n has been exacerbated by using ClasspathSuite. We have tried fixing it by p=\r\natching it with a custom runner as suggested here: http://forum.springframe=\r\nwork.org/archive/index.php/t-64510.html\n&gt;\n&gt; The patch didn&#39;t seem to help e=\r\nven if the fTest references are nulled and we hint gc to run in the subsuit=\r\ne tearDown.\n&gt;\n&gt; Has anybody seen this too?\n&gt; Any suggested workaround and/o=\r\nr best practice?\n&gt;\n&gt; We are currently converting all the 3.8 tests to 4.5 h=\r\noping to provide a more consistent environment, but I&#39;d like to know your t=\r\nake on this.\n&gt;\n&gt; Thanks,\n&gt; Giuliano\n&gt;\n&gt;\n&gt;\n&gt; -------------------------------=\r\n-----\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21449, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21451, 
+    "contentTrasformed": false, 
+    "postDate": "1238158752", 
+    "canDelete": false, 
+    "nextInTopic": 21454, 
+    "prevInTopic": 21449, 
+    "headers": {
+        "inReplyToHeader": "PGdxZzluNysxOXA3QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwMzI3MDU1OXc2ZWE0MGVhOHgzN2Y0NWZiOWEwNGMxYzg1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGdxZzluNysxOXA3QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 16392, 
+    "senderId": "VSx-Tmo3ZvQb5f7Oh94xYvIocE_qBglRqLjPbVtJSRUlCZPKd9DMxp4DYipN5ws9EF1-WTzMDszRZBnP_dquTXRvwto", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] JUnit works great in IDE, how do I run it from a shell?", 
+    "from": "Jan Cumps &lt;j_cumps@...&gt;", 
+    "authorName": "Jan Cumps", 
+    "msgSnippet": "Pat, Netbeans has all prereqs to do this. The default test target in netbeans directs the output to a window. You can find the definition in ", 
+    "msgId": 16391, 
+    "rawEmail": "Return-Path: &lt;j_cumps@...&gt;\r\nReceived: (qmail 31080 invoked from network); 25 Mar 2006 23:26:13 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m35.grp.scd.yahoo.com with QMQP; 25 Mar 2006 23:26:12 -0000\r\nReceived: from unknown (HELO n10a.bullet.dcn.yahoo.com) (216.155.203.233)\n  by mta4.grp.scd.yahoo.com with SMTP; 25 Mar 2006 23:26:09 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [216.155.201.64] by n10.bullet.dcn.yahoo.com with NNFMP; 25 Mar 2006 23:26:08 -0000\r\nReceived: from [66.218.69.6] by t1.bullet.dcn.yahoo.com with NNFMP; 25 Mar 2006 23:26:08 -0000\r\nReceived: from [66.218.66.78] by t6.bullet.scd.yahoo.com with NNFMP; 25 Mar 2006 23:26:08 -0000\r\nX-Sender: j_cumps@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 54457 invoked from network); 23 Mar 2006 14:46:38 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m23.grp.scd.yahoo.com with QMQP; 23 Mar 2006 14:46:38 -0000\r\nReceived: from unknown (HELO web36201.mail.mud.yahoo.com) (209.191.68.227)\n  by mta5.grp.scd.yahoo.com with SMTP; 23 Mar 2006 14:46:38 -0000\r\nReceived: (qmail 87945 invoked by uid 60001); 23 Mar 2006 14:46:36 -0000\r\nMessage-ID: &lt;20060323144636.87943.qmail@...&gt;\r\nReceived: from [195.33.104.5] by web36201.mail.mud.yahoo.com via HTTP; Thu, 23 Mar 2006 14:46:36 GMT\r\nDate: Thu, 23 Mar 2006 14:46:36 +0000 (GMT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;44221B5D.8090503@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Jan Cumps &lt;j_cumps@...&gt;\r\nReply-To: jancumps@...\r\nSubject: Re: [junit] JUnit works great in IDE, how do I run it from a shell?\r\nX-Yahoo-Group-Post: member; u=253029613; y=sKT9GyalWWKpgqaAMbYnUjce4JuiqhAI3IvhzJJ3jmqDjw\r\nX-Yahoo-Profile: j_cumps\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: kentlbeck &lt;kentb@...&gt; via web; 25 Mar 2006 23:26:06 -0000\r\n\r\nPat,\n\nNetbeans has all prereqs to do this.\n\nThe default test target in netbeans directs the output\nto a window.\nYou can find the definition in\n./nbproject/build-impl.xml:\n\n&lt;target name=&quot;-init-macrodef-junit&quot;&gt;\n  &lt;macrodef name=&quot;junit&quot; \n...\n    &lt;junit showoutput=&quot;true&quot; fork=&quot;true&quot; \n...\n      &lt;formatter type=&quot;brief&quot; usefile=&quot;false&quot;/&gt;\n    &lt;/junit&gt;\n...\n  &lt;/macrodef&gt;\n&lt;/target&gt;\n\nYou can override the test target so that it also\nwrites the testresults to disk.\n\n1: Copy the definition from ./nbproject/build-impl.xml\nto ./build.xml, or edit it \n\n2: change formatter :\n      &lt;formatter type=&quot;brief&quot; usefile=&quot;true&quot;/&gt;\n\nYou will find your results as txt files in\n.build/test/results.\n\nCheck the documentation for the Ant task &#39;JUnit&#39; for\nall formatter options:\n\nformatter\nThe results of the tests can be printed in different\nformats. Output will always be sent to a file, unless\nyou set the usefile attribute to false. The name of\nthe file is determined by the name of the test and can\nbe set by the outfile attribute of &lt;test&gt;.\n\n\nGood luck,\nJan\n\n--- Pat Farrell &lt;pfarrell@...&gt; wrote:\n\n&gt; I&#39;ve had great luck with NB 5.0 and junit on my\n&gt; project.\n&gt; But the output goes to the &#39;statistics&#39; window\n&gt; and that can&#39;t be cut and pasted using normal X\n&gt; conventions.\n&gt; (I&#39;m running it on a Mandrivia 2006 box with JRE\n&gt; 5.0)\n&gt; \n&gt; I&#39;d really love to be able to pipe the output of the\n&gt; statistics page so I can send the great results off\n&gt; the my pointy haired bosses.\n&gt; \n&gt; I&#39;ve connected to my project&#39;s main directory, where\n&gt; the\n&gt; build.xml is (and above the nbproject directories)\n&gt; \n&gt; ant test\n&gt; and nearly anything else I can try gets a long\n&gt; message\n&gt; from ant\n&gt; \n&gt; starting out with\n&gt; \n&gt; \n&gt; BUILD FAILED\n&gt;\n/home/pfarrell/aframe/sandbox/src/server/AFrameLib/nbproject/build-impl.xml:459:\n&gt; The following error occurred while executing this\n&gt; line:\n&gt;\n/home/pfarrell/aframe/sandbox/src/server/AFrameLib/nbproject/build-impl.xml:140:\n&gt; Could not create task or type of type: junit.\n&gt; \n&gt; Ant could not find the task or a class this task\n&gt; relies upon.\n&gt; \n&gt; This is common and has a number of causes; the usual\n&gt; solutions are to read the manual pages then download\n&gt; and\n&gt; install needed JAR files, or fix the build file:\n&gt;  - You have misspelt &#39;junit&#39;.\n&gt; \n&gt; \n&gt; [snip]\n&gt; \n&gt; Any clues?\n&gt; \n&gt; thanks\n&gt; Pat\n&gt; -- \n&gt; Pat Farrell\n&gt; http://www.pfarrell.com/\n&gt; \n&gt; \n&gt; \n&gt; \n\n\n\n\t\t\n___________________________________________________________ \nYahoo! Photos � NEW, now offering a quality print service from just 8p a photo http://uk.photos.yahoo.com\n\n\n\n\n", 
+    "profile": "j_cumps", 
+    "topicId": 16371, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 253029613, 
+    "prevInTime": 16390, 
+    "contentTrasformed": false, 
+    "postDate": "1143125196", 
+    "canDelete": false, 
+    "nextInTopic": 16400, 
+    "prevInTopic": 16388, 
+    "headers": {
+        "inReplyToHeader": "PDQ0MjIxQjVELjgwOTA1MDNAcGZhcnJlbGwuY29tPg==", 
+        "messageIdInHeader": "PDIwMDYwMzIzMTQ0NjM2Ljg3OTQzLnFtYWlsQHdlYjM2MjAxLm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

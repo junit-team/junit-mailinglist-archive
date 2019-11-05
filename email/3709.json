@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 3710, 
+    "senderId": "6dv4ABq8y8nGZD5soquryFLAJVJLgaxetG-e47wZibrj770ZYpV_iNLvCgRB5rNkvsWURX73hz8dy1iONpj5afcIADrtW9Qgng", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] failing to generate error on NullPointerException", 
+    "from": "Jesse McConnell &lt;jesse@...&gt;", 
+    "authorName": "Jesse McConnell", 
+    "msgSnippet": "... nope. ... here is my ant target   ", 
+    "msgId": 3709, 
+    "topicId": 3706, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78122391, 
+    "messageBody": "<div id=\"ygrps-yiv-116196879\">On (07/01/02 12:13), Vladimir Bossicard wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; X-eGroups-Return: sentto-2423328-3713-1010434503-jesse=<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gallup.com@...\">gallup.com@...</a><br/>\n&gt; X-Sender: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:vladimir@...\">vladimir@...</a><br/>\n&gt; X-Apparently-To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; X-Sent: 7 Jan 2002 20:15:03 GMT<br/>\n&gt; User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.7) Gecko/20011221<br/>\n&gt; X-Accept-Language: en-us<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; From: Vladimir Bossicard &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:vladimir@...\">vladimir@...</a>&gt;<br/>\n&gt; X-Yahoo-Profile: vbossica<br/>\n&gt; Mailing-List: list <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>; contact <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-owner@yahoogroups.com\">junit-owner@yahoogroups.com</a><br/>\n&gt; Delivered-To: mailing list <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Precedence: bulk<br/>\n&gt; List-Unsubscribe: &lt;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a>&gt;<br/>\n&gt; Date: Mon, 07 Jan 2002 12:13:38 -0800<br/>\n&gt; Subject: Re: [junit] failing to generate error on NullPointerException<br/>\n&gt; Reply-To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; <br/>\n&gt; &gt; Error: <br/>\n&gt; &gt; java.lang.NullPointerException<br/>\n&gt; &gt;         at<br/>\n&gt; &gt; org.apache.xerces.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:996)<br/>\n&gt; &gt;         at com.gallup.g.LanguageHandler.load(LanguageHandler.java:109)<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; The words &quot;.load&quot; and &quot;SAXParser&quot; make me think of a classic ClassLoader <br/>\n&gt; problem.  Because you didn&#39;t mentioned which runner you were using, the <br/>\n&gt; question I have is:<br/>\n&gt; <br/>\n&gt; - are you using the Swing application?<br/>\n<br/>\n </span></blockquote>nope.<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; If you do, you should try the TextUI runner and see if you still have <br/>\n&gt; the same problem.  If the TextUI works fine, you have found the classic <br/>\n&gt; ClassLoader bug.  You can either stick with the TextUI runner or use the <br/>\n&gt; Swing runner with the &quot;reload class&quot; checkbox unchecked.<br/>\n<br/>\n </span></blockquote>here is my ant target<br/>\n<br/>\n   &lt;target name=&quot;test&quot; depends=&quot;compile&quot;&gt;<br/>\n      &lt;junit printsummary=&quot;withOutAndErr&quot; fork=&quot;on&quot; timeout=&quot;120000&quot;<br/>\nhaltonfailure=&quot;no&quot;&gt;<br/>\n         &lt;classpath refid=&quot;classpath&quot;/&gt;<br/>\n         &lt;formatter<br/>\nclassname=&quot;org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter&quot;<br/>\n/&gt;<br/>\n         &lt;batchtest fork=&quot;no&quot; todir=&quot;${test.dir}&quot;&gt;<br/>\n            &lt;fileset dir=&quot;${build.classes.dir}&quot;&gt;<br/>\n               &lt;include name=&quot;**/*$TEST.class&quot; /&gt;<br/>\n            &lt;/fileset&gt;<br/>\n         &lt;/batchtest&gt;<br/>\n      &lt;/junit&gt;<br/>\n   &lt;/target&gt;<br/>\n<br/>\n<br/>\nAnd here is the main of the inner class:<br/>\n<br/>\npublic static void main( String args[] ) {<br/>\n         junit.textui.TestRunner.run( suite() );<br/>\n      }<br/>\n<br/>\nI have never used the swing UI since I run all the tests automated on a<br/>\nfew different computers with tinderbox.<br/>\n<br/>\nIs there any other information I could supply?<br/>\n<br/>\nAnd do you have a link to the Classic Classloader problem you were<br/>\ntalking about?<br/>\n<br/>\nJesse<br/>\n<br/>\nP.S. I was poking through the ant bugs looking if this might be<br/>\nsomething from ant itself...no dice though.<br/>\n<br/>\n-- <br/>\nJesse McConnell\t\t\t\t&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jesse@...\">jesse@...</a>&gt;<br/>\nThe Gallup Organization\t\t\t(402) 486-6987</div>", 
+    "prevInTime": 3708, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1010435261", 
+    "canDelete": false, 
+    "nextInTopic": 3710, 
+    "prevInTopic": 3707, 
+    "headers": {
+        "inReplyToHeader": "PDNDM0EwMTcyLjMwMTA2QGJvc3NpY2FyZC5jb20+OyBmcm9tIHZsYWRpbWlyQGJvc3NpY2FyZC5jb20gb24gTW9uLCBKYW4gMDcsIDIwMDIgYXQgMTI6MTM6MzhQTSAtMDgwMA==", 
+        "messageIdInHeader": "PDIwMDIwMTA3MTQyNzQxLkIzNzczQGdhbGx1cC5jb20+", 
+        "referencesHeader": "PDIwMDIwMTA3MTQwMDE4LkEzNzczQGdhbGx1cC5jb20+IDwzQzNBMDE3Mi4zMDEwNkBib3NzaWNhcmQuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 17338, 
+    "senderId": "3eWb9mEJvptO76tmTEY8bNFEzRCrOFDTG5dDP9vnwB-XsQDyoa_Q9YeHXMr3wIhI-NDxMWmXR4cqHA0GlW3H3KOyI4cUZZoz4qwWoT4cAwE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing Contexts", 
+    "from": "&quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt;", 
+    "authorName": "Lasse Koskela", 
+    "msgSnippet": "Hi Danno, ... I m not sure what you mean by VelocityContext relying on an underlying classloader(?) but I d like to add a little something about mocking the", 
+    "msgId": 17337, 
+    "rawEmail": "Return-Path: &lt;lasse.koskela@...&gt;\r\nX-Sender: lasse.koskela@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 96175 invoked from network); 7 Aug 2006 22:28:19 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m32.grp.scd.yahoo.com with QMQP; 7 Aug 2006 22:28:19 -0000\r\nReceived: from unknown (HELO py-out-1112.google.com) (64.233.166.177)\n  by mta2.grp.scd.yahoo.com with SMTP; 7 Aug 2006 22:28:19 -0000\r\nReceived: by py-out-1112.google.com with SMTP id f28so889258pyf\n        for &lt;junit@yahoogroups.com&gt;; Mon, 07 Aug 2006 15:28:13 -0700 (PDT)\r\nReceived: by 10.65.59.20 with SMTP id m20mr8905272qbk;\n        Mon, 07 Aug 2006 15:28:13 -0700 (PDT)\r\nReceived: by 10.64.112.3 with HTTP; Mon, 7 Aug 2006 15:28:13 -0700 (PDT)\r\nMessage-ID: &lt;3975e2d10608071528g4a92d12fieab795dceca30fed@...&gt;\r\nDate: Tue, 8 Aug 2006 01:28:13 +0300\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;eb0c37+hqbu@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;eb0c37+hqbu@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt;\r\nSubject: Re: [junit] Unit testing Contexts\r\nX-Yahoo-Group-Post: member; u=190530936; y=LUuU11gKBvvob4ZNLJIMZTx4o6kWyCn8VNleHykIhJWQ-e5c-IU8\r\nX-Yahoo-Profile: lassekoskela\r\n\r\nHi Danno,\n\nOn 8/4/06, DanHinojosa &lt;newsreader@...&gt; wrote:\n&gt;  VelocityContext context = new VelocityContext();\n&gt;              context.put(&quot;requestMap&quot;, requestMap);\n&gt;              StringWriter w = new StringWriter();\n&gt;              Velocity.mergeTemplate(&quot;mytemplate.vm&quot;, &quot;UTF-8&quot;, context, w);\n&gt;              String text = w.toString();\n&gt;\n&gt;  InitialContext ic = new InitialContext();\n&gt;              Session session = (Session) ic.find(&quot;mail/MailSource&quot;);\n&gt;              Message msg = new MimeMessage(session);\n&gt;              msg.setContent(text, &quot;text/plain&quot;);\n&gt;\n&gt;  If I create a testFoo method to test this I am out of luck.   This is\n&gt;  because the Velocity Context relies on an underlying classloader.  The\n&gt;   InitialContext relies on an underlying Java EE context. Again, this\n&gt;  is a UNIT TEST, and not an integration or system test.  So what is the\n&gt;  best way to do get good test coverage on this?  Shall I extract the\n&gt;  code into another class that I can inject my InitialContext mocks and\n&gt;  my VelocityContext mocks through there?\n\nI&#39;m not sure what you mean by VelocityContext relying on an underlying\nclassloader(?) but I&#39;d like to add a little something about mocking\nthe InitialContext to Joakim&#39;s points about abstracting things a bit.\n\nThe open source MockEJB project (http://www.mockejb.org) includes a\nhandy little class named &quot;MockContextFactory&quot;. With that, you can do\nsomething like this:\n\nimport org.mockejb.jndi.MockContextFactory;\n\npublic class TestingJndiStuffWithMockContextFactory {\n    @Before\n    public void initializeMockInitialContext() {\n        MockContextFactory.setAsInitial();\n\n        // bind whatever objects you want into the JNDI tree\n        InitialContext context = new InitialContext();\n        context.bind(&quot;whatever&quot;, new MockWhatever());\n    }\n\n    @After\n    public void resetInitialContext() {\n         MockContextFactory.revertSetAsInitial();\n    }\n}\n\n\n-Lasse-\n\n", 
+    "profile": "lassekoskela", 
+    "topicId": 17327, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190530936, 
+    "prevInTime": 17336, 
+    "contentTrasformed": false, 
+    "postDate": "1154989693", 
+    "canDelete": false, 
+    "nextInTopic": 17369, 
+    "prevInTopic": 17330, 
+    "headers": {
+        "inReplyToHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDM5NzVlMmQxMDYwODA3MTUyOGc0YTkyZDEyZmllYWI3OTVkY2VjYTMwZmVkQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg=="
+    }
+}

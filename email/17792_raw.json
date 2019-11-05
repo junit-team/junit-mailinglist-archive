@@ -1,0 +1,30 @@
+{
+    "topicId": 17266, 
+    "postDate": "1157453155", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "320eXZFNTuhv-6RrBAFavRlW8BlrQSOZcMI7wkqz3cxjUgWYMUCwy_fHJ-CIV84nBCeT01w1GEbdmQWkeUl2u3Y9BphWOjSsdaEwqxMcAw", 
+    "nextInTime": 17793, 
+    "userId": 12653864, 
+    "prevInTime": 17791, 
+    "prevInTopic": 17791, 
+    "headers": {
+        "inReplyToHeader": "PDQ0RkNBREE0LjUwNDA2QG1pbmRzcHJpbmcuY29tPg==", 
+        "messageIdInHeader": "PDQ0RkQ1NTYzLjgwMzA5MDhAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "referencesHeader": "PGI4NmI2YTljMDYwOTA0MDkzOW0xM2M3OWQ0OXg4OGU4YzAxNTYyZTkyODQ4QG1haWwuZ29vZ2xlLmNvbT4JIDwyMDA2MDkwNDIwNTcxNi42MTk4OS5xbWFpbEB3ZWI2MDcxNC5tYWlsLnlhaG9vLmNvbT4gPGI4NmI2YTljMDYwOTA0MTUxMHY0OGEzZDI0M2plZDM0N2I1MTBjMTUwM2FlQG1haWwuZ29vZ2xlLmNvbT4gPDQ0RkNBOUJFLjgwMzA1MDBAbWV0YWxhYi51bmMuZWR1PiA8NDRGQ0FEQTQuNTA0MDZAbWluZHNwcmluZy5jb20+"
+    }, 
+    "authorName": "Elliotte Harold", 
+    "numMessagesInTopic": 287, 
+    "msgSnippet": "... True. That s why I agree with Meyer that postconditions do not need to be checked at runtime, and can be replaced by tests. Meyer s quite clear that", 
+    "contentTrasformed": false, 
+    "msgId": 17792, 
+    "nextInTopic": 17793, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;elharo@...&gt;\r\nX-Sender: elharo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 56017 invoked from network); 5 Sep 2006 10:45:59 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m21.grp.scd.yahoo.com with QMQP; 5 Sep 2006 10:45:59 -0000\r\nReceived: from unknown (HELO mail5.sea5.speakeasy.net) (69.17.117.7)\n  by mta6.grp.scd.yahoo.com with SMTP; 5 Sep 2006 10:45:59 -0000\r\nReceived: (qmail 8817 invoked from network); 5 Sep 2006 10:45:58 -0000\r\nReceived: from dsl254-067-087.nyc1.dsl.speakeasy.net (HELO [192.168.254.100]) (elharo@[216.254.67.87])\n          (envelope-sender &lt;elharo@...&gt;)\n          by mail5.sea5.speakeasy.net (qmail-ldap-1.03) with AES256-SHA encrypted SMTP\n          for &lt;junit@yahoogroups.com&gt;; 5 Sep 2006 10:45:58 -0000\r\nMessage-ID: &lt;44FD5563.8030908@...&gt;\r\nDate: Tue, 05 Sep 2006 06:45:55 -0400\r\nUser-Agent: Thunderbird 1.5.0.5 (Macintosh/20060719)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;b86b6a9c0609040939m13c79d49x88e8c01562e92848@...&gt;\t &lt;20060904205716.61989.qmail@...&gt; &lt;b86b6a9c0609041510v48a3d243jed347b510c1503ae@...&gt; &lt;44FCA9BE.8030500@...&gt; &lt;44FCADA4.50406@...&gt;\r\nIn-Reply-To: &lt;44FCADA4.50406@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Elliotte Harold &lt;elharo@...&gt;\r\nSubject: Re: [junit] Re: Test-friendly, but not caller-friendly?\r\nX-Yahoo-Group-Post: member; u=12653864; y=ncqqrRBfGNO357wC7mUQHIIbI-PJEi-C4-gse1oTfixrYvRV\r\n\r\nMichael Feathers wrote:\n\n&gt; I think the line is fuzzier than that.  Postconditions don&#39;t verify the \n&gt; client. \n&gt; \n\nTrue. That&#39;s why I agree with Meyer that postconditions do not need to \nbe checked at runtime, and can be replaced by tests. Meyer&#39;s quite clear \nthat postconditions and preconditions are quite different things. A \nprecondition failure is a client bug. A postcondition failure is a \nprovider bug. Provider bugs can be addressed by provider testing. Client \n  bugs cannot be.\n\nClass invariants, I suppose, can fall in either camp. If the class \nmaintains its invariants provided all preconditions are satisfied, then \nit doesn&#39;t need to be verified except through testing. However, if \nmethod invocations that satisfy individual preconditions can together \nviolate the class invariant, then you&#39;d need to check the invariant at \nruntime. For example, imagine a Money class with both a setDollars and a \nsetCents method. Both dollars and cents can be negative, zero, or \npositive. However, if one is negative the other must be nonPositive and \nif one is positive, the other must be nonNegative. There the invariant \ncrosses the boundaries between the methods. I prefer to avoid this if \npossible, but sometimes it happens.\n\n\n&gt; The sneaky thing about DbC is that if you want to use its assertions \n&gt; essentially as tests you have to exercise your code.  It&#39;s not just a \n&gt; matter of writing the assertions.  When you test, the code that you \n&gt; write is the exercising code, and you can test both clients and \n&gt; providers.  Not saying that DbC is bad, just that I wouldn&#39;t want to \n&gt; rely on its assertion mechanism rather than tests.  \n\nOne of the things I write unit tests for is the proper behavior of the \nmethods in the face of a precondition violation. (Usually that&#39;s \nthrowing an exception.)\n\n&gt; On the other hand, I \n&gt; feel oddly comfortable writing code with lots of tests and no embedded \n&gt; DbC constructs.\n\nYou&#39;re perhaps not worrying about other programmers using your code with \nno tests, or other programmers trying to break your security and do bad \nthings with your code. I am quite uncomfortable thinking about such \nthings. That&#39;s why I check my preconditions rigorously.\n\n-- \n﻿Elliotte Rusty Harold  elharo@...\nJava I/O 2nd Edition Just Published!\nhttp://www.cafeaulait.org/books/javaio2/\nhttp://www.amazon.com/exec/obidos/ISBN=0596527500/ref=nosim/cafeaulaitA/\n\n", 
+    "subject": "Re: [junit] Re: Test-friendly, but not caller-friendly?"
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 9101, 
+    "postDate": "1060837685", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "nAEmx8kulKDnrbFaAJHrviJ5nd16BmFQ1URgKehGHBDtf1fuhAwNH9B9GYGrZQkIY1-1f7fCHxjFTBcgCMD_vp8__6VL_fIcV3g", 
+    "nextInTime": 9104, 
+    "userId": 106503903, 
+    "prevInTime": 9102, 
+    "prevInTopic": 9102, 
+    "headers": {
+        "inReplyToHeader": "PGJoZHFrYitkZjJuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ5NTIwODc4LUNFMTUtMTFENy05QzEzLTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4="
+    }, 
+    "authorName": "Timothy Wall", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "Your Server throws an exception on its own thread (that s all fail does, read the source).  In the absence of anyone else catching it, its ThreadGroup will", 
+    "contentTrasformed": false, 
+    "msgId": 9103, 
+    "nextInTopic": 9106, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;twall@...&gt;\r\nX-Sender: twall@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 6294 invoked from network); 14 Aug 2003 05:08:04 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m16.grp.scd.yahoo.com with QMQP; 14 Aug 2003 05:08:04 -0000\r\nReceived: from unknown (HELO out001.verizon.net) (206.46.170.140)\n  by mta3.grp.scd.yahoo.com with SMTP; 14 Aug 2003 05:08:04 -0000\r\nReceived: from oculustech.com ([141.149.178.231]) by out001.verizon.net\n          (InterMail vM.5.01.05.33 201-253-122-126-133-20030313) with ESMTP\n          id &lt;20030814050804.XQTG12592.out001.verizon.net@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Thu, 14 Aug 2003 00:08:04 -0500\r\nDate: Thu, 14 Aug 2003 01:08:05 -0400\r\nSubject: Re: [junit] Simple multithreaded test case\r\nContent-Type: text/plain; delsp=yes; charset=US-ASCII; format=flowed\r\nMime-Version: 1.0 (Apple Message framework v552)\r\nTo: junit@yahoogroups.com\r\nContent-Transfer-Encoding: 7bit\r\nIn-Reply-To: &lt;bhdqkb+df2n@...&gt;\r\nMessage-Id: &lt;49520878-CE15-11D7-9C13-003065BF83DA@...&gt;\r\nX-Mailer: Apple Mail (2.552)\r\nX-Authentication-Info: Submitted using SMTP AUTH at out001.verizon.net from [141.149.178.231] at Thu, 14 Aug 2003 00:08:03 -0500\r\nFrom: Timothy Wall &lt;twall@...&gt;\r\nX-Yahoo-Group-Post: member; u=106503903\r\n\r\nYour Server throws an exception on its own thread (that&#39;s all fail  \ndoes, read the source).  In the absence of anyone else catching it, its  \nThreadGroup will handle it in uncaughtException.  It never reaches the  \nJUnit thread that is actually running your test.\n\nYou need to  have your server thread signal the failure to the JUnit  \nthread.  This could be as simple as setting a flag that gets checked  \njust before your main testXXX method returns.\n\nOn Wednesday, August 13, 2003, at 12:56 PM, vocaro2000 wrote:\n\n&gt; Hi everyone,\n&gt;\n&gt; This topic may have been discussed before, but I couldn&#39;t find it\n&gt; anywhere in the FAQ, the forums, or the docs. (The GroboUtils package\n&gt; is related to this but doesn&#39;t seem to specifically address my\n&gt; question.) The issue is this code:\n&gt;\n&gt; import junit.framework.*;\n&gt;\n&gt; public class ThreadTest extends TestCase\n&gt; {\n&gt;    class Server extends Thread\n&gt;    {\n&gt;       public void run()\n&gt;       {\n&gt;          fail(&quot;The server failed its test case&quot;);\n&gt;\n&gt;          synchronized (this)\n&gt;          {\n&gt;             notifyAll();\n&gt;          }\n&gt;       }\n&gt;    }\n&gt;\n&gt;    Server server;\n&gt;\n&gt;    public ThreadTest(String name)\n&gt;    {\n&gt;       super(name);\n&gt;\n&gt;       server = new Server();\n&gt;    }\n&gt;\n&gt;    protected void setUp()\n&gt;    {\n&gt;       try\n&gt;       {\n&gt;          server.start();\n&gt;\n&gt;          synchronized (server)\n&gt;          {\n&gt;             server.wait();\n&gt;          }\n&gt;       }\n&gt;       catch (Exception e)\n&gt;       {\n&gt;          fail(e.toString());\n&gt;       }\n&gt;    }\n&gt;\n&gt;    public void testSomething() {}\n&gt; }\n&gt;\n&gt; And here&#39;s an Ant file for your convenience:\n&gt;\n&gt; &lt;project name=&quot;Thread Test&quot; default=&quot;compile&quot;&gt;\n&gt;\n&gt;    &lt;target name=&quot;compile&quot;&gt;\n&gt;       &lt;javac srcdir=&quot;.&quot;/&gt;\n&gt;    &lt;/target&gt;\n&gt;\n&gt;    &lt;target name=&quot;runtest&quot;&gt;\n&gt;       &lt;junit printsummary=&quot;true&quot;&gt;\n&gt;          &lt;test name=&quot;ThreadTest&quot;/&gt;\n&gt;       &lt;/junit&gt;\n&gt;    &lt;/target&gt;\n&gt;\n&gt; &lt;/project&gt;\n&gt;\n&gt; When you look at the source code, it seems quite clear that the test\n&gt; case should always fail. This is not what happens, however. Although\n&gt; JUnit prints the correct assertion failure to System.out, it doesn&#39;t\n&gt; report any failures. It thinks that the test succeeded. Is this a bug\n&gt; in JUnit, or am I just not understanding how it works?\n&gt;\n&gt; Thanks for any pointers,\n&gt;\n&gt; Trevor\n&gt;\n&gt;\n&gt;\n&gt; ------------------------ Yahoo! Groups Sponsor  \n&gt; ---------------------~--&gt;\n&gt; Buy Ink Cartridges or Refill Kits for Your HP, Epson, Canon or Lexmark\n&gt; Printer at Myinks.com. Free s/h on orders $50 or more to the US &  \n&gt; Canada. http://www.c1tracking.com/l.asp?cid=5511\n&gt; http://us.click.yahoo.com/l.m7sD/LIdGAA/qnsNAA/5cFolB/TM\n&gt; --------------------------------------------------------------------- \n&gt; ~-&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to  \n&gt; http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "subject": "Re: [junit] Simple multithreaded test case"
+}

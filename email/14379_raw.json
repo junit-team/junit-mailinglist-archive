@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 14380, 
+    "senderId": "-I3OnDfNtJS2xpP-a8dgnVP2mcj2HlxWYxblf_TRUoHVW-8ziNwPJc0pNXby2ftqpeHI5mRMIDlZqeXIh_rFaqT8_Si-FMZNcqU", 
+    "systemMessage": false, 
+    "subject": "Testing a log rotation method", 
+    "from": "Asif Sattar &lt;sattar_asif@...&gt;", 
+    "authorName": "Asif Sattar", 
+    "msgSnippet": "Hi everyone I m trying to get my unit test that tests log rotation functionality to work and it doesn t seem to do it properly...the log rotation method itself", 
+    "msgId": 14379, 
+    "rawEmail": "Return-Path: &lt;sattar_asif@...&gt;\r\nX-Sender: sattar_asif@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 45741 invoked from network); 18 Aug 2005 18:16:07 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m27.grp.scd.yahoo.com with QMQP; 18 Aug 2005 18:16:07 -0000\r\nReceived: from unknown (HELO web30002.mail.mud.yahoo.com) (68.142.200.65)\n  by mta2.grp.scd.yahoo.com with SMTP; 18 Aug 2005 18:16:07 -0000\r\nReceived: (qmail 77948 invoked by uid 60001); 18 Aug 2005 18:16:02 -0000\r\nMessage-ID: &lt;20050818181602.77946.qmail@...&gt;\r\nReceived: from [195.194.4.65] by web30002.mail.mud.yahoo.com via HTTP; Thu, 18 Aug 2005 11:16:02 PDT\r\nDate: Thu, 18 Aug 2005 11:16:02 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;4304C549.5030007@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Asif Sattar &lt;sattar_asif@...&gt;\r\nSubject: Testing a log rotation method\r\nX-Yahoo-Group-Post: member; u=46895256; y=1Noa5hzO6L3oZyweG7pm2oWrbkyuYcwuR0RUdHAuLytnyPDm92c\r\nX-Yahoo-Profile: sattar_asif\r\n\r\nHi everyone\n\nI&#39;m trying to get my unit test that tests log rotation\nfunctionality to work and it doesn&#39;t seem to do it\nproperly...the log rotation method itself is pretty\nstraightforward, it keeps logs from the past 7 days and\ndeletes the rest after checking the directory:\n\n    private static void logRotation() {\n\n        // Populate logFilesInLogDirectory with files in\nlogFileDirectory\n        File logFilesInDirectory = new\nFile(logFileDirectory);\n        String[] logFilesArray =\nlogFilesInDirectory.list();\n        List logFilesInLogDirectory =\nArrays.asList(logFilesArray);\n\n        // Remove files that are not smart card log files\nfrom file list\n        for (int i = 0; i &lt; logFilesInLogDirectory.size();\ni++) {\n            if (!((String)\nlogFilesInLogDirectory.get(i)).startsWith(logFilePrefix)) {\n                logFilesInLogDirectory.remove(i);\n            }\n        }\n\n        // Delete oldest files if there are more than\nnoOfPreviousLogFiles files\n        if (logFilesInLogDirectory.size() &gt;\nnoOfPreviousLogFiles) {\n            Collections.sort(logFilesInLogDirectory);\n            for (int i = (noOfPreviousLogFiles - 1); i &lt;\nlogFilesInLogDirectory.size(); i++) {\n                new File((String)\nlogFilesInLogDirectory.remove(i)).delete();\n            }\n        }\n    }\n\nBut for some reason my log rotation tester can&#39;t get back\nthe right number of files.\n\npublic void testLogRotation() throws\nIllegalArgumentException, IllegalAccessException,\nSmartCardPropertiesException, IOException {\n        \n        int noOfLogFiles = 0;\n        String logFileDirectory = null;\n        \n        noOfLogFiles =\nsmartCardLoggerConfig.getNoOfPreviousLogFiles();\n        logFileDirectory = &quot;c:&#92;&#92;loggerTest&quot;;\n        \n        File logFilesInDirectory = new\nFile(logFileDirectory);\n        //logFilesInDirectory.createNewFile();\n        \n        // Populate logFilesInLogDirectory with files in\nlogFileDirectory\n        logFilesInDirectory = new File(logFileDirectory);\n        String[] logFilesArray =\nlogFilesInDirectory.list();\n        System.out.println(&quot;Number of files in &quot; +\nlogFileDirectory + &quot; is &quot; + logFilesArray.length);\n        \n        // Remove all files\n        for (int i = 0; i &lt; logFilesArray.length; i++) {\n            System.out.println(&quot;Deleting file  &quot; +\nlogFilesArray[i]);\n            System.out.println(&quot;Files in directory &quot; +\nArrays.asList(logFilesArray));\n            new File(logFilesArray[i]).delete();\n        }\n        \n        logFilesArray = logFilesInDirectory.list();\n \n        assertEquals(0, logFilesArray.length);\n\n        \n        int d = new Random().nextInt(1000) - 500;\n        \n        for (int i = 0; i &lt; 10; i++) {\n            testDate = new Date((new Date().getTime() +\n(d*100*60*60*24)));\n            logFileDateField.set(null, testDate);\n            smartCardLogger.log(SmartCardLogger.SEVERE,\ngetClass(), &quot;testLogRotation()&quot;, &quot;Testing log rotation&quot;);\n            d -= new Random().nextInt(20);\n            System.out.println(&quot;Creation log file for date\n&quot; + testDate);\n        }\n        \n        logFilesArray = logFilesInDirectory.list();\n        \n        assertEquals(noOfLogFiles, logFilesArray.length);\n        \n        // Remove all files\n// for (int i = 0; i &lt; logFilesArray.length; i++) {\n// new File(logFilesArray[i]).delete();\n// }\n\n\nAny suggestions, solutions would be MOST appreciated\n\n\nRegards\n\nAsif\n\n\n\t\t\n____________________________________________________\nStart your day with Yahoo! - make it your home page \nhttp://www.yahoo.com/r/hs \n \n\n", 
+    "profile": "sattar_asif", 
+    "topicId": 14377, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 46895256, 
+    "prevInTime": 14378, 
+    "contentTrasformed": false, 
+    "postDate": "1124388962", 
+    "canDelete": false, 
+    "nextInTopic": 14381, 
+    "prevInTopic": 14378, 
+    "headers": {
+        "inReplyToHeader": "PDQzMDRDNTQ5LjUwMzAwMDdAZmFzdC1tYWlsLm9yZz4=", 
+        "messageIdInHeader": "PDIwMDUwODE4MTgxNjAyLjc3OTQ2LnFtYWlsQHdlYjMwMDAyLm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

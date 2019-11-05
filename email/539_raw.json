@@ -1,0 +1,28 @@
+{
+    "topicId": 539, 
+    "postDate": "982868984", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Michael Forsberg &lt;forsberg@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "GpOZPplwwjSRkKYGp1uaqbSExGogWypIobfKTjmsezE-785_Mt_aKmT0hwD_s1FK5fcnFH3zF_La7m5ZlqvDerkYbewqCU1QtRIoFCTiR8ZFQw", 
+    "nextInTime": 540, 
+    "userId": 0, 
+    "prevInTime": 538, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNBOTU2M0Y4LkVGNTQ2NEIzQHJvY3NvZnR3YXJlLmNvbT4="
+    }, 
+    "authorName": "Michael Forsberg", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "Would it be possible for the next release to add the line System.runFinalization(); in each main for all TestRunners. The reason for this enhancement, if it is", 
+    "contentTrasformed": false, 
+    "msgId": 539, 
+    "nextInTopic": 545, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;forsberg@...&gt;\r\nX-Sender: forsberg@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_4); 22 Feb 2001 19:07:36 -0000\r\nReceived: (qmail 8942 invoked from network); 22 Feb 2001 19:07:33 -0000\r\nReceived: from unknown (10.1.10.27) by m8.onelist.org with QMQP; 22 Feb 2001 19:07:33 -0000\r\nReceived: from unknown (HELO stormy.sonfire.com) (209.198.156.146) by mta2 with SMTP; 22 Feb 2001 19:07:32 -0000\r\nReceived: from rocsoftware.com ([209.198.156.211]) by stormy.sonfire.com (8.9.3/8.9.3) with ESMTP id OAA19259 for &lt;junit@yahoogroups.com&gt;; Thu, 22 Feb 2001 14:03:00 -0600\r\nMessage-ID: &lt;3A9563F8.EF5464B3@...&gt;\r\nDate: Thu, 22 Feb 2001 13:09:44 -0600\r\nX-Mailer: Mozilla 4.75 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: J Unit &lt;junit@yahoogroups.com&gt;\r\nSubject: J Unit&#39;s textui.TestRunner envoking System.runFinalization();\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Michael Forsberg &lt;forsberg@...&gt;\r\n\r\nWould it be possible for the next release to add the line \n\nSystem.runFinalization();\n\nin each main for all TestRunners.\n\nThe reason for this enhancement, if it is an enhancement, would be to\nreduce setUp and tearDown between tests.\n\nIn using a finalization method a object that needs to exist (or be\ncreated) for multiple tests could be created once and deleted once\ninstead of between each test.   This object could reset it&#39;s state (as\nin the example below) in a setUp or tearDown but may not need to be\nreinstantiated.\n\nJust a request.\n\nBig Mike\n\n\n\nExample (current snippet)...\n\n..... inside test class extending TestCase\n\nprivate static File tempFile;\n\nprivate static RandomAccessFile raf;\n\nprotected void setUp()\nthrows IOException {\n\ttempFile = File.createTempFile(&quot;TempFile&quot;,null);\n\traf = new RandomAccessFile(tempFile, &quot;rw&quot;);\n}\n\nprotected void tearDown()\nthrows IOException {\n\traf.close();\n\traf = null;\n\tassert(&quot;Fail to delete temp file&quot;,\n\t\ttrue,\n\t\ttempFile.delete());\n}\n\n\n\n\ncould be replaced with\n\nExample (new code snipet)....\n\n...inside class extending TestCase\n\n\nprivate static File tempFile;\n\nstatic {\n   try {\n      tempFile = createTempFile(&quot;TempFile&quot;,null);\n   } catch (IOException e) {\n      throw e.fillInStackTrace();\n   }\n}\n\nprivate static RandomAccessFile raf;\n\nstatic {\n   try {\n      raf = new RandomAccessFile(tempFile,&quot;rw&quot;);\n   } catch (IOException) {\n      throw e.fillInStackTrace();\n   }\n}\n\nprotected void setUp()\nthrows IOException {\n\traf.seek(0);\n\traf.setLength(0);\n}\n\nprotected void finalize()\nthrows Throwable {\n   raf.close();\n   raf = null;\n   if (!file.delete()) {\n      throw IOException(&quot;Unable to delete the tempfile.&quot;);\n   }\n}\n\n", 
+    "subject": "J Unit&#39;s textui.TestRunner envoking System.runFinalization();"
+}

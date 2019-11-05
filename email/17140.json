@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 17141, 
+    "senderId": "jBd9RA4lI3vOe_NQj8VyDlhzt_9zS2YVsd1ZfNC1bRZoJqNNftcYYuNkGU-hmTRFocTH97_KyqXH4y-8l26UG7u8Q9K57SAATqWQYuQjdEco", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Not able to run junit test case", 
+    "from": "&quot;Jochen Hiller&quot; &lt;jo.hiller@...&gt;", 
+    "authorName": "Jochen Hiller", 
+    "msgSnippet": "Hi Pradeep, your mixing JUnit 3 and JUnit 4 styled testcases. Either: 1. JUnit 3 style: inherit from TestCase, use your public static suite() method, and use a", 
+    "msgId": 17140, 
+    "profile": "jochen.hiller", 
+    "topicId": 17137, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 275093002, 
+    "messageBody": "<div id=\"ygrps-yiv-2040057706\">Hi Pradeep,<br/>\n<br/>\nyour mixing JUnit 3 and JUnit 4 styled testcases.<br/>\n<br/>\nEither:<br/>\n1. JUnit 3 style: inherit from TestCase, use your public static suite()<br/>\nmethod, and use a JUnit 3 based runner<br/>\n2. JUnit 4 style: do NOT inherit from TestCase, use @Test annotation, and<br/>\nuse either JUnit 4 based runner (JUnitCore, or your IDE) or a JUnit 3 runner<br/>\nwith the JUnit4Adapter.<br/>\n<br/>\nYou will get this message, if a runner will NOT found any test methods, e.g.<br/>\nif you are using a JUnit 3 based runner, and not having any testXXX methods.<br/>\nCheck your IDE which kind of runner your are starting.<br/>\n<br/>\nHTH, Jochen<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 7/17/06, pradeep_3diitr &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:pradeep_3diitr@...\">pradeep_3diitr@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;   Hi,<br/>\n&gt;<br/>\n&gt; I am getting following error while running a Junit TestCase whose<br/>\n&gt; format conforms to new style (@Test, etc):<br/>\n&gt;<br/>\n&gt; No tests found in org.MyCompany.EmployeeTest<br/>\n&gt;<br/>\n&gt; junit.framework.AssertionFailedError: No tests found in<br/>\n&gt; org.MyCompany.EmployeeTest at<br/>\n&gt; org.junit.internal.runners.OldTestClassRunner.run<br/>\n&gt; (OldTestClassRunner.java:35) at junit.framework.JUnit4TestAdapter.run<br/>\n&gt; (JUnit4TestAdapter.java:32)<br/>\n&gt;<br/>\n&gt; I know this is happening because of annotations being used.<br/>\n&gt;<br/>\n&gt; Could you please resolve this ASAP.<br/>\n&gt;<br/>\n&gt; Following is the TestCase --&gt;<br/>\n&gt;<br/>\n&gt; package org.MyCompany;<br/>\n&gt;<br/>\n&gt; import org.MyCompany.Employee;<br/>\n&gt;<br/>\n&gt; import org.junit.Test;<br/>\n&gt; import org.junit.runner.RunWith;<br/>\n&gt; import org.junit.runners.Parameterized;<br/>\n&gt; import org.junit.runners.Parameterized.Parameters;<br/>\n&gt; import org.junit.Assert;<br/>\n&gt; import org.junit.Before;<br/>\n&gt; import org.junit.After;<br/>\n&gt; import org.junit.Ignore;<br/>\n&gt;<br/>\n&gt; import org.junit.runner.Result;<br/>\n&gt;<br/>\n&gt; import java.util.LinkedList;<br/>\n&gt; import java.util.Iterator;<br/>\n&gt;<br/>\n&gt; import junit.framework.JUnit4TestAdapter;<br/>\n&gt; import junit.framework.TestCase;<br/>\n&gt;<br/>\n&gt; public class EmployeeTest extends TestCase<br/>\n&gt; {<br/>\n&gt; private Employee satendra;<br/>\n&gt; private Employee pradeep;<br/>\n&gt; private Employee sriram;<br/>\n&gt;<br/>\n&gt; @Before<br/>\n&gt; public void setUp()<br/>\n&gt; {<br/>\n&gt; satendra = new Employee(&quot;Satendra<br/>\n&gt; Diwedi&quot;,30,50000,null);<br/>\n&gt; pradeep = new Employee(&quot;Pradeep<br/>\n&gt; Yadav&quot;,26,30000,satendra);<br/>\n&gt; sriram = new Employee(&quot;Sriram<br/>\n&gt; Sethumadhavan&quot;,26,35000,satendra);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Test<br/>\n&gt; public void GetName()<br/>\n&gt; {<br/>\n&gt; Assert.assertEquals(&quot;Satendra<br/>\n&gt; Diwedi&quot;,satendra.getName());<br/>\n&gt; Assert.assertEquals(&quot;Pradeep Yadav&quot;,pradeep.getName<br/>\n&gt; ());<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Test<br/>\n&gt; public void getAge()<br/>\n&gt; {<br/>\n&gt; Assert.assertEquals(26,sriram.getAge());<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Test<br/>\n&gt; public void getSalary()<br/>\n&gt; {<br/>\n&gt; Assert.assertEquals(30000.0,pradeep.getSalary(),0);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Test<br/>\n&gt; public void raiseSalary()<br/>\n&gt; {<br/>\n&gt; pradeep.raiseSalary(10);<br/>\n&gt; Assert.assertEquals(33000.0,pradeep.getSalary(),0);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Test<br/>\n&gt; public void getManager()<br/>\n&gt; {<br/>\n&gt; Assert.assertSame(satendra,pradeep.getManager());<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; //@Ignore<br/>\n&gt; @Test<br/>\n&gt; public void getSubordinateList()<br/>\n&gt; {<br/>\n&gt; LinkedList&lt;Employee&gt; l = satendra.getSubordinateList<br/>\n&gt; ();<br/>\n&gt;<br/>\n&gt; Iterator listIter = l.listIterator();<br/>\n&gt;<br/>\n&gt; Employee e;<br/>\n&gt;<br/>\n&gt; e = (Employee)listIter.next();<br/>\n&gt;<br/>\n&gt; Assert.assertSame(pradeep,e);<br/>\n&gt;<br/>\n&gt; e = (Employee)listIter.next();<br/>\n&gt;<br/>\n&gt; Assert.assertSame(sriram,e);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @After<br/>\n&gt; public void tearDown()<br/>\n&gt; {<br/>\n&gt; satendra = null;<br/>\n&gt; sriram = null;<br/>\n&gt; pradeep = null;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; public static junit.framework.Test suite() {<br/>\n&gt; return new JUnit4TestAdapter(EmployeeTest.class);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Regards,<br/>\n&gt;<br/>\n&gt; Pradeep<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 17139, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1153154872", 
+    "canDelete": false, 
+    "nextInTopic": 17147, 
+    "prevInTopic": 17138, 
+    "headers": {
+        "inReplyToHeader": "PGU5ZnRwNCtyc2piQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDU0NTczNWVjMDYwNzE3MDk0N2w1ZDU4M2E5MXk4M2M3M2EwMjY5N2ZjODNhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGU5ZnRwNCtyc2piQGVHcm91cHMuY29tPg=="
+    }
+}

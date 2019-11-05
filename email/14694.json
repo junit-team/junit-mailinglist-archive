@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 14695, 
+    "senderId": "BFDmJfZLzNNdg-n9Q4QoHm1W3GhurBL_L-3JTW5aNIRLPE9SUKp6OQLhYrTzrC42fE-w1bJLGUXUTpe5gFsnJLBPIQbBJNut0PGFmMFxr1ZI", 
+    "systemMessage": true, 
+    "subject": "Better design solution", 
+    "from": "&quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@...&gt;", 
+    "authorName": "Iliya Agoshkov", 
+    "msgSnippet": "Hello, Here is some short description of a task being solved: I need to analyze the HTML document and extract some links to external resources (such as ", 
+    "msgId": 14694, 
+    "profile": "agoshkoviv", 
+    "topicId": 14694, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 234978661, 
+    "messageBody": "<div id=\"ygrps-yiv-878388896\">Hello,<br/>\nHere is some short description of a task being solved:<br/>\nI need to analyze the HTML document and extract some links to external<br/>\nresources (such as &lt;A href=&quot;www.yahoo.com&quot;&gt;link&lt;/A&gt; and &lt;IMG<br/>\nSRC=&quot;asdasd.gif&quot;/&gt; and etc),<br/>\nI have to differentiate links by a target location, so it can be link to<br/>\nexternal resources (&lt;A href=&quot;ww.yahoo.com&quot;/&gt; and to internal resources<br/>\n(&lt;A href=&quot;/admin/userslist.do&quot;/&gt;),<br/>\nand differentiate by the link type, it can be: AnchorLink (&lt;A/&gt; - tag),<br/>\nImageLink (&lt;IMG/&gt; tag), mailto (&lt;A<br/>\nhref=&quot;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:refactoring@...\">refactoring@...</a>&quot;/&gt;) and may some others in<br/>\nfuture.<br/>\n <br/>\nso I produced following classes hierarchy:<br/>\n <br/>\npublic class LinksExtractor<br/>\n{<br/>\n    public LinksExtractor( String document, String[] aliases ); //<br/>\n&quot;aliases&quot; is the array of Strings representing site aliases, needed to<br/>\ndetermine whether the link is internal or external (i.e. { www.site.com<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.site.com\">http://www.site.com</a>&gt; , www.mysite.com &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.mysite.com\">http://www.mysite.com</a>&gt; ,<br/>\nwww.hissite.com &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.hissite.com\">http://www.hissite.com</a>&gt;  }, so all links to this sites<br/>\nare considered internal links)<br/>\n    public Collection extractLinks(); // returns Collection of Link<br/>\nsubclasses corresponding to links found in document.<br/>\n}<br/>\n <br/>\npublic class Link<br/>\n{<br/>\n    public String getUrl();<br/>\n    public String getObject(); // for internal links return, for<br/>\nexample, some object from application class hierarchy (for<br/>\nInternalImageLink returns for example some<br/>\ncom.company.businessobjects.MediaObject instance)<br/>\n    public static Object getLinkedObject( org.w3c.Element node ); //<br/>\nreturns instance of concrete Link subclass (see below)<br/>\n}<br/>\n <br/>\npublic class InternalImageLink extends Link  // represents &lt;IMG<br/>\nSRC=&quot;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.site.com/img/b.gif&quot;/\">http://www.site.com/img/b.gif&quot;/</a>&gt; for example<br/>\n{<br/>\n}<br/>\n <br/>\npublic class ExternalImageLink extends Link // represents &lt;IMG<br/>\nSRC=&quot;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.anysite.com/img/b.gif&quot;/\">http://www.anysite.com/img/b.gif&quot;/</a>&gt; for example<br/>\n{<br/>\n}<br/>\n <br/>\npublic class MailToLink extends Link // represent &lt;A<br/>\nhref=&quot;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:refactoring@yahoogroups.com\">refactoring@yahoogroups.com</a>&quot;/&gt;<br/>\n{<br/>\n}<br/>\n <br/>\npublic class InternalAnchorLink extends Link // represent &lt;A<br/>\nhref=&quot;www.site.com/about&quot;/&gt;<br/>\n{<br/>\n}<br/>\n <br/>\netc... (some other Link subclasses).<br/>\n <br/>\nIn present solution linksExtractor.extractLinks() parses HTML document<br/>\nto DOM, than iterates each node and substitutes it to<br/>\nLink.getLinkedObject( node ), which returns instance of a class<br/>\ncorresponding to link, found in Node, or null, if current Node is not a<br/>\nlink.<br/>\n <br/>\nI&#39;d like to improve this design solution, for it could support not only<br/>\nHTML as a document, but plaintext also, and may be in future some other<br/>\ntypes.<br/>\nand also it should be easy to add new Link subclasses (for example<br/>\nCSSLink) with minimal changes needed.<br/>\n <br/>\nAny help would be very appreciated.<br/>\n <br/>\nIlya.<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 14693, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1126004146", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDlCRUFBMUI4Njc4MzM0NEJBNkNGOUI5NUY1QjYyMDkyM0MxODkyQG5ld3Rvbi5ocS5hY3Rpcy5ydT4="
+    }
+}

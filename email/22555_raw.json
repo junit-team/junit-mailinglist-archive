@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 22556, 
+    "senderId": "ohZFAvmmLlDvodOVv0aofUQQgoAdGyispzMF0G09JGQWFrG2xGCoy47JRGi6WeaXKMH1apWawJkKMFsI4TXQfCQnSGyiG1uXNOxHOUP_lkGHobZ0OSq2", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: @DataPoints called several times for Theories", 
+    "from": "&quot;Loritsch, Berin C.&quot; &lt;berin.loritsch@...&gt;", 
+    "authorName": "Loritsch, Berin C.", 
+    "msgSnippet": "It would be best in this case to limit the CloneablwStrategy to Cloneable objects which make the clone method available.  The main thing that can go wrong have", 
+    "msgId": 22555, 
+    "rawEmail": "Return-Path: &lt;prvs=16851d299b=berin.loritsch@...&gt;\r\nX-Sender: prvs=16851d299b=berin.loritsch@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 80883 invoked from network); 16 Mar 2010 14:36:48 -0000\r\nX-Received: from unknown (66.196.94.107)\n  by m12.grp.re1.yahoo.com with QMQP; 16 Mar 2010 14:36:48 -0000\r\nX-Received: from unknown (HELO mnbm01-relay1.mnb.gd-ais.com) (137.100.120.43)\n  by mta3.grp.re1.yahoo.com with SMTP; 16 Mar 2010 14:36:48 -0000\r\nX-Received: from ([160.207.224.15])\n\tby mnbm01-relay1.mnb.gd-ais.com with SMTP  id 5202712.252749252;\n\tTue, 16 Mar 2010 09:35:59 -0500\r\nX-Received: from vaff01-mail01.ad.gd-ais.com ([10.13.13.20]) by mnbm01-fes01.ad.gd-ais.com with Microsoft SMTPSVC(6.0.3790.3959);\n\t Tue, 16 Mar 2010 09:35:58 -0500\r\nX-MimeOLE: Produced By Microsoft Exchange V6.5\r\nContent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nDate: Tue, 16 Mar 2010 10:30:15 -0400\r\nMessage-ID: &lt;75F5ED8A5A553646A46E00E6EC854FA304565E1A@...-ais.com&gt;\r\nIn-Reply-To: &lt;b86b6a9c1003151338s3dcdc544vde43a20922b68d88@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] Re: @DataPoints called several times for Theories\r\nthread-index: AcrEf6eja7E3wWgaQQSHu008/LCZEwAlUquw\r\nReferences: &lt;58dba2251002180943q238dd8dv11ab48736321e178@...&gt; &lt;hlkif2+3mte@...&gt; &lt;58dba2251003121544p3cd7dd28h1a899ce657f66ad3@...&gt; &lt;a527fddf1003140915l73761ee1r781ba20fc768e42e@...&gt; &lt;75F5ED8A5A553646A46E00E6EC854FA30378C7E4@...-ais.com&gt; &lt;4f7da6b91003150651m12f2796kf9aab17ff312cd93@...&gt; &lt;58dba2251003151056k4bf24ff2xf161e6415abf4aba@...&gt; &lt;75F5ED8A5A553646A46E00E6EC854FA30378C7EE@...-ais.com&gt; &lt;SNT125-W99F30F3457B2F3E6279BDC02E0@...&gt; &lt;b86b6a9c1003151338s3dcdc544vde43a20922b68d88@...&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReturn-Path: Berin.Loritsch@...\r\nX-OriginalArrivalTime: 16 Mar 2010 14:35:58.0670 (UTC) FILETIME=[FE6816E0:01CAC515]\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Loritsch, Berin C.&quot; &lt;berin.loritsch@...&gt;\r\nSubject: RE: [junit] Re: @DataPoints called several times for Theories\r\nX-Yahoo-Group-Post: member; u=428096731; y=wMm0dFv3Hgx_CrJM3RIIRdqriX_oCSSL2Q73AGzvOGBfOXKK\r\nX-Yahoo-Profile: bloritsch\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nIt would be best in this case to limit the CloneablwStrategy to Cloneable o=\r\nbjects which make the clone method available.  The main thing that can go w=\r\nrong have to do with transient values which would need to be reset manually=\r\n.\r\n\r\n=20\r\n\r\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of C=\r\n=C3=A9dric Beust ?\r\nSent: Monday, March 15, 2010 4:39 PM\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: @DataPoints called several times for Theories\r\n\r\n=20\r\n\r\n =20\r\n\r\nOn Mon, Mar 15, 2010 at 1:27 PM, Tan Shin Hwei &lt;shinhwei@... &lt;mail=\r\nto:shinhwei%40hotmail.com&gt; &gt; wrote:\r\n\r\n&gt;\r\n&gt;\r\n&gt; Below is the method that contains the CloneableStrategy:\r\n&gt;\r\n&gt; public Object copyDataPoint(Object toBeReplicated) throws Exception {\r\n&gt; try {\r\n&gt; Method method=3D toBeReplicated.getClass().getMethod(&quot;clone&quot;,\r\n&gt; new Class[0]);\r\n&gt; //invoke the clone method\r\n&gt; return method.invoke(toBeReplicated, new Object[0]);\r\n&gt; } catch (Exception e) {\r\n&gt; throw new CopyStrategyFailureException();\r\n&gt; }\r\n&gt;\r\n\r\nYou should probably make sure that the class supports cloning before\r\ninvoking its clone() method, or the result won&#39;t be what you expect...\r\n\r\n--=20\r\nC=E9=A4=B2ic\r\n\r\n[Non-text portions of this message have been removed]\r\n\r\n\r\n\r\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "bloritsch", 
+    "topicId": 22425, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 428096731, 
+    "prevInTime": 22554, 
+    "contentTrasformed": false, 
+    "postDate": "1268749815", 
+    "canDelete": false, 
+    "nextInTopic": 22559, 
+    "prevInTopic": 22553, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMTAwMzE1MTMzOHMzZGNkYzU0NHZkZTQzYTIwOTIyYjY4ZDg4QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDc1RjVFRDhBNUE1NTM2NDZBNDZFMDBFNkVDODU0RkEzMDQ1NjVFMUFAdmFmZjAxLW1haWwwMS5hZC5nZC1haXMuY29tPg==", 
+        "referencesHeader": "PDU4ZGJhMjI1MTAwMjE4MDk0M3EyMzhkZDhkdjExYWI0ODczNjMyMWUxNzhAbWFpbC5nbWFpbC5jb20+IDxobGtpZjIrM210ZUBlR3JvdXBzLmNvbT4gPDU4ZGJhMjI1MTAwMzEyMTU0NHAzY2Q3ZGQyOGgxYTg5OWNlNjU3ZjY2YWQzQG1haWwuZ21haWwuY29tPiA8YTUyN2ZkZGYxMDAzMTQwOTE1bDczNzYxZWUxcjc4MWJhMjBmYzc2OGU0MmVAbWFpbC5nbWFpbC5jb20+IDw3NUY1RUQ4QTVBNTUzNjQ2QTQ2RTAwRTZFQzg1NEZBMzAzNzhDN0U0QHZhZmYwMS1tYWlsMDEuYWQuZ2QtYWlzLmNvbT4gPDRmN2RhNmI5MTAwMzE1MDY1MW0xMmYyNzk2a2Y5YWFiMTdmZjMxMmNkOTNAbWFpbC5nbWFpbC5jb20+IDw1OGRiYTIyNTEwMDMxNTEwNTZrNGJmMjRmZjJ4ZjE2MWU2NDE1YWJmNGFiYUBtYWlsLmdtYWlsLmNvbT4gPDc1RjVFRDhBNUE1NTM2NDZBNDZFMDBFNkVDODU0RkEzMDM3OEM3RUVAdmFmZjAxLW1haWwwMS5hZC5nZC1haXMuY29tPiA8U05UMTI1LVc5OUYzMEYzNDU3QjJGM0U2Mjc5QkRDMDJFMEBwaHguZ2JsPiA8Yjg2YjZhOWMxMDAzMTUxMzM4czNkY2RjNTQ0dmRlNDNhMjA5MjJiNjhkODhAbWFpbC5nbWFpbC5jb20+"
+    }
+}

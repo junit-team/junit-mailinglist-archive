@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 17189, 
+    "senderId": "jL2F8OJgRNRgzEUecPymj_boDUTez_atvdoZsLGPGyeZA_1XW4jFCeGk7ysz5SF1_jjhVXrj0EaMhJqlXQQr9DzwUdpY9w", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to Test Private Methods Inside a Class", 
+    "from": "Ole Ersoy &lt;ole_ersoy@...&gt;", 
+    "authorName": "Ole Ersoy", 
+    "msgSnippet": "Hey Ilja, Separation of concerns is another great reason to put routines in their own class, and in this case I could put the private load method in it s own", 
+    "msgId": 17188, 
+    "profile": "ole_ersoy", 
+    "topicId": 17170, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 98908154, 
+    "messageBody": "<div id=\"ygrps-yiv-1348062677\">Hey Ilja,<br/>\n<br/>\nSeparation of concerns is another great reason to put<br/>\nroutines in their own class, and in this case I could<br/>\nput the private load method in it&#39;s own class, and use<br/>\naspects to trigger the load method within the maven<br/>\nmojo, but ... Here&#39;s the code and I&#39;ll comment further<br/>\non the but below:<br/>\n<br/>\n    private ComponentDefinition<br/>\nloadComponentDefinition(File resourceFile) throws<br/>\nMojoExecutionException {<br/>\n<br/>\n        ResourceSet resourceSet = new<br/>\nResourceSetImpl();<br/>\n<br/>\n        <br/>\n<br/>\n<br/>\n<br/>\n        resourceSet.getResourceFactoryRegistry().<br/>\n<br/>\n        getExtensionToFactoryMap().put(RDNA_EXTENSION,<br/>\nnew XMIResourceFactoryImpl());<br/>\n<br/>\n        <br/>\n<br/>\n        Resource resource = <br/>\n<br/>\n           <br/>\nresourceSet.createResource(URI.createFileURI(resourceFile.getAbsolutePath()));<br/>\n<br/>\n               <br/>\n<br/>\n<br/>\n<br/>\n        RdnaPackage rdnaPackage =<br/>\nRdnaPackage.eINSTANCE;<br/>\n<br/>\n       <br/>\nresourceSet.getPackageRegistry().put(rdnaPackage.getNsURI(),<br/>\nrdnaPackage);<br/>\n<br/>\n        <br/>\n<br/>\n<br/>\n        try {<br/>\n<br/>\n            resource.load(null);<br/>\n<br/>\n        } catch (IOException e1) {<br/>\n<br/>\n            throw new MojoExecutionException(&quot;Could<br/>\nnot read rdna resource.&quot;);<br/>\n<br/>\n        }<br/>\n<br/>\n               <br/>\n<br/>\n        ComponentDefinition componentDefinition =<br/>\n<br/>\n            (ComponentDefinition)<br/>\nresource.getContents().get(0);<br/>\n<br/>\n        <br/>\n<br/>\n        return componentDefinition;    \t<br/>\n<br/>\n    }<br/>\n<br/>\n<br/>\nThis code has a few parameters in it that are specific<br/>\n<br/>\nto the loading of this type of resource.<br/>\n<br/>\nFirst ComponentDefinition:<br/>\n<br/>\nThis is the model of the resource being loaded.<br/>\n<br/>\nRdnaPackage<br/>\n<br/>\nThis is part of the factory for creating instances of<br/>\nthe model being loaded.<br/>\n<br/>\nSo this method returns an instance of the loaded<br/>\nmodel.<br/>\n<br/>\nIn this case the RdnaPackage and ComponentDefinition<br/>\nhave a one to one correspondence, and both are needed<br/>\nto make use of the loaded model, so I decided just to<br/>\nkeep the method private and test it using the<br/>\nPriviligedAccessor...<br/>\n<br/>\nCheers,<br/>\n- Ole<br/>\n<br/>\n--- Ilja Preuss &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:it@...\">it@...</a>&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Ole Ersoy wrote:<br/>\n&gt; <br/>\n&gt; &gt; The file loading part is in a private method,<br/>\n&gt; because<br/>\n&gt; &gt; the load routine is specific to the class that is<br/>\n&gt; &gt; being tested, and is therefore not useful in a<br/>\n&gt; utility<br/>\n&gt; &gt; library.<br/>\n&gt; <br/>\n&gt; Reusability is not the only reason to extract things<br/>\n&gt; into their own <br/>\n&gt; classes, is it?<br/>\n&gt; <br/>\n&gt; &gt; So I just wanted to put the load routine in a<br/>\n&gt; private<br/>\n&gt; &gt; method and test it there, then call it from the<br/>\n&gt; public<br/>\n&gt; &gt; method.<br/>\n&gt; <br/>\n&gt; Would putting it into its own class have had any<br/>\n&gt; negative effect?<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Can you show us the load routine?<br/>\n&gt; <br/>\n&gt; Curious, Ilja<br/>\n&gt; <br/>\n<br/>\n<br/>\n </span></blockquote>__________________________________________________<br/>\nDo You Yahoo!?<br/>\nTired of spam?  Yahoo! Mail has the best spam protection around <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://mail.yahoo.com\">http://mail.yahoo.com</a></div>", 
+    "prevInTime": 17187, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1153753974", 
+    "canDelete": false, 
+    "nextInTopic": 17192, 
+    "prevInTopic": 17187, 
+    "headers": {
+        "inReplyToHeader": "PDQ0QzQ1ODFGLjQwN0BpbGphcHJldXNzLmRlPg==", 
+        "messageIdInHeader": "PDIwMDYwNzI0MTUxMjU3LjU1NDcxLnFtYWlsQHdlYjYwNzE1Lm1haWwueWFob28uY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 12586, 
+    "senderId": "Q_cQ7WIw13EEYQdrUZesz6MEaFYVIK7lk8eGoE_0VI__gwrL788cNWqYyJXkK002OIScC64-zevzxe_Ptl4xAYUh-T5XeQcRpGmpUGq11A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to keep variable between two (or more) test", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... In order to share data between tests, you need to use global data (that is, public static data). This is required because you (mostly) give up control over", 
+    "msgId": 12585, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 65668 invoked from network); 4 Jan 2005 01:40:21 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m3.grp.scd.yahoo.com with QMQP; 4 Jan 2005 01:40:21 -0000\r\nReceived: from unknown (HELO smtp101.rog.mail.re2.yahoo.com) (206.190.36.79)\n  by mta6.grp.scd.yahoo.com with SMTP; 4 Jan 2005 01:40:21 -0000\r\nReceived: from unknown (HELO ?192.168.1.117?) (srainsberger5790@24.156.43.226 with plain)\n  by smtp101.rog.mail.re2.yahoo.com with SMTP; 4 Jan 2005 01:40:20 -0000\r\nMessage-ID: &lt;41D9F402.9010001@...&gt;\r\nDate: Mon, 03 Jan 2005 20:40:18 -0500\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;96aa79ed050103061943c6767a@...&gt;\r\nIn-Reply-To: &lt;96aa79ed050103061943c6767a@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.79\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] How to keep variable between two (or more) test\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nThomas Manson wrote:\n&gt; \n&gt; Hi,\n&gt; \n&gt; \n&gt; For my test i need to keep some information between my tests:\n&gt; \n&gt; I need to connect to a workflow server and make operation on it...\n&gt; \n&gt; For example to get on Task i need to :\n&gt; \n&gt; connect  (connection identifier),\n&gt; Start a procedure as a (get the id of the new task)\n&gt; make several test operation on this task ( with the ID)\n&gt; \n&gt; \n&gt; How could i do that?\n&gt; It seems that between two test a new TestCase() is done so a classe\n&gt; variable cannot be used.\n\nIn order to share data between tests, you need to use global data (that \nis, public static data). This is required because you (mostly) give up \ncontrol over instantiating your test objects.\n\nThat said, you can always write your tests so that they don&#39;t need each \nother. I guess you have this:\n\n  * A few tests for connecting\n  * Several tests that use a connected object\n\nThe second category of tests do not necessarily need to use the same \nconnection from the first category of tests. The second category of \ntests can simply reconnect!\n\nIn one test suite:\n\nMyConnectingTests ... {\n     testOk\n     testFailedBecauseOfX\n     testFailedBecauseOfY\n}\n\nMyOperatingTests ... {\n     private Connection connection;\n\n     setUp() {\n         connectToWorkflowObject();\n     }\n\n     testDoXWithWorkflow ...\n     testDoYWithWorkflow ....\n}\n\nEach of the &quot;operating tests&quot; connects (separately) to the same workflow \nobject. Just make sure that tearDown() closes the connection after each \ntest.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 12580, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12584, 
+    "contentTrasformed": false, 
+    "postDate": "1104802818", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12580, 
+    "headers": {
+        "inReplyToHeader": "PDk2YWE3OWVkMDUwMTAzMDYxOTQzYzY3NjdhQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQxRDlGNDAyLjkwMTAwMDFAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDk2YWE3OWVkMDUwMTAzMDYxOTQzYzY3NjdhQG1haWwuZ21haWwuY29tPg=="
+    }
+}

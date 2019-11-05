@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 23008, 
+    "senderId": "WQwSNSqkF4gKlIKKc1TE6_O---BzdoFyw20Csb8h_zwoSCnmnfWU_duP9BW4ACg5EZg7SDn-meq9zD-eEvaVysI_", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running test with guaranteed method order -&gt; cookbook/FAQ?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "tiaraki, Thanks for the suggestion!  Can you add it as a feature request at github?  (http://github.com/KentBeck/junit)  I m moving a bit slow, and that will", 
+    "msgId": 23007, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 57254 invoked from network); 11 Oct 2010 17:28:21 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m1.grp.sp2.yahoo.com with QMQP; 11 Oct 2010 17:28:21 -0000\r\nX-Received: from unknown (HELO mail-gw0-f43.google.com) (74.125.83.43)\n  by mta3.grp.sp2.yahoo.com with SMTP; 11 Oct 2010 17:28:21 -0000\r\nX-Received: by gwb11 with SMTP id 11so594031gwb.30\n        for &lt;junit@yahoogroups.com&gt;; Mon, 11 Oct 2010 10:28:21 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.90.75.10 with SMTP id x10mr336593aga.160.1286818100734; Mon,\n 11 Oct 2010 10:28:20 -0700 (PDT)\r\nX-Received: by 10.90.130.13 with HTTP; Mon, 11 Oct 2010 10:28:20 -0700 (PDT)\r\nIn-Reply-To: &lt;i8to5q+eqb4@...&gt;\r\nReferences: &lt;i8to5q+eqb4@...&gt;\r\nDate: Mon, 11 Oct 2010 13:28:20 -0400\r\nX-Google-Sender-Auth: p0gESRjrtGsqK87IOUS9vSAOaVE\r\nMessage-ID: &lt;AANLkTimt2afzoFaVx-dTJwCwuOGqHvxf9y-_arDd27Lp@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Running test with guaranteed method order -&gt; cookbook/FAQ?\r\nX-Yahoo-Group-Post: member; u=341876227; y=NPC5R6tCtJj8UhJWl15u8dSkjPXJWd88IhaumvjVhk4\r\nX-Yahoo-Profile: dsaff\r\n\r\ntiaraki,\n\nThanks for the suggestion!  Can you add it as a feature request a=\r\nt\ngithub?  (http://github.com/KentBeck/junit)  I&#39;m moving a bit slow,\nand t=\r\nhat will help keep it on my radar.  Thanks,\n\n   David\n\nOn Sun, Oct 10, 2010=\r\n at 9:10 PM, tiaraki &lt;tiaraki@...&gt; wrote:\n&gt; Hello\n&gt;\n&gt; Although junit =\r\nis designed to run the test methods in arbitrary order,\n&gt; e.g. for sorting =\r\noften failing ones first or just to be safe that there are not dependencies=\r\n, every now and then someone has a valid case where it could indeed be usef=\r\nul.\n&gt;\n&gt; One solution is offered in the API docs of Request.sortWith()=C2=B9=\r\n but the\n&gt; example seems only to work for standalone calls not for running =\r\nthe tests with @test annotations from an IDE or automated tool. For these c=\r\nases it would be nice if you could write an example like the one below in t=\r\nhe FAQ or the cookbook as it took me a while to figure out how to do it.\n&gt;\n=\r\n&gt; bye\n&gt; tiaraki\n&gt;\n&gt;\n&gt; import java.util.Collections;\n&gt; import java.util.Comp=\r\narator;\n&gt; import java.util.List;\n&gt;\n&gt; import org.junit.runners.BlockJUnit4Cl=\r\nassRunner;\n&gt; import org.junit.runners.model.FrameworkMethod;\n&gt; import org.j=\r\nunit.runners.model.InitializationError;\n&gt;\n&gt; public class SortByMethodNameRu=\r\nnner extends BlockJUnit4ClassRunner {\n&gt;\n&gt; =A0 =A0private static class NameC=\r\nmp implements Comparator&lt;FrameworkMethod&gt; {\n&gt; =A0 =A0 =A0 =A0@Override\n&gt; =\r\n=A0 =A0 =A0 =A0public int compare(FrameworkMethod o1, FrameworkMethod o2) {=\r\n\n&gt; =A0 =A0 =A0 =A0 =A0 =A0return o1.getName().compareTo(o2.getName());\n&gt; =\r\n=A0 =A0 =A0 =A0}\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0public SortByMethodNameRunner(Class&lt;=\r\n?&gt; clazz) throws InitializationError {\n&gt; =A0 =A0 =A0 =A0super(clazz);\n&gt; =A0=\r\n =A0}\n&gt;\n&gt; =A0 =A0@Override\n&gt; =A0 =A0protected List&lt;FrameworkMethod&gt; compute=\r\nTestMethods() {\n&gt; =A0 =A0 =A0 =A0List&lt;FrameworkMethod&gt; list =3D super.compu=\r\nteTestMethods();\n&gt; =A0 =A0 =A0 =A0Collections.sort(list, new NameCmp());\n&gt; =\r\n=A0 =A0 =A0 =A0return list;\n&gt; =A0 =A0}\n&gt; }\n&gt;\n&gt; =C2=B9: http://junit.sourcef=\r\norge.net/javadoc/org/junit/runner/Request.html#sortWith%28java.util.Compara=\r\ntor%29\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links=\r\n\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23004, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23006, 
+    "contentTrasformed": false, 
+    "postDate": "1286818100", 
+    "canDelete": false, 
+    "nextInTopic": 23010, 
+    "prevInTopic": 23004, 
+    "headers": {
+        "inReplyToHeader": "PGk4dG81cStlcWI0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGltdDJhZnpvRmFWeC1kVEp3Q3d1T0dxSHZ4Zjl5LV9hckRkMjdMcEBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGk4dG81cStlcWI0QGVHcm91cHMuY29tPg=="
+    }
+}

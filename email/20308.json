@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 20309, 
+    "senderId": "9xkG8Bd5it2cRIrd3tKWBzqaJKR1wr8BRfGeNchD_8O9Vy0d7GEteWsK2ur0SClYJ8Jf_GLFAiZ2EWX-Xn4_lUnaKmcQvR0P9BysfBaMWDEh", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing a listener", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... You have already received some answers, but here is a summary of the technique I use. I like to check that the event source is generating the right events ", 
+    "msgId": 20308, 
+    "profile": "nails762", 
+    "topicId": 20278, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "messageBody": "<div id=\"ygrps-yiv-676533107\">On Feb 2, 2008, at 15:37 , Jason Davis wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I am trying to test a parser class I wrote. In my test method I<br/>\n&gt; invoke the parser method I want to test with<br/>\n&gt; a string of data. However , the method returns nothing. Its result is<br/>\n&gt; sent to a listener. How can I test this method<br/>\n&gt; based on the results it sends to the listener. I hope this makes  <br/>\n&gt; sense :s<br/>\n&gt;<br/>\n </span></blockquote>You have already received some answers, but here is a summary of the  <br/>\ntechnique I use.<br/>\n<br/>\nI like to check that the event source is generating the right events  <br/>\nat the right times by attaching a mock Listener and intercepting  <br/>\nmethod calls. In the case of an XML SAX-style parser, you might have a  <br/>\ntest like this pseudo-Java test:<br/>\n<br/>\ntestBeginTag:<br/>\n     mock = mock(ParserListener.class);<br/>\n     parser = Parser.withListener(mock.proxy());<br/>\n<br/>\n     mock.expects(once()).method(&quot;handleEvent&quot;).with(eq(new  <br/>\nBeginTagEvent(&quot;html&quot;)));<br/>\n<br/>\n     parser.parse(&quot;&lt;html&gt;&quot;);<br/>\n<br/>\nThese tests help me know whether Parser sends the right event at the  <br/>\nright time. I might have one more test for multiple listeners:<br/>\n<br/>\ntestMultipleListeners:<br/>\n     mocks = [mock(ParserListener.class), mock(ParserListener.class),  <br/>\nmock(ParserListener.class)]<br/>\n     parser = Parser.withManyListeners(mocks.collect { |each|  <br/>\neach.proxy() })<br/>\n     event = new Event();<br/>\n<br/>\n     mocks.each { |each|  <br/>\neach.expects(once()).method(&quot;handleEvent&quot;).with(same(event))) }<br/>\n<br/>\n     parser.notifyAll(event);<br/>\n<br/>\nThis test helps me know the mechanics of notifying listeners works.<br/>\n<br/>\nFinally, there is no &quot;testing the listener&quot;: the listener is just a  <br/>\nJava class, so there&#39;s nothing special you need to do to test it. Just  <br/>\ninvoke its handleEvent() method with various event objects and check  <br/>\nwhat it does. I usually design my listeners as simple delegates to  <br/>\nmore model-like classes, so that handleEvent() acts as a Mediator.<br/>\n<br/>\nI hope this helps.<br/>\n----<br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.ca\">http://www.jbrains.ca</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contributions to Agile Software Practice</div>", 
+    "prevInTime": 20307, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1202758538", 
+    "canDelete": false, 
+    "nextInTopic": 20708, 
+    "prevInTopic": 20307, 
+    "headers": {
+        "inReplyToHeader": "PDI3YTYyNDM3MDgwMjAyMTMzN2sxMzFhMzE4ZXMxOGQ5YzU1MGJjNTJkMGRmQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PEVBM0QwREU4LTAwQ0ItNEMwQS1BMzY4LTk4NUUwNTYzMDg5Q0BnbWFpbC5jb20+", 
+        "referencesHeader": "PDI3YTYyNDM3MDgwMjAyMTMzN2sxMzFhMzE4ZXMxOGQ5YzU1MGJjNTJkMGRmQG1haWwuZ21haWwuY29tPg=="
+    }
+}

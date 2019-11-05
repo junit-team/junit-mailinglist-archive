@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 8278, 
+    "senderId": "EQKBLkJM3I2p_ia1-5rbusoJt0KKFO5rdQKYIC1Rby9OlH8FQg2SWXPT6FE9bAfebGOZbljH01wOxaanjunlnjMtZwKuOMxC64lmtOMixHA", 
+    "systemMessage": false, 
+    "subject": "singletons and running tests more than once", 
+    "from": "Christian Pekeler &lt;christian@...&gt;", 
+    "authorName": "Christian Pekeler", 
+    "msgSnippet": "Background: I m using a custom junit testrunner in a custom testing application. The testing application protects itself against testcases running amok by", 
+    "msgId": 8277, 
+    "profile": "pekeler", 
+    "topicId": 8277, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 63615397, 
+    "messageBody": "<div id=\"ygrps-yiv-1407225490\">Background: I&#39;m using a custom junit testrunner in a custom testing <br/>\napplication. The testing application protects itself against testcases <br/>\nrunning amok by making a backup of System.properties when starting the <br/>\ntests and restoring that backup when it&#39;s done.<br/>\n<br/>\nNow I want to test a class implemented as a singleton which depends on <br/>\ncertain System.properties being set. Currently, this class&#39; constructor <br/>\nis loading some properties from somewhere and sticks them into <br/>\nSystem.properties. So if I test this class in my test environment, it <br/>\nonly passes the tests the first time they are run. Running the tests <br/>\nagain fails, because the same singleton instance is used but this time <br/>\nthe system.properties are reseted.<br/>\n<br/>\nI see several options for dealing with this situation:<br/>\n<br/>\na) tearDown() is setting the static ivar which holds the singleton to <br/>\nnull, so that the lazy static sharedInstance() always creates a new <br/>\ninstance and by that always sets the correct System.properties. That <br/>\nwould require to make that ivar set-able from outside the class it&#39;s <br/>\ndeclared in.<br/>\n<br/>\nb) setUp() is explicitly telling the singleton instance to reload the <br/>\nproperties.<br/>\n<br/>\nc) The singleton loads the properties and copies the values into ivars <br/>\nand uses them instead of System.properties. This would only work if the <br/>\nsingleton is isolated from other classes that don&#39;t depend on these <br/>\nSystem.properties, so it&#39;s not a general solution (and when using <br/>\nframeworks, it&#39;s not always possible to isolate classes using mocks).<br/>\n<br/>\nd) The singleton&#39;s static sharedInstance() method could check if the <br/>\nnecessary system.properties are set and load them if required. This <br/>\nwould cause a little performance hit because sharedInstance() is used a <br/>\nlot. Also, it&#39;s wouldn&#39;t be obvious to the reader of the source why <br/>\nthat is done and would require inline documentation.<br/>\n<br/>\ne) Always use a new classloader instance when running the tests, which <br/>\nwould cause singletons to get recreated. However, I think a test should <br/>\nalways pass, no matter how often I run it using the same classloader.<br/>\n<br/>\nf) Make the singleton non-exclusive, i.e. have a public constructor in <br/>\nthat class for users that want their own instance, like the testcase. <br/>\nBut that would mean that the testcase doesn&#39;t test the singleton aspect <br/>\nof the class.<br/>\n<br/>\ng) The testing app doesn&#39;t run the tests in the same process/vm, <br/>\ninstead creates a new sandbox every time the tests are run. That would <br/>\nrequire too much work for me and make running the tests slower.<br/>\n<br/>\nAre there other options for dealing with my problem? Which one would <br/>\nyou prefer?<br/>\n<br/>\n<br/>\nThanks,<br/>\nChristian</div>", 
+    "prevInTime": 8276, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1054833670", 
+    "canDelete": false, 
+    "nextInTopic": 8284, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDE5RjYyRTkyLTk3N0EtMTFENy05MTE3LTAwMDM5MzdDMERDQ0BwZWtlbGVyLm9yZz4="
+    }
+}

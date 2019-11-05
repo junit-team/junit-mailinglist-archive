@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 23305, 
+    "senderId": "UkoEG5oMGPpPXQyC0CxZCmxckyfb7uPBdsvg0yDsT7JV7rhEfNbFx2o26QV8xKR7a1NfofyvYpQ9hg-6JGGWChgb", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing a helper class with a factory method", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Doug, I ve found that discussions about what constitutes a unit test vs a developer test can often be improved by focusing on the goals. If your current", 
+    "msgId": 23304, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 42769 invoked from network); 2 Mar 2011 16:58:44 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m4.grp.sp2.yahoo.com with QMQP; 2 Mar 2011 16:58:44 -0000\r\nX-Received: from unknown (HELO mail-gw0-f46.google.com) (74.125.83.46)\n  by mta3.grp.sp2.yahoo.com with SMTP; 2 Mar 2011 16:58:44 -0000\r\nX-Received: by gwj20 with SMTP id 20so56048gwj.33\n        for &lt;junit@yahoogroups.com&gt;; Wed, 02 Mar 2011 08:58:44 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.90.52.3 with SMTP id z3mr444917agz.189.1299085124089; Wed, 02\n Mar 2011 08:58:44 -0800 (PST)\r\nX-Received: by 10.91.210.3 with HTTP; Wed, 2 Mar 2011 08:58:44 -0800 (PST)\r\nIn-Reply-To: &lt;ik6042+7nd4@...&gt;\r\nReferences: &lt;ik6042+7nd4@...&gt;\r\nDate: Wed, 2 Mar 2011 11:58:44 -0500\r\nX-Google-Sender-Auth: kg1U40g-6hlWJpZTm94fCoDs30Y\r\nMessage-ID: &lt;AANLkTi=eriZs19pQrB=WjDoOeSfvAC7J947b-sqwE6Nm@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Testing a helper class with a factory method\r\nX-Yahoo-Group-Post: member; u=341876227; y=7XS9ukj9IK7V1Few89tcqygHxxocboFI1GNxZOzRNok\r\nX-Yahoo-Profile: dsaff\r\n\r\nDoug,\n\nI&#39;ve found that discussions about what constitutes a &quot;unit test&quot; vs =\r\na\n&quot;developer test&quot; can often be improved by focusing on the goals.\n\nIf your=\r\n current implementation is sufficient to catch the bugs you\ncare about, and=\r\n it runs fast enough in the situations you wish it did,\nthen you&#39;re good to=\r\n go.  There&#39;s several situations in which you might\nwant to consider redesi=\r\ngning to provide more isolation and\nflexibility:\n\n1) You want to hypothetic=\r\nally test situations which are difficult to\nsimulate with a real database (=\r\nfor example, what if the initial\nconnection works, but subsequent calls to =\r\nthe database time out?)\n2) Connections to the database are slow enough that=\r\n your personal\ndevelopment rhythm stalls.\n3) The test database you want to =\r\nuse is not reliable enough, or is not\navailable everywhere you wish you cou=\r\nld run the tests.\n\nIn those cases, you might consider using a test double f=\r\nor the\ndatabase, to isolate the behavior of SQLHelper from the behavior,\npe=\r\nrformance, and availability of the underlying database.\n\nDoes that help?\n\n =\r\n  David Saff\n\nOn Thu, Feb 24, 2011 at 11:13 AM, douggiefox &lt;paul@javabytes.=\r\nco.uk&gt; wrote:\n&gt; Hi\n&gt;\n&gt; I&#39;m refactoring and I&#39;ve created a helper class that=\r\n I&#39;m trying to test.\n&gt;\n&gt; The code I end up with is this:\n&gt;\n&gt; public class S=\r\nQLHelper {\n&gt;\n&gt; =A0def connection\n&gt; =A0String url =3D &quot;urltodata&quot;\n&gt; =A0Strin=\r\ng username =3D &quot;&quot;\n&gt; =A0String password =3D &quot;&quot;\n&gt; =A0String driver =3D &quot;com.d=\r\nriver&quot;\n&gt;\n&gt; =A0def ApproachSQLHelper() {\n&gt;\n&gt; =A0 =A0this.connection =3D groo=\r\nvy.sql.Sql.newInstance(this.url, this.username, this.password, this.driver)=\r\n\n&gt; =A0}\n&gt;\n&gt; }\n&gt;\n&gt; and my test looks a little like this:\n&gt;\n&gt; class SQLHelper=\r\nTests extends GrailsUnitTestCase {\n&gt;\n&gt; =A0 =A0def helper\n&gt;\n&gt; =A0 =A0protect=\r\ned void setUp() {\n&gt; =A0 =A0 =A0 =A0super.setUp()\n&gt; =A0 =A0 =A0 =A0helper =\r\n=3D new SQLHelper()\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0protected void tearDown() {\n&gt; =A0=\r\n =A0 =A0 =A0super.tearDown()\n&gt; =A0 =A0 =A0 =A0helper =3D null\n&gt; =A0 =A0}\n&gt;\n=\r\n&gt; =A0 =A0void testOpenConnection() {\n&gt; =A0 =A0 =A0assert helper.connection =\r\ninstanceof groovy.sql.Sql\n&gt; =A0 =A0}\n&gt;\n&gt;\n&gt; }\n&gt;\n&gt; It all works and passes bu=\r\nt my question is this. =A0The helper class uses &quot;newInstance&quot; which unless =\r\ngiven a correct url and a valid driver will throw an exception. =A0So in pr=\r\noviding this information it&#39;s making me think this is more an integration t=\r\nest rather than a unit test. =A0Am I off course here?\n&gt;\n&gt; Best DF\n&gt;\n&gt;\n&gt;\n&gt; -=\r\n-----------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23294, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23303, 
+    "contentTrasformed": false, 
+    "postDate": "1299085124", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 23294, 
+    "headers": {
+        "inReplyToHeader": "PGlrNjA0Mis3bmQ0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGk9ZXJpWnMxOXBRckI9V2pEb09lU2Z2QUM3Sjk0N2Itc3F3RTZObUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGlrNjA0Mis3bmQ0QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 2036, 
+    "senderId": "nLRI_wq2H5vPIYhUAWKLY-NKYjtd-YmzMIPUBBntdqYL-yYVep6pdnD5jcz5xc7l8UTdsMWgSypNJb7vClQXTbW_EKiHkPvcPLygrIgmNRBJJtg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Junit manipulating exceptions?", 
+    "from": "&quot;Jason Rogers&quot; &lt;jason.rogers@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "Frank, Are you sure that it isn t getting into the catch block?  Also, I didn t know that e.toString() returned the same thing as e.getMessage().  Is that so? ", 
+    "msgId": 2035, 
+    "topicId": 2034, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1476913657\">Frank,<br/>\n<br/>\nAre you sure that it isn&#39;t getting into the catch block?  Also, I didn&#39;t<br/>\nknow that e.toString() returned the same thing as e.getMessage().  Is that<br/>\nso?<br/>\n<br/>\n-Jason<br/>\n<br/>\n<blockquote><span title=\"ireply\">     &gt; -----Original Message-----<br/>\n    &gt; From: Frank Enos [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:fenos@...\">fenos@...</a>]<br/>\n    &gt; Sent: Friday, July 20, 2001 3:13 PM<br/>\n    &gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n    &gt; Subject: [junit] Junit manipulating exceptions?<br/>\n    &gt; <br/>\n    &gt; <br/>\n    &gt; I&#39;ve provided coded examples below. My basic question is <br/>\n    &gt; this: Does Junit <br/>\n    &gt; (3.7) manipulate exceptions in some way that would <br/>\n    &gt; prevent an exception <br/>\n    &gt; from being caught in a normal try/catch block? The <br/>\n    &gt; behavior I&#39;m seeing is <br/>\n    &gt; that if I attempt to catch the specific exception thrown <br/>\n    &gt; by a method (e.g. <br/>\n    &gt; catch (java.sql.SQLException e), the catch block fails to <br/>\n    &gt; catch it and <br/>\n    &gt; Junit logs it as an error. If I use catch (Exception e), <br/>\n    &gt; the exception is <br/>\n    &gt; caught as I would expect. I find that I can call <br/>\n    &gt; getClass() on the caught <br/>\n    &gt; Exception and that it returns the expected SQLException, <br/>\n    &gt; whereas using <br/>\n    &gt; instanceof fails.<br/>\n    &gt; <br/>\n    &gt; Examples (behaves the same using other methods throwing <br/>\n    &gt; other exception types)<br/>\n    &gt; methods are from:<br/>\n    &gt; public class PersistenceTest extends TestCase {...}<br/>\n    &gt; <br/>\n    &gt;    public static void main(String[] args) {<br/>\n    &gt; \ttry {<br/>\n    &gt;        PersistenceManager.singleton().write(&quot;insert into <br/>\n    &gt; noSuchTable <br/>\n    &gt; values(&#39;junk&#39;)&quot;);<br/>\n    &gt; \t  System.out.println(&quot;No exception writing to <br/>\n    &gt; non-existent table&quot;);<br/>\n    &gt; \t} catch (SQLException e) {<br/>\n    &gt; \t  System.out.println(e.getClass().toString());<br/>\n    &gt; \t}<br/>\n    &gt;    }<br/>\n    &gt; <br/>\n    &gt; If I simply invoke this main()  method which I have added <br/>\n    &gt; to the test <br/>\n    &gt; class, it behaves as expected, printing the expected name <br/>\n    &gt; of the class and <br/>\n    &gt; exiting normally.<br/>\n    &gt; <br/>\n    &gt;    public void testBadWrite() {<br/>\n    &gt; \ttry {<br/>\n    &gt;        \t\t<br/>\n    &gt; PersistenceManager.singleton().write(&quot;insert into noSuchTable <br/>\n    &gt; values(&#39;hey&#39;)&quot;);<br/>\n    &gt; \t  \tfail(&quot;No exception writing to non-existent table&quot;);<br/>\n    &gt; \t} catch (SQLException e) {<br/>\n    &gt; \t  assertTrue(e.toString().indexOf(&quot;ORA-00942&quot;) &gt; -1);<br/>\n    &gt; \t}<br/>\n    &gt;    }<br/>\n    &gt; <br/>\n    &gt; This test method fails to catch the SQLException, passing <br/>\n    &gt; it upwards and <br/>\n    &gt; logging an error.<br/>\n    &gt; <br/>\n    &gt; The following test passes, however:<br/>\n    &gt; <br/>\n    &gt;    public void testBadWrite2() {<br/>\n    &gt; \ttry {<br/>\n    &gt;        \t\t<br/>\n    &gt; PersistenceManager.singleton().write(&quot;insert into noSuchTable <br/>\n    &gt; values(&#39;hey&#39;)&quot;);<br/>\n    &gt; \t  \tfail(&quot;No exception writing to non-existent table&quot;);<br/>\n    &gt; \t} catch (Exception e) {<br/>\n    &gt; \t  assertEquals(&quot;java.sql.SQLException&quot;, e.getClass().getName())<br/>\n    &gt; \t  assertTrue(e.toString().indexOf(&quot;ORA-00942&quot;) &gt; -1);<br/>\n    &gt; \t}<br/>\n    &gt;    }<br/>\n    &gt; <br/>\n    &gt; What am I missing?<br/>\n    &gt; Thanks,<br/>\n    &gt; Frank<br/>\n    &gt; <br/>\n    &gt; <br/>\n    &gt; To unsubscribe from this group, send an email to:<br/>\n    &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n    &gt;  <br/>\n    &gt; <br/>\n    &gt; Your use of Yahoo! Groups is subject to <br/>\n </span></blockquote><a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 2034, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "995660685", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 2034, 
+    "headers": {
+        "messageIdInHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2MTlCQGV4Y2g+"
+    }
+}

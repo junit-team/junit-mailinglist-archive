@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 22393, 
+    "senderId": "QRfWpE5mqyGz-u4LeHwx-pgU0oZ0yeEg7s9q1F6oNRoMVqdIJJOTB_GlAx-m9kvQ6l0UtHpUp7X0UOpSXnjZnRRSPHIBcQ0u3A", 
+    "systemMessage": true, 
+    "subject": "[junit] Cannot use @Rule in Scala", 
+    "from": "Barry Kaplan &lt;groups1@...&gt;", 
+    "authorName": "Barry Kaplan", 
+    "msgSnippet": "Running the following test class MongoUserDetailsManagerTest { @Rule val mongo = new MongoResource( test_insight ) ... } Results in java.lang.Exception: Field", 
+    "msgId": 22392, 
+    "profile": "memelet", 
+    "topicId": 22392, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 134818751, 
+    "messageBody": "<div id=\"ygrps-yiv-13891476\">Running the following test<br/>\n<br/>\n    class MongoUserDetailsManagerTest {<br/>\n      @Rule val mongo = new MongoResource(&quot;test_insight&quot;)<br/>\n      ...<br/>\n    }<br/>\n<br/>\nResults in<br/>\n<br/>\n    java.lang.Exception: Field mongo must be public<br/>\n\tat<br/>\norg.junit.runners.BlockJUnit4ClassRunner.validateRuleField(BlockJUnit4ClassRunner.java:184)<br/>\n<br/>\nThis is because the bytecode for scala public vars (public is the default<br/>\nscope scala) are not public. <br/>\n<br/>\nTo be able to use @Rule in scala I had to hack BlockJUnit4ClassRunner with:<br/>\n<br/>\n    private void validateRuleField(Field field, List&lt;Throwable&gt; errors) {<br/>\n        if (!MethodRule.class.isAssignableFrom(field.getType()))<br/>\n\t    errors.add(new Exception(&quot;Field &quot; + field.getName()<br/>\n                      + &quot; must implement MethodRule&quot;));<br/>\n        //TP_HACK To allow for scala val&#39;s<br/>\n        field.setAccessible(true);<br/>\n        // if (!Modifier.isPublic(field.getModifiers()))<br/>\n        // errors.add(new Exception(&quot;Field &quot; + field.getName()<br/>\n        //           + &quot; must be public&quot;));<br/>\n\t}<br/>\n<br/>\nMight it be considered to allow for non-public fields as some kind of JUnit<br/>\noption?<br/>\n<br/>\n-barry<br/>\n-- <br/>\nView this message in context: <a rel=\"nofollow\" target=\"_blank\" href=\"http://old.nabble.com/Cannot-use-%40Rule-in-Scala-tp27552231p27552231.html\">http://old.nabble.com/Cannot-use-%40Rule-in-Scala-tp27552231p27552231.html</a><br/>\nSent from the JUnit - User mailing list archive at Nabble.com.</div>", 
+    "prevInTime": 22391, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1265914669", 
+    "canDelete": false, 
+    "nextInTopic": 22445, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDI3NTUyMjMxLnBvc3RAdGFsay5uYWJibGUuY29tPg=="
+    }
+}

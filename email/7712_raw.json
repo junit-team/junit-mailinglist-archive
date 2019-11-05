@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 7713, 
+    "senderId": "ktGoxBtXKFwZAQ0w5fnuFFbShgZfESh4pInQpp_1s6zWM0xZL6AT6gQSsmNon7o2cxPYwqlN8sFu7FUKrThqzWS9JjldS5PTCYq2lHgGfdbRUQ", 
+    "systemMessage": false, 
+    "subject": "Is this a bug in xmlunit 0.8 version??", 
+    "from": "Raja Nagendra Kumar &lt;Nagendra.Raja@...&gt;", 
+    "authorName": "Raja Nagendra Kumar", 
+    "msgSnippet": "Hi! I am trying to compare two xml files which has CDATA Section as below.. The  xmlunit0.8 version is saying that they are not equal.. is this a bug in", 
+    "msgId": 7712, 
+    "rawEmail": "Return-Path: &lt;Nagendra.Raja@...&gt;\r\nReceived: (qmail 70446 invoked by uid 7800); 13 Apr 2003 17:28:43 -0000\r\nX-Sender: Nagendra.Raja@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 13 Apr 2003 17:15:53 -0000\r\nReceived: (qmail 25592 invoked from network); 13 Apr 2003 17:15:53 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m8.grp.scd.yahoo.com with QMQP; 13 Apr 2003 17:15:53 -0000\r\nReceived: from unknown (HELO nwkea-mail-2.sun.com) (192.18.42.14)\n  by mta1.grp.scd.yahoo.com with SMTP; 13 Apr 2003 17:15:53 -0000\r\nReceived: from phys-apex-1.india.sun.com ([129.158.227.154])\n\tby nwkea-mail-2.sun.com (8.9.3p2+Sun/8.9.3) with ESMTP id KAA24025\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 13 Apr 2003 10:15:51 -0700 (PDT)\r\nReceived: from sun.com (rajawin [129.158.227.173])\n\tby phys-apex-1.india.sun.com (8.12.8+Sun/8.12.8/ENSMAIL,v2.3beta1307) with ESMTP id h3DHFoda022577\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 13 Apr 2003 22:45:50 +0530 (IST)\r\nMessage-ID: &lt;3E999B29.1010202@...&gt;\r\nDate: Sun, 13 Apr 2003 22:45:21 +0530\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Is this a bug in xmlunit 0.8 version??\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Raja Nagendra Kumar &lt;Nagendra.Raja@...&gt;\r\nX-Yahoo-Group-Post: member; u=94898027\r\nX-Yahoo-Profile: nagkumar.rm\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 13 Apr 2003 17:28:43 -0000\r\n\r\n Hi!\n\nI am trying to compare two xml files which has CDATA Section as below..\n\n\nThe  xmlunit0.8 version is saying that they are not equal.. is this a \nbug in xmlunit?\n\n\nIf i remove &#92;n after the CDATA Section as pointed out in the comment, \nthen it is saying they are equal..\n\nThanking you in advance\n\nRegards,\nNagendra\n\n\n\npublic class TestXMLTagTexts extends XMLTestCase\n{\n\npublic void setUp() throws Exception\n    {\n    DocumentBuilderFactory lDBFactory =\n        DocumentBuilderFactory.newInstance();\n    lDBFactory.setNamespaceAware( true );\n    lDBFactory.setValidating( false );\n    XMLUnit.setControlDocumentBuilderFactory( lDBFactory );\n    XMLUnit.setIgnoreWhitespace( true );\n    }//setUp()\n\n public void testCDATASectionVarient2() throws Exception\n    {\n    String lInput =\n        &quot;&lt;xsl:stylesheet xmlns:xsl=&#92;&quot;http://www.w3.org/TR/WD-xsl&#92;&quot;&gt;&quot; +\n        &quot;&lt;xsl:script&gt;&#92;n&quot; +\n        &quot;&#92;n&quot; +\n        &quot;//ADDGLOBALSHERE&#92;n&quot; +\n        &quot;&#92;n&quot; +\n        &quot;&lt;![CDATA[   //&gt; end CDATA tag for VID colorizing&#92;n&quot; +\n        &quot;var rgDate=new Array();&#92;n&quot; +\n        &quot;//&gt;&#92;n&quot; +\n        &quot;]]&gt;&#92;n&quot; + //if i remve this &#92;n then it works fine..\n        &quot;&lt;/xsl:script&gt;&#92;n&quot; +\n        &quot;&#92;n&quot; +\n        &quot;&lt;/xsl:stylesheet&gt;&#92;n&quot;;\n\n    String lExpectation =\n        &quot;&lt;xsl:stylesheet xmlns:xsl=&#92;&quot;http://www.w3.org/TR/WD-xsl&#92;&quot;&gt;&quot; +\n        &quot;&lt;xsl:script&gt;&quot; +\n        &quot;&#92;n&#92;n//ADDGLOBALSHERE&#92;n&#92;n&quot; +\n        &quot;&lt;![CDATA[   //&gt; end CDATA tag for VID colorizing&#92;n&quot; +\n        &quot;var rgDate=new Array();&#92;n&quot; +\n        &quot;//&gt;&#92;n&quot; +\n        &quot;]]&gt;&quot; +\n        &quot;&lt;/xsl:script&gt;&#92;n&quot; +\n        &quot;&lt;/xsl:stylesheet&gt;&#92;n&quot;;\n   \n    assertXMLEqual( lInput, lExpectation );\n    }//testCDATASectionVarient2()\n\n public static void main( String[] args )\n {   \n    TestSuite testSuite = new TestSuite();\n    testSuite.addTest( new TestXMLTagTexts( &quot;testCDATASectionVarient2&quot; ) );\n    junit.textui.TestRunner.run( testSuite );\n   \n }//main()\n}//class TestXMLTagTexts\n\n\n\n\n", 
+    "profile": "nagkumar.rm", 
+    "topicId": 7712, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 94898027, 
+    "prevInTime": 7711, 
+    "contentTrasformed": false, 
+    "postDate": "1050254121", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNFOTk5QjI5LjEwMTAyMDJAc3VuLmNvbT4="
+    }
+}

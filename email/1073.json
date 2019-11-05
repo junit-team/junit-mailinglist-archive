@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 1074, 
+    "senderId": "OauUQbVAjEKFXwC2NH_BAmNiZJio6g3pb1hG-I-MExSBHvQFRwkiJhwG991ZwV7MxvXOya1h6c_d_lfgO_ISKHXj57vSSM8yjg", 
+    "systemMessage": false, 
+    "subject": "On extending JUnit with AspectJ...", 
+    "from": "David Li &lt;david@...&gt;", 
+    "authorName": "David Li", 
+    "msgSnippet": "Hi, I think I just found a solution to my long time problem with JUnit. We do development mostly on server side components and most of these server side", 
+    "msgId": 1073, 
+    "topicId": 1073, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-2069396590\">Hi,<br/>\n<br/>\n  I think I just found a solution to my long time problem with JUnit. We<br/>\ndo development mostly on server side components and most of these server<br/>\nside classes need to run with the server context properly setup. <br/>\n<br/>\n  Setting up these server contxt often involve using specialized<br/>\nclassloader to load the class. Using JUnit&#39;s native test runner often<br/>\nconflict with these classloader. ;( <br/>\n<br/>\n  We end up have to write our implementation of TestRunner for each of<br/>\nthese environment and we often have to implement all three TestRunners.<br/>\nThe work is tedious and this makes tracking new version of JUnit a lot<br/>\nharder. :(<br/>\n<br/>\n  There doesn&#39;t seem to be a good Object Oriented Java based solution to<br/>\nthis problem. The problem of having to adapt each TestRunner to specific<br/>\nenvironment will requires extending all three TestRunner at the same<br/>\ntime and have to call the class different names. <br/>\n<br/>\n  Aspect Oriented Programming (www.aspectj.org) seem to solve this<br/>\nproblem elegantly. The following is a quick sample codes on adapting<br/>\nLog4J into JUnit which extending all three TestRunner in one file. <br/>\n<br/>\n  The problem: We use Log4J in our components and JUnit to unit test of<br/>\nthe components. The problem is that Log4J need to be initialized at<br/>\nleast once from the main method. Doing it in a OO way will require us to<br/>\nextending all three TestRunner to something like <br/>\n<br/>\npublic class TestRunnerWithLog4J extends junit.awtui.TestRunner<br/>\n{<br/>\n    public static void main(String[] args) {<br/>\n        Log4J_INIT_CODES_HERE;<br/>\n        super.main(args);<br/>\n    }<br/>\n}<br/>\n<br/>\n  Second problem we are having is that we need to document the fact and<br/>\nmake our developers aware what TestRunner to be use with what framework.<br/>\nWe now have three versions of TestRunner:<br/>\n<br/>\nTestRunnerWithEnhydra, TestRunnerWithOzone and TestRunnerWithLog4. <br/>\n<br/>\nIn this case, Ozone uses Log4J as well. The list grows very fast and the<br/>\nextensions codes become a big tangled codes and maintaince hell!<br/>\n<br/>\nAspectJ seems to provide a very elegant solution to this. The following<br/>\nis my first try to use AspectJ to solve this problem:<br/>\n<br/>\n---<br/>\npackage junit.aspect;<br/>\n<br/>\naspect Log4JRunner {<br/>\n<br/>\n    pointcut runnerMain():<br/>\n        executions(public static void<br/>\njunit.awtui.TestRunner.main(String[])) ||<br/>\n        executions(public static void<br/>\njunit.textui.TestRunner.main(String[])) ||<br/>\n        executions(public static void<br/>\njunit.swingui.TestRunner.main(String[]));<br/>\n<br/>\n    before(): runnerMain() {<br/>\n        org.apache.log4j.BasicConfigurator.configure();<br/>\n       <br/>\norg.apache.log4j.Category.getRoot().setPriority(org.apache.log4j.Priority.DEBUG);<br/>\n    }<br/>\n}<br/>\n---<br/>\n<br/>\nThis aspect simply extending the main method in each TestRunner to<br/>\nproperly initialize the Log4J. This extension gives three main<br/>\nadvantages:<br/>\n<br/>\n1. No modification to the original JUnit codes<br/>\n2. No messy subclass of TestRunner to maintaine.<br/>\n3. No special documents for each TestRunner for each environment.<br/>\n<br/>\nI&#39;d like to get the opinion of the JUnit users and developers on using<br/>\nAOP as the extension proramming for JUnit.<br/>\n<br/>\nThanks.<br/>\n<br/>\nDavid Li<br/>\nDigitalSesame</div>", 
+    "prevInTime": 1072, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "988658611", 
+    "canDelete": false, 
+    "nextInTopic": 1075, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNBRURCQkIzLjQ0MTlBNThDQGRpZ2l0YWxzZXNhbWUuY29tPg=="
+    }
+}

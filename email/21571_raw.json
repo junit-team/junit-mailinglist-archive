@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 21572, 
+    "senderId": "_cg5b1WsQApLBPhG7Mmj2ZRLbR6Got2XXZC2AXM7SpqxGMvpLYzmbXfchCaU86z-SjXMuladKfifJI84J4qyTy4eUUTI-w", 
+    "systemMessage": true, 
+    "subject": "ClassNotFoundException, sometimes", 
+    "from": "David Rush &lt;david@...&gt;", 
+    "authorName": "David Rush", 
+    "msgSnippet": "I m working on setting up some junit test cases for an application that s been around a while.  I have some tests running via ant, but I have a strange", 
+    "msgId": 21571, 
+    "rawEmail": "Return-Path: &lt;david@...&gt;\r\nReceived: (qmail 53241 invoked from network); 5 May 2009 23:59:32 -0000\r\nReceived: from unknown (98.137.34.46)\n  by m1.grp.re1.yahoo.com with QMQP; 5 May 2009 23:59:32 -0000\r\nReceived: from unknown (HELO n35b.bullet.mail.sp1.yahoo.com) (66.163.168.149)\n  by mta3.grp.sp2.yahoo.com with SMTP; 5 May 2009 23:59:32 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1241567971; bh=4Dz+/WA89oIrFF3ZQwKuhCj60w0ynfNjeZ+wqBkvqQk=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:X-Received:Message-ID:Date:User-Agent:MIME-Version:To:X-Enigmail-Version:OpenPGP:Content-Type:Content-Transfer-Encoding:X-Originating-IP:X-eGroups-Msg-Info:From:Reply-To:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:Sender:X-Yahoo-Newman-Property:X-eGroups-Approved-By:X-eGroups-Auth; b=XBYNaBplxrihGBL4Ttlgs5hFisSHu44fBLOdQorUx2uQKeiNGCtY3CrHEcxLwMvl2qj6ucaOzIMCa6Q95xRxKoIscHoPkNSbe1CFW3EESuZB7AjgsriUaCgRljpb/pXF\r\nReceived: from [69.147.65.172] by n35.bullet.mail.sp1.yahoo.com with NNFMP; 05 May 2009 23:59:31 -0000\r\nReceived: from [98.137.35.15] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 05 May 2009 23:59:31 -0000\r\nX-Sender: david@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 34407 invoked from network); 5 May 2009 20:29:01 -0000\r\nX-Received: from unknown (69.147.108.201)\n  by m3.grp.re1.yahoo.com with QMQP; 5 May 2009 20:29:01 -0000\r\nX-Received: from unknown (HELO smtp1.phpwebhosting.com.phpwebhosting.com) (70.84.132.50)\n  by mta2.grp.re1.yahoo.com with SMTP; 5 May 2009 20:29:01 -0000\r\nX-Received: (qmail 9700 invoked from network); 5 May 2009 20:28:01 -0000\r\nX-Received: from unknown (HELO [172.16.0.100]) (sendonly2@...@75.76.84.146)\n\tby smtp1.phpwebhosting.com with (DHE-RSA-AES256-SHA encrypted) SMTP; Tue, 05 May 2009 15:28:01 -0500\r\nMessage-ID: &lt;4A00A14C.5060306@...&gt;\r\nDate: Tue, 05 May 2009 14:27:56 -0600\r\nUser-Agent: Thunderbird 2.0.0.21 (Windows/20090302)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nX-Enigmail-Version: 0.95.7\r\nOpenPGP: id=6FD05E49\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 2:3:4:0:0\r\nFrom: David Rush &lt;david@...&gt;\r\nReply-To: david@...\r\nSubject: ClassNotFoundException, sometimes\r\nX-Yahoo-Group-Post: member; u=230574984; y=b_Ivv9mpjJqY2pUsMbQ9qEt8d2fjOfzsjI3hMXC49kk\r\nX-Yahoo-Profile: ky7dr\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 05 May 2009 23:59:31 -0000\r\n\r\nI&#39;m working on setting up some junit test cases for an application that&#39;s been around a while.  I have some tests running via ant, but I have a strange situation.\n\nWhen use &quot;ant clean&quot; to delete all the compiled classes, then &quot;ant test&quot; (which depends on the compile task, so it&#39;ll compile before it runs the tests) to run the junit tests (via the junit ant task), it works fine.  The code compiles and the junit tests work.\n\nHowever, if I immediately run &quot;ant test&quot; to re-run the junit tests, it fails with a NoClassDefFoundError, complaining about not being able to find a particular class in a 3rd-party library I&#39;m using.  The correct .jar file for the library is in the classpath.\n\nIf I do &quot;ant clean&quot;, then &quot;ant test&quot; it works.\n\nAny ideas?\n\nHere&#39;s the &quot;test&quot; snippet from my ant script:\n\n  &lt;target name=&quot;test&quot; depends=&quot;compile.tests&quot; description=&quot;Runs JUnit tests&quot;&gt;\n    &lt;junit printsummary=&quot;false&quot; haltonfailure=&quot;true&quot; showoutput=&quot;true&quot;&gt;\n      &lt;classpath refid=&quot;test.classpath&quot;/&gt;\n        &lt;formatter type=&quot;brief&quot; usefile=&quot;false&quot;/&gt;\n        &lt;batchtest&gt;\n          &lt;fileset dir=&quot;build/classes&quot; includes=&quot;**/*.class&quot;/&gt;\n        &lt;/batchtest&gt;\n      &lt;/junit&gt;\n  &lt;/target&gt;\n\nDavid\n\n", 
+    "profile": "ky7dr", 
+    "topicId": 21571, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 230574984, 
+    "prevInTime": 21570, 
+    "contentTrasformed": false, 
+    "postDate": "1241555276", 
+    "canDelete": false, 
+    "nextInTopic": 21572, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRBMDBBMTRDLjUwNjAzMDZAcnVzaHRvbmUuY29tPg=="
+    }
+}

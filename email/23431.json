@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 23432, 
+    "senderId": "qzuC6CrBdkPbDfP50USqoQPPOwkWmVCGRPR5uvJohM9JNBT7PvYEoK_buR9qjqSGTwuZgP3qUWhF1J8bslLNdrjZo736xWmFklg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] mock javax.naming.InitialContext", 
+    "from": "Alistair Israel &lt;aisrael@...&gt;", 
+    "authorName": "Alistair Israel", 
+    "msgSnippet": "... The simplest thing I found that worked was to write a StubContext (implements Context) and a StubContextFactoryBuilder (implements ", 
+    "msgId": 23431, 
+    "profile": "aisrael", 
+    "topicId": 23430, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190140219, 
+    "messageBody": "<div id=\"ygrps-yiv-2002341693\">On Thu, Jun 2, 2011 at 3:39 AM, congzb &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:zhebincong@...\">zhebincong@...</a>&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; in my source code, including following code:<br/>\n&gt;<br/>\n&gt;                InitialContext ctx = new InitialContext();<br/>\n&gt;                ............= (...........)ctx.lookup(&quot;java:comp/env/service/someservce&quot;);<br/>\n&gt;<br/>\n&gt; so i wonder, in my junit test case, how to mock the InitialContext to look up and return a mock service?<br/>\n<br/>\n </span></blockquote>The simplest thing I found that worked was to write a StubContext<br/>\n(implements Context) and a StubContextFactoryBuilder (implements<br/>\nInitialContextFactoryBuilder) that returns instances of my<br/>\nStubContext.<br/>\n<br/>\nNot quite a dynamic mock, but I suppose you can use the same<br/>\ntechniques with a Mockito-synthesized mock Context. I wasn&#39;t<br/>\ninterested in mocking the JNDI context per se, anyway. I just needed a<br/>\nconvenient way for JNDI client code to be able to resolve names at<br/>\ntest time.<br/>\n<br/>\nAnyway—in my test&#39;s setup method I call<br/>\nNamingManager.setInitialContextFactoryBuilder() passing it an instance<br/>\nof my StubContextFactoryBuilder(). I also added a check to<br/>\nhasInitialContextFactoryBuilder() to avoid an exception when<br/>\nsetInitialContextFactoryBuilder() is called more than once.<br/>\n<br/>\nYou&#39;re welcome to look at StubJndiContext.java on junit-rules for the<br/>\ncode that packages up the above as a @Rule:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"https://github.com/AlistairIsrael/junit-rules/blob/master/src/main/java/junit/rules/jndi/StubJndiContext.java\">https://github.com/AlistairIsrael/junit-rules/blob/master/src/main/java/junit/rules/jndi/StubJndiContext.java</a><br/>\n<br/>\nHope this helps!<br/>\n<br/>\n- alistair<br/>\n--<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://alistairisrael.wordpress.com\">http://alistairisrael.wordpress.com</a></div>", 
+    "prevInTime": 23430, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1306970647", 
+    "canDelete": false, 
+    "nextInTopic": 23432, 
+    "prevInTopic": 23430, 
+    "headers": {
+        "inReplyToHeader": "PGlzNjRoYSs1MG40QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEJBTkxrVGltUE1DTmJNN0EtNE1wdFhYV3FlUWVqSlRkUEtnQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGlzNjRoYSs1MG40QGVHcm91cHMuY29tPg=="
+    }
+}

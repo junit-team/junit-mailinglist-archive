@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 12338, 
+    "senderId": "WT40xwvxPu-cwjjBX-Hn8AFDEy1xu7l3RgNoZSsHgIM58JxoA-dmopQiK4d-V_pay3SDPrqcMf2KTmISNz2WXBQAAmZgzjmOzQwVTL2ioQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Question about creating a fixture for JUnitPerf", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I assume you want this behavior: 1. Set up 2. Run all tests 3. Tear down For this, you want TestSetup. Subclass TestSetup to do your one-time set up and", 
+    "msgId": 12337, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 98762 invoked from network); 18 Nov 2004 19:23:59 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m2.grp.scd.yahoo.com with QMQP; 18 Nov 2004 19:23:59 -0000\r\nReceived: from unknown (HELO smtp105.rog.mail.re2.yahoo.com) (206.190.36.83)\n  by mta6.grp.scd.yahoo.com with SMTP; 18 Nov 2004 19:23:59 -0000\r\nReceived: from unknown (HELO ?192.168.1.117?) (srainsberger5790@24.156.43.226 with plain)\n  by smtp105.rog.mail.re2.yahoo.com with SMTP; 18 Nov 2004 19:23:58 -0000\r\nMessage-ID: &lt;419CF6CD.90009@...&gt;\r\nDate: Thu, 18 Nov 2004 14:23:57 -0500\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20041116170037.12105.qmail@...&gt;\r\nIn-Reply-To: &lt;20041116170037.12105.qmail@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.83\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Question about creating a fixture for JUnitPerf\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nMike Foley wrote:\n\n&gt; I have some JUnit/Cactus tests that I am converting to JUnitPerf timed \n&gt; and load tests.  The JUnit test deploys and undeploys in setUp() and \n&gt; tearDown().    For the JUnitPerf tests I only want setUp() to occur for \n&gt; the first user first iteration....and for tearDown() I only want to \n&gt; undeploy for last user last iteration.  How best to accomplish this?\n\nI assume you want this behavior:\n\n1. Set up\n2. Run all tests\n3. Tear down\n\nFor this, you want TestSetup. Subclass TestSetup to do your one-time set \nup and tear down, then create a class like this:\n\nclass TimedTestsWithOneTimeSetUp {\n     public static Test suite() {\n         return new OneTimeSetup(new TestSuite(MyTimedTests.class));\n     }\n}\n\nI&#39;m not sure whether this will give you the performance measurements you \nwant, because it will exclude the one-time setup/tear down from those \nmeasurements, but it will work.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 12321, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12336, 
+    "contentTrasformed": false, 
+    "postDate": "1100805837", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12323, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMTE2MTcwMDM3LjEyMTA1LnFtYWlsQHdlYjYwNTAxLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDQxOUNGNkNELjkwMDA5QHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PDIwMDQxMTE2MTcwMDM3LjEyMTA1LnFtYWlsQHdlYjYwNTAxLm1haWwueWFob28uY29tPg=="
+    }
+}

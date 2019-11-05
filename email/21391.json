@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21392, 
+    "senderId": "uq5RPX8QbUliIW4_nA4NpsapXQ8I5SWN9BnU89leLmMfO8FfV5PBmHDvAwY9Q8yiJMGKOKTQvOUcttzPT8zR-mWhM8c-RuY", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit with Selenium-RC how to", 
+    "from": "Fredrik Wendt &lt;fredrik@...&gt;", 
+    "authorName": "Fredrik Wendt", 
+    "msgSnippet": "... Disclaimer: No JUnit, no Selenium-RC used in the solution below. What we did is to put all Selenium tests (HTML source) in a separate web-app, bundled with", 
+    "msgId": 21391, 
+    "profile": "fredrik.wendt", 
+    "topicId": 21383, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 337462199, 
+    "messageBody": "<div id=\"ygrps-yiv-1566184512\">On fre, 2009-02-20 at 13:25 +0000, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:majkic@...\">majkic@...</a> wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi guys,<br/>\n&gt; I need to create automated acceptance tests. Selenium seems to be<br/>\n&gt; nice, since it allows someone without much (or none at all)<br/>\n&gt; programming experience, as our Product Owner to create those tests<br/>\n&gt; with Firefox Selenium IDE plug-in.<br/>\n&gt; <br/>\n&gt; But time has come to integrate those tests to other JUnit tests, so<br/>\n&gt; these can be run on CI server.<br/>\n<br/>\n </span></blockquote>Disclaimer: No JUnit, no Selenium-RC used in the solution below.<br/>\n<br/>\nWhat we did is to put all Selenium tests (HTML source) in a separate<br/>\nweb-app, bundled with Selenium Core and an index.jsp that starts the<br/>\ntest automatically when called by a browser. (We also mangled Selenium<br/>\nCore to let a USERNAME and PASSWORD Selenium variables be set and<br/>\npresent in all tests - mangled means five lines of javascript code.)<br/>\n<br/>\n<br/>\nTo have it run in a CI environment ... I wrote two applications:<br/>\n<br/>\na) a simple app called &quot;test agent&quot; that can take two commands over<br/>\nXML-RPC:<br/>\na1) start a browser pointing it at a certain URL (pointing to the<br/>\nindex.jsp file mentioned above, also telling the browser where the<br/>\nselenium result should be posted)<br/>\na2) stop a browser<br/>\n<br/>\nb) A web-app called &quot;test conductor&quot; that <br/>\nb1) keeps track of test agents<br/>\nb2) aggregate results returned from browsers<br/>\nb3) register test new test runs and launch them when test agents become<br/>\nidle<br/>\n<br/>\nThis works well and having the test files in HTML (with human readable<br/>\nID values on all elements the test interacts with) makes it useful for<br/>\nmanual testing as well. Since the web-app with test can be deployed on a<br/>\ndevelopers machine, a developer can also ask the test conductor to run a<br/>\ntest off the developer&#39;s machine (and start debugging server side).<br/>\n<br/>\nThere&#39;s no JUnit integration. We just added a simple script on our CI<br/>\nenvironment (Hudson) that after each successful build of the full<br/>\nsoftware stack does:<br/>\ni) download the build artifacts, deploy them to a test server<br/>\nii) register a new test run with web-app b mentioned above<br/>\niii) waits for b to return a fail/success<br/>\niv) undeploys the artifacts from step i<br/>\n<br/>\n<br/>\nThis was all setup one year ago - the client I worked for wasn&#39;t sure<br/>\nwhat Selenium could do or if they wanted to invest time using it. Having<br/>\nthe test written/saved in human readable HTML was a good selling point -<br/>\nif they decided to not go with Selenium then the tests could still be<br/>\nused &quot;as is&quot;.<br/>\n<br/>\nSince then:<br/>\nSelenium 1.0 still hasn&#39;t been released.<br/>\nThere&#39;s still no Selenium Driver that can use HTML files as source.<br/>\n3000+ runs completed.<br/>\nWe run test agents for FF2, FF3, IE7, Safari on Mac.<br/>\n<br/>\nParts of the test agent and test conductor is BSD-licensed, some parts<br/>\nwhere developed for the client (and I think they&#39;ll be happy to share<br/>\nunder BSD-ish license).<br/>\n<br/>\n/ Fredrik<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 21390, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1235470791", 
+    "canDelete": false, 
+    "nextInTopic": 21392, 
+    "prevInTopic": 21389, 
+    "headers": {
+        "inReplyToHeader": "PGdubWF2aCtsODhoQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDEyMzU0NzA3OTIuODcyNS41OC5jYW1lbEBhc3BpcmU+", 
+        "referencesHeader": "PGdubWF2aCtsODhoQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 43, 
+    "nextInTime": 19654, 
+    "senderId": "DVxY1igaFqr9fQDAOMHf_ybeVfmS4wZBqsOKd64TAm_khC3KWumzNJNI5bS_Y6ca2X6JDUxQcB3BmLdzQ38qbsL1g2RhHdA4_w5vZtpa4ivdUTfrbA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing singleton patterns", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "Pat, ... I don t see any mention yet in this thread of the simplest solution of them all: put all of the singleton s implementation in a non-singleton abstract", 
+    "msgId": 19653, 
+    "profile": "tibbettj_at_verdi_sra_com", 
+    "topicId": 19636, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "messageBody": "<div id=\"ygrps-yiv-659886510\">Pat,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; This may be a bit off charter, but I&#39;ve been reading some well argued<br/>\n&gt; articles that have names such as &quot;Why is Singleton evil?&quot; and at the top<br/>\n&gt; of the list are troubles that the singleton pattern causes for unit<br/>\n&gt; testing. (which is on topic.)<br/>\n&gt; <br/>\n&gt; The usual suggestions for rewriting the code are offered, such as using<br/>\n&gt; a factory class to allocate/create objects, and always always just<br/>\n&gt; returning the one and only.<br/>\n&gt; <br/>\n&gt; So far, so good. But, the Factory class has to keep a store of<br/>\n&gt; anti-singletons. And the usual call is something like<br/>\n&gt; AntiSingleton anAnti = Factory.createAntiSingleton();<br/>\n&gt; <br/>\n&gt; Which is used statically, and implies that the Factory is a singleton so<br/>\n&gt; its cache of AntiSingletons can be kept in one and only one store.<br/>\n&gt; <br/>\n&gt; I&#39;m not seeing how changing the Singleton class to a class that needs<br/>\n&gt; the singleton Factory class has done anything. We&#39;ve still got a<br/>\n&gt; singleton, and so all arguments that there is implied coupling, and bad<br/>\n&gt; karma for testing still hold.<br/>\n<br/>\n </span></blockquote>I don&#39;t see any mention yet in this thread of the simplest solution of <br/>\nthem all: put all of the singleton&#39;s implementation in a non-singleton <br/>\nabstract base class, then subclass it as a singleton. The abstract base <br/>\nclass can be subclassed separately for testing. In other words,<br/>\n<br/>\n// abstract base class<br/>\npublic abstract class Foo {<br/>\n   protected Foo() { }<br/>\n<br/>\n   public String getBar() { return &quot;bar!&quot;; }<br/>\n}<br/>\n<br/>\n// singleton implementation<br/>\npublic final class TheOneTrueFoo extends Foo {<br/>\n   private TheOneTrueFoo() { super(); }<br/>\n<br/>\n   public static Foo getInstance() { return foo; }<br/>\n<br/>\n   private final static Foo = new TheOneTrueFoo();<br/>\n}<br/>\n<br/>\n// test-only implementation<br/>\npublic final class TestFoo {<br/>\n   public TestFoo() { super(); }<br/>\n}<br/>\n<br/>\nVoila! The 3 statements in the singleton implementation go untested, but <br/>\nall of the rest of Foo can be tested normally.</div>", 
+    "prevInTime": 19652, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1185804113", 
+    "canDelete": false, 
+    "nextInTopic": 19654, 
+    "prevInTopic": 19647, 
+    "headers": {
+        "inReplyToHeader": "PDQ2QUI0MTZDLjIwNDA0MDBAcGZhcnJlbGwuY29tPg==", 
+        "messageIdInHeader": "PDQ2QURFRjUxLjgwNjA0MDdAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "referencesHeader": "PDQ2QUI0MTZDLjIwNDA0MDBAcGZhcnJlbGwuY29tPg=="
+    }
+}

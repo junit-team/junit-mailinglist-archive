@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20187, 
+    "senderId": "zo-ZhEt1KorMXURoUEpGAvyQRukQxLwcdK0wQd-AoomZDgD8UKiIBv_OYPXuboaqhyxOeViRiN5ZPysxxB0I7rYwmz_17NAKbdCtdHmGW0JaVjP_LGw", 
+    "systemMessage": true, 
+    "subject": "Bug in org.junit.Assert", 
+    "from": "&quot;Walter Gildersleeve&quot; &lt;newsgroups@...&gt;", 
+    "authorName": "Walter Gildersleeve", 
+    "msgSnippet": "Hi, I searched around to see if anyone s submitted this bug.  I didn t find a dupe, so I ll go ahead and post; apologies if it s already known. In", 
+    "msgId": 20186, 
+    "profile": "null_bock", 
+    "topicId": 20186, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 230339302, 
+    "messageBody": "<div id=\"ygrps-yiv-787129746\">Hi,<br/>\n<br/>\nI searched around to see if anyone&#39;s submitted this bug.  I didn&#39;t<br/>\nfind a dupe, so I&#39;ll go ahead and post; apologies if it&#39;s already known.<br/>\n<br/>\nIn Assert#format(String, Object, Object), a NullPointerException is<br/>\nthrown if either param &quot;expected&quot; or &quot;actual&quot; is null and the other is<br/>\n*the string* &quot;null&quot;.  Here are a couple test cases demonstrating this:<br/>\n<br/>\n@Test(expected=NullPointerException.class)<br/>\npublic void confirmError() {<br/>\n    assertEquals(null, &quot;null&quot;);<br/>\n}<br/>\n<br/>\n@Test(expected=NullPointerException.class)<br/>\npublic void confirmErrorToo() {<br/>\n    assertEquals(&quot;null&quot;, null);<br/>\n}<br/>\n<br/>\nThis is because Assert#format is trying to print extended information<br/>\nwhen two objects are visually identical but semantically different;<br/>\nnamely, it wants to display the class names as well as the values,<br/>\ndoing a Object#getClass() without checking if the object is null.<br/>\n<br/>\nHere&#39;s a possible fix:<br/>\n<br/>\n<br/>\nstatic String format(String message, Object expected, Object actual) {<br/>\n    String formatted = &quot;&quot;;<br/>\n    if (message != null && !message.equals(&quot;&quot;)) {<br/>\n        formatted = message + &quot; &quot;;<br/>\n    }<br/>\n<br/>\n    String expectedString = String.valueOf(expected);<br/>\n    String actualString = String.valueOf(actual);<br/>\n<br/>\n    if (expected == null) {<br/>\n        return formatted + &quot;expected: &lt;null&gt; but was: &quot;<br/>\n            + actual.getClass().getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;<br/>\n    } else if (actual == null) {<br/>\n        return formatted + &quot;expected: &quot; + expected.getClass().getName()<br/>\n                + &quot;&lt;&quot; + expectedString + &quot;&gt; but was: &lt;null&gt;&quot;;<br/>\n    } else if (expectedString.equals(actualString)) {<br/>\n        return formatted + &quot;expected: &quot; + expected.getClass().getName()<br/>\n                + &quot;&lt;&quot; + expectedString + &quot;&gt; but was: &quot;<br/>\n                + actual.getClass().getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;<br/>\n    } else {<br/>\n        return formatted + &quot;expected:&lt;&quot; + expectedString + &quot;&gt; but was:&lt;&quot;<br/>\n                + actualString + &quot;&gt;&quot;;<br/>\n    }<br/>\n}<br/>\n<br/>\nThe assumption here is that actual and expected will never *both* be<br/>\nnull.  Right?<br/>\n<br/>\nWalter Gildersleeve<br/>\nPortland, OR</div>", 
+    "prevInTime": 20185, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1198269256", 
+    "canDelete": false, 
+    "nextInTopic": 20188, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGZraDgwOCs0OTNtQGVHcm91cHMuY29tPg=="
+    }
+}

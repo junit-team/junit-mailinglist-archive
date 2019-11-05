@@ -1,0 +1,28 @@
+{
+    "topicId": 2836, 
+    "postDate": "1002156074", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "fwVLu2mdutsCoPtWmi4HXgDDOW9xOOd18wrRngMHzy4tmL1tL9F-aXDpR2Z1rr_d0M6AGtj7kUGHhyNtwQexQ9FeuRPRyX6D8Dugzx9DYJv47Q", 
+    "nextInTime": 2842, 
+    "userId": 0, 
+    "prevInTime": 2840, 
+    "prevInTopic": 2840, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDExMDA0MDA0MTE0LjE1NDk5LmNwbXRhQGMwMDcuc252LmNwLm5ldD4="
+    }, 
+    "authorName": "Vladimir Bossicard", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "The really best solution to avoid all this mess (autoexec.bat...) is to use Ant.  If you are not working with Ant, invest a few hours to set it running. Ok, to", 
+    "contentTrasformed": false, 
+    "msgId": 2841, 
+    "nextInTopic": 2842, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;vbossica@...&gt;\r\nX-Sender: vbossica@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_4_1); 4 Oct 2001 00:39:14 -0000\r\nReceived: (qmail 87325 invoked from network); 4 Oct 2001 00:39:14 -0000\r\nReceived: from unknown (10.1.10.142)\n  by 10.1.1.224 with QMQP; 4 Oct 2001 00:39:14 -0000\r\nReceived: from unknown (HELO c007.snv.cp.net) (209.228.33.216)\n  by mta3 with SMTP; 4 Oct 2001 00:41:15 -0000\r\nReceived: (cpmta 15500 invoked from network); 3 Oct 2001 17:41:14 -0700\r\nDate: 3 Oct 2001 17:41:14 -0700\r\nMessage-ID: &lt;20011004004114.15499.cpmta@...&gt;\r\nX-Sent: 4 Oct 2001 00:41:14 GMT\r\nReceived: from [64.79.2.4] by mail.telocity.com with HTTP; 03 Oct 2001\n    17:41:14 PDT\r\nContent-Type: text/plain\r\nContent-Disposition: inline\r\nMime-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Web Mail 3.9.3.5\r\nX-Sent-From: vbossica@...\r\nSubject: Re: [junit] Limitation on Home Installation of Junit\r\nFrom: Vladimir Bossicard &lt;vladimir@...&gt;\r\n\r\nThe really best solution to avoid all this mess (autoexec.bat...) is to use Ant.  If you are not working with Ant, invest a few hours to set it running.\n\nOk, to run Ant, you have to set the ANT_HOME environment variable...\n\nYou can then easily and precisely define what your classpath is and forget about these $%&#^ global variables :-)\n\nWhat I do:\n\n- in my build.xml file, I do not make any assumptions about where my project will be compiled.  No explicit reference to the classpath is made\n- the classpath is defined with the &lt;classpath&gt;&lt;/classpath&gt; task\n- the script needs some variable (like the location of the javahelp libs) so I have a mk.bat script that call ant and passes all the needed variables with the -D option\n- instead of &#39;ant build&#39; I type &#39;mk build&#39;\n\nto build the project on another environment, only the mk.bat file must be changed\n\n-Vladimir\n\nbuild.xml\n\n  &lt;property name=&quot;build_dir&quot;    value=&quot;build&quot; /&gt;\n  &lt;property name=&quot;src_dir&quot;      value=&quot;src&quot; /&gt;\n\n   &lt;target name=&quot;build&quot; depends=&quot;init&quot;&gt;\n     &lt;javac srcdir=&quot;${src_dir}&quot;\n            destdir=&quot;${build_dir}&quot;\n            debug=&quot;on&quot;\n            verbose=&quot;off&quot;\n            deprecation=&quot;on&quot;&gt;\n       &lt;classpath&gt;\n          &lt;pathelement location=&quot;${javahelp_home}/lib/jh.jar&quot; /&gt;\n       &lt;/classpath&gt;\n     &lt;/javac&gt;\n     &lt;copy todir=&quot;${build_dir}&quot; &gt;\n       &lt;fileset dir=&quot;${src_dir}&quot;\n                excludes=&quot;**/*.java,**/*.*~&quot; /&gt;\n     &lt;/copy&gt;\n  &lt;/target&gt;\n\nmk.bat:\n\nc:&#92;...&#92;ant.exe -Djavahelp_home=${JHHOME}/javahelp $1\n\n\n\n", 
+    "subject": "Re: [junit] Limitation on Home Installation of Junit"
+}

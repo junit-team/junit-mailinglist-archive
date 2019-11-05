@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 18175, 
+    "senderId": "KUU9JdsWlnEEu_i7Rr4PzmES6ElW7XIMf4Zw321mad8rsxj2IubrGFpxh_748ANsTu97Vxk1p2if9eYjWhfDMSp3y4_TgZCnSqQAbYqmtpF9", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] JUnit 3.8.1 with JDK 1.1.8", 
+    "from": "&quot;Jochen Hiller&quot; &lt;jo.hiller@...&gt;", 
+    "authorName": "Jochen Hiller", 
+    "msgSnippet": "Hi Leslie, thats a real historical question ,-) I do not have an JDK 1.1.8 available, to do any testing. But, I did a port of JUnit 3.8.1 for a very small", 
+    "msgId": 18174, 
+    "rawEmail": "Return-Path: &lt;jo.hiller@...&gt;\r\nReceived: (qmail 80940 invoked from network); 20 Oct 2006 18:10:53 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m26.grp.scd.yahoo.com with QMQP; 20 Oct 2006 18:10:53 -0000\r\nReceived: from unknown (HELO n10a.bullet.sc5.yahoo.com) (66.163.187.153)\n  by mta2.grp.scd.yahoo.com with SMTP; 20 Oct 2006 18:10:53 -0000\r\nReceived: from [66.163.187.121] by n10.bullet.sc5.yahoo.com with NNFMP; 20 Oct 2006 18:10:24 -0000\r\nReceived: from [66.218.69.6] by t2.bullet.sc5.yahoo.com with NNFMP; 20 Oct 2006 18:10:23 -0000\r\nReceived: from [66.218.66.72] by t6.bullet.scd.yahoo.com with NNFMP; 20 Oct 2006 18:10:23 -0000\r\nX-Sender: jo.hiller@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 9817 invoked from network); 20 Oct 2006 17:15:11 -0000\r\nReceived: from unknown (66.218.67.34)\n  by m32.grp.scd.yahoo.com with QMQP; 20 Oct 2006 17:15:11 -0000\r\nReceived: from unknown (HELO nz-out-0102.google.com) (64.233.162.194)\n  by mta8.grp.scd.yahoo.com with SMTP; 20 Oct 2006 17:15:11 -0000\r\nReceived: by nz-out-0102.google.com with SMTP id r28so403527nza\n        for &lt;junit@yahoogroups.com&gt;; Fri, 20 Oct 2006 10:14:09 -0700 (PDT)\r\nReceived: by 10.65.232.12 with SMTP id j12mr901852qbr;\n        Fri, 20 Oct 2006 10:14:09 -0700 (PDT)\r\nReceived: by 10.65.196.6 with HTTP; Fri, 20 Oct 2006 10:14:09 -0700 (PDT)\r\nMessage-ID: &lt;545735ec0610201014v7d3f29afo212cf40e5cabb85a@...&gt;\r\nDate: Fri, 20 Oct 2006 19:14:09 +0200\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;ehaq2j+smiq@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;ehaq2j+smiq@...&gt;\r\nFrom: &quot;Jochen Hiller&quot; &lt;jo.hiller@...&gt;\r\nSubject: Re: [junit] JUnit 3.8.1 with JDK 1.1.8\r\nX-Yahoo-Group-Post: member; u=275093002; y=JOMB2Zo-vrYir3DxHZzliJanc1Xy9USpiLb__fo7l8reHjFk7jrX7A\r\nX-Yahoo-Profile: jochen.hiller\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 20 Oct 2006 18:10:21 -0000\r\n\r\nHi Leslie,\n\nthats a real historical question ,-)\n\nI do not have an JDK 1.1.=\r\n8 available, to do any testing. But, I did a port\nof JUnit 3.8.1 for a very=\r\n small virtual machine, called leJOS [1]. I called\nthis port leJOSUnit [2],=\r\n which is OpenSouce, you can download to have a look\ninside. leJOS is based=\r\n on -target 1.1 byte code, so a =CD am definitely sure,\nthat leJOSUnit is r=\r\nunning on JDK 1.1.\n\nThe main thing to be done was avoid any Java reflection=\r\n. I do not known,\nsince when all the required reflection capabilities for J=\r\nUnit 3.8.1 have\nbeen intoduced in J2SE.\n\nIn leJOSUnit, the mechanism to set=\r\nup a TestCase is very simple. Lets see an\nexample for a TestCase:\n\npublic c=\r\nlass OneTest extends TestCase {\n    public OneTest(String name) {\n        s=\r\nuper(name);\n    }\n    public static Test suite() {\n        TestSuite suite =\r\n=3D new TestSuite();\n        suite.addTest(new OneTest(&quot;testOne&quot;));\n       =\r\n suite.addTest(new OneTest(&quot;testTwo&quot;));\n        return suite;\n    }\n    pro=\r\ntected void runTest() throws Throwable {\n        if (&quot;testOne&quot;.equals(getNa=\r\nme())) {\n            testOne();\n        } else if (&quot;testTwo&quot;.equals(getName=\r\n())) {\n            testTwo();\n        } else {\n            fail();\n        =\r\n}\n    }\n    public void testOne() {\n        // ...\n    }\n    public void te=\r\nstTwo() {\n        // ...\n    }\n}\n\nSo, the basic idea is to implement the ru=\r\nnTest() and dispatch with a static\napproach. A TestSuite can be implemented=\r\n the known way:\n\npublic class AllTests {\n    public static void main(String=\r\n[] args) {\n        // put here a runner for your embedded platform, or a\nju=\r\nnit.textui.runner when a console is available\n        // ... lejosunit.rcxu=\r\ni.TestRunner.main(suite());\n    }\n\n    public static Test suite() {\n       =\r\n TestSuite suite =3D new TestSuite();\n        suite.addTest(OneTest.suite()=\r\n);\n        suite.addTest(TwoTest.suite());\n        return suite;\n    }\n}\n\nT=\r\nhis is only a hint for which direction to look for. What kind of error do\ny=\r\nou have ? Did you try to run the JUnit test suite against itself ?\n\nBye, Jo=\r\nchen\n\n[1] http://www.lejos.org\n[2] http://lejosunit.sourceforge.net\n\n\nOn 10=\r\n/20/06, lchapman123 &lt;leslie.chapman@...&gt; wrote:\n&gt;\n&gt;   Has anyo=\r\nne had success running JUnit 3.8.1 with JDK 1.1.8? I am\n&gt; trying (unsuccess=\r\nfully) to run the two together on an embedded\n&gt; platform to no avail. I wou=\r\nld like to rule out that it is an\n&gt; incompatibility between the two distrib=\r\nutions.\n&gt;\n&gt; Thank you!\n&gt;\n&gt;  \n&gt;\n\n\n[Non-text portions of this message have be=\r\nen removed]\n\n\n\n", 
+    "profile": "jochen.hiller", 
+    "topicId": 18171, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 275093002, 
+    "prevInTime": 18173, 
+    "contentTrasformed": false, 
+    "postDate": "1161364449", 
+    "canDelete": false, 
+    "nextInTopic": 18175, 
+    "prevInTopic": 18171, 
+    "headers": {
+        "inReplyToHeader": "PGVoYXEyaitzbWlxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDU0NTczNWVjMDYxMDIwMTAxNHY3ZDNmMjlhZm8yMTJjZjQwZTVjYWJiODVhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVoYXEyaitzbWlxQGVHcm91cHMuY29tPg=="
+    }
+}

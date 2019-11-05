@@ -1,0 +1,29 @@
+{
+    "topicId": 9506, 
+    "postDate": "1064592062", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "M6Zx1jUyOI7JrogY7tV-6xVedDdrHlmh76ZFdzd4QXNabvoxNIii5fh1dT7q67B9fRMD4WOpoJChuNMgRiCiYqeuczBrzXiqO88", 
+    "nextInTime": 9511, 
+    "userId": 106503903, 
+    "prevInTime": 9509, 
+    "prevInTopic": 9506, 
+    "headers": {
+        "inReplyToHeader": "PEY3QjE2RUI4OTg0QjE0NDA5QUNCMDE1RjEzMjZCQjY2MUZGMkE4QEFUTDFWRVhDMDA1LnVzZG9tMDA0LnRjby50Yz4=", 
+        "messageIdInHeader": "PEEwNzE0NEEwLUYwM0EtMTFENy05MTlFLTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4="
+    }, 
+    "authorName": "Timothy Wall", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "Do a wait on a shared object; when all events have been fired, do a notify.  On the original wait, set your max timeout, e.g. final Object lock = new Object();", 
+    "contentTrasformed": false, 
+    "msgId": 9510, 
+    "nextInTopic": 9511, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;twall@...&gt;\r\nX-Sender: twall@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 27589 invoked from network); 26 Sep 2003 16:01:04 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m7.grp.scd.yahoo.com with QMQP; 26 Sep 2003 16:01:04 -0000\r\nReceived: from unknown (HELO out001.verizon.net) (206.46.170.140)\n  by mta1.grp.scd.yahoo.com with SMTP; 26 Sep 2003 16:01:04 -0000\r\nReceived: from oculustech.com ([68.160.37.123]) by out001.verizon.net\n          (InterMail vM.5.01.05.33 201-253-122-126-133-20030313) with ESMTP\n          id &lt;20030926160104.CRYF5382.out001.verizon.net@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Fri, 26 Sep 2003 11:01:04 -0500\r\nDate: Fri, 26 Sep 2003 12:01:02 -0400\r\nSubject: Re: [junit] How to test threaded method?\r\nContent-Type: text/plain; delsp=yes; charset=US-ASCII; format=flowed\r\nMime-Version: 1.0 (Apple Message framework v552)\r\nTo: junit@yahoogroups.com\r\nContent-Transfer-Encoding: 7bit\r\nIn-Reply-To: &lt;F7B16EB8984B14409ACB015F1326BB661FF2A8@...&gt;\r\nMessage-Id: &lt;A07144A0-F03A-11D7-919E-003065BF83DA@...&gt;\r\nX-Mailer: Apple Mail (2.552)\r\nX-Authentication-Info: Submitted using SMTP AUTH at out001.verizon.net from [68.160.37.123] at Fri, 26 Sep 2003 11:01:03 -0500\r\nFrom: Timothy Wall &lt;twall@...&gt;\r\nX-Yahoo-Group-Post: member; u=106503903\r\n\r\nDo a wait on a shared object; when all events have been fired, do a  \nnotify.  On the original wait, set your max timeout, e.g.\n\nfinal Object lock = new Object();\nsynchronized(lock) {\n\tlock.wait(TIMEOUT_INTERVAL);\n}\nassertEquals(eventsExpected, eventsReceived);\n\nOn your event-listening thread:\n\nsynchronized(lock) {\n\t// after all events have been sent\n\tlock.notifyAll();\n}\n\nOn Thursday, September 25, 2003, at 07:14 PM, Kris Henderson wrote:\n\n&gt; I have a method that when called creates a thread and does all its work\n&gt; in the new thread.  It looks kind of like this:\n&gt;\n&gt; public void doSomething()\n&gt; {\n&gt;     Thread requestThread = new Thread()\n&gt;     {\n&gt;         public void run()\n&gt;         {\n&gt;             fireStartEvent();\n&gt;\n&gt;             //do some stuff that takes a long time\n&gt;\n&gt;             fireDoneEvent();\n&gt;         }\n&gt;     };\n&gt;     requestThread.start();\n&gt; }\n&gt;\n&gt; I would like to test this method to make sure it sends the correct\n&gt; events in the correct order and that the EventObject contains the\n&gt; correct data.\n&gt;\n&gt; So I wrote a test that looks like this:\n&gt;\n&gt;\n&gt; public void testDoSomething()\n&gt; {\n&gt;     m_eventCount = 0;\n&gt;     final MockService service = new MockService();\n&gt;     service.addOperationListener(new OperationAdapter()\n&gt;     {\n&gt;         public void operationUpdate(OperationEvent event)\n&gt;         {\n&gt;             m_eventCount += 1;\n&gt;         }\n&gt;     });\n&gt;\n&gt;     service.doSomething();\n&gt;\n&gt;     assertEquals(2, m_eventCount);\n&gt; }\n&gt;\n&gt; My test fails because it reaches the assertEquals before all the events\n&gt; can be fired.  If I add a call to Thread.sleep after the call to\n&gt; doSomething() then the test succeeds.  Does anyone know a better way to\n&gt; test this so I don&#39;t have to add a call to Thread.sleep?\n&gt;\n&gt; Thanks,\n&gt; Kris\n&gt;\n&gt; ------------------------ Yahoo! Groups Sponsor  \n&gt; ---------------------~--&gt;\n&gt; Upgrade to 128-Bit SSL Security!\n&gt; http://us.click.yahoo.com/p7cEmB/s7qGAA/yigFAA/5cFolB/TM\n&gt; --------------------------------------------------------------------- \n&gt; ~-&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to  \n&gt; http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "subject": "Re: [junit] How to test threaded method?"
+}

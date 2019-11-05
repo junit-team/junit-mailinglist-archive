@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 7957, 
+    "senderId": "SKRNpGMm7Ixg5ZoClRPMIjQhmr4MJKW16eMnZXmWzKlpKbrVsA8FP_8mloLOS3tSY993JxhZSXl1Gj6nV_yMSLAz7re_TFVv5N0", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] question about Assert.assertEquals", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "... Well, kind of.  What I m saying is that when you re subclassing equals from anywhere but Object, you have to decide which way you want it to break. ... I", 
+    "msgId": 7956, 
+    "profile": "zipwow", 
+    "topicId": 7948, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "messageBody": "<div id=\"ygrps-yiv-9804704\">--- &quot;J. B. Rainsberger&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I read your conclusion to be that it is therefore all right to code<br/>\n&gt; equals() in such a way as to report falsely that two objects are<br/>\n&gt; equal, because there&#39;s no way to make a superclass and subclass<br/>\n&gt; follow the equals() contract. Is that what you are saying? <br/>\n<br/>\n </span></blockquote>Well, kind of.  What I&#39;m saying is that when you&#39;re subclassing equals<br/>\nfrom anywhere but Object, you have to decide which way you want it to<br/>\nbreak.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; If it is,<br/>\n&gt; then I think it&#39;s all the more important to implement equals() in a<br/>\n&gt; failsafe way, since Bloch claims (and I don&#39;t doubt him, but I would<br/>\n&gt; need to think about it) that a subclass with more attributes than its<br/>\n&gt; superclass cannot be equal to it.<br/>\n<br/>\n </span></blockquote>I think this is the confusion... What he&#39;s said is that you cannot<br/>\noverride equals without breaking either symmetry or transitivity (which<br/>\nis what I&#39;m interpreting you to mean when you say &#39;in a failsafe way&#39;).<br/>\n <br/>\n<br/>\nYou can write a subclass that reports itself equal to the superclass. <br/>\nIn fact, you can&#39;t avoid it, and that&#39;s the problem.<br/>\n<br/>\nIf you use the instanceof approach, then (as you point out) you&#39;re<br/>\nbreaking symmetry.<br/>\n<br/>\nHowever, if you go with a different approach, say ignoring the added<br/>\ncharacteristic, you break transitivity.  Bloch&#39;s example from Effective<br/>\nJava has a ColoredPoint that has a new attribute color.  ColoredPoints<br/>\nneed to be different if they&#39;re different colors.  But what happens<br/>\nwhen they&#39;re compared to regular Points?<br/>\n<br/>\ninstanceof approach (breaks symmetry)<br/>\n<br/>\npublic boolean equals(Object o) {<br/>\n  if (o ! instanceof ColoredPoint) {<br/>\n     return false;<br/>\n  }...<br/>\n}<br/>\n<br/>\nI think this is the one you&#39;re warning about.  If you have a Point and<br/>\na ColoredPoint of the same coordinates:<br/>\n<br/>\npoint.equals(coloredPoint)  (true)<br/>\ncoloredPoint.equals(point)  (false)<br/>\n<br/>\nSo, how do you fix that?  Do you special-case the subclass?<br/>\n<br/>\npublic boolean equals(Object o) {<br/>\n  if (o instanceof Point) {<br/>\n     //do color-blind comparison<br/>\n  }...<br/>\n}<br/>\n<br/>\nThis gives you equals for both cases, but consider the following with a<br/>\nred, blue, and uncolored point:<br/>\n<br/>\nbluePoint.equals(point);  (true)<br/>\npoint.equals(redPoint); (true)<br/>\nbluePoint.equals(redPoint) (false)<br/>\n<br/>\nThis breaks transitivity (if x=y and y=z, then x = z must be true).<br/>\n<br/>\nI guess if you change the equals clause of Point to return false for<br/>\nColoredPoints you can solve this, but then you&#39;re polluting your<br/>\nsuperclass equals method with knowledge of each subclass.<br/>\n<br/>\nSo, in summary, I&#39;m saying that if you subclass an equals for anything<br/>\nbut Object, you&#39;re going to break it.  Be sure that you break it in a<br/>\nway that you expect.  Does that make sense?<br/>\n<br/>\nOh, Bloch recommends that in this case you &quot;favor composition over<br/>\ninheritence&quot;, and have ColoredPoint not extend Point, but pass through<br/>\nall the common methods to Point, and provide a view method called<br/>\nasPoint().  I haven&#39;t thought through the ramifications of that.<br/>\n<br/>\nLastly, for the original poster, before J.B. reminds me of it:  be sure<br/>\nyou override hashCode as well, or funny things will happen in your<br/>\nmaps.<br/>\n<br/>\n-Kevin<br/>\n<br/>\n__________________________________<br/>\nDo you Yahoo!?<br/>\nThe New Yahoo! Search - Faster. Easier. Bingo.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://search.yahoo.com\">http://search.yahoo.com</a></div>", 
+    "prevInTime": 7955, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1052266130", 
+    "canDelete": false, 
+    "nextInTopic": 7961, 
+    "prevInTopic": 7953, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNTA2MTg1MDE4MDgyOC4wMDUyQTVFMkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNTA3MDAwODUwLjIzNjU4LnFtYWlsQHdlYjgwNTEwLm1haWwueWFob28uY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 16818, 
+    "senderId": "pAvFaUlLqB-CSMESl816dbp8IWHZVrQ8soJLgkqDPXbcH9DE187z3tbhfMfLxoEXA-MZs6Rwu-4go8TtaWqhPGLhHV7TAEn2", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: How to comment test methods in Junit 4?", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Dear VGReddy, The new filter support gives you programmable control over what tests are run. For example: public class FilterTest { public static class Example", 
+    "msgId": 16817, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 84456 invoked from network); 2 Jun 2006 20:40:42 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m31.grp.scd.yahoo.com with QMQP; 2 Jun 2006 20:40:42 -0000\r\nReceived: from unknown (HELO smtpauth07.mail.atl.earthlink.net) (209.86.89.67)\n  by mta7.grp.scd.yahoo.com with SMTP; 2 Jun 2006 20:40:42 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth07.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1FmGQJ-0000DW-7f\n\tfor junit@yahoogroups.com; Fri, 02 Jun 2006 16:39:11 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Fri, 2 Jun 2006 13:39:04 -0700\r\nMessage-ID: &lt;006401c68684$99d53650$6401a8c0@T42&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;e5ir05+qomj@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869\r\nThread-index: AcaEcQjFpW0zAsDZQAW3nu64oWkIzwBbptKQ\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d4788909999d4bafc5383ffac9ae942d2778892e2cd035b31e3f350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] Re: How to comment test methods in Junit 4?\r\nX-Yahoo-Group-Post: member; u=173198504; y=fCqpHUG7sv3h0bL7OQLdlK3_VvoOw5Wvd5QtQbylKRiuzbxW\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nDear VGReddy,\n\nThe new filter support gives you programmable control over what tests are\nrun. For example:\n\npublic class FilterTest {\n\tpublic static class Example {\n\t\t@Test public void one() {}\n\t\t@Test public void two() {}\n\t\t@Test public void three() {}\n\t}\n\n\t@Test public void filter() {\n\t\tRequest request= Request.aClass(Example.class);\n\t\tFilter filter= new Filter() {\n\t\t\t@Override\n\t\t\tpublic boolean shouldRun(Description description) {\n\t\t\t\treturn\ndescription.getDisplayName().startsWith(&quot;t&quot;);\n\t\t\t}\n\n\t\t\t@Override\n\t\t\tpublic String describe() {\n\t\t\t\tthrow new UnsupportedOperationException();\n\t\t\t}\n\t\t};\n\t\tRequest filtered= request.filterWith(filter);\n\t\tResult result= new JUnitCore().run(filtered);\n\t\tassertEquals(2, result.getRunCount());\n\t}\n}\n\nIt seems to me like this will solve your problem, although it may be too\ngeneral for your purposes.\n\nSincerely yours,\n\nKent Beck\nThree Rivers Institute\n\n&gt; -----Original Message-----\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; Behalf Of vgreddy43\n&gt; Sent: Tuesday, May 30, 2006 6:20 PM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] Re: How to comment test methods in Junit 4?\n&gt; \n&gt; Can anybody help me on how to solve this?\n&gt; \n&gt; Thanks.\n&gt; \n&gt; \n&gt; --- In junit@yahoogroups.com, &quot;vgreddy43&quot; &lt;vgreddy43@...&gt; wrote:\n&gt; &gt;\n&gt; &gt; Hello friends,\n&gt; &gt; \n&gt; &gt; I have a test case with some testmethods which are written in \n&gt; &gt; junit 4 style. As showsn below.\n&gt; &gt; \n&gt; &gt; public Class MyTestCase{\n&gt; &gt; \n&gt; &gt; @Before\n&gt; &gt; public void mysetup(){\n&gt; &gt;  //some code\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; @Test\n&gt; &gt; public void mytest1(){\n&gt; &gt; //some code\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; @Test\n&gt; &gt; public void mytest2(){\n&gt; &gt; //some code\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; @After\n&gt; &gt; \n&gt; &gt; public void myteardown(){\n&gt; &gt; //some code\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; public static junit.framework.Test suite() {\n&gt; &gt;   return new JUnit4TestAdapter(MyTestCase.class);    \n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; When we run this it will test mytest1 and mytest2 methods.\n&gt; &gt; But if I want only mytest1 to run how do I do that. Using @Ignore \n&gt; we \n&gt; &gt; can comment other tests but I want to do this in junit3.8 style, \n&gt; like\n&gt; &gt; \n&gt; &gt; Public static Test suite() {\n&gt; &gt; TestSuite suite = new TestSuite(&quot;TestSuite&quot;);\n&gt; &gt; suite.addTest(new MyTestCase(&quot;mytest1&quot;));\n&gt; &gt; //suite.addTest(new OIDBHelperTest(&quot;myttest2&quot;));\n&gt; &gt; //suite.addTest(new OIDBHelperTest(&quot;myttest3&quot;));\n&gt; &gt; \n&gt; &gt; return suite;\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; Any ideas on this, how to acheive this type of functionality in \n&gt; &gt; junit4?\n&gt; &gt; \n&gt; &gt; thanks.\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 16698, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 16816, 
+    "contentTrasformed": false, 
+    "postDate": "1149280744", 
+    "canDelete": false, 
+    "nextInTopic": 16819, 
+    "prevInTopic": 16780, 
+    "headers": {
+        "inReplyToHeader": "PGU1aXIwNStxb21qQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwNjQwMWM2ODY4NCQ5OWQ1MzY1MCQ2NDAxYThjMEBUNDI+"
+    }
+}

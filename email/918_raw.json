@@ -1,0 +1,30 @@
+{
+    "topicId": 901, 
+    "postDate": "986536872", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Stefan Bodewig &lt;bodewig@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "RcsLlKZnmhaAdyXOh_Evot8FbPfjyfFnYqT9Au-ORoMy6LHUBv7C81g0Eb_F-rmkWluDMHQOJl62JzlFEgUV1C2PA566G2M", 
+    "nextInTime": 919, 
+    "userId": 0, 
+    "prevInTime": 917, 
+    "prevInTopic": 909, 
+    "headers": {
+        "inReplyToHeader": "Y2hlbGNrQGVic2RyLmNvbSdzIG1lc3NhZ2Ugb2YgIldlZCwgNCBBcHIgMjAwMSAxNzoxMjoxMyAtMDQwMCI=", 
+        "messageIdInHeader": "PG0zem9kdWJtOG4uZnNmQGJvZGV3aWcuYm9zdC5kZT4=", 
+        "referencesHeader": "PDkxM0QwRDJBOTA3MUQxMTFCN0MyMDA4MDVGRTZDNkU3MDI2NThENzRAVVMyPg=="
+    }, 
+    "authorName": "Stefan Bodewig", 
+    "numMessagesInTopic": 5, 
+    "msgSnippet": "... What I ve done so far in similar situations was something like the following - I omit your error() case, but that should be easy: (1) Define a Callback", 
+    "contentTrasformed": false, 
+    "msgId": 918, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;bodewig@...&gt;\r\nX-Sender: bodewig@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_1); 6 Apr 2001 06:35:34 -0000\r\nReceived: (qmail 94995 invoked from network); 6 Apr 2001 06:35:33 -0000\r\nReceived: from unknown (10.1.10.142) by m8.onelist.org with QMQP; 6 Apr 2001 06:35:33 -0000\r\nReceived: from unknown (HELO bodewig.bost.de) (195.227.98.11) by mta3 with SMTP; 6 Apr 2001 07:36:37 -0000\r\nReceived: (from bodewig@localhost) by bodewig.bost.de (8.9.3/8.9.3) id IAA24667; Fri, 6 Apr 2001 08:01:12 +0200\r\nX-Authentication-Warning: bodewig.bost.de: bodewig set sender to bodewig@... using -f\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] How can I test async callbacks?\r\nReferences: &lt;913D0D2A9071D111B7C200805FE6C6E702658D74@US2&gt;\r\nDate: 06 Apr 2001 08:01:12 +0200\r\nIn-Reply-To: chelck@...&#39;s message of &quot;Wed, 4 Apr 2001 17:12:13 -0400&quot;\r\nMessage-ID: &lt;m3zodubm8n.fsf@...&gt;\r\nLines: 85\r\nUser-Agent: Gnus/5.0807 (Gnus v5.8.7) XEmacs/21.1 (Cuyahoga Valley)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Stefan Bodewig &lt;bodewig@...&gt;\r\n\r\n&lt;chelck@...&gt; wrote:\n\n&gt; I have some code that uses async callbacks and I&#39;d like to test\n&gt; them. The problem is I don&#39;t know how to report the errors and\n&gt; failures that occur in the callback to JUnit.\n\nWhat I&#39;ve done so far in similar situations was something like the\nfollowing - I omit your error() case, but that should be easy:\n\n(1) Define a Callback class of your own, that looks something like\nthis\n\nclass Callback implements ICallback {\n    private AssertionFailedError failure = 0;\n    private boolean called = false;\n\n    public AssertionFailedError getFailure() {return failure;}\n    public boolean hasBeenCalled() {return called;}\n\n    public void ok(Object data) {\n        try {\n            if (data == null) {\n                failure = new AssertionFailederror(&quot;data is null&quot;);\n                return;\n            }\n            .... more tests ....\n        } finally {\n            synchronized(this) {\n                called = true;\n                this.notifyAll();\n            }\n        }\n    }\n}\n\n(2) use it in your test method like this\n\n    Callback callback = new Callback();\n    assert(!callback.hasBeenCalled());\n    m_model.getData(callback);\n    synchronized (callback) {\n        // avoid race condition\n        if (!callback.hasBeenCalled()) {\n            callback.wait(REASONABLE_TIMEOUT);\n        }\n    }\n    assert(&quot;no callback but timeout&quot;, callback.hasBeenCalled());\n    AssertionFailedError ae = callback.getFailure();\n    if (failure != null) {\n        throw ae;\n    }\n\nThe wait/notifyAll approach will only work if you know for sure that\nthe Callback will be called in a different thread - alternatively you\ncould use\n\n    Runnable r = new Runnable() {\n        public void run() {\n            m_model.getData(callback);\n        }\n    };\n    (new Thread(r)).start();\n\nto ensure you are running in separate Threads.\n\nA scenario like yours has been so common in a past project of mine -\nmodels would be loaded by SwingWorkers and would fire change events\nwhen ready - that I&#39;ve created my own abstract base class for things\nlike Callback.  This encapsulates the logic of hasBeenCalled and\nprovides a set of assert methods of its own, something like\n\n    protected boolean assertNotNull(Object o) {\n        if (o == null) {\n            failure = new AssertionFailedError(&quot;expected not null&quot;);\n        }\n        return failure == null;\n    }\n\nand the ok method would do something like\n\n            if (!assertNotNull(data)) {\n                return;\n            }\n\nStefan\n\n", 
+    "subject": "Re: [junit] How can I test async callbacks?"
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 22761, 
+    "senderId": "K_34__bwAz_bIdlUl81e8kvy1aPUQzs7SvynDg72bqgkjU0eisWk1DznK4ziFk0M7X3RJWQKphuu9o0j1Q", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Large, hierarchical, randomized test suites: how to not\trun out of memory?", 
+    "from": "allamistakeo18@...", 
+    "authorName": "allamistakeo18@mac.com", 
+    "msgSnippet": "Thanks again for your hints. I have a few problems with your suggestion. First of all, your code is slightly broken (I guess you were typing it off the top of", 
+    "msgId": 22760, 
+    "topicId": 22741, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 449575965, 
+    "messageBody": "<div id=\"ygrps-yiv-1077064916\">Thanks again for your hints. <br/>\n<br/>\nI have a few problems with your suggestion. First of all, your code is slightly broken (I guess you were typing it off the top of your head). MethodRule.apply() must return a Statement, not void. A correct implementation seems to be the following (at least, that&#39;s what I came up with): <br/>\n<br/>\n@Rule<br/>\npublic MethodRule repeat = new MethodRule() {<br/>\n\t\t<br/>\n\t@Override<br/>\n\tpublic Statement apply(final Statement base, FrameworkMethod method, Object target) {<br/>\n\t\t\t<br/>\n\t\treturn new Statement() {<br/>\n<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic void evaluate() throws Throwable {<br/>\n\t\t\t\tfor (int i = 0; i &lt; 1000; i++)<br/>\n\t\t\t\t\tbase.evaluate();<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n\t}<br/>\n};<br/>\n<br/>\nAnother problem I have is that it turns out my @Before method is executed only once before running all 1000 tests, instead of once before each test. <br/>\n<br/>\nFinally, this approach flattens the test hierarchy. Instead of being able to consult the result of each run of the test method, if any of the runs fails, the whole test suite is interrupted, and the following tests are not run at all. I would like to be able to see the frequency of failure of the test method, and the various ways in which it fails. <br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 22759, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1276372010", 
+    "canDelete": false, 
+    "nextInTopic": 22767, 
+    "prevInTopic": 22752, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGlsUG1Zc3RmR2YxTmloZzBVbUxxT2VMNHpwQUNiTXZ2N015Ni1PNkBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PERBOERGRUVGLTg1REUtNEVGMy1CMjA4LURCNDJGODBENTAwQ0BtYWMuY29tPg==", 
+        "referencesHeader": "PDBDMTk3RUM0LTM3QzgtNDM3NS05MjM1LTkzQzU0MjI5REM5OEBtYWMuY29tPiA8QUFOTGtUaWtHOERldUtrVGcxbjBpaHZJTXhscGRHa0pQVjM0QlFIVjAzWENNQG1haWwuZ21haWwuY29tPiA8MkIyM0JFNUUtQTI4OS00MUQ4LUEyNEItMkM4MkFERjAzRUFCQG1hYy5jb20+IDxBQU5Ma1Rpbm5tMExhemNPMEU3ZTViWUhJR2poTDJpQVM4U0FUVXdJNl9kRlBAbWFpbC5nbWFpbC5jb20+IDxEM0RDOTdGRC1GMzdGLTRCN0UtQUYwRC05MTRERjQyOEE5NTlAbWFjLmNvbT4gPEFBTkxrVGlsUG1Zc3RmR2YxTmloZzBVbUxxT2VMNHpwQUNiTXZ2N015Ni1PNkBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

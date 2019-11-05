@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 6456, 
+    "senderId": "WeK4WaTeZXtiR8HTRQ9abPvXCqsmiSxbrIdVrw6QsDKuHLx3txAS8zCJ00WVDwQrmerJlOUSipzq1s79XDOYXCsd5aQnBDwh1FbsOAfLuXl-YZuC", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TestCase classes and code", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "So said  tumb@juno.com  on  12/14/2002 -------------------- ... JUnit.TestCase. ... I would rather let Kent do it. I cite ", 
+    "msgId": 6455, 
+    "profile": "nails762", 
+    "topicId": 6454, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-2092841270\">So said  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:tumb@...\">tumb@...</a>  on  12/14/2002 --------------------<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;I suspect I&#39;m not properly understanding what is meant by TestCase.<br/>\n&gt;You&#39;ve got a definition that more than simply - extends<br/>\n </span></blockquote>JUnit.TestCase.<br/>\n<blockquote><span title=\"ireply\"> &gt;Could you define TestCase and comment on our testing system. <br/>\n<br/>\n </span></blockquote>I would rather let Kent do it. I cite<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.xprogramming.com/testfram.htm.\">http://www.xprogramming.com/testfram.htm.</a> To paraphrase: a TestCase<br/>\nclass is a test fixture; a TestCase instance is an individual test<br/>\noperating on the fixture.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;What we have a one to one correspondence of test classes to production<br/>\n&gt;classes. For example, a CalculatorEngine.java and<br/>\n&gt;CalculatorEngineTest.java (extended from TestCase) in parallel<br/>\n&gt;directories so that they&#39;re in the same package. When we we&#39;ve written<br/>\n </span></blockquote>a<br/>\n<blockquote><span title=\"ireply\"> &gt;few tests and find that some setup code is repeated in more than one<br/>\n </span></blockquote>test<br/>\n<blockquote><span title=\"ireply\"> &gt;class (often because it&#39;s setting up a mock database or file system)<br/>\n </span></blockquote>that<br/>\n<blockquote><span title=\"ireply\"> &gt;goes into something we call a XxxxTestUtility class - maybe<br/>\n&gt;OracleTestUtility.java.<br/>\n<br/>\n </span></blockquote>Why &quot;Utility&quot;? Is there no better name for what that class is doing?<br/>\nMaybe you didn&#39;t know what it was until now. Still, &quot;SetUp&quot; would be a<br/>\nbetter choice, don&#39;t you find?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;I&#39;m wondering if our TestUtility is what you&#39;re calling a fixture even<br/>\n&gt;tho it doesn&#39;t extend TestCase. This class will setup the sometimes<br/>\n&gt;complicated objects, often instantiating several objects and setting<br/>\n&gt;their state. It&#39;s methods are then called by the test classes that<br/>\n </span></blockquote>extend<br/>\n<blockquote><span title=\"ireply\"> &gt;TestCase and are called in test suites. <br/>\n<br/>\n </span></blockquote>You are right: your *Utility classes are test fixtures and you are<br/>\nusing TestCase to group tests together.<br/>\n<br/>\nYour *Utility classes should be TestCase descendants and you should use<br/>\nTestSuite to group tests together. If you do that, then you&#39;ll be using<br/>\nJUnit the way it was intended. You seem to be going out of your way to<br/>\nbuild something that JUnit gives you free of charge.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;We still have a one-to-one correspondence of test classes to<br/>\n </span></blockquote>production<br/>\n<blockquote><span title=\"ireply\"> &gt;classes which seems to help make sure that we test everything. <br/>\n<br/>\n </span></blockquote>Justify this. I typically do not have a 1:1 correspondence. I cannot<br/>\nsee how having that correspondence (on its own) gives me any more or<br/>\nless confidence in testing everything.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;And tells<br/>\n&gt;us where to look for code that tests a given class. <br/>\n<br/>\n </span></blockquote>I admit that this is a nice consequence of the 1:1 correspondence.<br/>\nStill, if the TestCase classes are named well, it will be clear. It&#39;s<br/>\nnot as though I split my tests into many test cases and those test<br/>\ncases are named something Martian compared to the class name.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;If it matters, this<br/>\n&gt;project was started a few years before we&#39;d heard of unit tests and<br/>\n </span></blockquote>long<br/>\n<blockquote><span title=\"ireply\"> &gt;before test driven development reached us.<br/>\n<br/>\n </span></blockquote>Of course it matters. The world has learned since then. :)<br/>\n<br/>\nTo be clear, what you&#39;re doing is in no way wrong, except that you&#39;re<br/>\ndoing work on your own that JUnit does for you. The TestCase class is<br/>\ndesigned to represent a fixture so that each test can communicate<br/>\nsimply with the fixture through instance-level attributes. By placing<br/>\nthe fixture in a collaborating object, you&#39;re simply making that<br/>\ncommunication slightly more complex. If it works, then I won&#39;t argue,<br/>\nbut you&#39;re doing more than you need to.<br/>\n<br/>\nThanks for sharing your experience with us!<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603<br/>\nAll correspondence (c) 2002 Diaspar Software Services.<br/>\nIf you want to use it, just ask; don&#39;t steal.</div>", 
+    "prevInTime": 6454, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1039976262", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 6454, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMjE0LjEyMzcyNy4tNDMzMTY1LjQudHVtYkBqdW5vLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDIxMjE1MTMxNzQyMDEwNi4wMTM0QjYxNUBzbXRwLnltLnBodWIubmV0LmNhYmxlLnJvZ2Vycy5jb20+", 
+        "referencesHeader": "PDIwMDIxMjE0LjEyMzcyNy4tNDMzMTY1LjQudHVtYkBqdW5vLmNvbT4="
+    }
+}

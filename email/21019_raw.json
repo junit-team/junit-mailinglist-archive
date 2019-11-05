@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 21020, 
+    "senderId": "5PakL7pLA0_Pkjqq73ulBNreIbwRmRHDTkzW1hWwGkRhNCftHtum_jxxUSckKJVhMiwGs9EU9DmBP96Tl8-efZ623iqWtcPKcmj1uZcghBiWJ7v7", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterized and Theories overlaps", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "... I m not sure that there is a misunderstanding here but just to make sure: While what you wrote is technically true I think it simplifies the theory a bit.", 
+    "msgId": 21019, 
+    "rawEmail": "Return-Path: &lt;joakim.ohlrogge@...&gt;\r\nX-Sender: joakim.ohlrogge@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 25624 invoked from network); 23 Oct 2008 11:42:07 -0000\r\nX-Received: from unknown (66.218.67.97)\n  by m53.grp.scd.yahoo.com with QMQP; 23 Oct 2008 11:42:07 -0000\r\nX-Received: from unknown (HELO yw-out-1718.google.com) (74.125.46.157)\n  by mta18.grp.scd.yahoo.com with SMTP; 23 Oct 2008 11:42:07 -0000\r\nX-Received: by yw-out-1718.google.com with SMTP id 9so58990ywk.12\n        for &lt;junit@yahoogroups.com&gt;; Thu, 23 Oct 2008 04:42:07 -0700 (PDT)\r\nX-Received: by 10.65.189.20 with SMTP id r20mr536004qbp.51.1224762126722;\n        Thu, 23 Oct 2008 04:42:06 -0700 (PDT)\r\nX-Received: by 10.65.219.20 with HTTP; Thu, 23 Oct 2008 04:42:06 -0700 (PDT)\r\nMessage-ID: &lt;b9ee5e410810230442m54c9a527l27336de38391ce7c@...&gt;\r\nDate: Thu, 23 Oct 2008 13:42:06 +0200\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20109560.post@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;fr8fv1+80rk@...&gt; &lt;20029916.post@...&gt;\n\t &lt;b9ee5e410810191534i4d9216f4gedd598b1d527cc25@...&gt;\n\t &lt;4f7da6b90810201038y16e17b8at4635043d47eeabe6@...&gt;\n\t &lt;002901c932e6$277f2280$6401a8c0@ferrari&gt;\n\t &lt;20109560.post@...&gt;\r\nX-Google-Sender-Auth: 48d21d39ac8533f3\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nX-eGroups-From: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nFrom: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nReply-To: joakim.ohlrogge@...\r\nSubject: Re: [junit] Parameterized and Theories overlaps\r\nX-Yahoo-Group-Post: member; u=261856052; y=yiLIOQN1ag6hI4iqPXqEFIfaUrfUOhiMfmY9521I4T9VgJi4\r\nX-Yahoo-Profile: j0hlrogge\r\n\r\n&gt; Thanks for the clear responses. What i see is that a theory is a\n&gt; (parametrized) test inside out; you don&#39;t specify what will work but you\n&gt; leave out what should not be tested (iow assumptions by leaving out the data\n&gt; for these cases).\n\nI&#39;m not sure that there is a misunderstanding here but just to make sure:\n\nWhile what you wrote is technically true I think it simplifies the\ntheory a bit. I would consider a long list of assumptions in a theory\na smell, perhaps named: &quot;assmumptions is the mother of all screw ups&quot;\n:). I almost fell into the trap of using assumptions to filter the\n&quot;desired&quot; datapoints to the &quot;correct&quot; theory but that would be a\nviolation of the idea, the idea is that the datapoints I have\nspecified and all other datapoints I (or an automatic tool) can come\nup with should pass. I think that there is a subtle difference here\nbetween data driven tests and theories, data driven tests are merely a\nconvenient way to create lots of specific examples while theories aim\nat the abstraction, the definition of the truth in this system.\n\nIf a lot of assumptions are a smell, then what are our weapons against\nthem? I found that declaring types help here and it pays off\ninstantly. For instance, if I represent name as a String and phone\nnumber as a String and it is important to my theories to differentiate\nbetween the two I could ether:\n\nAssume that any string with numbers in it is a phone number and that\nanything that is not a phone number is a name.\nOr, I could declare the type Name and the type PhoneNumber.\n\nIn this case I would prefer a type.\n\nIf I was intersted in defining what a long distance call is I could\nwrite that as a theory:\n\n @Theory\npublic void makeLongDistanceCall(PhoneNumber from, PhoneNumber to) {\n     assumeThat(from.areaCode, is(not(equalTo(to.areaCode)));\n     Call call = new Call(from, to);\n     assertTrue(call.isLongDistance());\n}\n\nI probably screwed up both the domain and the design but I hope my\nidea of what an assumptions role in a theory is and how theories are\ndifferent than data-driven tests in spite of them both being driven by\ndata.\nI also hope that in the case the domain is screwed up it should be\nperfectly clear from the above theory to anyone who knows the domain.\nFinally, I hope this helps someone :)\n/J\n\n", 
+    "profile": "j0hlrogge", 
+    "topicId": 20365, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "prevInTime": 21018, 
+    "contentTrasformed": false, 
+    "postDate": "1224762126", 
+    "canDelete": false, 
+    "nextInTopic": 21027, 
+    "prevInTopic": 21000, 
+    "headers": {
+        "inReplyToHeader": "PDIwMTA5NTYwLnBvc3RAdGFsay5uYWJibGUuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDgxMDIzMDQ0Mm01NGM5YTUyN2wyNzMzNmRlMzgzOTFjZTdjQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZyOGZ2MSs4MHJrQGVHcm91cHMuY29tPiA8MjAwMjk5MTYucG9zdEB0YWxrLm5hYmJsZS5jb20+CSA8YjllZTVlNDEwODEwMTkxNTM0aTRkOTIxNmY0Z2VkZDU5OGIxZDUyN2NjMjVAbWFpbC5nbWFpbC5jb20+CSA8NGY3ZGE2YjkwODEwMjAxMDM4eTE2ZTE3YjhhdDQ2MzUwNDNkNDdlZWFiZTZAbWFpbC5nbWFpbC5jb20+CSA8MDAyOTAxYzkzMmU2JDI3N2YyMjgwJDY0MDFhOGMwQGZlcnJhcmk+CSA8MjAxMDk1NjAucG9zdEB0YWxrLm5hYmJsZS5jb20+"
+    }
+}

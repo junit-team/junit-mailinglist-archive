@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 24, 
+    "nextInTime": 23485, 
+    "senderId": "V2JwA_yneiGRVbbGo-XCMvaWnvVlai4DMmJnhHp3Bjdo7tpe0SnULimrkanXSJX8xpn-lwFdFe7Ldx16OMrlZvtZpkLy", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Not knowing the tests in advance when providing a test runner", 
+    "from": "Bill Venners &lt;bill@...&gt;", 
+    "authorName": "Bill Venners", 
+    "msgSnippet": "Hi Esko, I also had to try and abstract over the various kinds of not-run tests in ScalaTest given I wanted to be able to run JUnit and TestNG tests through ", 
+    "msgId": 23484, 
+    "rawEmail": "Return-Path: &lt;bill@...&gt;\r\nX-Sender: bill@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 17062 invoked from network); 24 Jun 2011 21:36:52 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m5.grp.sp2.yahoo.com with QMQP; 24 Jun 2011 21:36:52 -0000\r\nX-Received: from unknown (HELO mail-yw0-f52.google.com) (209.85.213.52)\n  by mta1.grp.sp2.yahoo.com with SMTP; 24 Jun 2011 21:36:52 -0000\r\nX-Received: by ywo7 with SMTP id 7so4457016ywo.25\n        for &lt;junit@yahoogroups.com&gt;; Fri, 24 Jun 2011 14:36:52 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.101.200.18 with SMTP id c18mr4164593anq.58.1308951411239; Fri,\n 24 Jun 2011 14:36:51 -0700 (PDT)\r\nX-Received: by 10.101.67.10 with HTTP; Fri, 24 Jun 2011 14:36:51 -0700 (PDT)\r\nIn-Reply-To: &lt;4E02F44A.6020508@...&gt;\r\nReferences: &lt;itfi5a+u52c@...&gt;\n\t&lt;4E0214D4.2040504@...&gt;\n\t&lt;BANLkTimabmOKRvC6jPN7DbPS27fKzeVJTg@...&gt;\n\t&lt;4E02F44A.6020508@...&gt;\r\nDate: Fri, 24 Jun 2011 14:36:51 -0700\r\nMessage-ID: &lt;BANLkTimDSabTfcFwzgKo5a4VzxfvYkX-hA@...&gt;\r\nTo: junit@yahoogroups.com\r\nFrom: Bill Venners &lt;bill@...&gt;\r\nSubject: Re: [junit] Not knowing the tests in advance when providing a test runner\r\nX-Yahoo-Group-Post: member; u=416990097; y=XkUKGVJ5cwGW-UCXR2eaMVUqyvFapMe1bz4pmhmGGedZjtm7GdM\r\nX-Yahoo-Profile: billvenners\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nHi Esko,\n\nI also had to try and abstract over the various kinds of not-run =\r\ntests in\nScalaTest given I wanted to be able to run JUnit and TestNG tests =\r\nthrough\nScalaTest as well as ScalaTest tests. One thing I didn&#39;t implement =\r\nwas a\nnotion of skipped tests, but I&#39;m considering adding that, because it =\r\nmeans\nsomething different than ignored or pending tests. What these mean in=\r\n\nScalaTest are:\n\nignored: test used to work, but I broke it and don&#39;t have =\r\ntime to fix it\nnow. Don&#39;t want to delete it, so marking it ignored and have=\r\n a good\nintention of coming back and fixing it later\n\npending: fleshing out=\r\n the &quot;specification&quot; of code I likely haven&#39;t written\nyet, but for sure the=\r\n test I haven&#39;t written yet (pendingUntilFixed is a\nsubset of this, for a b=\r\nug I haven&#39;t fixed yet.)\n\nskipped: test skipped due to some assumption need=\r\ned by the test not being\nmet, such as a database being available on the net=\r\nwork.\n\nThe skipped concept shows up in JUnit as assumptions, and in TestNG =\r\nas\ndependent tests, I think.\n\nBill\n\nOn Thu, Jun 23, 2011 at 1:07 AM, Esko L=\r\nuontola &lt;esko.luontola@...&gt;wrote:\n\n&gt; **\n&gt;\n&gt;\n&gt; Joakim Ohlrogge wrote o=\r\nn 23.6.2011 0:20:\n&gt;\n&gt; &gt; Jumi looks very interesting. It would be great with=\r\n &quot;one API to run them\n&gt; all\n&gt; &gt; and in darkness bind them&quot; so to speak :) B=\r\nasically talk to one API to\n&gt; get\n&gt; &gt; access to all the different test fram=\r\neworks out there.\n&gt;\n&gt; Yes, that&#39;s the plan. :)\n&gt;\n&gt; The initial version of t=\r\nhe testing framework facing public API can be\n&gt; viewed at\n&gt;\n&gt; https://githu=\r\nb.com/orfjackal/jumi/tree/master/jumi-api/src/main/java/net/orfjackal/jumi/=\r\napi\n&gt;\n&gt;\n&gt; &gt; One of the big challenges was statuses and I think my thoughts =\r\nwere along\n&gt; &gt; the lines of RDF where one could express that things that &quot;p=\r\nending&quot; is a\n&gt; &gt; kind of &quot;ignored&quot; for reporting purposes but differs in th=\r\nat it is yet to\n&gt; be\n&gt; &gt; implemented.\n&gt;\n&gt; That&#39;s one thing that I&#39;ve also b=\r\neen wondering that what would be the\n&gt; best way to do it. There are quite m=\r\nany different reasons for having a\n&gt; skipped/ignored/pending test, and also=\r\n with some testing frameworks they\n&gt; are marked pending during the executio=\r\nn of the test (e.g. ScalaTest&#39;s\n&gt; pendingUntilFixed) whereas some mark them=\r\n before executing any test code\n&gt; (e.g. JUnit&#39;s @Ignore).\n&gt;\n&gt; At first I&#39;ll=\r\n create the simplest possible solution and have just one\n&gt; concept of skipp=\r\ned tests. Later, once I get some feedback from users and\n&gt; framework develo=\r\npers, I&#39;ll gather the different use cases for skipping\n&gt; tests and think ab=\r\nout supporting them better.\n&gt;\n&gt; --\n&gt; Esko Luontola\n&gt; www.orfjackal.net\n&gt;  \n=\r\n&gt;\n\n\n\n-- \nBill Venners\nArtima, Inc.\nhttp://www.artima.com\n\n\n[Non-text portio=\r\nns of this message have been removed]\n\n\n", 
+    "profile": "billvenners", 
+    "topicId": 23466, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 416990097, 
+    "prevInTime": 23483, 
+    "contentTrasformed": false, 
+    "postDate": "1308951411", 
+    "canDelete": false, 
+    "nextInTopic": 23488, 
+    "prevInTopic": 23482, 
+    "headers": {
+        "inReplyToHeader": "PDRFMDJGNDRBLjYwMjA1MDhAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PEJBTkxrVGltRFNhYlRmY0Z3emdLbzVhNFZ6eGZ2WWtYLWhBQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGl0Zmk1YSt1NTJjQGVHcm91cHMuY29tPgk8NEUwMjE0RDQuMjA0MDUwNEBnbWFpbC5jb20+CTxCQU5Ma1RpbWFibU9LUnZDNmpQTjdEYlBTMjdmS3plVkpUZ0BtYWlsLmdtYWlsLmNvbT4JPDRFMDJGNDRBLjYwMjA1MDhAZ21haWwuY29tPg=="
+    }
+}

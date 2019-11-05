@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 12964, 
+    "senderId": "X4mskPB1o8Ruhvk96DHc38yilvV1P1vEwG73S8L4Uc_PXw0qtc8h27ebEWWaBg1ck_hwATZ-W-iy-9DwiukVtx23El71TwMQyzw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit test dependencies", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "The short answer is:  Don t write tests that are interdependant . There s some nice rants about why you don t want to do that, but the short reason is that", 
+    "msgId": 12963, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 58781 invoked from network); 25 Feb 2005 23:16:10 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m21.grp.scd.yahoo.com with QMQP; 25 Feb 2005 23:16:10 -0000\r\nReceived: from unknown (HELO wproxy.gmail.com) (64.233.184.203)\n  by mta5.grp.scd.yahoo.com with SMTP; 25 Feb 2005 23:16:10 -0000\r\nReceived: by wproxy.gmail.com with SMTP id 68so543910wri\n        for &lt;junit@yahoogroups.com&gt;; Fri, 25 Feb 2005 15:16:10 -0800 (PST)\r\nDomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;\n        s=beta; d=gmail.com;\n        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;\n        b=d2w5npXWRQHJWziwTJ/pN76W+67jtYPAV3WpwaHYzMFLbouc9QKaFTPrEaEgVTLC9xAv9HdTk9C3DlFQ/5mexZoS6XPcrC1IzgseUG3S+wTeLf6oPuPT5JbdfpoEVNt/Ta/I3t2O6GIIZ3YdcgDbhBIB0IIRqWgL9TsSl0KVbTQ=\r\nReceived: by 10.54.51.56 with SMTP id y56mr53298wry;\n        Fri, 25 Feb 2005 15:16:09 -0800 (PST)\r\nReceived: by 10.54.22.45 with HTTP; Fri, 25 Feb 2005 15:16:09 -0800 (PST)\r\nMessage-ID: &lt;4fff064f05022515162fe7470a@...&gt;\r\nDate: Fri, 25 Feb 2005 15:16:09 -0800\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20050225201623.2646.qmail@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nReferences: &lt;20050225201623.2646.qmail@...&gt;\r\nX-eGroups-Remote-IP: 64.233.184.203\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nReply-To: Kevin Klinemeier &lt;zipwow@...&gt;\r\nSubject: Re: [junit] JUnit test dependencies\r\nX-Yahoo-Group-Post: member; u=198331568\r\nX-Yahoo-Profile: zipwow\r\n\r\nThe short answer is:  &quot;Don&#39;t write tests that are interdependant&quot;. \nThere&#39;s some nice rants about why you don&#39;t want to do that, but the\nshort reason is that you don&#39;t know which one is failing.\n\nYour example was an insert/delete method.  Make these separate tests,\npossibly in separate TestCase classes.  Change your tests to look for\n*separate* data so that failures in the deletion test do not conflict\nwith the insert test.  As an aside, save yourself some trouble and use\ndata in your Unit Tests that is also different from your Dev or\nTesting data.  The last thing you want is for records you inserted\nduring your development to conflict with your automated unit tests.\n\nIf you find yourself in a situation where you *can&#39;t* refactor them to\nbe non-interdependant, then reconsider what you&#39;re testing, and see if\nthe two dependant tests are really one test.  In many insert/delete\nsituations, I don&#39;t really care that the database changed but that the\nexpectations of my API hold.  I&#39;ll leave it to the database developers\nover at MySQL to make sure it does its job successfully.\n\nDoes that help?\n\n-Kevin  \n\n\nOn Fri, 25 Feb 2005 12:16:23 -0800 (PST), k m &lt;raca200x@...&gt; wrote:\n&gt; \n&gt; \n&gt; Hello,\n&gt; \n&gt; A colleague and myself are beginning to implement JUnit tests. We are facing a dilemma that I hope you can help us with. How are dependent unit tests handled?\n&gt; \n&gt; For example, there are 2 independent methods that must be tested, but to test them and clean-up they become dependent. So, the methods are addRecordToDB() and deleteRecordFromDB(). Additionally, addRecordToDB() will fail if the record already exists in the database.\n&gt; \n&gt; To test that addRecordToDB() can add a new record, testAddRecordToDB() must ensure that the record does not already exist, which relies on a deleteRecordFormDB() message in setUp().\n&gt; \n&gt; To test that deleteRecordFromDB() can delete an existing record, testDeleteRecordFromDB() must ensure that the record already exists in the database, which relies on an addRecordToDB() in setUp().\n&gt; \n&gt; To test that addRecordToDB() fails if the record already exists, testAddRecordToDBDuplication() must ensure that either\n&gt; \n&gt; - the record does not already exist, which relies on deleteRecordFromDB() in setUp() and 2 addRecordToDB() messages in the test method OR\n&gt; \n&gt; - the record already exists, which relies on 1 addRecordToDB() message in setup() and 1 addRecordToDB() message in the test Method\n&gt; \n&gt; These same issues also affect the tearDown() method.\n&gt; \n&gt; Generically stated, should a test method&#39;s setUp() and tearDown() rely on an untested method? If not, how can we avoid it? Is there a way to enforce the sequence of test method runs?\n&gt; \n&gt; Any advice would be appreciated. Thanks.\n&gt; \n&gt; \n&gt; ---------------------------------\n&gt; Do you Yahoo!?\n&gt;  Yahoo! Mail - You care about security. So do we.\n&gt; \n&gt; [Non-text portions of this message have been removed]\n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt; \n&gt;\n\n", 
+    "profile": "zipwow", 
+    "topicId": 12962, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 198331568, 
+    "prevInTime": 12962, 
+    "contentTrasformed": false, 
+    "postDate": "1109373369", 
+    "canDelete": false, 
+    "nextInTopic": 12964, 
+    "prevInTopic": 12962, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwMjI1MjAxNjIzLjI2NDYucW1haWxAd2ViNTAyMDYubWFpbC55YWhvby5jb20+", 
+        "messageIdInHeader": "PDRmZmYwNjRmMDUwMjI1MTUxNjJmZTc0NzBhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDUwMjI1MjAxNjIzLjI2NDYucW1haWxAd2ViNTAyMDYubWFpbC55YWhvby5jb20+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 13152, 
+    "senderId": "nqvM7t-PofrygW6_jCqZsA8qTAisipQ1fHPlqKXz0Jt_7u2ibhV2mi6rfNSaeClOfh5AeXX4IcgxCdYWQzfAP-DwsmO2fqehrAK17mo", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: detect test failure in teardown()", 
+    "from": "&quot;Robert Wenner&quot; &lt;robert.wenner@...&gt;", 
+    "authorName": "Robert Wenner", 
+    "msgSnippet": "Hi, ... This can only yield wrong results, as you create a new TestResult rather than using the one JUnit uses. You can just overwrite the runBare method in", 
+    "msgId": 13151, 
+    "profile": "robertwenner", 
+    "topicId": 13146, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 115089258, 
+    "messageBody": "<div id=\"ygrps-yiv-1279034580\">Hi,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; \tTestResult tr = new TestResult(); <br/>\n </span></blockquote>This can only yield wrong results, as you create a new TestResult rather<br/>\nthan using the one JUnit uses.<br/>\n<br/>\nYou can just overwrite the runBare method in TestCase, like this:<br/>\n<br/>\n<br/>\nimport junit.framework.*;<br/>\n<br/>\npublic class fail extends TestCase {<br/>\n    public void runBare() throws Throwable {<br/>\n        setUp();<br/>\n        runTest();<br/>\n        tearDown();<br/>\n    }<br/>\n<br/>\n    public void tearDown() {<br/>\n        System.out.println(&quot;down&quot;);<br/>\n    }<br/>\n<br/>\n    public void testWorks() {<br/>\n        // Nothing works always ;-)<br/>\n    }<br/>\n<br/>\n    public void testFails() {<br/>\n        fail(&quot;did not work&quot;);<br/>\n    }<br/>\n<br/>\n    public void testThrows() {<br/>\n        throw new RuntimeException(&quot;woops&quot;);<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\nRunning this, I get<br/>\n<br/>\nrobert@sauerbraten:~&gt; javac -classpath<br/>\n/home/robert/sw/junit3.8.1/junit.jar:. fail.java && java -classpath<br/>\n/home/robert/sw/junit3.8.1/junit.jar:. junit.textui.TestRunner fail<br/>\n.down<br/>\n.F.E<br/>\nTime: 0.007<br/>\nThere was 1 error:<br/>\n1) testThrows(fail)java.lang.RuntimeException: woops<br/>\n        at fail.testThrows(fail.java:24)<br/>\n        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br/>\n        at<br/>\nsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)<br/>\n        at<br/>\nsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)<br/>\n        at fail.runBare(fail.java:7)<br/>\nThere was 1 failure:<br/>\n1) testFails(fail)junit.framework.AssertionFailedError: did not work<br/>\n        at fail.testFails(fail.java:20)<br/>\n        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br/>\n        at<br/>\nsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)<br/>\n        at<br/>\nsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)<br/>\n        at fail.runBare(fail.java:7)<br/>\n<br/>\nFAILURES!!!<br/>\nTests run: 3,  Failures: 1,  Errors: 1<br/>\n<br/>\n<br/>\ntearDown is only called after the succesful test.<br/>\nIs that what you are looking for?<br/>\n<br/>\nRobert<br/>\n<br/>\n-- <br/>\nDSL Komplett von GMX +++ Superg�nstig und stressfrei einsteigen!<br/>\nAKTION &quot;Kein Einrichtungspreis&quot; nutzen: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.gmx.net/de/go/dsl\">http://www.gmx.net/de/go/dsl</a></div>", 
+    "prevInTime": 13150, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1111614860", 
+    "canDelete": false, 
+    "nextInTopic": 13157, 
+    "prevInTopic": 13149, 
+    "headers": {
+        "messageIdInHeader": "PDk4OTMuMTExMTYxNDg2MEB3d3cxNy5nbXgubmV0Pg==", 
+        "referencesHeader": "PGQxc2JnYys2MmpwQGVHcm91cHMuY29tPg=="
+    }
+}

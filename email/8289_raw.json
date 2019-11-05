@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 8290, 
+    "senderId": "OF9LPbY3chaFYNzq2RGt_1m4fBmllir0VaCl-RPebmpLfzrCwTykqjeLgjET6RfTui2nYnRFGO8o6A2LOC3x-TnXNivoJdU48YzOcEcXYQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Anyway to dynamically change name of test  passed to formatter?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... private int side1; private int side2; private int side3; private int expectedVolume; public TestVolume(int side1, int side2, int side3, int expectedVolume)", 
+    "msgId": 8289, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 79420 invoked from network); 9 Jun 2003 16:01:19 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m14.grp.scd.yahoo.com with QMQP; 9 Jun 2003 16:01:18 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta2.grp.scd.yahoo.com with SMTP; 9 Jun 2003 16:01:17 -0000\r\nReceived: from quincy ([24.156.43.226])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030609160116.JIEW367110.fep02-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Mon, 9 Jun 2003 12:01:16 -0400\r\nMessage-ID: &lt;200306091201230565.473B0B2F@...&gt;\r\nIn-Reply-To: &lt;bbddau+3b69@...&gt;\r\nReferences: &lt;bbddau+3b69@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Mon, 09 Jun 2003 12:01:23 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: Anyway to dynamically change name of test\n  passed to formatter?\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Mon, 9 Jun 2003 12:01:16 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\n\n&gt;So said tjporterxx on 2003-06-01 --------------------\n&gt;Thanks for the qui=\r\nck reply, especially on a Saturday night!\n&gt;\n&gt;I&#39;m missing something here, si=\r\nnce I could not integrate your code\n&gt;fragments into my code.  I probably do=\r\n not have the hierarchy of JUnit\n&gt;objects and methods clear yet.\n&gt;\n&gt;Here is=\r\n my little test case, perhaps you could fit your code into it\n&gt;as an exampl=\r\ne? Instead of the loop structure you indicated, for this\n&gt;particular case I=\r\n assume I would use two suite.addTest(...) calls.\n&gt;\n&gt;Ah Hah!  Lightbulb jus=\r\nt lit up:\n&gt;\n&gt;I _think_ I understand that I have to extend TestCase into a\n&gt;=\r\nParameterizedTestCase, then have TestVol extend ParameterizedTestCase\n&gt;inst=\r\nead of TestCase.  In that case,  I cannot fit your code fragments\n&gt;into the=\r\n code for TestVol directly, but must create a separate\n&gt;ParameterizedTestCa=\r\nse.java file and then the ParameterizedTestCase\n&gt;class file to be imported =\r\ninto TestVol.\n&gt;\n&gt;------------------------------------------------------\n&gt;im=\r\nport junit.framework.Test;\n&gt;import junit.framework.TestCase;\n&gt;import junit.=\r\nframework.TestSuite;\n&gt;import junit.textui.TestRunner;\n&gt;\n&gt;/**\n&gt;* @author tpo=\r\nrter\n&gt;*\n&gt;* To change the template for this generated type comment go to\n&gt;* =\r\nWindow&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments\n&gt;*/\n&gt;public class=\r\n TestVolume extends TestCase {\n&gt;      // test objects\n&gt;\n    private int sid=\r\ne1;\n    private int side2;\n    private int side3;\n    private int expectedV=\r\nolume;\n\n    public TestVolume(int side1, int side2, int side3, int expected=\r\nVolume) {\n        super(makeTestName(side1, side2, side3);\n        this.sid=\r\ne1 =3D side1;\n        this.side2 =3D side2;\n        this.side3 =3D side3;\n =\r\n       this.expectedVolume =3D expectedVolume;\n    }\n\n    private static St=\r\nring makeTestName(int side1, int side2, int side3) {\n        return &quot;Volume=\r\nTestCase&lt;&quot; + side1 + &quot;, &quot; + side2 + &quot;, &quot; + side3 + &quot;&gt;&quot;;\n    }\n\n    public s=\r\ntatic Test suite() {\n        int[][] testData =3D new int[][] {\n           =\r\n { 2, 2, 2, 8 },\n            { 1, 2, 3, 6 },\n            { 2, 3, 2, 12 }\n  =\r\n      };\n\n        TestSuite suite =3D new TestSuite();\n        for (int i =\r\n=3D 0; i &lt; testData.length; i++) {\n            int[] eachTestData =3D testD=\r\nata[i];\n            suite.addTest(new TestVolume(eachTestData[0], eachTestD=\r\nata[1], eachTestData[2], eachTestData[3]);\n        }\n        return suite;\n=\r\n    }\n\n    public void testCalculateVolume() {\n        assertEquals(expecte=\r\ndVolume, new Volume().calculateVolume(side1, side2, side3));\n    }\n&gt;\n&gt;}\n\nTh=\r\nat&#39;s one way to do it. I typed this code into my e-mail client, so there&#39;s =\r\nno guarantee it compiles. Fix as needed.\n\nBTW: don&#39;t abbreviate. Abbreviati=\r\nons confuse.\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;=\r\ns write software that people understand.\nhttp://www.diasparsoftware.com/\nte=\r\nlephone: +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 8236, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 8288, 
+    "contentTrasformed": false, 
+    "postDate": "1055174483", 
+    "canDelete": false, 
+    "nextInTopic": 8292, 
+    "prevInTopic": 8245, 
+    "headers": {
+        "inReplyToHeader": "PGJiZGRhdSszYjY5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwNjA5MTIwMTIzMDU2NS40NzNCMEIyRkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGJiZGRhdSszYjY5QGVHcm91cHMuY29tPg=="
+    }
+}

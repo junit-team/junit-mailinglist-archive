@@ -1,0 +1,28 @@
+{
+    "topicId": 521, 
+    "postDate": "982805084", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Ryan Ankarberg &lt;RyanA@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "dpfi_HxIi3zj5I_XIQWA5LIddXKadjwZK7fGFpyL5FYfbqEyoCp1YgQkToVsGql8L9KDQPnlQN-CKSLmHxt3JB9HVR6rQQ", 
+    "nextInTime": 526, 
+    "userId": 0, 
+    "prevInTime": 524, 
+    "prevInTopic": 524, 
+    "headers": {
+        "messageIdInHeader": "PDREOUVFMEE0QkZFQ0QzMTFCMjQyMDA5MDI3NjE1MDdDMDEwRUY5RUNAc3J2X3dlYi5jb3JwLnh5bG8uY29tPg=="
+    }, 
+    "authorName": "Ryan Ankarberg", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "Thank you!  very helpful ... From: Joi Ellis [mailto:joi@aravox.com] Sent: Wednesday, February 21, 2001 4:56 PM To: junit@yahoogroups.com Subject: Re:", 
+    "contentTrasformed": false, 
+    "msgId": 525, 
+    "nextInTopic": 526, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;RyanA@...&gt;\r\nX-Sender: RyanA@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_4); 22 Feb 2001 01:25:47 -0000\r\nReceived: (qmail 41154 invoked from network); 22 Feb 2001 01:24:47 -0000\r\nReceived: from unknown (10.1.10.26) by l9.egroups.com with QMQP; 22 Feb 2001 01:24:47 -0000\r\nReceived: from unknown (HELO mail.xylo.com) (65.193.3.10) by mta1 with SMTP; 22 Feb 2001 01:24:47 -0000\r\nReceived: by srv_web.corp.xylo.com with Internet Mail Service (5.5.2653.19) id &lt;15CNJ30D&gt;; Wed, 21 Feb 2001 17:24:46 -0800\r\nMessage-ID: &lt;4D9EE0A4BFECD311B24200902761507C010EF9EC@srv_web.corp.xylo.com&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] question regarding setup()\r\nDate: Wed, 21 Feb 2001 17:24:44 -0800\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: Ryan Ankarberg &lt;RyanA@...&gt;\r\n\r\nThank you!  very helpful\n\n-----Original Message-----\nFrom: Joi Ellis [mailto:joi@...]\nSent: Wednesday, February 21, 2001 4:56 PM\nTo: &#39;junit@yahoogroups.com&#39;\nSubject: Re: [junit] question regarding setup()\n\n\nOn Wed, 21 Feb 2001, Ryan Ankarberg wrote:\n\n&gt; I was noticing that each time a particular test method within my test\ncases\n&gt; is called, it in turn calls setup(), each time... How can I go about\nhaving\n&gt; it only call setup() once, when the test case is initialized?\n\nBy default, the setup() and teardown() methods are called before and after\neach individual test method within the class.  \n\nIf you want a setup() to run once before any of the class test methods,\nand a teardown() to run once after all of the class test methods, then\nlook at junit.extensions.TestSetup.java.\n\nI&#39;ve included an example of how I used it.  An &#39;MP&#39; in this context\nis a native process which must be running for some of the tests.\nIt must contain a predefined, known set of user accounts which\nthe test case will be manipulating.\n\nThe TestSetup decorator calls a script in its setup() method\nwhich creates the expected accounts, and the teardown() method\ncalls another script which removes the accounts and returns the\nnative process to a known state.\n\npackage com.aravox.nsapi;\n\nimport junit.extensions.TestSetup;\nimport junit.framework.Test;\nimport java.io.IOException;\n\n/**\n * Title:        Test NSApi\n * Description:  Unit tests for NSApi\n * Copyright:    Copyright (c) 2000Joi Ellis\n * Company:      Aravox Technologies, Inc.\n * @author Joi Ellis\n * @version 1.0\n */\n\npublic class MPSetup extends TestSetup {\n\n  public MPSetup( Test t) {\n    super(t);\n  }\n  protected void setUp() {\n    try {\n \nRuntime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/setupTestUsers&quot;);\n    } catch (IOException ioex) {\n      ioex.printStackTrace();\n    }\n  }\n  protected void tearDown() {\n    try {\n \nRuntime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/removeTestUsers&quot;);\n    } catch (IOException ioex) {\n      ioex.printStackTrace();\n    }\n  }\n}\n\nTo use MPSetup, I wrap my existing suite object inside a new\nMPSetup suite like this:\n\npublic class AllTests extends TestCase {\n ....\n  public static Test suite() {\n    TestSuite suite = new TestSuite();\n    suite.addTest(com.aravox.nsapi.TestConnectionInfo.suite());\n    suite.addTest(TestUdpConnect.suite());\n    suite.addTest(TestFirewall.suite());\n    suite.addTest(TestJNsApiSubsystemInterfaces.suite());\n    suite.addTest(TestNsConvertStringToMD5Secret.suite());\n    suite.addTest(TestNsConvertStringToSHA1Secret.suite());\n    suite.addTest(TestLocales.suite());\n    suite.addTest(TestResBundle.suite());\n    // now wrap my suite inside a MPSetup suite and return it.\n    MPSetup mps = new MPSetup( suite );\n    return mps;\n  }\n....\n}\n\n\n-- \nJoi Ellis                    Software Engineer\nAravox Technologies          joi@..., gyles19@...\n\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I\nreally like about Linux is that it has Microsoft worried.  Anything\nthat kicks a monopoly in the pants has got to be good for something.\n           - Chris Johnson\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "RE: [junit] question regarding setup()"
+}

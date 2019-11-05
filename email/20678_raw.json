@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 20679, 
+    "senderId": "dAo_L8_SMHYBIsrgtQD45A_VHNtWEBn-mU-Cm3QwKsNfVPRw7lD_9H-sZhVYBehbl5EhfAlyYPNB6j7wRXNGsNMkBDU4MY8B", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Sorter in JUnit 4.5", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Robin, We were able to reproduce the defect your found with a simple test. Indeed, filters and sorters don t work correctly in all cases in 4.5 compared to ", 
+    "msgId": 20678, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 65574 invoked from network); 10 Jul 2008 18:51:37 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m53.grp.scd.yahoo.com with QMQP; 10 Jul 2008 18:51:37 -0000\r\nX-Received: from unknown (HELO elasmtp-mealy.atl.sa.earthlink.net) (209.86.89.69)\n  by mta17.grp.scd.yahoo.com with SMTP; 10 Jul 2008 18:51:36 -0000\r\nX-Received: from [71.210.0.54] (helo=kentspavilion)\n\tby elasmtp-mealy.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1KH1Et-0001r1-3K\n\tfor junit@yahoogroups.com; Thu, 10 Jul 2008 14:51:36 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;g4f7ph+jdpg@...&gt;\r\nDate: Thu, 10 Jul 2008 11:51:31 -0700\r\nMessage-ID: &lt;01a701c8e2bd$f9bdf010$4000a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;g4f7ph+jdpg@...&gt;\r\nThread-Index: AcjdATogzKs/r4c5SjCkGXkwj7sbpwFu3Oew\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3198\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478174de44350bfa1f89043f57a49a42188633a2d08139eb819350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] Sorter in JUnit 4.5\r\nX-Yahoo-Group-Post: member; u=173198504; y=PjXdYmJZP-rC_EmNQWFFKjOvFK2Vq2d2Uj9bjTBhZEHZYAVc\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nRobin,\n \nWe were able to reproduce the defect your found with a simple test. Indeed,\nfilters and sorters don&#39;t work correctly in all cases in 4.5 compared to\n4.4. We will fix this defect before releasing. Thank you for the clear\nexample--that made diagnosis much easier even though fixing it is turning\nout to be difficult.\n \nRegards,\n \nKent Beck\nThree Rivers Institute\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nrobinjay33\nSent: Tuesday, July 01, 2008 11:39 PM\nTo: junit@yahoogroups.com\nSubject: [junit] Sorter in JUnit 4.5\n\n\n\nHi!\n\nI have implemented a very straight-forward sorter that runs fine in\nJUnit up to version 4.4 but not in 4.5 beta. Here is the sorter:\n\npublic class InternalTestClassArraySorter extends Sorter {\npublic InternalTestClassArraySorter(Comparator&lt;Description&gt; comparator) {\nsuper(comparator);\n}\n\n@Override\npublic int compare(Description o1, Description o2) {\nSystem.out.println(&quot;Comparing&quot; + o1 + &quot; and &quot; + o2);\nreturn super.compare(o1, o2);\n}\n\npublic void apply(Object runner) {\nsuper.apply((Runner)runner);\n}\n\n\npublic static class MethodNameComparator implements\nComparator&lt;Description&gt; {\npublic int compare(Description o1, Description o2) {\nreturn o1.getDisplayName().compareTo(o2.getDisplayName());\n}\n}\n}\n\nAnd here is the according runner:\n\npublic class SortedSkipRunner extends Parameterized {\nprivate static final Configuration config;\nprivate final PropertyMethodSkipFilter filter;\nprivate final Sorter sorter;\n\nstatic {\nconfig = new Configuration();\n}\n\npublic SortedSkipRunner(Class&lt;?&gt; klass) throws Throwable {\nsuper(klass);\n\nfilter = new PropertyMethodSkipFilter();\nfilter.setConfig(config);\nthis.filter(filter);\n\nsorter = new InternalTestClassArraySorter(new\nInternalTestClassArraySorter.MethodNameComparator());\nthis.sort(sorter);\n}\n\npublic static Configuration getConfig() {\nreturn config;\n}\n}\n\nBasically it should sort the test-methods by the name of the test\nmethod. I do apply it via the sort-method in my Runner. But somehow\nthe sorter is ignored by my test-execution. Any guess what is going\nwrong here?\n\nThanks & Best Regards,\nRobin\n\n\n\n \n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 20652, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 20677, 
+    "contentTrasformed": false, 
+    "postDate": "1215715891", 
+    "canDelete": false, 
+    "nextInTopic": 20688, 
+    "prevInTopic": 20652, 
+    "headers": {
+        "inReplyToHeader": "PGc0ZjdwaCtqZHBnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAxYTcwMWM4ZTJiZCRmOWJkZjAxMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PGc0ZjdwaCtqZHBnQGVHcm91cHMuY29tPg=="
+    }
+}

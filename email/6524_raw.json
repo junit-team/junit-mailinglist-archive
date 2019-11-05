@@ -1,0 +1,30 @@
+{
+    "topicId": 1696, 
+    "postDate": "1040361296", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "nmcIfMqVguG19TCvuVJZKlInJqhA6t31ZN8evq-Dl0B9VJLHhVJrgU545lck3s3I7L0bIXjr77KsZgTQboVEmOwKNknC9AfPATik4-kT3AA", 
+    "nextInTime": 6525, 
+    "userId": 114327599, 
+    "prevInTime": 6523, 
+    "prevInTopic": 6523, 
+    "headers": {
+        "inReplyToHeader": "PDAwMDMwMWMyYTc3YiQ4YzA0YjU1MCQ2NDAxYThjMEBsYXRpdHVkZTAxPjsgZnJvbSBtc2lsdmVyc3RlaW5Ac2lsdmVybWFyay5jb20gb24gVGh1LCBEZWMgMTksIDIwMDIgYXQgMTE6Mjc6MzZBTSAtMDUwMA==", 
+        "messageIdInHeader": "PDIwMDIxMjE5MjIxNDU2LkEyMTIwQHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "referencesHeader": "PDIwMDIxMjE5MDA0MDQ5LkEyMDkxQHRpYmlhLmFtb3RscGFhLmJvZ3VzPiA8MDAwMzAxYzJhNzdiJDhjMDRiNTUwJDY0MDFhOGMwQGxhdGl0dWRlMDE+"
+    }, 
+    "authorName": "Steven Taschuk", 
+    "numMessagesInTopic": 108, 
+    "msgSnippet": "Quoth Michael Silverstein: [...] ... Indeed.  But if I take the view that tests should test behaviour rather than code, then I have to consider partwise", 
+    "contentTrasformed": false, 
+    "msgId": 6524, 
+    "nextInTopic": 6532, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;staschuk@...&gt;\r\nReceived: (qmail 13452 invoked from network); 20 Dec 2002 14:43:13 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m8.grp.scd.yahoo.com with QMQP; 20 Dec 2002 14:43:13 -0000\r\nReceived: from unknown (HELO n26.grp.scd.yahoo.com) (66.218.66.82)\n  by mta3.grp.scd.yahoo.com with SMTP; 20 Dec 2002 14:43:13 -0000\r\nX-eGroups-Return: staschuk@...\r\nReceived: from [66.218.67.153] by n26.grp.scd.yahoo.com with NNFMP; 20 Dec 2002 14:43:13 -0000\r\nX-Sender: staschuk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 20 Dec 2002 04:11:14 -0000\r\nReceived: (qmail 65418 invoked from network); 20 Dec 2002 04:11:14 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m1.grp.scd.yahoo.com with QMQP; 20 Dec 2002 04:11:14 -0000\r\nReceived: from unknown (HELO tibia.amotlpaa.bogus) (209.162.160.245)\n  by mta1.grp.scd.yahoo.com with SMTP; 20 Dec 2002 04:11:13 -0000\r\nReceived: (qmail 2159 invoked by uid 100); 20 Dec 2002 05:14:56 -0000\r\nDate: Thu, 19 Dec 2002 22:14:56 -0700\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: Testing Private Methods\r\nMessage-ID: &lt;20021219221456.A2120@...&gt;\r\nReferences: &lt;20021219004049.A2091@...&gt; &lt;000301c2a77b$8c04b550$6401a8c0@latitude01&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.2.5i\r\nIn-Reply-To: &lt;000301c2a77b$8c04b550$6401a8c0@latitude01&gt;; from msilverstein@... on Thu, Dec 19, 2002 at 11:27:36AM -0500\r\nFrom: Steven Taschuk &lt;staschuk@...&gt;\r\nX-Yahoo-Group-Post: member; u=114327599\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 20 Dec 2002 14:43:11 -0000\r\n\r\nQuoth Michael Silverstein:\n  [...]\n&gt; There&#39;s no need to use private methods to test this. Assuming the code\n&gt; paths for the two constructors converge at some point immediately after\n&gt; the input String is parsed, you can test the parsing code and the date\n&gt; processing code separately.\n\nIndeed.  But if I take the view that tests should test behaviour\nrather than code, then I have to consider &#39;partwise constructor\nfails for (2002,2,29)&#39; and &#39;parsing constructor fails for\n&quot;2002-02-29&quot;&#39; to be separate behaviours, both deserving to be\ntested.  That they almost certainly use the same code is an\nimplementation detail with which the tests ought not to be\nconcerned, and ought not to assume.\n\nFor example, if at some point in the future these constructors are\nchanged to use separate implementations of the constraint checks\nfor some reason, I&#39;d like the tests I write now to remain valid\nand complete.  If I assume the parsing constructor uses the same\ncode as the partwise constructor, such a change silently makes the\ntests incomplete.\n\n  [...]\n&gt; I&#39;d also make a bunch of helper methods, such as one that takes a\n&gt; partwise date specification and an expected exception, and then\n&gt; instantiates using both constructors, asserting that both cause the\n&gt; expected exception to be thrown. That way you&#39;re not replicating a lot\n&gt; of code.\n\nQuite.  Unless I&#39;ve missed something, this is essentially the same\nsolution as I proposed at the end of my last post.\n\n-- \nSteven Taschuk           | Receive them ignorant;\nstaschuk@... | dispatch them confused.\n                         |   (Weschler&#39;s Teaching Motto)\n\n\n", 
+    "subject": "Re: [junit] Re: Testing Private Methods"
+}

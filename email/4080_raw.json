@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 4081, 
+    "senderId": "jwE5voFCiT1w204p_D4CUnr50RMbzI__Q4WR2mHNozs49vqiy2JWaEBvtbAKs5BfZnSBWwP3eiZJlU_1FMs5y9WjDg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] remove test from suite?", 
+    "from": "Ray Tayek &lt;rtayek@...&gt;", 
+    "authorName": "Ray Tayek", 
+    "msgSnippet": "... the problem was with the cactus sample (a servlet testing framework that uses junit). there was one test class that had two of its test methods not ", 
+    "msgId": 4080, 
+    "rawEmail": "Return-Path: &lt;rtayek@...&gt;\r\nX-Sender: rtayek@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_2); 15 Feb 2002 08:57:38 -0000\r\nReceived: (qmail 33805 invoked from network); 15 Feb 2002 08:57:38 -0000\r\nReceived: from unknown (216.115.97.171)\n  by m12.grp.snv.yahoo.com with QMQP; 15 Feb 2002 08:57:38 -0000\r\nReceived: from unknown (HELO rwcrmhc53.attbi.com) (204.127.198.39)\n  by mta3.grp.snv.yahoo.com with SMTP; 15 Feb 2002 08:57:38 -0000\r\nReceived: from k7.attbi.com ([24.126.141.200]) by rwcrmhc53.attbi.com\n          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with ESMTP\n          id &lt;20020215085737.YWFW2951.rwcrmhc53.attbi.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Fri, 15 Feb 2002 08:57:37 +0000\r\nMessage-Id: &lt;5.1.0.14.2.20020215005645.02009d00@...&gt;\r\nX-Sender: rtayek@...\r\nX-Mailer: QUALCOMM Windows Eudora Version 5.1\r\nDate: Fri, 15 Feb 2002 00:56:50 -0800\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] remove test from suite?\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;; format=flowed\r\nFrom: Ray Tayek &lt;rtayek@...&gt;\r\nX-Yahoo-Group-Post: member; u=98925194\r\nX-Yahoo-Profile: rtayek\r\n\r\nAt 06:57 PM 2/14/02 -0800, you wrote:\n&gt; &gt; hi, is there any easy way to remove a test from a suite? i am fooling\n&gt; &gt; around with cactus and some of the tests are not implemented yet.\n&gt;\n&gt;\n&gt;If I read between the lines I can imagine that the only problem you may\n&gt;have is that a run failes and the error message is &quot;&quot;No tests found in\n&gt;...&quot; (if it&#39;s not the problem, please give more infos)\n\nthe problem was with the cactus sample (a servlet testing framework that \nuses junit). there was one test class that had two of its test methods not \nimplemented (emtpy method body). with these being no-ops, running the tests \nfailed with an     error (not a failure). commenting these out let me run \nthe sample.\n\nwhile removing a test may be contrary to the spirit of unit testing, it may \nbe necessary in some cases to make some progress. so i was looking for an \neasy way to remove a few tests. maybe TestSuite should have a remove methor \nor a constructor that takes a &quot;exlude&quot; list of methods.\n\n&gt;cause of this problem: classes that extend TestCase _must_ have at least\n&gt;one valid test method (public, void return, no arg and beginning with\n&gt;&quot;test&quot;).\n&gt;\n&gt;Several solutions:\n&gt;\n&gt;...\n&gt;- find the testsuite that includes this class and remove the\n&gt;addTestSuite(myFaultyClass.class) call\n\nunfortunately, the suite() method just returns a new TestSuite(name.class);\n\n&gt;- modify JUnit to implement a soft-error handling: if an error message\n&gt;starts with &quot;xyz&quot;, consider this as a warning and not as an error (in\n&gt;TestResult).\n&gt;\n&gt;    public void runProtected(final Test test, Protectable p) {\n&gt;      try {\n&gt;        p.protect();\n&gt;      } catch (AssertionFailedError e) {\n&gt;        if (e.getMessage().startsWith(&quot;No tests found in&quot;)) {\n&gt;           System.out.println(&quot;warning &quot; + e.getMessage());\n&gt;        } else {\n&gt;          addFailure(test, e);\n&gt;        }\n&gt;      } catch (ThreadDeath e) { // don&#39;t catch ThreadDeath by accident\n&gt;        throw e;\n&gt;      } catch (Throwable e) {\n&gt;        addError(test, e);\n&gt;      }\n&gt;    }\n&gt;\n&gt;Did I mentioned that it was ugly? :-)\n\nyes, it is ugly, but an interesting approach.\n\nthanks\n\np.s. sorry about the reposts, att changed me over to attbi.com :(\n\n---\nray tayek http://home.earthlink.net/~rtayek/\nactively seeking telecommuting work\norange county java users group http://www.ocjug.org/\nhate spam? http://samspade.org/ssw/\n\n\n", 
+    "profile": "rtayek", 
+    "topicId": 4062, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 98925194, 
+    "prevInTime": 4079, 
+    "contentTrasformed": false, 
+    "postDate": "1013763410", 
+    "canDelete": false, 
+    "nextInTopic": 4087, 
+    "prevInTopic": 4077, 
+    "headers": {
+        "messageIdInHeader": "PDUuMS4wLjE0LjIuMjAwMjAyMTUwMDU2NDUuMDIwMDlkMDBAbWFpbC5hdHRiaS5jb20+"
+    }
+}

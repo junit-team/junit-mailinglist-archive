@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 16469, 
+    "senderId": "Trmo4GJX6xmlD4RRDks222vzAr5_qMf15TGEh5MDbBY7WA_7cHqHPQkhGdsfC8HEq64gU8s-xH8L79FB9BgS80r-DfxRtCPcBkccw6TqkQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] help with test methods", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Typically, no. Tests do not invoke other tests. Instead, simply refactor. Start here, with duplication in the tests: public void testAddBookOk() { ", 
+    "msgId": 16468, 
+    "profile": "nails762", 
+    "topicId": 16457, 
+    "spamInfo": {
+        "reason": "10", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-2065136951\">guilherme mello wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi...<br/>\n&gt;   <br/>\n&gt;   I have this method to add a book in library:<br/>\n&gt;   <br/>\n&gt;   public void testAddBookOk() {<br/>\n&gt;         book.setTitleBook(&quot;The lord of rings&quot;);<br/>\n&gt;         library.addBook(book);<br/>\n&gt; }<br/>\n&gt;   <br/>\n&gt;   And i have this method to listAllBooks:<br/>\n&gt;   <br/>\n&gt;       public void testListAllBooks() {<br/>\n&gt;         testAddBookOk();<br/>\n&gt;         books = library.listAllBooks();<br/>\n&gt;        <br/>\n&gt;         assertEquals(books.get(0), &quot;The lord of rings&quot;);<br/>\n&gt;     }<br/>\n&gt;   <br/>\n&gt;   is correct I to call the method  testAddBookOk() in the body of <br/>\n&gt; testListAllBooks ?<br/>\n<br/>\n </span></blockquote>Typically, no. Tests do not invoke other tests. Instead, simply refactor.<br/>\n<br/>\nStart here, with duplication in the tests:<br/>\n<br/>\npublic void testAddBookOk() {<br/>\n     book.setTitleBook(&quot;The lord of rings&quot;);<br/>\n     library.addBook(book);<br/>\n}<br/>\n<br/>\npublic void testListAllBooks() {<br/>\n     book.setTitleBook(&quot;The lord of rings&quot;);<br/>\n     library.addBook(book);<br/>\n     books = library.listAllBooks();<br/>\n     assertEquals(books.get(0), &quot;The lord of rings&quot;);<br/>\n}<br/>\n<br/>\nNow we have duplication at the beginning of these tests. Extract this <br/>\ncode to setUp():<br/>\n<br/>\nprotected void setUp() {<br/>\n     book.setTitleBook(&quot;The lord of rings&quot;);<br/>\n     library.addBook(book);<br/>\n}<br/>\n<br/>\npublic void testAddBookOk() {<br/>\n     // what do we assert here?<br/>\n}<br/>\n<br/>\npublic void testListAllBooks() {<br/>\n     books = library.listAllBooks();<br/>\n     assertEquals(books.get(0), &quot;The lord of rings&quot;);<br/>\n}<br/>\n<br/>\nWhen I do this, I notice that one tests no longer has any code in it. <br/>\nThere is usually an assertion in every test. What can we assert here?<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 16467, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1144711417", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16461, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDYwNDA2MTczMzAwLjExNzU0LnFtYWlsQHdlYjM4MDAxLm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDQ0M0FFOEY5LjQwMTAzMDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDYwNDA2MTczMzAwLjExNzU0LnFtYWlsQHdlYjM4MDAxLm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 10042, 
+    "senderId": "moYUBy5FrNYUGCQiTGIFvwXUHiAz4Rirxejmf44a6HjkeVHE7YKmllqolKJ2t1FVkUcn-V5Q2cZ7rL4u5tXZ8hmMI1b_aDog9lce96RssoE2DK5XEw", 
+    "systemMessage": false, 
+    "subject": "Re: textui vs. swingui classloader issue?", 
+    "from": "&quot;GoldenDog63&quot; &lt;Phillipp.Stoker@...&gt;", 
+    "authorName": "GoldenDog63", 
+    "msgSnippet": "That was it. Thanks for the help, I didn t hit that question when searched the faq. It works either by unchecking the reload, or by putting the", 
+    "msgId": 10041, 
+    "rawEmail": "Return-Path: &lt;Phillipp.Stoker@...&gt;\r\nReceived: (qmail 44613 invoked by uid 7800); 4 Dec 2003 23:10:51 -0000\r\nX-Sender: Phillipp.Stoker@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 42199 invoked from network); 4 Dec 2003 19:04:03 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m20.grp.scd.yahoo.com with QMQP; 4 Dec 2003 19:04:03 -0000\r\nReceived: from unknown (HELO n17.grp.scd.yahoo.com) (66.218.66.72)\n  by mta1.grp.scd.yahoo.com with SMTP; 4 Dec 2003 19:04:03 -0000\r\nReceived: from [66.218.66.115] by n17.grp.scd.yahoo.com with NNFMP; 04 Dec 2003 19:03:02 -0000\r\nDate: Thu, 04 Dec 2003 19:03:00 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: textui vs. swingui classloader issue?\r\nMessage-ID: &lt;bqo0d4+6h7k@...&gt;\r\nIn-Reply-To: &lt;bqnu6o+4kv6@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2333\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.72\r\nFrom: &quot;GoldenDog63&quot; &lt;Phillipp.Stoker@...&gt;\r\nX-Yahoo-Group-Post: member; u=168060038\r\nX-Yahoo-Profile: GoldenDog63\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 4 Dec 2003 23:10:51 -0000\r\n\r\nThat was it. Thanks for the help, I didn&#39;t hit that question when \nsearched the faq. It works either by &#39;unchecking&#39; the reload, or by \nputting the org.apache.commons.logging.* in the properties.\n\nThanks\n\n--- In junit@yahoogroups.com, &quot;geektank&quot; &lt;emeade@o...&gt; wrote:\n&gt; That sounds like the known classloader problem to me: \n&gt;  \n&gt; http://junit.sourceforge.net/doc/faq/faq.htm#running_8 \n&gt;  \n&gt;  \n&gt; --- In junit@yahoogroups.com, &quot;GoldenDog63&quot; &lt;Phillipp.Stoker@L...&gt; \nwrote: \n&gt; &gt; I&#39;m having trouble with what appears to be classloader issues ... \n&gt; &gt; I built the following example to determine if there is a real \nproblem  \n&gt; &gt; here. This test simply logs a single message during execution. If \nI  \n&gt; &gt; run the test under the swingui, I get an apache  \n&gt; &gt; exception &#39;....SimpleLog does not implement Log&#39; (which is \nclearly  \n&gt; &gt; not the case). This test runs exactly as-is under the textui with \nno  \n&gt; &gt; errors.  \n&gt; &gt;  \n&gt; &gt; Anyone have a clue? \n&gt; &gt;  \n&gt; &gt; JUnit 3.8.1 \n&gt; &gt; JDK 1.3.1_03 \n&gt; &gt; Commons-Logging 1.0.3 \n&gt; &gt; class compiled to junit/build \n&gt; &gt;  \n&gt; &gt; Text Command ==&gt; \n&gt; &gt; java -cp junit/build;junit/lib/commons- \n&gt; &gt; logging.jar;junit/lib/junit.3.8.1.jar com.temp.EnvironmentTest  \n&gt; &gt; . \n&gt; &gt; Time: 0.05 \n&gt; &gt;  \n&gt; &gt; OK (1 test) \n&gt; &gt;  \n&gt; &gt; Swing Command ==&gt; \n&gt; &gt; java -cp junit/build;junit/lib/commons- \n&gt; &gt; logging.jar;junit/lib/junit.3.8.1.jar junit.swingui.TestRunner  \n&gt; &gt; com.temp.EnvironmentTest  \n&gt; &gt;  \n&gt; &gt; ==== code ==== \n&gt; &gt; package com.temp; \n&gt; &gt;  \n&gt; &gt; import junit.framework.TestCase; \n&gt; &gt; import junit.framework.TestSuite; \n&gt; &gt; import org.apache.commons.logging.Log; \n&gt; &gt; import org.apache.commons.logging.LogFactory; \n&gt; &gt;  \n&gt; &gt; public class EnvironmentTest extends TestCase { \n&gt; &gt;  \n&gt; &gt;     public EnvironmentTest(String s) { \n&gt; &gt;         super(s); \n&gt; &gt;     } \n&gt; &gt;  \n&gt; &gt;     public void testEnvironment() throws Exception { \n&gt; &gt;         Log log = LogFactory.getLog(this.getClass()); \n&gt; &gt;         log.error(&quot;Test - Logged Error ...&quot;); \n&gt; &gt;     } \n&gt; &gt;  \n&gt; &gt;     public static TestSuite suite() { \n&gt; &gt;         TestSuite suite = new TestSuite\n(&quot;com.temp.EnvironmentTest&quot;); \n&gt; &gt;         suite.addTest(new EnvironmentTest(&quot;testEnvironment&quot;)); \n&gt; &gt;         return suite; \n&gt; &gt;     } \n&gt; &gt;  \n&gt; &gt;     public static void main(String[] args) { \n&gt; &gt;         junit.textui.TestRunner.run(suite()); \n&gt; &gt;     } \n&gt; &gt; } \n&gt; &gt;  \n&gt; &gt; TIA\n\n\n", 
+    "profile": "GoldenDog63", 
+    "topicId": 10038, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 168060038, 
+    "prevInTime": 10040, 
+    "contentTrasformed": false, 
+    "postDate": "1070564580", 
+    "canDelete": false, 
+    "nextInTopic": 10042, 
+    "prevInTopic": 10039, 
+    "headers": {
+        "inReplyToHeader": "PGJxbnU2bys0a3Y2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGJxbzBkNCs2aDdrQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 13262, 
+    "senderId": "sXKnefnFq0aQdk4wVOH6EpnJ10_8dvVFSojVMdDgvxx47VCz7Yey_zJb6h4LS1ezYmmZjl_GSJamhCJsjonQ-AZXushXn5oDIhips0AzvlJYpjFzdSnjlSGjdsgBu8404dgm0uh0iK5T", 
+    "systemMessage": false, 
+    "subject": "Re: How to test this class ?", 
+    "from": "=?iso-8859-1?q?Harald_M._M=FCller?= &lt;harald.m.mueller@...&gt;", 
+    "authorName": "Harald M. Müller", 
+    "msgSnippet": "Well - you did use the System.setIn() as I explained. For the rest, using the pipe mechanism is of course also possible and ok, it is only more work than", 
+    "msgId": 13261, 
+    "rawEmail": "Return-Path: &lt;harald.m.mueller@...&gt;\r\nX-Sender: harald.m.mueller@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 61472 invoked from network); 10 Apr 2005 08:25:22 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m25.grp.scd.yahoo.com with QMQP; 10 Apr 2005 08:25:22 -0000\r\nReceived: from unknown (HELO n16a.bulk.scd.yahoo.com) (66.94.237.45)\n  by mta3.grp.scd.yahoo.com with SMTP; 10 Apr 2005 08:25:22 -0000\r\nDomainKey-Signature: \r\nReceived: from [66.218.69.2] by n16.bulk.scd.yahoo.com with NNFMP; 10 Apr 2005 08:25:22 -0000\r\nReceived: from [66.218.66.82] by mailer2.bulk.scd.yahoo.com with NNFMP; 10 Apr 2005 08:25:22 -0000\r\nDate: Sun, 10 Apr 2005 08:25:22 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;d3anti+796u@...&gt;\r\nIn-Reply-To: &lt;d3a6ji+c7i0@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2861\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: =?iso-8859-1?q?Harald_M._M=FCller?= &lt;harald.m.mueller@...&gt;\r\nSubject: Re: How to test this class ?\r\nX-Yahoo-Group-Post: member; u=74507428\r\nX-Yahoo-Profile: harald_m_mueller\r\n\r\n\nWell - you did use the System.setIn() as I explained. For the rest, \nusing the pipe mechanism is of course also possible and ok, it is \nonly more work than simply providing a ByteInputStream by the two \nlines\n\n   byte[] withLine = in.getBytes();\n   System.setIn(new ByteArrayInputStream(withLine));\n\n... and off you go, without need of Threads, sleeps, Exceptions, and \nother things.\nKeep it simple :-)\n\nRegards\nHarald M. Mueller\n\n--- In junit@yahoogroups.com, &quot;rubbinio&quot; &lt;rubbinio@y...&gt; wrote:\n&gt; \n&gt; Thx Harald for your answer but I managed to find a solution myself\n&gt; after a loot of seraching on the net and a lot of reading I came up\n&gt; with my own solution. Here it is in case someone else needs it.\n&gt; \n&gt; I basically created a thread which fakes an input and it works \ngreat.\n&gt; Here is the code:\n&gt; \n&gt; \n&gt; private class fakeInput extends Thread\n&gt;     {\n&gt;         private String in_;\n&gt;         \n&gt;         public fakeInput( String in )\n&gt;         {\n&gt;             in_ = in;\n&gt;         }\n&gt;         \n&gt;         public void run()\n&gt;         {\n&gt;             try \n&gt;             {\n&gt;                 \n&gt;                 PipedInputStream testInPipe = new PipedInputStream\n();\n&gt;             \tPipedOutputStream testOutPipe = new PipedOutputStream\n();\n&gt;             \ttestInPipe.connect(testOutPipe);\n&gt;             \tSystem.setIn(testInPipe);\n&gt;             \tString withline = in_ + &quot;&#92;n&quot;;\n&gt;                 this.sleep(1000);\n&gt;                 testOutPipe.write(withline.getBytes(), 0,\n&gt; withline.length());\n&gt; \n&gt;                 \n&gt;             }\n&gt;             catch ( Exception e)\n&gt;             {                \n&gt;             }\n&gt;             \n&gt;             \n&gt;         }\n&gt;     }\n&gt; \n&gt; \n&gt; --- In junit@yahoogroups.com, Harald M. Muller \n&lt;harald.m.mueller@b...&gt;\n&gt; wrote:\n&gt; &gt; \n&gt; &gt; &gt; \n&gt; &gt; &gt; I need to test a class in which all the methods read via \nSystem.in.\n&gt; &gt; &gt; \n&gt; &gt; &gt; How can I fake the input so that I can automate my tests ?\n&gt; &gt; &gt; \n&gt; &gt; &gt; Any answer will be helpfull ..... I am using JUnit under \nEclipse.\n&gt; &gt; &gt; \n&gt; &gt; &gt; \n&gt; &gt; &gt; \n================================================================\n&gt; &gt; &gt; \n&gt; &gt; &gt; class Input {\n&gt; &gt; &gt; \n&gt; &gt; &gt;   static final BufferedReader keyboard = new BufferedReader( \nnew\n&gt; &gt; &gt; InputStreamReader(System.in));\n&gt; &gt; &gt; \n&gt; &gt; \n&gt; &gt; Since JDK1.1, there is a method\n&gt; &gt; \tSystem.setIn(InputStream in)\n&gt; &gt; Just call this in setUp() to get Input from somewhere else (a\n&gt; &gt; FileInputStream or a ByteArrayInputStream probably make most \nsense). If\n&gt; &gt; you want to be perfect, do the following:\n&gt; &gt; \n&gt; &gt; class MyTestCase ... {\n&gt; &gt;   InputStream originalIn;\n&gt; &gt;   public void setUp() {\n&gt; &gt;     originalIn = System.in;\n&gt; &gt;     System.setIn(....);\n&gt; \n&gt; \n&gt; &gt;   }\n&gt; &gt;   public void tearDown() {\n&gt; &gt;     System.setIn(originalIn);\n&gt; &gt;   }\n&gt; &gt;   // ...\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; No need for any fancy refactoring ;-) - but it wouldn&#39;t hurt to \ndo it!\n&gt; &gt; \n&gt; &gt; Regards\n&gt; &gt; Harald M. Mueller\n\n\n\n\n", 
+    "profile": "harald_m_mueller", 
+    "topicId": 13253, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 74507428, 
+    "prevInTime": 13260, 
+    "contentTrasformed": false, 
+    "postDate": "1113121522", 
+    "canDelete": false, 
+    "nextInTopic": 13268, 
+    "prevInTopic": 13259, 
+    "headers": {
+        "inReplyToHeader": "PGQzYTZqaStjN2kwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGQzYW50aSs3OTZ1QGVHcm91cHMuY29tPg=="
+    }
+}

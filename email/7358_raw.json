@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 7359, 
+    "senderId": "o0ePQ8JiaGCMFXnvHs4sP8CmfooLobIrc2ingv-XN36PDH-zWfmKwRqFZR1XTixykKa_b6nuNpJ0219HvUs3l9NX9zyc_lOieHc", 
+    "systemMessage": false, 
+    "subject": "Factory adaptor approach", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "In response to my own problems and an earlier question, I ve been thinking about how to test classes that retrieve things from static factories. I don t want", 
+    "msgId": 7358, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nReceived: (qmail 98918 invoked from network); 2 Apr 2003 00:19:33 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m10.grp.scd.yahoo.com with QMQP; 2 Apr 2003 00:19:33 -0000\r\nReceived: from unknown (HELO n13.grp.scd.yahoo.com) (66.218.66.68)\n  by mta1.grp.scd.yahoo.com with SMTP; 2 Apr 2003 00:19:33 -0000\r\nX-eGroups-Return: zipwow@...\r\nReceived: from [66.218.67.165] by n13.grp.scd.yahoo.com with NNFMP; 02 Apr 2003 00:19:33 -0000\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 1 Apr 2003 18:43:13 -0000\r\nReceived: (qmail 10682 invoked from network); 1 Apr 2003 18:43:13 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 1 Apr 2003 18:43:13 -0000\r\nReceived: from unknown (HELO web80402.mail.yahoo.com) (66.218.79.57)\n  by mta2.grp.scd.yahoo.com with SMTP; 1 Apr 2003 18:43:13 -0000\r\nMessage-ID: &lt;20030401184313.36379.qmail@...&gt;\r\nReceived: from [207.14.29.3] by web80402.mail.yahoo.com via HTTP; Tue, 01 Apr 2003 10:43:13 PST\r\nDate: Tue, 1 Apr 2003 10:43:13 -0800 (PST)\r\nSubject: Factory adaptor approach\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nX-Yahoo-Group-Post: member; u=82914509\r\nX-Yahoo-Profile: zipwow\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 02 Apr 2003 00:19:31 -0000\r\n\r\nIn response to my own problems and an earlier question, I&#39;ve been\nthinking about how to test classes that retrieve things from static\nfactories.\n\nI don&#39;t want to give up being able to make these factories, but they\ntypically are for things that I&#39;d want to use mock objects for\n(persistence, logging, etc).\n\nThe requirements I started with were:\n\n1. The public interface to the factory cannot change.\n2. The factory&#39;s outputs must be editable at runtime by test classes.\n3. The factory&#39;s outputs must be editable by classes not in the\nfactory&#39;s package.\n\nWhat I came up with was the regular factory, with some extra logic for\nreplacement.  That satisfied #2.  I made the methods protected in order\nto fulfill requirement #1.  Lastly, in order to get around the\nprotected restriction for #3, I made a &#39;FactoryAdaptor&#39; that basically\nprovided pass-through for those protected methods.\n\nHere&#39;s some quick example code:\n\npublic class Factory {\n\n  private static overrideThing=null;\n\n  public static Thing createThing(String thingName) {\n    Thing returnThing;   \n    if (overrideThing != null) {\n      returnThing=overrideThing;\n    } else {\n      do what you&#39;d normally do..\n    }\n    return returnThing;\n  }\n\n  protected static void ut_setOverrideThing(Thing overrideThing) {\n    this.overrideThing= overrideThing;\n  }\n}\n\npublic class FactoryAdaptor extends Factory {\n  public static setOverrideThing(Thing overrideThing) {\n    ut_setOverrideTHing(overrideThing);\n  }\n}\n\n\nIn the real implementation, I provided methods to &#39;clear&#39; the override,\nwhich is more straightforward than setting it to null.  I also provided\nmethods for recording the thingNames that were requested.  In the\nfuture, if I need it, I may change it to specify a list of things to\nreturn over several requests, but I didn&#39;t need it this time around.\n\nI like this because it doesn&#39;t change the public interface, and the\ntest interface can reside in the test source folder.  Those parts of\nthe code that exist for unit test functionality are marked that way,\nthough I may have gone too far in modifying the method naming\nconvention for this.\n\nUsage is pretty straightforward, calls go to the FactoryAdaptor.\n\nHave other folks used this approach, or something similar?  What do you\nall think of this approach to the problem?\n\nKevin Klinemeier\n\nPS:  It occurs to me now that if the factory were a little different,\nwith a single static getCurrent() method and otherwise instance\nmethods, this would reduce the nefarious intermingling of the &#39;mocking&#39;\ncode, because the current method could return a completely different\n(mock) factory altogether.\n\n__________________________________________________\nDo you Yahoo!?\nYahoo! Tax Center - File online, calculators, forms, and more\nhttp://platinum.yahoo.com\n\n\n", 
+    "profile": "zipwow", 
+    "topicId": 7358, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "prevInTime": 7357, 
+    "contentTrasformed": false, 
+    "postDate": "1049222593", 
+    "canDelete": false, 
+    "nextInTopic": 7411, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDMwNDAxMTg0MzEzLjM2Mzc5LnFtYWlsQHdlYjgwNDAyLm1haWwueWFob28uY29tPg=="
+    }
+}

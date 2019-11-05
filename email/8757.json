@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 8758, 
+    "senderId": "MCrNDtjEuNv9tzyLQY5a2PUxVQe8Mk3WnhiLxScclR5xHKGyw5RmyPmaXyfl9XeA7Yxr9BCXXIpLj3HZNEI-XRBCbTDlwrnXF0Sy5zffFIo", 
+    "systemMessage": false, 
+    "subject": "Re: client-server simulation in separate JVM&#39;s using Junit", 
+    "from": "&quot;korosh_afshar&quot; &lt;korosh_afshar@...&gt;", 
+    "authorName": "korosh_afshar", 
+    "msgSnippet": "thanks for response. this is pretty much the solution I have now.  The problem I have with this is that I lose control of my test case and have to manipulate", 
+    "msgId": 8757, 
+    "profile": "korosh_afshar", 
+    "topicId": 8717, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 80285661, 
+    "messageBody": "<div id=\"ygrps-yiv-511663487\">thanks for response.<br/>\n<br/>\nthis is pretty much the solution I have now.  The problem I have with <br/>\nthis is that I lose control of my test case and have to manipulate the <br/>\nant build script to change the number of clients I want to spawn, <br/>\nwhere as being able to do this in the main Test case I have control <br/>\nover exactly how many clients I want to spawn based on configurable <br/>\nparameters from a junit property file.<br/>\n<br/>\nso far this is what I am doing.<br/>\n<br/>\n<br/>\n--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Leonardo Abreu de Barros&quot; &lt;leobarros@e.<br/>\n..&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hello,<br/>\n&gt; <br/>\n&gt; I&#39;m not sure if I understand what exactly is your problem, but it <br/>\n&gt; seems that you have exactly the same requirement I do. I need to <br/>\n&gt; start a server, on a separate JVM, start a client, run a suite of <br/>\n&gt; tests and then shutdown down them all.<br/>\n&gt; <br/>\n&gt; I achieved this using both the &lt;parallel&gt; task and the &quot;fork&quot; <br/>\n&gt; attribute of the &lt;java&gt; task. Following is the code I&#39;m using, <br/>\n </span></blockquote>please <br/>\n<blockquote><span title=\"ireply\"> &gt; consider if it can be of any help.<br/>\n&gt; <br/>\n&gt; &lt;target name=&quot;junit&quot; depends=&quot;compile&quot;&gt;<br/>\n&gt;   &lt;parallel&gt;<br/>\n&gt;     &lt;sequential&gt;<br/>\n&gt;       &lt;echo&gt; # Starting Server...&lt;/echo&gt;<br/>\n&gt;       &lt;java dir=&quot;${SERVER_DIR}&quot; classname=&quot;mypackage.MyServer&quot; <br/>\n&gt; fork=&quot;yes&quot;&gt;<br/>\n&gt;         &lt;jvmarg value=&quot;-server&quot;/&gt;<br/>\n&gt;         &lt;classpath refid=&quot;server.classpath&quot;/&gt;<br/>\n&gt;       &lt;/java&gt;<br/>\n&gt;     &lt;/sequential&gt;<br/>\n&gt;     &lt;sequential&gt;<br/>\n&gt;       &lt;!-- Waits for the server listener to be up --&gt;<br/>\n&gt;       &lt;waitfor maxwait=&quot;5&quot; maxwaitunit=&quot;second&quot;&gt;<br/>\n&gt; \t&lt;socket server=&quot;${server}&quot; port=&quot;${rmiport}&quot;/&gt;<br/>\n&gt;       &lt;/waitfor&gt;<br/>\n&gt;       &lt;junit printsummary=&quot;on&quot; fork=&quot;false&quot; haltonfailure=&quot;false&quot;  <br/>\n&gt; failureproperty=&quot;tests.failed&quot; showoutput=&quot;true&quot;&gt;<br/>\n&gt;         &lt;classpath refid=&quot;project.classpath&quot;/&gt;<br/>\n&gt; \t&lt;formatter type=&quot;brief&quot; usefile=&quot;false&quot;/&gt;<br/>\n&gt; \t&lt;test name=&quot;${testfile}&quot;/&gt;<br/>\n&gt;       &lt;/junit&gt;<br/>\n&gt;       &lt;fail if=&quot;tests.failed&quot;&gt;<br/>\n&gt;         *****************************<br/>\n&gt; \tOne or more tests failed. Check output...<br/>\n&gt;         *****************************<br/>\n&gt;       &lt;/fail&gt;<br/>\n&gt;       &lt;echo&gt;Testes completed.&lt;/echo&gt;<br/>\n&gt;     &lt;/sequential&gt;<br/>\n&gt;   &lt;/parallel&gt;<br/>\n&gt; &lt;/target&gt;<br/>\n&gt; <br/>\n&gt; Take care,<br/>\n&gt; Leonardo Barros<br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;korosh_afshar&quot; &lt;korosh_afshar@y...&gt; <br/>\n&gt; wrote:<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; Hi,<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; I have a need to spawn a server and multiple clients in different <br/>\n&gt; VM&#39;s <br/>\n&gt; &gt; because of singleton use of a library that each client uses which <br/>\n&gt; &gt; limits me to this solution.   Server starts, then clients each <br/>\n&gt; start <br/>\n&gt; &gt; and interact with the server and make assertions on the response <br/>\n&gt; from <br/>\n&gt; &gt; server.<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; I know about Ant with parallel task or batch job.  I know about <br/>\n&gt; &gt; ActiveTestSuite and JUnitPref but they seems to run tests in <br/>\n&gt; different <br/>\n&gt; &gt; threads but same JVM.<br/>\n&gt; &gt; <br/>\n&gt; &gt; I&#39;d like to do this from ONE TestCase since that seems like a <br/>\n </span></blockquote>nicer <br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; solution than Ant parallel task.  e.g my TestClientServer  would <br/>\n&gt; spawn <br/>\n&gt; &gt; a server in a different VM and also spawn as many clients as I <br/>\n </span></blockquote>want <br/>\n<blockquote><span title=\"qreply\"> &gt; &gt; each in its own VM and then once all client(s) test methods are <br/>\n&gt; done, <br/>\n&gt; &gt; the TestClientServer tears down.<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; Is there a way to do this.<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; thanks </span></blockquote></div>", 
+    "prevInTime": 8756, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1058971697", 
+    "canDelete": false, 
+    "nextInTopic": 8758, 
+    "prevInTopic": 8747, 
+    "headers": {
+        "inReplyToHeader": "PGJmbHNpbitsMjd1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGJmbTc3aCs4a2puQGVHcm91cHMuY29tPg=="
+    }
+}

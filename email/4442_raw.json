@@ -1,0 +1,28 @@
+{
+    "topicId": 4429, 
+    "postDate": "1016735972", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Brendan Holmes&quot; &lt;brendan.holmes@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "F69zKJS7EglU7-1ncsh0NiICCtqxX38dbsC75GybSf9mGRh3VNRxXnzTiXmL9dSORAOJBvLEjMvxWU-0v7lNvbeI0olNcq3IJPhoBderObMPdfHl3fbmNg", 
+    "nextInTime": 4443, 
+    "userId": 90540384, 
+    "prevInTime": 4441, 
+    "prevInTopic": 4441, 
+    "headers": {
+        "messageIdInHeader": "PEQ5QkM4MTI1OTNCQzJFNDRBODAzRTY3NjVGRkE1RTJEMDk4NTcwQGdwby5tb2JpbGVhd2FyZS5jb20+"
+    }, 
+    "authorName": "Brendan Holmes", 
+    "numMessagesInTopic": 14, 
+    "msgSnippet": "Hi, I ve had some problems writing tests for methods that return void too. I most cases it s impossible ( for me anyway ) to change method sigs of production", 
+    "contentTrasformed": false, 
+    "msgId": 4442, 
+    "nextInTopic": 4443, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;Brendan.Holmes@...&gt;\r\nX-Sender: Brendan.Holmes@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 21 Mar 2002 18:39:33 -0000\r\nReceived: (qmail 61338 invoked from network); 21 Mar 2002 18:39:33 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m3.grp.scd.yahoo.com with QMQP; 21 Mar 2002 18:39:33 -0000\r\nReceived: from unknown (HELO demo2.mobileaware.com) (193.120.150.222)\n  by mta3.grp.scd.yahoo.com with SMTP; 21 Mar 2002 18:39:33 -0000\r\nReceived: from mail.mobileaware.com by demo2.mobileaware.com\n          via smtpd (for mta3.grp.scd.yahoo.com [66.218.66.218]) with SMTP; 21 Mar 2002 18:50:01 UT\r\nX-MimeOLE: Produced By Microsoft Exchange V6.0.4712.0\r\ncontent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nSubject: RE: [junit] Re: testing void methods\r\nDate: Thu, 21 Mar 2002 18:39:32 -0000\r\nMessage-ID: &lt;D9BC812593BC2E44A803E6765FFA5E2D098570@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] Re: testing void methods\r\nThread-Index: AcHRBVoLXyMnbn6ETOmzcT7iSi6EdgAAOYlA\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nFrom: &quot;Brendan Holmes&quot; &lt;brendan.holmes@...&gt;\r\nX-Yahoo-Group-Post: member; u=90540384\r\n\r\nHi,\n\nI&#39;ve had some problems writing tests for methods that return void too.=\r\n\nI most cases it&#39;s impossible ( for me anyway ) to change method sigs of\npr=\r\noduction code, particulaly if the method is exposed thought a\npublished int=\r\nerface.  Not all of you will agree with my solution, but I\nwrote some inner=\r\n classes that morror that methods I&#39;m testing, and uses\nthese inner classes=\r\n to validate return values.  Also where necessary,\nthese classes are stripp=\r\ned out when the product is built.\n\nRegards,\n\n~Brendan.\n\n\n-----Original Mess=\r\nage-----\nFrom: jays81 [mailto:jays81@...]\nSent: Thursday, March 21, 2=\r\n002 6:22 PM\nTo: junit@yahoogroups.com\nSubject: [junit] Re: testing void met=\r\nhods\n\n\nhi,\n\nthanks for that,\n\ni a still slightly confused though!\nThis is t=\r\nhe set up\n\nEventMgtBean contains method dispatch event e.g\n\npublic void dis=\r\npatchEvent(Event event){\n     handleEvent(event);\n}\n\nshould i be adding ext=\r\nra methods to my bean to check if my event has \nreached the dispatchEvent m=\r\nethod and test it in my test class or \nshould i create a mock object\n\nthank=\r\ns\n\n\n\n\n\n--- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:\n&gt; jays81 wrote:\n&gt; \n=\r\n&gt; &gt; hi,\n&gt; &gt;\n&gt; &gt; I am new to this junit testing. I am trying to test void me=\r\nthods.\n&gt; &gt; What is the best way of doing this.\n&gt; &gt;\n&gt; &gt; e.g i am testing a m=\r\nethod:\n&gt; &gt;\n&gt; &gt; void dispatchEvent(Event event)\n&gt; &gt;\n&gt; &gt; which inside calls h=\r\nandleEvent(event) , in a class called Handle\n&gt; &gt; (this is also a void metho=\r\nd)\n&gt; &gt;\n&gt; \n&gt; Can you construct the object defining dispatchEvent() with a mo=\r\nck\n&gt; representation of a Handle.  The MockHandle would effectively just \nea=\r\nt the\n&gt; event, and define a wasHandled() method indicating whether the \neve=\r\nnt was\n&gt; received.\n&gt; \n&gt;     public void testEventReceived() {\n&gt; \n&gt;         =\r\nMockHandle handle =3D new MockHandle();\n&gt;         Foo f =3D new Foo(handle)=\r\n;\n&gt; \n&gt;         f.dispatchEvent(event);\n&gt; \n&gt;         assertTrue(handle.wasHa=\r\nndled());\n&gt;     }\n&gt; \n&gt; Notice that by using composition - Foo is composed o=\r\nf a Handle - \nthe design\n&gt; is more testable _and_ flexible.  Foo could use =\r\ndifferent \nimplementations of\n&gt; Handles without requiring modification.  Wh=\r\nenever I find something \ndifficult\n&gt; to test, it&#39;s an opportunity for a des=\r\nign improvement.\n&gt; \n&gt; Mike\n&gt; \n&gt; --\n&gt; Mike Clark\n&gt; Clarkware Consulting, Inc=\r\n.\n&gt; http://www.clarkware.com\n&gt; 720.851.2014\n\n\n\nTo unsubscribe from this gro=\r\nup, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yaho=\r\no! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n\n\n", 
+    "subject": "RE: [junit] Re: testing void methods"
+}

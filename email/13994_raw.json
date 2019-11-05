@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 13995, 
+    "senderId": "d_cBLIOb-nlboY0wqgqkEoJ3zD1mHVhesypWIVIBrEVDnbDMCtuZwcq3Z6VBi54l6uhv5nEW6SREAoi-0ouS7fI8iHOd_eWFpmLHU3ENbA", 
+    "systemMessage": true, 
+    "subject": "Problems with one time setup and teardown", 
+    "from": "&quot;patelr08&quot; &lt;rakesh.mailgroups@...&gt;", 
+    "authorName": "patelr08", 
+    "msgSnippet": "Hi, I m trying to use the one time setup functionality of junit to set up a db connection for subsequent tests but finding that the code is never called. ", 
+    "msgId": 13994, 
+    "rawEmail": "Return-Path: &lt;rakesh.mailgroups@...&gt;\r\nReceived: (qmail 88522 invoked from network); 21 Jun 2005 16:42:38 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m30.grp.scd.yahoo.com with QMQP; 21 Jun 2005 16:42:38 -0000\r\nReceived: from unknown (HELO n6a.bulk.scd.yahoo.com) (66.94.237.40)\n  by mta5.grp.scd.yahoo.com with SMTP; 21 Jun 2005 16:42:37 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.3] by n6.bulk.scd.yahoo.com with NNFMP; 21 Jun 2005 16:41:38 -0000\r\nReceived: from [66.218.66.72] by mailer3.bulk.scd.yahoo.com with NNFMP; 21 Jun 2005 16:41:38 -0000\r\nX-Sender: rakesh.mailgroups@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 57220 invoked from network); 21 Jun 2005 09:45:07 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m29.grp.scd.yahoo.com with QMQP; 21 Jun 2005 09:45:07 -0000\r\nReceived: from unknown (HELO n10a.bulk.scd.yahoo.com) (66.94.237.44)\n  by mta6.grp.scd.yahoo.com with SMTP; 21 Jun 2005 09:45:06 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.4] by n10.bulk.scd.yahoo.com with NNFMP; 21 Jun 2005 09:45:06 -0000\r\nReceived: from [66.218.66.78] by mailer4.bulk.scd.yahoo.com with NNFMP; 21 Jun 2005 09:45:06 -0000\r\nDate: Tue, 21 Jun 2005 09:45:04 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;d98nj0+s1pa@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2071\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;patelr08&quot; &lt;rakesh.mailgroups@...&gt;\r\nSubject: Problems with one time setup and teardown\r\nX-Yahoo-Group-Post: member; u=217486622; y=YBklktVGtA3wxcBZ78R6Af81wSmh45nTA_tcSJY0Lw3N0-A\r\nX-Yahoo-Profile: patelr08\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 21 Jun 2005 16:41:36 -0000\r\n\r\nHi,\n\nI&#39;m trying to use the one time setup functionality of junit to set up\na db connection for subsequent tests but finding that the code is\nnever called.\n\nHere&#39;s my testcase:\n\npublic class TestSecurityService extends TestCase {\n    private static OracleDataSource ds;\n    private SecurityService ss;\n\n    protected void setUp() throws Exception {\n        if (ds == null) {\n            ds = new OracleDataSource();\n            ds.setDriverType(&quot;thin&quot;);\n            ds.setServerName(&quot;177.12.56.110&quot;);\n            ds.setNetworkProtocol(&quot;tcp&quot;);\n            ds.setDatabaseName(&quot;orcl&quot;);\n            ds.setPortNumber(1521);\n        }\n\n        ss = new SecurityService(ds);\n    }\n\n    public void testLoginSuccess() throws LoginException {\n        Subject subject = ss.login(&quot;scott&quot;.toCharArray(),\n                &quot;Passw0rd&quot;.toCharArray());\n        assertNotNull(&quot;Successful login&quot;, subject);\n    }\n\n    public void testLoginFailure() {\n        Subject subject;\n\n        try {\n            subject = ss.login(&quot;nobody&quot;.toCharArray(),\n&quot;nothing&quot;.toCharArray());\n            fail(&quot;Expected LoginException because invalid\nusername/password&quot;);\n        } catch (LoginException e) {\n            // ignore because test passed\n        }\n    }\n\n    public void testChangePassword() throws LoginException {\n        Subject subject = ss.changePassword(&quot;scott&quot;.toCharArray(),\n                &quot;Passw0rd&quot;.toCharArray(), &quot;NewPassw0rd&quot;.toCharArray());\n        assertNotNull(subject);\n    }\n\n    public static void oneTimeSetup() {\n        System.out.println(&quot;oneTimeSetUp&quot;);\n    }\n\n    public static void oneTimeTearDown() {\n        System.out.println(&quot;oneTimeTearDown&quot;);\n    }\n\n    public static Test suite() {\n        TestSetup setup = new TestSetup(new\nTestSuite(TestIFSTSecurityService.class)) {\n            protected void setUp() throws Exception {\n                oneTimeSetup();\n            }\n\n            protected void tearDown() throws Exception {\n                oneTimeTearDown();\n            }\n        };\n        return setup;\n    }\n}\n\nAny ideas what I&#39;m doing wrong?\n\nThanks\n\nRakesh\n\n\n\n\n\n", 
+    "profile": "patelr08", 
+    "topicId": 13994, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 217486622, 
+    "prevInTime": 13993, 
+    "contentTrasformed": false, 
+    "postDate": "1119347104", 
+    "canDelete": false, 
+    "nextInTopic": 14008, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGQ5OG5qMCtzMXBhQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 4926, 
+    "senderId": "RRfoWo5PVNy-zVFIC_IRHXOsVHR5MlABKaioLtt-48r4eRtCeGz9TuQpVH-s_ySg4WOBbLUjpKDTrvDy8u_JO33I1X8bJQ", 
+    "systemMessage": false, 
+    "subject": "Re: unit testing philosophy", 
+    "from": "&quot;cilqproj&quot; &lt;cilqproj@...&gt;", 
+    "authorName": "cilqproj", 
+    "msgSnippet": "The problem is that I m struggling to test a pretty complex piece of code and I m trying to get some advice ( hints, help, etc .. ) to help me tackle it. In", 
+    "msgId": 4925, 
+    "rawEmail": "Return-Path: &lt;cilqproj@...&gt;\r\nReceived: (qmail 52774 invoked from network); 10 May 2002 01:16:34 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m9.grp.scd.yahoo.com with QMQP; 10 May 2002 01:16:34 -0000\r\nReceived: from unknown (HELO n8.grp.scd.yahoo.com) (66.218.66.92)\n  by mta3.grp.scd.yahoo.com with SMTP; 10 May 2002 01:16:34 -0000\r\nX-eGroups-Return: cilqproj@...\r\nReceived: from [66.218.67.135] by n8.grp.scd.yahoo.com with NNFMP; 10 May 2002 01:16:34 -0000\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 10 May 2002 01:16:33 -0000\r\nX-Sender: cilqproj@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 10 May 2002 00:24:03 -0000\r\nReceived: (qmail 51539 invoked from network); 10 May 2002 00:24:03 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m6.grp.scd.yahoo.com with QMQP; 10 May 2002 00:24:03 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta1.grp.scd.yahoo.com with SMTP; 10 May 2002 00:24:03 -0000\r\nReceived: from [66.218.67.130] by n3.grp.scd.yahoo.com with NNFMP; 10 May 2002 00:23:58 -0000\r\nDate: Fri, 10 May 2002 00:23:56 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: unit testing philosophy\r\nMessage-ID: &lt;abf3us+5c1l@...&gt;\r\nIn-Reply-To: &lt;B9008640.7F44%koss@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2564\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;cilqproj&quot; &lt;cilqproj@...&gt;\r\nX-Yahoo-Group-Post: member; u=112605396\r\nX-Yahoo-Profile: cilqproj\r\n\r\nThe problem is that I&#39;m struggling to test a pretty complex piece of\ncode and I&#39;m trying to get some advice ( hints, help, etc .. ) to help\nme tackle it.  \n\nIn the real world, I use ATG Dynamo.  If you&#39;ve heard of it or used\nit, it&#39;s an App Server / EJB Container.   Dynamo&#39;s entire framework is\nbased off this component known as Nucleus, which does a lot of work in\nterms of instantiating classes, setting properties, etc..  It&#39;s also\nvery slow and to test - build - test takes forever if I have to start\nand stop the app-server for every change in the code. \n\nThat&#39;s where MockObjects come in.  Dynamo is a very Java Beans heavy\nframework, that relies a lot on setters and getters.  ( In fact, the\nMockObjects guys at SF have started putting together some Dynamo\nMockObjects. ) I was looking into MockObjects as a way to lessen my\nreliance on the Nucleus namespace so that I could code quickly and\nonly integrate with the Nucleus namespace at the latest possible time.\n\nHowever, I can&#39;t get my head around the fact that in certain cases my\nmock code will need to generate other mock code \n\nHere&#39;s a method from a piece of old code that I wrote before I decided\nto start using JUnit:\n\n    public  Map generateEmptyPreferencesMap( Map m ) throws\nRepositoryException {\n\n\t// get the list of possible preferences\n\tRepositoryView contactMethodView = getPreferencesRepository().getView(\nCONTACT_METHOD_REPOSITORY_ITEM );\n\tRepositoryItem[] contactMethods = contactMethodView.executeQuery(\ncontactMethodView.getQueryBuilder().createUnconstrainedQuery() );\n\t\n\tif ( ( contactMethods != null ) && ( contactMethods.length &gt; 0 ) )  {\n\t    // add each one to the map\n\t    for ( int i = 0 ; i &lt; contactMethods.length ; i++ ) {\n\t\tm.put( contactMethods[i].getPropertyValue(\nCONTACT_METHOD_CODE_PROPERTY_NAME ), new BooleanPlaceHolder() );\n\t    }\n\t}\n     return m;\n    }\n     \n\nThe Repository API is Dynamo&#39;s object-oriented data abstraction api. \nIn this case, I assume I would setPreferencesRepository( new\nMyMockRepository()  )\n\nbut that MockRepository needs to return a MockRepositoryView which in\nturn needs to return a MockQueryBuilder, or so I seem to believe.\n\nIn a sentence:  how would one test this?  \n\nAs before,\nAny and all help is greatly appreciated.\n\nI apologize for any unnecessary lengthiness.\n\nThanks,\n\nAadi\n\n--- In junit@y..., Bob Koss &lt;koss@o...&gt; wrote:\n&gt; \n&gt; It would help if you&#39;d tell us what the problem is instead of presenting\n&gt; your solution of the problem as the problem.\n&gt; \n&gt; I&#39;ve never needed mocks inside of mocks - it doesn&#39;t even make sense.\n&gt; \n&gt; \n\n\n\n\n", 
+    "profile": "cilqproj", 
+    "topicId": 4923, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112605396, 
+    "prevInTime": 4924, 
+    "contentTrasformed": false, 
+    "postDate": "1020990236", 
+    "canDelete": false, 
+    "nextInTopic": 4938, 
+    "prevInTopic": 4924, 
+    "headers": {
+        "inReplyToHeader": "PEI5MDA4NjQwLjdGNDQla29zc0BvYmplY3RtZW50b3IuY29tPg==", 
+        "messageIdInHeader": "PGFiZjN1cys1YzFsQGVHcm91cHMuY29tPg=="
+    }
+}

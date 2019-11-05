@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 14788, 
+    "senderId": "YqjuDPQjzvrejHg-h8rCEca7NvSGXVTkshhUybQlxS46fl2wIiX26Kkm9hnJuXdsnDJ0hCEyaPmBgZA9EnbDo4zq1nBKXpcFc5uCreqJqRVb9peWdnLDEJ0QUPA", 
+    "systemMessage": true, 
+    "subject": "Re: How many aspects a particular test method should test???", 
+    "from": "&quot;xll_ll_ll_ll_ll_llx&quot; &lt;xll_ll_ll_ll_ll_llx@...&gt;", 
+    "authorName": "xll_ll_ll_ll_ll_llx", 
+    "msgSnippet": "Thanks Rob et al. in pointing me towards the unreachability of someParam++. Well as Rob said it that is the danger of using code to illustrate your point", 
+    "msgId": 14787, 
+    "profile": "xll_ll_ll_ll_ll_llx", 
+    "topicId": 14769, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224627165, 
+    "messageBody": "<div id=\"ygrps-yiv-918135225\">Thanks Rob et al. in pointing me towards the unreachability of<br/>\nsomeParam++. Well as Rob said it that is the danger of using code to<br/>\nillustrate your point (seeking help in my case :-)) <br/>\n<br/>\nI guess I should have rather written that method somewhat like :<br/>\n<br/>\npublic int someEarlierParam;<br/>\npublic void someMethod(int someParam) throws invalidParamException{<br/>\n   if(someParam!=1||someParam!=2)<br/>\n       throw invalidParamException<br/>\n<br/>\n   someParam++;<br/>\n   someEarlierParam += someParam;<br/>\n}<br/>\n<br/>\nAs I take it from the replies, each different task carried out by a<br/>\nmethod should be tested by a different test method ?? But I attempted<br/>\none test method to take care of several different tasks of a<br/>\nparticular method and found it working ok. I deliberately failed it<br/>\nfor one task at a time, and JUnit reported me precisely for which of<br/>\nthe task (I mean which of my assert&#39;s) the test method is failing. <br/>\nIf same thing can be accomplished both ways (writing separate test<br/>\nmethods as well as by writing a single one) then what is the advantage<br/>\nof writing separate ones ???<br/>\n<br/>\nThanks.<br/>\nNitesh Maan<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Rob Biedenharn &lt;Rob_Biedenharn@a...&gt; wrote:<br/>\n&gt; At 9/13/2005 04:27 AM, you wrote:<br/>\n&gt; &gt;On Sunday 11 September 2005 20:31, xll_ll_ll_ll_ll_llx wrote:<br/>\n&gt; &gt; &gt; Hi all,<br/>\n&gt; &gt; &gt; I am really really new with JUnit. Do excuse me if this question is<br/>\n&gt; &gt; &gt; too simple that it irritated you. OK so here is my confusion:<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; The method I want to test is something like this:<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; public void someMethod(int someParam) throws invalidParamException<br/>\n&gt; &gt; &gt; {<br/>\n&gt; &gt; &gt;   if(someParam!=1||someParam!=2)<br/>\n&gt; &gt; &gt;         throw invalidParamException<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;   someParam++;<br/>\n&gt; &gt; &gt; }<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Now this method will test someParam passed to it and if it gets<br/>\nstuck<br/>\n&gt; &gt; &gt; in the IF statement will throw exception else update someParam. Now<br/>\n&gt; &gt; &gt; what I wanna know is that the test method that I write to test a<br/>\n&gt; &gt; &gt; method like this should I be writing one test method that tests both<br/>\n&gt; &gt; &gt; whether exception is thrown correctly as well as someParam updated<br/>\n&gt; &gt; &gt; correctly. OR<br/>\n&gt; &gt; &gt; I should be writing one test method that tests for the exception and<br/>\n&gt; &gt; &gt; another that tests whether someParam is being updated appropriately.<br/>\n&gt; &gt;<br/>\n&gt; &gt;At least two methods.<br/>\n&gt; &gt;<br/>\n&gt; &gt;Note that the update to `someParam` is pointless in the code you<br/>\n&gt; &gt;show. `someParam` is a local variable (specifically, an argument)<br/>\n&gt; &gt;of primitive type (int); when someMethod exits, someParam evaporates.<br/>\n&gt; &gt;<br/>\n&gt; &gt;--<br/>\n&gt; &gt;Chris &quot;electric hedgehog&quot; Dollin<br/>\n&gt; &gt;Logic is rational /re/construction. Life is construction.<br/>\n&gt; <br/>\n&gt; I don&#39;t know why I didn&#39;t see it before (well, yes I do, I wasn&#39;t <br/>\n&gt; looking!), but the example method simplifies to:<br/>\n&gt; public void someMethod(int someParam) throws invalidParamException {<br/>\n&gt;          throw new invalidParamException();<br/>\n&gt; }<br/>\n&gt; So it&#39;s trivial to test!  (Not to mention just plain trivial, but<br/>\nthat&#39;s <br/>\n&gt; the danger of trying to illustrate a point with &quot;code&quot;.  I&#39;m sure<br/>\nthat if <br/>\n&gt; one were to attempt to write a test for some observable behavior in<br/>\nplace <br/>\n&gt; of the &quot;someParam++;&quot;  (say, a call to some other method), even the <br/>\n&gt; original author would discover the problem with the condition as<br/>\nwritten.<br/>\n&gt; <br/>\n&gt; The problem with this type of code and the lack of tests is when<br/>\nsomeone <br/>\n&gt; changes the condition and the previously unreachable code (but not <br/>\n&gt; &quot;unreachable&quot; in a simple, static sense) can then be executed.  I<br/>\nknow I&#39;ve <br/>\n&gt; been bitten by that bug in the past.<br/>\n&gt; <br/>\n&gt; -Rob<br/>\n&gt; <br/>\n&gt; Rob Biedenharn  &lt;Rob_Biedenharn@a...&gt;<br/>\n&gt; (C) 513-295-4739<br/>\n&gt; (H) 513-677-2172        <a rel=\"nofollow\" target=\"_blank\" href=\"http://alum.mit.edu/www/rob_biedenharn/\">http://alum.mit.edu/www/rob_biedenharn/</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; [Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 14786, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1126648977", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 14786, 
+    "headers": {
+        "inReplyToHeader": "PDUuMi4wLjkuMC4yMDA1MDkxMzA3MjYxNC4wMWJlOTQwMEBwb3AzLmZ1c2UubmV0Pg==", 
+        "messageIdInHeader": "PGRnN2lhaCtocmhxQGVHcm91cHMuY29tPg=="
+    }
+}

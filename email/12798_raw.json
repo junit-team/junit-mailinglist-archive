@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 12799, 
+    "senderId": "g7NemG7DRkK7TBQtvHSHkyBUk1E-VTpo_mN8drq7yDLnECzPPH1gk448-PD_sB6Bfjip7B1g8pVDEaf5LdSwMdt0UeZDTruSnBOcUvPeWaeN", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing EJBs with a live database", 
+    "from": "Alex Popescu &lt;alexandru.popescu@...&gt;", 
+    "authorName": "Alex Popescu", 
+    "msgSnippet": "... Hash: SHA1 [quote J. B. Rainsberger::on 2/2/2005 8:28 PM] ... I suggest that for testing real db queries you should do one of the following: 1/ either", 
+    "msgId": 12798, 
+    "rawEmail": "Return-Path: &lt;alexandru.popescu@...&gt;\r\nX-Sender: alexandru.popescu@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 19049 invoked from network); 3 Feb 2005 07:27:35 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 3 Feb 2005 07:27:35 -0000\r\nReceived: from unknown (HELO mail.evolva.ro) (193.19.192.5)\n  by mta1.grp.scd.yahoo.com with SMTP; 3 Feb 2005 07:27:34 -0000\r\nReceived: from localhost (localhost [127.0.0.1])\n\tby mail.evolva.ro (Postfix) with ESMTP id 488631572F3\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  3 Feb 2005 09:22:07 +0200 (EET)\r\nReceived: from mail.evolva.ro ([127.0.0.1])\n by localhost (evonet.ro [127.0.0.1]) (amavisd-new, port 10024) with LMTP\n id 29102-01-14 for &lt;junit@yahoogroups.com&gt;;\n Thu,  3 Feb 2005 09:22:06 +0200 (EET)\r\nReceived: from [192.168.0.123] (home-162.193.evolva.ro [193.19.193.162])\n\t(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))\n\t(No client certificate requested)\n\tby mail.evolva.ro (Postfix) with ESMTP id 8C2991572EC\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  3 Feb 2005 09:22:06 +0200 (EET)\r\nMessage-ID: &lt;4201D24F.1090707@...&gt;\r\nDate: Thu, 03 Feb 2005 09:27:11 +0200\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ctm6s0+dphn@...&gt; &lt;42011BD3.60506@...&gt;\r\nIn-Reply-To: &lt;42011BD3.60506@...&gt;\r\nX-Enigmail-Version: 0.89.6.0\r\nX-Enigmail-Supports: pgp-inline, pgp-mime\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Virus-Scanned: by amavisd-new at evonet.ro\r\nX-eGroups-Remote-IP: 193.19.192.5\r\nFrom: Alex Popescu &lt;alexandru.popescu@...&gt;\r\nSubject: Re: [junit] Testing EJBs with a live database\r\nX-Yahoo-Group-Post: member; u=182387364\r\nX-Yahoo-Profile: alexpopescu70000\r\n\r\n-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n[quote J. B. Rainsberger::on 2/2/2005 8:28 PM]\n| Anitha kanthraj wrote:\n|&gt;\n|&gt;\n|&gt; Thanks for the prompt response Shane,\n|&gt;\n|&gt; This is the code - to check an EJB method\n|&gt; public void testfindAll(){\n|&gt;                try{\n|&gt;                      Collection valueobjectCollection =\n|&gt; userRemote.findAllUsers();\n|&gt;                      assertNotNull(valueobjectCollection);\n|&gt;                      assertEquals(224, valueobjectCollection.size\n|&gt; ());\n|&gt;                      }\n|&gt;                catch (Exception e){\n|&gt;                      System.out.println(&quot;Error ----in finding\n|&gt; user &quot;  + e);\n|&gt;                      }\n|&gt;                }\n|&gt;\n|&gt; the value 224 is the rowcount of the table which has to be changed\n|&gt; every time a row gets inserted into the table.\n|\n| If this is a problem, then the /test/ should prepare the data in the\n| database, rather than relying on whatever is already there.\n|\n| If all your tests use the same data set, that adds to the cost of\n| incremental development, because as new features are added, the data set\n| changes, and the cost of maintaining the tests goes up. This is one\n| source of common misconceptions that tests are overhead.\n|\n| To solve the problem, testFindAll() should set up the data it needs in\n| the database, so that it controls the expected outcome. This is an\n| important trait of any good test, and not just tests that use a database.\n|\n|&gt; Yes I agree a DB query will increase the time taken to execute the\n|&gt; tests but on the contrary by automating that step anyone can run my\n|&gt; tests with minimum or no code change.\n|\n| I disagree. The more tests rely on external resources, the more\n| /difficult/ they are to run by different people on different machines at\n| different times. That&#39;s been my experience.\n\nI suggest that for testing real db queries you should do one of the following:\n1/ either prepare the database data before running any of your tests (this will guarantee that no\nmatter which db is used the results will be the same)\n2/ or use dbUnit to prepare your db data for you.\n\nI am absolutely sure that the value 224 will a lot of headaches from now on: after a time the test\nwill start failing for different developers, they will have to fix it according to their db version\nand finally they will dismiss the test.\n\n- --\n:alex\n[the_mindstorm]\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.0 (MingW32)\n\niD8DBQFCAdJPTTDTje0R2dgRAmZMAJ4y+3A1nb1ZPzuOqU59Gn3ou76TMQCdFdW2\narKT/T7omJpPA7xa/NAodxY=\n=8jUB\n-----END PGP SIGNATURE-----\n\n", 
+    "profile": "alexpopescu70000", 
+    "topicId": 12769, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 182387364, 
+    "prevInTime": 12797, 
+    "contentTrasformed": false, 
+    "postDate": "1107415631", 
+    "canDelete": false, 
+    "nextInTopic": 12803, 
+    "prevInTopic": 12793, 
+    "headers": {
+        "inReplyToHeader": "PDQyMDExQkQzLjYwNTA2QHJvZ2Vycy5jb20+", 
+        "messageIdInHeader": "PDQyMDFEMjRGLjEwOTA3MDdAZXZvbHZhLnJvPg==", 
+        "referencesHeader": "PGN0bTZzMCtkcGhuQGVHcm91cHMuY29tPiA8NDIwMTFCRDMuNjA1MDZAcm9nZXJzLmNvbT4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 7620, 
+    "senderId": "koLtXEpJGShxMqjSRmpiFIx8u-dRUfMHNxI3AjBaVNnI1egwgiIdGR6wg2gLuPuWeqlUYaJsbQCree4L8Cqjmi--1IT1uebz9tZjvJoWuQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] [OT] DBC semantics (was Re: About the value of  JUnit)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Be careful. Your test is broken. List allows duplicate entries. It s Set you re thinking of. Neither test below for Collection makes sense, because Collection", 
+    "msgId": 7619, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 8 Apr 2003 19:51:39 -0000\r\nReceived: (qmail 99617 invoked from network); 8 Apr 2003 19:51:38 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m5.grp.scd.yahoo.com with QMQP; 8 Apr 2003 19:51:38 -0000\r\nReceived: from unknown (HELO fep01-mail.bloor.is.net.cable.rogers.com) (66.185.86.71)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 Apr 2003 19:51:37 -0000\r\nReceived: from quincy ([142.179.150.14])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030408195137.GARY4788.fep01-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Tue, 8 Apr 2003 15:51:37 -0400\r\nMessage-ID: &lt;200304081351350432.01393350@...&gt;\r\nIn-Reply-To: &lt;3E92F063.8000006@...&gt;\r\nReferences: &lt;6777614D-66C1-11D7-9AB1-000393C30ECE@...&gt;\n &lt;b6kmde+pn9h@...&gt;\n &lt;3E92F063.8000006@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Tue, 08 Apr 2003 13:51:35 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] [OT] DBC semantics (was Re: About the value of\n  JUnit)\r\nMime-Version: 1.0\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep01-mail.bloor.is.net.cable.rogers.com from [142.179.150.14] using ID &lt;jbrains@...&gt; at Tue, 8 Apr 2003 15:51:36 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nBe careful. Your test is broken. List allows duplicate entries. It&#39;s Set you&#39;re thinking of.\n\nNeither test below for Collection makes sense, because Collection makes no warranty about whether duplicate entries are permitted. List allows them, but Set does not. The strongest contract for Collection.add that you can write with rewriting the algorithm appears to be &quot;newCollection.size &gt;= oldCollection.size&quot;.\n\n[None of this affects the points made about DBC. I merely comment on the correctness of the code.]\n\nTake care.\n\nSo said Paul Christmann on 4/8/2003 --------------------\nHere I digress into more of a DBC-specific question, recognizing that \nthis is not a DBC mailing list...\n\njavainsel wrote:\n&gt; Consider the examples at the JUnit site:\n&gt; \n&gt;     Collection collection = new ArrayList();\n&gt;     collection.add(&quot;itemA&quot;);\n&gt;     assertEquals(1, collection.size());\n&gt;     collection.add(&quot;itemB&quot;);\n&gt;     assertEquals(2, collection.size());\n&gt;     \n&gt; As a postcondition it would maybe look like &quot;AFTER:size() == \n&gt; BEFORE:size()++&quot; (pseudo code). This is very readable, natural and \n&gt; of much greater use for testing and documenting than JUnit/TDD.\n\nThis &quot;Contract&quot; is actually not complete.  Nor is the JUnit test. \nNeither shows the expectation of what should happen when you re-add an \nequal entry.  I know how I&#39;d do it with JUnit:\n\n     String entry = &quot;itemA&quot;;\n     collection.add(entry);\n     assertEquals(1, collection.size());\n     collection.add(entry);\n     assertEquals(1, collection.size());\n     collection.add(new String(entry));\n     assertEquals(1, collection.size());\n\nHow would you capture that in a contract without re-implementing the \nmethod itself?  Something like this, I guess?\n\nif ( collection.contains(obj) ) AFTER:size() == BEFORE.size()\nelse AFTER.size() == BEFORE.size()++;\n\nIts just that I&#39;m now starting to rewrite what&#39;s in the method itself as \npart of the contract definition.  Hence it seems that I&#39;m dangerously \nclose to code duplication for one method.\n\nNOTE: This isn&#39;t meant to question the value of DBC; I like what DBC \nseems to offer.  I just don&#39;t see how to write useable post-conditions \nfor non-trivial methods.  And this case (Collection.add(Object)) is \nactually a fairly trivial method.\n\nPC\n\nPaul Christmann\nPrior Artisans, LLC\nmailto:paul@...\n504-587-9072\n\n\n\nYahoo! Groups Sponsor\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. \nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 7610, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 7618, 
+    "contentTrasformed": false, 
+    "postDate": "1049831495", 
+    "canDelete": false, 
+    "nextInTopic": 7620, 
+    "prevInTopic": 7610, 
+    "headers": {
+        "inReplyToHeader": "PDNFOTJGMDYzLjgwMDAwMDZAcHJpb3JhcnRpc2Fucy5jb20+", 
+        "messageIdInHeader": "PDIwMDMwNDA4MTM1MTM1MDQzMi4wMTM5MzM1MEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDY3Nzc2MTRELTY2QzEtMTFENy05QUIxLTAwMDM5M0MzMEVDRUBxbHVlLmNvbT4gPGI2a21kZStwbjloQGVHcm91cHMuY29tPiA8M0U5MkYwNjMuODAwMDAwNkBwcmlvcmFydGlzYW5zLmNvbT4="
+    }
+}

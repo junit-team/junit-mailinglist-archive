@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 18729, 
+    "senderId": "OHRTvKamoarlByQN4IWOmHZCEb8-AELKXTs5hOUqkxT2s5EL-w8_5cZacLEkCFIVBJyv6C02PCX1H6UHV0z19qyrtS6jloASowVaCiIBkw", 
+    "systemMessage": false, 
+    "subject": "Re: How to get test&#39;s name in JUnit 4", 
+    "from": "&quot;gabrielcooper&quot; &lt;gabriel.cooper@...&gt;", 
+    "authorName": "gabrielcooper", 
+    "msgSnippet": "... [...] ... [...] ... To get a test s name use this runner with the @RunWith(NameAwareTestClassRunner.class) at the top of your test class and inside your", 
+    "msgId": 18728, 
+    "profile": "gabrielcooper", 
+    "topicId": 18651, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 294114387, 
+    "messageBody": "<div id=\"ygrps-yiv-2077568581\"><blockquote><span title=\"ireply\">&gt; &gt; It seems like the RunListeneer would have a reference to the currently<br/>\n&gt; &gt; running test, simply because of its &quot;testStarted&quot; and &quot;testFinished&quot;<br/>\n&gt; &gt; functions <br/>\n </span></blockquote>[...]<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; Is it possible to get access to this from within the test class<br/>\n&gt; &gt; itself?<br/>\n&gt; <br/>\n&gt; No, by design.  Sorry about that.<br/>\n </span></blockquote>[...] <br/>\n<blockquote><span title=\"ireply\"> &gt; Information on custom runners is currently somewhat lacking.  It<br/>\n&gt; appears from your later message that you&#39;ve somewhat successfully<br/>\n&gt; navigating the waters.  Any interest in writing up a short blog entry<br/>\n&gt; or article on your experiences?  Thanks,<br/>\n&gt; <br/>\n&gt;    David Saff<br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>To get a test&#39;s name use this runner with the<br/>\n@RunWith(NameAwareTestClassRunner.class) at the top of your test class<br/>\nand inside your @Before method do something like:<br/>\n<br/>\nString testName = NameAwareTestClassRunner.getTestName();<br/>\n<br/>\nAnyway, here&#39;s the runner.<br/>\n<br/>\n<br/>\n// NameAwareTestClassRunner.java<br/>\nimport org.junit.internal.runners.InitializationError;<br/>\nimport org.junit.internal.runners.TestClassRunner;<br/>\nimport org.junit.runner.Description;<br/>\nimport org.junit.runner.notification.RunListener;<br/>\nimport org.junit.runner.notification.RunNotifier;<br/>\n<br/>\npublic class NameAwareTestClassRunner extends TestClassRunner {<br/>\n\tpublic NameAwareTestClassRunner(Class&lt;?&gt; klass) throws<br/>\nInitializationError {<br/>\n\t\tsuper(klass);<br/>\n\t}<br/>\n<br/>\n\tprivate static String testName;<br/>\n\t<br/>\n\tprotected static String getName() {<br/>\n\t\treturn testName;<br/>\n\t}<br/>\n\t<br/>\n\tprotected static void setName(final String name) {<br/>\n\t\ttestName = name;<br/>\n\t}<br/>\n\t<br/>\n\tprotected static String getTestName() {<br/>\n\t\tif (testName == null)<br/>\n\t\t\treturn null;<br/>\n\t\t<br/>\n\t\tint last = testName.indexOf(&#39;(&#39;);<br/>\n\t\tif (last &lt; 0)<br/>\n\t\t\tlast = testName.length() + 1;<br/>\n\t\treturn testName.substring(0, last);<br/>\n\t}<br/>\n\t<br/>\n\tprivate static class NameListener extends RunListener {<br/>\n\t\t/** Record start of tests, not suites */<br/>\n\t\tpublic void testStarted(Description description) throws Exception {<br/>\n\t\t\tSystem.err.println(&quot; STARTED: &quot; + description.getDisplayName());<br/>\n\t\t\tsetName(description.isTest() ? description.getDisplayName() : null);<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tpublic void testFinished(Description description) throws Exception {<br/>\n<br/>\n\t\t\tSystem.err.println(&quot;FINISHED: &quot; + description.getDisplayName());<br/>\n\t\t\tif (getName() != null)<br/>\n\t\t\t\tif (getName().equals(description.getDisplayName()))<br/>\n\t\t\t\t\tsetName(null);<br/>\n\t\t\t\telse<br/>\n\t\t\t\t\tthrow new Exception(&quot;Test name mismatch&quot;);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic void run(final RunNotifier notifier) {<br/>\n\t\tnotifier.addListener(new NameListener());<br/>\n\t\tsuper.run(notifier);<br/>\n\t}<br/>\n}</div>", 
+    "prevInTime": 18727, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1168613534", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18727, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwMTExMTIwNG8yNzAwYTFiNG9iZTM0ZTI0YmM2MzQ1NjUyQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGVvODdhdSs2Mm1rQGVHcm91cHMuY29tPg=="
+    }
+}

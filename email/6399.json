@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 108, 
+    "nextInTime": 6400, 
+    "senderId": "z82WF2PVr9E93mBTHS_3NIGCbpEH1nBTOK2p_P-1HF6CaTAf-12PHqDl_KxtEf3KCzMEwJSgyZ9ILQGBxRd84ipIvbuTWA", 
+    "systemMessage": false, 
+    "subject": "RE: Testing Private Methods", 
+    "from": "Henry Stapp &lt;hstapp@...&gt;", 
+    "authorName": "Henry Stapp", 
+    "msgSnippet": "Hi All, The how to test private methods question (see below) came up on the NUnit group, and I thought some TDD gurus here might be able to help out. Sorry", 
+    "msgId": 6399, 
+    "topicId": 1696, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 39531306, 
+    "messageBody": "<div id=\"ygrps-yiv-42121451\">Hi All,<br/>\n<br/>\nThe &#39;how to test private methods&#39; question (see below) came up on the NUnit<br/>\ngroup, and I thought some TDD gurus here might be able to help out. Sorry if<br/>\nthis has already been rehashed a hundred times, but I was wrestling with<br/>\nthis a lot myself, and despite reading the Wiki threads on this, I still<br/>\ndon&#39;t have a good &#39;pattern&#39; to use... <br/>\n<br/>\nThe example from my case was a class, KeyAuthenticator, with a method<br/>\nValidate(). Validate calls several internal methods to check hashcodes,<br/>\ntimestamps, etc. but the client shouldn&#39;t really need to know about any of<br/>\nthat. The problem was that the methods for checking hashcodes and timestamps<br/>\nwere the parts that needed the most testing...<br/>\n<br/>\npublic class KeyAuthenticator {<br/>\n\t//... instance variables etc...<br/>\n\tpublic bool Validate() {<br/>\n\t\tif (!CheckTimestamp()) return false;<br/>\n\t\tif (!CheckHash()) return false;<br/>\n\t\treturn true;<br/>\n\t}<br/>\n<br/>\n\tprivate bool CheckTimestamp() {<br/>\n\t\t//... timestamp math<br/>\n\t}\t<br/>\n\t<br/>\n\tprivate bool CheckHash() {<br/>\n\t\t//... MD5 hash comparison<br/>\n\t}<br/>\n<br/>\n} <br/>\n<br/>\nLeaving out the backdoor reflection approach for the moment, the choices<br/>\nseemed to be:<br/>\n<br/>\n1) &quot;pollute&quot; the interface by making methods public that should be private.<br/>\nSome argue that this is the correct thing to do, but generally accepted<br/>\nprinciples of good design seem to require making your public interface as<br/>\nminimal as possible.<br/>\n<br/>\n2) Only test the public interface, perhaps giving up detailed testing of<br/>\ninternal logic.<br/>\nThe argument for this is that if the internal logic can&#39;t be easily tested<br/>\nthrough exercising the public API, then you should theoretically be able to<br/>\nget rid of all the &#39;untestable&#39; code, since it can&#39;t ever be reached...<br/>\nSomehow to me (as an admitted TDD newbie), it just seemed better to be able<br/>\nto bang on these internal methods directly, rather than relying on the<br/>\npublic methods to access them. It seems easier and cleaner to test a method<br/>\nin isolation than to try to test it only via it&#39;s caller... <br/>\n<br/>\n3) Make more classes... change the private methods into public methods of<br/>\nnew simple classes. <br/>\nTo use the example above, I could create a &#39;KeyHash&#39; class and a<br/>\n&#39;KeyTimestamp&#39; class, then have each of these expose public methods...<br/>\nperhaps this is the best refactoring, but it seemed to me to cause a<br/>\nprofusion of one-method classes...<br/>\n<br/>\n4) Make the methods &#39;protected&#39;, have your Test class inherit from your<br/>\nclass under test.<br/>\nThis does work, however having a bunch of protected methods in your class<br/>\ninterface could give the impression to future users that the class was<br/>\ndesigned to be inherited from, which is not really true in this case...<br/>\n<br/>\nI&#39;d love to hear the group&#39;s thoughts...<br/>\n<br/>\nThanks in advance,<br/>\n<br/>\nHenry Stapp<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:noreply@...\">noreply@...</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:noreply@...\">noreply@...</a>]<br/>\nSent: Thursday, December 12, 2002 1:21 PM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:noreply@...\">noreply@...</a><br/>\nSubject: [nunit - Help] Testing Private Methods<br/>\n<br/>\n<br/>\n<br/>\nRead and respond to this message at: <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"https://sourceforge.net/forum/message.php?msg_id=1792320\">https://sourceforge.net/forum/message.php?msg_id=1792320</a><br/>\nBy: zagnut_999<br/>\n<br/>\nI was wondering how one goes about testing the private methods of a class if<br/>\nyour tests are in a seperate assembly?<br/>\n<br/>\n______________________________________________________________________<br/>\nYou are receiving this email because you elected to monitor this forum.<br/>\nTo stop monitoring this forum, login to SourceForge and visit: <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"https://sourceforge.net/forum/monitor.php?forum_id=33694\">https://sourceforge.net/forum/monitor.php?forum_id=33694</a></div>", 
+    "prevInTime": 6398, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1039735052", 
+    "canDelete": false, 
+    "nextInTopic": 6400, 
+    "prevInTopic": 1750, 
+    "headers": {
+        "messageIdInHeader": "PDY2QzUzQjBDODhEM0Q0MTE4RjRBMDA5MDI3RENFMDY0MDIwMzYzQkJAeWxhY3lidGV4YzAxLnlvdWJldC5jb20+"
+    }
+}

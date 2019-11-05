@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 7591, 
+    "senderId": "sW6OBADTZ-9OddSs-ARQ8YoIJjx7FD3kfzCX8GGZXhh2yUtvZE4HGrmVLe2OwmsmmlEbMj0WSg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit and RMI, please help ...", 
+    "from": "skss2002@...", 
+    "authorName": "skss2002@aol.com", 
+    "msgSnippet": "Bernd, ... I tried to prove it for the last few days but quite embarrassingly, I couldn t.  The test that I claimed *seemed to work*, I couldn t reproduce it ", 
+    "msgId": 7590, 
+    "topicId": 7374, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 107426134, 
+    "messageBody": "<div id=\"ygrps-yiv-316304987\">Bernd,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt; if (clientObject != null && clientObject.equals(null)) { <br/>\n&gt;the result of this expression is always false.<br/>\n&gt;question: how is clientObject set to null if client disconnects?<br/>\n&gt;Is this an RMI feature?<br/>\n<br/>\n </span></blockquote>I tried to prove it for the last few days but quite embarrassingly, I <br/>\ncouldn&#39;t.  The test that I claimed *seemed to work*, I couldn&#39;t reproduce it <br/>\neither (the original test had been deleted long ago).  So, the if-statement <br/>\nabove is quite ridiculous.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;In your other mail I saw that the client passes a this to the server. But <br/>\n </span></blockquote>client and &gt;server do not run in the same VM. What happens if the client gets <br/>\ngarbage &gt;collected (will this happen?)<br/>\n<br/>\nThe client does get garbage<br/>\n collected but the result is not as I previously thought; the unreferenced() <br/>\nmethod in the server (implementing unreferenced interface) will be called <br/>\ninstead.  However, I tried to test this behaviour without success:  I started <br/>\nthe server with &quot;java -Djava.rmi.dgc.leaseValue=30000 DatabaseServer&quot; (30 <br/>\nseconds).  In the client, I set the remote object to null, called System.gc() <br/>\nand System.runFinalization() but the unreferenced() still wasn&#39;t called after <br/>\na few minutes.<br/>\n  Anybody knows why?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;Will the server have an invalid reference?<br/>\n<br/>\n </span></blockquote>It doesn&#39;t seem so, excerpt from Java 1.3 docs:<br/>\n<br/>\n&quot;A non-remote object, that is passed as a parameter of a remote method <br/>\ninvocation or returned as a result of a remote method invocation, is passed <br/>\nby copy; that is, the object is serialized using the object serialization <br/>\nmechanism of the Java platform.&quot;<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;Does it make sence to pass this client VM specific refernece to the server <br/>\n </span></blockquote>VM?<br/>\n<br/>\nIt <br/>\ndoesn&#39;t, thanks for helping me to realize that now.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;Maybe the easiest solution is to have a timestamp in your locklist when the <br/>\n </span></blockquote>lock &gt;was aquired. let the server thread search for timed out locks.<br/>\n<br/>\nYes, I think so too.  Originally, I tried not to rely on the server&#39;s system <br/>\nclock and based on my sloppy test results, I thought I had found a better way <br/>\nto do this ...  Actually, the answer is right in front of me had I study the <br/>\ndocs more carefully, excerpt from RMI-FAQ:<br/>\n<br/>\n&quot;D.1 Is there a way to get automatic notification as soon as a remote Java VM <br/>\nfails? <br/>\nThis is very desirable and is on our RFE list. A notification facility should <br/>\nbe available in a future release.&quot;<br/>\n<br/>\nIf I knew this, then I could almost be certain that the obscure <br/>\n&quot;clientObj.equals(null)&quot; statement would not do the job.<br/>\n<br/>\nThanks for the code example, I heard the term &quot;call-back&quot; before but not <br/>\nquite sure how to implement it, your example helps a lot.<br/>\n<br/>\nSam<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 7589, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049754282", 
+    "canDelete": false, 
+    "nextInTopic": 7592, 
+    "prevInTopic": 7558, 
+    "headers": {
+        "messageIdInHeader": "PDFkYS42ZmUyYTljLjJiYzM1NGFhQGFvbC5jb20+"
+    }
+}

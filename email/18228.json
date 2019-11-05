@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 18229, 
+    "senderId": "VDMI-VMA9xiE-y-rkiu14IvAupIDjdm_owMs-RNQ1-ymvMYWGtljQLW41plWzjFsz8wmuxpqyEpV6Lbrb2REoYIeLrvnwhrvqSRU0czmgrA8g59X", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit testing MBeans", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "The subclass technique can also be tested with rMock using intercept. Then rMock automatically subclasses the bean for you so that you can control what it", 
+    "msgId": 18228, 
+    "profile": "j0hlrogge", 
+    "topicId": 18187, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-1670896202\">The subclass technique can also be tested with rMock using intercept. Then<br/>\nrMock automatically subclasses the bean for you so that you can control what<br/>\nit returns. It would look something like this:<br/>\n<br/>\nprivate MyMBean myInterceptedMBean;<br/>\n<br/>\nprotected void setUp() {<br/>\n    myInterceptedMBean = (MyMBean)intercept(MyMBean.class, &quot;someMBean&quot;);<br/>\n}<br/>\n<br/>\npublic void testInterceptStateString() {<br/>\n      // record an expectation to getStateString and modify it&#39;s return<br/>\nvalue<br/>\n      myInterceptedMBean.getStateString();<br/>\n      modify().multiplicity(expect.atLeastOnce()).returnValue(&quot;My<br/>\nstateString&quot;);<br/>\n<br/>\n      startVerification();<br/>\n<br/>\n      assertThat(myInterceptedMBean.getStateString(), is.eq(&quot;My<br/>\nstateString&quot;);<br/>\n}<br/>\n<br/>\npublic void testInterceptStateStringDifferentValue() {<br/>\n      // record an expectation to getStateString and modify it&#39;s return<br/>\nvalue<br/>\n      myInterceptedMBean.getStateString();<br/>\n      modify().multiplicity(expect.atLeastOnce()).returnValue(&quot;My other<br/>\nstateString&quot;);<br/>\n<br/>\n      startVerification();<br/>\n<br/>\n      assertThat(myInterceptedMBean.getStateString(), is.eq(&quot;My other<br/>\nstateString&quot;);<br/>\n}<br/>\n<br/>\n<br/>\nThe benefit here is that you don&#39;t need to create a subclass and it&#39;s easy<br/>\nto modify the state-string in other testcases, just set up new values and<br/>\ntest away.The downside is that it becomes a bit more magical what is going<br/>\non..<br/>\nJames Carr blogged about this technique lately here:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://blog.james-carr.org/?p=32\">http://blog.james-carr.org/?p=32</a><br/>\n<br/>\nJust another option to consider. I hope this is interesting.<br/>\n/J<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 10/26/06, J. B. Rainsberger &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains762@...\">jbrains762@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;   Ravi wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; My Apologies, I should have put one in before ...<br/>\n&gt; &gt;<br/>\n&gt; &gt; In the example below, I have shown a method named,<br/>\n&gt; &gt; initLocation, you will see this method checks the<br/>\n&gt; &gt; state of the MBean before the method proceeds to do<br/>\n&gt; &gt; its stuff..<br/>\n&gt; &gt;<br/>\n&gt; &gt; Please note that this &#39;StateString&#39; is set by JBoss.<br/>\n&gt; &gt;<br/>\n&gt; &gt; public synchronized String initLocation () {<br/>\n&gt; &gt;<br/>\n&gt; &gt; /* Check if the StateString has &quot;Started&quot; value.<br/>\n&gt; &gt; */<br/>\n&gt; &gt; if (!this.getStateString().equals(&quot;Started&quot;))<br/>\n&gt; &gt; return &quot;Service currently not started &quot;;<br/>\n&gt; &gt; try {<br/>\n&gt; &gt; popLocals();<br/>\n&gt; &gt; this.running = true;<br/>\n&gt; &gt; } catch (Exception e) {<br/>\n&gt; &gt; this.running = false;<br/>\n&gt; &gt; log.error(&quot;Error invoking popLocals&quot;);<br/>\n&gt; &gt; }<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt;From your reply I get the feeling, I might have to end<br/>\n&gt; &gt; up using cactus, as this &#39;StateString&#39; is something<br/>\n&gt; &gt; which is set by JBoss.<br/>\n&gt;<br/>\n&gt; I assume the StateString property is not writable through the public<br/>\n&gt; interface of the MBean class?<br/>\n&gt;<br/>\n&gt; If it /is/ writable, then your test should impersonate JBoss and set it.<br/>\n&gt;<br/>\n&gt; If it is /not/ writable, then consider using the &quot;subclass to test&quot;<br/>\n&gt; technique.<br/>\n&gt;<br/>\n&gt; public void testDoNotInitializeIfServiceNotStarted() throws Exception {<br/>\n&gt; MyMBean mbean = new MyMBean() {<br/>\n&gt; protected String getStateString() {<br/>\n&gt; return &quot;Stopped&quot;; // Something other than &quot;Started&quot;<br/>\n&gt; }<br/>\n&gt; };<br/>\n&gt;<br/>\n&gt; mbean.initLocation();<br/>\n&gt; // assert mbean didn&#39;t change to &quot;Started&quot; state...<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Something like that.<br/>\n&gt; --<br/>\n&gt; J. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.ca\">http://www.jbrains.ca</a><br/>\n&gt; Your guide to software craftsmanship<br/>\n&gt; JUnit Recipes: Practical Methods for Programmer Testing<br/>\n&gt; 2005 Gordon Pask Award for contribution Agile Software Practice<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 18227, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1161893769", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18221, 
+    "headers": {
+        "inReplyToHeader": "PDQ1NDBBMkVCLjQwMjA0MDNAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYxMDI2MTMxNnIzYmRkNzhiYnZhNDE5ODRhZmExZWExOTUzQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDYxMDI1MjMwODA3LjIzODE5LnFtYWlsQHdlYjUwNjA4Lm1haWwueWFob28uY29tPgkgPDQ1NDBBMkVCLjQwMjA0MDNAZ21haWwuY29tPg=="
+    }
+}

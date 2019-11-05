@@ -1,0 +1,28 @@
+{
+    "topicId": 2662, 
+    "postDate": "1000493386", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "aiGPMsUEzMFyVTP1OZEDwMAhhDF5eSMl929Z-sgiQIo6RBiLswoRubEgzmUxUREQqTxrQOdRV58y9qtH0pQ2e3C4jZ4ilLtARcCU0JOTP3XQ6Q", 
+    "nextInTime": 2664, 
+    "userId": 0, 
+    "prevInTime": 2662, 
+    "prevInTopic": 2662, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDEwOTE0MTg0OTQ2LjEzMy5jcG10YUBjMDA3LnNudi5jcC5uZXQ+"
+    }, 
+    "authorName": "Vladimir Bossicard", 
+    "numMessagesInTopic": 13, 
+    "msgSnippet": "One thing you have to understand is that when a assertion failed, the method is exited because an Error is thrown.  There is no way to avoid this unless you", 
+    "contentTrasformed": false, 
+    "msgId": 2663, 
+    "nextInTopic": 2667, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;vbossica@...&gt;\r\nX-Sender: vbossica@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_2_2); 14 Sep 2001 20:40:02 -0000\r\nReceived: (qmail 61905 invoked from network); 14 Sep 2001 18:49:47 -0000\r\nReceived: from unknown (10.1.10.26)\n  by l10.egroups.com with QMQP; 14 Sep 2001 18:49:47 -0000\r\nReceived: from unknown (HELO c007.snv.cp.net) (209.228.33.210)\n  by mta1 with SMTP; 14 Sep 2001 18:49:47 -0000\r\nReceived: (cpmta 135 invoked from network); 14 Sep 2001 11:49:46 -0700\r\nDate: 14 Sep 2001 11:49:46 -0700\r\nMessage-ID: &lt;20010914184946.133.cpmta@...&gt;\r\nX-Sent: 14 Sep 2001 18:49:46 GMT\r\nReceived: from [64.79.2.4] by mail.telocity.com with HTTP; 14 Sep 2001\n    11:49:46 PDT\r\nContent-Type: text/plain\r\nContent-Disposition: inline\r\nMime-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Web Mail 3.9.3.5\r\nX-Sent-From: vbossica@...\r\nSubject: Re: [junit] Proper use of TestReult\r\nFrom: Vladimir Bossicard &lt;vladimir@...&gt;\r\n\r\nOne thing you have to understand is that when a assertion failed, the method is exited because an Error is thrown.  There is no way to avoid this unless you write your own JUnit app.  I don&#39;t think that it&#39;s what you want...\n\nif you have 3 mendatory fields, you write 4 methods.  The first 3 test that you successfully see when fields are missing and the 4th to see if everything&#39;s fine when you have your 3 mendatory fields.  You have done quite the same thing (removing one field after another) but my approach is more simple.  \n\nRemember: &quot;keep tests simple&quot;.  The more complicated the test code is, the more likely you introduce errors in the test code.  The goal of unit testing is not to debug your test code :-)\n\nto implement the simpliest tests possible:\n\n- use the setUp() method to create your data object\n- create 4 tests methods (in my example it&#39;s 4)\n- remove one single mendatory field at the beginning of each test method\n- call the fail() method to tell JUnit that something wrong happend\n\nprivate Data data;\n\npublic void setUp () {\n  data = new Data();\n  data.put(...);\n}\n\npublic void testField1Missing () {\n  data.remove(...);\n  try {\n     profile = home.create(data);\n  } catch (IllegalFieldsFormatException e) {\n     // if home throws this excpetion when a field is missing, it&#39;s fine\n  }\n}\n\npublic void testAllFieldsOK () {\n  try {\n     profile = home.create(data);\n  } catch (IllegalFieldsFormatException e) {\n     fail(&quot;this execption should not have been thrown&quot;)\n  }\n}\n\nHope it helps\n\n-Vladimir\n\n\n\n", 
+    "subject": "Re: [junit] Proper use of TestReult"
+}

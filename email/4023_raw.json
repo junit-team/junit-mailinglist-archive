@@ -1,0 +1,30 @@
+{
+    "topicId": 4008, 
+    "postDate": "1013521744", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Dale E Martin &lt;dmartin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "hCuKHIoSsdxK63jEuzzbrGmJJTv0IHPWueY7S7shSmJOZRvyO0CPdawNVAY_a9Z56i0BOs9UXfw_NAAFyM89vUTEdWTIV5VdhQ1wpgqb", 
+    "nextInTime": 4024, 
+    "userId": 72011287, 
+    "prevInTime": 4022, 
+    "prevInTopic": 4022, 
+    "headers": {
+        "inReplyToHeader": "PDNDNjg0N0U1LjcwODAwMDdAYm9zc2ljYXJkLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDIwMjEyMDg0OTA0LkE3MzBAY2xpZnRvbmxhYnMuY29tPg==", 
+        "referencesHeader": "PDIwMDIwMjEwMTAwMDM3LjgxMDgzLnFtYWlsQHdlYjIwNjAxLm1haWwueWFob28uY29tPiA8MTAxMzQ2MzMxMi4zYzY4MzkxMDNlMmI1QHdlYm1haWwuYmxhY2tzdW4uY2E+IDwzQzY4M0YxQy41REFGODZFNkBzYWJyZS5jb20+IDwzQzY4NDdFNS43MDgwMDA3QGJvc3NpY2FyZC5jb20+"
+    }, 
+    "authorName": "Dale E Martin", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "... It is definitely true that each system has major variations, and finding the common subset is problematic.  I ve approached this problem a couple of ", 
+    "contentTrasformed": false, 
+    "msgId": 4023, 
+    "nextInTopic": 4024, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;dmartin@...&gt;\r\nX-Sender: dmartin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_2); 12 Feb 2002 13:49:14 -0000\r\nReceived: (qmail 75078 invoked from network); 12 Feb 2002 13:49:05 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m4.grp.snv.yahoo.com with QMQP; 12 Feb 2002 13:49:05 -0000\r\nReceived: from unknown (HELO chinchilla.toadis.porkis) (216.23.53.172)\n  by mta2.grp.snv.yahoo.com with SMTP; 12 Feb 2002 13:49:05 -0000\r\nReceived: from gerbil.toadis.porkis (gerbil) [192.168.10.2] \n\tby chinchilla.toadis.porkis with smtp (Exim 3.12 #1 (Debian))\n\tid 16adIu-0001LE-00; Tue, 12 Feb 2002 08:49:04 -0500\r\nReceived: by gerbil (sSMTP sendmail emulation); Tue, 12 Feb 2002 08:49:04 -0500\r\nDate: Tue, 12 Feb 2002 08:49:04 -0500\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Database Select query checks!! newbie\r\nMessage-ID: &lt;20020212084904.A730@...&gt;\r\nReferences: &lt;20020210100037.81083.qmail@...&gt; &lt;1013463312.3c6839103e2b5@...&gt; &lt;3C683F1C.5DAF86E6@...&gt; &lt;3C6847E5.7080007@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nIn-Reply-To: &lt;3C6847E5.7080007@...&gt;\r\nUser-Agent: Mutt/1.3.23i\r\nFrom: Dale E Martin &lt;dmartin@...&gt;\r\nX-Yahoo-Group-Post: member; u=72011287\r\n\r\n&gt; Database dependent: normally inserting data into a database if pretty\n&gt; simple but it&#39;s true that if you plan to support Sybase, Oracle and\n&gt; mySQL, you may have to write 3 different scripts to populate your 3\n&gt; different databases.  But it must be done only once.\n\nIt is definitely true that each system has major variations, and finding\nthe common subset is problematic.  I&#39;ve approached this problem a couple of\ndifferent ways.   \n\nThe first way is to assume that you&#39;ll need to be able to insert data into\nany table that your application is using.  If this is the case, then you\ncan write the insertion code and tests for it up front, and then use the\nactual insertion code to do the inserts.  The problem with this approach is\nthat to do any decent testing, you also need the retrieval code\n(i.e. queries.)  And then you also need to be able to delete the data that\nyou&#39;ve inserted if you want to leave the DB in a &quot;pristine&quot; state.  (So\nyou&#39;ve have to insert the data, do your tests, and delete the data for each\ntest that needs the data, or in &quot;setup&quot; and &quot;teardown&quot; at the very least.)\nIn a project I&#39;m currently working on, I&#39;ve ended up with\n&quot;testInsertUpdateDelete&lt;Object&gt;&quot; since you wind up testing all of these\nfunctions if you want to test one of them.\n\nAnother case is where you don&#39;t ever need to insert any data - you&#39;re\naccessing the DB in a read-only fashion.  In this case, hopefully you&#39;ve\ngot access to test data in some form and you can write tests against the\nreal data.  If not, and you want to shortcut writing JDBC insertion code,\nant has a cool facility:\n &lt;target name=&quot;generateTestData&quot;&gt;\n &lt;sql\n    driver=&quot;COM.ibm.db2.jdbc.app.DB2Driver&quot;\n    url=&quot;jdbc:db2:&lt;DB NAME&gt;&quot;\n    userid=&quot;&lt;usrname&gt;&quot;\n    password=&quot;&lt;password&gt;&quot;\n    print=&quot;true&quot;\n    autocommit=&quot;true&quot;\n    &gt;\n  &lt;classpath&gt;\n     &lt;pathelement location=&quot;d:/sqllib/java/db2java.zip&quot;/&gt;\n  &lt;/classpath&gt;\n      insert into someSchema.someTable ( column1, column2 ) \n          values ( &#39;value1&#39; , &#39;value2&#39; );\n  &lt;/sql&gt;\n  &lt;/target&gt;\n\nYou can throw &quot;arbitrary&quot; SQL into here and populate the database with test\ndata fairly easily.\n\nHope this is helpful!\n\nLater,\n\tDale\n-- \nDale E. Martin, Clifton Labs, Inc.\nSenior Computer Engineer\ndmartin@...\nhttp://www.cliftonlabs.com\npgp key available\n\n", 
+    "subject": "Re: [junit] Database Select query checks!! newbie"
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 7283, 
+    "senderId": "M0pUJLppQMX-J2Iug0GkMM5c_vaT4viUvi67OYIf4d0lJJby9vRRAgg3RhJsGfckdDGelkuoRRNIkvrc_PMj_w9X-zM", 
+    "systemMessage": false, 
+    "subject": "Re: JUnit Design?", 
+    "from": "&quot;billvenners&quot; &lt;bv@...&gt;", 
+    "authorName": "billvenners", 
+    "msgSnippet": "... that ... I see. The original intent was that users would write their own runner-esque code to run their tests. ... some listener ... in the above ... Do", 
+    "msgId": 7282, 
+    "rawEmail": "Return-Path: &lt;bv@...&gt;\r\nReceived: (qmail 825 invoked by uid 7800); 20 Mar 2003 23:35:07 -0000\r\nX-Sender: bv@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 20 Mar 2003 19:11:23 -0000\r\nReceived: (qmail 80040 invoked from network); 20 Mar 2003 19:11:23 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m10.grp.scd.yahoo.com with QMQP; 20 Mar 2003 19:11:23 -0000\r\nReceived: from unknown (HELO n6.grp.scd.yahoo.com) (66.218.66.90)\n  by mta2.grp.scd.yahoo.com with SMTP; 20 Mar 2003 19:11:23 -0000\r\nReceived: from [66.218.67.150] by n6.grp.scd.yahoo.com with NNFMP; 20 Mar 2003 19:11:23 -0000\r\nDate: Thu, 20 Mar 2003 19:11:21 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: JUnit Design?\r\nMessage-ID: &lt;b5d3oq+bmem@...&gt;\r\nIn-Reply-To: &lt;1048185655.3e7a0b37571a0@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2664\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;billvenners&quot; &lt;bv@...&gt;\r\nX-Yahoo-Group-Post: member; u=5637428\r\nX-Yahoo-Profile: billvenners\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 20 Mar 2003 23:35:07 -0000\r\n\r\n--- In junit@yahoogroups.com, &quot;Vladimir R. Bossicard&quot; &lt;vladimir@b...&gt;\nwrote:\n&gt; &gt; Could you clarify what you mean by &quot;not need a runner&quot; and how\nthat \n&gt; &gt; influenced the design of TestResult?\n&gt; \n&gt; it goes something like this:\n&gt; \n&gt; TestResult result = new TestResult();\n&gt; TestCase test = new MyTestCase(&quot;testXYZ&quot;);\n&gt; test.run(result);\n&gt; if (result.wasSuccessful()) {\n&gt;    S.o.p(&quot;hurra!&quot;);\n&gt; }\n&gt; \n&gt; no need for a TestRunner to execute the test.\n&gt; \nI see. The original intent was that users would write their own\nrunner-esque \ncode to run their tests.\n\n&gt; I don&#39;t particularly like the TestResult and would replace it by\nsome listener\n&gt; architecture.  But you couldn&#39;t run a test without TestRunner like\nin the \nabove\n&gt; example anymore.\n&gt;\nDo you mean besides the TestListeners that can register themselves\nwith \nTestResult itself?\n\nA listener architecture is kind of what we do in SuiteRunner, in that\nyou can \nspecify multiple Reporters for a single test run, as many as you\nwant. The \nRunner app puts the specified Reporters into a DispatchReporter,\nwhich \nforwards all method invocations to each specified Reporter. The tests \nthemselves need only ever make reports to one Reporter, which in the\ncase of \nRunner, is the DispatchReporter. This is similar to registering\nmultiple \nTestListeners with TestResult, then passing a single TestResult down\ninto the \ntests.\n \n&gt; &gt; &gt; if every test share the same resources, you can potentially\nhave some \n&gt; &gt; &gt; very tricky problems:\n&gt; \n&gt; &gt; Instead of creating a fixture in the constructor and reusing it\nin each \n&gt; &gt; test method -- hoping that testA doesn&#39;t screw up the fixture in\na way \n&gt; &gt; that causes testZ to fail -- you just recreate the fixture anew\nbefore \n&gt; &gt; each test method.\n&gt; \n&gt; If you recreate a fixture before each test, you&#39;re not _sharing_ a\nfixture.  The\n&gt; problem appears when the tests truly share a fixture and when they\nrely on\n&gt; another test&#39;s result for their execution (like in a\ncreate-update-delete test\n&gt; sequence).\n&gt; \nThat&#39;s true, but I still have the question: What does running each\ntest method \nin its own instance buy you that setUp and tearDown don&#39;t already buy\nyou? \nThe only advantage I can see is that you can screw up your setUp\nmethod by \nforgetting to recreate something. Running each test method in its own \ninstance shields you from any problem.\n\nAlso, is it not true that by forcing every test method into its own\ninstance, then \ntests can&#39;t share a fixture. So not only can you never encounter the\npotential \nproblems of sharing a fixture, you also aren&#39;t able to reap any\nbenefits of \nsharing a fixture. What do you usually tell people who want testB to\nuse the \nresults of testA?\n\n\n", 
+    "profile": "billvenners", 
+    "topicId": 7266, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 5637428, 
+    "prevInTime": 7281, 
+    "contentTrasformed": false, 
+    "postDate": "1048187481", 
+    "canDelete": false, 
+    "nextInTopic": 7283, 
+    "prevInTopic": 7280, 
+    "headers": {
+        "inReplyToHeader": "PDEwNDgxODU2NTUuM2U3YTBiMzc1NzFhMEBtYWlsLnNjZGkub3JnPg==", 
+        "messageIdInHeader": "PGI1ZDNvcStibWVtQGVHcm91cHMuY29tPg=="
+    }
+}

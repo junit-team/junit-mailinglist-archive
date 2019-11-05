@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 14425, 
+    "senderId": "TJ0EQoXY3fuH7v_iCq02DKoh93ElTGl7hO3PzilnWMZf83KsCI3DLTqZU5uZeuMNzfZY_UbVQ805tTmN_Uz1mWqzuoBS9L7-7wlwhLF2", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Preventing JUnit from stopping on failures.", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "I d like to chime in on this discussion just to throw a wrench in the works. ;) First, I am of the notion that I don t generally want multiple failures per", 
+    "msgId": 14424, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 81425 invoked from network); 23 Aug 2005 20:42:59 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m22.grp.scd.yahoo.com with QMQP; 23 Aug 2005 20:42:59 -0000\r\nReceived: from unknown (HELO out4.smtp.messagingengine.com) (66.111.4.28)\n  by mta4.grp.scd.yahoo.com with SMTP; 23 Aug 2005 20:42:59 -0000\r\nReceived: from frontend1.internal (mysql-sessions.internal [10.202.2.149])\n\tby frontend1.messagingengine.com (Postfix) with ESMTP id 4AA9DCCA155\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 23 Aug 2005 16:42:58 -0400 (EDT)\r\nReceived: from frontend3.messagingengine.com ([10.202.2.152])\n  by frontend1.internal (MEProxy); Tue, 23 Aug 2005 16:42:58 -0400\r\nX-Sasl-enc: w0dkV3jO2f8PaObP+85QlPlkzyRr/4MuzcpniUqf9Khx 1124829778\r\nReceived: from fast-mail.org (w018.z064003232.det-mi.dsl.cnc.net [64.3.232.18])\n\tby frontend3.messagingengine.com (Postfix) with ESMTP id 467511DA\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 23 Aug 2005 16:42:58 -0400 (EDT)\r\nMessage-ID: &lt;430B8A4C.2060607@...&gt;\r\nDate: Tue, 23 Aug 2005 16:42:52 -0400\r\nUser-Agent: Mozilla Thunderbird 0.5 (X11/20040208)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;E1E7bk7-0004j5-EL@...&gt; &lt;430B6BBD.1050100@...&gt;\r\nIn-Reply-To: &lt;430B6BBD.1050100@...&gt;\r\nX-Enigmail-Version: 0.83.4.0\r\nX-Enigmail-Supports: pgp-inline, pgp-mime\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Jason Rogers &lt;jacaetevha@...&gt;\r\nSubject: Re: [junit] Preventing JUnit from stopping on failures.\r\nX-Yahoo-Group-Post: member; u=109352929; y=vfJ-4HBPkj2r2WIDZFDbrnIDRaZiiZ4XrGI60bJWeKVUteg\r\nX-Yahoo-Profile: jacaetev\r\n\r\nI&#39;d like to chime in on this discussion just to throw a wrench in the \nworks. ;)\n\nFirst, I am of the notion that I don&#39;t generally want multiple failures \nper test.   However, there *seems* to be an assumption in this thread \nthat multilpe asserts per test are somehow related to each other, such \nthat if one fails and I fix it then the other possibly failing asserts \nwould be fixed at the same time.  That is not always, and perhaps \ngenerally, not the case.\n\nFollowing is a simple, very contrived, example of applying a CreditMemo \nto a Sale and its associated RecurringSale.  This is merely an example \nto show that multiple asserts within a test are not related to each \nother such that fixing one would fix others, but the asserts are related \nto the general action of applying a CreditMemo to an Sale.\n\npublic class SaleTest extends TestCase {\n    ...\n    public void testApplyCreditMemo_whenRecurringSalesExist() {\n        CreditMemo cm = new \nCreditMemo().newSaleAmount(-10).renewalAmount(-10);\n        RecurringSale renewal = RecurringSale.from(opty);\n        Sale opty = new \nSale().newSaleAmount(10).renewalAmount(20).addRenewal(renewal);\n\n        assertEquals(30, renewal.renewalAmount());\n        assertSame(Stage.NEGOTIATION, renewal.stage());\n\n        opty.applyCreditMemo(cm);\n\n        // if this fails should I assume that fixing it would also fix \nthe assert\n        // that follows concerning the renewal&#39;s CloseDate or Stage?\n        assertEquals(10, opty.renewalAmount());\n\n        // whether or not this fails does not guarantee that following \nasserts\n        // would fail or pass\n        assertEquals(0, opty.newSaleAmount());\n\n        assertEquals(10, renewal.renewalAmount());\n        assertEquals(cm.invoiceDate(), renewal.closeDate());\n        assertSame(Stage.NOT_PURCHASED, renewal.stage());\n    }\n    ...\n}\n\npublic class Sale {\n    ...\n    public Sale applyCreditMemo(CreditMemo aCreditMemo) {\n        creditMemos().add(aCreditMemo);\n        offsetNewSaleAmountBy(aCreditMemo.newSaleAmount());\n        offsetRenewalAmountBy(aCreditMemo.renewalAmount());\n        for(RecurringSale renewal : this.recurringSale()) {\n            renewal.applyCreditMemo(aCreditMemo);\n        }\n        return this;\n    }\n    ...\n}\n\npublic class RecurringSale extends Sale {\n    ...\n    public Sale applyCreditMemo(CreditMemo aCreditMemo) {\n        if (parent().isFullyCancelled()) {\n            return close();\n        }\n        return super.applyCreditMemo(aCreditMemo);\n    }\n\n    private RecurringSale close() {\n        this.closeDate(parent().closeDate());\n        this.stage(Stage.NOT_PURCHASED);\n        return this;\n    }\n    ...\n}\n\n-- \nJason Rogers\n\n&quot;I am crucified with Christ: nevertheless I live; yet not I,\nbut Christ liveth in me: and the life which I now live in \nthe flesh I live by the faith of the Son of God, who loved \nme, and gave himself for me.&quot;\n    Galatians 2:20\n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 14398, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 14423, 
+    "contentTrasformed": false, 
+    "postDate": "1124829772", 
+    "canDelete": false, 
+    "nextInTopic": 14425, 
+    "prevInTopic": 14423, 
+    "headers": {
+        "inReplyToHeader": "PDQzMEI2QkJELjEwNTAxMDBAYW5kcmV3bWNkb25hZ2guZjJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzMEI4QTRDLjIwNjA2MDdAZmFzdC1tYWlsLm9yZz4=", 
+        "referencesHeader": "PEUxRTdiazctMDAwNGo1LUVMQHNtdHBhdXRoMDUubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4gPDQzMEI2QkJELjEwNTAxMDBAYW5kcmV3bWNkb25hZ2guZjJzLmNvbT4="
+    }
+}

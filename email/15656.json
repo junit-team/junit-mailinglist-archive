@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 15657, 
+    "senderId": "VqIny9tJb5pczlG6AstyFaxu-TPsA9HmANmlcHi5f0fxcu9VuPyJscw2CYN1cgbOEQ7QKcHHDlsaHSuwCfGAjw0LiSw1mAuNyTiiM7YFlQrfIJc-v4t_fJ068Vp-x44utOIK", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Clarifying how to use unit tests", 
+    "from": "=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "... Looks good to me, especially if you are going to use dependency injection to remove even the hardcoded Impl mentions from your code. Note that TestNG s", 
+    "msgId": 15656, 
+    "profile": "cbeust", 
+    "topicId": 15467, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-1091835301\">On 12/8/05, Rakesh Patel &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rakesh.mailgroups@...\">rakesh.mailgroups@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hi Cedric,<br/>\n&gt;<br/>\n&gt; if i write a test against my interface then i am essentially writing a<br/>\n&gt; functional test. Thats not terrible except for the fact that as its so<br/>\n&gt; high up i will probably have to wire up the layers beneath, which you<br/>\n&gt; mention.<br/>\n&gt;<br/>\n&gt; So for my high level test, I end up doing this:<br/>\n&gt;<br/>\n&gt; protected void setUp() throws Exception {<br/>\n&gt; super.setUp();<br/>\n&gt; fs = new FetserverSoapBindingImpl();<br/>\n&gt; ls = new LogonServiceImpl(manager, &quot;testCache&quot;);<br/>\n&gt; ps = new PostcodeServiceMockImpl();<br/>\n&gt;<br/>\n&gt; ((FetserverSoapBindingImpl) fs).setLs(ls);<br/>\n&gt; ((FetserverSoapBindingImpl) fs).setPs(ps);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; which is wiring up all my classes. Fortunately, i may have dummy<br/>\n&gt; implementations instead i can use (PostcodeServiceMockImpl for example).<br/>\n&gt;<br/>\n&gt; I don&#39;t have a big issue doing this because i intend to use Spring which<br/>\n&gt; will allow wiring up beans like this in a much simpler fashion.<br/>\n<br/>\n<br/>\n </span></blockquote>Looks good to me, especially if you are going to use dependency injection to<br/>\nremove even the hardcoded Impl mentions from your code.<br/>\n<br/>\nNote that TestNG&#39;s data providers could come up handy for this as well to<br/>\nlet you test several implementations in the same test method:<br/>\n<br/>\n@Test(dataProviderName =  &quot;server-implementations&quot;)<br/>\npublic void verifyServer(FetServerBinding binding) {<br/>\n  ...<br/>\n}<br/>\n<br/>\n@DataProvider(name = &quot;server-implementations&quot;)<br/>\npublic Object[][] provideSoapImplementation() {<br/>\n  return new Object[][] {<br/>\n    { new FetserverSoapBindingImpl() },<br/>\n    { new FetserverRpcBindingImpl() }<br/>\n  }<br/>\n}<br/>\n<br/>\nand of course, dependency injection could be used on the data provider as<br/>\nwell so that even the class names of these implementations are no longer<br/>\nhardcoded in your Java source.<br/>\n<br/>\n--<br/>\nCédric<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://testng.org\">http://testng.org</a><br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 15655, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1134066476", 
+    "canDelete": false, 
+    "nextInTopic": 15673, 
+    "prevInTopic": 15653, 
+    "headers": {
+        "inReplyToHeader": "PDQzOTg3MjExLjEwNjA0MDZAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDUxMjA4MTAyN283OGM0ODYxYXQzMTBhZGYzMTNmYzk5NTE3QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PDQzODBDRUM5LjYwMDA3MDRAZ21haWwuY29tPgkgPDExMzI1ODMxOTMuNDM4MWQ5MTljZWYxMEBpbWFwLmNzYWlsLm1pdC5lZHU+CSA8NDM5ODQyQzQuODA5MDcwMEBnbWFpbC5jb20+CSA8Yjg2YjZhOWMwNTEyMDgwODIwdjUzZWM2MTY0Z2JhNGU1N2Y3MmEwMDc5ZTlAbWFpbC5nb29nbGUuY29tPgkgPDQzOTg3MjExLjEwNjA0MDZAZ21haWwuY29tPg=="
+    }
+}

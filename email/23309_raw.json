@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 23310, 
+    "senderId": "EdCxKj0h0ZKkni9zeRDy3iw_6EZTK29nXaUilf3Z9UumtvoT97L405UPeAzHUc_u9yupxmxmKQoja4pK-vwtXPrtYIKSEdqiM-tVh0iOOuHu1Q", 
+    "systemMessage": false, 
+    "subject": "Tooling feedback please: JUnit @Test, @RunWith etc annotations as meta-annotations proposal", 
+    "from": "Neale Upstone &lt;neale.upstone@...&gt;", 
+    "authorName": "Neale Upstone", 
+    "msgSnippet": "I m currently pursuing a number of proposal to enhance the DRYness and clarity of JUnit based tests. One valuable improvement in this area would be to allow", 
+    "msgId": 23309, 
+    "rawEmail": "Return-Path: &lt;neale.upstone@...&gt;\r\nReceived: (qmail 19580 invoked by uid 7800); 4 Mar 2011 11:20:36 -0000\r\nX-Sender: neale.upstone@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 78099 invoked from network); 4 Mar 2011 11:17:53 -0000\r\nX-Received: from unknown (66.196.94.106)\n  by m13.grp.re1.yahoo.com with QMQP; 4 Mar 2011 11:17:53 -0000\r\nX-Received: from unknown (HELO mail-ww0-f53.google.com) (74.125.82.53)\n  by mta2.grp.re1.yahoo.com with SMTP; 4 Mar 2011 11:17:53 -0000\r\nX-Received: by wwb29 with SMTP id 29so2770690wwb.10\n        for &lt;junit@yahoogroups.com&gt;; Fri, 04 Mar 2011 03:17:53 -0800 (PST)\r\nX-Received: by 10.227.1.102 with SMTP id 38mr440094wbe.109.1299237473052;\n        Fri, 04 Mar 2011 03:17:53 -0800 (PST)\r\nX-Received: from [192.168.2.61] (cpc1-cmbg1-0-0-cust800.5-4.cable.virginmedia.com [82.21.99.33])\n        by mx.google.com with ESMTPS id w25sm1705841wbd.11.2011.03.04.03.17.51\n        (version=SSLv3 cipher=OTHER);\n        Fri, 04 Mar 2011 03:17:52 -0800 (PST)\r\nMessage-ID: &lt;4D70CA5F.9090608@...&gt;\r\nDate: Fri, 04 Mar 2011 11:17:51 +0000\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.2; en-GB; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=windows-1252; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nFrom: Neale Upstone &lt;neale.upstone@...&gt;\r\nSubject: Tooling feedback please: JUnit @Test, @RunWith etc annotations as\n meta-annotations proposal\r\nX-Yahoo-Group-Post: member; u=477022967; y=-3_WEnIyWhZU1V2T280V7LCLYKVbD6SO7LHvRC0oh6pc1o0xK82-wg8icBjExtkDvfndevQgtUZFIEc\r\nX-Yahoo-Profile: nealeu\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via email; 4 Mar 2011 11:20:36 -0000\r\n\r\nI&#39;m currently pursuing a number of proposal to enhance the DRYness and \nclarity of JUnit based tests.\n\nOne valuable improvement in this area would be to allow common \nannotations to be specified and documented in one place as meta-annotations.\n\nFor example, the @Category annotation can be applied to classes or test \nmethods to mark the suite or test as belonging to one or more categories.\n\nWithout meta-annotations, you can end up with something like:\n\n@Category(SmokeTests.class, PerformanceTests.class)\npublic class SomeTests {\n}\n\nand\n\npublic class SomePerformanceTests {\n@Test(timeout=100)\n@Category(PerformanceTests.class)\npublic void a() {}\n}\n\nor, for Spring users, you get:\n\n@RunWith(SpringJUnit4ClassRunner.class)\n@ContextConfiguration(&quot;classpath:/repositoryMocks.xml, \nclasspath:/service-context.xml&quot;)\n@TransactionConfiguration(defaultRollback=true)\npublic class UserAccountServiceTests {\n@Test(timeout=1000)\n@Transaction(readOnly=true)\npublic void failedLoginShouldNotModifyAnything() { ...}\n}\n\nWith meta-annotations:\n\n/**\n* Description of the general approach to service layer test and why \nthese specific contexts are used\n*/\n@Documented\n@Retention(RetentionPolicy.RUNTIME)\n@Target(ElementType.TYPE)\n@RunWith(SpringJUnit4ClassRunner.class)\n@ContextConfiguration(&quot;classpath:/repositoryMocks.xml, \nclasspath:/service-context.xml&quot;)\n@TransactionConfiguration(defaultRollback=true)\npublic @interface ServiceLayerTests { }\n\n/**\n* This is used to test user interactions where services can be running \nagainst read-only repository slaves... etc.\n* The default timeout is according to our quality of service \nrequirements...etc.\n*/\n@Documented\n@Retention(RetentionPolicy.RUNTIME)\n@Target(ElementType.METHOD)\npublic @interface ServiceLayerTests { }\n\n\n@ServiceLayerTests\npublic class UserAccountServiceTests {\n@ReadOnlyUserInteractionTest\npublic void failedLoginShouldNotModifyAnything() { ...}\n}\n\n\n\nAs shown, the ability to allow JUnit annotations to be specified as \nmeta-annotations adds a big win to development teams working on large \nprojects where common approaches and centralised documentation will benefit.\n\n\nWith changes as proposed in \nhttps://github.com/KentBeck/junit/issues/194, JUnit can easily be made \nto recognise meta-annotations.\n\nFor those of you who work on tools based on JUnit, it would be great to \nget some feedback on this, as you may be looking for the @Test etc \nannotations yourself, but not as meta-annotations.\n\n\n--\nNeale Upstone\nOpen Credo Ltd � Excellence in Enterprise Software Development\nCertified SpringSource Delivery Partner\n\n", 
+    "profile": "nealeu", 
+    "topicId": 23309, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 477022967, 
+    "prevInTime": 23308, 
+    "contentTrasformed": false, 
+    "postDate": "1299237471", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRENzBDQTVGLjkwOTA2MDhAb3BlbmNyZWRvLmNvbT4="
+    }
+}

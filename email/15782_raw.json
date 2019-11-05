@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 64, 
+    "nextInTime": 15783, 
+    "senderId": "3eE8nUF8or97SNrSgf9aNxodN-P2Wqqv8AAEgACqP-wQJ-BnUI8ty2uDrlYRnJaRUYwbB0duoddruDKqKgxG0g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] On Requests and Plans", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... You can plug in new Runner definitions, and Runners have complete freedom to report whatever Plan they wish.  The Plan itself is a dumb tree of value", 
+    "msgId": 15782, 
+    "rawEmail": "Return-Path: &lt;saff@...&gt;\r\nX-Sender: saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 97035 invoked from network); 19 Jan 2006 03:27:27 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m26.grp.scd.yahoo.com with QMQP; 19 Jan 2006 03:27:27 -0000\r\nReceived: from unknown (HELO rozz.csail.mit.edu) (128.30.2.16)\n  by mta2.grp.scd.yahoo.com with SMTP; 19 Jan 2006 03:27:27 -0000\r\nReceived: from c-24-63-251-119.hsd1.ma.comcast.net ([24.63.251.119] helo=[192.168.0.103])\n\tby rozz.csail.mit.edu with esmtpsa (TLSv1:AES256-SHA:256)\n\t(Exim 4.50)\n\tid 1EzQPE-0003fE-9x\n\tfor junit@yahoogroups.com; Wed, 18 Jan 2006 22:24:12 -0500\r\nMessage-ID: &lt;43CF065B.8000108@...&gt;\r\nDate: Wed, 18 Jan 2006 22:24:11 -0500\r\nUser-Agent: Mozilla Thunderbird 1.0.7 (Windows/20050923)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;43CE624F.1000000@...&gt; &lt;43CEF0C7.2060409@...&gt;\r\nIn-Reply-To: &lt;43CEF0C7.2060409@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: David Saff &lt;saff@...&gt;\r\nSubject: Re: [junit] On Requests and Plans\r\nX-Yahoo-Group-Post: member; u=139771899; y=LHf96tKOy5o-UeBOWswaKNzVsPOWR1IhCE2itpKdgbg\r\nX-Yahoo-Profile: dsaff\r\n\r\nJ. B. Rainsberger wrote:\n\n&gt; David Saff wrote:\n&gt;\n&gt; &gt; To support these goals, we needed the following concepts:\n&gt; &gt;\n&gt; &gt; - Runner.  An extension to JUnit will likely define a custom subclass of\n&gt; &gt; Runner.\n&gt; &gt; - Plan.  Each Runner must report a Plan, a hierarchical tree of the\n&gt; &gt; names of the tests it will run.  Test events are reported with respect\n&gt; &gt; to leaves in this tree.\n&gt; &gt; - Request.  A Request is a specification of the desired tests to be\n&gt; &gt; run.  Extensions may also define custom subclasses of Request, in order\n&gt; &gt; to, for example, read tests to be run out of an XML file--if you think\n&gt; &gt; that&#39;s a good idea. :-)\n&gt; &gt;\n&gt; &gt; There is an important distinction between Requests and Plans.  A Request\n&gt; &gt; might be &quot;Please run all tests in class ValidationTest&quot;, with the\n&gt; &gt; corresponding Plan being &quot;I will run methods foo, bar, baz, and foobar\n&gt; &gt; in class ValidationTest&quot;.\n&gt;\n&gt; I love the idea of a Plan. Is the Plan Strategy pluggable? \n\nYou can plug in new Runner definitions, and Runners have complete \nfreedom to report whatever Plan they wish.  The Plan itself is a dumb \ntree of value objects representing, basically, test names (very close to \nwhat would be required to build Eclipse&#39;s JUnit Hierarchy view).  So I \nthink the answer is no to the letter of your question, but yes to its \nspirit. \n\n&gt; One common\n&gt; use case involves a Request to run parameterized tests where the data\n&gt; involved is massive and building the entire Plan in memory is infeasible\n&gt; or undesirable. Can we, for example, plug in a Plan that lazily\n&gt; instantiates TestCases at execute time?\n\nThe current architecture splits JUnit&#39;s activity into two &quot;phases&quot;:\n\n1) Planning: Runners are initialized and malformed tests noted.  At the \nend of this phase, a complete Plan tree may be constructed.  UI&#39;s like \nEclipse can now show a Test Hierarchy, and the total number of tests to \nbe run.  The only persistent state between these phases are the Runners \nthemselves, which in general, have only a field for a reference to the \ntest class, and perhaps some additional metadata.  No fixtures have yet \nbeen created.\n2) Running: For each test, an appropriate instance object is created and \nset up, the test is run, the result is reported, and the instance object \nis torn down and released to garbage collection.\n\nSo there&#39;s, again, several answers to your question.  As a general rule, \ntest fixture objects are always created lazily.  However, to take your \nuse case a little further, what if each line of a file was data for a \ntest case?  Currently, we would have to know the number of lines before \nthe end of the Planning phase.  The current implementation of the \nParameterized runner takes this approach: the parameters supplied are a \nCollection.  The size of the Collection is used during planning, and the \nactual values are iterated over during running.  A clever extender could \nimplement a Collection that knew its size, but lazily served up data to \nan Iterator. \n\nHowever, if the only way to know the number of lines in this \nhypothetical data file was to read it, this requirement would force \neither two passes through the file, or storing the whole file in \nmemory.  Do you think this would be a hangup often in scenarios you&#39;ve \nseen?  How did you solve such problems in JUnit 3?\n\nThanks for the excellent questions--this is exactly what we were looking \nfor.\n\n    David Saff\n\n", 
+    "profile": "dsaff", 
+    "topicId": 15770, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 15781, 
+    "contentTrasformed": false, 
+    "postDate": "1137641051", 
+    "canDelete": false, 
+    "nextInTopic": 15783, 
+    "prevInTopic": 15780, 
+    "headers": {
+        "inReplyToHeader": "PDQzQ0VGMEM3LjIwNjA0MDlAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzQ0YwNjVCLjgwMDAxMDhAbWl0LmVkdT4=", 
+        "referencesHeader": "PDQzQ0U2MjRGLjEwMDAwMDBAbWl0LmVkdT4gPDQzQ0VGMEM3LjIwNjA0MDlAcm9nZXJzLmNvbT4="
+    }
+}

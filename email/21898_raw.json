@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 21899, 
+    "senderId": "atmdlwf6VAV50syG4-721XQsuaR1YYweFJRJe68wwSYWtVfSrnzQy5nbvGGiVKmiyEfGRMNyrmQcyLjOWw2VjPVCIqrS0Z0y8VGnaVLISWI", 
+    "systemMessage": false, 
+    "subject": "Re: Rule annotation", 
+    "from": "&quot;yme0987654321&quot; &lt;yme0987654321@...&gt;", 
+    "authorName": "yme0987654321", 
+    "msgSnippet": "For the big class hierarchy that I had, this worked out. I had to make one rule which composed and delegated to an ExternalResource rule and had its own before", 
+    "msgId": 21898, 
+    "rawEmail": "Return-Path: &lt;yme0987654321@...&gt;\r\nX-Sender: yme0987654321@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 5678 invoked from network); 20 Aug 2009 17:38:47 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m2.grp.sp2.yahoo.com with QMQP; 20 Aug 2009 17:38:47 -0000\r\nX-Received: from unknown (HELO n38b.bullet.mail.sp1.yahoo.com) (66.163.168.152)\n  by mta3.grp.re1.yahoo.com with SMTP; 20 Aug 2009 17:38:47 -0000\r\nX-Received: from [69.147.65.147] by n38.bullet.mail.sp1.yahoo.com with NNFMP; 20 Aug 2009 17:38:17 -0000\r\nX-Received: from [98.137.34.36] by t10.bullet.mail.sp1.yahoo.com with NNFMP; 20 Aug 2009 17:38:17 -0000\r\nDate: Thu, 20 Aug 2009 17:38:16 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;h6k1m8+tgku@...&gt;\r\nIn-Reply-To: &lt;4f7da6b90908200818i187598ccq252b531dd53a0954@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;yme0987654321&quot; &lt;yme0987654321@...&gt;\r\nSubject: Re: Rule annotation\r\nX-Yahoo-Group-Post: member; u=386557907; y=AVghjmWCgspmv91jrhZhgkn47e8wBjf7_eyQ24ZRl9aifw_rKQM-ow\r\nX-Yahoo-Profile: yme0987654321\r\n\r\nFor the big class hierarchy that I had, this worked out. I had to make one =\r\nrule which composed and delegated to an ExternalResource rule and had its o=\r\nwn before and after methods because ExternalResource does not allow the ove=\r\nrriding of its apply method. I certainly understand the inclination to make=\r\n it final, but I would suggest that it be reconsidered.\n\nRegardless, going =\r\nfurther replacing my custom runner, I did hit another wall, with @BeforeCla=\r\nss and @AfterClass. I assume there is nothing to do about those (other than=\r\n an assumeThat in @BeforeClass)?\n\n\n--- In junit@yahoogroups.com, David Saff=\r\n &lt;david@...&gt; wrote:\n&gt;\n&gt; That&#39;s right: Rules can affect the processing after=\r\n @Before and before\n&gt; @After.  Could you replace your setup/teardown with a=\r\nn\n&gt; ExternalResource rule?\n&gt; \n&gt;    David Saff\n&gt; \n&gt; On Thu, Aug 20, 2009 at =\r\n11:11 AM, yme0987654321&lt;yme0987654321@...&gt; wrote:\n&gt; &gt; OK, I figured out the=\r\n problem. What happens is that I have a custom runner that suppresses the t=\r\nest (these are slow tests, so they are only run at check-in, not by the dev=\r\neloper while developing).\n&gt; &gt;\n&gt; &gt; However, when I replace that with a Rule,=\r\n the setup method is still run (looks slow). So I guess the conclusion is t=\r\nhat @Rule can&#39;t interrupt or override the setup and teardown process, so if=\r\n you need to do that you are back to a Runner? (Or making your own setups r=\r\nule-aware I guess).\n&gt; &gt;\n&gt; &gt; --- In junit@yahoogroups.com, David Saff &lt;david=\r\n@&gt; wrote:\n&gt; &gt;&gt;\n&gt; &gt;&gt; Yishai,\n&gt; &gt;&gt;\n&gt; &gt;&gt; I just ran a test, and the Rules in t=\r\nhe superclass were picked up.\n&gt; &gt;&gt; Can you post a small example? =A0Thanks,=\r\n\n&gt; &gt;&gt;\n&gt; &gt;&gt; =A0 =A0David Saff\n&gt; &gt;&gt;\n&gt; &gt;&gt; On Thu, Aug 20, 2009 at 10:21 AM, Da=\r\nvid Saff&lt;david@&gt; wrote:\n&gt; &gt;&gt; &gt; Yishai,\n&gt; &gt;&gt; &gt;\n&gt; &gt;&gt; &gt; Sounds like a bug. =A0=\r\nCan you file it at github? =A0Sorry for the oversight,\n&gt; &gt;&gt; &gt;\n&gt; &gt;&gt; &gt; =A0 Da=\r\nvid Saff\n&gt; &gt;&gt; &gt;\n&gt; &gt;&gt; &gt; On Wed, Aug 19, 2009 at 8:26 PM, yme0987654321&lt;yme09=\r\n87654321@&gt; wrote:\n&gt; &gt;&gt; &gt;&gt; I&#39;m looking at the new Rule annotation in JUnit4.=\r\n It&#39;s pretty nice, but it doesn&#39;t seem to inherit.\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt; That is =\r\nif I have a super class that has the @Rule, sub class tests don&#39;t run the r=\r\nule on its tests.\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt; Combined with the requirement that the ru=\r\nles field be public, this is surprising.\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt; The practical effe=\r\nct for me is that it can&#39;t really replace my custom runner, as the @RunWith=\r\n annotation is inherited by subclasses.\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt; Am I missing someth=\r\ning?\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt; Yishai.\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt; --------------=\r\n----------------------\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt; Yahoo! Groups Links\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt;\n=\r\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;&gt;\n&gt; &gt;&gt; &gt;\n&gt; &gt;&gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; ---------------------------=\r\n---------\n&gt; &gt;\n&gt; &gt; Yahoo! Groups Links\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt;\n\n\n\n", 
+    "profile": "yme0987654321", 
+    "topicId": 21887, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 386557907, 
+    "prevInTime": 21897, 
+    "contentTrasformed": false, 
+    "postDate": "1250789896", 
+    "canDelete": false, 
+    "nextInTopic": 21901, 
+    "prevInTopic": 21897, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDkwODIwMDgxOGkxODc1OThjY3EyNTJiNTMxZGQ1M2EwOTU0QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGg2azFtOCt0Z2t1QGVHcm91cHMuY29tPg=="
+    }
+}

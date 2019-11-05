@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21488, 
+    "senderId": "s2gMif6eiVqXZChWhA-0bAhNEQzoOcj1sLn0VNMu0hRAk_pPvV7AHyMFEvwxcqn1tVaulfnoYSQkC2BTAzofSgQiWbA", 
+    "systemMessage": false, 
+    "subject": "Race condition with timeouts", 
+    "from": "&quot;kentb&quot; &lt;kentb@...&gt;", 
+    "authorName": "kentb", 
+    "msgSnippet": "All, This is a test of the with enough eyeballs, all bugs are shallow hypothesis. I am experiencing a race condition with timeouts. Say I have a test like ", 
+    "msgId": 21487, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 82361 invoked from network); 9 Apr 2009 20:52:46 -0000\r\nX-Received: from unknown (69.147.108.200)\n  by m3.grp.re1.yahoo.com with QMQP; 9 Apr 2009 20:52:46 -0000\r\nX-Received: from unknown (HELO elasmtp-dupuy.atl.sa.earthlink.net) (209.86.89.62)\n  by mta1.grp.re1.yahoo.com with SMTP; 9 Apr 2009 20:52:46 -0000\r\nX-Received: from [65.100.4.215] (helo=kentspavilion)\n\tby elasmtp-dupuy.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1Ls1Es-0008S6-38\n\tfor junit@yahoogroups.com; Thu, 09 Apr 2009 16:52:46 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Thu, 9 Apr 2009 13:52:40 -0700\r\nMessage-ID: &lt;CFB57F117CE94B0196CD8BF65B8F70DE@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 11\r\nThread-Index: Acm5VRvvSl52Q7GyRgqJV3h9e3HzNA==\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5579\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d4787bfcd67ff3a01a6ef9ef4e93b8a1bb4aad2b4fe362948177350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;kentb&quot; &lt;kentb@...&gt;\r\nReply-To: &lt;kentb@...&gt;\r\nSubject: Race condition with timeouts\r\nX-Yahoo-Group-Post: member; u=173198504; y=LFx8VWrXkYPfEEeH8lCUzm7Vz5x8bXELJ20gHH6Q1aj22o1a\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nAll,\n\nThis is a test of the &quot;with enough eyeballs, all bugs are shallow&quot;\nhypothesis.\n\nI am experiencing a race condition with timeouts. Say I have a test like\nthis:\n\n\tpublic class WaitTooLong {\n\t\t@Test(timeout=10) public void ripVanWinkle() throws\nInterruptedException {\n\t\t\tThread.sleep(100);\n\t\t}\n\t}\n\nWhen I run this I get one of two errors, non-deterministically:\n\njava.lang.InterruptedException: sleep interrupted\n\tat java.lang.Thread.sleep(Native Method)\n\tat UnpredictableTest.takeTen(UnpredictableTest.java:5)\n\t...\n\nor\n\njava.lang.Exception: test timed out after 10 milliseconds\n\tat\norg.junit.internal.runners.statements.FailOnTimeout.evaluate(FailOnTimeout.j\nava:48)\n\t...\n\nHere&#39;s the relevant code in JUnit (FailOnTimeout):\n\n\tpublic void evaluate() throws Throwable {\n\t\tExecutorService service=\nExecutors.newSingleThreadExecutor();\n\t\tCallable&lt;Object&gt; callable= new Callable&lt;Object&gt;() {\n\t\t\tpublic Object call() throws Exception {\n\t\t\t\ttry {\n\t\t\t\t\tfNext.evaluate();\n\t\t\t\t} catch (Throwable e) {\n\t\t\t\t\tthrow new ExecutionException(e);\n\t\t\t\t}\n\t\t\t\treturn null;\n\t\t\t}\n\t\t};\n\t\tFuture&lt;Object&gt; result= service.submit(callable);\n\t\tservice.shutdown();\n\t\ttry {\n\t\t\tboolean terminated=\nservice.awaitTermination(fTimeout, TimeUnit.MILLISECONDS);\n\t\t\tif (!terminated)\n\t\t\t\tservice.shutdownNow();\n\t\t\tresult.get(0, TimeUnit.MILLISECONDS); // throws the\nexception if one occurred during the invocation\n\t\t} catch (TimeoutException e) {\n\t\t\tthrow new Exception(String.format(&quot;test timed out\nafter %d milliseconds&quot;, fTimeout));\n\t\t} catch (ExecutionException e) {\n\t\t\tthrow unwrap(e);\n\t\t}\n\t}\n\nIt seems that sometimes the TimeoutException gets thrown and caught and the\nException thrown. Sometimes, though, the InterruptedException that is\nterminating the test-running thread gets thrown/caught first. I&#39;ve stared at\nthis enough minutes to be ready for help.\n\nOne strangeness is that if I run the test programmatically\n(&quot;JUnitCore.runClass(WaitTooLong.class)&quot;) the Exception is always thrown. If\nI run the test with the Eclipse JUnit runner or with JUnit Max, the results\nare non-deterministic.\n\nAny ideas for making this deterministic? I would prefer the second result\nabove, if I can get it.\n\nRegards,\n\nKent Beck\nThree Rivers Institute\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 21487, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 21486, 
+    "contentTrasformed": false, 
+    "postDate": "1239310360", 
+    "canDelete": false, 
+    "nextInTopic": 21488, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+"
+    }
+}

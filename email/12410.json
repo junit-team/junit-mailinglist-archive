@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12411, 
+    "senderId": "wvuGsdTU_jY88SNHJs_Ch8JDy2QBFO3gr1i70o9N4I8Hu9aNOmcK7BvZkbU4GbHP5js3pcNBn8xqPukScvS5-y2coXIMeDbfu3kbM9OwqA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Reusable TestSuite facilities.", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I would make it a public, class-level field of the one-time setup class. ... If the method is going to be class-level, then the field it writes to also has", 
+    "msgId": 12410, 
+    "profile": "nails762", 
+    "topicId": 12404, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1425785292\">mark_l_salter wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; <br/>\n&gt; I am attempting to construct a test suite that has a common component<br/>\n&gt; referenced and used from within tests in the suite, which is set-up<br/>\n&gt; once.<br/>\n&gt; <br/>\n&gt; The &#39;common&#39; component is a network connection to a remote server<br/>\n&gt; (under test).  The important aspect (to me) for the majority of tests<br/>\n&gt; is not the connection, but getting a number of messages into and back<br/>\n&gt; from the remote system.  I am in the position of being able to predict<br/>\n&gt; what response the remote system should give for a particular request.<br/>\n&gt; I feel the connection establishment and management can (and should?)<br/>\n&gt; be tested separately.<br/>\n&gt; <br/>\n&gt; What I can&#39;t see is where to put the &#39;common&#39; object and how to<br/>\n&gt; reference it from a test level.  I feel like I am missing the obvious,<br/>\n&gt; and probably it&#39;s java rather than JUnit related!<br/>\n<br/>\n </span></blockquote>I would make it a public, class-level field of the one-time setup class.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; import junit.framework.*;<br/>\n&gt; import junit.extensions.TestSetup;<br/>\n&gt; <br/>\n&gt; public class AllTestsOneTimeSetup {<br/>\n&gt; <br/>\n&gt;     Connection c = null;<br/>\n&gt; <br/>\n&gt;     public static Test suite() {<br/>\n&gt; <br/>\n&gt;         TestSuite suite = new TestSuite();<br/>\n&gt; <br/>\n&gt;         suite.addTest(SomeTest.suite());<br/>\n&gt;         suite.addTest(AnotherTest.suite());<br/>\n&gt; <br/>\n&gt;         TestSetup wrapper = new TestSetup(suite) {<br/>\n&gt; <br/>\n&gt;             protected void setUp() {<br/>\n&gt;                 oneTimeSetUp();<br/>\n&gt;             }<br/>\n&gt; <br/>\n&gt;             protected void tearDown() {<br/>\n&gt;                 oneTimeTearDown();<br/>\n&gt;             }<br/>\n&gt;         };<br/>\n&gt; <br/>\n&gt;         return wrapper;<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public static void oneTimeSetUp() {<br/>\n&gt;         // one-time initialization code<br/>\n&gt; <br/>\n&gt;         c = new Connection(&quot;remoteIP&quot;);<br/>\n<br/>\n </span></blockquote>If the method is going to be class-level, then the field it writes to <br/>\nalso has to be class-level. That&#39;s fundamental Java, as you suspected.<br/>\n  :)<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 12409, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1101950957", 
+    "canDelete": false, 
+    "nextInTopic": 12417, 
+    "prevInTopic": 12404, 
+    "headers": {
+        "inReplyToHeader": "PGNvajBucCtvcWFnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxQUU2RkVELjUwMzA0MDBAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNvajBucCtvcWFnQGVHcm91cHMuY29tPg=="
+    }
+}

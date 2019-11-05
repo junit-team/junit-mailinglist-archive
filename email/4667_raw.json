@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 4668, 
+    "senderId": "nVAkYVolHdoKinfNmgMZQYKigktDiD5SOYejEVj3uEHgeU89k__S1qXgnUTqPntlNhFRz7cUFIPSKKUJxsmhbH5cfs8xSUWm", 
+    "systemMessage": false, 
+    "subject": "It&#39;s still JUnit&#39;s classloader", 
+    "from": "Steven Morgan &lt;xerafin@...&gt;", 
+    "authorName": "Steven Morgan", 
+    "msgSnippet": "This makes sense if you remember how ObjectInputStream gets its classloader.  When readObject() is called, the classloader used to resolve the class being", 
+    "msgId": 4667, 
+    "rawEmail": "Return-Path: &lt;xerafin@...&gt;\r\nX-Sender: xerafin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_1); 12 Apr 2002 11:57:11 -0000\r\nReceived: (qmail 89188 invoked from network); 12 Apr 2002 11:57:11 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m11.grp.scd.yahoo.com with QMQP; 12 Apr 2002 11:57:11 -0000\r\nReceived: from unknown (HELO web11507.mail.yahoo.com) (216.136.172.39)\n  by mta3.grp.scd.yahoo.com with SMTP; 12 Apr 2002 11:57:11 -0000\r\nMessage-ID: &lt;20020412115711.58412.qmail@...&gt;\r\nReceived: from [143.61.15.253] by web11507.mail.yahoo.com via HTTP; Fri, 12 Apr 2002 04:57:11 PDT\r\nDate: Fri, 12 Apr 2002 04:57:11 -0700 (PDT)\r\nSubject: It&#39;s still JUnit&#39;s classloader\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;1018558751.1083.31878.m12@yahoogroups.com&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Steven Morgan &lt;xerafin@...&gt;\r\nX-Yahoo-Group-Post: member; u=56874360\r\nX-Yahoo-Profile: xerafin\r\n\r\nThis makes sense if you remember how ObjectInputStream gets its classloader.  When\nreadObject() is called, the classloader used to resolve the class being loaded is\nthe  classloader associated with the class that called readObject().  In this case,\nthat class would be your test class which was indeed loaded by the JUnit\nclassloader.  That means your readObj object was also loaded by the JUnit\nclassloader, and that is the problem you are encountering.  When you use your class&#39;\nmain() method, then the class&#39; classloader is the same classloader calling\nreadObject(), so your classloaders then match.\n\nI do not have a good answer for you, unfortunately, because I see nothing in\nXMLDecoder that corresponds to the resolveClass() method of ObjectInputStream. \nAnyone else care to comment?\n\n-Steve  :)\n\n\nSaid &quot;bteichmann&quot; &lt;bteichmann@...&gt;:\n&gt; (it does not occure, if i run it with eclipes junit runner or if i \n&gt; run the source from its main() without junit.)\n&gt; \n&gt; the code lookes like this:\n&gt; +++++++++\n&gt;   dec =\n&gt;       new java.beans.XMLDecoder( \n&gt;         new BufferedInputStream(new FileInputStream(file)));\n&gt; \t  if (dec == null) throw new UserAgentException(&quot;cound not \n&gt; instanciate XMLdecoder with filename: &quot;+filename);\n&gt;     Object readObj = dec.readObject();\n&gt; \n&gt;     // the next 7 lines are for debugging purposes    \n&gt;     Class oc = readObj.getClass();\n&gt;     ClassLoader cl1 = oc.getClassLoader();\n&gt;     userAgent = new UserAgentImpl();\n&gt;     ClassLoader cl2 = userAgent.getClass().getClassLoader();\n&gt;     System.out.println(cl1.toString() + &quot;   &quot;+ cl2.toString() \n&gt;        + &quot;&#92;n&quot; + userAgent.getClass().getName()\n&gt;        + &quot;&#92;n&quot; + readObj.getClass().getName());\n&gt;     // this line does not work althought the readObj.class is \n&gt;     // the same as for userAgent\n&gt;     // the line throws a ClassCastException \n&gt;     userAgent = (UserAgentImpl) readObj;\n&gt;        \n&gt; +++++++\n&gt; the output looks like this:\n&gt; *****\n&gt; sun.misc.Launcher$AppClassLoader@2f6684   \n&gt; junit.runner.TestCaseClassLoader@efe475\n&gt; de.xx.useragent.UserAgentImpl\n&gt; de.xx.useragent.UserAgentImpl\n&gt; *******\n&gt; and altthought the class of readObj and userAgent are the same i got \n&gt; a ClassCastException on the last line &quot;userAgent = (UserAgentImpl) \n&gt; readObj;&quot;\n&gt; \n&gt; only if i run the test from a main() class in the TestCase i got \n&gt; different classloaders. if i run the TestCase from Eclipses buildin \n&gt; junit support the output looks like this no ClassCastException is \n&gt; thrown:\n&gt; ******\n&gt; sun.misc.Launcher$AppClassLoader@2f6684   \n&gt; sun.misc.Launcher$AppClassLoader@2f6684\n&gt; de.multivisual.textlib.useragent.UserAgentImpl\n&gt; de.multivisual.textlib.useragent.UserAgentImpl\n&gt; *******\n&gt; \n&gt; Any Ideas to fix this problem ?\n\n\n\n=====\n(@) (@)  Steven Morgan\n   |     xerafin@...\n  ---    http://profiles.yahoo.com/xerafin\n\n__________________________________________________\nDo You Yahoo!?\nYahoo! Tax Center - online filing with TurboTax\nhttp://taxes.yahoo.com/\n\n", 
+    "profile": "xerafin", 
+    "topicId": 4667, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 56874360, 
+    "prevInTime": 4666, 
+    "contentTrasformed": false, 
+    "postDate": "1018612631", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "inReplyToHeader": "PDEwMTg1NTg3NTEuMTA4My4zMTg3OC5tMTJAeWFob29ncm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDIwNDEyMTE1NzExLjU4NDEyLnFtYWlsQHdlYjExNTA3Lm1haWwueWFob28uY29tPg=="
+    }
+}

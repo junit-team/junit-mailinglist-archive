@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 10309, 
+    "senderId": "BJP12D383MgPrtCLJKrOQVav-1e2Z_yj5qIUKUB2N8iZrUjrcizi8L06v8zTha5Q4Q85-YV5ePEB3jzte0kNdNsYLeqU5Vesbl1RGHQd", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] testing a MUltithreaded Code", 
+    "from": "Jonathan Oddy &lt;j.oddy@...&gt;", 
+    "authorName": "Jonathan Oddy", 
+    "msgSnippet": "Refactor it, and stick the construction of IntegrityChecker into a factory somewhere.  Have the factory to return a mock IntegrityChecker and check its state", 
+    "msgId": 10308, 
+    "profile": "jonathanoddy", 
+    "topicId": 10301, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 124029770, 
+    "messageBody": "<div id=\"ygrps-yiv-1038993631\">Refactor it, and stick the construction of IntegrityChecker into a factory<br/>\nsomewhere.  Have the factory to return a mock IntegrityChecker and check its<br/>\nstate after calling dispatchCommand.  For example:<br/>\n <br/>\n/** The class whose behaviour you want to test */<br/>\npublic class MyDispatchClass<br/>\n{<br/>\n  public void dispatchCommand(String args)<br/>\n  {<br/>\n      IntegrityChecker integrityChecker = getChecker(args[0], args[0]);<br/>\n      integrityChecker.start()<br/>\n  }<br/>\n}<br/>\n <br/>\n/** Method within some TestCase implementation */<br/>\npublic void testWasStarted()<br/>\n{<br/>\n  class MockChecker extends IntegrityChecker<br/>\n  {<br/>\n    boolean wasStarted = false;<br/>\n    public void start()<br/>\n    {<br/>\n      wasStarted = true;<br/>\n    }<br/>\n    void verify()<br/>\n    {<br/>\n      assertTrue(&quot;Method start should have been called&quot;, wasStarted);<br/>\n    }<br/>\n  }<br/>\n <br/>\n  final MockChecker mockChecker = new IntegrityChecker(&quot;1&quot;, &quot;mychecker&quot;);<br/>\n  MyDispatchClass mdc = new MyDispatchClass()<br/>\n  {<br/>\n    protected IntegrityChecker getChecker(String id, String name)<br/>\n    {<br/>\n      return myChecker;<br/>\n    }<br/>\n  };<br/>\n  mdc.dispatchCommand(&quot;xyz&quot;);<br/>\n  mockChecker.verify();<br/>\n}<br/>\n <br/>\nIf you don&#39;t like the idea of extending the class you&#39;re testing then look<br/>\nat making the factory external to it, or may be passing the IntegrityChecker<br/>\ninstance into your class some how.<br/>\n <br/>\nAlso if you really want to test whether IntegrityChecker.start does<br/>\nsomething useful itself, then write some tests for IntegrityChecker in<br/>\nisolation from the fact that its usage is embedded within another class.<br/>\n <br/>\nHope that helps<br/>\n <br/>\nJonathan<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: mona_r_ahuja [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mahuja@...\">mahuja@...</a>]<br/>\nSent: 27 January 2004 00:49<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] testing a MUltithreaded Code<br/>\n<br/>\n<br/>\nHi,<br/>\nI am not very familiar with Junit.I have a question regrading testing <br/>\nmultithreaded code<br/>\nI have the following method in a class<br/>\n<br/>\npublic void dispatchCommand(final String[] args) {<br/>\n        String integrityCheckerId = args[0];<br/>\n        String integrityCheckerName = args[0];<br/>\n        <br/>\n        IntegrityChecker integrityChecker = new IntegrityChecker<br/>\n              (this, integrityCheckerId, integrityCheckerName);<br/>\n        <br/>\n        integrityChecker.start();<br/>\n            <br/>\n        }<br/>\n<br/>\nI need to unit test this method i.e I need to make sure that it has <br/>\ninfact started the integrityChecker thread . How do I do this since <br/>\nthe the object integrityChecker is local to this method.<br/>\nCan anyone suggest something.<br/>\nMona<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nYahoo! Groups Sponsor\t<br/>\n<br/>\nADVERTISEMENT<br/>\n <br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://rd.yahoo.com/SIG=12ccluqjt/M=267637.4116719.5338353.1261774/D=egroup\">http://rd.yahoo.com/SIG=12ccluqjt/M=267637.4116719.5338353.1261774/D=egroup</a><br/>\nweb/S=1705006905:HM/EXP=1075273960/A=1945638/R=0/*<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.netflix.com/Def\">http://www.netflix.com/Def</a><br/>\nault?mqso=60178383&partid=4116719&gt; click here\t<br/>\n <br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://us.adserver.yahoo.com/l?M=267637.4116719.5338353.1261774/D=egroupmai\">http://us.adserver.yahoo.com/l?M=267637.4116719.5338353.1261774/D=egroupmai</a><br/>\nl/S=:HM/A=1945638/rand=724913358&gt; \t<br/>\n<br/>\n<br/>\n  _____  <br/>\n<br/>\nYahoo! Groups Links<br/>\n<br/>\n<br/>\n*\tTo visit your group on the web, go to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/\">http://groups.yahoo.com/group/junit/</a> &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/\">http://groups.yahoo.com/group/junit/</a>&gt; <br/>\n  <br/>\n<br/>\n*\tTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&lt;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a>?subject=Unsubscribe&gt; <br/>\n  <br/>\n<br/>\n*\tYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a>&gt; . <br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 10307, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1075197494", 
+    "canDelete": false, 
+    "nextInTopic": 10319, 
+    "prevInTopic": 10306, 
+    "headers": {
+        "messageIdInHeader": "PEU1Qzc5MDQ5RDQ2MUQzMTFCODMxMDAwNjI5NTBCNTRBMDEyN0MzNzZAbnQtc3RvYy0wLnNicz4="
+    }
+}

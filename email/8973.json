@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 106, 
+    "nextInTime": 8974, 
+    "senderId": "4rf0VtxJEX00zIUKKIwz5Rd7zSa2cENih4ZTYNfx5QruLd70c5cwXACBHSmkZjZGqSKXpKEV8GOpo_Cs09QSf4ibYLMUjFIvf6M-7LcA0g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ClasspathWalker (even better)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I assumed that each different classpath variation gave rise to a collection of events, possibly diverse ones. That s why I jumped to the more granular", 
+    "msgId": 8973, 
+    "profile": "nails762", 
+    "topicId": 8807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-361479136\"><blockquote><span title=\"ireply\">&gt;So said Mike Clark on 2003-08-01 --------------------<br/>\n&gt;J. B. Rainsberger wrote:<br/>\n&gt;&gt; It occurs to me that to test the second behavior does not require<br/>\n&gt;mocking the classpath. We can have a degenerate event/listener design.<br/>\n&gt;&gt; <br/>\n&gt;&gt; As the ClasspathWalker walks the classpath, it calls a method to signal<br/>\n&gt;that it found something on the classpath. (event source)<br/>\n&gt;&gt; <br/>\n&gt;&gt; This signal handling method (event listener) then decides which kind of<br/>\n&gt;ClasspathEvent to create and send to the registered<br/>\n&gt;ClasspathEventListeners.<br/>\n&gt;&gt; <br/>\n&gt;&gt; In this case, you can test the second behavior above without having to<br/>\n&gt;actually walk the classpath. Much nicer.<br/>\n&gt;&gt; <br/>\n&gt;&gt; So the basic design is this:<br/>\n&gt;&gt; <br/>\n&gt;&gt; ClasspathWalker<br/>\n&gt;&gt;     walkClasspath(classpathRoot):<br/>\n&gt;&gt;         // iterate over classpath items under the root<br/>\n&gt;&gt;         // invoke foundSomething() with each thing you find<br/>\n&gt;&gt; <br/>\n&gt;&gt;     ClasspathEvent makeClasspathEvent(foundThing):<br/>\n&gt;&gt;         // decide which kind of ClasspathEvent to generate<br/>\n&gt;&gt;   <br/>\n&gt;&gt;     foundSomething(foundThing):<br/>\n&gt;&gt;         classpathEvent = makeClasspathEvent(foundThing);<br/>\n&gt;&gt;         notifyListeners(classpathEvent);<br/>\n&gt;&gt; <br/>\n&gt;&gt; ClasspathWalkerListener<br/>\n&gt;&gt;     onClasspathEvent(classpathEvent)<br/>\n&gt;&gt; <br/>\n&gt;&gt; My tests would be like this.<br/>\n&gt;&gt; <br/>\n&gt;&gt; * One TestCase class to verify ClasspathWalker.walkClasspath that tries<br/>\n&gt;various cases of classpath data; probably a parameterized test case --<br/>\n&gt;however many special cases there are<br/>\n&gt;&gt; <br/>\n&gt;&gt; * One TestCase class to verify ClasspathWalker.makeClasspathEvent for<br/>\n&gt;each different kind of thing I&#39;d find on the classpath<br/>\n&gt;&gt; <br/>\n&gt;&gt; * foundSomething is too simple to break<br/>\n&gt;&gt; <br/>\n&gt;&gt; * Tests for my implementation of ClasspathWalkerListener: each test<br/>\n&gt;simply sends a ClasspathEvent and verifies the behavior of the listener<br/>\n&gt;&gt; <br/>\n&gt;<br/>\n&gt;I&#39;d probably create a MockClasspathWalkerListener, then write a test <br/>\n&gt;case that installs it into the ClassPathWalker, and verifies various <br/>\n&gt;cases of classpath data.  For each variation, the test would ask the <br/>\n&gt;MockClasspathWalkerListener if it really received the events I was <br/>\n&gt;expecting for the variation, as in:<br/>\n&gt;<br/>\n&gt;public void testSomeClasspathVariation() {<br/>\n&gt;            <br/>\n&gt;   ClasspathWalker walker = new ClasspathWalker();<br/>\n&gt;   MockClasspathWalkerListener listener =<br/>\n&gt;       new MockClasspathWalkerListener();<br/>\n&gt;   walker.addListener(listener);<br/>\n&gt;<br/>\n&gt;   walker.walkClasspath(someClasspathVariation)<br/>\n&gt;            <br/>\n&gt;   assertTrue(listener.heard(someExpectedEvent));<br/>\n&gt;}<br/>\n&gt;<br/>\n&gt;Same intent, just a slightly more granular test.  And if I saw red for <br/>\n&gt;more than a couple minutes, I&#39;d start taking smaller steps by writing <br/>\n&gt;fine-grained tests such as those you mentioned.<br/>\n&gt;<br/>\n&gt;Or maybe somebody already said this while I was heads-down coding...<br/>\n<br/>\n </span></blockquote>I assumed that each different classpath variation gave rise to a collection of events, possibly diverse ones. That&#39;s why I jumped to the more granular tests. If each classpath variation maps to a single event, then there&#39;d be no need to test &quot;when I find this I generate that event&quot; and it collapses to the above.<br/>\n<br/>\nNo. Nobody already said that. :)<br/>\n<br/>\nTake care.<br/>\n<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 8972, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1059846140", 
+    "canDelete": false, 
+    "nextInTopic": 8979, 
+    "prevInTopic": 8972, 
+    "headers": {
+        "inReplyToHeader": "PDNGMkE5NkNDLjMwNzA5MDRAY2xhcmt3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwODAyMTM0MjIwMDQyMi4wMEQ2QjUwREBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDAwN2UwMWMzNTdjYiQxZDU2YzdmMCQyODc4MTYwYUBzeWJhc2UuY29tPiA8MTA1OTc0MjQ5Ny4yMTYzLjg1LmNhbWVsQGxvY2FsaG9zdD4gPDIwMDMwODAyMTEyMTQ4MDY3OC4wMDU2MEM4Q0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4gPDNGMkE4ODE3LjIwMDAwMDZAdGVhbWRla2FkZS5jb20+IDwyMDAzMDgwMjExNTA1OTA0NTYuMDA3MEMzODZAc3NtdHAuYmxvb3IuaXMubmV0LmNhYmxlLnJvZ2Vycy5jb20+IDwyMDAzMDgwMjEyMDYzOTAzMjcuMDA3RjFBRTVAc3NtdHAuYmxvb3IuaXMubmV0LmNhYmxlLnJvZ2Vycy5jb20+IDwzRjJBOTZDQy4zMDcwOTA0QGNsYXJrd2FyZS5jb20+"
+    }
+}

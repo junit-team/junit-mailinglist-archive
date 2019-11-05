@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4260, 
+    "senderId": "8-gz2EpCT92ydWi-925DV8BiX7wo6voLK18xn5PM2NGX3H24B0x-kYs33zDGfEZ0X_P8MKmVYtumVYo82UGcNQ5cfcYVC_mtatoO5Ll_4qR7zrwbJpeDLg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Needhelp regarding exception testing", 
+    "from": "&quot;&#92;&quot;J. B. Rainsberger&#92;&quot;&quot; &lt;jbr@...&gt;", 
+    "authorName": "&quot;J. B. Rainsberger&quot;", 
+    "msgSnippet": "... Is your question: How do I test whether my class throws the right exceptions? If so, Brian s suggestion should give you the answer.", 
+    "msgId": 4259, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 4 Mar 2002 13:51:53 -0000\r\nReceived: (qmail 8014 invoked from network); 4 Mar 2002 13:51:52 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m6.grp.snv.yahoo.com with QMQP; 4 Mar 2002 13:51:52 -0000\r\nReceived: from unknown (HELO ns1.blacksun.ca) (139.142.202.2)\n  by mta2.grp.snv.yahoo.com with SMTP; 4 Mar 2002 13:51:52 -0000\r\nReceived: (from root@localhost)\n\tby ns1.blacksun.ca (8.10.2/8.10.2) id g24DpoI18855;\n\tMon, 4 Mar 2002 07:51:50 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Needhelp regarding exception testing\r\nMessage-ID: &lt;1015249910.3c837bf690143@...&gt;\r\nDate: Mon, 04 Mar 2002 07:51:50 -0600 (CST)\r\nReferences: &lt;a5tuus+tdmf@...&gt;\r\nIn-Reply-To: &lt;a5tuus+tdmf@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nUser-Agent: IMP/PHP IMAP webmail program 2.2.4\r\nFrom: &quot;&#92;&quot;J. B. Rainsberger&#92;&quot;&quot; &lt;jbr@...&gt;\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nQuoting vinitshah76013 &lt;vinitshah76013@...&gt;:\n\n&gt; Hi\n&gt; I am working on a project for testing java code for exceptions and I \n&gt; need to automate this process. Does anyone have any idea how I can \n&gt; use junit to test for exceptions such as FileNotFoundException?\n&gt; Please reply.\n\nIs your question: How do I test whether my class throws the right exceptions? \nIf so, Brian&#92;&#39;s suggestion should give you the answer. http://c2.com/cgi/wiki?\nJavaUnitBestPractices also contains examples of good ways to write JUnit test \ncases. It covers your question and more.\n\nIs your question: How do I test whether my class handles exceptions thrown by \nother classes? If so, you need to understand that it is much easier to SIMULATE \nexceptions rather than RECREATE the conditions under which they occur. \n\nFor example, suppose your class uses a FileSystem object. Suppose the \nFileSystem object throws a DiskFullException whenever you try to write to the \nFileSystem and the disk is full. How do you test how your class behaves when \nthe disk is full?\n\nOption 1: Fill up the disk, run your test and return the disk to normal. \nAlthough this is an option, it&#92;&#39;s not an easy thing (nor a safe thing) to do.\n\nOption 2: Use a MockFileSystem object, which implements the same interface as \nFileSystem, to simulate the condition.\n\nExample:\n\npublic class MockFileSystem extends FileSystem {\n...\n    public void setupThrowException(final Throwable throwable) {\n        // Remember to throw &#92;&quot;throwable&#92;&quot; on every method call\n    }\n...\n}\n\n...\n\npublic void testDiskFull() throws Exception {\n    final MockFileSystem mockFileSystem = new MockFileSystem();\n    final String expectedFullDisk = &#92;&quot;c:/&#92;&quot;;\n    mockFileSystem.setupThrowException(new DiskFullException(expectedFullDisk));\n    final MyClass myClass = new MyClass(mockFileSystem);\n    try {\n        myClass.doSomething();\n        fail(&#92;&quot;How did you do that with a full disk!?&#92;&quot;);\n    }\n    catch(final MyClassException success) {\n        final Throwable enclosedException = success.getSourceThrowable();\n        assertTrue(enclosedException instanceof DiskFullException);\n        final DiskFullException actualException = (DiskFullException) \nenclosedException;\n        assertEquals(expectedFullDisk, actualException.getFullDisk());\n    }\n}\n\nI hope this helps a little.\n\nJ. B. (Joe) Rainsberger\nPresident, Diaspar Software Services\nhttp://www.diasparsoftware.com\nLet&#92;&#39;s write software that people understand.\n\n", 
+    "profile": "nails762", 
+    "topicId": 4254, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 4258, 
+    "contentTrasformed": false, 
+    "postDate": "1015249910", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4255, 
+    "headers": {
+        "inReplyToHeader": "PGE1dHV1cyt0ZG1mQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDEwMTUyNDk5MTAuM2M4MzdiZjY5MDE0M0B3ZWJtYWlsLmJsYWNrc3VuLmNhPg==", 
+        "referencesHeader": "PGE1dHV1cyt0ZG1mQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 6950, 
+    "senderId": "aOCyXdkjB4BJuJf1sTW81egAGKQ-8iSYSP2uczY1cX9bSS1S-aMcC_4p6DrA6AD2_mFCAcP0jV0-TboJD5I1F3rle9VsMA1iNZTrqG2xkuRJbWm_", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] one-time setup", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "The problem with the name is that the CLASS TestCase is a test fixture, but an INSTANCE of class TestCase, especially when running, is a test case. That always", 
+    "msgId": 6949, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 13 Feb 2003 15:01:10 -0000\r\nReceived: (qmail 6667 invoked from network); 13 Feb 2003 15:01:09 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 13 Feb 2003 15:01:09 -0000\r\nReceived: from unknown (HELO fep04-mail.bloor.is.net.cable.rogers.com) (66.185.86.74)\n  by mta3.grp.scd.yahoo.com with SMTP; 13 Feb 2003 15:01:09 -0000\r\nReceived: from quincy ([24.42.96.247])\n          by fep04-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.06 201-253-122-126-106-20020509) with ESMTP\n          id &lt;20030213150055.NFDD120822.fep04-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Thu, 13 Feb 2003 10:00:55 -0500\r\nMessage-ID: &lt;200302131001040371.050ED471@...&gt;\r\nIn-Reply-To: &lt;3E4AE479.F3E1D459@...&gt;\r\nReferences: &lt;3E4AE479.F3E1D459@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Thu, 13 Feb 2003 10:01:04 -0500\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] one-time setup\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep04-mail.bloor.is.net.cable.rogers.com from [24.42.96.247] using ID &lt;srainsberger5790@...&gt; at Thu, 13 Feb 2003 10:00:53 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nThe problem with the name is that the CLASS TestCase is a test fixture,\nbut an INSTANCE of class TestCase, especially when running, is a test\ncase.\n\nThat always bothered me. I&#39;m not sure how to fix it. I just got used to\nit.\n\nI didn&#39;t know that test case objects were being pooled. That&#39;s\ninteresting. What were you doing in a test case object that caused\nproblems with pooling? Maybe we can learn something about your design.\n\nYou can see, though, why there is a setUp() method rather than doing\nthat initialization in a constructor. In fact, I think the docs say\nthat explicitly somewhere, and if they don&#39;t, then they certainly\nshould.\n\nSo said  Eric Armstrong  on  2/12/2003 --------------------\n\n&gt;Somehow, I was under the impression that each test\n&gt;in a test case started with a &quot;clean slate&quot; -- that the\n&gt;setup code was re-run for each test method.\n&gt;\n&gt;But that doesn&#39;t appear to be the case. The test object\n&gt;created during setup turned out to be reused for\n&gt;subsequent tests in the test case, which caused problems\n&gt;arising from old state, until I figured it out.\n&gt;\n&gt;Now, for performance, it only makes sense that a fixture\n&gt;would be reused for each test in a test case class. So I&#39;m\n&gt;not suggesting that the implementation is wrong.\n&gt;\n&gt;But I read the docs at the main site, and I&#39;ve been following\n&gt;these threads for quite a while, and still I had a dead-wrong\n&gt;impression of what&#39;s going on.\n&gt;\n&gt;For example, in the FAQ, q2 &quot;How do I use a text fixture?&quot;\n&gt;says:\n&gt;   &quot;Each test runs in its own test fixture to isolate tests from the\n&gt;   changes made by other tests. Because the tests are isolated,\n&gt;   they can be run in any order.... The JUnit framework\n&gt;   automatically invokes the setUp() method before each test is\n&gt;   run and the tearDown() method after each test is run.&quot;\n&gt;\n&gt;Now for &quot;test&quot;, I was reading &quot;test *method*&quot;. As in testX(),\n&gt;testY(). But my recent epiphany suggests that I should have\n&gt;been reading it as &quot;test *case*&quot;, as in &quot;test-case class&quot;. And\n&gt;since the example shows a single test case class, with multiple\n&gt;test methods in it, it was easy to make that assumption.\n&gt;\n&gt;Note:\n&gt;In general, I&#39;m not much fond of the name, &quot;TestCase&quot;, because\n&gt;to me that represents a single test. Since a TestCase class can\n&gt;actually have multiple test methods, the name &quot;TestFixture&quot; is\n&gt;probably more appropriate. But be that as it may...\n&gt;\n&gt;It appears to me that the word &quot;test&quot; is badly overloaded in the\n&gt;docs, meaning at various times, test method, test case, and\n&gt;potentially even test suite.\n&gt;\n&gt;The best way to eliminate confusion that I can see is to do a\n&gt;global search on &quot;test &quot;, and replace with one of the hyphenated\n&gt;words &quot;test-method&quot;, &quot;test-case&quot;, or &quot;test-suite&quot;, as appropriate.\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\nAll correspondence (c) 2002 Diaspar Software Services.\nIf you want to use it, just ask; don&#39;t steal.\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 6946, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 6948, 
+    "contentTrasformed": false, 
+    "postDate": "1045148464", 
+    "canDelete": false, 
+    "nextInTopic": 6950, 
+    "prevInTopic": 6946, 
+    "headers": {
+        "inReplyToHeader": "PDNFNEFFNDc5LkYzRTFENDU5QHN1bi5jb20+", 
+        "messageIdInHeader": "PDIwMDMwMjEzMTAwMTA0MDM3MS4wNTBFRDQ3MUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDNFNEFFNDc5LkYzRTFENDU5QHN1bi5jb20+"
+    }
+}

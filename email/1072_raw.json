@@ -1,0 +1,29 @@
+{
+    "topicId": 1072, 
+    "postDate": "988657356", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "David Li &lt;david@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "7TJ4On7Ui9jUgwZFQ66K2STAihdZHmZdkmoo_vdQiWoD4aLln8DO86ibBgOGOo2dx1cSRDFHz_SL6AaUr44lQZ0PMlitMB7ekA", 
+    "nextInTime": 1073, 
+    "userId": 0, 
+    "prevInTime": 1071, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNBRURCNkNDLjY5MkQ0RjcwQGRpZ2l0YWxzZXNhbWUuY29tPg==", 
+        "referencesHeader": "PERBNTc0RkY4RjREOEQ0MTFCMjE0MDAwOEM3ODY5NkE5MzVFOTMxQGV4Y2hhbmdlLnNjYz4="
+    }, 
+    "authorName": "David Li", 
+    "numMessagesInTopic": 1, 
+    "msgSnippet": "Hi Matt, I just about to posting something related to this subject. We use both Log4J and JUnit intensively in our codes. Before, we used a modified TestRunner", 
+    "contentTrasformed": false, 
+    "msgId": 1072, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;david@...&gt;\r\nX-Sender: david@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 30 Apr 2001 18:50:22 -0000\r\nReceived: (qmail 62768 invoked from network); 30 Apr 2001 18:50:21 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 30 Apr 2001 18:50:21 -0000\r\nReceived: from unknown (HELO mail.topware.com.tw) (202.39.2.221) by mta3 with SMTP; 30 Apr 2001 18:50:20 -0000\r\nReceived: from digitalsesame.com (firewall.topware.com.tw [202.39.2.222]) by mail.topware.com.tw (8.11.0/8.11.0) with ESMTP id f3UIiFA09837; Tue, 1 May 2001 02:44:15 +0800\r\nSender: david@...\r\nMessage-ID: &lt;3AEDB6CC.692D4F70@...&gt;\r\nDate: Tue, 01 May 2001 03:02:36 +0800\r\nOrganization: DigitalSesame\r\nX-Mailer: Mozilla 4.76 [en] (X11; U; Linux 2.2.17-4CLE i686)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Junit and Log4j (Use AspectJ)\r\nReferences: &lt;DA574FF8F4D8D411B2140008C78696A935E931@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: David Li &lt;david@...&gt;\r\n\r\nHi Matt,\n\n  I just about to posting something related to this subject. We use both\nLog4J and JUnit intensively in our codes. Before, we used a modified\nTestRunner that initialize Log4J properly and log the result to Log4J.\nThis modification is not very clean and causes headache in tracking new\nLog4J version.\n\n  We start using AspectJ (www.aspectj.org). It&#39;s a Aspect Oriented\nProgramming in Java to deal with point cut concern. For detail, please\nread the aspectj page. With AspectJ, we are able to integrate Log4J with\nJUnit with a simple Aspect as the following:\n\n---\npackage junit.aspect;\n\naspect Log4JRunner {\n\n    /* catch the main method of three TestRunner */\n    pointcut runnerMain():\n        executions(public static void\njunit.awtui.TestRunner.main(String[])) ||\n        executions(public static void\njunit.textui.TestRunner.main(String[])) ||\n        executions(public static void\njunit.swingui.TestRunner.main(String[]));\n\n    /* initialize the log4j before executing any codes in main method */\n    before(): runnerMain() {\n        org.apache.log4j.BasicConfigurator.configure();\n       \norg.apache.log4j.Category.getRoot().setPriority(org.apache.log4j.Priority.DEBUG);\n    }\n}\n---\n\nWith that simple aspect, we now have all three TestRunner from JUnit\nproperly initialize Log4J! \n\nTo archive your goal on logging test result to Log4J, you can just write\nasepct to trap startTest, addError and addFailure in the test runner and\nlog the event to Log4J. \n\nDavid Li\nDigitalSesame\n\nMatthew Bertrand wrote:\n&gt; \n&gt; Hi everyone,\n&gt; \n&gt; I&#39;m having trouble figuring out how to use Junit in conjunction with Log4j\n&gt; for logging test results.  Does anyone have experience with this, or with\n&gt; redirecting Junit output in general?\n&gt; \n&gt; Any help appreciated,\n&gt; \n&gt; Matt\n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt; \n&gt; \n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n", 
+    "subject": "Re: [junit] Junit and Log4j (Use AspectJ)"
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 814, 
+    "postDate": "985843670", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "kconnor@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "TqBJcOgSeqwqDyVCh5wihLEBvT_kIU2wBy3DJxTVD57Io-muM_KR0-ENfVpGtaD58ZJZqsrN4zk04kodow", 
+    "nextInTime": 834, 
+    "userId": 0, 
+    "prevInTime": 832, 
+    "prevInTopic": 815, 
+    "headers": {
+        "inReplyToHeader": "PE5EQkJKRUZLTURHRklCRUtLRUxFQUVIS0REQUEubXNpbHZlcnN0ZWluQHNpbHZlcm1hcmsuY29tPg==", 
+        "messageIdInHeader": "PDk5dWg0bStiZnQ0QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "kconnor@interwoven.com", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "This is the sort of thing I was hoping for. Is the tool that manages the variables completely separate from Test Mentor? With JUnit as it is, it seems there s", 
+    "contentTrasformed": false, 
+    "msgId": 833, 
+    "nextInTopic": 838, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;kconnor@...&gt;\r\nX-Sender: kconnor@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_4); 29 Mar 2001 05:27:53 -0000\r\nReceived: (qmail 16001 invoked from network); 29 Mar 2001 05:27:53 -0000\r\nReceived: from unknown (10.1.10.26) by l7.egroups.com with QMQP; 29 Mar 2001 05:27:53 -0000\r\nReceived: from unknown (HELO c3.egroups.com) (10.1.10.50) by mta1 with SMTP; 29 Mar 2001 05:27:53 -0000\r\nX-eGroups-Return: kconnor@...\r\nReceived: from [10.1.10.65] by c3.egroups.com with NNFMP; 29 Mar 2001 05:27:53 -0000\r\nDate: Thu, 29 Mar 2001 05:27:50 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: TestSetup state\r\nMessage-ID: &lt;99uh4m+bft4@...&gt;\r\nIn-Reply-To: &lt;NDBBJEFKMDGFIBEKKELEAEHKDDAA.msilverstein@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2821\r\nX-Mailer: eGroups Message Poster\r\nFrom: kconnor@...\r\n\r\nThis is the sort of thing I was hoping for.  \n\nIs the tool that manages the variables completely separate from Test \nMentor?  \n\nWith JUnit as it is, it seems there&#39;s no way to internally handle \npassing around state info from the TestSuite&#39;s TestSetup.\n\nI suppose a singleton TestListener could keep track of test start/end \nand have methods like getLocalVar(name) and setLocalVar(name,value).  \n\nDoes anybody have anything like this?  Does it sound like the right \nthing to do?  The tmp file solution may be more expedient.\n\n-Kevin\n\n\n\n--- In junit@y..., &quot;Michael Silverstein&quot; &lt;msilverstein@s...&gt; wrote:\n&gt; We do the following with Test Mentor (a commercial component testing \ntool),\n&gt; but you could probably extend JUnit in a similar way:\n&gt; \n&gt; We provide a sort of managed variable scheme within the context of \nan\n&gt; executing test, respective of scope (tests in Test Mentor can be \nrecursively\n&gt; defined, if you like), that&#39;s basically a bunch of \njava.util.Hashtables,\n&gt; each tied to a particular scoping level. These Hashtable values are\n&gt; accessible by APIs within the tool that resolve the correct value, \ndepending\n&gt; on the context of the executing test. The APIs  make it pretty \ntransparent,\n&gt; relying mostly on a test execution context stack that tracks \nwhichever\n&gt; Hashtable should be active at the moment. The APIs (which any test \ninherits)\n&gt; look something like getLocalVar(name) and setLocalVar(name,value). \nSo you\n&gt; could instantiate/execute a test that sets variables, which then\n&gt; instantiates/exeuctes another test within it that may or may not set\n&gt; variables with the same name, and the tool will handle variable name \nscope\n&gt; resolution automatically.\n&gt; \n&gt; \n&gt; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n&gt; Mike Silverstein, Lead Architect\tvoice:  (919) 858-8300 x29\n&gt; SilverMark, Inc.\t\t\tfax:    (919) 858-8308\n&gt; 5511 Capital Center Drive\t\tmobile: (919) 669-5906\n&gt; Suite 510, Raleigh, NC 27606\t\ttoll free: (888) 588-0668\n&gt; http://www.silvermark.com\t\tmsilverstein@s...\n&gt; \n&gt; &gt; -----Original Message-----\n&gt; &gt; From: kconnor@i... [mailto:kconnor@i...]\n&gt; &gt; Sent: Tuesday, March 27, 2001 9:43 PM\n&gt; &gt; To: junit@y...\n&gt; &gt; Subject: [junit] TestSetup state\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; I was wondering if anyone else has wanted to pass state info from \na\n&gt; &gt; TestSetup Setup to the tests within the TestSuite it wraps?  If \nso,\n&gt; &gt; how did you accomplish it?  It could be written to a file but that\n&gt; &gt; seems less than optimal.\n&gt; &gt;\n&gt; &gt; The perlunit guys are tackling passing state info around using a\n&gt; &gt; runner object but they don&#39;t pass it to the setup/teardown \nroutines.\n&gt; &gt;\n&gt; &gt; Thanks for your help,\n&gt; &gt; Kevin\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; To unsubscribe from this group, send an email to:\n&gt; &gt; junit-unsubscribe@y...\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; Your use of Yahoo! Groups is subject to \nhttp://docs.yahoo.com/info/terms/\n&gt; &gt;\n&gt; &gt;\n\n\n", 
+    "subject": "Re: TestSetup state"
+}

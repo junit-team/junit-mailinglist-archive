@@ -1,0 +1,29 @@
+{
+    "topicId": 1, 
+    "postDate": "974543535", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Vera Peeters&quot; &lt;vera.peeters@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "6-sL6O9XmxhIC68_RL873qZFVlFy-CYHaXthz7920ifE747qMtTJGY07IB7K5WRlgyTawcqsDFdtpjHLwCSeeT6M8znOz0S179sGCvU", 
+    "nextInTime": 34, 
+    "userId": 0, 
+    "prevInTime": 32, 
+    "prevInTopic": 32, 
+    "headers": {
+        "inReplyToHeader": "PDAwMGYwMWMwNTBkOCRiNzYyMTNiMCQwMTAwMDAwYUB0aWdlcj4=", 
+        "messageIdInHeader": "PE5EQkJJQU1BRE1ISU1PQUxMQ0hETUVQR0NHQUEudmVyYS5wZWV0ZXJzQHRyeXguY29tPg=="
+    }, 
+    "authorName": "Vera Peeters", 
+    "numMessagesInTopic": 19, 
+    "msgSnippet": "In my implementation, the EJB is in fact an interface into a Box . The clients of my Boxes don t know anything about Boxes. From their point of view,", 
+    "contentTrasformed": false, 
+    "msgId": 33, 
+    "nextInTopic": 36, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;vera.peeters@...&gt;\r\nX-Sender: vera.peeters@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_2_1); 18 Nov 2000 10:31:53 -0000\r\nReceived: (qmail 64914 invoked from network); 18 Nov 2000 10:31:53 -0000\r\nReceived: from unknown (10.1.10.26) by l10.egroups.com with QMQP; 18 Nov 2000 10:31:53 -0000\r\nReceived: from unknown (HELO smtp.pandora.be) (195.130.132.33) by mta1 with SMTP; 18 Nov 2000 10:31:53 -0000\r\nReceived: (qmail 19948 invoked from network); 18 Nov 2000 10:31:51 -0000\r\nReceived: from unknown (HELO dellvera) ([213.224.90.90]) (envelope-sender &lt;vera.peeters@...&gt;) by hercules.telenet-ops.be (qmail-ldap-1.03) with SMTP for &lt;junit@egroups.com&gt;; 18 Nov 2000 10:31:51 -0000\r\nTo: &lt;junit@egroups.com&gt;\r\nSubject: RE: [junit] Re: J2EEUnit\r\nDate: Sat, 18 Nov 2000 11:32:15 +0100\r\nMessage-ID: &lt;NDBBIAMADMHIMOALLCHDMEPGCGAA.vera.peeters@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\nIn-Reply-To: &lt;000f01c050d8$b76213b0$0100000a@tiger&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nImportance: Normal\r\nFrom: &quot;Vera Peeters&quot; &lt;vera.peeters@...&gt;\r\n\r\nIn my implementation, the EJB is in fact an interface into a &quot;Box&quot;. The\nclients of my &quot;Boxes&quot; don&#39;t know anything about Boxes. From their point of\nview, they&#39;re simply using EJBs. Also, I do use session beans and entity\nbeans just as you describe them.\n\nThe thing I&#39;m trying to say is not so weird: the EJB-*classes* themselves\ndon&#39;t *implement* business logic, but they do *provide* it to its clients by\ncalling the appropriate classes in its private BL package (because they&#39;re\nthe interface into the Box).\n\nThe task of the EJB *class* is to provide everything that EJBs are designed\nfor to provide: network access, transaction management, resource management,\nmulti-thread behaviour (euh..., I think I forgot some but you&#39;ve got the\npoint), and I&#39;m very happy with that.\n\nThe task of the Box is to provide Business Logic to its clients. The Box is\naccessible only through an EJB interface. The Business Logic package of a\nBox is private to the Box. It can&#39;t be accessed from outside the Box (not\neven from other Boxes).\n\n\n\n\n\n\n&gt; -----Original Message-----\n&gt; From: Ilja Preu? [mailto:ilja.preuss@...]\n&gt; Sent: vrijdag 17 november 2000 21:55\n&gt; To: junit@egroups.com\n&gt; Subject: RE: [junit] Re: J2EEUnit\n&gt;\n&gt;\n&gt; &gt; &gt; So you don&#39;t implement business logic as session beans??? Sounds\n&gt; &gt; &gt; weird...\n&gt; &gt; &gt;\n&gt; &gt; &gt; ciao, Ilja\n&gt; &gt;\n&gt; &gt; Why?  I&#39;m not an EJB guy, but it seems like responsibility of an EJB\n&gt; &gt; thing is to present network accessible interface.\n&gt;\n&gt; But an interface to *what*?\n&gt;\n&gt; &gt; Since good OO design\n&gt; &gt; avoids many responsibilities in a given class, this makes\n&gt; &gt; complete sense\n&gt; &gt; to me.  Plus it makes things much more flexible and easier to test.\n&gt; &gt; Just like I wouldn&#39;t have my GUI classes implement business logic.\n&gt;\n&gt; EJB is a distributed component modell. Why distributed? Mainly for\n&gt; reliability and scalability: As you don&#39;t care where a component\n&gt; actually resides, you can put work-intensive components on there own\n&gt; cluster, and one cluster can stand in for another one if it fails for\n&gt; some reason.\n&gt;\n&gt; There are two main types of EJBs: entity beans and session beans. Entity\n&gt; beans are data classes, they are responsible for persistence. Session\n&gt; beans are the &#39;working horses&#39;, in a typical J2EE application, here\n&gt; resides your business logic.\n&gt;\n&gt; ciao, Ilja\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@egroups.com\n&gt;\n&gt;\n&gt;\n\n\n", 
+    "subject": "RE: [junit] Re: J2EEUnit"
+}

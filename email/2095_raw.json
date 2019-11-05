@@ -1,0 +1,28 @@
+{
+    "topicId": 2072, 
+    "postDate": "996031843", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Robert Watkins &lt;robertw@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "SwJz_7lmwy6bAMEzs9DMdJpySn6Vb9p6i68eikJ35HinS_jocKF7Ezhn06Nk_e_bMauI7Ob2pbb129zIOPvVDQ9a4UKtSQQ8L99tVaRN9g", 
+    "nextInTime": 2096, 
+    "userId": 0, 
+    "prevInTime": 2094, 
+    "prevInTopic": 2094, 
+    "headers": {
+        "messageIdInHeader": "PENGMkJDMTM1RkIzN0Q1MTE5N0Q0MDA1MDhCQUY1MjE3MDlCQjYxQGF1Ym5tc3gwMS5xc2kuY29tLmF1Pg=="
+    }, 
+    "authorName": "Robert Watkins", 
+    "numMessagesInTopic": 48, 
+    "msgSnippet": "... Hmmm.... how bout something like this: // Standard warning: I m building it from memory, there may be typoes or misnamed methods class AttributeTester", 
+    "contentTrasformed": false, 
+    "msgId": 2095, 
+    "nextInTopic": 2096, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;robert.watkins@...&gt;\r\nX-Sender: robert.watkins@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 25 Jul 2001 03:27:55 -0000\r\nReceived: (qmail 19686 invoked from network); 25 Jul 2001 03:27:55 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 25 Jul 2001 03:27:55 -0000\r\nReceived: from unknown (HELO qsi.com.au) (203.202.39.12) by mta1 with SMTP; 25 Jul 2001 03:27:54 -0000\r\nReceived: from aubnmsx01.qsi.com.au (aubnmsx01.qsi.com.au [192.168.21.22]) by qsi.com.au (8.9.3/8.9.3) with ESMTP id NAA11946 for &lt;junit@yahoogroups.com&gt;; Wed, 25 Jul 2001 13:18:26 +1000\r\nReceived: by aubnmsx01.qsi.com.au with Internet Mail Service (5.5.2653.19) id &lt;PCHCNWQ3&gt;; Wed, 25 Jul 2001 13:30:43 +1000\r\nMessage-ID: &lt;CF2BC135FB37D51197D400508BAF521709BB61@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Reporting more then 1 failed assertion per test\r\nDate: Wed, 25 Jul 2001 13:30:43 +1000\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nX-eGroups-From: Robert Watkins &lt;robert.watkins@...&gt;\r\nFrom: Robert Watkins &lt;robertw@...&gt;\r\n\r\nPeter O&#39;Neill wrote:\n&gt; I am hoping to test that all the attributes in the database can be set\n&gt; and that someone hasn&#39;t unwittingly changed a particular attribute to\n&gt; read-only. It would seem to be overkill to have a test method for each\n&gt; of the hundreds of attributes. So i currently do the following,\n&gt; \n&gt; \t- add a failure to a testResult\n&gt; \t- fail if the testResult failureCount &gt; 0\n&gt; \t- print out all the failures\n&gt; \n&gt; If anyone can help me with a better approach I would be grateful.\n\nHmmm.... how &#39;bout something like this:\n\n// Standard warning: I&#39;m building it from memory, there may be typoes or\nmisnamed methods\nclass AttributeTester extends junit.framework.TestCase {\n    private final String attributeToTest;\n\n    public AttributeTester(String name, String attributeToTest) {\n        super(name);\n        this.attributeToTest = attributeToTest;\n    }\n\n    public junit.framework.Test suite() {\n       junit.framework.TestSuite theSuite = new junit.framework.TestSuite();\n       // Create a an array of the attributes here\n       for (int i = 0; i &lt; attributes.length; i++) {\n           theSuite.addTest(new AttributeTester(&quot;testAttribute&quot;,\nattributes[i]);\n       }\n       return theSuite;\n    }\n\n    public void testAttribute() {\n        // ensure that this.attributeToTest is not read-only.\n    }\n}\n\nYou may also want to override toString() so that you can report the failing\nattribute in the error message.\n\nFor bonus points, pull in the list of attributes dynamically somehow\n(perhaps directly from the database, or from the script used to build the\ndatabase).\n\nRobert.\n\n-- \n     &quot;Duct tape is like the Force: it has a light side, a dark side,\n                   and it holds the universe together&quot;\n  Robert Watkins     robertdw@...     robertw@...\n\n", 
+    "subject": "RE: [junit] Reporting more then 1 failed assertion per test"
+}

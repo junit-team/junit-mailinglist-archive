@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19977, 
+    "senderId": "TLaetP2LQbwdkhlJ0eX_Lk9Uun250gGgi6y-JDEtSVDFvs8eqrXCwYrkr4J60GTuZ2mycGjSeqNwbJ7v_un5Fd9Cm9LnKwx6", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Why does BaseTestRunner require TestCase class rather than the Test interfac", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Bruno, That s what I needed. Thank you. We ll make sure this is fixed in the next release we ll post here when it s fixed in HEAD. Regards, Kent Beck Three", 
+    "msgId": 19976, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 57751 invoked from network); 12 Oct 2007 14:28:14 -0000\r\nReceived: from unknown (69.147.108.200)\n  by m51.grp.scd.yahoo.com with QMQP; 12 Oct 2007 14:28:14 -0000\r\nReceived: from unknown (HELO elasmtp-kukur.atl.sa.earthlink.net) (209.86.89.65)\n  by mta1.grp.re1.yahoo.com with SMTP; 12 Oct 2007 14:28:14 -0000\r\nReceived: from [67.131.9.243] (helo=kentspavilion)\n\tby elasmtp-kukur.atl.sa.earthlink.net with asmtp (Exim 4.34)\n\tid 1IgLUe-0004Eb-UI\n\tfor junit@yahoogroups.com; Fri, 12 Oct 2007 10:28:01 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;012901c80bb2$690e2cc0$6801a8c0@kentspavilion&gt; &lt;fenn3e+ivcg@...&gt;\r\nDate: Fri, 12 Oct 2007 07:27:51 -0700\r\nMessage-ID: &lt;00c101c80cdc$139ca2f0$6801a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;fenn3e+ivcg@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3198\r\nThread-Index: AcgMyBjafRDo9bZLTcOL3FrFd5tyywAE9XTQ\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478986a28d8589f2169d2a628558bc1decd3159de39be69e52c350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] Re: Why does BaseTestRunner require TestCase class rather than the Test interfac\r\nX-Yahoo-Group-Post: member; u=173198504; y=DRmXEiohfCojPoRoGa2ZE1RxtUIU65LKxGFcK704DT-wbFJl\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nBruno,\n \nThat&#39;s what I needed. Thank you. We&#39;ll make sure this is fixed in the next\nrelease we&#39;ll post here when it&#39;s fixed in HEAD.\n \nRegards,\n \nKent Beck\nThree Rivers Institute\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nBruno Felaco\nSent: Friday, October 12, 2007 4:51 AM\nTo: junit@yahoogroups.com\nSubject: [junit] Re: Why does BaseTestRunner require TestCase class rather\nthan the Test interfac\n\n\n\nHi,\n\nRather than explain, I&#39;ll let the test case speak for itself:\n\npublic class CastToTestTest extends TestCase {\n// Simple concrete extension of BaseTestRunner\nprivate final class BaseTestRunnerExtension\nextends BaseTestRunner \n{\nprotected void runFailed(String message) {}\npublic void testEnded(String testName) {}\npublic void testFailed(int status, Test test, Throwable t) {}\npublic void testStarted(String testName) {}\n}\n\npublic static class Example implements junit.framework.Test {\npublic int countTestCases() {return 0;}\n\npublic void run(TestResult result) {}\n\npublic static Test suite() {\nTestSuite result= new TestSuite();\nresult.addTest(new Example());\nreturn result;\n}\n}\n\npublic void testRunTestWhichIsNotATestCase() {\nTest myTest = new BaseTestRunnerExtension()\n.getTest(Example.class.getName());\n\n// This fails using JUnit 4.4:\nassertNotNull(myTest);\nassertTrue(myTest instanceof TestSuite);\n}\n}\n\n- Bruno\n\n--- In junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com, &quot;Kent Beck&quot;\n&lt;kentb@...&gt; wrote:\n&gt;\n&gt; Dear Bruno,\n&gt; \n&gt; Thank you for the defect report. I wasn&#39;t able to reproduce exactly\nthe same\n&gt; behavior you describe, but JUnit 3 tests don&#39;t work exactly the same\nas they\n&gt; did before. For example:\n&gt; \n&gt; public class CastToTestTest {\n&gt; public static class Example implements junit.framework.Test {\n&gt; public int countTestCases() {\n&gt; return 0;\n&gt; }\n&gt; public void run(TestResult result) {\n&gt; // do nothing\n&gt; }\n&gt; public static junit.framework.Test suite() {\n&gt; TestSuite result= new TestSuite();\n&gt; result.addTest(new Example());\n&gt; return result;\n&gt; }\n&gt; }\n&gt; @Test public void runTestWhichIsNotATestCase() {\n&gt; // Doesn&#39;t compile: TestRunner.run(Example.class);\n&gt; TestResult result= TestRunner.run(Example.suite());\n&gt; assertTrue(result.wasSuccessful());\n&gt; }\n&gt; }\n&gt; \n&gt; The first line of the test doesn&#39;t compile, which seems like an\nerror to me,\n&gt; but the test itself passes without a class cast exception. Did I\n&gt; misunderstand your report?\n&gt; \n&gt; Regards,\n&gt; \n&gt; Kent Beck\n&gt; Three Rivers Institute\n\n\n\n \n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 19971, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 19975, 
+    "contentTrasformed": false, 
+    "postDate": "1192199271", 
+    "canDelete": false, 
+    "nextInTopic": 19977, 
+    "prevInTopic": 19975, 
+    "headers": {
+        "inReplyToHeader": "PGZlbm4zZStpdmNnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwYzEwMWM4MGNkYyQxMzljYTJmMCQ2ODAxYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PDAxMjkwMWM4MGJiMiQ2OTBlMmNjMCQ2ODAxYThjMEBrZW50c3BhdmlsaW9uPiA8ZmVubjNlK2l2Y2dAZUdyb3Vwcy5jb20+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 24389, 
+    "senderId": "aKbMk0RaO9FbVTLo5LwB0rB0By2i6bW8_UtsTddG1Emp7kmljEO9bF6sh6vW_UJuyn5VQ9OtR-4vFWcn6AB44I9ppwYM3ps5Wll_OxmJPg", 
+    "systemMessage": true, 
+    "subject": "Timed Tests and Thread Safety", 
+    "from": "&quot;Steven Soloff&quot; &lt;s_soloff@...&gt;", 
+    "authorName": "Steven Soloff", 
+    "msgSnippet": "Hi All, I ve been using timed tests (i.e. @Test(timeout = ...)) for years but recently came across an implementation detail of which I was unaware.  While I", 
+    "msgId": 24388, 
+    "profile": "s_soloff", 
+    "topicId": 24388, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 327488285, 
+    "messageBody": "<div id=\"ygrps-yiv-1455427192\">Hi All,<br/>\n<br/>\nI&#39;ve been using timed tests (i.e. @Test(timeout = ...)) for years but recently came across an implementation detail of which I was unaware.  While I knew that timed tests are run in a thread other than the main test thread, I assumed that all aspects of the test (set up, test, and tear down) were run in that other thread.  I was surprised to discover that the set up and tear down methods are run on the main test thread, while the test method is run on a different thread.<br/>\n<br/>\nThis jumped out at me in a recent programming session because the class under test uses thread isolation to achieve thread safety, and its methods liberally assert that they are invoked on the same thread on which the object was instantiated.  Once I realized why my timed tests were failing unexpectedly, I worked around the problem by moving the necessary portions of my set up and tear down to the test method itself.<br/>\n<br/>\nHowever, this got me thinking about more subtle issues related to timed tests of code that is inherently NOT thread safe.  Consider the following contrived example, where Bar is the class under test:<br/>\n<br/>\npublic class Foo {<br/>\n    public void dispose() {<br/>\n    }<br/>\n}<br/>\n<br/>\npublic class Bar {<br/>\n    private Foo foo = null;<br/>\n<br/>\n    public void dispose() {<br/>\n        if (foo != null) {<br/>\n            foo.dispose();<br/>\n            foo = null;<br/>\n        }<br/>\n    }<br/>\n<br/>\n    public void setFoo(Foo foo) {<br/>\n        this.foo = foo;<br/>\n    }<br/>\n}<br/>\n<br/>\npublic class BarTest {<br/>\n    private Bar bar;<br/>\n<br/>\n    @Before<br/>\n    public void setUp() {<br/>\n        bar  = new Bar();<br/>\n    }<br/>\n<br/>\n    @Test<br/>\n    public void testSomethingOnMainThread() {<br/>\n        // ...<br/>\n        bar.setFoo(new Foo());<br/>\n        // ...<br/>\n    }<br/>\n<br/>\n    @Test(timeout = 1000)<br/>\n    public void testSomethingOnDifferentThread() {<br/>\n        // ...<br/>\n        bar.setFoo(new Foo());<br/>\n        // ...<br/>\n    }<br/>\n<br/>\n    @After<br/>\n    public void tearDown() {<br/>\n        bar.dispose();<br/>\n    }<br/>\n}<br/>\n<br/>\nWhen testSomethingOnMainThread() is run, I expect the Foo instance created in the test will have its dispose() method called in tearDown() because its assignment to the Bar.foo field occurs on the same thread that invokes tearDown().<br/>\n<br/>\nHowever, when testSomethingOnDifferentThread() is run, I expect the Foo instance created in the test MAY NOT have its dispose() method called in tearDown() because its assignment to the Bar.foo field occurs on a different thread than the one that invokes tearDown().  Without some kind of memory barrier, the Bar.foo field may not be safely published from the test thread to the main thread.<br/>\n<br/>\nMy concern is that there could be a significant change in the behavior of a test simply by annotating it with a timeout when the code under test is not thread safe.  I can&#39;t be the first person to ask this question (I apologize  if my search of this group&#39;s archives was not thorough enough), so I realize my entire premise may be ill-posed or that I&#39;m missing some fundamental understanding of the Java memory model.<br/>\n<br/>\nWith that said, is it reasonable to expect that, for a given @Test, all @Before and @After methods in the fixture be called on the same thread regardless of how the test is annotated?  Or is it simply up to the programmer to be aware of how timed tests are implemented, and to make it their responsibility to ensure code that is not thread safe is only ever invoked on a single thread, or to use external synchronization to ensure safe publication between threads?<br/>\n<br/>\nCheers,<br/>\nSteve<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 24387, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1369355663", 
+    "canDelete": false, 
+    "nextInTopic": 24389, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDE5MThCMTcwN0U0NjQzRThBNTAyQUJENTc2MkMzNDY1QFN0aW1weT4="
+    }
+}

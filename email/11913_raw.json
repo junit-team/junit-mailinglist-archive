@@ -1,0 +1,28 @@
+{
+    "topicId": 11913, 
+    "postDate": "1094653354", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Xg1fNMDdam3Ar5dwad7CdO0n9kjemSFATTczxdSQx-mmxIFe3XQlqflM4w9ZW-Ija7RpETKrEKff7xVCqgiBAnWlmbzHHIhjB9M", 
+    "nextInTime": 11914, 
+    "userId": 106503903, 
+    "prevInTime": 11912, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDg2RkU3RDVDLTAxQTItMTFEOS04NkY4LTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4="
+    }, 
+    "authorName": "Timothy Wall", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "I recently encountered a problem when running a lot (~500) of UI tests which probably wouldn t show up for non-UI tests until you get in the 100K of tests. ", 
+    "contentTrasformed": false, 
+    "msgId": 11913, 
+    "nextInTopic": 11921, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;twall@...&gt;\r\nX-Sender: twall@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 32513 invoked from network); 8 Sep 2004 14:22:43 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m18.grp.scd.yahoo.com with QMQP; 8 Sep 2004 14:22:43 -0000\r\nReceived: from unknown (HELO mail00.oculustech.com) (64.221.47.99)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 Sep 2004 14:22:42 -0000\r\nReceived: by mail00.oculustech.com (Postfix, from userid 1011)\n\tid 6F242144F4; Wed,  8 Sep 2004 10:22:37 -0400 (EDT)\r\nReceived: from [172.16.1.39] (pool-151-203-36-70.bos.east.verizon.net [151.203.36.70])\n\tby mail00.oculustech.com (Postfix) with ESMTP id A7B5914228\n\tfor &lt;junit@yahoogroups.com&gt;; Wed,  8 Sep 2004 10:22:36 -0400 (EDT)\r\nMime-Version: 1.0 (Apple Message framework v619)\r\nContent-Transfer-Encoding: 7bit\r\nMessage-Id: &lt;86FE7D5C-01A2-11D9-86F8-003065BF83DA@...&gt;\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nTo: JUnit Discussion &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 8 Sep 2004 10:22:34 -0400\r\nX-Mailer: Apple Mail (2.619)\r\nX-Spam-Level: \r\nX-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on \n\tmail00.int.oculustech.com\r\nX-Spam-Status: No, hits=-4.9 required=4.5 tests=BAYES_00 autolearn=ham \n\tversion=2.63\r\nX-eGroups-Remote-IP: 64.221.47.99\r\nFrom: Timothy Wall &lt;twall@...&gt;\r\nSubject: garbage-collection of tests\r\nX-Yahoo-Group-Post: member; u=106503903\r\n\r\nI recently encountered a problem when running a lot (~500) of UI tests \nwhich probably wouldn&#39;t show up for non-UI tests until you get in the \n100K of tests.\n\nAfter a TestCase instance is run, it is usually never garbage-collected \nor made available for GC until the runner itself is disposed on program \nexit (at least with the default runners, and probably with most custom \nrunners as well).  Not a big deal if you have just a few basic data \nfields or not too many tests, but if the runner has 1000s of tests and \nyou don&#39;t have enough resources for all tests to be resident at once, \nyou&#39;re in trouble.\n\nIn my case, each UI test usually included assignment of several member \nfields in its setUp method.   Unless these are explicitly nulled in the \ntearDown method, the references are kept around until the test runner \nterminates, since the TestCase instance itself is never GCd.  This \ncauses real problems when the fields are resource-intensive or the \nresources are limited (think Windows and UI resources).\n\nYes, it&#39;s possible to explicitly blank certain fields when necessary, \nbut that&#39;s only a hair removed from explicitly freeing memory, and a \npain when there are some 500-odd tests that would need to be changed \n(no refactoring tool for *that* yet, I&#39;m afraid).\n\nThere are several solutions:\n1) explicitly null fields in tearDown (this smells, because that&#39;s what \nGC is for)\n2) make a runner that doesn&#39;t keep references to test case instances \nafter they&#39;re run\n3) use reflection to auto-null all test case fields (hackishly neat, \nbut still smells)\n\nAny other ideas, suggestions?\n\n\n", 
+    "subject": "garbage-collection of tests"
+}

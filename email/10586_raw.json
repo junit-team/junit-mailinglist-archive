@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10587, 
+    "senderId": "ThRsTCeB1nDE04WbhpsOIgpBG1I0RzCtG4ljde_XrztrSiwd4NN8IMAUd8nMVYlzY9iTh3MvZiKTul5_wA_1YVs7WQKCVjy3jwFr3sKbBw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Can&#39;t add an object to a TestSuite?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I think you are reimplementing JUnit. You are trying to use a Parameterized Test Case: a test case whose fixture is assigned by the outside, rather than on", 
+    "msgId": 10586, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 10285 invoked from network); 3 Mar 2004 20:25:25 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m7.grp.scd.yahoo.com with QMQP; 3 Mar 2004 20:25:25 -0000\r\nReceived: from unknown (HELO fep01-mail.bloor.is.net.cable.rogers.com) (66.185.86.71)\n  by mta6.grp.scd.yahoo.com with SMTP; 3 Mar 2004 20:25:25 -0000\r\nReceived: from rogers.com ([24.156.43.226])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040303202509.HLJD230350.fep01-mail.bloor.is.net.cable.rogers.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Wed, 3 Mar 2004 15:25:09 -0500\r\nMessage-ID: &lt;40463EE5.6070509@...&gt;\r\nDate: Wed, 03 Mar 2004 15:24:05 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6b) Gecko/20031205 Thunderbird/0.4\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;c25776+prnn@...&gt;\r\nIn-Reply-To: &lt;c25776+prnn@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep01-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Wed, 3 Mar 2004 15:25:08 -0500\r\nX-eGroups-Remote-IP: 66.185.86.71\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Re: Can&#39;t add an object to a TestSuite?\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nnatemc47 wrote:\n\n&gt; JB,\n&gt; \n&gt; Thanks for your quick reply.  Unfortunately, I get the same error when I \n&gt; change new \n&gt; FooTest() to FooTest.suite().  I&#39;m using JUnit 3.8.1 if that matters. \n&gt;  \n&gt; After a peek at the JUnit source, I think we need a completely different \n&gt; Test \n&gt; implementation for this so we can write \n&gt;  \n&gt;     public static final class BarTest extends ObjectTestSuite { ... } \n&gt;  \n&gt; Here&#39;s a first draft below.  Though far from complete, it works for my \n&gt; trivial \n&gt; example.  What do you think? \n\nI think you are reimplementing JUnit.\n\nYou are trying to use a Parameterized Test Case: a test case whose \nfixture is assigned by the outside, rather than on the inside. The \nstandard pattern for that is as follows.\n\n1. Add a constructor taking your fixture data.\n2. Have the new constructor invoke super(testName), where testName is \neither a parameter of the new constructor or a name that you compute on \nthe spot.\n3. Add a suite() method that provides the fixture data for each test.\n4. Override runTest() to implement the one and only one test for each \nrow of fixture data.\n\nIf you need more than one test for each fixture row, then the solution \nis more complicated. Use FIT instead, or wait for my book.\n\nGoing back to your code, do this (+ add line, - remove line):\n\n &gt;  &gt; &gt; import junit.framework.Test;\n &gt;  &gt; &gt; import junit.framework.TestCase;\n &gt;  &gt; &gt; import junit.framework.TestSuite;\n &gt;  &gt; &gt; import junit.textui.TestRunner;\n &gt;  &gt; &gt;\n &gt;  &gt; &gt; public class FooTest extends TestCase {\n &gt;  &gt; &gt;     public static void main(final String[] args) {\n+              TestRunner.run(FooTest.suite());\n-              TestRunner.run(new FooTest());\n &gt;  &gt; &gt;     }\n &gt;  &gt; &gt;\n &gt;  &gt; &gt;     public static Test suite() {\n &gt;  &gt; &gt;         final TestSuite suite = new TestSuite();\n &gt;  &gt; &gt;         suite.addTest(new BarTest(5));\n &gt;  &gt; &gt;         return suite;\n &gt;  &gt; &gt;     }\n &gt;  &gt; &gt;\n &gt;  &gt; &gt;     public static final class BarTest extends TestCase {\n &gt;  &gt; &gt;         public BarTest(final String testName, final int x) {\n+                  super(testName);\n                    this.x = x;\n                }\n\n-              public void testBar() { System.out.println(x); }\n+              protected void runTest() {\n                    // Implement test here\n                }\n\n &gt;  &gt; &gt;         private final int x;\n &gt;  &gt; &gt;     }\n &gt;  &gt; &gt; }\n\nExplanation: at runtime no one is setting the test method name, so it is \nnull. Then the test runner tries to invoke the test method named &quot;null&quot; \n(or the null method -- it&#39;s one or the other) and it fails as you saw.\n\nI think you can agree that the above changes are much less obtrusive \nthan reimplementing the automatic test collecting scheme for JUnit&#39;s \ntest runners.\n\nAs I said earlier, if you have more data-driven suites like this, then \nuse FIT or FitNesse for testing instead. No law says FIT is just for \nCustomer Tests.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 10580, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 10585, 
+    "contentTrasformed": false, 
+    "postDate": "1078345445", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10585, 
+    "headers": {
+        "inReplyToHeader": "PGMyNTc3Nitwcm5uQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwNDYzRUU1LjYwNzA1MDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGMyNTc3Nitwcm5uQGVHcm91cHMuY29tPg=="
+    }
+}

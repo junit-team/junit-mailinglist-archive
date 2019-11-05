@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19902, 
+    "senderId": "U2urKezUym29Qt9iYw1OHS5UVrfm5x0BSkINzztkN81BX6vRKwhtcb83Rt53YM13ABEyJRju3HJn1XOt0AoqNzZXq23T7-iReIfXmYH3Ufcg5v5Y", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Is it possible to use an IoC framework inside junit testcase?", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "I have never used the Parameterized testcase but the code below makes me wonder why you can t do it like this: @RunWith(Parameterized.class) public class", 
+    "msgId": 19901, 
+    "rawEmail": "Return-Path: &lt;joakim.ohlrogge@...&gt;\r\nX-Sender: joakim.ohlrogge@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 96537 invoked from network); 15 Sep 2007 17:11:19 -0000\r\nReceived: from unknown (66.218.66.72)\n  by m46.grp.scd.yahoo.com with QMQP; 15 Sep 2007 17:11:19 -0000\r\nReceived: from unknown (HELO rv-out-0910.google.com) (209.85.198.188)\n  by mta14.grp.scd.yahoo.com with SMTP; 15 Sep 2007 17:11:19 -0000\r\nReceived: by rv-out-0910.google.com with SMTP id b22so874128rvf\n        for &lt;junit@yahoogroups.com&gt;; Sat, 15 Sep 2007 10:10:34 -0700 (PDT)\r\nReceived: by 10.115.95.1 with SMTP id x1mr694681wal.1189876233954;\n        Sat, 15 Sep 2007 10:10:33 -0700 (PDT)\r\nReceived: by 10.114.205.5 with HTTP; Sat, 15 Sep 2007 10:10:33 -0700 (PDT)\r\nMessage-ID: &lt;b9ee5e410709151010v5e85f530h9224a6bf9e70911c@...&gt;\r\nDate: Sat, 15 Sep 2007 19:10:33 +0200\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;fcfhr7+v0na@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;fcfhr7+v0na@...&gt;\r\nX-Google-Sender-Auth: 81954301477e2f5d\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nX-eGroups-From: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nFrom: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nReply-To: joakim.ohlrogge@...\r\nSubject: Re: [junit] Is it possible to use an IoC framework inside junit testcase?\r\nX-Yahoo-Group-Post: member; u=261856052; y=e9oH7LjQmDUkelTibEki1gucRD681linccTQmTBxJ0JCtJZO\r\nX-Yahoo-Profile: j0hlrogge\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nI have never used the Parameterized testcase but the code below makes me\nwonder why you can&#39;t\ndo it like this:\n\n@RunWith(Parameterized.class)\npublic class VehicleTest{\n@Parameters\npublic static Collection&lt;Object[]&gt; sets() {\nList&lt;Object[]&gt; args = new ArrayList&lt;Object[]&gt;();\n\nargs.add(new Truck());\nargs.add(new Car(someArgument));\nargs.add(new Motor(someOtherArgument));\n\nreturn args;\n}\n\nfinal Vehicle vehicle;\nVehicleTest(Vehicle vehicle){\nthis.vehicle = vehicle;\n}\n\n@Test\ntestRun(){\n....\n}\n}\n\nSure, that will create all instances at the same time, there is a\npossibility if you don&#39;t watch out that the different instances can share\ndata\nand so on but I don&#39;t know if that is a real issue for you...\n\nanother way would be to use anonymous factories which would defer creating\ninstances but is it really worth it?\n\npublic static Collection&lt;Object[]&gt; sets() {\nList&lt;Object[]&gt; args = new ArrayList&lt;Object[]&gt;();\n\nargs.add(new VehicleFactory() { public void create(){return new\nCar(parameter)});\n...\nreturn args;\n}\n\nor to use pico container or guice in populated in a @Before method and then\nadd the current vehicle to that one.\nGo with what feels most natural and is the least work for you to write and\nmaintain.\n\nOf course there is the possibility that I have overlooked something in\nparameterized test-case that excludes the\nabove mentioned possibilities, in that case I&#39;m sorry.\n\n/J\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "j0hlrogge", 
+    "topicId": 19899, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "prevInTime": 19900, 
+    "contentTrasformed": false, 
+    "postDate": "1189876233", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19899, 
+    "headers": {
+        "inReplyToHeader": "PGZjZmhyNyt2MG5hQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDcwOTE1MTAxMHY1ZTg1ZjUzMGg5MjI0YTZiZjllNzA5MTFjQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZjZmhyNyt2MG5hQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 6476, 
+    "senderId": "MbKZxXWQLZSNakkSh8hF9O_TqZY1dL30GLcD1QtkXEBwtxDjN9qU5QgFRTLbO5CWaaaMMl4SVUFSUwYyiSh12RI4KZcH4bpNgOrQii6TPamXUwwuj4g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] New TestCase instance per test method?", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vbossica@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... yes.  For each methods testXYZ the methods of your TestCase object are called in the following order: setUp, testXYZ, tearDown. if you do some", 
+    "msgId": 6475, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 17 Dec 2002 16:01:16 -0000\r\nReceived: (qmail 82835 invoked from network); 17 Dec 2002 16:01:14 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 17 Dec 2002 16:01:14 -0000\r\nReceived: from unknown (HELO c003.snv.cp.net) (209.228.32.218)\n  by mta1.grp.scd.yahoo.com with SMTP; 17 Dec 2002 16:01:12 -0000\r\nReceived: (cpmta 6226 invoked from network); 17 Dec 2002 08:01:11 -0800\r\nReceived: from 193.192.235.3 (HELO bossicard.com)\n  by smtp.telocity.com (209.228.32.218) with SMTP; 17 Dec 2002 08:01:11 -0800\r\nX-Sent: 17 Dec 2002 16:01:11 GMT\r\nMessage-ID: &lt;3DFF4A53.4090106@...&gt;\r\nDate: Tue, 17 Dec 2002 08:01:23 -0800\r\nUser-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2) Gecko/20021126\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] New TestCase instance per test method?\r\nReferences: &lt;atngu4+83e9@...&gt;\r\nIn-Reply-To: &lt;atngu4+83e9@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-From: &quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;\r\nFrom: &quot;Vladimir R. Bossicard&quot; &lt;vbossica@...&gt;\r\nX-Yahoo-Group-Post: member; u=112965394\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; My question is this - does jUnit instantiate my TestCase class for\n&gt; each test method that I have?\n\nyes.  For each methods &#39;testXYZ&#39; the methods of your TestCase object are \ncalled in the following order: setUp, testXYZ, tearDown.\n\nif you do some integration tests, you have to start/stop the server once \nfor all of your tests -&gt; use a TestSetup to &quot;encapsulate&quot; your main \ntestsuite.\n\n    Test suite() {\n       TestSuite suite = ...\n       suite.addTestSuite(...)\n\n       return new TestSetup(suite) {\n           public void setUp() {\n              /* start you server here */\n           }\n\n           public void tearDown() {\n              /* teardown your server here */\n           }\n       }\n    }\n\nThe tearDown method is not executed in a finally block, it means that if \nyou have errors/failures in your tests, the server will not be closed \nproperly.  To fix this, use the junitx.extension.TestSetup class of the \njunit-addons package (the tearDown is executed in a finally block).\n\nhth\n\n-Vladimir\n\n&lt;http://junit-addons.sf.net&gt;\n\n-- \nVladimir R. Bossicard\nwww.bossicard.com\n\n\n", 
+    "profile": "vbossica", 
+    "topicId": 6474, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "prevInTime": 6474, 
+    "contentTrasformed": false, 
+    "postDate": "1040140883", 
+    "canDelete": false, 
+    "nextInTopic": 6478, 
+    "prevInTopic": 6474, 
+    "headers": {
+        "inReplyToHeader": "PGF0bmd1NCs4M2U5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDNERkY0QTUzLjQwOTAxMDZAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PGF0bmd1NCs4M2U5QGVHcm91cHMuY29tPg=="
+    }
+}

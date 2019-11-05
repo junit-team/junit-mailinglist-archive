@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 10312, 
+    "senderId": "HvHisJWYzUetyjjVuoQIQI2ow_Jhfw-4j3DqV8jzV1z1dcqgE9cEvxVLFeRR6dRDyQqJwOOa4jZ769Ca4EHQpD4Qd2M-6NZdRByLTsvB_Qgs62pFhw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Problems testing an InputStream", 
+    "from": "&quot;Day, Jem BGI SF&quot; &lt;jem.day@...&gt;", 
+    "authorName": "Day, Jem BGI SF", 
+    "msgSnippet": "Chad, You need to ensure that your ant script is copying your resource files (ie your test .xml data) into whatever directory you re outputting your .class", 
+    "msgId": 10311, 
+    "rawEmail": "Return-Path: &lt;jem.day@...&gt;\r\nX-Sender: jem.day@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 78697 invoked from network); 27 Jan 2004 19:17:54 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m19.grp.scd.yahoo.com with QMQP; 27 Jan 2004 19:17:54 -0000\r\nReceived: from unknown (HELO fw-rc-01-qe0.barclaysglobal.com) (65.205.204.111)\n  by mta1.grp.scd.yahoo.com with SMTP; 27 Jan 2004 19:17:53 -0000\r\nReceived: from no.name.available by fw-rc-01-qe0.barclaysglobal.com\n          via smtpd (for mta1.grp.scd.yahoo.com [66.218.66.216]) with SMTP; 27 Jan 2004 19:17:53 UT\r\nReceived: from ([10.6.129.30])\n\tby mail-rc-03.barclaysglobal.com with SMTP ;\n\tTue, 27 Jan 2004 11:14:30 -0800 (PST)\r\nReceived: from no.name.available by fw-rc-01-qe1.barclaysglobal.com\n          via smtpd (for [192.168.12.45]) with SMTP; 27 Jan 2004 19:14:30 UT\r\nReceived: from calnte2k001.insidelive.net ([10.6.130.144]) by calntapp036 with InterScan Messaging Security Suite; Tue, 27 Jan 2004 11:14:25 -0800\r\nReceived: from calnte2k010.insidelive.net ([10.6.130.147]) by calnte2k001.insidelive.net with Microsoft SMTPSVC(5.0.2195.5329);\n\t Tue, 27 Jan 2004 11:14:25 -0800\r\nX-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1\r\ncontent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nDate: Tue, 27 Jan 2004 11:14:24 -0800\r\nMessage-ID: &lt;6312B9C0D5069E42B5107D1635CAC2EA142363@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] Problems testing an InputStream\r\nThread-Index: AcPjKuG9CqMB3AXfTOSokrqz/qwGKgB3lzfA\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReturn-Path: Jem.Day@...\r\nX-OriginalArrivalTime: 27 Jan 2004 19:14:25.0052 (UTC) FILETIME=[C6DFADC0:01C3E509]\r\nX-eGroups-Remote-IP: 65.205.204.111\r\nFrom: &quot;Day, Jem BGI SF&quot; &lt;jem.day@...&gt;\r\nSubject: RE: [junit] Problems testing an InputStream\r\nX-Yahoo-Group-Post: member; u=426314\r\nX-Yahoo-Profile: vladti\r\n\r\nChad,\n\n  You need to ensure that your ant script is copying your resource\n =\r\n files (ie your test .xml data) into whatever directory you&#39;re \n  outputtin=\r\ng your .class file to..\n\n  something along the lines of...\n\n  &lt;target name=\r\n=3D&quot;test.install&quot; depends=3D&quot;test.compile&quot;&gt;      \n     &lt;!-- Copy/install te=\r\nst files --&gt;  \n     &lt;copy todir=3D&quot;${test.clz}&quot;&gt;\n        &lt;fileset dir=3D&quot;${=\r\ntest.src}&quot;\n                 includes=3D&quot;**/*.xml,**/*.xsl, **/*.xsd **/*.wa=\r\nr **/test-log&quot;\n        /&gt;\n     &lt;/copy&gt;     \n  &lt;/target&gt;\n\nJem...\n\n\n\n-----Ori=\r\nginal Message-----\nFrom: Chad Woolley [mailto:lists@...]\nSent=\r\n: Sunday, January 25, 2004 2:09 AM\nTo: junit@yahoogroups.com\nSubject: [juni=\r\nt] Problems testing an InputStream\n\n\nHello,\n\nI am writing a test related to=\r\n XML parsing.  In the setUp() of my test, I read \nan InputStream as follows=\r\n:\n\n   inputStream =3D this.getClass().getResourceAsStream(&quot;sample.xml&quot;);\n\n.=\r\n..where sample.xml is in the same directory as my TestCase.\n\nI then have a =\r\n&quot;sanity&quot; check test to make sure I read the InputStream correctly:\n\n   publ=\r\nic void testSampleInputStreamIsValid() {\n     assertNotNull(&quot;InputStream sh=\r\nould not be null&quot;, inputStream);\n   }\n\nWhen I run this from within my IDE (=\r\nEclipse), it works fine - whether I run the \ntest directly, or from a suite=\r\n (which is in another package).\n\nHOWEVER, whenever I run it from Ant or Mav=\r\nen, I get a failure (InputStream is null).\n\nThis is probably a basic questi=\r\non related to reading InputStreams, but I&#39;m not \nsure what is wrong.  Hopef=\r\nully someone can help, or refer me to some helpful \ndocumentation.\n\nThanks,=\r\n\nChad\n\n\n\n \n\nYahoo! Groups Links\n\nTo visit your group on the web, go to:\n ht=\r\ntp://groups.yahoo.com/group/junit/\n\nTo unsubscribe from this group, send an=\r\n email to:\n junit-unsubscribe@yahoogroups.com\n\nYour use of Yahoo! Groups is=\r\n subject to:\n http://docs.yahoo.com/info/terms/ \n\n\n\n", 
+    "profile": "vladti", 
+    "topicId": 10290, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 426314, 
+    "prevInTime": 10310, 
+    "contentTrasformed": false, 
+    "postDate": "1075230864", 
+    "canDelete": false, 
+    "nextInTopic": 10488, 
+    "prevInTopic": 10292, 
+    "headers": {
+        "messageIdInHeader": "PDYzMTJCOUMwRDUwNjlFNDJCNTEwN0QxNjM1Q0FDMkVBMTQyMzYzQGNhbG50ZTJrMDEwLmluc2lkZWxpdmUubmV0Pg=="
+    }
+}

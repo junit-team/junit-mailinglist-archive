@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 5510, 
+    "senderId": "F9ALyi82AvsatJsQAO230t-JUY7YQvehXBYsRyvXwjFTnk3xFKReZgJkySho7lM-NP0hdfZplbLTiYydCgBA8U-uENhYzLd4k5hPcYNQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing methods declared private", 
+    "from": "Toby Ferguson &lt;toby.h.ferguson@...&gt;", 
+    "authorName": "Toby Ferguson", 
+    "msgSnippet": "Peter, private is private - so if these methods truly are private then noone can get at them. However, one technique is to use an inner class that gives access", 
+    "msgId": 5509, 
+    "topicId": 5490, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 119106703, 
+    "messageBody": "<div id=\"ygrps-yiv-676539923\">Peter,<br/>\n<br/>\nprivate is private - so if these methods truly are private then noone can<br/>\nget at them.<br/>\n<br/>\nHowever, one technique is to use an inner class that gives access to the<br/>\nmethods to be tested, and then to not include that class when publishing the<br/>\nfinal code.<br/>\n<br/>\nFor example, here is some class with a private method (I&#39;ve attached the<br/>\nclasses too, in case this gets garbled as text)<br/>\n<br/>\npublic class PrivateMethod<br/>\n{<br/>\n  private String value =  &quot;foo&quot;;<br/>\n<br/>\n  private String getValue(){<br/>\n return value;<br/>\n  }<br/>\n<br/>\n  private void setValue(String v){<br/>\n this.value = v;<br/>\n  }<br/>\n<br/>\n  public class Test<br/>\n  {<br/>\n public String getValue(){<br/>\n   return value;<br/>\n }<br/>\n public void setValue(String v){<br/>\n   value = v;<br/>\n }<br/>\n  }<br/>\n}<br/>\nNote the inner &quot;Test&quot; class exposing public versions of the private get/set<br/>\nmethods ...<br/>\n<br/>\nHere&#39;s a TestPrivateMethod class which will show how to use the inner<br/>\nPrivateMethod.Test class:<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\nimport junit.textui.TestRunner;<br/>\n<br/>\npublic class TestPrivateMethod extends TestCase<br/>\n{<br/>\n<br/>\n  public TestPrivateMethod(String name){<br/>\n super(name);<br/>\n  }<br/>\n<br/>\n  public static void main(String [] args){<br/>\n TestRunner.run(new TestSuite(TestPrivateMethod.class));<br/>\n  }<br/>\n<br/>\n   /** Will not compile!<br/>\n  public void testPrivateGet(){<br/>\n PrivateMethod p = new PrivateMethod();<br/>\n assertEquals(p.getValue(), &quot;foo&quot;);<br/>\n  }<br/>\n   */<br/>\n<br/>\n  public void testPrivateGetViaInnerClass(){<br/>\n PrivateMethod p = new PrivateMethod();<br/>\n PrivateMethod.Test pt = p.new Test();<br/>\n assertEquals(&quot;foo&quot;, pt.getValue());<br/>\n  }<br/>\n<br/>\n  public void testPrivateSetViaInnerClass(){<br/>\n PrivateMethod p = new PrivateMethod();<br/>\n PrivateMethod.Test pt = p.new Test();<br/>\n final String nv = &quot;new value&quot;;<br/>\n pt.setValue(nv);<br/>\n assertEquals( nv, pt.getValue());<br/>\n  }<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\np_d_w_219 wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; The methods that I most want to test are often the ones I want to<br/>\n&gt; declare as private. That makes them inaccessible to my testing<br/>\n&gt; harness.<br/>\n&gt;<br/>\n&gt; I could be designing my classes improperly for use with JUnit or<br/>\n&gt; perhaps I&#39;m setting JUnit up incorrectly. Could anyone offer me so<br/>\n&gt; guidance on this issue.<br/>\n&gt;<br/>\n&gt; Thanks,<br/>\n&gt; Peter<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n<br/>\n </span></blockquote>  ----------<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\nimport junit.textui.TestRunner;<br/>\nimport junit.framework.Assert;<br/>\n<br/>\npublic class TestPrivateMethod extends TestCase<br/>\n{<br/>\n<br/>\n  public TestPrivateMethod(String name){<br/>\n\tsuper(name);<br/>\n  }<br/>\n<br/>\n  public static void main(String [] args){<br/>\n\tTestRunner.run(new TestSuite(TestPrivateMethod.class));<br/>\n  }<br/>\n<br/>\n\t  /** Will not compile!<br/>\n  public void testPrivateGet(){<br/>\n\tPrivateMethod p = new PrivateMethod();<br/>\n\tassertEquals(p.getValue(), &quot;foo&quot;);<br/>\n  }<br/>\n\t  */<br/>\n<br/>\n  public void testPrivateGetViaInnerClass(){<br/>\n\tPrivateMethod p = new PrivateMethod();<br/>\n\tPrivateMethod.Test pt = p.new Test();<br/>\n\tassertEquals(&quot;foo&quot;, pt.getValue());<br/>\n  }<br/>\n<br/>\n  public void testPrivateSetViaInnerClass(){<br/>\n\tPrivateMethod p = new PrivateMethod();<br/>\n\tPrivateMethod.Test pt = p.new Test();<br/>\n\tfinal String nv = &quot;new value&quot;;<br/>\n\tpt.setValue(nv);<br/>\n\tassertEquals( nv, pt.getValue());<br/>\n  }<br/>\n}<br/>\n<br/>\n  ----------<br/>\n<br/>\npublic class PrivateMethod<br/>\n{<br/>\n  private String value =  &quot;foo&quot;;<br/>\n  <br/>\n  private String getValue(){<br/>\n\treturn value;<br/>\n  }<br/>\n<br/>\n  private void setValue(String v){<br/>\n\tthis.value = v;<br/>\n  }<br/>\n<br/>\n  public class Test <br/>\n  {<br/>\n\tpublic String getValue(){<br/>\n\t  return value;<br/>\n\t}<br/>\n\tpublic void setValue(String v){<br/>\n\t  value = v;<br/>\n\t}<br/>\n  }<br/>\n}<br/>\n<br/>\n\t<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 5508, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1028221001", 
+    "canDelete": false, 
+    "nextInTopic": 5517, 
+    "prevInTopic": 5493, 
+    "headers": {
+        "messageIdInHeader": "PDNENDk2ODQ5Ljc5M0IwM0MzQHN1bi5jb20+", 
+        "referencesHeader": "PGFpNGNwbStyaWdjQGVHcm91cHMuY29tPg=="
+    }
+}

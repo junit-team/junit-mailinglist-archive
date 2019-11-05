@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 4628, 
+    "senderId": "RU665um48IzXIXHlVCvCKlv949CkN6k5zzG88CEmaEDzz1G6gbv3biu61fNVywYkFYmLx_pfYB53p2EpBSl_-IVvuBzDl8Dy-r4EHOZsT3a3LHVm", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] assertContains? -&gt; junit development question?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Is there something wrong with: assertTrue( str.indexOf(keywordStr) = 0 )? I used to want many, many custom assertions. I now believe it s cleaner simply ", 
+    "msgId": 4627, 
+    "profile": "nails762", 
+    "topicId": 4617, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-1901530515\"><blockquote><span title=\"ireply\">&gt; it would create easier-to-read and maintain tests than having to<br/>\n&gt; currently <br/>\n&gt; do containment checks by writing<br/>\n&gt; <br/>\n&gt; if(str.indexOf(keywordStr) &lt; 0) {<br/>\n&gt; \tfail(&quot;failed.&quot;);<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>Is there something wrong with:<br/>\n<br/>\nassertTrue( str.indexOf(keywordStr) &gt;= 0 )?<br/>\n<br/>\nI used to want many, many custom assertions. I now believe it&#39;s cleaner simply <br/>\nto build a lot of custom methods answering boolean, then using assertTrue() and <br/>\nassertFalse(). What changes in your example is the condition, and not the <br/>\nassertion mechanism.<br/>\n<br/>\nYou create your own abstract TestCase class with your custom boolean-logic <br/>\nmethods.<br/>\n<br/>\npublic abstract class MyTestCase extends TestCase {<br/>\n    public static boolean containsText(final String string, final String <br/>\npattern) {<br/>\n        return string.indexOf(pattern) &gt;= 0;<br/>\n    }<br/>\n    ...<br/>\n}<br/>\n<br/>\n...<br/>\n<br/>\npublic class SomeTest extends MyTestCase {<br/>\n    public void testSomething() {<br/>\n        assertTrue(containsText(&quot;Hello&quot;, &quot;el&quot;));<br/>\n    }<br/>\n}<br/>\n<br/>\n...<br/>\n<br/>\nOf course, after enough of this, your code starts to look like procedural <br/>\nprogramming code, because what you REALLY want is to extend String, which you <br/>\ncan&#39;t do. If you really want to, you can wrap String and provide the extra <br/>\nmethods.<br/>\n<br/>\npublic class MyString {<br/>\n    private final String string;<br/>\n<br/>\n    public MyString(final String aString) {<br/>\n        string = aString;<br/>\n    }<br/>\n<br/>\n    public boolean contains(final String pattern) {<br/>\n        return string.indexOf(pattern) &gt;= 0;<br/>\n    }<br/>\n<br/>\n    public boolean matchesRegex(final String regex) {<br/>\n        // ORO magic...<br/>\n    }<br/>\n}<br/>\n<br/>\nIt&#39;s cleaner in one respect and uglier in another.<br/>\n<br/>\nJ. B. (Joe) Rainsberger<br/>\nPresident, Diaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nLet&#39;s write software that people understand.</div>", 
+    "prevInTime": 4626, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1018029117", 
+    "canDelete": false, 
+    "nextInTopic": 4629, 
+    "prevInTopic": 4626, 
+    "headers": {
+        "inReplyToHeader": "PDY5RTc1OTQ5N0ZBQjgzNDQ4Njc4MDNEMkUyQ0VCQjQ4Mjc1OTVBQGhlbm5lcGluLnJ4aHViLm5ldD4=", 
+        "messageIdInHeader": "PDEwMTgwMjkxMTcuM2NhZGU0M2QxNTg2NkB3ZWJtYWlsLmJsYWNrc3VuLmNhPg==", 
+        "referencesHeader": "PDY5RTc1OTQ5N0ZBQjgzNDQ4Njc4MDNEMkUyQ0VCQjQ4Mjc1OTVBQGhlbm5lcGluLnJ4aHViLm5ldD4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20440, 
+    "senderId": "YEfZ24fzm2Gp7ts-rFQsmTqE8vC0fUlP7uZJnfOW67vROaDwcBsJkycvineVBtTBrnJgr66UAnbKi9QPUGnrddx5zpYwAPRKqSGL2Q", 
+    "systemMessage": true, 
+    "subject": "Re: Parameterized test with default value", 
+    "from": "&quot;toalexsmail&quot; &lt;toalexsmail@...&gt;", 
+    "authorName": "toalexsmail", 
+    "msgSnippet": "I thought again and I found some other solutions. ... As I stated in my previous answer in Java the only way to supply default parameters to function (and to", 
+    "msgId": 20439, 
+    "profile": "toalexsmail", 
+    "topicId": 20436, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 340165037, 
+    "messageBody": "<div id=\"ygrps-yiv-568849467\">I thought again and I found some other solutions.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;kelvsyc&quot; &lt;kelvsyc@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; I&#39;ve just gotten into parameterized testing and customized JUnit4<br/>\n&gt; Runners, but I have a few questions:<br/>\n&gt; <br/>\n&gt; How do I go about making a parameterized test for which a single<br/>\n&gt; default parameter value is provided if a list of parameter values is<br/>\n&gt; not given?  (It appears to me that you may need to have a custom<br/>\n&gt; runner that&#39;s similar to Parameterized)<br/>\n&gt; <br/>\n&gt; Furthermore, suppose I have a subclass of this test, which defines a<br/>\n&gt; second parameter, which, unlike the first, is a required parameter<br/>\n&gt; (ie. I can choose to have my list of parameters as either two values<br/>\n&gt; or a single, which would assume the usage of a default value).  How<br/>\n&gt; would I go about doing that?  (Would I need to use a different runner?)<br/>\n&gt; <br/>\n&gt; How would I generalize this to any number of parameters (required and<br/>\n&gt; optional)?<br/>\nAs I stated in my previous answer in Java the only way to supply<br/>\ndefault parameters to function (and to constructor as I explained) is<br/>\nto overload it when one constructor call another. But what you could<br/>\ndo is to move this calculation of default values from the only<br/>\nconstructor to @Parametrized static method. Because you can&#39;t declare<br/>\nmore than one constructor you should define helper class for this purpose.<br/>\nFor example, you want to use 2 parameters one is boolean with default<br/>\nvalue false and second is required.<br/>\n<br/>\n@RunWith(Parameterized.class)<br/>\npublic class YourTest {<br/>\n    @Parameters<br/>\n    public static Collection&lt;?&gt; testFindLastOrder(){<br/>\n\t\treturn Arrays.&lt;Object[]&gt;asList(new Object[][]{<br/>\n                        YourTestHelper helper = new YourTestHelper(); <br/>\n\t\t\t{helper.getDefaultFlagValue(), OrderType.SIGN_UP, 1}, // 0<br/>\n\t\t\t{helper.getDefaultFlagValue(), OrderType.SIGN_UP, 15}, // 1<br/>\n                        {true, -7}, // 1<br/>\n\t\t\t<br/>\n\t};<br/>\n    private boolean flag;<br/>\n    private int i;    <br/>\n<br/>\n    public YourTest(boolean flag, int i){<br/>\n       this.flag = flag;<br/>\n       this.i = i;<br/>\n    }<br/>\n    ...<br/>\n}<br/>\n<br/>\npublic class YourTestHelper {<br/>\n   public boolean getDefaultFlagValue(){<br/>\n       return false;<br/>\n   }<br/>\n}<br/>\n <br/>\nYou can optimize this code, but the idea is clear. If you subclass<br/>\nYourTest class and want to change parameters that are passed to the<br/>\ntest class, you should simply define @Parameters method in your<br/>\nsubclass. You will use, perhaps, different helper class, which in is<br/>\ncase, perhaps subclasses YourTestHelper.  <br/>\n<br/>\n <br/>\n&gt; Finally, what if I wanted my parameterized tests to be named via some<br/>\n&gt; naming function (instead of serially numbered like Parameterized)?<br/>\n&gt;<br/>\nYou can consider to use Theories instead of Parameterized. Their you<br/>\nhave support for this. Note, that Theories run all permutations of<br/>\nyour parametrizes, so it can be not exactly what you want. I have no<br/>\nexperience by using this though, so I can&#39;t help you more. </span></blockquote></div>", 
+    "prevInTime": 20438, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1207867021", 
+    "canDelete": false, 
+    "nextInTopic": 20440, 
+    "prevInTopic": 20438, 
+    "headers": {
+        "inReplyToHeader": "PGZ0a2lzaitydHB0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGZ0bTRxZCtuMWNuQGVHcm91cHMuY29tPg=="
+    }
+}

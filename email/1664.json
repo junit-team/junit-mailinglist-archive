@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 1665, 
+    "senderId": "nux4Lue0p4GvGZr1P889GOXocWHzC7KWPmP8lUTILtfGkAKFe0urZB5sJhiAJIV_OFN71L0_Kg", 
+    "systemMessage": false, 
+    "subject": "Re: Running setUp once for all tests in a test suite", 
+    "from": "dfw1@...", 
+    "authorName": "dfw1@cornell.edu", 
+    "msgSnippet": "... method is ... ago ... to do ... extensions ... Grant, I do it this way: public class JDBCTests extends TestCase { public JDBCTests(String testName) { ", 
+    "msgId": 1664, 
+    "topicId": 1633, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-868525458\">--- In junit@y..., Grant Lewis &lt;lewis@s...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Can somebody help explain how to setup a TestCase so the setUp<br/>\n </span></blockquote>method is<br/>\n<blockquote><span title=\"ireply\"> &gt; executed once for all the tests. I posed this question a week or so<br/>\n </span></blockquote>ago<br/>\n<blockquote><span title=\"ireply\"> &gt; a and never received a reply with sufficient detail explaining how<br/>\n </span></blockquote>to do<br/>\n<blockquote><span title=\"ireply\"> &gt; it. Somebody suggested I look at the TestSetup class in the<br/>\n </span></blockquote>extensions<br/>\n<blockquote><span title=\"ireply\"> &gt; package, but I didn&#39;t get very far with that approach.<br/>\n&gt; <br/>\n&gt; Any help appreciated.<br/>\n<br/>\n </span></blockquote>Grant,<br/>\n<br/>\nI do it this way:<br/>\n<br/>\npublic class JDBCTests extends TestCase<br/>\n{<br/>\n    public JDBCTests(String testName)<br/>\n    {<br/>\n        super(testName);<br/>\n    }<br/>\n<br/>\n<br/>\n    public static Test suite()<br/>\n    {<br/>\n        TestSuite suite=new TestSuite();<br/>\n<br/>\n        suite.addTest(NestedSQLExceptionTest.suite());<br/>\n        suite.addTest(ResultSetWrongSizeExceptionTest.suite());<br/>\n        suite.addTest(ConnectionSourceTest.suite());<br/>\n        suite.addTest(DatabaseUtilsTest.suite());<br/>\n        suite.addTest(SQLStatementStringTest.suite());<br/>\n<br/>\n        return new JDBCTestSetup(suite);<br/>\n    }<br/>\n}<br/>\n<br/>\nJDBCTestSetup extends TestSetup, and sets up the jdbc connection<br/>\npools, etc. for the rest of the tests.<br/>\n<br/>\nDave</div>", 
+    "prevInTime": 1663, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "993567172", 
+    "canDelete": false, 
+    "nextInTopic": 1666, 
+    "prevInTopic": 1657, 
+    "headers": {
+        "inReplyToHeader": "PDNCMzc5QTdELjY4QUYyRjJEQHNjcmEub3JnPg==", 
+        "messageIdInHeader": "PDloYTdrNCtuMzJzQGVHcm91cHMuY29tPg=="
+    }
+}

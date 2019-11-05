@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 4294, 
+    "senderId": "VdPa6c2JvP68NDbAen41c7vLCvmgOdYuGGlPvk57KyCr-uSSU8yITsKX25AuY5uo7X3o5JIxF6t7ScCLnJZBrYw", 
+    "systemMessage": false, 
+    "subject": "Re: about teardown", 
+    "from": "Arnd Kohrs &lt;kohrs@...&gt;", 
+    "authorName": "Arnd Kohrs", 
+    "msgSnippet": "Hi, in addition to cleaning up stuff which might not be cleaned up by the garbage collection, I use tearDown() for the following purposes: - reset global state", 
+    "msgId": 4293, 
+    "profile": "arndkohrs", 
+    "topicId": 4273, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 7430552, 
+    "messageBody": "<div id=\"ygrps-yiv-200123838\">Hi,<br/>\n<br/>\nin addition to cleaning up stuff which might not be cleaned up by the<br/>\ngarbage collection, I use tearDown() for the following<br/>\npurposes: <br/>\n<br/>\n- reset global state to the state before the test:<br/>\n  Example: <br/>\n  Object oldTool;<br/>\n  protected void setUp() throws Exception {<br/>\n    super.setUp();<br/>\n    oldTool = Toolbox.getTool(&quot;ThreadFactory&quot;);<br/>\n    Toolbox.registerTool(&quot;ThreadFactory&quot;,new TestThreadFactory());<br/>\n  }<br/>\n<br/>\n  protected void tearDown() throws Exception {<br/>\n    Toolbox.registerTool(&quot;ThreadFactory&quot;,oldTool);    <br/>\n  }<br/>\n<br/>\n- validate that the tests (and the run objects) did not claim and not<br/>\n  release resources which they should have.  I think it&#39;s kind of smelly<br/>\n  if threads which have been created during the tests keep running, or<br/>\n  mutexes have been acquired but not released.  Therefore I introduce<br/>\n  resource tracking in some test cases.  And the tearDown() is the place<br/>\n  to validate that claimed resources are in a valid state after the test<br/>\n  in a generic way. <br/>\n<br/>\nWhat are others doing in their tearDowns?<br/>\n<br/>\nCheers,<br/>\n<br/>\nArnd.<br/>\n<br/>\nBTW: Never forget to call the super setUp and tearDown!<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;&gt;&gt;&gt; &quot;Ryan&quot; == Ryan P Ripley &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:ryan.ripley@...\">ryan.ripley@...</a>&gt; writes:<br/>\n<br/>\n </span></blockquote>    Ryan&gt; Hey Bhanu, Hopefully this helps a bit, my comments are inline<br/>\n    Ryan&gt; with your questions.<br/>\n<br/>\n    Ryan&gt; 1) why actuall teardown() method is required.<br/>\n<br/>\n    Ryan&gt; Teardown() is used to &quot;clean up&quot; any objects created in the<br/>\n    Ryan&gt; setup().  These objects are generally called fixtures.<br/>\n<br/>\n    Ryan&gt; Example:<br/>\n<br/>\n    Ryan&gt; \tvoid setup() {<br/>\n    Ryan&gt; \t\tClass.forName(&quot;sun.jdbc.odbc.JdbcOdbcDriver&quot;);<br/>\n    Ryan&gt; \t\tmyDBConnection =<br/>\n    Ryan&gt; DriverManager.getConnection(&quot;jdbc:odbc:YourDB&quot;);<br/>\n    Ryan&gt; \t\tmySqlStatement = myDBConnection.createStatement();<br/>\n    Ryan&gt; \t\tmyResults = mySqlStatement.executeQuery(&quot;select * from<br/>\n    Ryan&gt; foo&quot;);<br/>\n    Ryan&gt; \t}<br/>\n<br/>\n    Ryan&gt; \tvoid tearDown() {<br/>\n    Ryan&gt; \t\tmyDBConnection.close(); mySqlStatement.close();<br/>\n    Ryan&gt; \t\tmyResults.close();<br/>\n    Ryan&gt; \t}<br/>\n<br/>\n    Ryan&gt; You are basically just cleaning up objects, note: this is not<br/>\n    Ryan&gt; only limited to db connections, this is just an example usage.<br/>\n<br/>\n    Ryan&gt; 2) when i call tearDown() method it is making objects as<br/>\n    Ryan&gt;    null. though i<br/>\n    Ryan&gt; am not making the objects as null. what is the reason.<br/>\n<br/>\n    Ryan&gt; This is what tearDown() is for.  Object cleanup.  I&#39;m not sure<br/>\n    Ryan&gt; that I exactly follow the behavior you are seeing...<br/>\n<br/>\n    Ryan&gt; 3) how to write a log file if any of them have the code to<br/>\n    Ryan&gt;    make the log<br/>\n    Ryan&gt; file please forword to me.<br/>\n<br/>\n    Ryan&gt; I&#39;m currently working on a logging system for JUNIT using<br/>\n    Ryan&gt; log4j.  The plan is to use this to get the output to a<br/>\n    Ryan&gt; standard log file for metrics reporting.  I&#39;ll keep you<br/>\n    Ryan&gt; posted.<br/>\n<br/>\n    Ryan&gt; Hope this helps!<br/>\n<br/>\n    Ryan&gt; \t--Ryan<br/>\n<br/>\n--</div>", 
+    "prevInTime": 4292, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1015604484", 
+    "canDelete": false, 
+    "nextInTopic": 4298, 
+    "prevInTopic": 4276, 
+    "headers": {
+        "inReplyToHeader": "PDAwMGYwMWMxYzUxOCQ0ZTc5MTY5MCRlNTM3NTlhNUBhMDU1MjAxPiAoIlJ5YW4gUCBSaXBsZXkiJ3MgbWVzc2FnZSBvZiAiV2VkLCA2IE1hciAyMDAyIDA5OjA3OjUyIC0wNTAwIik=", 
+        "messageIdInHeader": "PHUxeWV2Nm5lai5mc2ZAY2FzdGlmeS5uZXQ+", 
+        "referencesHeader": "PDAwMGYwMWMxYzUxOCQ0ZTc5MTY5MCRlNTM3NTlhNUBhMDU1MjAxPg=="
+    }
+}

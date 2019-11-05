@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 300, 
+    "senderId": "SBuEXQVm87nlSFzGnT0dx4m44HLU15h3q4OjUPHLNOUnVUQw-qlv2wVS35W6EBBxP86oxk7zc9ZHEs_MjA7ZBPgTUn93", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] tests for a queue class?", 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "authorName": "Robert Sartin", 
+    "msgSnippet": "Well, unit testing really requires having an implementation, so let s assume one: import java.util.LinkedList; /** A trivial and incomplete FIFO Queue class. *", 
+    "msgId": 299, 
+    "topicId": 297, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1761804769\">Well, unit testing really requires having an implementation, so let&#39;s<br/>\nassume one:<br/>\n<br/>\nimport java.util.LinkedList;<br/>\n<br/>\n/** A trivial and incomplete FIFO Queue class.<br/>\n * @author Robert Sartin<br/>\n * @version 1.1<br/>\n */<br/>\npublic class Queue {<br/>\n  LinkedList queue = new LinkedList();<br/>\n<br/>\n  /** Construct an empty Queue. */<br/>\n  public Queue() {<br/>\n  }<br/>\n<br/>\n  /** Remove and return first item from a Queue that has an item.<br/>\n   * @return the Object that was at the front of the Queue<br/>\n   */<br/>\n  public Object remove() {<br/>\n    return queue.removeFirst();<br/>\n  }<br/>\n<br/>\n  /** Add an Object to the end of the Queue.<br/>\n   * @param o the Object to add<br/>\n   */<br/>\n  public void add(Object o) {<br/>\n    queue.addLast(o);<br/>\n  }<br/>\n<br/>\n  /** Query if Queue is empty.<br/>\n   * @return true if the Queue is empty<br/>\n   */<br/>\n  public boolean isEmpty() {<br/>\n    return 0 == queue.size();<br/>\n  }<br/>\n}<br/>\n<br/>\nand a quickie TestCase for it:<br/>\n<br/>\nimport junit.framework.Test;<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\n<br/>\npublic class QueueTest extends TestCase {<br/>\n  public QueueTest(String name) {<br/>\n    super(name);<br/>\n  }<br/>\n<br/>\n  public static Test suite() {<br/>\n    return new TestSuite(QueueTest.class);<br/>\n  }<br/>\n<br/>\n  public static void main(String[] args) {<br/>\n    junit.textui.TestRunner.run(suite());<br/>\n  }<br/>\n<br/>\n  /** Verify Queue is empty when created. */<br/>\n  public void testEmptyOnCreation() {<br/>\n    Queue qut = new Queue();<br/>\n    assert(qut.isEmpty());<br/>\n  }<br/>\n<br/>\n  /** Verify Queue can have single item added and <br/>\n   * it is returned on remove. <br/>\n   */<br/>\n  public void testAddThenRemove() {<br/>\n    Queue qut = new Queue();<br/>\n    Object foo = new Object();<br/>\n    qut.add(foo);<br/>\n<br/>\n    assertSame(foo, qut.remove());<br/>\n    assert(qut.isEmpty());<br/>\n  }<br/>\n<br/>\n  /** Verify Queue can have multiple items added and <br/>\n   * they are returned in FIFO order. Verify with two<br/>\n   * simple interleavings of add/remove.<br/>\n   */<br/>\n  public void testFiFo() {<br/>\n    Queue qut = new Queue();<br/>\n    Object foo1 = new Object();<br/>\n    Object foo2 = new Object();<br/>\n    Object foo3 = new Object();<br/>\n    Object foo4 = new Object();<br/>\n<br/>\n    qut.add(foo1);<br/>\n    qut.add(foo2);<br/>\n    assertSame(foo1, qut.remove());<br/>\n    assertSame(foo2, qut.remove());<br/>\n    assert(qut.isEmpty());<br/>\n<br/>\n    qut.add(foo3);<br/>\n    assertSame(foo3, qut.remove());<br/>\n    assert(qut.isEmpty());<br/>\n    qut.add(foo4);<br/>\n    assertSame(foo4, qut.remove());<br/>\n    assert(qut.isEmpty());<br/>\n  }<br/>\n}<br/>\n<br/>\nIt seems to test everything that could possibly break. Of course, now<br/>\nthat I&#39;ve said that someone will point out some defects....<br/>\n<br/>\nNote the missing tests:<br/>\n<br/>\n- nothing to try to &quot;overflow&quot; a Queue since I didn&#39;t define what that<br/>\nwould mean or how it would happen. [In fact, it doesn&#39;t have limits<br/>\nother than available heap.] A BoundedQueue would have test on those<br/>\naspects.<br/>\n<br/>\n- nothing to verify thread safety since I did not explicitly say it was<br/>\nthread safe. [In fact, it is not thread safe.] A ThreadSafeQueue would<br/>\nhave tests on those aspects.<br/>\n<br/>\n- nothing to verify what happens when I remove from an empty Queue<br/>\nsince I did not specify what should happen. [In fact, it will throw<br/>\nNoSuchElementException, but this wasn&#39;t specified.] Personally, if it<br/>\nwere really necessary I suppose I might test (and then maybe specify)<br/>\nthe NoSuchElementException.<br/>\n<br/>\nRegards,<br/>\n<br/>\nRob<br/>\n<br/>\n<br/>\n__________________________________________________<br/>\nDo You Yahoo!?<br/>\nYahoo! Auctions - Buy the things you want at great prices. <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://auctions.yahoo.com/\">http://auctions.yahoo.com/</a></div>", 
+    "prevInTime": 298, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "980283129", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 297, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDEwMTIzMjA1MjA5LjMzNjQucW1haWxAd2ViMTE2MDgubWFpbC55YWhvby5jb20+"
+    }
+}

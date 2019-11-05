@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 19605, 
+    "senderId": "dv8Zd7knOl4IELBnBYCnTaoUPKCTjReZ_djjkHMiTCpaqIP1angzbXfTCTL41vsBPx_Q540--gQmnzw5XGyWRhIM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to automatically verify state of fixture after test run", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Nat, Extending internals of your dependencies in order to give your users a better experience is a fact of life.  With 4.4, we took one step toward a more", 
+    "msgId": 19604, 
+    "profile": "dsaff", 
+    "topicId": 19603, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-374361118\">Nat,<br/>\n<br/>\nExtending internals of your dependencies in order to give your users a<br/>\nbetter experience is a fact of life.  With 4.4, we took one step<br/>\ntoward a more extensible design for JUnit4ClassRunner.  In the next<br/>\nversion, we hope to finish, and stabilize, the object structure, so<br/>\nthat extenders can depend on it.  The way to do what you want in JUnit<br/>\n4.4 and beyond should look like this:<br/>\n<br/>\n\tpublic static class Mocks extends JUnit4ClassRunner {<br/>\n\t\tpublic Mocks(Class&lt;?&gt; klass) throws InitializationError {<br/>\n\t\t\tsuper(klass);<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\t@Override<br/>\n\t\tprotected TestMethod wrapMethod(Method method) {<br/>\n\t\t\treturn new TestMethod(method, getTestClass()) {<br/>\n\t\t\t\t@Override<br/>\n\t\t\t\tprotected void invoke(Roadie context)<br/>\n\t\t\t\t\t\tthrows IllegalArgumentException,<br/>\n\t\t\t\t\t\tIllegalAccessException, InvocationTargetException {<br/>\n\t\t\t\t\tsuper.invoke(context);<br/>\n\t\t\t\t\tverifyMocks();<br/>\n\t\t\t\t}<br/>\n\t\t\t};<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nThe Roadie class is new in 4.4: it sets up for the test, tears down<br/>\nafter the test, and records what&#39;s going on while the test is<br/>\nperforming.  (For cultural background to the metaphor, see:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://en.wikipedia.org/wiki/Roadie)\">http://en.wikipedia.org/wiki/Roadie)</a><br/>\n<br/>\nThanks,<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 7/23/07, Nat Pryce &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:nat.pryce@...\">nat.pryce@...</a>&gt; wrote:<br/>\n&gt; Hi all.<br/>\n&gt;<br/>\n&gt; It&#39;s our own fault I know, but the new JUnit 4.4 release breaks jMock<br/>\n&gt; 2 because we extended the internal runner classes to verify mock<br/>\n&gt; objects at the end of the test but before the @After methods are<br/>\n&gt; called to tear down the fixtures.<br/>\n&gt;<br/>\n&gt; The classes we extended no longer exist.  What&#39;s the new, approved way<br/>\n&gt; of doing this?<br/>\n&gt;<br/>\n&gt; --Nat<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19603, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1185197433", 
+    "canDelete": false, 
+    "nextInTopic": 19605, 
+    "prevInTopic": 19603, 
+    "headers": {
+        "inReplyToHeader": "PDE3ZmE1M2QwNzA3MjMwNTAwdjRjNzEwYjlkeTgyNGQ4NjhlNTViOGFhZjRAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwNzIzMDYzMGs3YmQ0NTc4OGlhZmUxY2M1ODk3OTQ0NTg5QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDE3ZmE1M2QwNzA3MjMwNTAwdjRjNzEwYjlkeTgyNGQ4NjhlNTViOGFhZjRAbWFpbC5nbWFpbC5jb20+"
+    }
+}

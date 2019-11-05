@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3016, 
+    "senderId": "46vTpaLcgejl75ARYn_-vha5A8GFs2s3ovf9tpQhvj_n__OchYwUdKdZ0yh6r4bMQI4IM24agmEAqAVm3p_2e4ZsaHUpWQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Problems with WL transactions and JUnit", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... At first blush, setDefault() appears to have a different transaction isolation level than the finder such that the finder is not reading the current state", 
+    "msgId": 3015, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 19 Oct 2001 18:29:04 -0000\r\nReceived: (qmail 95011 invoked from network); 19 Oct 2001 18:29:02 -0000\r\nReceived: from unknown (10.1.10.27)\n  by l9.egroups.com with QMQP; 19 Oct 2001 18:29:02 -0000\r\nReceived: from unknown (HELO wren.mail.pas.earthlink.net) (207.217.121.64)\n  by mta2 with SMTP; 19 Oct 2001 18:29:02 -0000\r\nReceived: from clarkware.com (user-33qtosv.dialup.mindspring.com [199.174.227.159])\n\tby wren.mail.pas.earthlink.net (8.9.3/8.9.3) with ESMTP id LAA20069\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 19 Oct 2001 11:28:56 -0700 (PDT)\r\nMessage-ID: &lt;3BD070B8.BB96109B@...&gt;\r\nDate: Fri, 19 Oct 2001 12:28:08 -0600\r\nOrganization: Clarkware Consulting, Inc.\r\nX-Mailer: Mozilla 4.77 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Problems with WL transactions and JUnit\r\nReferences: &lt;20011019181452.81DFE4688A@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nX-Yahoo-Profile: clarkware\r\n\r\nLaurent Duperval wrote:\n\n&gt; We have subclassed TestCase into a TransactionTestCase for which the setUp()\n&gt; creates a new javax.transaction.UserTransaction. When the test is finished,\n&gt; the tearDown() rolls back the transaction. It works on almost all our test\n&gt; cases.\n&gt;\n&gt; Of the 200+ test cases we have, two of them have a weird behaviour. Our\n&gt; entity EJBs are all container-managed and pretty much all of them have\n&gt; finder methods described in the descriptor. What we have found with the two\n&gt; ill-behaved tests is that modifying some beans within the UnitTest does not\n&gt; affect the finder method. For example:\n&gt;\n&gt; Foo foo = home.create();\n&gt; foo.setDefault(true);\n&gt; Foo foo2 = home.findDefault();\n&gt; // foo2 has the same data as foo\n&gt; foo.setDefault(false);\n&gt; // The following should throw an exception but doesn&#39;t\n&gt; foo2 = home.findDefault();\n&gt;\n\nAt first blush, setDefault() appears to have a different transaction isolation level than the finder such that the finder is not\nreading the current state of Foo.  If the UserTransaction is being employed in setUp(), then it&#39;s probably foiling the\ncontainer-managed transactions.  This might explain why removing the use of the specialized setUp() causes it to work as\nexpected.\n\n\n&gt;\n&gt; Now, if print the content of foo2, I can see that the value of isDefault()\n&gt; is set to false. So the finder should never have found it, yet it does. We\n&gt; have found that if we remove the transactional environment from our unit\n&gt; test (i.e. extend TestCase instead of TransactionTestCase), then it works.\n&gt;\n\nPerhaps a look at the TransactionTestCase.setUp() would help, as this seems to be the differentiator.\n\nMike\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 3014, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3014, 
+    "contentTrasformed": false, 
+    "postDate": "1003516088", 
+    "canDelete": false, 
+    "nextInTopic": 3016, 
+    "prevInTopic": 3014, 
+    "headers": {
+        "messageIdInHeader": "PDNCRDA3MEI4LkJCOTYxMDlCQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PDIwMDExMDE5MTgxNDUyLjgxREZFNDY4OEFAbGVuYXJkLm1pY3JvY2VsbGk1LmNvbT4="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 12586, 
+    "senderId": "kA8avTtiwDmvRoT581vX6iq_MfY7ja-Y_wgQG8zlE8fnqCN3wq7g6uh5SYCLdR2zM-2qHix1V-KjmNzTgTV6xh3qo2xvT9CLnZfIgCy1nQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to keep variable between two (or more) test", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... In order to share data between tests, you need to use global data (that is, public static data). This is required because you (mostly) give up control over", 
+    "msgId": 12585, 
+    "profile": "nails762", 
+    "topicId": 12580, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-2050850461\">Thomas Manson wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; Hi,<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; For my test i need to keep some information between my tests:<br/>\n&gt; <br/>\n&gt; I need to connect to a workflow server and make operation on it...<br/>\n&gt; <br/>\n&gt; For example to get on Task i need to :<br/>\n&gt; <br/>\n&gt; connect  (connection identifier),<br/>\n&gt; Start a procedure as a (get the id of the new task)<br/>\n&gt; make several test operation on this task ( with the ID)<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; How could i do that?<br/>\n&gt; It seems that between two test a new TestCase() is done so a classe<br/>\n&gt; variable cannot be used.<br/>\n<br/>\n </span></blockquote>In order to share data between tests, you need to use global data (that <br/>\nis, public static data). This is required because you (mostly) give up <br/>\ncontrol over instantiating your test objects.<br/>\n<br/>\nThat said, you can always write your tests so that they don&#39;t need each <br/>\nother. I guess you have this:<br/>\n<br/>\n  * A few tests for connecting<br/>\n  * Several tests that use a connected object<br/>\n<br/>\nThe second category of tests do not necessarily need to use the same <br/>\nconnection from the first category of tests. The second category of <br/>\ntests can simply reconnect!<br/>\n<br/>\nIn one test suite:<br/>\n<br/>\nMyConnectingTests ... {<br/>\n     testOk<br/>\n     testFailedBecauseOfX<br/>\n     testFailedBecauseOfY<br/>\n}<br/>\n<br/>\nMyOperatingTests ... {<br/>\n     private Connection connection;<br/>\n<br/>\n     setUp() {<br/>\n         connectToWorkflowObject();<br/>\n     }<br/>\n<br/>\n     testDoXWithWorkflow ...<br/>\n     testDoYWithWorkflow ....<br/>\n}<br/>\n<br/>\nEach of the &quot;operating tests&quot; connects (separately) to the same workflow <br/>\nobject. Just make sure that tearDown() closes the connection after each <br/>\ntest.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 12584, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1104802818", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12580, 
+    "headers": {
+        "inReplyToHeader": "PDk2YWE3OWVkMDUwMTAzMDYxOTQzYzY3NjdhQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQxRDlGNDAyLjkwMTAwMDFAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDk2YWE3OWVkMDUwMTAzMDYxOTQzYzY3NjdhQG1haWwuZ21haWwuY29tPg=="
+    }
+}

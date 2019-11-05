@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 7396, 
+    "senderId": "COHb4CMX9ay9SzmB5xYA3NszwCVzgQNl377ykxU2AQRI0_XSukYuucsk7nTM2R_l0MBpIjtmbCOezie1xRDPL5Dh6xaE_g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: JUnit Design?", 
+    "from": "Levi Cook &lt;levicook@...&gt;", 
+    "authorName": "Levi Cook", 
+    "msgSnippet": "... Here s something less speculative... My tearDown method still needed some work. In particular TestCase.countTestCases() didn t do what I (incorrectly)", 
+    "msgId": 7395, 
+    "rawEmail": "Return-Path: &lt;levicook@...&gt;\r\nX-Sender: levicook@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 2 Apr 2003 02:52:58 -0000\r\nReceived: (qmail 1903 invoked from network); 2 Apr 2003 02:52:57 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m5.grp.scd.yahoo.com with QMQP; 2 Apr 2003 02:52:57 -0000\r\nReceived: from unknown (HELO relay.pulsity.com) (63.136.2.20)\n  by mta1.grp.scd.yahoo.com with SMTP; 2 Apr 2003 02:52:57 -0000\r\nReceived: from salesoutsourcing.com ([63.136.2.18]) by relay.pulsity.com with Microsoft SMTPSVC(5.0.2195.5329);\n\t Tue, 1 Apr 2003 20:52:56 -0600\r\nReceived: from papajo.com [68.114.212.217] by salesoutsourcing.com with ESMTP\n  (SMTPD32-7.07) id A087C6E011E; Tue, 01 Apr 2003 20:52:55 -0600\r\nDate: Tue, 1 Apr 2003 20:52:55 -0600\r\nSubject: Re: [junit] Re: JUnit Design?\r\nMime-Version: 1.0 (Apple Message framework v551)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;692BA6BB-64A5-11D7-BE14-000393AD2732@...&gt;\r\nMessage-Id: &lt;3443371A-64B6-11D7-BE14-000393AD2732@...&gt;\r\nX-Mailer: Apple Mail (2.551)\r\nReturn-Path: levicook@...\r\nX-OriginalArrivalTime: 02 Apr 2003 02:52:56.0950 (UTC) FILETIME=[F6E76960:01C2F8C2]\r\nFrom: Levi Cook &lt;levicook@...&gt;\r\nX-Yahoo-Group-Post: member; u=72977190\r\nX-Yahoo-Profile: lcook53703\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\nOn Tuesday, April 1, 2003, at 06:52  PM, Levi Cook wrote:\n\n&gt;\n&gt; On Wednesday, March 26, 2003, at 12:07  PM, Robert Bateman wrote:\n&gt;\n&gt;&gt; I tried this - it doesn&#39;t work :(\n&gt;\n&gt; The code snippet I posted was pure speculation.\n\nHere&#39;s something less speculative...\n\nMy tearDown method still needed some work. In particular  \n&quot;TestCase.countTestCases()&quot; didn&#39;t do what I (incorrectly) thought it  \nshould. I made a classic JUnit error and confused &quot;TestCase&quot; and  \n&quot;Test&quot;. Anyway, I ended up writing a one off utility method  \n&quot;countTestMethods()&quot; that does what I expected & all was well...\n\nFor what its worth, this example still isn&#39;t recommended. Its  \nfunctional & could easily be improved, but it smells bad.\n\n-- Levi\n\n\nGoneStatic.java\n------------------------------------------------------------------------ \n----------------------------------------------\n\nimport java.lang.reflect.Method;\n\nimport junit.framework.TestCase;\nimport junit.swingui.TestRunner;\n\n\npublic final class GoneStatic extends TestCase {\n\n\tprivate static Connection myConnection = null;\n\tprivate static int numTestsRun = 0;\n\n\tprotected void setUp() {\n\t\tif (myConnection == null) {\n\t\t\tmyConnection = createMyConnection();\n\t\t}\n\t}\n\n\tpublic void testA() {\n\t}\n\tpublic void testB() {\n\t}\n\tpublic void testC() {\n\t}\n\n\tprotected void tearDown() {\n\t\tnumTestsRun++;\t\t\n\t\t\n\t\t//if (numTestsRun == countTestCases()) {\n\t\t//                   ^^^^^^^^^^^^^^\n\t\t// oops, doesn&#39;t do what I expected, my bad\n\t\t//\n\t\tif (numTestsRun == countTestMethods()) {\n\t\t\tmyConnection.close();\n\t\t\tmyConnection = null;\n\t\t\tnumTestsRun = 0;\n\t\t}\n\t}\n\n\tprivate Connection createMyConnection() {\n\t\t// do something &quot;expensive&quot;\n\t\t// (aka. sleep 10 seconds:)\n\t\treturn new Connection();\n\t}\n\t\n\tprivate int countTestMethods() {\n\t\tint count = 0;\n\t\t\n\t\tMethod[] methods = getClass().getMethods();\n\t\t\n\t\tfor(int i = 0; i &lt; methods.length; i++) {\n\t\t\tif(methods[i].getName().startsWith(&quot;test&quot;)) {\n\t\t\t\tcount++;\t\t\n\t\t\t}\n\t\t}\n\t\t\n\t\treturn count;\t\t\n\t}\n\n\n\tpublic static void main(String[] args) {\n\t\tTestRunner.run(GoneStatic.class);\n\t}\n\n\n\tprivate static class Connection {\n\n\t\tprivate static Object lock = null;\n\n\t\tprivate Connection() {\n\t\t\tSystem.out.println(&quot;Entered Connection()&quot;);\n\t\t\tprintState();\n\t\t\t\n\t\t\tif (lock != null) {\n\t\t\t\tthrow new UnsupportedOperationException(&quot;There can only be one!&quot;);\n\t\t\t}\n\t\t\telse {\n\t\t\t\tlock = new Object();\n\t\t\t}\n\n\t\t\ttry {\n\t\t\t\tThread.sleep(10000);\n\t\t\t} catch (InterruptedException e) {\n\t\t\t\tSystem.out.println(&quot;This isn&#39;t supposed to happen :(&quot;);\n\t\t\t\te.printStackTrace();\n\t\t\t}\n\t\t}\n\t\t\n\t\tprivate void close() {\n\t\t\tSystem.out.println(&quot;Entered Connection.close()&quot;);\n\t\t\tprintState();\n\t\t\t\n\t\t\tif(lock == null) {\n\t\t\t\tthrow new UnsupportedOperationException(&quot;I&#39;m already closed!&quot;);\n\t\t\t}\n\t\t\telse {\n\t\t\t\tlock = null;\n\t\t\t}\n\t\t}\n\t\t\n\t\tprivate void printState() {\n\t\t\tSystem.out.print(this);\n\t\t\tSystem.out.print(&quot;: lock=&quot;);\n\t\t\tSystem.out.println(lock);\n\t\t\tSystem.out.println(&quot;-----------&quot;);\n\t\t}\n\t}\n}\n\n\n&gt; -- Levi\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "lcook53703", 
+    "topicId": 7266, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 72977190, 
+    "prevInTime": 7394, 
+    "contentTrasformed": false, 
+    "postDate": "1049251975", 
+    "canDelete": false, 
+    "nextInTopic": 7703, 
+    "prevInTopic": 7385, 
+    "headers": {
+        "inReplyToHeader": "PDY5MkJBNkJCLTY0QTUtMTFENy1CRTE0LTAwMDM5M0FEMjczMkBwYXBham8uY29tPg==", 
+        "messageIdInHeader": "PDM0NDMzNzFBLTY0QjYtMTFENy1CRTE0LTAwMDM5M0FEMjczMkBwYXBham8uY29tPg=="
+    }
+}

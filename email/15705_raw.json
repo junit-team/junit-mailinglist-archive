@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 15706, 
+    "senderId": "SxTppUjlL3SnoOjt_r98hvZxxcLS0_tQh5Y5lN-rv6iRb_nNVtHgdUck6e-n7XO98BW6a6LvTek2I6aeFkqZ0kwr8it0Nc6xkLJHhAXnsQOy1kVu-A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Class.getClassLoader().getResourceAsStream() fails in GUI test runners?", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "... It s not a Foo; it s the TestCase subclass itself.", 
+    "msgId": 15705, 
+    "rawEmail": "Return-Path: &lt;tibbettj@...&gt;\r\nX-Sender: tibbettj@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 39681 invoked from network); 16 Dec 2005 16:03:41 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m8.grp.scd.yahoo.com with QMQP; 16 Dec 2005 16:03:41 -0000\r\nReceived: from unknown (HELO mailhost2.sra.com) (163.252.31.55)\n  by mta6.grp.scd.yahoo.com with SMTP; 16 Dec 2005 16:03:41 -0000\r\nReceived: from verdi.iisd.sra.com ([163.252.29.9]) by mailhost2.sra.com with Microsoft SMTPSVC(6.0.3790.211);\n\t Fri, 16 Dec 2005 11:03:36 -0500\r\nReceived: from [163.252.3.3] (exaiphnes [163.252.3.3])\n\tby verdi.iisd.sra.com (8.9.3p2/8.9.3) with ESMTP id LAA03076\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 16 Dec 2005 11:03:34 -0500 (EST)\r\nMessage-ID: &lt;43A2E556.7040807@...&gt;\r\nDate: Fri, 16 Dec 2005 11:03:34 -0500\r\nUser-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.7) Gecko/20040517\r\nX-Accept-Language: en-US, en, ja, ko\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;43A1876A.1050603@...&gt; &lt;43A23EAE.9040102@...&gt;\r\nIn-Reply-To: &lt;43A23EAE.9040102@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nReturn-Path: tibbettj@...\r\nX-OriginalArrivalTime: 16 Dec 2005 16:03:36.0210 (UTC) FILETIME=[4572C720:01C6025A]\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: jason r tibbetts &lt;tibbettj@...&gt;\r\nReply-To: tibbettj@...\r\nSubject: Re: [junit] Class.getClassLoader().getResourceAsStream() fails in\n GUI test runners?\r\nX-Yahoo-Group-Post: member; u=224061497; y=_7Hztb0dR2pS2I7ViCkeXYCFKUFtypgY_gHxK_1e002rNeqXjVFGoYApgv-kcmDZsnyKcg\r\nX-Yahoo-Profile: tibbettj_at_verdi_sra_com\r\n\r\nJ. B. Rainsberger wrote:\n&gt; jason r tibbetts wrote:\n&gt; \n&gt;&gt;I&#39;m trying to test a class that loads a properties file in a special\n&gt;&gt;way. Because this class can be used in servlets (where\n&gt;&gt;this.getClass().getResourceAsStream() doesn&#39;t work, because of\n&gt;&gt;classloader issues) as well as in ordinary contexts, it takes a Class\n&gt;&gt;argument in its constructor. This Class&#39;s class loader is used to get\n&gt;&gt;the resource, as in\n&gt;&gt;\n&gt;&gt;   public Foo(Class cls, String propFilePath) {\n&gt;&gt;     ClassLoader loader = cls.getClassLoader();\n&gt;&gt;     InputStream in = loader.getResourceAsStream(propFilePath);\n&gt;&gt;   }\n&gt;&gt;\n&gt;&gt;It&#39;s usually sufficient for the caller to simply pass in\n&gt;&gt;this.getClass(). It&#39;s sufficient enough for the TestCase that tests it,\n&gt;&gt;anyway, /except/ when the test is run in the GUI TestRunner, or in code\n&gt;&gt;coverage tools like jcoverage and EMMA. In all three cases, the tests\n&gt;&gt;fail because the loader.getResourceAsStream() call returns null. The\n&gt;&gt;TestCase&#39;s setUp() constructs the Foo by passing in the TestCase&#39;s own\n&gt;&gt;class, as in:\n&gt;&gt;\n&gt;&gt;   foo = new Foo(this.getClass(), &quot;some/path&quot;);\n&gt;&gt;\n&gt;&gt;Other tests that load properties (in the usual way, via\n&gt;&gt;this.getClass.getResourceAsStream()) work just fine in all scenarios.\n&gt;&gt;\n&gt;&gt;I&#39;ve read the JUnit FAQ, mailing list archives, J.B.&#39;s book, the\n&gt;&gt;jcoverage and EMMA docs, etc., all to no avail. I know that the JUnit\n&gt;&gt;GUI test runners do use a custom classloader, but the custom\n&gt;&gt;functionality in that classloader don&#39;t appear to be relevant here. Nor\n&gt;&gt;do I want to add Foo&#39;s package to the excluded.properties, because\n&gt;&gt;that&#39;s a package that I&#39;m actively testing.\n&gt; \n&gt; \n&gt; What type is &#39;this&#39;? Foo? Try this:\n&gt; \n&gt; foo = new Foo(Foo.class, &quot;some/path&quot;)\n&gt; \n&gt; Once you do this 3 times, refactor to a named constructor:\n&gt; \n&gt; foo = Foo.forPath(&quot;some/path&quot;);\n&gt; \n&gt; static Foo forPath(String path) {\n&gt;      return new Foo(Foo.class, path);\n&gt; }\n\nIt&#39;s not a Foo; it&#39;s the TestCase subclass itself.\n\n", 
+    "profile": "tibbettj_at_verdi_sra_com", 
+    "topicId": 15698, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "prevInTime": 15704, 
+    "contentTrasformed": false, 
+    "postDate": "1134749014", 
+    "canDelete": false, 
+    "nextInTopic": 15706, 
+    "prevInTopic": 15703, 
+    "headers": {
+        "inReplyToHeader": "PDQzQTIzRUFFLjkwNDAxMDJAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzQTJFNTU2LjcwNDA4MDdAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "referencesHeader": "PDQzQTE4NzZBLjEwNTA2MDNAdmVyZGkuaWlzZC5zcmEuY29tPiA8NDNBMjNFQUUuOTA0MDEwMkByb2dlcnMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 14980, 
+    "senderId": "LLLHLUhdD9aUTJ0nJPju61YGTtT4vZS2BkFLv4aMee8guvel4_bex73XzM5dBu_VK8D3VsbEHCUNJiqR3UFCjb-tr4Lieubm", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] JUnit4: TestListener questions", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "... 1. The first argument is the test object. I assume that it will be useful, if only to print with toString(). I don t have any examples where it is used,", 
+    "msgId": 14979, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 43458 invoked from network); 27 Sep 2005 20:06:22 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m29.grp.scd.yahoo.com with QMQP; 27 Sep 2005 20:06:22 -0000\r\nReceived: from unknown (HELO smtpauth03.mail.atl.earthlink.net) (209.86.89.63)\n  by mta3.grp.scd.yahoo.com with SMTP; 27 Sep 2005 20:06:22 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth03.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1EKLiT-0008Gv-Br\n\tfor junit@yahoogroups.com; Tue, 27 Sep 2005 16:06:17 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Tue, 27 Sep 2005 13:06:12 -0700\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nIn-Reply-To: &lt;43395D08.90207@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nThread-Index: AcXDc0/0iKw6ZB+GR+C+83s0IJrSCgAHOt/A\r\nMessage-ID: &lt;E1EKLiT-0008Gv-Br@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d47858fd6117bcadbe0b1d037ce98d5ad77541ff679f2edfd118350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] JUnit4: TestListener questions\r\nX-Yahoo-Group-Post: member; u=173198504; y=YBHtCAoFnIxY2WeON0jvt7FzWN73YpjGDEHMg1yvfNIk-1ut\r\nX-Yahoo-Profile: kentlbeck\r\n\r\n \n\n&gt; -----Original Message-----\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; Behalf Of Elliotte Rusty Harold\n&gt; Sent: Tuesday, September 27, 2005 7:54 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] JUnit4: TestListener questions\n&gt; \n&gt; I&#39;m implementing a sample TestListener. I&#39;ve encountered a number of \n&gt; unclear points I wanted to ask about. Here&#39;s the interface:\n&gt; \n&gt; package org.junit.runner;\n&gt; \n&gt; import java.lang.reflect.Method;\n&gt; \n&gt; \n&gt; public interface TestListener {\n&gt; \n&gt; \tvoid testRunStarted(int testCount);\n&gt; \t\n&gt; \tvoid testRunFinished(Runner runner); //TODO: Something \n&gt; is wrong here... \n&gt; Should take an event anyway\n&gt; \t\n&gt; \tvoid testStarted(Object test, String name);\n&gt; \n&gt; \tvoid testFinished(Object test, String name);\n&gt; \n&gt; \tvoid testFailure(Failure failure);\n&gt; \n&gt; \tvoid testIgnored(Method method);\n&gt; \n&gt; }\n&gt; \n&gt; \n&gt; 1. What is the first argument passed to the testStarted and \n&gt; testFinished \n&gt; class? I assume this is the actual test object which in JUnit 4 can \n&gt; extend any class. Is it really helpful to pass this given \n&gt; that it&#39;s only \n&gt; an object of unspecified type and in practice may have any type?\n&gt; \n&gt; 2. Why does testIgnored() get a Method when testFailure gets \n&gt; a Failure? \n&gt; Should there be an Ignored class? Or should testFailure take a method \n&gt; instead? These two feel out of sync.\n&gt; \n&gt; 3. Does testFinished always bracket testStarted? i.e. does \n&gt; testFailure/testIgnored go in between started and finished or does it \n&gt; replace testFinished?\n\n1. The first argument is the test object. I assume that it will be useful,\nif only to print with toString(). I don&#39;t have any examples where it is\nused, though, which makes me suspicious.\n\n2. If a test is marked @Ignored, we don&#39;t create the test object at all.\nHowever, we need a way to report the class and method that is being ignored.\nMethod is a handy collector of those two pieces of information.\n\n3. testFinished() is always called.\n\nWe would like to move TestListener to an Event object style:\n  interface TestListener {\n    notify(TestEvent event);\n  }\n\nOr something like that. This makes it easier to extend TestListener in the\nfuture (changes won&#39;t break existing code) at the expense of readability\n(case logic in listener implemetations).\n\nSincerely yours,\n\nKent Beck\nThree Rivers Institute\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 14969, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 14978, 
+    "contentTrasformed": false, 
+    "postDate": "1127851572", 
+    "canDelete": false, 
+    "nextInTopic": 14981, 
+    "prevInTopic": 14969, 
+    "headers": {
+        "inReplyToHeader": "PDQzMzk1RDA4LjkwMjA3QG1ldGFsYWIudW5jLmVkdT4=", 
+        "messageIdInHeader": "PEUxRUtMaVQtMDAwOEd2LUJyQHNtdHBhdXRoMDMubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

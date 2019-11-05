@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 4294, 
+    "senderId": "fEja3rUMPjKZaAQG1sYgbDSf38lkOuw17KaNZ3Ermt9dB91eaNYOf6vFoy32FzUGPUx1w0Wo_C_iLWBNJQJFWjs", 
+    "systemMessage": false, 
+    "subject": "Re: about teardown", 
+    "from": "Arnd Kohrs &lt;kohrs@...&gt;", 
+    "authorName": "Arnd Kohrs", 
+    "msgSnippet": "Hi, in addition to cleaning up stuff which might not be cleaned up by the garbage collection, I use tearDown() for the following purposes: - reset global state", 
+    "msgId": 4293, 
+    "rawEmail": "Return-Path: &lt;kohrs@...&gt;\r\nX-Sender: kohrs@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 8 Mar 2002 17:00:05 -0000\r\nReceived: (qmail 46337 invoked from network); 8 Mar 2002 16:20:19 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m11.grp.snv.yahoo.com with QMQP; 8 Mar 2002 16:20:19 -0000\r\nReceived: from unknown (HELO ns1.castify.net) (194.98.78.16)\n  by mta2.grp.snv.yahoo.com with SMTP; 8 Mar 2002 16:20:19 -0000\r\nReceived: from CLEMENTINE (gw.castify.net [194.98.78.19])\n\tby ns1.castify.net (8.11.0/8.8.7) with ESMTP id g28GKDW28145;\n\tFri, 8 Mar 2002 17:20:13 +0100\r\nTo: junit@yahoogroups.com\r\nSubject: Re: about teardown\r\nReferences: &lt;000f01c1c518$4e791690$e53759a5@a055201&gt;\r\nX-Mailer: Gnus/5.090004 (Oort Gnus v0.04) Emacs/21.1\r\nDate: Fri, 08 Mar 2002 17:21:24 +0100\r\nIn-Reply-To: &lt;000f01c1c518$4e791690$e53759a5@a055201&gt; (&quot;Ryan P Ripley&quot;&#39;s\n message of &quot;Wed, 6 Mar 2002 09:07:52 -0500&quot;)\r\nMessage-ID: &lt;u1yev6nej.fsf@...&gt;\r\nLines: 88\r\nUser-Agent: Gnus/5.090004 (Oort Gnus v0.04) Emacs/21.1\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Arnd Kohrs &lt;kohrs@...&gt;\r\nFrom: Arnd Kohrs &lt;kohrs@...&gt;\r\nX-Yahoo-Group-Post: member; u=7430552\r\nX-Yahoo-Profile: arndkohrs\r\n\r\n\nHi,\n\nin addition to cleaning up stuff which might not be cleaned up by the\ngarbage collection, I use tearDown() for the following\npurposes: \n\n- reset global state to the state before the test:\n  Example: \n  Object oldTool;\n  protected void setUp() throws Exception {\n    super.setUp();\n    oldTool = Toolbox.getTool(&quot;ThreadFactory&quot;);\n    Toolbox.registerTool(&quot;ThreadFactory&quot;,new TestThreadFactory());\n  }\n\n  protected void tearDown() throws Exception {\n    Toolbox.registerTool(&quot;ThreadFactory&quot;,oldTool);    \n  }\n\n- validate that the tests (and the run objects) did not claim and not\n  release resources which they should have.  I think it&#39;s kind of smelly\n  if threads which have been created during the tests keep running, or\n  mutexes have been acquired but not released.  Therefore I introduce\n  resource tracking in some test cases.  And the tearDown() is the place\n  to validate that claimed resources are in a valid state after the test\n  in a generic way. \n\nWhat are others doing in their tearDowns?\n\nCheers,\n\nArnd.\n\nBTW: Never forget to call the super setUp and tearDown!\n\n\n\n&gt;&gt;&gt;&gt;&gt; &quot;Ryan&quot; == Ryan P Ripley &lt;ryan.ripley@...&gt; writes:\n\n    Ryan&gt; Hey Bhanu, Hopefully this helps a bit, my comments are inline\n    Ryan&gt; with your questions.\n\n    Ryan&gt; 1) why actuall teardown() method is required.\n\n    Ryan&gt; Teardown() is used to &quot;clean up&quot; any objects created in the\n    Ryan&gt; setup().  These objects are generally called fixtures.\n\n    Ryan&gt; Example:\n\n    Ryan&gt; \tvoid setup() {\n    Ryan&gt; \t\tClass.forName(&quot;sun.jdbc.odbc.JdbcOdbcDriver&quot;);\n    Ryan&gt; \t\tmyDBConnection =\n    Ryan&gt; DriverManager.getConnection(&quot;jdbc:odbc:YourDB&quot;);\n    Ryan&gt; \t\tmySqlStatement = myDBConnection.createStatement();\n    Ryan&gt; \t\tmyResults = mySqlStatement.executeQuery(&quot;select * from\n    Ryan&gt; foo&quot;);\n    Ryan&gt; \t}\n\n    Ryan&gt; \tvoid tearDown() {\n    Ryan&gt; \t\tmyDBConnection.close(); mySqlStatement.close();\n    Ryan&gt; \t\tmyResults.close();\n    Ryan&gt; \t}\n\n    Ryan&gt; You are basically just cleaning up objects, note: this is not\n    Ryan&gt; only limited to db connections, this is just an example usage.\n\n    Ryan&gt; 2) when i call tearDown() method it is making objects as\n    Ryan&gt;    null. though i\n    Ryan&gt; am not making the objects as null. what is the reason.\n\n    Ryan&gt; This is what tearDown() is for.  Object cleanup.  I&#39;m not sure\n    Ryan&gt; that I exactly follow the behavior you are seeing...\n\n    Ryan&gt; 3) how to write a log file if any of them have the code to\n    Ryan&gt;    make the log\n    Ryan&gt; file please forword to me.\n\n    Ryan&gt; I&#39;m currently working on a logging system for JUNIT using\n    Ryan&gt; log4j.  The plan is to use this to get the output to a\n    Ryan&gt; standard log file for metrics reporting.  I&#39;ll keep you\n    Ryan&gt; posted.\n\n    Ryan&gt; Hope this helps!\n\n    Ryan&gt; \t--Ryan\n\n-- \n\n\n", 
+    "profile": "arndkohrs", 
+    "topicId": 4273, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 7430552, 
+    "prevInTime": 4292, 
+    "contentTrasformed": false, 
+    "postDate": "1015604484", 
+    "canDelete": false, 
+    "nextInTopic": 4298, 
+    "prevInTopic": 4276, 
+    "headers": {
+        "inReplyToHeader": "PDAwMGYwMWMxYzUxOCQ0ZTc5MTY5MCRlNTM3NTlhNUBhMDU1MjAxPiAoIlJ5YW4gUCBSaXBsZXkiJ3MgbWVzc2FnZSBvZiAiV2VkLCA2IE1hciAyMDAyIDA5OjA3OjUyIC0wNTAwIik=", 
+        "messageIdInHeader": "PHUxeWV2Nm5lai5mc2ZAY2FzdGlmeS5uZXQ+", 
+        "referencesHeader": "PDAwMGYwMWMxYzUxOCQ0ZTc5MTY5MCRlNTM3NTlhNUBhMDU1MjAxPg=="
+    }
+}

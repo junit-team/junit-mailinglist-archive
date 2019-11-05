@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 43, 
+    "nextInTime": 19661, 
+    "senderId": "xQgF7KIm_tKDcRwtTvDzQDVxP3v7B4e_kAkjs7MUGYpIXqcFPGNlJz1US5B6_e1xRVQVZMDP2Q0PxGeUQX33TDm9PiXdB7oBlCZaw69qTfw4yw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing singleton patterns", 
+    "from": "Michael Feathers &lt;mfeathers@...&gt;", 
+    "authorName": "Michael Feathers", 
+    "msgSnippet": "... Testing singletons can be hard, but the harder problem is testing code that uses singletons. The problem with singletons is that they are classes which", 
+    "msgId": 19660, 
+    "profile": "mfeathers256", 
+    "topicId": 19636, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78021826, 
+    "messageBody": "<div id=\"ygrps-yiv-788478131\">Cédric Beust ♔ wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;On 7/30/07, jason r tibbetts &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:tibbettj@...\">tibbettj@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;I don&#39;t see how this helps...  How would you test the following code:<br/>\n&gt;<br/>\n&gt;public void hardToTest() {<br/>\n&gt;  TheOneTrueFoo.getInstance().blah();<br/>\n&gt;}<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n </span></blockquote>Testing singletons can be hard, but the harder problem is testing code <br/>\nthat uses singletons.<br/>\n<br/>\nThe problem with singletons is that they are classes which arrogate to <br/>\nthemselves the ability to determine a system-wide constraint: there will <br/>\nbe only one instance per system. That can be fine in production, but in <br/>\ntesting, each test is an independent system.<br/>\n<br/>\nHowever, sometimes it&#39;s not a problem. If you have a singleton with <br/>\nimmutable state, chances are, it will be easily testable and it will do <br/>\nokay in tests of classes that use it. If, on the other hand, it has <br/>\nmutable state and that state can affect the results of other tests, or <br/>\nif your singleton has unpleasant side effects on the outside world, the <br/>\nsingle instance constraint probably interferes with testing.<br/>\n<br/>\nThere are a bunch of ways to handle this. In some cases, it can be as <br/>\neasy as adding a resetForTesting method to your singleton:<br/>\n<br/>\npublic static void resetForTesting() {<br/>\ninstance = null;<br/>\n}<br/>\n<br/>\nYou can call this method in your setUp and in your tearDown to <br/>\nre-initialize the singleton.<br/>\n<br/>\nIn other cases, you can make testing easier for classes that use <br/>\nsingletons by using &#39;Extract and Override Getter&#39; on the class you want <br/>\nto test:<br/>\n<br/>\nAs an example, if you have a class like this:<br/>\n<br/>\npublic class A {<br/>\npublic doSomething() {<br/>\n...<br/>\nThingDoer.getInstance().doThing();<br/>\n}<br/>\n}<br/>\n<br/>\nYou can refactor to this:<br/>\n<br/>\npublic class A {<br/>\npublic doSomething() {<br/>\n...<br/>\ngetThingDoer().doThing();<br/>\n}<br/>\n<br/>\nprotected ThingDoer getThingDoer() {<br/>\nreturn ThingDoer.getInstance();<br/>\n}<br/>\n}<br/>\n<br/>\nIf you want to testing class A now, you subclass it and override <br/>\ngetThingDoer() to return a test double. When you do this, you have at <br/>\nleast three choices when making your test double, you can:<br/>\n1) Extract an interface for ThingDoer and have getInstance return an <br/>\nobject of the interface type, or<br/>\n2) Use &#39;Extract Implementer&#39; by calling the interface ThingDoer and <br/>\npushing all of its implementation down to a subclass. The advantage here <br/>\nis that every use of the name &#39;ThingDoer&#39; in your application now refers <br/>\nto an interface, or<br/>\n3) Make the constructor of ThingDoer protected, and subclass ThingDoer, <br/>\noverriding only the methods you need to make ThingDoer cooperate well in <br/>\nyour test.<br/>\n<br/>\nIn each of these cases, you&#39;ll have to raise the visibility of the <br/>\nconstructor.<br/>\n<br/>\nThese are pragmatic choices. What you do depends upon the style you want <br/>\nto have in your application along with the particular circumstance.<br/>\n<br/>\nIf you don&#39;t want to go the &#39;Extract and Override Getter&#39; route, you can <br/>\nuse &#39;Introduce Static Setter.&#39; This is simply adding a setter to the <br/>\nsingleton which you can use to replace the instance while under test. <br/>\nThe nice thing about it, is that it allows you to fake the singleton in <br/>\nall of your tests. You just have to remember to call the static setter <br/>\nin all of your setUp and tearDown methods. And, you do have to choice <br/>\namong the three options I mentioned above for creating test doubles.<br/>\n<br/>\nIf you&#39;re working in fresh code, you have more options. However, those <br/>\nare some of the common approaches people take when attempting to get <br/>\ntests in place in code where someone has used singleton.<br/>\n<br/>\nMichael Feathers<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.objectmentor.com\">http://www.objectmentor.com</a><br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://beautifulcode.oreillynet.com/\">http://beautifulcode.oreillynet.com/</a></div>", 
+    "prevInTime": 19659, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1185823319", 
+    "canDelete": false, 
+    "nextInTopic": 19661, 
+    "prevInTopic": 19658, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDcwNzMwMDkwM2o3YTM0NWViZWgxYmY5Nzc2MTAxODViZDc5QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQ2QUUzQTU3LjEwOTA5MDBAbWluZHNwcmluZy5jb20+", 
+        "referencesHeader": "PDQ2QUI0MTZDLjIwNDA0MDBAcGZhcnJlbGwuY29tPgkgPDQ2QURFRjUxLjgwNjA0MDdAdmVyZGkuaWlzZC5zcmEuY29tPiA8Yjg2YjZhOWMwNzA3MzAwOTAzajdhMzQ1ZWJlaDFiZjk3NzYxMDE4NWJkNzlAbWFpbC5nbWFpbC5jb20+"
+    }
+}

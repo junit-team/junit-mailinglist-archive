@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 14119, 
+    "senderId": "yDLHRFQTW9QHz_EDtwurdSDFUvFrtpYa5OBAVwVsyL7eod5VDxPQazAj0EE9IqIT8UmDQ6hFWQMAD4N79ic2njrnNH6REXP4Juh0BzmhjpdNgEnpZg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing Methods with Dates WAS: Testing Methods with Random Numbers", 
+    "from": "Andrew McDonagh &lt;andrew.mcdonagh@...&gt;", 
+    "authorName": "Andrew McDonagh", 
+    "msgSnippet": "... snipped. ... snipped Yes thats a very good technique.   I ve used  it when using Dates and the current system time. Instead of code using Java s", 
+    "msgId": 14118, 
+    "profile": "andy_ipaccess", 
+    "topicId": 14105, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 73998260, 
+    "messageBody": "<div id=\"ygrps-yiv-361828585\">Michael wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;Hi. I was brainstorming and idea on the drive home from work tonight<br/>\n&gt;and realized I didn&#39;t know how to test something. This didn&#39;t come as<br/>\n&gt;a major shock, but I think I have an idea for a solution and I would<br/>\n&gt;like some devil&#39;s advocates :)<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n </span></blockquote>snipped.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;The implementation of DoubleGenerator in production code could be a<br/>\n&gt;wrapper around Math.random() and a testing implementation could allow<br/>\n&gt;you to set the sequence of doubles to return.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n </span></blockquote>snipped<br/>\n<br/>\n<br/>\nYes thats a very good technique.   I&#39;ve used  it when using Dates and <br/>\nthe current system time.<br/>\n<br/>\nInstead of code using Java&#39;s System.currentTimeInMillis() method <br/>\ndirectly, they get the time via an abstract factory. The production code <br/>\nconcrete factory does the usual System.currentTimeInMillis() whereas the <br/>\ntests use a Test Concrete Factory that is preconfigured to always return <br/>\nthe same value.<br/>\n<br/>\nprotected void setUp() throws Exception {<br/>\n      SystemTimeFactorySingleton.setConcreteFactory(new <br/>\nTestSystemTimeFactory(10));<br/>\n   }<br/>\n<br/>\npublic void testReportingInvalidAttributeType() {<br/>\n<br/>\n   AlarmReporterImpl reporter = new AlarmReporterImpl();<br/>\n<br/>\n   MockAlarmEventSubscriber mockAlarmEventSubscriber = new <br/>\nMockAlarmEventSubscriber();<br/>\n   reporter.setAlarmEventSubscriber(mockAlarmEventSubscriber);<br/>\n<br/>\n   String dn = &quot;bss=0,Site=2&quot;;<br/>\n<br/>\n   reporter.reportInvalidAttributeTypeAlarm(dn);<br/>\n<br/>\n   Alarm actualAlarm = mockAlarmEventSubscriber.getLastAlarm();<br/>\n<br/>\n   Date expectedDate = new <br/>\nDate(SystemTimeFactorySingleton.getInstance().currentTimeInMillis());<br/>\n   assertEquals(expectedDate, actualAlarm .getDate());<br/>\n   assertEquals(expectedDN, actualAlarm.getDN());<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\npublic interface SystemTimeFactory {<br/>\n   long currentTimeInMillis();<br/>\n   long currentTimeInSeconds();<br/>\n}<br/>\n<br/>\n<br/>\n//////////////////////////////<br/>\npublic class DefaultSystemTimeFactory implements SystemTimeFactory {<br/>\n<br/>\n   public long currentTimeInMillis() {<br/>\n      return System.currentTimeMillis();<br/>\n   }<br/>\n<br/>\n   public long currentTimeInSeconds() {<br/>\n      return (currentTimeInMillis() / 1000) * 1000;<br/>\n   }<br/>\n}<br/>\n<br/>\n//////////////////////////////<br/>\npublic class TestSystemTimeFactory implements SystemTimeFactory {<br/>\n<br/>\n   public TestSystemTimeFactory(long time) {<br/>\n      m_time = time;<br/>\n   }<br/>\n<br/>\n   public void setTimeInMillis(long time) {<br/>\n      m_time = time;<br/>\n   }<br/>\n<br/>\n  public long currentTimeInMillis() {<br/>\n      return m_time;<br/>\n   }<br/>\n<br/>\n   public long currentTimeInSeconds() {<br/>\n      return (currentTimeInMillis() / 1000) * 1000;<br/>\n   }<br/>\n<br/>\n   private long m_time;<br/>\n}<br/>\n<br/>\npublic class SystemTimeFactorySingleton {<br/>\n   public static SystemTimeFactory getInstance() {<br/>\n      return s_concreteFactory;<br/>\n   }<br/>\n<br/>\n   /**<br/>\n    * use this to replace the &quot;production&quot; factory with one for a <br/>\nspecific purpose such as testing.<br/>\n    */<br/>\n   public static void setConcreteFactory(SystemTimeFactory <br/>\nconcreteFactory) {<br/>\n      s_concreteFactory = concreteFactory;<br/>\n   }<br/>\n<br/>\n   private static SystemTimeFactory s_concreteFactory = new <br/>\nDefaultSystemTimeFactory();<br/>\n}<br/>\n<br/>\nWe chose to use a singleton abstract factory rather than pass around the <br/>\nSystemTime, mainly because we were working on legacy code As the legacy <br/>\ncode was already doing System.currentTimeInMIllis() it helped us move <br/>\nforward with the story without having to refactor method signatures to <br/>\npass the time around.  I&#39;m not sure if I would have used a Singleton <br/>\nAbstract factory or not next time (no pun intended).<br/>\n<br/>\n<br/>\nAndrew</div>", 
+    "prevInTime": 14117, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1121161578", 
+    "canDelete": false, 
+    "nextInTopic": 14119, 
+    "prevInTopic": 14116, 
+    "headers": {
+        "inReplyToHeader": "PGRhbjlzNitpY25pQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyRDM5MTZBLjMwMDA5MDhAaXBhY2Nlc3MuY29tPg==", 
+        "referencesHeader": "PGRhbjlzNitpY25pQGVHcm91cHMuY29tPg=="
+    }
+}

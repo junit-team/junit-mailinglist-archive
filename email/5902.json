@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 5903, 
+    "senderId": "-AyQnm8-QsMI8zhk3ulVGXVKgXIlLPYUbXPMFJYOauMMv3jRB73wNZfHXXmICenWfgs3T0n2mlEC8mPXgkx2C_yvJdn8ivgIKgSLpYzp", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Do JUnit internals suck?!?", 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "authorName": "Mark Meyers", 
+    "msgSnippet": "... class Xxx extends Assert implements Test ? Never tried it though... ... That is the case already: public class Assert... static public void", 
+    "msgId": 5902, 
+    "topicId": 5875, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 61568997, 
+    "messageBody": "<div id=\"ygrps-yiv-1085694530\"><blockquote><span title=\"ireply\">&gt; -----Original Message-----<br/>\n&gt; From: Berin Loritsch [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bloritsch@...\">bloritsch@...</a>]<br/>\n&gt; ...<br/>\n&gt; <br/>\n&gt; Another issue I have is that while JUnit defines the Test interface,<br/>\n&gt; it only really expects the TestCase base class.  It is unclear how<br/>\n&gt; the Test interface interacts with the system.  Sometimes I would much<br/>\n&gt; rather work with my own base class that is completely separate from<br/>\n&gt; JUnit.  The Assert class should be made a static utility clasee, not<br/>\n&gt; a base class as well.  That would allow us to work with the assert<br/>\n&gt; methods from any class something like this is much better:<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>class Xxx extends Assert implements Test ?<br/>\nNever tried it though...<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Assert.isTrue( myObject.rocks() );<br/>\n&gt; <br/>\n&gt; than this:<br/>\n&gt; <br/>\n&gt; assertTrue( myObject.rocks() );<br/>\n&gt; <br/>\n&gt; ...<br/>\n&gt; <br/>\n&gt; What I would like to see is the following:<br/>\n&gt; <br/>\n&gt; * Explicit use of interfaces--make the contracts clear, and code the<br/>\n&gt;    test runners/collectors to use the interfaces and not the base<br/>\n&gt;    classes.  If there are different contracts with a type of <br/>\n&gt; test/suite,<br/>\n&gt;    then it needs a new interface.<br/>\n&gt; <br/>\n&gt; * Making Assert into a set of static utilities so that we don&#39;t have<br/>\n&gt;    to inherit it to make it useful.<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>That is the case already:<br/>\n<br/>\npublic class Assert...    <br/>\n    static public void assertTrue(boolean condition){<br/>\n        assertTrue(null, condition);<br/>\n    }<br/>\n    static public void fail(String message)...<br/>\n<br/>\nThe downside is of course not being able to override those methods...<br/>\n(redefining assertTrue(String, boolean) will not change behavior of<br/>\nassertTrue(boolean) as with instance methods)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; ...<br/>\n&gt; * Explicit declaration of the TestCase being the Leaf of the <br/>\n&gt; model, not<br/>\n&gt;    a branch (as it is now treated).  A different interface <br/>\n&gt; for TestSuite<br/>\n&gt;    and TestCase will help.<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>When writing tests, it is very usefull to group related tests together in a<br/>\nsingle java file . <br/>\nIt may be clearer on the &quot;internals&quot; side if there would be a<br/>\nTestMethodInvoker class that takes a TestCase and a Method and invokes the<br/>\nmethod on the instance. <br/>\nYou could get rid of the TestCase(String nameThatIsReallyAMethodName)<br/>\nconstructor. The constructor is most definitely confusing to novice users.<br/>\nAnd they are encouraged to put setUp code in the constructor. It is there<br/>\nanyway, not so the setUp method.<br/>\nThe TestSuite and TestMethodInvoker would participate in the composite<br/>\npattern, the TestCase could then just be collection of test methods (and no<br/>\nlonger implement Test, behavior extracted to TestMethodInvoker ).<br/>\nIs that a good idea ?<br/>\nDownside is backward compatibility, of course...</div>", 
+    "prevInTime": 5901, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1033568163", 
+    "canDelete": false, 
+    "nextInTopic": 5903, 
+    "prevInTopic": 5901, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ4MUE4QENBU0UwNTI+"
+    }
+}

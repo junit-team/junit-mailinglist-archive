@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5214, 
+    "senderId": "YTSH_Qry7at-Eb_ggvbrTGt4V8GXjeT4GKV8v_C9zMNkcVYlAAYyNRW28j7YrNZl8dEP-F_jRYjsGdXpxuSzJERq4b4", 
+    "systemMessage": false, 
+    "subject": "Re: distinguishing between failures and errors", 
+    "from": "&quot;pholser&quot; &lt;pholser@...&gt;", 
+    "authorName": "pholser", 
+    "msgSnippet": "... good. ... simplifying (the ctor that takes an int kind of misdirects): public void testExceptionExpected() { try { new ArrayList().get( 23 ); fail( Should", 
+    "msgId": 5213, 
+    "rawEmail": "Return-Path: &lt;pholser@...&gt;\r\nX-Sender: pholser@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 19 Jun 2002 15:18:35 -0000\r\nReceived: (qmail 95506 invoked from network); 19 Jun 2002 15:18:34 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 19 Jun 2002 15:18:34 -0000\r\nReceived: from unknown (HELO n28.grp.scd.yahoo.com) (66.218.66.84)\n  by mta3.grp.scd.yahoo.com with SMTP; 19 Jun 2002 15:18:34 -0000\r\nReceived: from [66.218.67.141] by n28.grp.scd.yahoo.com with NNFMP; 19 Jun 2002 15:18:34 -0000\r\nDate: Wed, 19 Jun 2002 15:18:31 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: distinguishing between failures and errors\r\nMessage-ID: &lt;aeq7c7+p87v@...&gt;\r\nIn-Reply-To: &lt;3D0F474F.6040501@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3523\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;pholser&quot; &lt;pholser@...&gt;\r\nX-Yahoo-Group-Post: member; u=66805313\r\nX-Yahoo-Profile: pholser\r\n\r\n--- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:\n&gt; Q: What&#39;s the difference between a failure and an error?\n&gt; \n&gt; A:\n&gt; \n&gt; Assertions are used to check for the possibility of failures,\n&gt; therefore failures are anticipated.\n\ngood.\n\n&gt; In the following example, the IndexOutOfBoundsException is expected\n&gt; and checked with an assertion.  If the expected exception is not\n&gt; raised, then a failure is produced.  \n\nsimplifying (the ctor that takes an int kind of misdirects):\n\npublic void testExceptionExpected() {\n  try {\n    new ArrayList().get( 23 );\n    fail( &quot;Should have thrown IndexOutOfBoundsException&quot; );\n  }\n  catch ( IndexOutOfBoundsException success ) {\n  }\n}\n\n&gt; Errors are unanticipated problems resulting in uncaught exceptions\n&gt; being propagated from a test method.  In the following example, the\n&gt; IndexOutOfBoundsException is not expected. The JUnit framework\n&gt; produces an error if the IndexOutOfBoundsException, or any other\n&gt; unchecked exception, is raised.  \n\nhow about changing the example so that IndexOutOfBoundsException\nshouldn&#39;t be thrown.  plus, IndexOutOfBoundsException is an unchecked\nexception, so don&#39;t bother with adding it to the throws clause:\n\n  public void testExceptionUnexpected() {\n    List list = new ArrayList();\n    list.add( &quot;blah&quot; );\n    assertEquals( &quot;0th element&quot;, &quot;blah&quot;, list.get( 0 ) );\n  }\n\n&gt; Both failures and errors will cause the test to fail.  However, it\n&gt; is useful to differentiate between failures and errors because the\n&gt; debugging process is slightly different.  \n&gt; \n&gt; In the first example, the use of fail() will not generate a\n&gt; complete stack trace including the method that raised the\n&gt; exception.  In this case that&#39;s sufficient since we anticipate that\n&gt; the exception will be raised.  If it&#39;s not raised, then it&#39;s a\n&gt; problem with the test itself.  \n&gt; \n&gt; In the second example,  the JUnit framework catches the exception\n&gt; and generates an error with a complete stack trace for the\n&gt; exception.  Since we don&#39;t expect this exception to be raised, a\n&gt; complete stack trace is useful in debugging why it was raised.\n\ngolden.\n\ni was struggling with whether checked exceptions advertised in the\n&quot;throws&quot; clause of a method being tested represented &quot;anticipated&quot;\nfaults that merited catching and failing the test if caught.\nafter reading all the discussion here and at the wiki, i&#39;m inclined\nonly to catch the exception that should be thrown during the course\nof a test (if any), letting the others propagate out as errors.\n\nif that&#39;s the majority opinion of the user community, then i&#39;d go so\nfar as to mention it in the FAQ...that this leads to test methods\nthat themselves advertise &quot;throws Exception&quot;, allowing checked\nexceptions which aren&#39;t anticipated in a given test to be treated as\nerrors rather than failures, resulting in cleaner code:\n\n  public void testReflectiveInstantiation() throws Exception {\n    MyClass instance = (MyClass) MyClass.class.newInstance();\n    assertNotNull( instance );\n  }\n\nversus:\n\n  public void testReflectiveInstantiation() {\n    try {\n      MyClass instance = (MyClass) MyClass.class.newInstance();\n      assertNotNull( instance );\n    }\n    catch ( IllegalAccessException ex ) {\n      fail( &quot;threw: &quot; + ex );\n    }\n    catch ( InvocationTargetException ex ) {\n      fail( &quot;ctor threw: &quot; + ex.getTargetException() );\n    }\n    catch ( ExceptionInInitializerError error ) {\n      fail( &quot;threw: &quot; + error );\n    }\n    catch ( SecurityException ex ) {\n      fail( &quot;threw: &quot; + ex );\n    }\n  }\n\nthanks for the enlightenment!\n\n--p\n\n\n\n", 
+    "profile": "pholser", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 66805313, 
+    "prevInTime": 5212, 
+    "contentTrasformed": false, 
+    "postDate": "1024499911", 
+    "canDelete": false, 
+    "nextInTopic": 5215, 
+    "prevInTopic": 5212, 
+    "headers": {
+        "inReplyToHeader": "PDNEMEY0NzRGLjYwNDA1MDFAY2xhcmt3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PGFlcTdjNytwODd2QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 9226, 
+    "senderId": "ZuooqHvPKWm7BwMLMJopPiInfyun_z2gdSf-AogCvR_1Vi4SFW7KEkb3Jp6-3IuFSZfXijs0KPhZglo_CpvTzY-Oef1KatRA5O1z6bRvkg", 
+    "systemMessage": false, 
+    "subject": "Re: HTTP Testing - Local and Remote", 
+    "from": "Paul Christmann &lt;java-junit@...&gt;", 
+    "authorName": "Paul Christmann", 
+    "msgSnippet": "I ve also wanted similar functionality as you describe, and have done it using ant, junit, tomcat and cactus.  (And my own WebServer java code. Yikes.....).", 
+    "msgId": 9225, 
+    "topicId": 9224, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106325759, 
+    "messageBody": "<div id=\"ygrps-yiv-1063567070\">I&#39;ve also wanted similar functionality as you describe, and have done it<br/>\nusing ant, junit, tomcat and cactus.  (And my own WebServer java code.<br/>\nYikes.....).  (I don&#39;t consider this &quot;unit&quot; testing, per se.  But I do<br/>\nconsider it a reasonable problem, and one that I solved with &quot;unit&quot;<br/>\ntesting tools.)<br/>\n<br/>\nSo here&#39;s a bunch of thoughts which I hope provide some insights into<br/>\nwhat I did to solve a similar problem:<br/>\n<br/>\nI wanted to test HTTP communication with a server, and test excercising<br/>\nremote functionality.  At first, I thought they were the same tests, and<br/>\nI only tried to excercise the remote functionality.  I quickly learned<br/>\nthat this was too hard - because a problem with a malformed HTTP message<br/>\nwas very hard to diagnose.  So, I split the problem into two:<br/>\n<br/>\n1) Test HTTP Communication with a server.  I now define this as meaning:<br/>\ncan my client generate an appropriate http message, with the correct<br/>\nheaders and body?  Can the server interpret an http message, reading<br/>\nhttp headers correctly?<br/>\n<br/>\nThis is something I consider &quot;unit&quot; tests.<br/>\n<br/>\n1a) Testing the server side is pretty easy using cactus.  I use the<br/>\nFilterTestCase, as all of our Http &quot;interpretation&quot; on the server is<br/>\nhandled in a single Filter.  So all I have to do is test that single<br/>\nfilter to make sure Http headers are interpreted appropriately.<br/>\n<br/>\n1b) Testing the client side is a little harder, and required me to<br/>\neventually mock a web server for the client to use just to trap http<br/>\nheaders.  I&#39;m not particularly fond of this solution.<br/>\nEssentially, the build launches its own web server, the client code<br/>\ntalks to it, and then the test code verifies that the web server<br/>\nreceived expected data.<br/>\n<br/>\n2) Test remote method invocations: If I ask the server to do something,<br/>\ndoes it do the right thing?<br/>\n<br/>\nThis is something I consider &quot;functional&quot; testing.<br/>\n<br/>\n(In our case, all request/responses are wrapped as Java objects.  So<br/>\ntest code deals only with Java objects, without any knowledge of the<br/>\nfact that perhaps a remote server was called to handle the request.  The<br/>\ntest code just creates and verifies java objects)<br/>\n<br/>\n2a) I have ant build file that will run a bunch of JUnit tests with a<br/>\nURL provided as input.  The test java code opens a connection to the<br/>\nprovided URL and requests something (the actual opening of the<br/>\nURLConnedtion is hidden from the test code).  The test java code then<br/>\nverifies the response.<br/>\n<br/>\n2b) The ant build file will (by default) launch its own version of<br/>\nTomcat first.  The test will run entirely on a single machine;<br/>\nlaunch Tomcat with an appropriate web application and the JUnit tests<br/>\ntalk to it.  This (getting tomcat started up) proved to be a little<br/>\ntricky, but quite doable.<br/>\n<br/>\n2c) Alternatively, by changing the build properties, the same JUnit test<br/>\nwill run against an already running server (locally or remotely, doesn&#39;t<br/>\nmatter).  In our case, we use that to verify a deployed/staging environment.<br/>\n<br/>\nI&#39;m going to skip posting details of code and build files unless<br/>\nanyone actually thinks it would be useful.<br/>\n<br/>\nThomas Robbs wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Greetings...<br/>\n&gt; <br/>\n&gt; I&#39;m finding myself in a situation where I would like to create the <br/>\n&gt; following type of test case:<br/>\n&gt; <br/>\n&gt; - testing a web service via HTTP - default testing of the service <br/>\n&gt; would require that the HTTP server is started up on the local machine<br/>\n&gt;  - an additional way of executing the test would be to have the same<br/>\n&gt;  HTTP based tests execute against an assumed host/port that is<br/>\n&gt; already running the HTTP server w/ the service.<br/>\n </span></blockquote>-- <br/>\nPC<br/>\n<br/>\nPaul Christmann<br/>\nPrior Artisans, LLC<br/>\nmailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:paul@...\">paul@...</a><br/>\n504-587-9072</div>", 
+    "prevInTime": 9224, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1061996593", 
+    "canDelete": false, 
+    "nextInTopic": 9226, 
+    "prevInTopic": 9224, 
+    "headers": {
+        "inReplyToHeader": "PEI2NEQxNDNFOUIyNzJDNEI4NkQ5RjE3MTI4RTY5NDYzMTAzQ0VEQG1haW4tc3J2LkNBU0VSTy5DT00+", 
+        "messageIdInHeader": "PGJpaWg1cyRwdTUkMUBzZWEuZ21hbmUub3JnPg==", 
+        "referencesHeader": "PEI2NEQxNDNFOUIyNzJDNEI4NkQ5RjE3MTI4RTY5NDYzMTAzQ0VEQG1haW4tc3J2LkNBU0VSTy5DT00+"
+    }
+}

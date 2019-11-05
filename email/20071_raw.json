@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 20072, 
+    "senderId": "T0ssmjwFP_AEpy4BEMLqSGJjLsiuAzleSUxTWPXhG1hjWFLRGZQosItrvdd5kB1Jxd3nVCdmsuhdDtRyZnqpwuuRxz7rMm1F_XY", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to test a method that logs to a file", 
+    "from": "&quot;Joel Neely&quot; &lt;joel.neely@...&gt;", 
+    "authorName": "Joel Neely", 
+    "msgSnippet": "I ve used two techniques in similar situations, but I m sure there are others (including some more elegant than my quick hacks). 1) Inspect the log file: 1.1)", 
+    "msgId": 20071, 
+    "rawEmail": "Return-Path: &lt;joel.neely@...&gt;\r\nReceived: (qmail 32099 invoked from network); 7 Nov 2007 13:23:25 -0000\r\nReceived: from unknown (66.218.67.95)\n  by m54.grp.scd.yahoo.com with QMQP; 7 Nov 2007 13:23:25 -0000\r\nReceived: from unknown (HELO n53a.bullet.mail.sp1.yahoo.com) (66.163.168.147)\n  by mta16.grp.scd.yahoo.com with SMTP; 7 Nov 2007 13:23:25 -0000\r\nReceived: from [216.252.122.217] by n53.bullet.mail.sp1.yahoo.com with NNFMP; 07 Nov 2007 13:23:25 -0000\r\nReceived: from [66.218.69.6] by t2.bullet.sp1.yahoo.com with NNFMP; 07 Nov 2007 13:23:25 -0000\r\nReceived: from [66.218.66.80] by t6.bullet.scd.yahoo.com with NNFMP; 07 Nov 2007 13:23:25 -0000\r\nX-Sender: joel.neely@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 23767 invoked from network); 7 Nov 2007 12:49:51 -0000\r\nX-Received: from unknown (66.218.67.95)\n  by m53.grp.scd.yahoo.com with QMQP; 7 Nov 2007 12:49:51 -0000\r\nX-Received: from unknown (HELO py-out-1112.google.com) (64.233.166.179)\n  by mta16.grp.scd.yahoo.com with SMTP; 7 Nov 2007 12:49:51 -0000\r\nX-Received: by py-out-1112.google.com with SMTP id y63so4260346pyg\n        for &lt;junit@yahoogroups.com&gt;; Wed, 07 Nov 2007 04:49:51 -0800 (PST)\r\nX-Received: by 10.64.250.7 with SMTP id x7mr1599437qbh.1194439786003;\n        Wed, 07 Nov 2007 04:49:46 -0800 (PST)\r\nX-Received: by 10.65.218.8 with HTTP; Wed, 7 Nov 2007 04:49:45 -0800 (PST)\r\nMessage-ID: &lt;5e0b968a0711070449k4f794bd8p8948dcc4f023bd65@...&gt;\r\nDate: Wed, 7 Nov 2007 06:49:45 -0600\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;fgrnnv+dta9@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;fgrnnv+dta9@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Joel Neely&quot; &lt;joel.neely@...&gt;\r\nSubject: Re: [junit] How to test a method that logs to a file\r\nX-Yahoo-Group-Post: member; u=236637683; y=PSJ3KZn3CZLcmob6LctPcv1Xl2pZC6fGngaoXaeSSOU8qEZ2\r\nX-Yahoo-Profile: joelneely\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: copabella &lt;joe@...&gt; via web; 07 Nov 2007 13:23:23 -0000\r\n\r\nI&#39;ve used two techniques in similar situations, but I&#39;m sure there are\nothers (including some more elegant than my quick hacks).\n\n1) Inspect the log file:\n\n1.1) Start logging with a fresh log file name.\n1.2) Run code under test.\n1.3) Run an assertion against the content of the file from step one.\n\nThe clean way to do the above, of course, is to have a small library\nof tools that e.g. given a file name return the entire content of the\nfile as a single string, given a file name and a string, verify that\nsome line in the file contains the given string, etc.\n\n2) Mock or stub the logging:\n\nBreak the dependency that&#39;s hanging you up.\n\nApache commons logging provides an interface-oriented wrapper around\nseveral widely-used logging implementations (including Log4J). By\nwriting against the apache.commons.logging.Log interface in your\nactual code, you break the dependency on Log4J implementation details.\nFor unit testing, you can then:\n\n2.1) create a stub implementation of Log that e.g. puts all log\nmessages in a StringWriter which you can then inspect, or\n2.2) write a mock that implements Log and verifies that the expected\nseverity call was made with the expected message properties, or\n2.3) use your imagination for more options.\n\nIf you have reasons for not bringing in another set of outside code\n(e.g. time-consuming certification/approval/legal processes), you can\nwrite your own simple interface that has the key &quot;level&quot; methods\n(error(...), warn(...), etc.) and create two implementations: one that\nproxies for Log4J and the other that provides the stub/mock\ncapabilities you need for testing.\n\nHope this helps!\n-jn-\n\nOn 11/7/07, Hemanth &lt;hemanthdv_yid@...&gt; wrote:\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Hi\n&gt;\n&gt;  I would like to know how to JUnit test a method that writes logs to a\n&gt;  file. I am using log4j and I have methods that write different logs to\n&gt;  a file. How do I Junit test that these methods are working fine.\n&gt;\n&gt;  Regards\n&gt;  Hemanth\n&gt;\n&gt;                    \n\n\n\n-- \nProgramming is the art of writing essays in crystal clear prose and\nmaking them execute. - Per Brinch Hansen\n\n", 
+    "profile": "joelneely", 
+    "topicId": 20070, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 236637683, 
+    "prevInTime": 20070, 
+    "contentTrasformed": false, 
+    "postDate": "1194439785", 
+    "canDelete": false, 
+    "nextInTopic": 20074, 
+    "prevInTopic": 20070, 
+    "headers": {
+        "inReplyToHeader": "PGZncm5uditkdGE5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDVlMGI5NjhhMDcxMTA3MDQ0OWs0Zjc5NGJkOHA4OTQ4ZGNjNGYwMjNiZDY1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZncm5uditkdGE5QGVHcm91cHMuY29tPg=="
+    }
+}

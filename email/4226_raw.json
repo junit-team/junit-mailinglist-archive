@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 4227, 
+    "senderId": "K93UrL-gBtMarMO7TEDuCoypNhTys7omWTbuFam-Suf9Siy8bjCymKAaSH7FH23swVLbfYsmdpehnXXoLOEWimpqYmnDDw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing GUIs - mouse clicks, list selections, and other user  inputs", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... GUI testing is difficult, but not entirely impossible.  Testing some things is easier than others, depending on the testability of the APIs for the ", 
+    "msgId": 4226, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 28 Feb 2002 15:17:29 -0000\r\nReceived: (qmail 64041 invoked from network); 28 Feb 2002 15:17:28 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m8.grp.snv.yahoo.com with QMQP; 28 Feb 2002 15:17:28 -0000\r\nReceived: from unknown (HELO dodo.mail.pas.earthlink.net) (207.217.120.99)\n  by mta1.grp.snv.yahoo.com with SMTP; 28 Feb 2002 15:17:28 -0000\r\nReceived: from clarkware.com (user-33qtp4h.dialup.mindspring.com [199.174.228.145])\n\tby dodo.mail.pas.earthlink.net (8.9.3/8.9.3) with ESMTP id HAA11167\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 28 Feb 2002 07:17:27 -0800 (PST)\r\nMessage-ID: &lt;3C7E4977.CD6AA2BD@...&gt;\r\nDate: Thu, 28 Feb 2002 08:15:03 -0700\r\nOrganization: Clarkware Consulting, Inc.\r\nX-Mailer: Mozilla 4.77 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Testing GUIs - mouse clicks, list selections, and other user \n inputs\r\nReferences: &lt;20020227.210815.-214231.9.tumb@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nX-Yahoo-Group-Post: member; u=33026788\r\nX-Yahoo-Profile: clarkware\r\n\r\ntumb@... wrote:\n\n&gt; Can someone give me some references to how JUnit can be used to test\n&gt; GUIs? All the examples I&#39;ve seen test class fields, computations, etc.\n&gt;\n\nGUI testing is difficult, but not entirely impossible.  Testing some things\nis easier than others, depending on the testability of the APIs for the\ncollaborating widgets.\n\nFor example, I don&#39;t know of a way to programmatically click the column\nheader of a table.  I do know that buttons have a doClick() method, and maybe\nthere&#39;s a table header button available through the API somewhere. You may\nalso be able to employ a Robot to go through the motions, though I&#39;ve never\ntried it.\n\nOn the other hand, it&#39;s relatively easy to programmatically select an item\nfrom a combo box and test that it notifies its listener:\n\n    public class MockItemListener implements ItemListener {\n        public String item;\n\n        public void itemStateChanged(ItemEvent ie) {\n            item = (String)ie.getItem();\n        }\n    }\n\n    JComboBox combo = new JComboBox();\n    // setup combo box\n\n    MockItemListener itemListener = new MockItemListener();\n    combo.addItemListener(itemListener);\n\n    combo.setSelectedItem(&quot;Animals&quot;);\n\n    assertEquals(&quot;Animals&quot;, itemListener.item);\n\nThen you can go on to test that the panel next to the combo box contains the\nappropriate text when a &quot;real&quot; item listener is registered with the combo\nbox.  Again, it&#39;s basically testing that all the components of the MVC design\nare hooked up properly and receiving notification.\n\nI try to keep the GUI tests limited to the initialization, structure, and\nhookup of widgets.  It helps to keep the GUI as thin as possible, without any\napplication-level behavior buried within the view layer.\n\nA few months back Bill Wake hosted a test-first design challenge.  Bill wrote\nthe tests, we made them pass.  The last part had us build a GUI for a simple\nspreadsheet application.  It really opened my eyes to ways to reasonably test\nthe interaction of GUI components.  All the code and tests are available at\n\n    http://www.clarkware.com/tfchallenge/part5/\n\nThe GUI tests are captured in SheetFrameTest.java.\n\nMike\n\n--\nMike Clark\nClarkware Consulting, Inc.\nhttp://www.clarkware.com\n720.851.2014\n\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 4222, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "prevInTime": 4225, 
+    "contentTrasformed": false, 
+    "postDate": "1014909303", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4224, 
+    "headers": {
+        "messageIdInHeader": "PDNDN0U0OTc3LkNENkFBMkJEQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PDIwMDIwMjI3LjIxMDgxNS4tMjE0MjMxLjkudHVtYkBqdW5vLmNvbT4="
+    }
+}

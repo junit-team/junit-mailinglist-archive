@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 79, 
+    "nextInTime": 15372, 
+    "senderId": "yiJdXPBJPI0Tr5c22xNUYmSKURw1wI6sJEW_4BC3c09LFylTheMZq6EnV-wOT0hcVhEECAf_OavqKL8zAReCLw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit 4 restructuring", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... Not again.  :) Just to clarify, callMethod could be written with exactly the semantics needed above.  I believe that your point was that clarity has been", 
+    "msgId": 15371, 
+    "rawEmail": "Return-Path: &lt;saff@...&gt;\r\nX-Sender: saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 80481 invoked from network); 7 Nov 2005 20:42:59 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m31.grp.scd.yahoo.com with QMQP; 7 Nov 2005 20:42:59 -0000\r\nReceived: from unknown (HELO rozz.csail.mit.edu) (128.30.2.16)\n  by mta3.grp.scd.yahoo.com with SMTP; 7 Nov 2005 20:42:58 -0000\r\nReceived: from c-24-147-177-124.hsd1.ma.comcast.net ([24.147.177.124] helo=[192.168.2.23])\n\tby rozz.csail.mit.edu with esmtpa (Exim 4.50)\n\tid 1EZDmL-0003fi-97\n\tfor junit@yahoogroups.com; Mon, 07 Nov 2005 15:39:45 -0500\r\nMessage-ID: &lt;436FBB8D.2010908@...&gt;\r\nDate: Mon, 07 Nov 2005 15:39:41 -0500\r\nUser-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;57a363140511032344x16f50023yc391ee721271f93@...&gt; &lt;436B6D2C.2050700@...&gt; &lt;436BBEEB.5020803@...&gt;\r\nIn-Reply-To: &lt;436BBEEB.5020803@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: David Saff &lt;saff@...&gt;\r\nSubject: Re: [junit] JUnit 4 restructuring\r\nX-Yahoo-Group-Post: member; u=139771899; y=UVYnSQnVCbcyp2Km9byJZqvUGWbMqdqs4qGRenvTs84\r\nX-Yahoo-Profile: dsaff\r\n\r\nJ. B. Rainsberger wrote:\n\n&gt; &gt; But it&#39;s really just using summaryString as a testing utility.  I&#39;d be\n&gt; &gt; tempted to write this instead, which feels clearer:\n&gt; &gt;\n&gt; &gt; assertThat(states, summarizeTo(&quot;GREEN 0.0 GREEN 0.5 RED 1.0&quot;))\n&gt;\n&gt; The problem with this is that you lose the context of the &quot;states&quot;\n&gt; object in the method &quot;summarizeTo&quot;. Generalizing this looks bad, as it\n&gt; resorts to the kind of reflection you showed next:\n&gt;\n&gt; &gt; Constraint summarizeTo(String summary) {\n&gt; &gt;     return applyTo(eq(summary), callMethod(&quot;summaryString&quot;));\n&gt; &gt; }\n&gt;\n&gt; callMethod on which object? Bang, you&#39;re dead. :)\n\nNot again.  :)\n\nJust to clarify, callMethod could be written with exactly the semantics \nneeded above.  I believe that your point was that clarity has been shot \ndead, since not many people want to reason about higher-order functions \nrather than string equality when doing testing.  Very true.  This is \nwhat I get for choosing the first example at hand.\n\nHowever, thinking harder about constraints was helpful for me.  The aha \nfor me is that writing a new constraint has value whenever it allows the \nframework to get its hands on a whole value that it otherwise wouldn&#39;t \nhave.  This is why I actually rarely write\n\nassertThat(x, eq(&quot;Target string&quot;));\n\n(I did in the first month or so after learning JMock.  Martin Fowler: \n&quot;Often when you come across something new it can be a good idea to \noveruse it in order to find out it&#39;s [sic] boundaries.&quot;)\n\nassertEquals(&quot;Target string&quot;, x);\n\nmeans exactly the same thing, doesn&#39;t freak non-JMock maintainers, and \nproduces an error string that Eclipse can parse nicely for me.\n\nHowever,\n\nassertTrue(x &lt; 100)\n\nis much more troublesome.  The framework never gets its hands on the \nactual value of x, so all you get is &quot;assertion failed&quot; (or in Ruby, \n&quot;&lt;false&gt; is not &lt;true&gt;&quot;.  I love that.).  Instead,\n\nassertThat(x, lessThan(100))\n\nexposes the actual value of x to the framework, and now you get an \ninformative failure message for free.  All this is to say that \nsummarizeTo was a bad place to write a constraint. \n\n&gt; So...\n&gt;\n&gt;      assertThat(states.summary(), eq(new Summary(0, 0.5, 1));\n&gt;\n&gt; would be my choice.\n\nMine is\n\nassertThat(states.summary(), eq(new Summary(&quot;GREEN 0.0 GREEN 0.5 RED 1.0&quot;)))\n\n    David Saff\n\n", 
+    "profile": "dsaff", 
+    "topicId": 15154, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 15370, 
+    "contentTrasformed": false, 
+    "postDate": "1131395981", 
+    "canDelete": false, 
+    "nextInTopic": 15373, 
+    "prevInTopic": 15370, 
+    "headers": {
+        "inReplyToHeader": "PDQzNkJCRUVCLjUwMjA4MDNAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzNkZCQjhELjIwMTA5MDhAbWl0LmVkdT4=", 
+        "referencesHeader": "PDU3YTM2MzE0MDUxMTAzMjM0NHgxNmY1MDAyM3ljMzkxZWU3MjEyNzFmOTNAbWFpbC5nbWFpbC5jb20+IDw0MzZCNkQyQy4yMDUwNzAwQG1pdC5lZHU+IDw0MzZCQkVFQi41MDIwODAzQHJvZ2Vycy5jb20+"
+    }
+}

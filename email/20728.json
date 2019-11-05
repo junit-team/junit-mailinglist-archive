@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 20, 
+    "nextInTime": 20729, 
+    "senderId": "iAbH2ZhfGway4FU2Szyngpnv_rWf23821uPxPJsPnUQ7Lo0xkxDwac2HuuPmjDSIDuk2-mo_xDByn-v-M3fFY8cVBvU", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does JUnit 4 now support dependencies?", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Daniel, On Thu, Jul 17, 2008 at 3:39 PM, Daniel Brolund ... Absolutely.  We ve built a similar idea into BlockJUnit4ClassRunner in JUnit 4.5.  Imagine: public", 
+    "msgId": 20728, 
+    "profile": "dsaff", 
+    "topicId": 20690, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1447729463\">Daniel,<br/>\n<br/>\nOn Thu, Jul 17, 2008 at 3:39 PM, Daniel Brolund<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:daniel.brolund@...\">daniel.brolund@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi all,<br/>\n&gt;<br/>\n&gt; I kind of agree with Hans, and I have another viewpoint on this<br/>\n&gt; dependency thing:<br/>\n&gt;<br/>\n&gt; JUnit is already a set of &quot;execution blocks&quot; with &quot;implicit&quot;<br/>\n&gt; dependencies, e.g. a @Test method depends on the @Before method, @After<br/>\n&gt; depends on [@Before, @Test], [@Before, @Test, @After] depends on<br/>\n&gt; @BeforeClass etc.<br/>\n&gt;<br/>\n&gt; If we would make those explicit by some mechanism/abstraction, I&#39;m not<br/>\n&gt; sure exactly how, we could probably use the same mechanism/abstraction<br/>\n&gt; to declare dependencies.<br/>\n&gt; If we could expose this dependency tree (unidirectional graph?), it<br/>\n&gt; might be possible to add behaviors, like parallel execution, exclusion<br/>\n&gt; of dependent tests on failure, etc.<br/>\n&gt; Does this make sense?<br/>\n<br/>\n </span></blockquote>Absolutely.  We&#39;ve built a similar idea into BlockJUnit4ClassRunner in<br/>\nJUnit 4.5.  Imagine:<br/>\n<br/>\npublic class RemoveFailingDependents extends BlockJUnit4ClassRunner {<br/>\n\tpublic RemoveFailingDependents(Class&lt;?&gt; klass) throws InitializationError {<br/>\n\t\tsuper(klass);<br/>\n\t}<br/>\n<br/>\n\t@Override<br/>\n\tprotected void runChild(FrameworkMethod method, RunNotifier notifier) {<br/>\n\t\tfor (FrameworkMethod each : getDependencies(method))<br/>\n\t\t\tif (alreadyMarkedFailed(method)) {<br/>\n\t\t\t\tnotifier.fireTestIgnored(describeChild(method));<br/>\n\t\t\t\treturn;<br/>\n\t\t\t}<br/>\n\t\tRunListener listener = new RunListener() {<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic void testFailure(Failure failure) throws Exception {<br/>\n\t\t\t\tmarkTestFailed(failure.getDescription());<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n\t\tnotifier.addListener(listener);<br/>\n\t\tsuper.runChild(method, notifier);<br/>\n\t\tnotifier.removeListener(listener);<br/>\n\t}<br/>\n}<br/>\n<br/>\nThis leaves out the ordering that would need to be done by a sorter to<br/>\nmake sure that dependencies run before dependers.<br/>\n<br/>\n   David Saff</div>", 
+    "prevInTime": 20727, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1217516380", 
+    "canDelete": false, 
+    "nextInTopic": 20735, 
+    "prevInTopic": 20725, 
+    "headers": {
+        "inReplyToHeader": "PDEyMTYzMjM1NTEuMjEyNjMuNjEuY2FtZWxAZGFuaWVsLXVidW50dT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgwNzMxMDc1OXMxYzdlYmM5NXNhYmUzMjMzYzZjMTdkNWU4QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDcyMDMxMy41NTA5OC5xbUB3ZWIzOTcwNC5tYWlsLm11ZC55YWhvby5jb20+CSA8MTIxNjMyMzU1MS4yMTI2My42MS5jYW1lbEBkYW5pZWwtdWJ1bnR1Pg=="
+    }
+}

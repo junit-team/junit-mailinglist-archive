@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 979, 
+    "senderId": "oeNVOEy7FTVNACYjcmhDalUlGArauo4qnqOoKyoocsQGMpE9BnBNUrmeWbQfh-cY9UJsKxvkf-YaiaziiHOa-L7jviUy5V6b8ybWVt_Fm-PdOj-_XA", 
+    "systemMessage": false, 
+    "subject": "Order of tests with databases", 
+    "from": "&quot;Uwe Schuster&quot; &lt;uwe.schuster@...&gt;", 
+    "authorName": "Uwe Schuster", 
+    "msgSnippet": "Hello, I m new to JUnit and this group. However I read some articles on JUnit in general and some of the discussions about the order of tests. The common", 
+    "msgId": 978, 
+    "topicId": 978, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-791211411\">Hello,<br/>\n<br/>\nI&#39;m new to JUnit and this group. However I read some articles on <br/>\nJUnit in general and some of the discussions about the order of <br/>\ntests. The common conclusions and recommendations are:<br/>\n- Avoid dependencies between tests<br/>\n- If dependencies are necessary however, group these tests in a <br/>\nsingle test case and use a suite method to force the order of <br/>\nexecution<br/>\n- The execution order of tests in a suite is in fact the order tests <br/>\nwere added, although this behaviour results from an implementation <br/>\ndetail, not from JUnit&#39;s specification.<br/>\n<br/>\nHowever the following situation might be quite common, especially in <br/>\ndatabase environments:<br/>\n- To test a special function of a class, a large set of (persistent?)<br/>\nobjects must be created, which takes substantial time<br/>\n- Some test case X needs a SetUp that is exactly the same as the <br/>\nresult of another test case Y&#39;s setUp plus some or all of Y&#39;s test <br/>\nmethods<br/>\n- There is no possibility of redesigning the application code because <br/>\nthe classes in test are partially &quot;legacy code&quot;, strongly interwoven <br/>\nand not heavily tested - this is why we need to write a new test <br/>\nsuite for them...<br/>\n<br/>\nThe discussions do not provide a solution or recommendation for this.<br/>\nSo to me in this environment the best solution seems to be to let <br/>\none test case Y use a backup of the database that was taken after the <br/>\nother test X has (successfully!) run.<br/>\nHaving each test build the complex initialization (even if refactored <br/>\ninto some initialization classes) is bad because it makes the tests <br/>\nrun too long - it is diffcult enough to get some developers write and <br/>\nuse tests, but if they always wait 10 minutes for a test to complete, <br/>\nthey will not use it a second time...<br/>\nThe backup and restore method might have the advantage that restoring <br/>\nthe database to that state the developer&#39; test needs is quite fast, <br/>\nso that the code-test-improve-test cycle might become less annoying <br/>\nto the developer.<br/>\nI am thinking of implementing a framework (as an extension to JUnit) <br/>\nthat allows a test case X to define a prerequisite test case Y by <br/>\nname. If a backup exists for Y (that is: Y was already run <br/>\nsuccessfully before) the backup gets restored and X may quickly <br/>\nexecute. If no backup exists, first Y gets run, a backup is taken and <br/>\nthen X is run (and maybe a backup is taken again).<br/>\nMoreover to minimize the run time of a complete test suite of the <br/>\nwhole system, even the database could be reused without the need to <br/>\ndelete and recreate it after each single test run.<br/>\n<br/>\nIs this idea bad only because it hurts JUnit&#39;s ideology, is it bad <br/>\nbecause a solution already exists (where??), is it bad for other <br/>\nreasons or is it even a good idea :-) ?<br/>\n<br/>\nWaiting for your comments,<br/>\nUwe Schuster,<br/>\nHealy Hudson AG<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.healy-hudson.com/\">http://www.healy-hudson.com/</a></div>", 
+    "prevInTime": 977, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987610040", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDlia2Uzbyt2dWhxQGVHcm91cHMuY29tPg=="
+    }
+}

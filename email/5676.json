@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 5677, 
+    "senderId": "nSvHpfQQzdNNuyqg3S0jhaIlArdWuB7YFDH0aCyvwCEl_FnPBuA920s-iAr40dVvLy5RY2SVfQvYK04k0skg5mrwR9L3qrW1HXNkoIVi", 
+    "systemMessage": false, 
+    "subject": "Re: Just replaced my 3.7 jar with 3.8", 
+    "from": "&quot;ericheikkila&quot; &lt;ericheikkila@...&gt;", 
+    "authorName": "ericheikkila", 
+    "msgSnippet": "Ok..after some more investigation, it looks like there is some problem with the class loader I m using, and whatever Websphere is doing to load classes.  This", 
+    "msgId": 5676, 
+    "profile": "ericheikkila", 
+    "topicId": 5663, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 68550261, 
+    "messageBody": "<div id=\"ygrps-yiv-507230955\">Ok..after some more investigation, it looks like there is some <br/>\nproblem with the class loader I&#39;m using, and whatever Websphere is <br/>\ndoing to load classes.  This was not an issue with 3.7.  Now, <br/>\nhowever, every time a test tries to get an initial context, it blows <br/>\nup (complaining about not being able to find the ORB class).<br/>\n<br/>\nArgh.<br/>\n<br/>\nHere&#39;s the code I&#39;m now using to load the tests...<br/>\n<br/>\n---------------------------------------------------------------<br/>\n<br/>\nTestSuite suite = new TestSuite();<br/>\n<br/>\nLoadingTestCollector loader = new LoadingTestCollector();<br/>\nEnumeration tests = loader.collectTests();<br/>\n\t\t<br/>\nTestCaseClassLoader classLoader = new TestCaseClassLoader();<br/>\nString className;<br/>\n<br/>\nProperties testProperties = new Properties();<br/>\n<br/>\ntry {<br/>\n\tFileInputStream file = new FileInputStream(new File<br/>\n(EXCLUDED_TESTS));<br/>\n\ttestProperties.load(file);<br/>\n} catch (Exception e) {<br/>\n}<br/>\n\t\t<br/>\nList excludedPackages = getExcludedPackages(testProperties);<br/>\n\t<br/>\nwhile (tests.hasMoreElements()) {<br/>\n\t<br/>\n\tclassName = (String)tests.nextElement();<br/>\n<br/>\n\tSystem.out.println(&quot;CLASSNAME = &quot; + className);<br/>\n<br/>\n\tif (isTestExcluded(className, testProperties, <br/>\nexcludedPackages)) {<br/>\n\t\tcontinue;<br/>\n\t}<br/>\n\t\t\t<br/>\n\tClass[] classArgs = new Class[] { String.class };<br/>\n\tObject[] constructorArgs = new Object[] { new String<br/>\n(className) };<br/>\n\t\t\t<br/>\n\tClass loadedClass = classLoader.loadClass(className, true);<br/>\n//\tjava.lang.reflect.Constructor theConstructor = <br/>\nloadedClass.getConstructor(classArgs);<br/>\n<br/>\n\tjava.lang.reflect.Constructor[] theConstructors = <br/>\nloadedClass.getConstructors();<br/>\n//\tObject theClass = theConstructor.newInstance(constructorArgs);<br/>\n\tObject theClass = null;<br/>\n\t<br/>\n\ttry {<br/>\n\t\ttheConstructors[0].newInstance(null);<br/>\n\t}<br/>\n\tcatch (IllegalArgumentException iae) {<br/>\n\t\tSystem.out.println(&quot;Trying string constructor&quot;);<br/>\n\t\ttheClass = theConstructors[0].newInstance<br/>\n(constructorArgs);<br/>\n\t}<br/>\n\t\t<br/>\n\ttry {<br/>\n\t\tMethod suiteMethod = loadedClass.getDeclaredMethod<br/>\n(&quot;suite&quot;, new Class[0]);<br/>\n\t\tsuite.addTest((Test)suiteMethod.invoke(theClass, new <br/>\nClass[0]));<br/>\n\t}<br/>\n\tcatch (NoSuchMethodException nsme) {<br/>\n\t\tSystem.out.println(&quot;Skipping class (&quot; + className <br/>\n+ &quot;) ... no suite method.&quot;);<br/>\n\t}<br/>\n}<br/>\n<br/>\n---------------------------------------------------------------<br/>\n<br/>\nSo did something change with the TestClassLoaders?<br/>\nOr is IBM just doing something silly again? ;)<br/>\n<br/>\nThanks,<br/>\n<br/>\n-Eric<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:<br/>\n&gt; ericheikkila wrote:<br/>\n&gt; <br/>\n&gt; &gt;Hmmm....I didn&#39;t change any code, I just dropped the jar in place, <br/>\n&gt; &gt;then pointed the IDE at it.  None of the class path dependencies <br/>\n&gt; &gt;changed within the code either.  I swapped 3.7 back in, and it <br/>\nworks <br/>\n&gt; &gt;just fine.<br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; Is it possible your 3.7 version includes a custom <br/>\nexcluded.properties file?<br/>\n&gt; <br/>\n&gt; Mike<br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt; Mike Clark<br/>\n&gt; Clarkware Consulting Inc.<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com\">http://www.clarkware.com</a> <br/>\n&gt; (720) 851-2014 </span></blockquote></div>", 
+    "prevInTime": 5675, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1030632866", 
+    "canDelete": false, 
+    "nextInTopic": 5677, 
+    "prevInTopic": 5668, 
+    "headers": {
+        "inReplyToHeader": "PDNENkQxNjJBLjUwMjA5MDBAY2xhcmt3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PGFrbGNqMittZzd0QGVHcm91cHMuY29tPg=="
+    }
+}

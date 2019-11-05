@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 9701, 
+    "senderId": "R6GHVQPjyfQXZK0nur2YWTbxFDwRc1UUCoX8UAQAf8gYKBO2GYJZahaxoL8TMcXOf9WUNEFvtB_-cNA9O8-i0QRSaqrjFNKPUBXwcOIv", 
+    "systemMessage": false, 
+    "subject": "Re: TestSuite", 
+    "from": "&quot;Bo Rasmussen&quot; &lt;krogenlund@...&gt;", 
+    "authorName": "Bo Rasmussen", 
+    "msgSnippet": "Hi again, This works fine - however looking at my report generated using the junitreport ant task I m missing information on which packages has been tested.", 
+    "msgId": 9700, 
+    "rawEmail": "Return-Path: &lt;krogenlund@...&gt;\r\nReceived: (qmail 47505 invoked from network); 15 Oct 2003 15:08:35 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m15.grp.scd.yahoo.com with QMQP; 15 Oct 2003 15:08:35 -0000\r\nReceived: from unknown (HELO n17.grp.scd.yahoo.com) (66.218.66.72)\n  by mta6.grp.scd.yahoo.com with SMTP; 15 Oct 2003 15:08:35 -0000\r\nX-eGroups-Return: krogenlund@...\r\nReceived: from [66.218.67.161] by n17.grp.scd.yahoo.com with NNFMP; 15 Oct 2003 15:08:35 -0000\r\nX-Sender: krogenlund@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 98818 invoked from network); 15 Oct 2003 10:19:16 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m8.grp.scd.yahoo.com with QMQP; 15 Oct 2003 10:19:16 -0000\r\nReceived: from unknown (HELO n33.grp.scd.yahoo.com) (66.218.66.101)\n  by mta1.grp.scd.yahoo.com with SMTP; 15 Oct 2003 10:19:16 -0000\r\nReceived: from [66.218.67.179] by n33.grp.scd.yahoo.com with NNFMP; 15 Oct 2003 10:19:16 -0000\r\nDate: Wed, 15 Oct 2003 10:19:13 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: TestSuite\r\nMessage-ID: &lt;bmj6v1+jd6b@...&gt;\r\nIn-Reply-To: &lt;bmh85q+sk5t@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2870\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;Bo Rasmussen&quot; &lt;krogenlund@...&gt;\r\nX-Yahoo-Group-Post: member; u=23725443\r\nX-Yahoo-Profile: krogenlund\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 15 Oct 2003 15:08:33 -0000\r\n\r\nHi again,\n\nThis works fine - however looking at my report generated using the \njunitreport ant task I&#39;m missing information on which packages has \nbeen tested. All package information I get is the top level package \ncontaining TestProject. I can see that the output from the junit ant \ntask does not contain this information...\n\nIt would be nice if the report provided information on which packages \nwere tested and not just the name of test methods.  Am I missing \nsomething?\n\nRegards\n-Bo\n\n--- In junit@yahoogroups.com, &quot;lranatunga&quot; &lt;lranatun@s...&gt; wrote:\n&gt; I too am relatively new to junit, but try the following revision:\n&gt; \n&gt; public class TestProject\n&gt;     extends TestSuite {\n&gt; \n&gt;   //...\n&gt; \n&gt;   public static Test suite() {\n&gt;     TestSuite suite = new TestSuite();\n&gt; \n&gt;     //---instead of this:\n&gt;     //suite.addTestSuite(dk.company.emc.TestPackage.class);\n&gt; \n&gt;     //---try this:\n&gt;     suite.addTest(dk.company.emc.TestPackage.suite());\n&gt; \n&gt;     return suite;\n&gt;   }\n&gt; }\n&gt; \n&gt; Note that the above:\n&gt; 1. uses addTest() instead of addTestSuite()\n&gt; 2. calls the TestPackage.suite() static method which returns a Test.\n&gt; \n&gt; \n&gt; Also, btw, if your package level suite only has a single TestCase, \nyou\n&gt; can use the following shortcut:\n&gt; \n&gt; public static Test suite() {\n&gt;   return new TestSuite(dk.company.emc.TestPackage.class);\n&gt; }\n&gt; \n&gt; instead of:\n&gt; \n&gt; &gt; public static Test suite() {\n&gt; &gt;   TestSuite suite = new TestSuite();\n&gt; &gt;   suite.addTestSuite(dk.company.emc.TestPackage.class);\n&gt; &gt;   return suite;\n&gt; &gt; }\n&gt; \n&gt; cheers.\n&gt; \n&gt; --- In junit@yahoogroups.com, &quot;krogenlund&quot; &lt;krogenlund@h...&gt; wrote:\n&gt; &gt; Hi,\n&gt; &gt; \n&gt; &gt; I have a small problem using TestSuites. We organise our tests \nsuch \n&gt; &gt; that there is a test suite for each package, and one for the \nentire \n&gt; &gt; project. The project level suite aggregates the package suites. \nThe \n&gt; &gt; problem is that when running the project level suite it says that \n&gt; &gt; there&#39;s no tests defined for the package level suites. When I run\n&gt; the \n&gt; &gt; package suites however things are ok! What could be wrong - I&#39;m \n&gt; &gt; relatively new to JUnit. \n&gt; &gt; \n&gt; &gt; I&#39;m using the ant junit task\n&gt; &gt; \n&gt; &gt; The code for the project level suite\n&gt; &gt; \n&gt; &gt; public class TestProject\n&gt; &gt;     extends TestSuite {\n&gt; &gt; \n&gt; &gt;   public TestProject(String s) {\n&gt; &gt;     super(s);\n&gt; &gt;   }\n&gt; &gt; \n&gt; &gt;   public static Test suite() {\n&gt; &gt;     TestSuite suite = new TestSuite();\n&gt; &gt;     suite.addTestSuite(dk.company.emc.TestPackage.class);\n&gt; &gt;     return suite;\n&gt; &gt;   }\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; The code for the package level suite\n&gt; &gt; \n&gt; &gt; public class TestPackage\n&gt; &gt;     extends TestSuite {\n&gt; &gt; \n&gt; &gt;   public TestPackage(String s) {\n&gt; &gt;     super(s);\n&gt; &gt;   }\n&gt; &gt; \n&gt; &gt;   public static Test suite() {\n&gt; &gt;     TestSuite suite = new TestSuite();\n&gt; &gt;     suite.addTestSuite(dk.company.emc.TestBlackBoard.class);\n&gt; &gt;     return suite;\n&gt; &gt;   }\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; Thanks in advance\n&gt; &gt; Bo\n\n\n\n", 
+    "profile": "krogenlund", 
+    "topicId": 9677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 23725443, 
+    "prevInTime": 9699, 
+    "contentTrasformed": false, 
+    "postDate": "1066213153", 
+    "canDelete": false, 
+    "nextInTopic": 9701, 
+    "prevInTopic": 9682, 
+    "headers": {
+        "inReplyToHeader": "PGJtaDg1cStzazV0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGJtajZ2MStqZDZiQGVHcm91cHMuY29tPg=="
+    }
+}

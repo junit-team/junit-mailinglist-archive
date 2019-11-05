@@ -1,0 +1,28 @@
+{
+    "topicId": 2374, 
+    "postDate": "997886134", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Peter McEvoy&quot; &lt;pmcevoy@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "iwYKuK_PBpxxDUTU8YOx4sIBEOor2VfyOKVuOffpVSTkZ2Rp6Ldw_YkxsP5N-zg7KHQ9unLTkJCTAIQg7HbU-9L2AjTqsobN", 
+    "nextInTime": 2375, 
+    "userId": 0, 
+    "prevInTime": 2373, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDAwMTIwMWMxMjU5NyQ4YmFjZWRhMCQ2MTA2MDIwYUBaRVJPPg=="
+    }, 
+    "authorName": "Peter McEvoy", 
+    "numMessagesInTopic": 10, 
+    "msgSnippet": "Folks, In my test case, I have a set of testXXX methods that are order dependant.  I have been using the Junit best practices doc on ", 
+    "contentTrasformed": false, 
+    "msgId": 2374, 
+    "nextInTopic": 2375, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;pmcevoy@...&gt;\r\nX-Sender: pmcevoy@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_1); 15 Aug 2001 14:39:31 -0000\r\nReceived: (qmail 93293 invoked from network); 15 Aug 2001 14:38:49 -0000\r\nReceived: from unknown (10.1.10.142)\n  by m8.onelist.org with QMQP; 15 Aug 2001 14:38:49 -0000\r\nReceived: from unknown (HELO dublin.iona.ie) (212.120.147.5)\n  by mta3 with SMTP; 15 Aug 2001 14:38:49 -0000\r\nReceived: from ZERO ([10.2.6.97]) by dublin.iona.ie (8.8.8/iona-1.02) with SMTP id PAA13629 for &lt;junit@yahoogroups.com&gt;; Wed, 15 Aug 2001 15:42:14 +0100 (BST)\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: Shared data between test methods in a testcase\r\nDate: Wed, 15 Aug 2001 15:35:34 +0100\r\nMessage-ID: &lt;001201c12597$8baceda0$6106020a@ZERO&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2911.0)\r\nImportance: Normal\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200\r\nFrom: &quot;Peter McEvoy&quot; &lt;pmcevoy@...&gt;\r\n\r\nFolks,\n\tIn my test case, I have a set of testXXX methods that are order dependant.  I have been using the\n&quot;Junit best practices&quot; doc on\nhttp://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit_p.html\nin particular the paragraph on how to preserve order of the test methods.\n\nI am doing this because I wnat to share data between each test method (for example my first method\ntests that I can create an EJB object, the next is that I can read it, the third that I can update\nit and the last that I can delete it).\n\nI have discovered, tho that when I call testRunner on the Suite, that, whereas each method IS called\nin order, there is no way for me to share data between the method calls (by using private scope\nclass variables).  I was also surprised to see that setUp was called before each test method.\n\nI am sharing a primary key (which is generated at run time from a database sequence) which I have no\nway of knowing the value of between one test run and the next.\n\nCode snippets are:\n------------------------------------------------------------------------\npublic class CustomerEJBTest extends TestCase {\n    private Context ctx;\n    private int ionaid;\n    private Properties custInfo;\n\n    public CustomerEJBTest(String name) {\n        super(name);\n    }\n    public static Test suite(){\n        TestSuite suite = new TestSuite();\n\n        //Since testing CRUD of the EJB, order of tests is important,\n        //see the best practices doc\n        //http://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit_p.html\n        //and the section on ordering tests\n        suite.addTest( new CustomerEJBTest(&quot;testLookup&quot;) );\n        suite.addTest( new CustomerEJBTest(&quot;testCreate&quot;) );\n        suite.addTest( new CustomerEJBTest(&quot;testFindByPrimaryKey&quot;) );\n        suite.addTest( new CustomerEJBTest(&quot;testFindByEmailAddress&quot;) );\n        suite.addTest( new CustomerEJBTest(&quot;testUpdate&quot;) );\n        suite.addTest( new CustomerEJBTest(&quot;testRemove&quot;) );\n        return suite;\n    }\n    protected void setUp() throws Exception {\n...\n\t}\n\n...\n   public void testCreate() throws Exception {\n        CustomerHome home =\n(CustomerHome)PortableRemoteObject.narrow(ctx.lookup(&quot;minerva/registration/Cus\n\n        custInfo.setProperty(&quot;firstname&quot;, &quot;Peter&quot;);\n        custInfo.setProperty(&quot;emailaddress&quot;, &quot;pmcevoy@...&quot;);\n\n        Customer c = home.create( custInfo );\n        ionaid = c.getIonaid();\n\n        assertTrue(ionaid &gt; 0);\n    }\n\n(NOTE: some lines above deliberately truncated...)\n---------------------------------------------------\netc...\nNotice above that class variable ionaid gets set in the testCreate, and then is SUPPOSED to be\nre-used in the lookup/update and delete test methods....\n\n\nAny tips appreciated..\n\nC Ya,\n\nPeter McEvoy\nSenior Technical Analyst\nIONA Technologies\n\n\n", 
+    "subject": "Shared data between test methods in a testcase"
+}

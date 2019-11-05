@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13879, 
+    "senderId": "ypELDaT_wGMrG2TVvP2BKwvMgIHzntb-nly8q4l1e7FrMqVwP_w8W9-bmRGy_HbVaUrwoQ9MevS7L1YCpiOvWLu3_8UofQs3GUE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Chris&#39; excellent test-splitting adventure", 
+    "from": "Chris Dollin &lt;kers@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... [snippety-snip] ... I don t think we can change to subversion; too many users (potential or real) would have to change as well. (I don t know if we can", 
+    "msgId": 13878, 
+    "profile": "anover_alias", 
+    "topicId": 13795, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88056088, 
+    "messageBody": "<div id=\"ygrps-yiv-1616412629\">On Tuesday 07 June 2005 16:29, J. B. Rainsberger wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Chris Dollin wrote:<br/>\n<br/>\n </span></blockquote>[snippety-snip]<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; What do you do that if I did it too I could do better? Apart from using<br/>\n&gt; &gt; a faster CVS server, that is.<br/>\n&gt;<br/>\n&gt; Well...<br/>\n&gt;<br/>\n&gt; 1. I use Subversion, so I don&#39;t have the same CVS issues you seem to<br/>\n&gt; have. It also looks like you have far too much stuff in a single CVS<br/>\n&gt; server or module. It looks like it&#39;s time to split them.<br/>\n<br/>\n </span></blockquote>I don&#39;t think we can change to subversion; too many users (potential<br/>\nor real) would have to change as well. (I don&#39;t know if we can mirror<br/>\na CVS with a subversion or vice-versa. A year or so ago I did try and<br/>\nfind if there was a CVS mirror application, so that we could use a <br/>\nlocal CVS server for development and refresh the remote CVS asynchronously,<br/>\nbut my Google-fu was low.)<br/>\n<br/>\nFor similar (user-oriented) reasons, I don&#39;t *think* we could split<br/>\nthe codebase into multiple modules. <br/>\n<br/>\nOn good days, the CVS is acceptably fast. It&#39;s just that the bad days<br/>\nhappen when you need speed. At least it seems that way.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 2. It looks like you&#39;re spending a great deal of your effort maintaining<br/>\n&gt; test suites. I suppose you have to do that for some good reason, but<br/>\n&gt; when I run my tests, I run them all. If I need two categories of tests,<br/>\n&gt; that&#39;s two source trees. (test/source and slowtest/source)<br/>\n<br/>\n </span></blockquote>Perhaps I didn&#39;t paint a correct picture. The only suite maintenance<br/>\nwe usually do is that the tests for package X.P, which live in X.P.test,<br/>\nare collected into a suite (usually, and I think suboptimally, named<br/>\nTestPackage); and X.test has a suite that includes X.P.test.TestPackage,<br/>\netc upwards.<br/>\n<br/>\nSo when a new test [suite] materialises, there&#39;s a one-line edit in<br/>\nthe appropriate TestPackage.<br/>\n <br/>\n[The DB tests are a separate subsuite, but share code because of<br/>\n abstract test cases.]<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 3. How often do you want to run only a subset of tests that isn&#39;t, for<br/>\n&gt; example, a coherent package of tests?<br/>\n<br/>\n </span></blockquote>Hardly ever. Just sometimes, I&#39;d like to assemble a nonce suite of<br/>\n&quot;that one there, this one here&quot;; it&#39;s never been enough of a problem<br/>\nto force a solution.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; In Eclipse, I mostly right-click<br/>\n&gt; either the source tree or the package and run the tests.<br/>\n<br/>\n </span></blockquote>Yes. (Actually, mostly it&#39;s left-click the Run button.) <br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 4. For the &quot;helper code&quot;, I generally make that stuff class-level as<br/>\n&gt; preparation for the refactoring, so it doesn&#39;t get in my way while I&#39;m<br/>\n&gt; moving tests around. I spend less time in limbo with compile errors or<br/>\n&gt; red tests.<br/>\n<br/>\n </span></blockquote>That&#39;s a possibility. I&#39;ll bear that in mind for the next time; of course,<br/>\nit does add another step, but the payback might be worth it.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 5. Yes, I would imagine you have too many global caches. :)<br/>\n<br/>\n </span></blockquote>I&#39;m not sure if it&#39;s one or two ...<br/>\n<br/>\nActually, the nasty dependency problem is bnodes - &quot;blank nodes&quot; in<br/>\nRDF - which have nonce IDs based on UIDs. Which means they&#39;re different<br/>\neach run. Which means they hash differently ditto. Which means things<br/>\ncome out of tables in different orders. Which means that order-dependent<br/>\nbuggy code can appear to work ...<br/>\n<br/>\n... which means that we all know that if that appears to be happening<br/>\n(ie tests will pass, then fail, with no code changes) we lock down the<br/>\nbnode ID generation. <br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 6. I&#39;m not sure why renaming a recently-created class is such a pain,<br/>\n&gt; even in CVS: it hardly has any history to worry about, so I wouldn&#39;t<br/>\n&gt; worry about it.<br/>\n<br/>\n </span></blockquote>It&#39;s just the Historical Broken Record; experience shows that I&#39;m likely<br/>\nto make a mistake when doing it.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; How long does this whole dance actually take for you? I imagine it&#39;s<br/>\n&gt; more than one minute.<br/>\n<br/>\n </span></blockquote>I&#39;d call it five. Not flowy.<br/>\n<br/>\n[I just did a CVS update; `time` reports that it took 1m11.938s, ie,<br/>\n significantly over a minute. No updates arrived.]<br/>\n<br/>\n-- <br/>\nChris &quot;electric hedgehog&quot; Dollin<br/>\nIt&#39;s called *extreme* programming, not *stupid* programming.</div>", 
+    "prevInTime": 13877, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1118223684", 
+    "canDelete": false, 
+    "nextInTopic": 13879, 
+    "prevInTopic": 13877, 
+    "headers": {
+        "inReplyToHeader": "PDQyQTVCRDUwLjEwNTA1MDlAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDUwNjA4MTA0MS4yNDc2Ni5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "referencesHeader": "PDQyOWZhZTUxLjFmNi4xYTJiLjI2ODE2QGludGVybm9kZS5vbi5uZXQ+IDwyMDA1MDYwNzA3NDkuMDg3MDEua2Vyc0BocGxiLmhwbC5ocC5jb20+IDw0MkE1QkQ1MC4xMDUwNTA5QHJvZ2Vycy5jb20+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 11143, 
+    "senderId": "x2vYmS-AFV_t0MnisZH-RdLf7iTI6QFtzl58WHIEqlWcHL-FigAa6_hkrDsOctlGZvLfnZNfiDp6kiuapEsi-CFAQSkHplS0EPp4av6srA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] test Database Connection", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I suggest using jMock/EasyMock for this approach. Either product (they re essentially the same, but with different API styles) makes it very easy to make", 
+    "msgId": 11142, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 22774 invoked from network); 7 Jun 2004 20:29:54 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m25.grp.scd.yahoo.com with QMQP; 7 Jun 2004 20:29:54 -0000\r\nReceived: from unknown (HELO fep03-mail.bloor.is.net.cable.rogers.com) (66.185.86.73)\n  by mta1.grp.scd.yahoo.com with SMTP; 7 Jun 2004 20:29:54 -0000\r\nReceived: from [192.168.1.112] ([24.156.43.226])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040607195948.FINJ3107.fep01-mail.bloor.is.net.cable.rogers.com@[192.168.1.112]&gt;\n          for &lt;junit@yahoogroups.com&gt;; Mon, 7 Jun 2004 15:59:48 -0400\r\nMessage-ID: &lt;40C4C962.5090005@...&gt;\r\nDate: Mon, 07 Jun 2004 16:00:34 -0400\r\nUser-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ca1r45+1sj6@...&gt;\r\nIn-Reply-To: &lt;ca1r45+1sj6@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep01-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Mon, 7 Jun 2004 15:59:48 -0400\r\nX-eGroups-Remote-IP: 66.185.86.73\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] test Database Connection\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nanita23_n wrote:\n\n&gt;   Hi All,\n&gt; I am stuck on database conn.......\n&gt; can anyone give me a solution????????\n&gt; \n&gt; -&gt;How to check database connection using mock object?\n&gt; My test case is not working\n&gt; How to approch to this problem???????\n&gt; code is like this\n&gt; \n&gt; java file contain one method public void xxx(object of bean\n&gt; class,Datasource ds)\n&gt; {\n&gt; con=ds.getConnection();\n&gt; //all the stuff using prepared stmt 4 insertion\n&gt; }\n\nI suggest using jMock/EasyMock for this approach. Either product \n(they&#39;re essentially the same, but with different API styles) makes it \nvery easy to make an interface, and DataSource, Connection, Statement, \nPreparedStatement are all interfaces.\n\nSo if you&#39;re testing an entity bean&#39;s remove(), you can do this \n(EasyMock style):\n\ntestRemove() {\n     dataSource = create mock DataSource\n     connection = create mock Connection\n     preparedStatement = create mock PreparedStatement\n     // each of these has a &quot;control&quot; and a &quot;proxy&quot;\n\n     // invoke method on proxy, saying &quot;I expect this to be invoked&quot;\n     dataSource.getConnection();\n\n     // invoke method on control, saying &quot;here&#39;s how to respond&quot;\n     dataSourceControl.setReturnValue(connection);\n\n     // proxy method... you&#39;re expecting this call\n     connection.prepareStatement(&quot;delete from TABLE where CONDITION&quot;);\n\n     // control method\n     connectionControl.setReturnValue(preparedStatement);\n\n     ...\n\n     // verify all mocks were used correctly\n     dataSourceControl.verify();\n     connectionControl.verify();\n     preparedStatementControl.verify();\n}\n\nDo you get the idea?\n\neasymock.org\njmock.org\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11141, 
+    "contentTrasformed": false, 
+    "postDate": "1086638434", 
+    "canDelete": false, 
+    "nextInTopic": 11150, 
+    "prevInTopic": 11141, 
+    "headers": {
+        "inReplyToHeader": "PGNhMXI0NSsxc2o2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwQzRDOTYyLjUwOTAwMDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNhMXI0NSsxc2o2QGVHcm91cHMuY29tPg=="
+    }
+}

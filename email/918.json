@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 919, 
+    "senderId": "P0vnX3kMxrUquWlXsYNt02HlchwwIYuAwpxo_wRBcpiKEPO97j5NKPzvMJX0q-etdvRQBP4TAIesLl7PkhJ_-Ccyy7WOMpE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How can I test async callbacks?", 
+    "from": "Stefan Bodewig &lt;bodewig@...&gt;", 
+    "authorName": "Stefan Bodewig", 
+    "msgSnippet": "... What I ve done so far in similar situations was something like the following - I omit your error() case, but that should be easy: (1) Define a Callback", 
+    "msgId": 918, 
+    "topicId": 901, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1057668204\">&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:chelck@...\">chelck@...</a>&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I have some code that uses async callbacks and I&#39;d like to test<br/>\n&gt; them. The problem is I don&#39;t know how to report the errors and<br/>\n&gt; failures that occur in the callback to JUnit.<br/>\n<br/>\n </span></blockquote>What I&#39;ve done so far in similar situations was something like the<br/>\nfollowing - I omit your error() case, but that should be easy:<br/>\n<br/>\n(1) Define a Callback class of your own, that looks something like<br/>\nthis<br/>\n<br/>\nclass Callback implements ICallback {<br/>\n    private AssertionFailedError failure = 0;<br/>\n    private boolean called = false;<br/>\n<br/>\n    public AssertionFailedError getFailure() {return failure;}<br/>\n    public boolean hasBeenCalled() {return called;}<br/>\n<br/>\n    public void ok(Object data) {<br/>\n        try {<br/>\n            if (data == null) {<br/>\n                failure = new AssertionFailederror(&quot;data is null&quot;);<br/>\n                return;<br/>\n            }<br/>\n            .... more tests ....<br/>\n        } finally {<br/>\n            synchronized(this) {<br/>\n                called = true;<br/>\n                this.notifyAll();<br/>\n            }<br/>\n        }<br/>\n    }<br/>\n}<br/>\n<br/>\n(2) use it in your test method like this<br/>\n<br/>\n    Callback callback = new Callback();<br/>\n    assert(!callback.hasBeenCalled());<br/>\n    m_model.getData(callback);<br/>\n    synchronized (callback) {<br/>\n        // avoid race condition<br/>\n        if (!callback.hasBeenCalled()) {<br/>\n            callback.wait(REASONABLE_TIMEOUT);<br/>\n        }<br/>\n    }<br/>\n    assert(&quot;no callback but timeout&quot;, callback.hasBeenCalled());<br/>\n    AssertionFailedError ae = callback.getFailure();<br/>\n    if (failure != null) {<br/>\n        throw ae;<br/>\n    }<br/>\n<br/>\nThe wait/notifyAll approach will only work if you know for sure that<br/>\nthe Callback will be called in a different thread - alternatively you<br/>\ncould use<br/>\n<br/>\n    Runnable r = new Runnable() {<br/>\n        public void run() {<br/>\n            m_model.getData(callback);<br/>\n        }<br/>\n    };<br/>\n    (new Thread(r)).start();<br/>\n<br/>\nto ensure you are running in separate Threads.<br/>\n<br/>\nA scenario like yours has been so common in a past project of mine -<br/>\nmodels would be loaded by SwingWorkers and would fire change events<br/>\nwhen ready - that I&#39;ve created my own abstract base class for things<br/>\nlike Callback.  This encapsulates the logic of hasBeenCalled and<br/>\nprovides a set of assert methods of its own, something like<br/>\n<br/>\n    protected boolean assertNotNull(Object o) {<br/>\n        if (o == null) {<br/>\n            failure = new AssertionFailedError(&quot;expected not null&quot;);<br/>\n        }<br/>\n        return failure == null;<br/>\n    }<br/>\n<br/>\nand the ok method would do something like<br/>\n<br/>\n            if (!assertNotNull(data)) {<br/>\n                return;<br/>\n            }<br/>\n<br/>\nStefan</div>", 
+    "prevInTime": 917, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "986536872", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 909, 
+    "headers": {
+        "inReplyToHeader": "Y2hlbGNrQGVic2RyLmNvbSdzIG1lc3NhZ2Ugb2YgIldlZCwgNCBBcHIgMjAwMSAxNzoxMjoxMyAtMDQwMCI=", 
+        "messageIdInHeader": "PG0zem9kdWJtOG4uZnNmQGJvZGV3aWcuYm9zdC5kZT4=", 
+        "referencesHeader": "PDkxM0QwRDJBOTA3MUQxMTFCN0MyMDA4MDVGRTZDNkU3MDI2NThENzRAVVMyPg=="
+    }
+}

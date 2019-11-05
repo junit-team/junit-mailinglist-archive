@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11095, 
+    "senderId": "GMjpes9f9qa52ToiO9mZ-eV2KhCm8HFAV6Wkiwl2vkuGnEhnym4Lh6vC0fdQF9nu0CQLY1hIONYrMsWqVQ6Va7VqTdy9xA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit on large scale", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "Hi Kevin, ... Substantial amounts of MockObjects raises a red flag for me.  It means that there may be areas where an object needing to be mocked has taken too", 
+    "msgId": 11094, 
+    "profile": "clarkware", 
+    "topicId": 11060, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "messageBody": "<div id=\"ygrps-yiv-760599842\">Hi Kevin,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; One of the concerns that I (and<br/>\n&gt; developers) have is that we will end up with thousands of test cases, <br/>\n&gt; many<br/>\n&gt; of which will involve using substantial amounts of MockObjects to set <br/>\n&gt; up<br/>\n&gt; test cases and that all this will become too much of an overhead to <br/>\n&gt; manage &<br/>\n&gt; maintain.<br/>\n<br/>\n </span></blockquote>Substantial amounts of MockObjects raises a red flag for me.  It means <br/>\nthat there may be areas where an object needing to be mocked has taken <br/>\ntoo much control in the system.  I can&#39;t speak to your system of <br/>\ncourse, but here&#39;s something I see regularly:<br/>\n<br/>\nSay we have a method that takes a BigObject and does something with a <br/>\nsubset of the data in that object:<br/>\n<br/>\n    public void doSomething(BigObject o) {<br/>\n       String s = o.getStringValue();<br/>\n       int i = o.getIntValue();<br/>\n       // do something with &#39;s&#39; and &#39;i&#39;<br/>\n    }<br/>\n<br/>\nThere are several other methods like doSomething() in the system, so <br/>\nthe initial reaction is to mock BigObject so that we can pass it into <br/>\ndoSomething() and the other methods.  BigObject has a lot of setup <br/>\ninvolved to put it into a test state, but with some effort we can <br/>\ncreate a MockBigObject.<br/>\n<br/>\nBut the doSomething() method is really trying to tell us that it <br/>\ndoesn&#39;t want a BigObject.  It just wants a String and an int:<br/>\n<br/>\n    public void doSomething(String s, int i) {<br/>\n       // do something with &#39;s&#39; and &#39;i&#39;<br/>\n    }<br/>\n<br/>\nOK, now we only have to initialize a String and an int to pass into <br/>\ndoSomething() during the test.  Can we do the same thing with other <br/>\nmethods that take a BigObject?  Or do those methods share the need for <br/>\na subset of data we can package in a SmallerObject?<br/>\n<br/>\nI realize this is a trivial example, but perhaps it helps illustrate <br/>\nhow low-cost decoupling can pay off.  I would suggest mocking as a last <br/>\nresort as often times it&#39;s a band-aid for what the system really wants. <br/>\n  I find that if I reach for mocking first, then I miss those design <br/>\nopportunities.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Specifically,  that changing code in the future will involve<br/>\n&gt; analysis of not only the project code but also the junit test code - an<br/>\n&gt; overhead we don&#39;t have today of course.<br/>\n<br/>\n </span></blockquote>But aren&#39;t you doing that analysis work already?  That is, every time <br/>\nyou change code you have to analyze how the change will affect the <br/>\nclients of that code.  Tests are just another client of the code that <br/>\npoke and prod it in specific ways.  As such, they detect unwanted <br/>\nchanges in the code they use.<br/>\n<br/>\nIn my experience the analysis work is less speculative and more <br/>\ndefinitive when I&#39;m working on code that&#39;s being used by unit tests.  <br/>\nThe tests simply give me more confidence to change the code:<br/>\n<br/>\n&quot;Let&#39;s see what happens when I try to simplify this chunk of code?&quot;<br/>\n<br/>\n(Refactor and rerun all the tests)<br/>\n<br/>\n&quot;Oops, when a client passes in those specific values, it breaks!&quot;<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Has anyone applied junit on a large scale such as this? I&#39;d love to <br/>\n&gt; hear<br/>\n&gt; comments about pros & cons and lessons learned etc.<br/>\n<br/>\n </span></blockquote>Coincidentally, I&#39;m working with a team that builds online travel <br/>\nbooking applications.  I&#39;ve helped other teams apply JUnit to large <br/>\nscale projects, as well.  Refactoring legacy code for testability isn&#39;t <br/>\nalways easy, and I wouldn&#39;t recommend you tackle it all at once.  But <br/>\nmy experience has been that if it&#39;s done pragmatically, then the <br/>\ninvestment pays for itself time and again.<br/>\n<br/>\nHope this helps.<br/>\n<br/>\nRegards,<br/>\n<br/>\nMike</div>", 
+    "prevInTime": 11093, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1086190054", 
+    "canDelete": false, 
+    "nextInTopic": 11095, 
+    "prevInTopic": 11091, 
+    "headers": {
+        "inReplyToHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VBQkNNQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPg==", 
+        "messageIdInHeader": "PDVGMzZCNzQ4LUI0QTktMTFEOC1CNDJBLTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "referencesHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VBQkNNQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPg=="
+    }
+}

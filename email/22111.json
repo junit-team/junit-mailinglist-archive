@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 22112, 
+    "senderId": "N2rpEP71HCjdXZGF9d2E4Wp2QD1VyL7L9DL2Rlu-g0a0dQFJcDI4Uf1_Ty1VVnghaVaxcKbdXPKvZsGken2KJ4VIW_D6_3M8tEHfXYVT-kQbFNBLQ7GNnU2adUZCtMM", 
+    "systemMessage": true, 
+    "subject": "Re: Event Dispatch Thread", 
+    "from": "&quot;marcelo_javier_ruiz&quot; &lt;marcelo_javier_ruiz@...&gt;", 
+    "authorName": "marcelo_javier_ruiz", 
+    "msgSnippet": "Hi Alex! Thank for the quick reply. The problem I was facing was because we re using Mockito, and it does not support mock setting and verification by ", 
+    "msgId": 22111, 
+    "profile": "marcelo_javier_ruiz", 
+    "topicId": 22108, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 321112357, 
+    "messageBody": "<div id=\"ygrps-yiv-1830920051\">Hi Alex!<br/>\n<br/>\nThank for the quick reply. The problem I was facing was because we&#39;re<br/>\nusing Mockito, and it does not support mock setting and verification by<br/>\ndifferent threads. I will take a look to your code, but in the meantime<br/>\nI found a solution (and EDT Runner for JUnit 4.5) that I will share just<br/>\nin case someone else needs this weird trick:<br/>\n<br/>\nimport javax.swing.SwingUtilities;<br/>\nimport org.junit.Ignore;<br/>\nimport org.junit.runner.notification.RunNotifier;<br/>\nimport org.junit.runners.model.FrameworkMethod;<br/>\nimport org.junit.runners.model.InitializationError;<br/>\nimport org.junit.runners.model.Statement;<br/>\n<br/>\n<br/>\n/**<br/>\n  * Runs JUnit tests in the Event Dispatch Thread (EDT).<br/>\n  *<br/>\n  * To accomplish this, timeouts are not considered.<br/>\n  * @BeforeClass and @AfterClass methods are NOT run in the EDT<br/>\n  *<br/>\n  * @author Marcelo J. Ruiz.<br/>\n  */<br/>\n@Ignore<br/>\npublic class EDTRunner extends org.junit.runners.BlockJUnit4ClassRunner<br/>\n{<br/>\n<br/>\n     public SwingRunner(Class&lt;?&gt; klass) throws InitializationError {<br/>\n         super(klass);<br/>\n     }<br/>\n<br/>\n     @Override<br/>\n     protected void runChild(final FrameworkMethod method,<br/>\n             final RunNotifier notifier) {<br/>\n<br/>\n         try {<br/>\n             SwingUtilities.invokeAndWait(new Runnable() {<br/>\n<br/>\n                 @Override<br/>\n                 public void run() {<br/>\n                     hookMethod(method, notifier);<br/>\n                 }<br/>\n             });<br/>\n         } catch (Exception ex) {<br/>\n             throw new RuntimeException(<br/>\n                     &quot;Failed While Running in EDT:&quot; + ex.getMessage(),<br/>\n                     ex);<br/>\n         }<br/>\n     }<br/>\n<br/>\n     private void hookMethod(final FrameworkMethod method,<br/>\n             final RunNotifier notifier) {<br/>\n         super.runChild(method, notifier);<br/>\n     }<br/>\n<br/>\n     @Override<br/>\n     protected Statement withPotentialTimeout(final FrameworkMethod<br/>\nmethod,<br/>\n             final Object test, final Statement next) {<br/>\n         return next;<br/>\n     }<br/>\n}<br/>\n<br/>\nThanks again Alex!<br/>\n<br/>\nMarcelo<br/>\n<br/>\n--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;marcelo_javier_ruiz&quot;<br/>\n&lt;marcelo_javier_ruiz@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hello All!<br/>\n&gt;<br/>\n&gt; I&#39;m using JUnit 4.5 and I&#39;m facing a problem with the EDT.<br/>\n&gt; I&#39;m wondering if there is an easy way to create a custom Runner that<br/>\n </span></blockquote>will run my UI tests in the EDT. I did find just one example in the<br/>\nInternet that played with org.junit.internal and I would like to get to<br/>\na more stable solution.<br/>\n<blockquote><span title=\"ireply\"> &gt; I know I could make every assertion with Runnables and<br/>\n </span></blockquote>SwingUtilities.invokeAndWait(), but I feel the code gets messy.<br/>\n<blockquote><span title=\"ireply\"> &gt; I am dreaming with JUnit providing a runner for the EDT :) but in the<br/>\n </span></blockquote>meantime: Has anyone faced this problem before? If so, how did you solve<br/>\nit? :)<br/>\n<blockquote><span title=\"ireply\"> &gt; Thanks!<br/>\n&gt;<br/>\n&gt; Marcelo.<br/>\n&gt;<br/>\n&gt; Ps: In this project the would not let me use Jemmy or Fest, so I am<br/>\n </span></blockquote>stuck.<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n<br/>\n<br/>\n<br/>\n </span></blockquote>[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 22110, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1259164872", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22109, 
+    "headers": {
+        "inReplyToHeader": "PGhlaGxnaStjNTd2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGhlamtjOCttcmgzQGVHcm91cHMuY29tPg=="
+    }
+}

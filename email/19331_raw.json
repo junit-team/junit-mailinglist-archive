@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 19332, 
+    "senderId": "O6hVeRUelelXuvcefefVEEMlAQuVysvJ_ymic64QDk555zHC_hmiTiLqr-bmQbAqQdzwcqxN2HOe8ecft9PEJl6Rzo3flcUKs5kxuA5-nZEHhRo", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing abstract classes", 
+    "from": "&quot;Andrew McDonagh&quot; &lt;andrewmcdonagh@...&gt;", 
+    "authorName": "Andrew McDonagh", 
+    "msgSnippet": "Yes, its normally better to test Abstract classes through their deriving classes.  This way you are testing the real classes that are certain to be used,", 
+    "msgId": 19331, 
+    "rawEmail": "Return-Path: &lt;andrewmcdonagh@...&gt;\r\nX-Sender: andrewmcdonagh@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 61935 invoked from network); 10 May 2007 22:05:25 -0000\r\nReceived: from unknown (66.218.67.36)\n  by m47.grp.scd.yahoo.com with QMQP; 10 May 2007 22:05:25 -0000\r\nReceived: from unknown (HELO nz-out-0506.google.com) (64.233.162.227)\n  by mta10.grp.scd.yahoo.com with SMTP; 10 May 2007 22:05:25 -0000\r\nReceived: by nz-out-0506.google.com with SMTP id l8so815446nzf\n        for &lt;junit@yahoogroups.com&gt;; Thu, 10 May 2007 15:05:24 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;\n        b=BnlkK8P8W/F2H4p9JICacn3HDomfWlDdK08manlLIOk4uRNwND4KbB2H/ZN701ljXAWgTl94i1DXLufTJD2CD3I47z+Fjxqg3Ri1dLYbzQVoOO0wDjpIjcmXt0NtzaEA3s3jZ29YilexTYW+LXoYi2demiQGsXLnZRofzFU5eZk=\r\nReceived: by 10.114.200.2 with SMTP id x2mr688387waf.1178834724760;\n        Thu, 10 May 2007 15:05:24 -0700 (PDT)\r\nReceived: by 10.114.153.5 with HTTP; Thu, 10 May 2007 15:05:24 -0700 (PDT)\r\nMessage-ID: &lt;35c507d30705101505x1f71ed6h2a5ef4648b4f3273@...&gt;\r\nDate: Thu, 10 May 2007 23:05:24 +0100\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;f1uj79+plp6@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;f1uj79+plp6@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Andrew McDonagh&quot; &lt;andrewmcdonagh@...&gt;\r\nSubject: Re: [junit] Testing abstract classes\r\nX-Yahoo-Group-Post: member; u=283773244; y=ui2MqT2spr7c6zTejaKIqcjMet5JJZp-g7CREXiisjBijIx2V8XPXg\r\nX-Yahoo-Profile: andy_ipaccess\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nYes, its normally better to test Abstract classes through their deriving\nclasses.  This way you are testing the real classes that are certain to be\nused, whereas any method on an abstract base class is viable for over\nriding.\n\nIf it turns out that you are writing the same tests for each of the derived\nclasses, because they only implement one or a small number of the abstract\nbase classes methods, and you feel like its an exercise in typing out\ntests....  Then &#39;the code&#39; is telling you the design is wrong.  Wrong, as\nin, why use Inheritance if all the derived classes do is add a single extra\nimplementation detail.  The cure for this is to &#39;Favour Delegation over\nInheritance&#39;.\n\nWhat would the design look like if you used delegation to call those extra\nclasses instead of virtual polymorphic calls?\n\nE.g. Inheritance\n\n\nclass Car {\n  abstract String getMake();\n}\n\nclass BMW extends Car {\n  String getMake() {\n     returns &quot;BMW&quot;;\n  }\n}\n\nclass Toyota extends Car\n  String getMake() {\n     returns &quot;Toyota&quot;;\n  }\n}\n\nQ: Do we Test Each class or abstract base class\n\nE.g. Delegation (Note using the String class as the class to delegate to -\nbut it could easily be one of your own classes)\n\nclass Car {\n  private String make;\n\n  Car(String aMake) {\n     make = aMake;\n  }\n\n   String getMake() {\n      return make;\n   }\n}\n\n\nclass CarTest {\n\n   @Test\n   testMakeOfCars() {\n      Car bmw = new Car(&quot;BMW&quot;);\n      assertEquals(&quot;Wrong make!&quot;, &quot;BMW&quot;, bmw.getMake() );\n\n      Car toyota = new Car(&quot;Toyota&quot;);\n      assertEquals(&quot;Wrong make!&quot;, &quot;Toyota&quot;, toyota.getMake() );\n   }\n}\n\n\nOn 5/10/07, elmoseeriksen &lt;elmoseeriksen@...&gt; wrote:\n&gt;\n&gt;   I read in the FAQ about testing abstract classes, but I do not\n&gt; understand the example given in the link the FAQ refers to.\n&gt; When I e.g. make the test class abstract, Eclipse gives the message\n&gt; &quot;No JUnit tests found&quot;. Furthermore, my classes do not follow the\n&gt; Liskov Substitution Principle mentioned in the article.\n&gt;\n&gt; If someone has a simple example of testing abstract classes with\n&gt; JUnit, or could explain it, I would really appreciate it.\n&gt;\n\n\n\nOr should an abstract class simply be tested through the classes that\n&gt; extends the abstract class?\n&gt;\n&gt; - Louise\n&gt;\n&gt;  \n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "andy_ipaccess", 
+    "topicId": 19330, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 283773244, 
+    "prevInTime": 19330, 
+    "contentTrasformed": false, 
+    "postDate": "1178834724", 
+    "canDelete": false, 
+    "nextInTopic": 19332, 
+    "prevInTopic": 19330, 
+    "headers": {
+        "inReplyToHeader": "PGYxdWo3OStwbHA2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDM1YzUwN2QzMDcwNTEwMTUwNXgxZjcxZWQ2aDJhNWVmNDY0OGI0ZjMyNzNAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGYxdWo3OStwbHA2QGVHcm91cHMuY29tPg=="
+    }
+}

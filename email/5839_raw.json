@@ -1,0 +1,30 @@
+{
+    "topicId": 5818, 
+    "postDate": "1032798281", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "GKL4RTRaXLGT58XIaliW1u67ccYqUzC7d1NenAdGWBI_GXaPujCagYQz-qG8O6Cw2FkJn-QZ-uuKcCbcjKZi00fKRdq09vRYNrf5gI3GVXo", 
+    "nextInTime": 5840, 
+    "userId": 114327599, 
+    "prevInTime": 5838, 
+    "prevInTopic": 5833, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwOTIzMTEzMzI1LjUzNzk5LnFtYWlsQHdlYjEzOTA4Lm1haWwueWFob28uY29tPjsgZnJvbSBzcGVhazJtYW5wcmVldEB5YWhvby5jb20gb24gTW9uLCBTZXAgMjMsIDIwMDIgYXQgMDQ6MzM6MjVBTSAtMDcwMA==", 
+        "messageIdInHeader": "PDIwMDIwOTIzMTAyNDQxLkExNDA3MUB0aWJpYS5hbW90bHBhYS5ib2d1cz4=", 
+        "referencesHeader": "PDIwMDIwOTIzMTEzMzI1LjUzNzk5LnFtYWlsQHdlYjEzOTA4Lm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "Steven Taschuk", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "... The usual answer is: Don t. That is, rather than writing (for example) public void readDataFrom( String filename ) throws IOException { InputStream in =", 
+    "contentTrasformed": false, 
+    "msgId": 5839, 
+    "nextInTopic": 5847, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;staschuk@...&gt;\r\nReceived: (qmail 40501 invoked from network); 24 Sep 2002 12:34:02 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m14.grp.scd.yahoo.com with QMQP; 24 Sep 2002 12:34:02 -0000\r\nReceived: from unknown (HELO n7.grp.scd.yahoo.com) (66.218.66.91)\n  by mta3.grp.scd.yahoo.com with SMTP; 24 Sep 2002 12:34:02 -0000\r\nX-eGroups-Return: staschuk@...\r\nReceived: from [66.218.67.135] by n7.grp.scd.yahoo.com with NNFMP; 24 Sep 2002 12:34:01 -0000\r\nX-Sender: staschuk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_1_3); 23 Sep 2002 16:22:23 -0000\r\nReceived: (qmail 97393 invoked from network); 23 Sep 2002 16:22:23 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m5.grp.scd.yahoo.com with QMQP; 23 Sep 2002 16:22:23 -0000\r\nReceived: from unknown (HELO tibia.amotlpaa.bogus) (161.184.202.65)\n  by mta2.grp.scd.yahoo.com with SMTP; 23 Sep 2002 16:22:21 -0000\r\nReceived: (qmail 14092 invoked by uid 100); 23 Sep 2002 16:24:41 -0000\r\nDate: Mon, 23 Sep 2002 10:24:41 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] writing testcase for data read from a file\r\nMessage-ID: &lt;20020923102441.A14071@...&gt;\r\nReferences: &lt;20020923113325.53799.qmail@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.2.5i\r\nIn-Reply-To: &lt;20020923113325.53799.qmail@...&gt;; from speak2manpreet@... on Mon, Sep 23, 2002 at 04:33:25AM -0700\r\nFrom: Steven Taschuk &lt;staschuk@...&gt;\r\nX-Yahoo-Group-Post: member; u=114327599\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 24 Sep 2002 12:34:01 -0000\r\n\r\nQuoth Singh Manpreet:\n&gt; This is a sort of newbie question, could anyone please\n&gt; explain me how i can write a testcase for a method\n&gt; which is reading data from a file.\n\nThe usual answer is: Don&#39;t.\n\nThat is, rather than writing (for example)\n\n\tpublic void readDataFrom( String filename ) throws IOException {\n\t\tInputStream in = new FileInputStream( filename );\n\t\t// ... read data from in ...\n\t}\n\nand trying to test this, instead write (for example)\n\n\tpublic void readDataFrom( InputStream in ) throws IOException {\n\t\t// ... read data from in ...\n\t}\n\nand test this by passing an ad hoc InputStream; for example:\n\n\tpublic void testReadingData() throws IOException {\n\t\tInputStream testdata = new ByteArrayInputStream( new byte[] {\n\t\t\t// ... test data ...\n\t\t} );\n\t\tfoo.readDataFrom( testdata );\n\t\t// ... assert postconditions of reading this data ...\n\t}\n\nThere are two reasons for doing it this way.\n\nFirst, the philosophy of unit testing requires that if a test of\nfoo fails, then foo itself is at fault.  (If something else might\nbe at fault, you&#39;re doing integration testing.)  But testing a\nmethod which reads data from a file tests two components: the\nmethod itself, which interprets the data, and the JVM, which reads\nthe file.  The rewrite above isolates the interpretation of the\ndata as an independently testable unit.\n\nSecond, what you do with the data is conceptually distinct from\nhow you get it, so in principle they should be able to vary\nindependently.  But a method which reads data from a file both\nacquires the data (by opening the file) and interprets it (by\nreading from the resulting InputStream), making it difficult to\nchange where the data comes from later.  The rewrite above\ndecouples these two processes, adding significant flexibility for\nfree.  (And indeed, we immediately make use of this flexibility in\nthe unit test.)\n\nYou might, of course, write a convenience method such as\n\n\tpublic void readDataFrom( String filename ) throws IOException {\n\t\treadDataFrom( new FileInputStream( filename ) );\n\t}\n\nand then wonder how to test this.  Imho this method is too simple\nto deserve testing; its correctness is obvious by inspection.\n\nA similar point is made (rather less verbosely) in the FAQ, on the\ntopic of testing servlets and beans.\n\n\n", 
+    "subject": "Re: [junit] writing testcase for data read from a file"
+}

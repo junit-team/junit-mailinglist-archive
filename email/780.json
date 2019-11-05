@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 781, 
+    "senderId": "kQBOms4N0glt8bH6hNlFB2r_DZfkoP8JOPJZZnYevtc5-cIl_xmMiJMyua4H0_o-HvyYb821ijx7GB4K_R4fG4A", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Unit testing Antlr", 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "authorName": "Joi Ellis", 
+    "msgSnippet": "... I m not using Ant, I m using Gillmer Derge s AntlrTool in JBuilder. Works great!  It even adds syntax checking to JB4 s editor when I m working in a .g", 
+    "msgId": 780, 
+    "topicId": 747, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-502394005\">On Fri, 23 Mar 2001, Erik Meade wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I wrote some very simple tests for Ant&#39;s Antlr task.<br/>\n<br/>\n </span></blockquote>I&#39;m not using Ant, I&#39;m using Gillmer Derge&#39;s AntlrTool in JBuilder.<br/>\nWorks great!  It even adds syntax checking to JB4&#39;s editor when I&#39;m working<br/>\nin a .g grammar file.<br/>\n<br/>\nI ended up creating a junit.extensions class by subclassing TestCase<br/>\nand giving it a new constructor.   I pass in a File, a Lexer Class object,<br/>\na Parser Class object, and a String naming the topmost rule in the Parser.<br/>\n<br/>\nThe test uses reflection to identify the desired constructors and the<br/>\nmethod that corresponds with the rule, and then instantiates the parser<br/>\nto parse the provided File.  <br/>\n<br/>\nI have another class which looks for files which match &quot;input*.data&quot; and<br/>\nbuilds a suite of AntlrParserTestCase test objects, one for each input<br/>\nfile, using the parser and lexer classes I&#39;m testing.  I may turn this<br/>\ninto an extensions class later.<br/>\n<br/>\n  public static Test suite() {<br/>\n    TestSuite suite = new TestSuite( &quot;TestFcpConfigParser&quot; );<br/>\n    File file = null;<br/>\n    file = new File( inputPath );<br/>\n    if ( file.exists() ) {<br/>\n      parseFile( suite, file );<br/>\n    } else {<br/>\n      // @todo: make this a failure or exception so the test fails<br/>\n      System.out.println( &quot;File &quot; + file + &quot; skipped.&quot; );<br/>\n    }<br/>\n    return suite;<br/>\n  }<br/>\n<br/>\n  private static InputDataFilter idf = new InputDataFilter();<br/>\n<br/>\n  private static void parseFile( TestSuite suite, File file ) {<br/>\n    if ( file.isDirectory() ) {<br/>\n      File[] kids = file.listFiles( idf );<br/>\n      for ( int i = 0; i &lt; kids.length; i++ ) {<br/>\n        parseFile( suite, kids[i] );<br/>\n      }<br/>\n    } else {<br/>\n      suite.addTest( new AntlrParserTestCase( file, FcpConfigLexer.class,<br/>\n          FcpConfigParser.class, &quot;startRule&quot; )<br/>\n      );<br/>\n    }<br/>\n  }<br/>\n<br/>\nThe topmost unit test can inspect the resulting parser object&#39;s fields<br/>\nfor the expected content.  So far, what I have is a set of config files<br/>\nwhich should all produce an identical result object, so I defined a<br/>\nstatic reference constant in the data class to compare against.  That way<br/>\nwhen I change the data object, I can update the reference constant and<br/>\nnot have to go change code inside the test case to match.<br/>\n<br/>\nSince I&#39;m passing in the class objects, not instances, the JVM isn&#39;t<br/>\nbloating up with a bazillion instances of the lexer/parser stuff, just<br/>\ntest objects in the suite().  I haven&#39;t had the chance yet to instrument<br/>\nthis and see how much heap it consumes.  I only have 6 input files so far,<br/>\nbut I expect it to grow as I expand the grammar.<br/>\n<br/>\nI&#39;m still developing this setup.  Right now the AntlrParserTestCase<br/>\nextension assumes the topmost rule has neither parameters nor returns. <br/>\nI need to figure out how to accomodate that, probably with additional<br/>\nfields on the constructor. (Ick. Long parameter list smell!)<br/>\n<br/>\n-- <br/>\nJoi Ellis                    Software Engineer<br/>\nAravox Technologies          <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gyles19@...\">gyles19@...</a><br/>\n<br/>\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I<br/>\nreally like about Linux is that it has Microsoft worried.  Anything<br/>\nthat kicks a monopoly in the pants has got to be good for something.<br/>\n           - Chris Johnson</div>", 
+    "prevInTime": 779, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "985618511", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 772, 
+    "headers": {
+        "inReplyToHeader": "PERDRUZKTUxNR09QREtPR0VMSE5ESUVOUENBQUEuZW1lYWRlQGdlZWtmYXJtLm9yZz4=", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwMzI2MDgzMjU1MC4yNjkxLTEwMDAwMEBqb2kuYXJhdm94LmNvbT4="
+    }
+}

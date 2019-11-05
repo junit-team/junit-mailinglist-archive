@@ -1,0 +1,29 @@
+{
+    "topicId": 919, 
+    "postDate": "986587685", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Chas Schley&quot; &lt;chas@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "7vaklJtJbEh1dmNM3uLaXDmx-jcQAHJAbrWvX8G0BF9N3G5uXlsNECZdthEsZH3ys7gnUUdQ3K7UvncZRY6n8Xy95JKCrQ", 
+    "nextInTime": 925, 
+    "userId": 0, 
+    "prevInTime": 923, 
+    "prevInTopic": 923, 
+    "headers": {
+        "messageIdInHeader": "PDAyNTUwMWMwYmVkNSQ0YWIwNjZjMCQ2NDY2NjQwYUB6aGFucmEuY29tPg==", 
+        "referencesHeader": "PDQ4RUMxNTBDQTZFNEQzMTFCMTg2MDA1MDhCOTVBREYyMDVEREVFNjZAbWFpbDEtc2QucGVyZWdyaW5lLmNvbT4="
+    }, 
+    "authorName": "Chas Schley", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "Questions below, answers immediately following, rest of original message appended. ... 1) Yes, comment your code ;)  Seriously, a better way to what?  What is", 
+    "contentTrasformed": false, 
+    "msgId": 924, 
+    "nextInTopic": 926, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;chas@...&gt;\r\nX-Sender: chas@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_1); 6 Apr 2001 20:03:49 -0000\r\nReceived: (qmail 23130 invoked from network); 6 Apr 2001 20:03:48 -0000\r\nReceived: from unknown (10.1.10.27) by l8.egroups.com with QMQP; 6 Apr 2001 20:03:48 -0000\r\nReceived: from unknown (HELO napa.zhanra.com) (63.91.87.120) by mta2 with SMTP; 6 Apr 2001 20:03:48 -0000\r\nReceived: from chas (chas.zhanra.com [10.100.102.100]) by napa.zhanra.com (8.9.3/8.9.3) with SMTP id NAA17358 for &lt;junit@yahoogroups.com&gt;; Fri, 6 Apr 2001 13:05:37 -0700\r\nMessage-ID: &lt;025501c0bed5$4ab066c0$6466640a@...&gt;\r\nReply-To: &quot;Chas Schley&quot; &lt;chas@...&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;48EC150CA6E4D311B18600508B95ADF205DDEE66@...&gt;\r\nSubject: Re: [junit] JUnit FAQ TestSetup example\r\nDate: Fri, 6 Apr 2001 13:08:05 -0700\r\nOrganization: Zhanra Corporation\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.00.2919.6600\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600\r\nFrom: &quot;Chas Schley&quot; &lt;chas@...&gt;\r\n\r\nQuestions below, answers immediately following, rest of original message\nappended.\n\n&gt; (1) Is there a better way?\n&gt; (2) Will the variables defined in oneTimeSetup be in scope inside MyTest?\n&gt; (3) How can I reuse the fixture defined in this class for another set of\n&gt; tests?\n&gt; (4) Will the fixtures defined the suite&#39;s TestCase&#39;s still be created?\n\n1) Yes, comment your code ;)  Seriously, a better way to what?  What is it\nthat you seek to accomplish?  If, as the name AllTests implies, this test is\nsimply plumbing to run all of your tests, then you don&#39;t need a fixture.\nYou can remove the TestSuite wrapper and the oneTimeSetUp and\noneTimeTearDown methods.  Simply have your suite() method return the\nTestSuite to which you have added your tests, not the TestSetup wrapper.\n2) Variables declared in a method are scoped to that method, so they are out\nof scope outside of the method.  Class that inherit from the class in which\nyour (public or protected) method is defined have acces to the method (and\ntherefore the effects of the variable), but the variable is still scoped to\nthe method and not beyond.\n3) If you remove the TestSetup wrapper, then you won&#39;t have a fixture to\nreuse in other classes.  At my company, I created a zTestCase class that\nextends TestCase.  In my class, I define a generic fixture, and provide\nconvenience methods for manipulating that fixture.  All of our tests (all\nthose that need the fixture) extend zTestCase.  That way, our tests leverage\nthe fixture in their supers, and override oneTimeSetUp if they need to alter\nthe generic fixture.\n4) Yes, unless their oneTimeSetUp overrides the setUp method, in which case,\nno.  Again, it depends on what you seek to accomplish.\n\nHope that helps,\n\n_chas_\n\n&gt; From: &quot;Mark Bucciarelli&quot; &lt;mbucciarelli@...&gt;\n&gt; To: &lt;junit@yahoogroups.com&gt;\n&gt; Sent: Friday, April 06, 2001 12:17 PM\n&gt; Subject: RE: [junit] JUnit FAQ TestSetup example\n&gt;\n\n&gt; I also found the FAQ confusing on this point.  I&#39;m sure it&#39;s my ignorance\nof\n&gt; Java that causes me not to follow your helpful reply.  Here&#39;s a class (and\na\n&gt; few questions below):\n&gt;\n&gt;     public class AllTests extends TestCase\n&gt;     {\n&gt;       public AllTests(String name) { super(name); }\n&gt;\n&gt;       public static Test suite()\n&gt;       {\n&gt;         TestSuite suite = new TestSuite();\n&gt;         suite.add(MyTest.suite());\n&gt;         suite.add(MyOtherTest.suite());\n&gt;         TestSetup wrapper= new TestSetup(suite)\n&gt;\n\n&gt;             public void setUp()\n&gt;\n\n&gt;               oneTimeSetUp();\n&gt;             }\n&gt;             public void tearDown()\n&gt;\n\n&gt;               oneTimeTearDown();\n&gt;             }\n&gt;           };\n&gt;         return wrapper;\n&gt;       }\n&gt;\n&gt;       public void oneTimeSetup()\n&gt;       {\n&gt;       }\n&gt;\n&gt;       public void oneTimeTearDown()\n&gt;       {\n&gt;       }\n&gt;\n&gt;     }\n\n\n", 
+    "subject": "Re: [junit] JUnit FAQ TestSetup example"
+}

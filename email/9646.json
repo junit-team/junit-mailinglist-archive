@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 9647, 
+    "senderId": "Dc71VL9YRCr_dfUueToZmn4PZtu0iKL4j8lgB22CS-3BV_--Qbrlh8vpvlsbm6N2BuPo9Ih2DurZf5qib2vW8wZkI657SbKGoGjQ7ICQdPFK", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: How would you test a code which is used in Multi-threaded context", 
+    "from": "&quot;Kris Henderson&quot; &lt;khenderson@...&gt;", 
+    "authorName": "Kris Henderson", 
+    "msgSnippet": "Sal, I think I know why your test is failing.  I numbered the lines below, hopefully they won t get reformatted away when I send this.  You test is probably", 
+    "msgId": 9646, 
+    "profile": "kris_556", 
+    "topicId": 9641, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90305179, 
+    "messageBody": "<div id=\"ygrps-yiv-1805865777\">Sal,<br/>\n<br/>\nI think I know why your test is failing.  I numbered the lines below,<br/>\nhopefully they won&#39;t get reformatted away when I send this.  You test is<br/>\nprobably executing in this order:<br/>\n<br/>\n9, 10, 11, 12, 6, 13, 7<br/>\n<br/>\nOr maybe this order<br/>\n<br/>\n9, 6, 11, 7, 12, 13<br/>\n<br/>\nBoth of which fail.<br/>\n<br/>\nI re-wrote the test and was able to get it to pass.  Here&#39;s how I<br/>\nre-wrote it:<br/>\n    public void testGetAndPutWithThread() throws Exception <br/>\n    {<br/>\n        final SynchronizedQueue synchronizedQueue = new<br/>\nSynchronizedQueue();<br/>\n        new Thread() <br/>\n        {<br/>\n            public void run() <br/>\n            {<br/>\n                synchronizedQueue.put(&quot;FirstElement&quot;);<br/>\n               synchronizedQueue.put(&quot;SecondElement&quot;);<br/>\n            }<br/>\n        }.start();<br/>\n        assertEquals(&quot;FirstElement&quot;, synchronizedQueue.get());<br/>\n        assertEquals(&quot;SecondElement&quot;, synchronizedQueue.get());<br/>\n        <br/>\n        synchronizedQueue.put(&quot;ThirdElement&quot;);<br/>\n        assertEquals(&quot;ThirdElement&quot;, synchronizedQueue.get());<br/>\n    }<br/>\n<br/>\nI think this is still testing what you want to test.  Give it a try and<br/>\nsee if it works for you.<br/>\n<br/>\nKris<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; -----Original Message-----<br/>\n&gt; From: shailesh401 [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:skadam@...\">skadam@...</a>] <br/>\n&gt; Sent: Monday, October 06, 2003 11:39 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; <br/>\n&gt; I have changes the code a to <br/>\n&gt;1.  public void testGetAndPutWithThread() throws Exception {<br/>\n&gt;2.          Vector elements = new Vector();<br/>\n&gt;3.          final SynchronizedQueue synchronizedQueue = new<br/>\n </span></blockquote>SynchronizedQueue();<br/>\n<blockquote><span title=\"ireply\"> &gt;4.          new Thread() {<br/>\n&gt;5.              public void run() {<br/>\n&gt;6.                  assertEquals(&quot;FirstElement&quot;,<br/>\n </span></blockquote>synchronizedQueue.get());<br/>\n<blockquote><span title=\"ireply\"> &gt;7.                  assertEquals(&quot;ThirdElement&quot;,<br/>\n </span></blockquote>synchronizedQueue.get());<br/>\n<blockquote><span title=\"qreply\"> &gt;8.              }<br/>\n&gt;9.          }.start();<br/>\n&gt;10.         synchronizedQueue.put(&quot;FirstElement&quot;);<br/>\n&gt;11.         synchronizedQueue.put(&quot;SecondElement&quot;);<br/>\n&gt;12.         assertEquals(&quot;SecondElement&quot;, synchronizedQueue.get());<br/>\n&gt;13.         synchronizedQueue.put(&quot;ThirdElement&quot;);<br/>\n&gt;14.     }<br/>\n&gt; <br/>\n&gt; -------------------------------------------------------------------<br/>\n&gt; <br/>\n&gt; Now when i run the test it has a random behavior<br/>\n&gt; <br/>\n&gt; i get the error<br/>\n&gt; junit.framework.AssertionFailedError: expected:&lt;FirstElement&gt; but <br/>\n&gt; was:&lt;SecondElement&gt;<br/>\n&gt; junit.framework.AssertionFailedError: expected:&lt;SecondElement&gt; but <br/>\n&gt; was:&lt;FirstElement&gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; How would i write the test code to make sure the order of put and get<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Thanks<br/>\n&gt; Sal<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------ Yahoo! Groups Sponsor <br/>\n&gt; ---------------------~--&gt;<br/>\n&gt; Buy Ink Cartridges or Refill Kits for your HP, Epson, Canon or Lexmark<br/>\n&gt; Printer at MyInks.com. Free s/h on orders $50 or more to the <br/>\n&gt; US & Canada.<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.c1tracking.com/l.asp?cid=5511\">http://www.c1tracking.com/l.asp?cid=5511</a><br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/mOAaAA/3exGAA/qnsNAA/5cFolB/TM\">http://us.click.yahoo.com/mOAaAA/3exGAA/qnsNAA/5cFolB/TM</a><br/>\n&gt; --------------------------------------------------------------<br/>\n&gt; -------~-&gt;<br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 9645, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1065470480", 
+    "canDelete": false, 
+    "nextInTopic": 9648, 
+    "prevInTopic": 9645, 
+    "headers": {
+        "messageIdInHeader": "PEY3QjE2RUI4OTg0QjE0NDA5QUNCMDE1RjEzMjZCQjY2ODgxNkJDQEFUTDFWRVhDMDA1LnVzZG9tMDA0LnRjby50Yz4="
+    }
+}

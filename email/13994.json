@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 13995, 
+    "senderId": "qXt7p4iLyWMtmtkMsLMva50rumxShXmL-hf1cV_fxi8iK-KzMrGZ8HA4fRqX8gzqadyVlbzhzw09EqApvEvBPZsqVQ5TgMb9w6mcRSdt-A", 
+    "systemMessage": true, 
+    "subject": "Problems with one time setup and teardown", 
+    "from": "&quot;patelr08&quot; &lt;rakesh.mailgroups@...&gt;", 
+    "authorName": "patelr08", 
+    "msgSnippet": "Hi, I m trying to use the one time setup functionality of junit to set up a db connection for subsequent tests but finding that the code is never called. ", 
+    "msgId": 13994, 
+    "profile": "patelr08", 
+    "topicId": 13994, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 217486622, 
+    "messageBody": "<div id=\"ygrps-yiv-2141135109\">Hi,<br/>\n<br/>\nI&#39;m trying to use the one time setup functionality of junit to set up<br/>\na db connection for subsequent tests but finding that the code is<br/>\nnever called.<br/>\n<br/>\nHere&#39;s my testcase:<br/>\n<br/>\npublic class TestSecurityService extends TestCase {<br/>\n    private static OracleDataSource ds;<br/>\n    private SecurityService ss;<br/>\n<br/>\n    protected void setUp() throws Exception {<br/>\n        if (ds == null) {<br/>\n            ds = new OracleDataSource();<br/>\n            ds.setDriverType(&quot;thin&quot;);<br/>\n            ds.setServerName(&quot;177.12.56.110&quot;);<br/>\n            ds.setNetworkProtocol(&quot;tcp&quot;);<br/>\n            ds.setDatabaseName(&quot;orcl&quot;);<br/>\n            ds.setPortNumber(1521);<br/>\n        }<br/>\n<br/>\n        ss = new SecurityService(ds);<br/>\n    }<br/>\n<br/>\n    public void testLoginSuccess() throws LoginException {<br/>\n        Subject subject = ss.login(&quot;scott&quot;.toCharArray(),<br/>\n                &quot;Passw0rd&quot;.toCharArray());<br/>\n        assertNotNull(&quot;Successful login&quot;, subject);<br/>\n    }<br/>\n<br/>\n    public void testLoginFailure() {<br/>\n        Subject subject;<br/>\n<br/>\n        try {<br/>\n            subject = ss.login(&quot;nobody&quot;.toCharArray(),<br/>\n&quot;nothing&quot;.toCharArray());<br/>\n            fail(&quot;Expected LoginException because invalid<br/>\nusername/password&quot;);<br/>\n        } catch (LoginException e) {<br/>\n            // ignore because test passed<br/>\n        }<br/>\n    }<br/>\n<br/>\n    public void testChangePassword() throws LoginException {<br/>\n        Subject subject = ss.changePassword(&quot;scott&quot;.toCharArray(),<br/>\n                &quot;Passw0rd&quot;.toCharArray(), &quot;NewPassw0rd&quot;.toCharArray());<br/>\n        assertNotNull(subject);<br/>\n    }<br/>\n<br/>\n    public static void oneTimeSetup() {<br/>\n        System.out.println(&quot;oneTimeSetUp&quot;);<br/>\n    }<br/>\n<br/>\n    public static void oneTimeTearDown() {<br/>\n        System.out.println(&quot;oneTimeTearDown&quot;);<br/>\n    }<br/>\n<br/>\n    public static Test suite() {<br/>\n        TestSetup setup = new TestSetup(new<br/>\nTestSuite(TestIFSTSecurityService.class)) {<br/>\n            protected void setUp() throws Exception {<br/>\n                oneTimeSetup();<br/>\n            }<br/>\n<br/>\n            protected void tearDown() throws Exception {<br/>\n                oneTimeTearDown();<br/>\n            }<br/>\n        };<br/>\n        return setup;<br/>\n    }<br/>\n}<br/>\n<br/>\nAny ideas what I&#39;m doing wrong?<br/>\n<br/>\nThanks<br/>\n<br/>\nRakesh</div>", 
+    "prevInTime": 13993, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1119347104", 
+    "canDelete": false, 
+    "nextInTopic": 14008, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGQ5OG5qMCtzMXBhQGVHcm91cHMuY29tPg=="
+    }
+}

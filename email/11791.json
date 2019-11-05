@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 11792, 
+    "senderId": "tkG5yRJuSQH3qw_tWlPyWsqgjo8E76NoRMC-7GglVJOFN3MWM862jIyycsqDOGRBMc4yuuaaLLsS5sk_aWV9XsMiEBIsevFnHrbCCggipG22J7X2s5a18oU", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to test XML file processing?", 
+    "from": "Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;", 
+    "authorName": "Mark Van Peteghem", 
+    "msgSnippet": "... You might want to test two things here: 1) if the code correctly checks whether the file exists, 2) whether the file is parsed correctly. To test these", 
+    "msgId": 11791, 
+    "profile": "mvp_be", 
+    "topicId": 11782, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 184823457, 
+    "messageBody": "<div id=\"ygrps-yiv-731306214\">jxingtang wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I have a method to read an XML file and then use DOM to extract the<br/>\n&gt; data. Can anyone recommend a good way to unit test this method? The<br/>\n&gt; code snippet is blow:<br/>\n&gt;<br/>\n&gt;       public void processConfigFile( String fileNameArg )<br/>\n&gt;             throws IllegalArgumentException<br/>\n&gt;       {<br/>\n&gt;             File configFile = new File( fileNameArg );<br/>\n&gt;             if( configFile.exists() == false )<br/>\n&gt;             {<br/>\n&gt;                   String msg = &quot;Failed to locate the specified<br/>\n&gt; configuration file &#92;&quot;&quot; +<br/>\n&gt;                                     fileNameArg + &quot;&#92;&quot;&quot;;<br/>\n&gt;                   throw new IllegalArgumentException( msg );<br/>\n&gt;             }<br/>\n&gt;            <br/>\n&gt;             DocumentBuilderFactory factory =<br/>\n&gt;                   DocumentBuilderFactory.newInstance();<br/>\n&gt;            <br/>\n&gt;             try<br/>\n&gt;             {<br/>\n&gt;                DocumentBuilder builder =<br/>\n&gt; factory.newDocumentBuilder();<br/>\n&gt;                configDoc = builder.parse( configFile );<br/>\n&gt;             }<br/>\n&gt;                 ....<br/>\n<br/>\n </span></blockquote>You might want to test two things here: 1) if the code correctly checks <br/>\nwhether the file exists, 2) whether the file is parsed correctly. To <br/>\ntest these two, it&#39;s better to refactor your code to<br/>\n<br/>\n<br/>\n      public void processConfigFile( String fileNameArg )<br/>\n            throws IllegalArgumentException<br/>\n      {<br/>\n            File configFile = new File( fileNameArg );<br/>\n            if( configFile.exists() == false )<br/>\n            {<br/>\n                  String msg = &quot;Failed to locate the specified<br/>\nconfiguration file &#92;&quot;&quot; +<br/>\n                                    fileNameArg + &quot;&#92;&quot;&quot;;<br/>\n                  throw new IllegalArgumentException( msg );<br/>\n            }<br/>\n            FileReader reader = new FileReader(configFile);<br/>\n            processConfigFile(reader);<br/>\n      }<br/>\n           <br/>\n      public void processConfigFile( Reader reader )<br/>\n            throws IllegalArgumentException<br/>\n      {<br/>\n            DocumentBuilderFactory factory =<br/>\n                  DocumentBuilderFactory.newInstance();<br/>\n           <br/>\n            try<br/>\n            {<br/>\n               DocumentBuilder builder =<br/>\nfactory.newDocumentBuilder();<br/>\n               configDoc = builder.parse( reader );<br/>\n            }<br/>\n       }<br/>\n<br/>\nNow you can test the second method (which is more important, I think) <br/>\nwith a StringReader, which you can fill with data in your junit tests as <br/>\nyou like, by giving it a String in its constructor. The first method can <br/>\nbe easily tested with two tests, one with a (simple) existing file and <br/>\none with a non-existing file.<br/>\n<br/>\nThe advantage of this refactoring is not only easier testing, but also <br/>\nmakes your code more flexible.<br/>\n<br/>\n-- <br/>\n  Mark Van Peteghem<br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.q-mentum.com\">http://www.q-mentum.com</a> -- easier and more powerful unit testing</div>", 
+    "prevInTime": 11790, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1092730903", 
+    "canDelete": false, 
+    "nextInTopic": 11793, 
+    "prevInTopic": 11789, 
+    "headers": {
+        "inReplyToHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxMjFDMDE3LjcwMzA3MDRAcS1tZW50dW0uY29tPg==", 
+        "referencesHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg=="
+    }
+}

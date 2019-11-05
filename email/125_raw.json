@@ -1,0 +1,28 @@
+{
+    "topicId": 121, 
+    "postDate": "977175276", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "_l4HzscoY_S4zDYKXkTNB3DQnEjQZwRZ5pD8B9hfThfuIdhEqta31_6ZCktKv428ZqVtZ2Y96P4CRGADzKeCAj4ckZ6R", 
+    "nextInTime": 126, 
+    "userId": 0, 
+    "prevInTime": 124, 
+    "prevInTopic": 124, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDAxMjE4MjEzNDM2LjIxMTM1LnFtYWlsQHdlYjExNjA0Lm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "Robert Sartin", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "... Boy, is this embarassing. The guy who made the change removed the source rather than archiving it. I just went in to reproduce the change and discovered", 
+    "contentTrasformed": false, 
+    "msgId": 125, 
+    "nextInTopic": 126, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;robert_sartin@...&gt;\r\nX-Sender: robert_sartin@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_3_1_3); 18 Dec 2000 21:35:50 -0000\r\nReceived: (qmail 65662 invoked from network); 18 Dec 2000 21:34:36 -0000\r\nReceived: from unknown (10.1.10.142) by l7.egroups.com with QMQP; 18 Dec 2000 21:34:36 -0000\r\nReceived: from unknown (HELO web11604.mail.yahoo.com) (216.136.172.56) by mta3 with SMTP; 18 Dec 2000 22:35:41 -0000\r\nMessage-ID: &lt;20001218213436.21135.qmail@...&gt;\r\nReceived: from [24.27.18.247] by web11604.mail.yahoo.com; Mon, 18 Dec 2000 13:34:36 PST\r\nDate: Mon, 18 Dec 2000 13:34:36 -0800 (PST)\r\nReply-To: sartin@...\r\nSubject: Re: [junit] Failure Message\r\nTo: junit@egroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Robert Sartin &lt;robert_sartin@...&gt;\r\nFrom: Robert Sartin &lt;sartin@...&gt;\r\n\r\n\n--- Andreas Heilwagen &lt;andreas.heilwagen@...&gt; wrote:\n&gt;Can you send the patch to me? :)\n&gt;I&#39;d like to include it into JUnitX&lt;BR&gt;\n\nBoy, is this embarassing. The guy who made the change removed the\nsource rather than archiving it. I just went in to reproduce the change\nand discovered the junit authors were there before I was. In junit (3.4\nat least) there is a properties file (~/junit.properties  with &quot;~&quot;\nbeing the Java &quot;user.home&quot; property). If you set maxmessage in that\nfile (a line with &quot;maxmessage=5000&quot; for example), it will override the\ndefault. I&#39;ve got it set to 5000 now.\n\nThe only obvious enhancement would be to have maxmessage=-1 mean\ninfinite.\n\nPatch for that (against junit 3.4):\n\n$ diff -c junit/runner/BaseTestRunner.java.orig\njunit/runner/BaseTestRunner.java\n*** junit/runner/BaseTestRunner.java.orig       Mon Dec 18 15:27:31\n2000\n--- junit/runner/BaseTestRunner.java    Mon Dec 18 15:32:40 2000\n***************\n*** 74,80 ****\n         * Truncates a String to the maximum length.\n         */\n        public static String truncate(String s) {\n!               if (s.length() &gt; fMaxMessage)\n                        s= s.substring(0, fMaxMessage)+&quot;...&quot;;\n                return s;\n        }\n--- 74,80 ----\n         * Truncates a String to the maximum length.\n         */\n        public static String truncate(String s) {\n!               if ((fMaxMessage &gt; 0) && (s.length() &gt; fMaxMessage))\n                        s= s.substring(0, fMaxMessage)+&quot;...&quot;;\n                return s;\n        }\n\nRegards,\n\nRob\n\n\n__________________________________________________\nDo You Yahoo!?\nYahoo! Shopping - Thousands of Stores. Millions of Products.\nhttp://shopping.yahoo.com/\n\n", 
+    "subject": "Re: [junit] Failure Message"
+}

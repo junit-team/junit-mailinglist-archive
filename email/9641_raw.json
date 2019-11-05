@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 9642, 
+    "senderId": "0MIvaoD62B8K654Rn86w17AEf6CqSzxOTzdBxebWp2itYmD3JQUrm5vr7vHpzPmw4Mp7KayjWyJOa_ItbEJLL88Ii_Nyv8HdtQEj", 
+    "systemMessage": false, 
+    "subject": "How would you test a code which is used in Multi-threaded context", 
+    "from": "&quot;shailesh401&quot; &lt;skadam@...&gt;", 
+    "authorName": "shailesh401", 
+    "msgSnippet": "Guys, Testing the following code in 1 thread is easy, but in multiple thread is confusing... 1st test passes, 2nd one fail. Any suggestions or help. Thanks Sal", 
+    "msgId": 9641, 
+    "rawEmail": "Return-Path: &lt;skadam@...&gt;\r\nReceived: (qmail 56031 invoked from network); 6 Oct 2003 15:52:20 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m12.grp.scd.yahoo.com with QMQP; 6 Oct 2003 15:52:20 -0000\r\nReceived: from unknown (HELO n21.grp.scd.yahoo.com) (66.218.66.77)\n  by mta5.grp.scd.yahoo.com with SMTP; 6 Oct 2003 15:52:20 -0000\r\nX-eGroups-Return: skadam@...\r\nReceived: from [66.218.67.133] by n21.grp.scd.yahoo.com with NNFMP; 06 Oct 2003 15:52:20 -0000\r\nX-Sender: skadam@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 9554 invoked from network); 6 Oct 2003 15:33:03 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m17.grp.scd.yahoo.com with QMQP; 6 Oct 2003 15:33:03 -0000\r\nReceived: from unknown (HELO n27.grp.scd.yahoo.com) (66.218.66.83)\n  by mta4.grp.scd.yahoo.com with SMTP; 6 Oct 2003 15:33:03 -0000\r\nReceived: from [66.218.67.171] by n27.grp.scd.yahoo.com with NNFMP; 06 Oct 2003 15:32:57 -0000\r\nDate: Mon, 06 Oct 2003 15:32:57 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: How would you test a code which is used in Multi-threaded context\r\nMessage-ID: &lt;bls1v9+m4hg@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1946\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;shailesh401&quot; &lt;skadam@...&gt;\r\nX-Yahoo-Group-Post: member; u=112334565\r\nX-Yahoo-Profile: shailesh401\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 06 Oct 2003 15:52:19 -0000\r\n\r\nGuys,\n  Testing the following code in 1 thread is easy, but\nin multiple thread is confusing...\n\n1st test passes, 2nd one fail.\n\nAny suggestions or help.\n\nThanks\n Sal\n\n\n--------------  SynchronizedQueue.java ----------------\n\nimport java.util.Vector;\n\npublic class SynchronizedQueue {\n    private Vector elements = new Vector(10,10);\n\n    public synchronized Object get() {\n        while (elements.isEmpty()) {\n            try {\n                wait();\n            } catch (InterruptedException e) {\n            }\n        }\n        notifyAll();\n        Object anElement = elements.remove(0);\n        return anElement;\n    }\n\n    public synchronized void put(Object anElement) {\n        elements.add(anElement);\n        notifyAll();\n    }\n}\n\n------------------ SynchronizedQueueTest ----------------------------\nimport junit.framework.TestCase;\n\nimport java.util.Vector;\n\npublic class SynchronizedQueueTest extends TestCase {\n\n        public void testGetAndPutWithoutThreads() throws Exception {\n        final SynchronizedQueue synchronizedQueue = new \nSynchronizedQueue();\n        synchronizedQueue.put(&quot;111&quot;);\n        synchronizedQueue.put(&quot;222&quot;);\n        synchronizedQueue.put(&quot;333&quot;);\n        assertEquals(&quot;111&quot;, synchronizedQueue.get());\n        assertEquals(&quot;222&quot;, synchronizedQueue.get());\n        assertNotSame(&quot;444&quot;, synchronizedQueue.get());\n    }\n\n    public void testGetAndPutWithThread() throws Exception {\n        Vector elements = new Vector();\n        SynchronizedQueue synchronizedQueue = new SynchronizedQueue();\n        new Thread() {\n            public void run() {\n                elements.add(synchronizedQueue.get());\n                elements.add(synchronizedQueue.get());\n            }\n        };\n        synchronizedQueue.put(&quot;FirstElement&quot;);\n        synchronizedQueue.put(&quot;SecondElement&quot;);\n        elements.add(synchronizedQueue.get());\n        synchronizedQueue.put(&quot;ThirdElement&quot;);\n        elements.toString();\n    }\n}\n\n\n\n\n\n", 
+    "profile": "shailesh401", 
+    "topicId": 9641, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112334565, 
+    "prevInTime": 9640, 
+    "contentTrasformed": false, 
+    "postDate": "1065454377", 
+    "canDelete": false, 
+    "nextInTopic": 9643, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJsczF2OSttNGhnQGVHcm91cHMuY29tPg=="
+    }
+}

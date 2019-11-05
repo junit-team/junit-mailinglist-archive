@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 20677, 
+    "senderId": "zk7CofxJpuDNnGtPOSMWjo8RmcsAHEozL8Y0ot0BELXW74vB3usxvEiaLvJIOcy8HmLvYVr24Wqji3qzuKJ_CRGakrtVF3cT", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit 3 suite setup tear down", 
+    "from": "David Beidle &lt;dabeidle@...&gt;", 
+    "authorName": "David Beidle", 
+    "msgSnippet": "Lars, It seems like the obvious suggestion is missing from this thread (or I at least missed it)... Since you re using JUnit 3, have you tried the TestSetup", 
+    "msgId": 20676, 
+    "rawEmail": "Return-Path: &lt;dabeidle@...&gt;\r\nX-Sender: dabeidle@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 11613 invoked from network); 10 Jul 2008 15:52:03 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m47.grp.scd.yahoo.com with QMQP; 10 Jul 2008 15:52:03 -0000\r\nX-Received: from unknown (HELO smtp.indra.com) (209.169.0.20)\n  by mta17.grp.scd.yahoo.com with SMTP; 10 Jul 2008 15:52:03 -0000\r\nX-Received: from [192.168.0.4] (c-67-173-249-252.hsd1.co.comcast.net [67.173.249.252])\n\t(authenticated bits=0)\n\tby smtp.indra.com (8.13.8/8.13.8) with ESMTP id m6AFrgFL012344\n\t(version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT)\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 10 Jul 2008 09:53:44 -0600 (MDT)\n\t(envelope-from dabeidle@...)\r\nMessage-Id: &lt;A0400C40-D10D-47AE-853C-CC4DA8C2179E@...&gt;\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;b9ee5e410807100737v51e76bdx627799a3bf7a3af4@...&gt;\r\nMime-Version: 1.0 (Apple Message framework v919.2)\r\nDate: Thu, 10 Jul 2008 09:51:59 -0600\r\nReferences: &lt;g51n8e+fu4r@...&gt; &lt;b9ee5e410807100737v51e76bdx627799a3bf7a3af4@...&gt;\r\nX-Mailer: Apple Mail (2.919.2)\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Beidle &lt;dabeidle@...&gt;\r\nSubject: Re: [junit] Junit 3 suite setup tear down\r\nX-Yahoo-Group-Post: member; u=69753388; y=dIg9cTkVur-yR5tzN6ZMyWzQEXEYghbBxALhUPNsGOa1-_esYsoj\r\nX-Yahoo-Profile: akamaligroup\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nLars,\n\nIt seems like the obvious suggestion is missing from this thread (or=\r\n I  \nat least missed it)...\n\nSince you&#39;re using JUnit 3, have you tried the=\r\n TestSetup decorator  \navailable in that version to provide one-time suite =\r\nsetUp and tearDown  \nmethods. For example:\n\n\n     public static Test suite(=\r\nClass testClass) {\n         TestSetup suite =3D new junit.extensions.TestSe=\r\ntup(new  \nTestSuite(testClass)) {\n             protected void setUp() {\n   =\r\n              // set up at the start o suite execution\n             }\n     =\r\n        protected void tearDown() {\n                 // tear down at the en=\r\nd of suite execution\n             }\n         };\n\n         return suite;\n   =\r\n  }\n\nI&#39;ve used this technique in a variety of scenarios to perform one-time=\r\n  \ninitialization for a suite. I&#39;ve used it in test case base classes to  \n=\r\nprovide similar behavior across derivative classes. In the example  \nabove,=\r\n I used TestSetup as an anonymous class, but you could extend it  \nor just =\r\nadd additional methods to provide the behavior needed.\n\n-Dave Beidle\n  The =\r\naKamali Group, Inc.\n\n\nOn Jul 10, 2008, at 8:37 AM, Joakim Ohlrogge wrote:\n\n=\r\n&gt; It sounds from your description that you are using JUnit 3.8.x ? In\n&gt; tha=\r\nt case it should not be too difficult to do by subclassing\n&gt; TestSuite. The=\r\n problem is that your test will not work if you run them\n&gt; outside the suit=\r\ne (unless you cater for that in some clever way).\n&gt;\n&gt; Subclassing TestSuite=\r\n in principle (have not tested this but the\n&gt; correct answer should be simi=\r\nlar enough)\n&gt;\n&gt; NetworkTestSuite extends TestSuite {\n&gt; public run(TestResul=\r\nt result) {\n&gt; startNetwork();\n&gt; super.run(result);\n&gt; stopNetwork();\n&gt; }\n&gt; }=\r\n\n&gt;\n&gt; Then you can just use NetworkTestSuite in place of TestSuite in the\n&gt; =\r\nroot of the tests that need a running network (or whatever it was that\n&gt; yo=\r\nu wanted like this:\n&gt;\n&gt; public static Test suite() {\n&gt;\n&gt; TestSuite suite=3D=\r\n new NetworkTestSuite();\n&gt;\n&gt; suite.addTest(MoneyTest.class);\n&gt;\n&gt; return sui=\r\nte;\n&gt;\n&gt; }\n&gt;\n&gt; I hope this helps.\n&gt; /J\n&gt;\n&gt; On Wed, Jul 9, 2008 at 8:53 AM, l=\r\nars &lt;lars.carlsson@...&gt;  \n&gt; wrote:\n&gt; &gt; Hi\n&gt; &gt; At my company we h=\r\nave alot of automated test cases and in all our\n&gt; &gt; suite we have a setup t=\r\nestcase and a teardown test case where we  \n&gt; setup\n&gt; &gt; network connection =\r\nthat takes some time and can not be done in  \n&gt; every TC. ,\n&gt; &gt; But i think=\r\n that there should exist a suite setup and a teardown and\n&gt; &gt; not be in a s=\r\netup/teardown TC.\n&gt; &gt; Are there any why of doing this or how could i best b=\r\ne solve this by\n&gt; &gt; extending TestSuite?\n&gt; &gt;\n&gt; &gt; Regards Lars\n&gt; &gt;\n&gt; &gt;\n&gt;\n&gt; -=\r\n- \n&gt; -----------------------------------------------------\n&gt; Joakim Ohlrogg=\r\ne\n&gt; Agical AB\n&gt; V=E4sterl=E5nggatan 79, 2 tr\n&gt; 111 29 Stockholm, SWEDEN\n&gt;\n&gt;=\r\n Mobile: +46-708-754004\n&gt; Blog: johlrogge.wordpress.com\n&gt; E-mail: joakim.oh=\r\nlrogge@...\n&gt;\n&gt; \n\n\n\n[Non-text portions of this message have been remov=\r\ned]\n\n\n", 
+    "profile": "akamaligroup", 
+    "topicId": 20668, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 69753388, 
+    "prevInTime": 20675, 
+    "contentTrasformed": false, 
+    "postDate": "1215705119", 
+    "canDelete": false, 
+    "nextInTopic": 20680, 
+    "prevInTopic": 20675, 
+    "headers": {
+        "inReplyToHeader": "PGI5ZWU1ZTQxMDgwNzEwMDczN3Y1MWU3NmJkeDYyNzc5OWEzYmY3YTNhZjRAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PEEwNDAwQzQwLUQxMEQtNDdBRS04NTNDLUNDNERBOEMyMTc5RUBpbmRyYS5jb20+", 
+        "referencesHeader": "PGc1MW44ZStmdTRyQGVHcm91cHMuY29tPiA8YjllZTVlNDEwODA3MTAwNzM3djUxZTc2YmR4NjI3Nzk5YTNiZjdhM2FmNEBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

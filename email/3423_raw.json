@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 3424, 
+    "senderId": "cEKCLqim4UfHgK2ZVFfSutIXem-4FePpBV2B6UgztlUDB1WwMicQCC-k44gQb_e0JiTbgZcJJgU", 
+    "systemMessage": false, 
+    "subject": "Does the tear down of fixtures get fired if my test spawns a thread?", 
+    "from": "ks558@...", 
+    "authorName": "ks558@hotmail.com", 
+    "msgSnippet": "I have a test fixture that appears to be calling the tear down method as soon as my test method creates and spawns a thread.  This causes my test to fail.  Is", 
+    "msgId": 3423, 
+    "rawEmail": "Return-Path: &lt;ks558@...&gt;\r\nX-Sender: ks558@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 3 Dec 2001 17:17:07 -0000\r\nReceived: (qmail 66860 invoked from network); 3 Dec 2001 17:17:07 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m9.grp.snv.yahoo.com with QMQP; 3 Dec 2001 17:17:07 -0000\r\nReceived: from unknown (HELO n5.groups.yahoo.com) (216.115.96.55)\n  by mta2.grp.snv.yahoo.com with SMTP; 3 Dec 2001 17:17:08 -0000\r\nX-eGroups-Return: ks558@...\r\nReceived: from [10.1.10.67] by n5.groups.yahoo.com with NNFMP; 03 Dec 2001 17:17:07 -0000\r\nDate: Mon, 03 Dec 2001 17:17:05 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Does the tear down of fixtures get fired if my test spawns a thread?\r\nMessage-ID: &lt;9ugc2h+h32v@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2231\r\nX-Mailer: eGroups Message Poster\r\nFrom: ks558@...\r\nX-Yahoo-Profile: pescador29\r\n\r\nI have a test fixture that appears to be calling the tear down method \nas soon as my test method creates and spawns a thread.  This causes \nmy test to fail.  Is this the desired effects of the test fixtures \nsetup and tear down?  I thought setup was called before the method \nand tear down was called upon finishing the method?\n\nHere is what I do:\npackage suncertify.test;\n\n/**\n * TestDatabase\n */\nimport junit.framework.*;\nimport suncertify.db.*;\nimport java.util.*;\n\npublic class TestDatabase extends TestCase\n{\n  public static Data d1 = null;\n  private static boolean isClient1Finished = false;\n  protected void setUp(){\n    isClient1Finished = false;\n    try {\n      System.err.println(&quot;Initialized dbase&quot;);\n      d1 =  new Data(&quot;./build/db.db&quot;);\n    } catch (Exception exc){\n      exc.printStackTrace();\n    }\n  }\n  protected void tearDown(){\n    d1 = null;\n    System.err.println(&quot;undid dbase...&quot;);\n  }\n\n  public void testConcurrentUsers(){\n    try {\n      isClient1Finished = false;\n     if(d1==null) TestCase.fail(&quot;Database is null in the beginning, \nbut don&#39;t know why&quot;);\n\n      // client2 gets lock.\n      new Thread(new Runnable(){\n        public void run(){\n          try {\n            System.err.println(&quot;In second client...&quot;);\n            if(d1==null) TestCase.fail(&quot;Database is null, but don&#39;t \nknow why&quot;);\n            d1.lock(1);\n            Thread.sleep(1000);\n            d1.unlock(1);\n            isClient1Finished = true;\n          } catch (Exception exc){\n            exc.printStackTrace();\n            TestCase.fail(&quot;Second Client failed due to unexpected \nexception.&quot;);\n          }\n        }\n      }).start();\n      // client1 gets lock\n      d1.lock(1);\n      TestCase.assertTrue(isClient1Finished);\n    } catch (Exception e){\n      e.printStackTrace();\n      TestCase.fail(&quot;Test Concurrent Users failed for unknown \nreason.&quot;);\n    }\n  }\n}\n\nI get the following output:\nInitialized dbase\nundid dbase...\nIn second client...\njunit.framework.AssertionFailedError: Database is null, but don&#39;t \nknow why\n    at junit.framework.Assert.fail(Assert.java:51)\n    at suncertify.test.TestDatabase$1.run(TestDatabase.java:82)\n    at java.lang.Thread.run(Thread.java:484)\n\nAny help would be appreciated...\n\n-brent fisher\n\n\n", 
+    "profile": "pescador29", 
+    "topicId": 3423, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3422, 
+    "contentTrasformed": false, 
+    "postDate": "1007399825", 
+    "canDelete": false, 
+    "nextInTopic": 3425, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDl1Z2MyaCtoMzJ2QGVHcm91cHMuY29tPg=="
+    }
+}

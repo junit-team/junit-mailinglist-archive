@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 699, 
+    "senderId": "vmX_sn0hrdAaOwdyuT8NZ4ws1UZRoMiXOuJrt-7Wmn6lZnr2MVH-IWW1HBH6fPZPTY0tl4A0h0bxPbodeD1XCsQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit, threads, and Swing", 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "authorName": "Joi Ellis", 
+    "msgSnippet": "... [snip] ... I write unit tests for the behavior of java beans.  JUnit can catch exceptions thrown in the event thread. I don t wrap my entire test inside an", 
+    "msgId": 698, 
+    "topicId": 693, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-680304739\">On Thu, 15 Mar 2001 <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:chelck@...\">chelck@...</a> wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I have a bunch of tests that manipulate Swing obejcts. To be safe these<br/>\n&gt; tests should run in the Swing event loop. I can do this by using<br/>\n&gt; invokeLater() or invokeAndWait() in the test suite. Something like this:<br/>\n&gt; <br/>\n </span></blockquote>[snip]<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; But this is very awkward, and (I&#39;m guessing) that JUnit can&#39;t automatically<br/>\n&gt; catch exceptions within the Swing event loop. Is there is an easier way?<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>I write unit tests for the behavior of java beans.  JUnit can catch<br/>\nexceptions thrown in the event thread.<br/>\n<br/>\nI don&#39;t wrap my entire test inside an invoke*() method, I wrote safety<br/>\nmethods to wrap around unsafe swing methods.  So, when my test wants to<br/>\ncall doClick() on a button, it calls this static method on the AllTests <br/>\nclass:<br/>\n<br/>\n  /**<br/>\n   * Safely call doClick() on the specified JButton.<br/>\n   * @param button The button to doClick().<br/>\n   */<br/>\n  public static void safeDoClick(final JButton button) {<br/>\n    try {<br/>\n      SwingUtilities.invokeAndWait(<br/>\n        new Runnable() {<br/>\n          /**<br/>\n           *  Main processing method for the AllTests object<br/>\n           */<br/>\n          public void run() {<br/>\n            button.doClick();<br/>\n          }<br/>\n        }<br/>\n      );<br/>\n    }<br/>\n    catch (Exception ex) {<br/>\n      ex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n<br/>\nI have 3 or 4 of these methods for things like get/setText, doClick(), <br/>\nJList.setSelection(), and requestFocus().  I had to overload safeDoClick()<br/>\nto accept different button types.<br/>\n<br/>\nHere&#39;s a test that uses these methods:<br/>\n  public void testConnectionInfoTestButton() {<br/>\n    mp = ManagementProcessor.getInstance();<br/>\n    assertNotNull( foo );<br/>\n    JFrame frame = new JFrame(&quot;testConnectionInfoTestButton&quot;);<br/>\n    frame.getContentPane().add( foo );<br/>\n    frame.pack();<br/>\n    frame.setVisible(true);<br/>\n    assert(&quot;Frame should be visible&quot;,frame.isVisible());<br/>\n<br/>\n    AllTests.pause(1000);<br/>\n    AllTests.safeDoClick(foo.testButton);<br/>\n    String result = AllTests.safeGetText( foo.resultsString );<br/>\n    AllTests.pause(1000);<br/>\n    assert(&quot;Expected it to fail&quot;, result.equals(foo.FAILURE));<br/>\n<br/>\n    mp.start();<br/>\n    AllTests.safeDoClick(foo.testButton);<br/>\n    AllTests.pause(2000);<br/>\n    result = AllTests.safeGetText( foo.resultsString );<br/>\n    assert(&quot;Expected it to succeed&quot;, result.equals(foo.SUCCESS));<br/>\n  }<br/>\n<br/>\n-- <br/>\nJoi Ellis                    Software Engineer<br/>\nAravox Technologies          <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gyles19@...\">gyles19@...</a><br/>\n<br/>\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I<br/>\nreally like about Linux is that it has Microsoft worried.  Anything<br/>\nthat kicks a monopoly in the pants has got to be good for something.<br/>\n           - Chris Johnson</div>", 
+    "prevInTime": 697, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "984670152", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 693, 
+    "headers": {
+        "inReplyToHeader": "PDkxM0QwRDJBOTA3MUQxMTFCN0MyMDA4MDVGRTZDNkU3MDI2NThENUFAVVMyPg==", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwMzE1MDkyMTQ1MC4xMzMzNi0xMDAwMDBAam9pLmFyYXZveC5jb20+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 10927, 
+    "senderId": "ytoF3Etpk5D0foJT0RFrl3GhZJEM-2wpn-C03vdOsd3hWkHk_kepDzbJwc_fgXZ3dUnY68y7XvR0XP7d6LtZUkZE1XIK7xNtDxi9bireq_dRgMYbfA", 
+    "systemMessage": false, 
+    "subject": "Re: Re: [junit] How can I automatize a mouse click ?", 
+    "from": "&quot;Vandercammen Bart&quot; &lt;bart.vandercammen@...&gt;", 
+    "authorName": "Vandercammen Bart", 
+    "msgSnippet": "I m wrapping my dialog in an ConfirmationMessageDialog , providing the show method I need. In this example I made the choice for this project to have a null", 
+    "msgId": 10926, 
+    "profile": "bartvdcammen", 
+    "topicId": 10909, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 162084231, 
+    "messageBody": "<div id=\"ygrps-yiv-1463268719\">I&#39;m wrapping my dialog in an ConfirmationMessageDialog , providing the show method I need.<br/>\n<br/>\nIn this example I made the choice for this project to have a null parentComponent ,&quot;Confirmation&quot; as title and OK_CANCEL as options of the OptionPane.<br/>\npublic class ConfirmationMessageDialog {<br/>\n\t/** shows the confirmationMessageDialog<br/>\n\t * @param message the message to display in the dialog<br/>\n\t * @return an integer indicating if the user clicked &quot;ok&quot; or &quot;cancel&quot;.<br/>\n\t */\t<br/>\n\tpublic int show(String message) {<br/>\n\t\treturn JOptionPane.showConfirmDialog(null,message,&quot;Confirmation&quot;,JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);<br/>\n\t}<br/>\n}<br/>\n<br/>\nAn instance of this class is kept at a central location, class that is a singleton . (some kind of ServiceLocator)<br/>\nIn my Case it&#39;s called the Maincontroller.<br/>\nInitialy the confirmationMessageDialog  is filled in but there is a setter and getter.<br/>\npublic class MainController {<br/>\n      \t private ConfirmationMessageDialog confirmationMessageDialog = new ConfirmationMessageDialog();<br/>\n\tprivate static MainController instance;<br/>\n\t       public static MainController getInstance() {<br/>\n  \t\tif (instance == null){<br/>\n            \tinstance = new MainController();<br/>\n        \t\t}<br/>\n        \t\treturn instance;<br/>\n    \t  }<br/>\n  \t  public ConfirmationMessageDialog getConfirmationMessageDialog() {<br/>\n  \t      return confirmationMessageDialog;<br/>\n \t   }<br/>\n   \t     public void setConfirmationMessageDialog(ConfirmationMessageDialog confirmationMessageDialog) {<br/>\n    \t\t    this.confirmationMessageDialog = confirmationMessageDialog;<br/>\n   \t }<br/>\n}<br/>\n<br/>\nIn the code, when a confirmation is needed :<br/>\nint answer =   MainController.getInstance().getConfirmationMessageDialog(&quot;Are you sure&quot;);<br/>\n<br/>\nIn the test of code where this is used, I subclass my ConfirmationMessageDialog and override the show method, returning what I want.<br/>\nUsually as an innerclass of my testclass, making it easy to manipulate.<br/>\n<br/>\npublic class TestsomeClass{<br/>\n<br/>\n\tint returnedConfirmation ;<br/>\n\tConfirmationMessageDialog  savedConfirmationMessageDialog  = MainController.getInstance().getConfirmationMessageDialog();<br/>\n<br/>\n\tprotected void setUp(){      <br/>\n\t\t// setup my own<br/>\n\t\t MainController.getInstance().setConfirmationMessageDialog(new TestConfirmationMessageDialog());<br/>\n \t}<br/>\n\t protected void tearDown() {<br/>\n\t\t// reset the real one<br/>\n\t\t MainController.getInstance().setConfirmationMessageDialog(savedConfirmationMessageDialog );<br/>\n   \t}<br/>\n <br/>\n\tpublic void testSomeMethodWithAConfirmation(){      <br/>\n\t\t        returnedConfirmation = JOptionPane.CANCEL_OPTION ;<br/>\n \t\t\ttestedClass.someMethodWithAConfirmation();<br/>\n\t\t\t//test what should happen if user cancelled<br/>\n \t\t\t        returnedConfirmation = JOptionPane.OK_OPTION;<br/>\n         \t\t\ttestedClass.someMethodWithAConfirmation();<br/>\n\t\t\t//test what should happen if user confirmed<br/>\n \t}<br/>\n\t<br/>\n\tclass TestConfirmationMessageDialog extends ConfirmationMessageDialog  {<br/>\n\t\tpublic int show(String message) {<br/>\n\t\t\treturn returnedConfirmation ;<br/>\n\t\t}<br/>\n\t}<br/>\n}<br/>\n<br/>\nYou can even keep the passed message (showedMessage) and test on it.<br/>\n<br/>\nThis smells a bit as mock testing. <br/>\nIt can be written cleaner with an interface , so that you don&#39;t have to subclass but implement instead.<br/>\n<br/>\nhope this helps,<br/>\n<br/>\nBart</div>", 
+    "prevInTime": 10925, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1083135651", 
+    "canDelete": false, 
+    "nextInTopic": 10930, 
+    "prevInTopic": 10924, 
+    "headers": {
+        "messageIdInHeader": "PEE5RjlERkY5NjNCREM3NEY5QURGOTA2M0VCNDQxN0EwNUVDRDhEQGlkY25tYWlsMTIxYS5pZGNuLm1pbC5pbnRyYT4="
+    }
+}

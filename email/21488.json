@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21489, 
+    "senderId": "qkGK8eP_1QX0tkaE4ix_v6FtxzC59-FHysDOgzc8a6ZDqocxqOm08l3bicNQGcc6HG3C-Mb3N0Ak6bF9a0-M4VuB6_A", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Race condition with timeouts", 
+    "from": "&quot;kentb&quot; &lt;kentb@...&gt;", 
+    "authorName": "kentb", 
+    "msgSnippet": "Oops, sorry about the formatting. I m afraid you ll have to go look at the JUnit source to read it easily. Regards, Kent _____ From: junit@yahoogroups.com", 
+    "msgId": 21488, 
+    "profile": "kentlbeck", 
+    "topicId": 21487, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-1663209261\">Oops, sorry about the formatting. I&#39;m afraid you&#39;ll have to go look at the<br/>\nJUnit source to read it easily.<br/>\n <br/>\nRegards,<br/>\n <br/>\nKent<br/>\n<br/>\n  _____  <br/>\n<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\nkentb<br/>\nSent: Thursday, April 09, 2009 1:53 PM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] Race condition with timeouts<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nAll,<br/>\n<br/>\nThis is a test of the &quot;with enough eyeballs, all bugs are shallow&quot;<br/>\nhypothesis.<br/>\n<br/>\nI am experiencing a race condition with timeouts. Say I have a test like<br/>\nthis:<br/>\n<br/>\npublic class WaitTooLong {<br/>\n@Test(timeout=10) public void ripVanWinkle() throws<br/>\nInterruptedException {<br/>\nThread.sleep(100);<br/>\n}<br/>\n}<br/>\n<br/>\nWhen I run this I get one of two errors, non-deterministically:<br/>\n<br/>\njava.lang.InterruptedException: sleep interrupted<br/>\nat java.lang.Thread.sleep(Native Method)<br/>\nat UnpredictableTest.takeTen(UnpredictableTest.java:5)<br/>\n...<br/>\n<br/>\nor<br/>\n<br/>\njava.lang.Exception: test timed out after 10 milliseconds<br/>\nat<br/>\norg.junit.internal.runners.statements.FailOnTimeout.evaluate(FailOnTimeout.j<br/>\nava:48)<br/>\n...<br/>\n<br/>\nHere&#39;s the relevant code in JUnit (FailOnTimeout):<br/>\n<br/>\npublic void evaluate() throws Throwable {<br/>\nExecutorService service=<br/>\nExecutors.newSingleThreadExecutor();<br/>\nCallable&lt;Object&gt; callable= new Callable&lt;Object&gt;() {<br/>\npublic Object call() throws Exception {<br/>\ntry {<br/>\nfNext.evaluate();<br/>\n} catch (Throwable e) {<br/>\nthrow new ExecutionException(e);<br/>\n}<br/>\nreturn null;<br/>\n}<br/>\n};<br/>\nFuture&lt;Object&gt; result= service.submit(callable);<br/>\nservice.shutdown();<br/>\ntry {<br/>\nboolean terminated=<br/>\nservice.awaitTermination(fTimeout, TimeUnit.MILLISECONDS);<br/>\nif (!terminated)<br/>\nservice.shutdownNow();<br/>\nresult.get(0, TimeUnit.MILLISECONDS); // throws the<br/>\nexception if one occurred during the invocation<br/>\n} catch (TimeoutException e) {<br/>\nthrow new Exception(String.format(&quot;test timed out<br/>\nafter %d milliseconds&quot;, fTimeout));<br/>\n} catch (ExecutionException e) {<br/>\nthrow unwrap(e);<br/>\n}<br/>\n}<br/>\n<br/>\nIt seems that sometimes the TimeoutException gets thrown and caught and the<br/>\nException thrown. Sometimes, though, the InterruptedException that is<br/>\nterminating the test-running thread gets thrown/caught first. I&#39;ve stared at<br/>\nthis enough minutes to be ready for help.<br/>\n<br/>\nOne strangeness is that if I run the test programmatically<br/>\n(&quot;JUnitCore.runClass(WaitTooLong.class)&quot;) the Exception is always thrown. If<br/>\nI run the test with the Eclipse JUnit runner or with JUnit Max, the results<br/>\nare non-deterministic.<br/>\n<br/>\nAny ideas for making this deterministic? I would prefer the second result<br/>\nabove, if I can get it.<br/>\n<br/>\nRegards,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 21487, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1239310630", 
+    "canDelete": false, 
+    "nextInTopic": 21489, 
+    "prevInTopic": 21487, 
+    "headers": {
+        "inReplyToHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PDAwRTkzNDM2NEI5RDRGMTk4RkFERUZDODY0N0YwMzYyQGtlbnRzcGF2aWxpb24+", 
+        "referencesHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+"
+    }
+}

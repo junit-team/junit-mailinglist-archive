@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 9969, 
+    "senderId": "kd-3kM63E9SM9ItCjgS4fqtpoB1u3YoBe4gJ-zZ1l9DHMpgg5yCtnmV-9gZxHSRbuFUxdopH3IWimejETSmYhlGqb9Dn7msQK_scWcqP9g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterized Test Case example", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Agreed: it s easier to understand, but more tests mean more code. I wanted to be able to write tests with data. Why duplicate all that stuff?! I don t", 
+    "msgId": 9968, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 76273 invoked from network); 20 Nov 2003 23:53:32 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m20.grp.scd.yahoo.com with QMQP; 20 Nov 2003 23:53:32 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta2.grp.scd.yahoo.com with SMTP; 20 Nov 2003 23:53:32 -0000\r\nReceived: from rogers.com ([24.156.43.226])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20031120235243.HANB451303.fep02-mail.bloor.is.net.cable.rogers.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Thu, 20 Nov 2003 18:52:43 -0500\r\nMessage-ID: &lt;3FBD53CD.2000200@...&gt;\r\nDate: Thu, 20 Nov 2003 18:52:45 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5b) Gecko/20030901 Thunderbird/0.2\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Parameterized Test Case example\r\nReferences: &lt;6ED72F9648E9D94A9250334954DB7CBFBBBF14@...&gt; &lt;93D6011C-1BB3-11D8-B93F-000A95A547BC@...&gt;\r\nIn-Reply-To: &lt;93D6011C-1BB3-11D8-B93F-000A95A547BC@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Thu, 20 Nov 2003 18:52:43 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nMike Clark wrote:\n\n&gt; \n&gt; On Nov 20, 2003, at 3:02 PM, Lasitha Ranatunga wrote:\n&gt; \n&gt;  &gt; I&#39;ve been solving this kind of duplication by creating my own\n&gt;  &gt; assertions.\n&gt;  &gt; As an example, see my version of CalculateAgeTest below.  I&#39;m curious\n&gt;  &gt; about\n&gt;  &gt; the pros/cons of each approach?\n&gt;  &gt;\n&gt;  &gt; cheers, lasitha.\n&gt;  &gt;\n&gt;  &gt; ----------------\n&gt;  &gt; package ca.bluejays.scouting.amateur.model.test;\n&gt;  &gt;\n&gt;  &gt; import java.util.Date;\n&gt;  &gt;\n&gt;  &gt; import junit.framework.*;\n&gt;  &gt; import XXX.BiographicalReport;\n&gt;  &gt; import XXX.PlayerFactory;\n&gt;  &gt;\n&gt;  &gt; import com.diasparsoftware.java.util.DateUtil;\n&gt;  &gt;\n&gt;  &gt; public class CalculateAgeTest2 extends TestCase {\n&gt;  &gt;\n&gt;  &gt;     public void testBirthday() {\n&gt;  &gt;         assertCorrectAge(30, DateUtil.makeDate(2004, 5, 4));\n&gt;  &gt;     }\n&gt;  &gt;\n&gt;  &gt;     public void testDayBeforeBirthday() {\n&gt;  &gt;         assertCorrectAge(29, DateUtil.makeDate(2004, 5, 3));\n&gt;  &gt;     }\n&gt;  &gt;\n&gt;  &gt;     public void testDayAfterBirthday() {\n&gt;  &gt;         assertCorrectAge(30, DateUtil.makeDate(2004, 5, 5));\n&gt;  &gt;     }\n&gt;  &gt;\n&gt;  &gt;     public void testDateOfBirth() {\n&gt;  &gt;         assertCorrectAge(0, DateUtil.makeDate(1974, 5, 4));\n&gt;  &gt;     }\n&gt;  &gt;\n&gt;  &gt;     public void testInvalidFutureDate() {\n&gt;  &gt;         assertCorrectAge(0, DateUtil.makeDate(1974, 5, 3));\n&gt;  &gt;     }\n&gt;  &gt;\n&gt;  &gt;     private void assertCorrectAge(int expectedAge, Date futureDate) {\n&gt;  &gt;         BiographicalReport biographicalReport = PlayerFactory\n&gt;  &gt;                 .makeBiographicalReport(&quot;Joe&quot;, &quot;Rainsberger&quot;, DateUtil\n&gt;  &gt;                     .makeDate(1974, 5, 4));\n&gt;  &gt;\n&gt;  &gt;         assertEquals(new Integer(expectedAge),\n&gt;  &gt;                      biographicalReport.getAgeAsOf(futureDate));\n&gt;  &gt;     }\n&gt;  &gt; }\n&gt; \n&gt; \n&gt; To my mind, this approach is more explicit than the parameterized test\n&gt; case example.  That is, I prefer the level of test language used here\n&gt; over the language used to coerce JUnit to do it for me.  But that&#39;s\n&gt; just my mind...\n\nAgreed: it&#39;s easier to understand, but more tests mean more code. I \nwanted to be able to write tests with data. Why duplicate all that stuff?!\n\nI don&#39;t think overriding runTest() and creating a TestSuite &quot;by hand&quot; is \nso advanced: it&#39;s how JUnit worked before they added the \nreflection-based stuff, anyway. Go back and re-read Test Infected: their \nfirst example is the groundwork for a Parameterized Test Case! \n(Hand-built suite() and override runTest().)\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 9954, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 9967, 
+    "contentTrasformed": false, 
+    "postDate": "1069372365", 
+    "canDelete": false, 
+    "nextInTopic": 9971, 
+    "prevInTopic": 9967, 
+    "headers": {
+        "inReplyToHeader": "PDkzRDYwMTFDLTFCQjMtMTFEOC1COTNGLTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "messageIdInHeader": "PDNGQkQ1M0NELjIwMDAyMDBAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDZFRDcyRjk2NDhFOUQ5NEE5MjUwMzM0OTU0REI3Q0JGQkJCRjE0QGlzbGNvbTJrLmlzbGxjbmV0cy5zdHVkZW50bG9hbi5vcmc+IDw5M0Q2MDExQy0xQkIzLTExRDgtQjkzRi0wMDBBOTVBNTQ3QkNAY2xhcmt3YXJlLmNvbT4="
+    }
+}

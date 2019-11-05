@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3016, 
+    "senderId": "321maoRJltZyCpEh1lsX7Cai81TOzfxbU6j1IYLYMAt1pI_AZ2d26nBITSzX30d0D56LakYtbMDoKKfqG7VdxuBf7rblKw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Problems with WL transactions and JUnit", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... At first blush, setDefault() appears to have a different transaction isolation level than the finder such that the finder is not reading the current state", 
+    "msgId": 3015, 
+    "profile": "clarkware", 
+    "topicId": 3014, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1601413634\">Laurent Duperval wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; We have subclassed TestCase into a TransactionTestCase for which the setUp()<br/>\n&gt; creates a new javax.transaction.UserTransaction. When the test is finished,<br/>\n&gt; the tearDown() rolls back the transaction. It works on almost all our test<br/>\n&gt; cases.<br/>\n&gt;<br/>\n&gt; Of the 200+ test cases we have, two of them have a weird behaviour. Our<br/>\n&gt; entity EJBs are all container-managed and pretty much all of them have<br/>\n&gt; finder methods described in the descriptor. What we have found with the two<br/>\n&gt; ill-behaved tests is that modifying some beans within the UnitTest does not<br/>\n&gt; affect the finder method. For example:<br/>\n&gt;<br/>\n&gt; Foo foo = home.create();<br/>\n&gt; foo.setDefault(true);<br/>\n&gt; Foo foo2 = home.findDefault();<br/>\n&gt; // foo2 has the same data as foo<br/>\n&gt; foo.setDefault(false);<br/>\n&gt; // The following should throw an exception but doesn&#39;t<br/>\n&gt; foo2 = home.findDefault();<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>At first blush, setDefault() appears to have a different transaction isolation level than the finder such that the finder is not<br/>\nreading the current state of Foo.  If the UserTransaction is being employed in setUp(), then it&#39;s probably foiling the<br/>\ncontainer-managed transactions.  This might explain why removing the use of the specialized setUp() causes it to work as<br/>\nexpected.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Now, if print the content of foo2, I can see that the value of isDefault()<br/>\n&gt; is set to false. So the finder should never have found it, yet it does. We<br/>\n&gt; have found that if we remove the transactional environment from our unit<br/>\n&gt; test (i.e. extend TestCase instead of TransactionTestCase), then it works.<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>Perhaps a look at the TransactionTestCase.setUp() would help, as this seems to be the differentiator.<br/>\n<br/>\nMike</div>", 
+    "prevInTime": 3014, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1003516088", 
+    "canDelete": false, 
+    "nextInTopic": 3016, 
+    "prevInTopic": 3014, 
+    "headers": {
+        "messageIdInHeader": "PDNCRDA3MEI4LkJCOTYxMDlCQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PDIwMDExMDE5MTgxNDUyLjgxREZFNDY4OEFAbGVuYXJkLm1pY3JvY2VsbGk1LmNvbT4="
+    }
+}

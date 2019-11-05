@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 2207, 
+    "senderId": "nRLkUXLo4f9xXbmhf7imSSITl-IA_zw4p00qw90oZswH4pCt3hxQmbXK7BW-ys_xrZesoSebolKq6y9TI2bKT6KWk-XnhGwc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: New to JUnit", 
+    "from": "Johannes Link &lt;john.link@...&gt;", 
+    "authorName": "Johannes Link", 
+    "msgSnippet": "Hi Das, I d have at least the following tests: - One or more tests for checking that the build up process works correctly. - One or more tests for every method", 
+    "msgId": 2206, 
+    "topicId": 2199, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-724992418\">Hi Das,<br/>\n<br/>\nI&#39;d have at least the following tests:<br/>\n- One or more tests for checking that the build up process works<br/>\ncorrectly.<br/>\n- One or more tests for every method which changes the state or<br/>\nstructure of your tree.<br/>\n<br/>\nI&#39;m only guessing your navigation and inspection methods of TreeHolder<br/>\nand TreeNode. Thus the resulting test class would look something like<br/>\nthis:<br/>\n<br/>\npublic class TreeHolderTest {<br/>\n   private TreeHolder treeHolder;<br/>\n   private TreeNode root;<br/>\n   protected void setUp() {<br/>\n\tCollection coll = ...;<br/>\n\ttreeHolder = new TreeHolder(coll);<br/>\n\troot = treeHolder.getRootNode();<br/>\n   }<br/>\n   public void testCreation() {<br/>\n\tassertTrue(!treeHolder.isEmpty)<br/>\n\tassertEquals(new TreeNode(&quot;....&quot;), root);<br/>\n\tassertEquals(3, root.getChildren().size());<br/>\n\t// navigate through the required tree and check the structure<br/>\n   }<br/>\n   public void testCalculateSomethig() {<br/>\n\ttreeHolder.calculateSomething(...);<br/>\n\t// navigate to the nodes which should have changed <br/>\n\t//and check their state<br/>\n   }<br/>\n   ...<br/>\n}<br/>\n<br/>\nThe complex part is navigating and checking the state. If you have the<br/>\nnecessary public interface, try to extract duplicate code in your test<br/>\nclass into methods of its own, e.g.:<br/>\n   private void assertNode(TreeNode node, String type, ...) {<br/>\n\tassertEquals(type, node.getType());<br/>\n\t....<br/>\n   }<br/>\n<br/>\nYou might not have public methods for performing the navigation and<br/>\nnecessary checks. In that case you have several possibilities:<br/>\n- Add those methods. When your tests need those methods the probability<br/>\nis high that some other client code will need them soon.<br/>\n- Implement a toString() in MyNode and/or TreeHolder which prints the<br/>\nrelevant attributes/structure and do a string compare.<br/>\n- Use mock objects for testing your TreeHolder class. This would require<br/>\nsome major refactoring of your existing code.<br/>\n<br/>\nThe problem you are facing - that your code is hard to test - is mainly<br/>\ndue to your not having written the code test first. Code driven by<br/>\nup-front tests is easy to test by definition. You have to get used to<br/>\ndoing it that way, though. I recommend the articles on objectmentor.com<br/>\nand xprogramming.com as a starting point if you are interested in the<br/>\ntest first idea.<br/>\n<br/>\ngood luck,<br/>\nJohannes<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; Thanks for your reply. My TreeHolder class is something like this:<br/>\n&gt; <br/>\n&gt; // Note: MyNode implements MutableTreeNode interface<br/>\n&gt; // and holds a UserDefinedObject<br/>\n&gt; <br/>\n&gt; public class TreeHolder {<br/>\n&gt; <br/>\n&gt;     MyNode rootNode; //the root node for the whole tree<br/>\n&gt; <br/>\n&gt;     public TreeHolder(Collection items) {<br/>\n&gt;         //constructor logic to build MyNodes out of the input<br/>\n&gt;         //items and set rootNode as the root of the generated<br/>\n&gt;         //tree of MyNodes.<br/>\n&gt; <br/>\n&gt;         rootNode = ... //build a MyNode Tree From &quot;items&quot;<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public void calculateSomething(int contextValue) {<br/>\n&gt; <br/>\n&gt;          //This changes the state of some MyNodes in the tree<br/>\n&gt;          rootNode.calculateSomething(contextValue);<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     //.... several such calculate methods<br/>\n&gt; <br/>\n&gt;     public void summarizeAll() {<br/>\n&gt; <br/>\n&gt;         //This again changes the state in some other way.<br/>\n&gt;         rootNode.summarizeAll();<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt;     public MyPackagedObject getAsNewPacakgedObject() {<br/>\n&gt; <br/>\n&gt;         //This packages the MyNode tree into a flattened<br/>\n&gt;         //object and returns it.<br/>\n&gt; <br/>\n&gt;         return rootNode.newPackagedObject();<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; I have written TestCases for the MyNode object already. Every<br/>\n&gt; calculate method on TreeHolder changes the state of the rootNode (or<br/>\n&gt; one/many subnodes.) So, how do I go about testing if the state<br/>\n&gt; changes are correct? Or rather, should I even be writing them (since<br/>\n&gt; TestMyNode may already covers those cases?)<br/>\n&gt; <br/>\n&gt; Thanks in advance for your help.<br/>\n&gt; --Das </span></blockquote></div>", 
+    "prevInTime": 2205, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "996562088", 
+    "canDelete": false, 
+    "nextInTopic": 2213, 
+    "prevInTopic": 2205, 
+    "headers": {
+        "messageIdInHeader": "PDNCNjY1NEE4LjEwNjYxQjI2QGdteC5uZXQ+", 
+        "referencesHeader": "PDlrNHVvaiticHFpQGVHcm91cHMuY29tPg=="
+    }
+}

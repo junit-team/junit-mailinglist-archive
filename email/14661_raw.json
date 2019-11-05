@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 125, 
+    "nextInTime": 14662, 
+    "senderId": "fnxqH86UTjUTTUlbsg2vV3ApCpaxcYDpifMMPenVP0mc8Aqotw6UMtFvLb9djJ5ZkpVzhJeo048FKoYA_Tca_pXCug", 
+    "systemMessage": false, 
+    "subject": "Re: How to test private methods in a class.", 
+    "from": "&quot;Robert&quot; &lt;yahoo@...&gt;", 
+    "authorName": "Robert", 
+    "msgSnippet": "... Yes. As I said, I d probably start this as an inner class - I don t tend to give inner classes overly descriptive names because the containing class", 
+    "msgId": 14661, 
+    "rawEmail": "Return-Path: &lt;yahoo@...&gt;\r\nX-Sender: yahoo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 69425 invoked from network); 5 Sep 2005 13:48:47 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m7.grp.scd.yahoo.com with QMQP; 5 Sep 2005 13:48:47 -0000\r\nReceived: from unknown (HELO n10a.bulk.scd.yahoo.com) (66.94.237.44)\n  by mta5.grp.scd.yahoo.com with SMTP; 5 Sep 2005 13:48:46 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.2] by n10.bulk.scd.yahoo.com with NNFMP; 05 Sep 2005 13:45:10 -0000\r\nReceived: from [66.218.66.84] by mailer2.bulk.scd.yahoo.com with NNFMP; 05 Sep 2005 13:44:54 -0000\r\nDate: Mon, 05 Sep 2005 13:44:54 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;dfhi4m+7db3@...&gt;\r\nIn-Reply-To: &lt;9BEAA1B86783344BA6CF9B95F5B620923C188B@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3082\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Robert&quot; &lt;yahoo@...&gt;\r\nSubject: Re: How to test private methods in a class.\r\nX-Yahoo-Group-Post: member; u=189784721; y=TNzx-nlVulL-yGxj8ZfdGnqfzpzwZC2_NwbNI13bt-ptFXPCNA\r\nX-Yahoo-Profile: robertdw26\r\n\r\n--- In junit@yahoogroups.com, &quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@a...&gt;\nwrote:\n&gt; But this QueryBuilder class looks for me more like\n&gt; FlightSearchQueryBuilder, as it doesn&#39;t provide any useful functionality\n&gt; for any places other\n&gt; \n&gt; then presented &#39;search&#39; method.\n\nYes. As I said, I&#39;d probably start this as an inner class - I don&#39;t\ntend to give inner classes overly descriptive names because the\ncontaining class provides context.\n\nAlso, I was trying to keep the name short enough to focus on the\nproblem. :)\n\n&gt; Looks like &quot;the more you refactor the closer you come to a better\n&gt; solution&quot;.\n\nUmm... not quite how I would put it. However, certainly the more you\nthink about your design, the better it will become. Removing\nduplication, in particular, tends to produce better designs, and\nrefactoring is a primary one to remove duplication.\n\n(In fact, it&#39;s the fact that private methods tend to hide duplication\nthat makes me want to avoid them).\n\nAs for your XML problem: this sounds like a case for the Visitor\npattern. Umm... like this:\n\nclass AirlineVisitor {\n  private String airlineId;\n  public AirlineVistor(String id) { \n    // avoid future null checks.\n    airlineId == (id == null ? &quot;NOSUCHID&quot; : id); \n  }\n\n  public void visit(XMLBuffer buffer, Airline airline) {\n    airline.printXml(buffer, airlineId.equals(airline.getId()));\n    }\n  }\n}\n\nThen your printAirlines method becomes:\n\nprivate void printAirlines( XMLBuffer xmlBuf, FlightSearchParameters\nparams ) {\n  xmlBuf.openTag( &quot;airlines&quot; );\n  AirlineVisitor visitor = new AirlineVistor(params.getAirlineId());\n  for (Airline airline : Airline.getList()) {\n    visitor.visit(xmlBuf, airline);\n  }\n  xmlBuf.closeTag();  // surely it already knows which tag to close?\n}\n\nThen... a CitiesVisitor might look like this:\n\nclass CitiesVisitor {\n  private AirportVisitor airportVisitor;\n  private String cityId;\n  public CitiesVisitor (String id, List airportIds) {\n    cityId = (id == null ? &quot;NOSUCHID&quot;);\n    airportVisitor = new AirportVisitor(airportIds);\n  }\n\n  public void visit(XMLBuffer buffer, City city) {\n    city.printXml(buffer, id.equals(city.getId()), airportVisitor);\n  }\n}\n\nAirportVisitor might look like this:\nclass AirportVisitor {\n  private List&lt;String&gt; airportIds;\n  public AirportVisitor (List ids) {\n    airportIds = ids;\n  }\n\n  public void visit(XMLBuffer buffer, Airport airport) {\n    airport.printXml(buffer, ids.contains(city.getId()));\n  }\n}\n\nAt this point, I&#39;d probably think that the AirlineVisitor is a\ndegenerate case of the AirportVisitor - if Airline and Airport had a\ncommon interface (such as &quot;Xmlable&quot;?). So I might refactor the visitors.\n\nYou&#39;ll also notice that the visitors themselves have a fairly common\ninterface - that may be handy. Or it may not be.\n\nAgain, the aim of this is to improve testability: I can test the\nvarious permutations of the various visitors (no item selected, lots\nof airports selected, etc) in small, focused tests, with one larger\ntest for printAirlines() that focuses on a very small set of data -\njust enough to show the visitors are wired up okay.\n\nRobert.\n\n\n\n\n", 
+    "profile": "robertdw26", 
+    "topicId": 14490, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "prevInTime": 14660, 
+    "contentTrasformed": false, 
+    "postDate": "1125927894", 
+    "canDelete": false, 
+    "nextInTopic": 14663, 
+    "prevInTopic": 14659, 
+    "headers": {
+        "inReplyToHeader": "PDlCRUFBMUI4Njc4MzM0NEJBNkNGOUI5NUY1QjYyMDkyM0MxODhCQG5ld3Rvbi5ocS5hY3Rpcy5ydT4=", 
+        "messageIdInHeader": "PGRmaGk0bSs3ZGIzQGVHcm91cHMuY29tPg=="
+    }
+}

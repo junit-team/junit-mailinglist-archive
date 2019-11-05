@@ -1,0 +1,29 @@
+{
+    "topicId": 986, 
+    "postDate": "987748650", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Thomas SMETS &lt;tsmets@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Dqwe99tzdWJaKHHZl60V-CyEKeYALgml3EVDUOoScC1VF3A3kiEQnz23fblsQgHgfH35_CYUaWgn2xqIap10TuH_YER-59g", 
+    "nextInTime": 997, 
+    "userId": 0, 
+    "prevInTime": 995, 
+    "prevInTopic": 995, 
+    "headers": {
+        "messageIdInHeader": "PDNBREZEOTJBLjhBQzA4RDM3QGFsdGVybi5vcmc+", 
+        "referencesHeader": "PDlibTV1Zytqa3NnQGVHcm91cHMuY29tPiA8M0FERUIzRTUuOTBGRDM0NjdAdXNxLmVkdS5hdT4gPDNBREZBQzQ4LkZCNTI0NDUzQHVzcS5lZHUuYXU+"
+    }, 
+    "authorName": "Thomas SMETS", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "James, You meant the TestCase to do some response delay validation & behavior under multi-threading. Yes in this case the run() methods are synchronized if you", 
+    "contentTrasformed": false, 
+    "msgId": 996, 
+    "nextInTopic": 997, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;tsmets@...&gt;\r\nX-Sender: tsmets@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 20 Apr 2001 06:45:04 -0000\r\nReceived: (qmail 78083 invoked from network); 20 Apr 2001 06:45:04 -0000\r\nReceived: from unknown (10.1.10.142) by m8.onelist.org with QMQP; 20 Apr 2001 06:45:04 -0000\r\nReceived: from unknown (HELO aeon.tvd.be) (195.162.196.20) by mta3 with SMTP; 20 Apr 2001 06:45:03 -0000\r\nReceived: from altern.org (cable-213-132-132-216.upc.chello.be [213.132.132.216]) by aeon.tvd.be (8.9.3/8.9.3/RELAY-1.1) with ESMTP id IAA09196 for &lt;junit@yahoogroups.com&gt;; Fri, 20 Apr 2001 08:45:02 +0200 (MET DST)\r\nMessage-ID: &lt;3ADFD92A.8AC08D37@...&gt;\r\nDate: Fri, 20 Apr 2001 08:37:30 +0200\r\nX-Mailer: Mozilla 4.7 [en-gb] (Win95; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Does JUnit TestCase terminate threads?\r\nReferences: &lt;9bm5ug+jksg@...&gt; &lt;3ADEB3E5.90FD3467@...&gt; &lt;3ADFAC48.FB524453@...&gt;\r\nContent-Type: multipart/mixed; boundary=&quot;------------8160FF5D3FFF5D1E60B1C4F7&quot;\r\nFrom: Thomas SMETS &lt;tsmets@...&gt;\r\n\r\n\r\n--------------8160FF5D3FFF5D1E60B1C4F7\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\n\r\nJames, \nYou meant the TestCase to do some response delay validation & behavior\nunder multi-threading.\nYes in this case the run() methods are synchronized if you read the\ndocumentation well.\nIf you look well at the source code of the Multi-threaded test cases the\nThreads with your Runnable are created & initialized. Then when all the\nThreads are ready to run the test case goes over all the Threads & call\nthe \n\n\tThread.start();\n\nThere&#39;s right after that a join() of ALL the Threads hence you don&#39;t\nmove much further before all the Threads are effectively running out of\ntheir &quot;  run()  &quot; methods.\n\n\nRegards,\n\nThomas,\n\nJames Sinnamon wrote:\n&gt; \n&gt; To answer my own question:\n&gt; \n&gt; Yes, JUnit does seem to cause threads to termiate after a period of time.  When\n&gt; I ran the\n&gt; same  test directly from the main() method, the loop did not terminate.  When I\n&gt; ran the test\n&gt; earlier from within a subclass of TestCase it did terminate.\n&gt; \n&gt; Of course I am sure that this is probably spelt out clearly somewhere in the\n&gt; documents,\n&gt; but I wasn&#39;t abl to spot it.\n&gt; \n&gt; Thanks again, for a very useful package. I am sure that I would be lost without\n&gt; JUnit.\n&gt; \n&gt; regards,\n&gt; \n&gt; James\n&gt; \n&gt; James Sinnamon wrote:\n&gt; \n&gt; &gt; My apologies if the question seems naive but I have been testing a program\n&gt; &gt; where\n&gt; &gt; the loop inside the run() method of a class which implements Runnable should\n&gt; &gt;\n&gt; &gt; NOT terminate, and yet it does seem to terminate.\n&gt; &gt;\n&gt; &gt; I see the message similar to the following:\n&gt; &gt;\n&gt; &gt;    Time: 0.566\n&gt; &gt;\n&gt; &gt; .. near the point of termination.\n&gt; &gt;\n&gt; &gt; Is it possible that the Junit TestCase class imposes a time limit, or is\n&gt; &gt; there something  about the Runnable interface that I need to\n&gt; &gt; underatand better, or do I need  to look even more closely\n&gt; &gt; at my own code?\n&gt; &gt;\n&gt; &gt; TIA\n&gt; &gt;\n&gt; &gt; James\n&gt; \n&gt; --\n&gt; James Sinnamon  sinnamon@...\n&gt; \n&gt; ph 07 46315566,  0412 319669\n&gt; PO Box 517 Darling Heights QLD 4350\n&gt; \n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt; \n&gt; \n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\r\n--------------8160FF5D3FFF5D1E60B1C4F7\r\nContent-Type: text/x-vcard; charset=us-ascii;\n name=&quot;tsmets.vcf&quot;\r\nContent-Description: Card for Thomas SMETS\r\nContent-Disposition: attachment;\n filename=&quot;tsmets.vcf&quot;\r\n\r\n[ Attachment content not displayed ]\r\n--------------8160FF5D3FFF5D1E60B1C4F7--\r\n\n", 
+    "subject": "Re: [junit] Does JUnit TestCase terminate threads?"
+}

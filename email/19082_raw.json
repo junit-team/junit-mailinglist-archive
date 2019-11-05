@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 19083, 
+    "senderId": "-t9I02DnFh-p8nm1xtsE8CWTJEdNtz5087bf5vA-3kHvJU9ajLrmfWviUaH1D9dazfkjuWOF4IJ-HInMg2R7xCWl", 
+    "systemMessage": false, 
+    "subject": "Custom runner in a creation loop", 
+    "from": "Dani Zweig &lt;dani@...&gt;", 
+    "authorName": "Dani Zweig", 
+    "msgSnippet": "I m trying to adapt the custom filter runner posted by David Saff, but when I try to run a test the runner seems to be caught in an infinite instantiation ", 
+    "msgId": 19082, 
+    "rawEmail": "Return-Path: &lt;dani@...&gt;\r\nReceived: (qmail 19337 invoked by uid 7800); 9 Mar 2007 20:56:55 -0000\r\nX-Sender: dani@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 88681 invoked from network); 9 Mar 2007 19:29:45 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m50.grp.scd.yahoo.com with QMQP; 9 Mar 2007 19:29:45 -0000\r\nReceived: from unknown (HELO talk.nabble.com) (72.21.53.35)\n  by mta7.grp.scd.yahoo.com with SMTP; 9 Mar 2007 19:29:45 -0000\r\nReceived: from [72.21.53.38] (helo=jubjub.nabble.com)\n\tby talk.nabble.com with esmtp (Exim 4.50)\n\tid 1HPkmW-00032E-5e\n\tfor junit@yahoogroups.com; Fri, 09 Mar 2007 11:29:36 -0800\r\nMessage-ID: &lt;9395825.post@...&gt;\r\nDate: Fri, 9 Mar 2007 06:57:25 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nX-Nabble-From: dani@...\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Dani Zweig &lt;dani@...&gt;\r\nSubject: Custom runner in a creation loop\r\nX-Yahoo-Group-Post: member; u=28278056; y=7sPJj2NX4nOiWw4-CcLs5WgfYbxwF0NqUSAN_Jydfr285q92\r\nX-Yahoo-Profile: danizweig\r\nX-eGroups-Approved-By: ddoss_2006 &lt;didoss@...&gt; via email; 9 Mar 2007 20:56:55 -0000\r\n\r\n\nI&#39;m trying to adapt the custom filter runner posted by David Saff, but when I\ntry to run a test the runner seems to be caught in an infinite instantiation\nloop.  (The behavior is the same whether I am running from ant 1.7 or\nEclipse 3.2)  Here&#39;s a stripped-down example of the code that is causing\nthis to happen.  What am I doing wrong?\n\ntnx.\n\n- Dani Zweig\n  dani@...\n\n// The Runner:\n\npackage com.designadvance.test;\n\nimport org.junit.runner.Description;\nimport org.junit.runner.Request;\nimport org.junit.runner.Runner;\nimport org.junit.runner.notification.RunNotifier;\n\n/**\n * Trivial runner with console trace.\n */\npublic class VerboseRunner extends Runner {\nprivate final Runner delegate;\n\npublic VerboseRunner(Class&lt;?&gt; testClass) throws Exception {\nRequest classRequest = Request.aClass(testClass);\ndelegate = classRequest.getRunner();\nSystem.out.println(&quot;Created VerboseRunner with testClass &quot; +\n        testClass);\n}\n\n@ Override\npublic Description getDescription() {\n    System.out.println(&quot;Description=&quot; + delegate.getDescription());\nreturn delegate.getDescription();\n}\n\n@ Override\npublic void run(RunNotifier notifier) {\n    System.out.println(&quot;Running...&quot;);\ndelegate.run(notifier);\n}\n}\n\n\n// The Test\n\n\npackage com.designadvance.test;\n\nimport static org.junit.Assert.assertEquals;\n\nimport org.junit.Test;\nimport org.junit.runner.RunWith;\n\n\n/**\n * Invoke JUnit4 with trivial customer runner.\n */\n@ RunWith(VerboseRunner.class)\npublic class FilterTest2 {\n    \n    public FilterTest2() {\n        // required\n    }\n    \n    @Test\n    public void atest() {\n        int a = 1;\n        assertEquals(1, a);\n    }\n    @Test\n    public void btest1() {\n        int b = 2;\n        assertEquals(2, b);\n    }\n    @Test\n    public void btest2() {\n        int b = 1;\n        assertEquals(1, b);\n    }\n}\n\n// The Console output:\n\nCreated VerboseRunner with testClass class\ncom.designadvance.test.FilterTest2\nCreated VerboseRunner with testClass class\ncom.designadvance.test.FilterTest2\nCreated VerboseRunner with testClass class\ncom.designadvance.test.FilterTest2\nCreated VerboseRunner with testClass class\ncom.designadvance.test.FilterTest2\nCreated VerboseRunner with testClass class\ncom.designadvance.test.FilterTest2\n... until terminated manually\n\n\n\n-- \nView this message in context: http://www.nabble.com/Custom-runner-in-a-creation-loop-tf3376116.html#a9395825\nSent from the JUnit - User mailing list archive at Nabble.com.\n\n\n", 
+    "profile": "danizweig", 
+    "topicId": 19082, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 28278056, 
+    "prevInTime": 19081, 
+    "contentTrasformed": false, 
+    "postDate": "1173452245", 
+    "canDelete": false, 
+    "nextInTopic": 19087, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDkzOTU4MjUucG9zdEB0YWxrLm5hYmJsZS5jb20+"
+    }
+}

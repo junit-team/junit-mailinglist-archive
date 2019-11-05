@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 22335, 
+    "senderId": "7mnfekz3rKfesAxqkS--_Tc0NXWkrUNW0ep2kjs7KKUXSC-JvH0XT2qUtc2a2ojzSrNWm-GIFvNV12tfFbwhqzaS", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing test infastructure", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Steve, There s two solutions I know, and neither is super. The first, which we do with the JUnit self-tests, is to declare a Suite and hand-include the tests", 
+    "msgId": 22334, 
+    "profile": "dsaff", 
+    "topicId": 22333, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-618747284\">Steve,<br/>\n<br/>\nThere&#39;s two solutions I know, and neither is super.<br/>\n<br/>\nThe first, which we do with the JUnit self-tests, is to declare a<br/>\nSuite and hand-include the tests that should actually be run.<br/>\n<br/>\nThe second, I just realized, is made a little easier by Rules.  Start<br/>\nwith this rule:<br/>\n<br/>\npublic class EnableDuringRun extends ExternalResource {<br/>\n  private boolean enabled = false;<br/>\n  protected void before() { enabled = true; }<br/>\n  protected void after() { enabled = false; }<br/>\n  public boolean isEnabled() { return enabled; }<br/>\n<br/>\n  public MethodRule skipUnlessEnabled() {<br/>\n    return new MethodRule() {<br/>\n      Statement apply(Statement base, Framework method, Object target) {<br/>\n        if (enabled) {<br/>\n          return base;<br/>\n        } else {<br/>\n          return new Statement() { public void evaluate() {} };<br/>\n        }<br/>\n      }<br/>\n    };<br/>\n  }<br/>\n}<br/>\n<br/>\nAnd then your test classes become:<br/>\n<br/>\npublic class OuterTest {<br/>\n   @Rule public EnableDuringRun runInners = new EnableDuringRun();<br/>\n<br/>\n   public static class InnerTest {<br/>\n     @Rule public MethodRule onlyAsExample = runInners.skipUnlessEnabled();<br/>\n   }<br/>\n<br/>\n   @Test public void foo() { ... }<br/>\n}<br/>\n<br/>\nThis will allow the inner tests to be detected and run, but will have<br/>\nthem simply pass unless they&#39;re run within the context of an outer<br/>\nclass&#39;s test method.<br/>\n<br/>\nMake sense?<br/>\n<br/>\n   David<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Sun, Jan 31, 2010 at 12:00 PM, steve.ebersole &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:steve@...\">steve@...</a>&gt; wrote:<br/>\n&gt; Hey all,<br/>\n&gt;<br/>\n&gt; I am developing some tests with JUnit 4.7.  It includes a bunch of standard stuff that I refactored out into rules and runners and 2 base test classes.  I want to test theses pieces of the &quot;testing infrastructure&quot;, so I wrote some basic JUnit tests that themselves invoke JUnitCore.runClasses directly passing inner classes as the tests.  That part actually works great!  The issue is that when T try to run all the tests, these inner clases are picked up as well.  For example, in <a rel=\"nofollow\" target=\"_blank\" href=\"http://tinyurl.com/yc6j46y\">http://tinyurl.com/yc6j46y</a> I actually end up getting tests for both FunctionalTestCaseTest and FunctionalTestCaseTest$FixtureTests.<br/>\n&gt;<br/>\n&gt; This is inside the IDE, when I right click on a package or the test dir and ask it to run tests.  I understand in {build-tool=of-choice-goes-here} I could exclude these inner classes.  Guess I am looking for a general purpose solution that works no matter how the tests are launched.<br/>\n&gt;<br/>\n&gt; Thanks in advance :)<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22333, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1265038418", 
+    "canDelete": false, 
+    "nextInTopic": 22344, 
+    "prevInTopic": 22333, 
+    "headers": {
+        "inReplyToHeader": "PGhrNGN1aSszNGJzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MTAwMjAxMDczM2ozZWQ0NmU4ZHdlMTQyN2Q5NTYzODk0ZDRhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGhrNGN1aSszNGJzQGVHcm91cHMuY29tPg=="
+    }
+}

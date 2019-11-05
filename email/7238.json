@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 20, 
+    "nextInTime": 7239, 
+    "senderId": "qEtNNdfu4NtLm5aPUsTOyNEH8HwG9_Dl0qgoKM1hp-TWCL5AUqqnKHa4_smlmjnbVKF7aFqkFCgyVy4n5WiE12LkCX-zTHvkPYxpLJa8pw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] debuggers", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Never mind. I didn t read the original e-mail closely enough. :) So said J. B. Rainsberger on 3/17/2003 -------------------- What about this, which is", 
+    "msgId": 7238, 
+    "profile": "nails762", 
+    "topicId": 7194, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1715859567\">Never mind. I didn&#39;t read the original e-mail closely enough. :)<br/>\n<br/>\nSo said J. B. Rainsberger on 3/17/2003 --------------------<br/>\nWhat about this, which is currently supported by JUnit:<br/>\n<br/>\nassertTrue(<br/>\n    &quot;Rainbow &quot; + rainbow.colorListAsString() + &quot; unexpectedly does not contain &quot; + Color.orange.toString(), <br/>\n    rainbow.contains(Color.orange));<br/>\n<br/>\nI don&#39;t typically write failure messages until I need them, but some people write them all the time &quot;just to be safe&quot;. There is duplication in the failure message and the assertion itself, but that&#39;s what the failure message is there for. You may eventually refactor to Vladimir&#39;s suggestion.<br/>\n<br/>\nSo said Vladimir R. Bossicard on 3/17/2003 --------------------<br/>\n<blockquote><span title=\"ireply\"> &gt;   assertTrue( rainbow.contains( Color.orange ) );<br/>\n&gt; <br/>\n&gt; If it fails, I have three choices for figuring out what rainbow contains so<br/>\n&gt; I can start figuring out where orange went:<br/>\n&gt; <br/>\n&gt; 1. Put the color list into the assert message:<br/>\n&gt; 2. Put in a debugging string (BTW, this is what I thought the OP meant when<br/>\n&gt; he said &quot;logging&quot;, but of course I was wrong):<br/>\n&gt; <br/>\n&gt;   System.out.println( &quot;Rainbow: &quot; + rainbow.colorListAsString() );<br/>\n&gt;   assertTrue( rainbow.contains( Color.orange ) );<br/>\n<br/>\n </span></blockquote>Comment for the 2nd option:<br/>\n<br/>\nThe problem is that when you have debugged your code, you will delete your<br/>\nSystem.out.println statement.  And chances are that sooner or later you will<br/>\nface the same problem somewhere else.  So you&#39;ll have to write your System.out<br/>\nstatement, debug the code and delete the statement.<br/>\n<br/>\nHow I work is a mix between 1) and 2): I write my custom assert class.  In this<br/>\ncase, I would write a class:<br/>\n<br/>\n   class ListAssert {<br/>\n      public static void assertContains(List actual, Object expected) {<br/>\n         if (!actual.contains(expected)) {<br/>\n            /* construct a message that precisely describes what happened<br/>\n             * and all the values contained in the List, so that it&#39;s<br/>\n             * easy to debug */<br/>\n            String msg = ...;<br/>\n            fail(msg);<br/>\n         }<br/>\n      }<br/>\n   }<br/>\n<br/>\nYou don&#39;t have to change all your &quot;assertTrue(...contains(...))&quot; assertions in<br/>\nall of your JUnit tests, but simply once one of these tests fails, replace the<br/>\nassertTrue by your custom assertion, recompile and reexecute the tests.<br/>\n<br/>\nAnd once the assertion is in your test code, it stays there (not like a<br/>\nSystem.out call).<br/>\n<br/>\nAnd once you have written this class, you can send it to me and I&#39;ll include it<br/>\ninto the JUnit-addons library.<br/>\n<br/>\n-Vladimir<br/>\n<br/>\n-- <br/>\nVladimir R. Bossicard<br/>\nwww.bossicard.com<br/>\n<br/>\nYahoo! Groups Sponsor<br/>\n<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n<br/>\n<br/>\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. <br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603<br/>\nAll correspondence (c) 2002 Diaspar Software Services.<br/>\nIf you want to use it, just ask; don&#39;t steal.<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]<br/>\n<br/>\n<br/>\nYahoo! Groups Sponsor<br/>\nADVERTISEMENT<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n<br/>\n<br/>\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. <br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603<br/>\nAll correspondence (c) 2002 Diaspar Software Services.<br/>\nIf you want to use it, just ask; don&#39;t steal.<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 7237, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1047925179", 
+    "canDelete": false, 
+    "nextInTopic": 7239, 
+    "prevInTopic": 7237, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwMzE3MTMxNzMxMDIxMS4xOEVGMTFCN0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwMzE3MTMxOTM5MDQ0NS4xOEYxMDZBMUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PE9GM0E1NDUxQjEuNTk0MjcxOTQtT05DMTI1NkNFNy4wMDU4NEU5RkBzYmFiLnNlPiA8MjAwMzAzMTIxNTAxMDgwOTc1LjA2ODNGNjUzQHNzbXRwLmJsb29yLmlzLm5ldC5jYWJsZS5yb2dlcnMuY29tPiA8MTA0NzUwNDY3My4zNzk0LjMuY2FtZWxAUmhpbm8+IDwwMDgyMDFjMmU5ODckZDI4MmY2MTAkNjUwMGE4YzBAbmlsbGE+IDwxMDQ3OTIzNDQ0LjNlNzYwYWY0NDJlZTVAbWFpbC5zY2RpLm9yZz4gPDIwMDMwMzE3MTMxNzMxMDIxMS4xOEVGMTFCN0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4="
+    }
+}

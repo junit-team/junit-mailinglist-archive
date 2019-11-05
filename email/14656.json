@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 125, 
+    "nextInTime": 14657, 
+    "senderId": "IluNdscT2GUtazW6YF2gnvoSPmKL_gDPg60YDHY0Scdb_NHZMIR8_X3xC0n4_8uh-xahLBhXc42WYzbx35c9YVTvAg", 
+    "systemMessage": false, 
+    "subject": "Re: How to test private methods in a class.", 
+    "from": "&quot;Robert&quot; &lt;yahoo@...&gt;", 
+    "authorName": "Robert", 
+    "msgSnippet": "... is ... readable. ... and it ... I extract private methods out of public methods to improve readability. I transform private methods into methods on new", 
+    "msgId": 14656, 
+    "profile": "robertdw26", 
+    "topicId": 14490, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "messageBody": "<div id=\"ygrps-yiv-1800646039\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@a...&gt;<br/>\nwrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Continuing about testing private methods.<br/>\n&gt; What if a private method represent some kind of functionality that<br/>\n </span></blockquote>is<br/>\n<blockquote><span title=\"ireply\"> &gt; needed only to this concrete class.<br/>\n&gt; You know sometimes there is a big method which is not clearly<br/>\n </span></blockquote>readable.<br/>\n<blockquote><span title=\"ireply\"> &gt; So usually I extract some smaller pieces of code naming them<br/>\n&gt; correspondingly.<br/>\n&gt; So the code becomes more readable. But these methods are private<br/>\n </span></blockquote>and it<br/>\n<blockquote><span title=\"ireply\"> &gt; seems to me,<br/>\n&gt; that there is no way to extract them to a separate class.<br/>\n<br/>\n </span></blockquote>I extract private methods out of public methods to improve<br/>\nreadability. I transform private methods into methods on new classes<br/>\nto improve testability - there are different drivers in force.<br/>\n<br/>\nIn your particular example, I&#39;d create a QueryBuilder class, and I&#39;d<br/>\nprobably put some more smarts into the FlightSearchParameters. Try<br/>\nsomething like this:<br/>\n<br/>\npublic static Collection&lt;Flight&gt; search(FlightSearchParameters<br/>\nparams) {<br/>\n  QueryBuilder builder = new QueryBuilder(params);<br/>\n  builder.addDirections();<br/>\n  builder.addAirline();<br/>\n  builder.addDate();<br/>\n<br/>\n  Query&lt;Flight&gt; query = builder.buildQuery(Flight.class);<br/>\n  return query.execute();<br/>\n}<br/>\n<br/>\nThis should be reasonably testable - if you need a bit more, consider<br/>\nadding a QueryBuilderFactory, which would let you drop in mock<br/>\nQueryBuilders to test the construction of the query.<br/>\n<br/>\nThe &quot;addDirections()&quot;, &quot;addAirline()&quot;, &quot;addDate()&quot; methods would<br/>\nessentially do the logic you&#39;ve got in each part of the query<br/>\nconstruction. For example, addDirections() would look like this:<br/>\n<br/>\npublic void addDirections() {<br/>\n  if ( params.getCityId() != null ) {          <br/>\n    addDirectionFilter( params, whereString, whereParams,<br/>\n&quot;T_AIRPORT.XM_CITY_ID&quot;, params.getCityId() );<br/>\n  } else {<br/>\n    addDirectionFilter( params, whereString, whereParams,<br/>\n&quot;T_AIRPORT.M_ID&quot;, params.getAirportId() );<br/>\n  }<br/>\n}<br/>\n<br/>\nThe Query class would be constructed with SQL and parameters, as built<br/>\nup by the QueryBuilder. The execute method would execute the SQL.<br/>\n<br/>\nThe first time I did this, it would end up as an inner class of<br/>\nwhatever the search() method is in. Over time, as other methods would<br/>\nget written, I would extract out bits and pieces. For example, the<br/>\nQuery class is extremely re-usable would come out very fast. The<br/>\nQueryBuilder class, by contrast, would become public fairly slowly,<br/>\nand there may well be a few different implementations to present a<br/>\nsuitable specialised interface. It&#39;s also possible that I would move<br/>\nthe smarts back to the SearchParameters - this would allow me to have<br/>\na reasonable generic QueryBuilder, with customised search parameters.<br/>\n<br/>\nThe interesting part here is that I can obtain this solution from the<br/>\nexisting code fairly easily by applying some simple &quot;Extract Method&quot;<br/>\nrefactorings, plus a coulple of &quot;Extract Method Object&quot; refactorings.<br/>\nThese tend to be very &quot;safe&quot; refactorings, which means I would be<br/>\nconfident enough to do it on a code base with otherwise shaky tests.<br/>\n<br/>\nHope this helps.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; How do I test these all &#39;addXXXFilter&#39; methods? <br/>\n<br/>\n </span></blockquote>As you&#39;d eat an elephant - one bite at a time.<br/>\n <br/>\n<blockquote><span title=\"ireply\"> &gt; Or I don&#39;t need to test em at all (cause they are tested through the<br/>\n&gt; test of &#39;public search(...)&#39; method)??<br/>\n<br/>\n </span></blockquote>No, you do need to test them, because they can fail. However, you<br/>\ndon&#39;t want to test all the permutations. By breaking them out, you can<br/>\neasily see what happens.<br/>\n <br/>\n<blockquote><span title=\"ireply\"> &gt; Or may be you can suggest a better design solution?<br/>\n<br/>\n </span></blockquote>Maybe. Maybe I didn&#39;t - I don&#39;t have the context to answer the<br/>\nquestion. I can confidently say I&#39;ve presented a _different_ design<br/>\nsolution, though.<br/>\n<br/>\nRobert.</div>", 
+    "prevInTime": 14655, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1125919155", 
+    "canDelete": false, 
+    "nextInTopic": 14658, 
+    "prevInTopic": 14655, 
+    "headers": {
+        "inReplyToHeader": "PDlCRUFBMUI4Njc4MzM0NEJBNkNGOUI5NUY1QjYyMDkyM0MxODg4QG5ld3Rvbi5ocS5hY3Rpcy5ydT4=", 
+        "messageIdInHeader": "PGRmaDlqaitkcGxqQGVHcm91cHMuY29tPg=="
+    }
+}

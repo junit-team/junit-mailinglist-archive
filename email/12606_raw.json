@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 20, 
+    "nextInTime": 12607, 
+    "senderId": "itys4QwyHe7VLdxkF30MJ2GCIcWRZVZ1EXo8MmtqU9jhCSMCd2swlzwlF_ylXPZJFmfauALELM_A9daSibx7MqKIImvfYcEEmnA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Javadocing test case and other test classes?", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "On Wed, 05 Jan 2005 09:59:19 -0800, Kevin Lawrence ... Right, and if the code in question were particularly long, or ugly in some other fashion, I d agree.", 
+    "msgId": 12606, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 40819 invoked from network); 5 Jan 2005 18:39:02 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m25.grp.scd.yahoo.com with QMQP; 5 Jan 2005 18:39:02 -0000\r\nReceived: from unknown (HELO wproxy.gmail.com) (64.233.184.205)\n  by mta6.grp.scd.yahoo.com with SMTP; 5 Jan 2005 18:39:02 -0000\r\nReceived: by wproxy.gmail.com with SMTP id 71so1631019wra\n        for &lt;junit@yahoogroups.com&gt;; Wed, 05 Jan 2005 10:39:01 -0800 (PST)\r\nDomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;\n        s=beta; d=gmail.com;\n        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;\n        b=ZL05QgPecdjdsn1uyTurlc3+LCwkAkNw67FETvXxig2byMKvzTLZb6u+oFcWn9UsYphwrdL1qA+N/FykulJ9/svbFdJAyusRpOSj7DmoH6gFIbuNYm3SzCkNb7S3mCVuUg4jgt1KusXeNkdVjf77lX0O8YW7NjjW4PmA9iyTTio=\r\nReceived: by 10.54.50.65 with SMTP id x65mr54021wrx;\n        Wed, 05 Jan 2005 10:39:01 -0800 (PST)\r\nReceived: by 10.54.22.51 with HTTP; Wed, 5 Jan 2005 10:39:01 -0800 (PST)\r\nMessage-ID: &lt;4fff064f05010510394246060f@...&gt;\r\nDate: Wed, 5 Jan 2005 10:39:01 -0800\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;41DC2AF7.1010708@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nReferences: &lt;000901c4f324$2c2b1650$c800a8c0@HARRY&gt;\n\t &lt;E64283F2-5F35-11D9-8660-000A95A547BC@...&gt;\n\t &lt;4fff064f050105091570fa9e36@...&gt;\n\t &lt;CFB591A2-5F3E-11D9-8660-000A95A547BC@...&gt;\n\t &lt;4fff064f05010509471424758e@...&gt;\n\t &lt;41DC2AF7.1010708@...&gt;\r\nX-eGroups-Remote-IP: 64.233.184.205\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nReply-To: Kevin Klinemeier &lt;zipwow@...&gt;\r\nSubject: Re: [junit] Javadocing test case and other test classes?\r\nX-Yahoo-Group-Post: member; u=198331568\r\nX-Yahoo-Profile: zipwow\r\n\r\nOn Wed, 05 Jan 2005 09:59:19 -0800, Kevin Lawrence\n&lt;kevin@...&gt; wrote:\n&gt; The standard answer is that comments are a way to deodorize a code smell\n&gt; and that you can often make the smell go away rather than cover it up\n&gt; with a comment. Of course, this isn&#39;t always possible and sometimes not\n&gt; even desirable in a test.\n\nRight, and if the code in question were particularly long, or ugly in\nsome other fashion, I&#39;d agree.  Taken alone your kind of comments can\nsound suspiciously like &quot;my code is self-documenting&quot;.  And it isn&#39;t.\n\n&gt; \n&gt; Sometimes it is though. I find that when I have a lot of page long\n&gt; tests, there is a lot of duplication between the tests - which hurts\n&gt; maintainability and readability. EXTRACT METHOD can help with both.\n&gt; \n&gt; I am imagining something like this :\n&gt; \n&gt; public void testMultipleCustomerPurchaseOrderEntriesForOneSalesOrderLine()\n&gt; {\n&gt;    createSalesOrderLine(...);\n&gt;    addCustomerPurchaseOrder( .... X );\n&gt;    addCustomerPurchaseOrder( .... Y );\n&gt;    assertSomethingAboutOrders( ...expected ...);\n&gt; }\n&gt;\n&gt; Any chance we can see the test ?\n\nYou&#39;ve described pretty much what it does.  There is other set-up that\nis done in this test that isn&#39;t done in the other tests in order to\ncreate the many purchase order situation, and there are more\nassertions because it checks a larger (about fifteen) set of data\ngoing in and out.  Most of that is done by helper methods, but you\nhave to record the values, so there&#39;s a lot of things like:\n\nString customerPO = &quot;somenumber&quot;;\nString housebillNumber = &quot;someHawb&quot;;\nString somethingElseToBeCheckedLater = &quot;somevalue&quot;;\n\nand their accompanying assert clauses.  Yes, I could do these in a\nseparate test, an interesting refactor and something we&#39;d likely do in\na code review, but not something I did the first time, and not the\nsource of the complexity that required the comment.\n\nI&#39;d share the test, but it uses client-specific data.  Some of it I\ncould change, but some values and paradigms are expected by the rest\nof the system (client codes, account nubmers, etc).\n\nIn general, what I wanted to say was that while Mike&#39;s right that most\nof the time the method name is sufficient, sometimes the case is\nenough of a corner that you both need and want a short description of\nwhat the heck is going on.  Not shipping any javadoc is turning that\n&#39;sometimes&#39; into &#39;never&#39;.\n\n-Kevin\n\n", 
+    "profile": "zipwow", 
+    "topicId": 12593, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 198331568, 
+    "prevInTime": 12605, 
+    "contentTrasformed": false, 
+    "postDate": "1104950341", 
+    "canDelete": false, 
+    "nextInTopic": 12607, 
+    "prevInTopic": 12605, 
+    "headers": {
+        "inReplyToHeader": "PDQxREMyQUY3LjEwMTA3MDhAZGlhbW9uZC1za3kuY29tPg==", 
+        "messageIdInHeader": "PDRmZmYwNjRmMDUwMTA1MTAzOTQyNDYwNjBmQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDAwMDkwMWM0ZjMyNCQyYzJiMTY1MCRjODAwYThjMEBIQVJSWT4JIDxFNjQyODNGMi01RjM1LTExRDktODY2MC0wMDBBOTVBNTQ3QkNAY2xhcmt3YXJlLmNvbT4JIDw0ZmZmMDY0ZjA1MDEwNTA5MTU3MGZhOWUzNkBtYWlsLmdtYWlsLmNvbT4JIDxDRkI1OTFBMi01RjNFLTExRDktODY2MC0wMDBBOTVBNTQ3QkNAY2xhcmt3YXJlLmNvbT4JIDw0ZmZmMDY0ZjA1MDEwNTA5NDcxNDI0NzU4ZUBtYWlsLmdtYWlsLmNvbT4JIDw0MURDMkFGNy4xMDEwNzA4QGRpYW1vbmQtc2t5LmNvbT4="
+    }
+}

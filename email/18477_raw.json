@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18478, 
+    "senderId": "vuRdn__fYrPfF86ySr1wfe5UK8EsTVoQT3Ptk7FagYcpeOV20JXDQjWsqPn_X9EE012JoiC6NodzG1nhryd0WMlyWEcZryKmSU_2vOfC9Uv4Ru6ZZVLmxYsKHqbsRaqOmiY57T0", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Literate assertions", 
+    "from": "&quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "... Oh, ok, so there is a lot more at work than assertions here, and this is a separate (albeit very interesting) topic from literate assertions.  I would ", 
+    "msgId": 18477, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 68024 invoked from network); 30 Nov 2006 23:35:26 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m36.grp.scd.yahoo.com with QMQP; 30 Nov 2006 23:35:26 -0000\r\nReceived: from unknown (HELO smtp-out.google.com) (216.239.33.17)\n  by mta6.grp.scd.yahoo.com with SMTP; 30 Nov 2006 23:35:26 -0000\r\nReceived: from spaceape14.eur.corp.google.com (spaceape14.eur.corp.google.com [172.28.16.148])\n\tby smtp-out.google.com with ESMTP id kAUN0tDU028234\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 30 Nov 2006 23:00:56 GMT\r\nReceived: from nz-out-0102.google.com (nzfo37.prod.google.com [10.36.191.37])\n\tby spaceape14.eur.corp.google.com with ESMTP id kAUN0TGx013717\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 30 Nov 2006 23:00:49 GMT\r\nReceived: by nz-out-0102.google.com with SMTP id o37so1567404nzf\n        for &lt;junit@yahoogroups.com&gt;; Thu, 30 Nov 2006 15:00:49 -0800 (PST)\r\nReceived: by 10.65.43.17 with SMTP id v17mr6383900qbj.1164927648919;\n        Thu, 30 Nov 2006 15:00:48 -0800 (PST)\r\nReceived: by 10.64.84.16 with HTTP; Thu, 30 Nov 2006 15:00:48 -0800 (PST)\r\nMessage-ID: &lt;b86b6a9c0611301500g15258e1u7927aee2b49c4a77@...&gt;\r\nDate: Thu, 30 Nov 2006 15:00:48 -0800\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;4f7da6b90611301127y3e3b6142nc2cc446d7fe6ac01@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;4f7da6b90611301127y3e3b6142nc2cc446d7fe6ac01@...&gt;\r\nFrom: &quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;\r\nSubject: Re: [junit] Re: Literate assertions\r\nX-Yahoo-Group-Post: member; u=199443513; y=xjzA6IqEaTxZjyfm9rioPKG62yB00DX6VN4-DbiXcuaz\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nOn 11/30/06, David Saff &lt;saff@...&gt; wrote:\n&gt;\n&gt;\n&gt; But it means something =\r\ncompletely different.  This is what I get for\n&gt; trying to be clever and con=\r\ncise at the same time. [1]\n&gt;\n&gt; assertThat(valueOf(button).isEnabled(), even=\r\ntually(eq(true)));\n&gt;\n&gt; ...only is useful in a multi-threaded situation, in =\r\nwhich the button\n&gt; may not be enabled the first time you check, but if you =\r\nwait a while,\n&gt; it should soon become enabled.  The great thing is that thi=\r\ns idea of\n&gt; repeatedly evaluating an expression, checking against a desired=\r\n\n&gt; result, and then waiting before evaluating again is all encapsulated\n&gt; w=\r\nithin the &quot;valueOf&quot; and &quot;eventually&quot; methods.  Once I figured this\n&gt; out, m=\r\ny asynchronous UI tests actually became readable.\n\n\nOh, ok, so there is a l=\r\not more at work than assertions here, and this is a\nseparate (albeit very i=\r\nnteresting) topic from literate assertions.  I would\ndefinitely hide this k=\r\nind of complexity (such as invokeLater(), join(),\netc...) in utility functi=\r\nons.\n\nFYI, here are a few ways you can test asynchronous code (e.g. UI or J=\r\nMS)\nwith TestNG &lt;http://beust.com/weblog/archives/000236.html&gt;.\n\nThe litera=\r\ncy is actually secondary here, which is why I&#39;m willing to\n&gt; live with and(=\r\ngreaterThan(10), lessThan(20)) when I have to [2].  The\n&gt; primary win is th=\r\nat the thing you&#39;re trying to assert is separated\n&gt; from the act of asserti=\r\nng\n\n\nI&#39;m a bit confused by this, which sounds interesting, but which I can&#39;=\r\nt\nconnect to your following examples:\n\n, so that you can write:\n&gt; assertTha=\r\nt(button, eventually(isEnabled()));  // will become enabled\n&gt; or\n&gt; assertTh=\r\nat(button, isEnabled());  // is now enabled\n&gt; or\n&gt; assertThat(button, not(i=\r\nsEnabled()));  // is disabled\n\n\nIn all these cases, it looks like both the =\r\nassert and the evaluation of the\nassert are executed at the same time, can =\r\nyou clarify?  (maybe by explaining\nwhat eventually() really does?)\n\n-- \nC=\r\n=E9dric\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 18472, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 18476, 
+    "contentTrasformed": false, 
+    "postDate": "1164927648", 
+    "canDelete": false, 
+    "nextInTopic": 18486, 
+    "prevInTopic": 18473, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDYxMTMwMTEyN3kzZTNiNjE0Mm5jMmNjNDQ2ZDdmZTZhYzAxQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDYxMTMwMTUwMGcxNTI1OGUxdTc5MjdhZWUyYjQ5YzRhNzdAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDRmN2RhNmI5MDYxMTMwMTEyN3kzZTNiNjE0Mm5jMmNjNDQ2ZDdmZTZhYzAxQG1haWwuZ21haWwuY29tPg=="
+    }
+}

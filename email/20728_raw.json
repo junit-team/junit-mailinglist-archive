@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 20, 
+    "nextInTime": 20729, 
+    "senderId": "BUKylTYsOZisBEOTCxKTWntWifA4baqMaB4WKKdhfKZgNyBOX5ywn1jYwr5HlLZ3YeP5ICKVFu1dFM-KmSuk65xsF20", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does JUnit 4 now support dependencies?", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Daniel, On Thu, Jul 17, 2008 at 3:39 PM, Daniel Brolund ... Absolutely.  We ve built a similar idea into BlockJUnit4ClassRunner in JUnit 4.5.  Imagine: public", 
+    "msgId": 20728, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 75445 invoked from network); 31 Jul 2008 14:59:41 -0000\r\nX-Received: from unknown (66.218.67.97)\n  by m47.grp.scd.yahoo.com with QMQP; 31 Jul 2008 14:59:41 -0000\r\nX-Received: from unknown (HELO yw-out-2324.google.com) (74.125.46.28)\n  by mta18.grp.scd.yahoo.com with SMTP; 31 Jul 2008 14:59:41 -0000\r\nX-Received: by yw-out-2324.google.com with SMTP id 9so361109ywe.71\n        for &lt;junit@yahoogroups.com&gt;; Thu, 31 Jul 2008 07:59:41 -0700 (PDT)\r\nX-Received: by 10.142.185.13 with SMTP id i13mr3299182wff.219.1217516380964;\n        Thu, 31 Jul 2008 07:59:40 -0700 (PDT)\r\nX-Received: by 10.142.101.9 with HTTP; Thu, 31 Jul 2008 07:59:40 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90807310759s1c7ebc95sabe3233c6c17d5e8@...&gt;\r\nDate: Thu, 31 Jul 2008 10:59:40 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;1216323551.21263.61.camel@daniel-ubuntu&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;720313.55098.qm@...&gt;\n\t &lt;1216323551.21263.61.camel@daniel-ubuntu&gt;\r\nX-Google-Sender-Auth: d2a5262551167c34\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;david@...&gt;\r\nSubject: Re: [junit] Does JUnit 4 now support dependencies?\r\nX-Yahoo-Group-Post: member; u=341876227; y=_weD4Q0B5Bnrk1EleYUZB3tdRk7NCOi5i22M7qupji0\r\nX-Yahoo-Profile: dsaff\r\n\r\nDaniel,\n\nOn Thu, Jul 17, 2008 at 3:39 PM, Daniel Brolund\n&lt;daniel.brolund@...&gt; wrote:\n&gt; Hi all,\n&gt;\n&gt; I kind of agree with Hans, and I have another viewpoint on this\n&gt; dependency thing:\n&gt;\n&gt; JUnit is already a set of &quot;execution blocks&quot; with &quot;implicit&quot;\n&gt; dependencies, e.g. a @Test method depends on the @Before method, @After\n&gt; depends on [@Before, @Test], [@Before, @Test, @After] depends on\n&gt; @BeforeClass etc.\n&gt;\n&gt; If we would make those explicit by some mechanism/abstraction, I&#39;m not\n&gt; sure exactly how, we could probably use the same mechanism/abstraction\n&gt; to declare dependencies.\n&gt; If we could expose this dependency tree (unidirectional graph?), it\n&gt; might be possible to add behaviors, like parallel execution, exclusion\n&gt; of dependent tests on failure, etc.\n&gt; Does this make sense?\n\nAbsolutely.  We&#39;ve built a similar idea into BlockJUnit4ClassRunner in\nJUnit 4.5.  Imagine:\n\npublic class RemoveFailingDependents extends BlockJUnit4ClassRunner {\n\tpublic RemoveFailingDependents(Class&lt;?&gt; klass) throws InitializationError {\n\t\tsuper(klass);\n\t}\n\n\t@Override\n\tprotected void runChild(FrameworkMethod method, RunNotifier notifier) {\n\t\tfor (FrameworkMethod each : getDependencies(method))\n\t\t\tif (alreadyMarkedFailed(method)) {\n\t\t\t\tnotifier.fireTestIgnored(describeChild(method));\n\t\t\t\treturn;\n\t\t\t}\n\t\tRunListener listener = new RunListener() {\n\t\t\t@Override\n\t\t\tpublic void testFailure(Failure failure) throws Exception {\n\t\t\t\tmarkTestFailed(failure.getDescription());\n\t\t\t}\n\t\t};\n\t\tnotifier.addListener(listener);\n\t\tsuper.runChild(method, notifier);\n\t\tnotifier.removeListener(listener);\n\t}\n}\n\nThis leaves out the ordering that would need to be done by a sorter to\nmake sure that dependencies run before dependers.\n\n   David Saff\n\n", 
+    "profile": "dsaff", 
+    "topicId": 20690, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 20727, 
+    "contentTrasformed": false, 
+    "postDate": "1217516380", 
+    "canDelete": false, 
+    "nextInTopic": 20735, 
+    "prevInTopic": 20725, 
+    "headers": {
+        "inReplyToHeader": "PDEyMTYzMjM1NTEuMjEyNjMuNjEuY2FtZWxAZGFuaWVsLXVidW50dT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgwNzMxMDc1OXMxYzdlYmM5NXNhYmUzMjMzYzZjMTdkNWU4QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDcyMDMxMy41NTA5OC5xbUB3ZWIzOTcwNC5tYWlsLm11ZC55YWhvby5jb20+CSA8MTIxNjMyMzU1MS4yMTI2My42MS5jYW1lbEBkYW5pZWwtdWJ1bnR1Pg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 16117, 
+    "senderId": "y0bcHgrRuW8ikXgEEU1IZfBqfkvP1SU_fcUdPeoIZHsrEG-OuJsTiWf5TJwAxjs_dXNbEEwRFOsAdAbYx_6RzR9m_fc0MgUo9bI", 
+    "systemMessage": true, 
+    "subject": "What makes a class &quot;testable&quot;?", 
+    "from": "Ian Pilcher &lt;i.pilcher@...&gt;", 
+    "authorName": "Ian Pilcher", 
+    "msgSnippet": "In this context, testable means a class that a TestRunner won t barf on. I am writing an Ant selector: http://ant.apache.org/manual/CoreTypes/selectors.html ", 
+    "msgId": 16116, 
+    "rawEmail": "Return-Path: &lt;i.pilcher@...&gt;\r\nReceived: (qmail 36631 invoked from network); 17 Feb 2006 19:19:22 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m14.grp.scd.yahoo.com with QMQP; 17 Feb 2006 19:19:22 -0000\r\nReceived: from unknown (HELO n25.bullet.scd.yahoo.com) (66.94.237.54)\n  by mta9.grp.scd.yahoo.com with SMTP; 17 Feb 2006 19:19:21 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.66.58] by n25.bullet.scd.yahoo.com with NNFMP; 17 Feb 2006 19:19:19 -0000\r\nReceived: from [66.218.66.78] by t7.bullet.scd.yahoo.com with NNFMP; 17 Feb 2006 19:19:19 -0000\r\nX-Sender: i.pilcher@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 56644 invoked from network); 15 Feb 2006 17:53:03 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m29.grp.scd.yahoo.com with QMQP; 15 Feb 2006 17:53:03 -0000\r\nReceived: from unknown (HELO ciao.gmane.org) (80.91.229.2)\n  by mta3.grp.scd.yahoo.com with SMTP; 15 Feb 2006 17:53:02 -0000\r\nReceived: from list by ciao.gmane.org with local (Exim 4.43)\n\tid 1F9QoB-0006an-H4\n\tfor junit@yahoogroups.com; Wed, 15 Feb 2006 18:51:19 +0100\r\nReceived: from c-67-174-65-253.hsd1.tx.comcast.net ([67.174.65.253])\n        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))\n        id 1AlnuQ-0007hv-00\n        for &lt;junit@yahoogroups.com&gt;; Wed, 15 Feb 2006 18:51:19 +0100\r\nReceived: from i.pilcher by c-67-174-65-253.hsd1.tx.comcast.net with local (Gmexim 0.1 (Debian))\n        id 1AlnuQ-0007hv-00\n        for &lt;junit@yahoogroups.com&gt;; Wed, 15 Feb 2006 18:51:19 +0100\r\nX-Injected-Via-Gmane: http://gmane.org/\r\nTo: junit@yahoogroups.com\r\nDate:  Wed, 15 Feb 2006 11:50:54 -0600\r\nLines: 64\r\nMessage-ID: &lt;dsvplv$uk7$1@...&gt;\r\nMime-Version:  1.0\r\nContent-Type:  text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding:  7bit\r\nX-Complaints-To: usenet@...\r\nX-Gmane-NNTP-Posting-Host: c-67-174-65-253.hsd1.tx.comcast.net\r\nUser-Agent: Mozilla Thunderbird 1.0.7-1.1.fc4 (X11/20050929)\r\nX-Accept-Language: en-us, en\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Ian Pilcher &lt;i.pilcher@...&gt;\r\nSubject: What makes a class &quot;testable&quot;?\r\nX-Yahoo-Group-Post: member; u=258039994; y=DAdEiKI43GLBx13l4jTO9n863btoeVR67jBxIdbDXLOeuP0Ci_k7rSpk\r\nX-Yahoo-Profile: jimbobjohannsen\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 17 Feb 2006 19:19:18 -0000\r\n\r\nIn this context, &quot;testable&quot; means a class that a TestRunner won&#39;t barf\non.\n\nI am writing an Ant selector:\n\n    http://ant.apache.org/manual/CoreTypes/selectors.html\n\nIt&#39;s purpose is to identify the classes which should be &quot;run&quot; by an Ant\nJUnit task:\n\n    &lt;target name=&quot;test-run&quot; depends=&quot;test-build&quot;&gt;\n      &lt;junit&gt;\n        &lt;batchtest&gt;\n          &lt;fileset dir=&quot;test/bin&quot;&gt;&lt;junitselector/&gt;&lt;/fileset&gt;\n        &lt;/batchtest&gt;\n      &lt;/junit&gt;\n    &lt;/target&gt;\n\nThis will allow me to write a a generic testing target, without\nconstraining the names of my test classes.\n\nIn order to do this properly, I need a precise definition of what makes\na class &quot;testable&quot; (in the above sense).  Here&#39;s the algorithm that I&#39;ve\ncome up with:\n\n    1.  Is the class public?\n          *  Yes - go to step 2\n          *  No - NOT testable - DONE\n\n    2.  Is the class an interface?\n          *  Yes - NOT testable - DONE\n          *  No - go to step 3\n\n    3.  Does the class have a &quot;suite method&quot; --\n        public static Test suite()?\n          * Yes - TESTABLE - DONE\n          * No - go to step 4\n\n    4.  Is the class abstract?\n          * Yes - NOT testable - DONE\n          * No - go to step 5\n\n    5.  Does the class implement junit.framework.Test?\n          *  Yes - go to step 6\n          *  No - NOT testable - DONE\n\n    6.  Does the class have a public default constructor --\n        public &lt;init&gt;()?\n          * Yes - TESTABLE - DONE\n          * No - go to step 7\n\n    7.  Does the class have a public string constructor --\n        public &lt;init&gt;(String)?\n          * Yes - TESTABLE - DONE\n          * No - NOT testable - DONE\n\nThoughts?\n\nThanks!\n\n-- \n========================================================================\nIan Pilcher                                        i.pilcher@...\n========================================================================\n\n\n\n\n", 
+    "profile": "jimbobjohannsen", 
+    "topicId": 16116, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 258039994, 
+    "prevInTime": 16115, 
+    "contentTrasformed": false, 
+    "postDate": "1140025854", 
+    "canDelete": false, 
+    "nextInTopic": 16130, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGRzdnBsdiR1azckMUBzZWEuZ21hbmUub3JnPg=="
+    }
+}

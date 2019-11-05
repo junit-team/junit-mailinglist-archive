@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 64, 
+    "nextInTime": 15783, 
+    "senderId": "NN6ObwpYmA9b9XixEI972Dlux36T2sLXhcvXz_IGWvFfo7c0_OhPfmunYlQ3rxvc3VN3XFfFTFdBgZ2mxrZM6A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] On Requests and Plans", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... You can plug in new Runner definitions, and Runners have complete freedom to report whatever Plan they wish.  The Plan itself is a dumb tree of value", 
+    "msgId": 15782, 
+    "profile": "dsaff", 
+    "topicId": 15770, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-580134673\">J. B. Rainsberger wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; David Saff wrote:<br/>\n&gt;<br/>\n&gt; &gt; To support these goals, we needed the following concepts:<br/>\n&gt; &gt;<br/>\n&gt; &gt; - Runner.  An extension to JUnit will likely define a custom subclass of<br/>\n&gt; &gt; Runner.<br/>\n&gt; &gt; - Plan.  Each Runner must report a Plan, a hierarchical tree of the<br/>\n&gt; &gt; names of the tests it will run.  Test events are reported with respect<br/>\n&gt; &gt; to leaves in this tree.<br/>\n&gt; &gt; - Request.  A Request is a specification of the desired tests to be<br/>\n&gt; &gt; run.  Extensions may also define custom subclasses of Request, in order<br/>\n&gt; &gt; to, for example, read tests to be run out of an XML file--if you think<br/>\n&gt; &gt; that&#39;s a good idea. :-)<br/>\n&gt; &gt;<br/>\n&gt; &gt; There is an important distinction between Requests and Plans.  A Request<br/>\n&gt; &gt; might be &quot;Please run all tests in class ValidationTest&quot;, with the<br/>\n&gt; &gt; corresponding Plan being &quot;I will run methods foo, bar, baz, and foobar<br/>\n&gt; &gt; in class ValidationTest&quot;.<br/>\n&gt;<br/>\n&gt; I love the idea of a Plan. Is the Plan Strategy pluggable? <br/>\n<br/>\n </span></blockquote>You can plug in new Runner definitions, and Runners have complete <br/>\nfreedom to report whatever Plan they wish.  The Plan itself is a dumb <br/>\ntree of value objects representing, basically, test names (very close to <br/>\nwhat would be required to build Eclipse&#39;s JUnit Hierarchy view).  So I <br/>\nthink the answer is no to the letter of your question, but yes to its <br/>\nspirit. <br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; One common<br/>\n&gt; use case involves a Request to run parameterized tests where the data<br/>\n&gt; involved is massive and building the entire Plan in memory is infeasible<br/>\n&gt; or undesirable. Can we, for example, plug in a Plan that lazily<br/>\n&gt; instantiates TestCases at execute time?<br/>\n<br/>\n </span></blockquote>The current architecture splits JUnit&#39;s activity into two &quot;phases&quot;:<br/>\n<br/>\n1) Planning: Runners are initialized and malformed tests noted.  At the <br/>\nend of this phase, a complete Plan tree may be constructed.  UI&#39;s like <br/>\nEclipse can now show a Test Hierarchy, and the total number of tests to <br/>\nbe run.  The only persistent state between these phases are the Runners <br/>\nthemselves, which in general, have only a field for a reference to the <br/>\ntest class, and perhaps some additional metadata.  No fixtures have yet <br/>\nbeen created.<br/>\n2) Running: For each test, an appropriate instance object is created and <br/>\nset up, the test is run, the result is reported, and the instance object <br/>\nis torn down and released to garbage collection.<br/>\n<br/>\nSo there&#39;s, again, several answers to your question.  As a general rule, <br/>\ntest fixture objects are always created lazily.  However, to take your <br/>\nuse case a little further, what if each line of a file was data for a <br/>\ntest case?  Currently, we would have to know the number of lines before <br/>\nthe end of the Planning phase.  The current implementation of the <br/>\nParameterized runner takes this approach: the parameters supplied are a <br/>\nCollection.  The size of the Collection is used during planning, and the <br/>\nactual values are iterated over during running.  A clever extender could <br/>\nimplement a Collection that knew its size, but lazily served up data to <br/>\nan Iterator. <br/>\n<br/>\nHowever, if the only way to know the number of lines in this <br/>\nhypothetical data file was to read it, this requirement would force <br/>\neither two passes through the file, or storing the whole file in <br/>\nmemory.  Do you think this would be a hangup often in scenarios you&#39;ve <br/>\nseen?  How did you solve such problems in JUnit 3?<br/>\n<br/>\nThanks for the excellent questions--this is exactly what we were looking <br/>\nfor.<br/>\n<br/>\n    David Saff</div>", 
+    "prevInTime": 15781, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1137641051", 
+    "canDelete": false, 
+    "nextInTopic": 15783, 
+    "prevInTopic": 15780, 
+    "headers": {
+        "inReplyToHeader": "PDQzQ0VGMEM3LjIwNjA0MDlAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzQ0YwNjVCLjgwMDAxMDhAbWl0LmVkdT4=", 
+        "referencesHeader": "PDQzQ0U2MjRGLjEwMDAwMDBAbWl0LmVkdT4gPDQzQ0VGMEM3LjIwNjA0MDlAcm9nZXJzLmNvbT4="
+    }
+}

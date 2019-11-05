@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 21961, 
+    "senderId": "vRcKGdbemRLgQiMpuW_4Q8EFjJA5KxHyiQ5NavxUgVLmF15CANA1AucltoutnwDWjTq5Ck931gKxAv-j68cEHPlAccl_9x_NVZ8g", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Deprectated Extension Point org.eclipse.jdt.junit.testRunListeners", 
+    "from": "Brett Daniel &lt;brettdaniel@...&gt;", 
+    "authorName": "Brett Daniel", 
+    "msgSnippet": "Tim, It is not necessary to implement the extension point.  Instead, you can add listeners directly to JUnitCore in your Plugin s start method: public class", 
+    "msgId": 21960, 
+    "rawEmail": "Return-Path: &lt;brettdaniel@...&gt;\r\nReceived: (qmail 44780 invoked from network); 8 Oct 2009 23:32:46 -0000\r\nReceived: from unknown (98.137.34.45)\n  by m5.grp.re1.yahoo.com with QMQP; 8 Oct 2009 23:32:46 -0000\r\nReceived: from unknown (HELO n43d.bullet.mail.sp1.yahoo.com) (66.163.169.157)\n  by mta2.grp.sp2.yahoo.com with SMTP; 8 Oct 2009 23:32:45 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1255044765; bh=TvhDRn8ovu4vi/bliji00KLBhiSSyTJ3BuMuxOAxSJI=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:X-Received:X-Received:Message-ID:Date:User-Agent:MIME-Version:To:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:X-eGroups-Msg-Info:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:X-YGroups-SubInfo:Sender:X-Yahoo-Newman-Property:X-eGroups-Approved-By:X-eGroups-Auth; b=UQ3zojLpu+BFSUqXB53/s3FNKBoLbg0YeSQAxSGnWxDQ0mpwISoHHLSS+wt+7wMkoRYt8QxgoLV6K3QDDz3M80+9Pvb1EFkAUYa1m/Il0oDnJIdBoqi8IP+5QaBBxZ4O\r\nReceived: from [69.147.65.172] by n43.bullet.mail.sp1.yahoo.com with NNFMP; 08 Oct 2009 23:32:45 -0000\r\nReceived: from [98.137.34.33] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 08 Oct 2009 23:32:45 -0000\r\nX-Sender: brettdaniel@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 27972 invoked from network); 8 Oct 2009 22:55:42 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m2.grp.re1.yahoo.com with QMQP; 8 Oct 2009 22:55:42 -0000\r\nX-Received: from unknown (HELO mail-ew0-f228.google.com) (209.85.219.228)\n  by mta2.grp.sp2.yahoo.com with SMTP; 8 Oct 2009 22:55:41 -0000\r\nX-Received: by ewy28 with SMTP id 28so55158ewy.18\n        for &lt;junit@yahoogroups.com&gt;; Thu, 08 Oct 2009 15:55:40 -0700 (PDT)\r\nX-Received: by 10.216.85.144 with SMTP id u16mr599001wee.3.1255042540051;\n        Thu, 08 Oct 2009 15:55:40 -0700 (PDT)\r\nX-Received: from ?128.174.241.250? (bdaniel3laptop.cs.uiuc.edu [128.174.241.250])\n        by mx.google.com with ESMTPS id m5sm763384gve.11.2009.10.08.15.55.36\n        (version=TLSv1/SSLv3 cipher=RC4-MD5);\n        Thu, 08 Oct 2009 15:55:37 -0700 (PDT)\r\nMessage-ID: &lt;4ACE6DE5.6040005@...&gt;\r\nDate: Thu, 08 Oct 2009 18:55:33 -0400\r\nUser-Agent: Thunderbird 2.0.0.23 (X11/20090812)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;1255005965.3340.12.camel@...-potsdam.de&gt;\r\nIn-Reply-To: &lt;1255005965.3340.12.camel@...-potsdam.de&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Brett Daniel &lt;brettdaniel@...&gt;\r\nSubject: Re: [junit] Deprectated Extension Point org.eclipse.jdt.junit.testRunListeners\r\nX-Yahoo-Group-Post: member; u=416009989; y=vB3bg3m1NK-NBVvIXnnMka9kTl3GRZ8vpiLbUg8V5Fn347O-1NKH\r\nX-Yahoo-Profile: brettddaniel\r\nX-YGroups-SubInfo: t=0;f=16;g=TkvOLMwbD3JJp_tPsuvc4s-bh7yGC8Fb9hUNM2AywqjK1ZOtF8qHYvr4LOwhNpa5tpU;\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 08 Oct 2009 23:32:43 -0000\r\n\r\nTim,\n\nIt is not necessary to implement the extension point.  Instead, you can \nadd listeners directly to JUnitCore in your Plugin&#39;s start method:\n\npublic class YourPlugin extends Plugin {\n     ...\n     public void start(BundleContext context) throws Exception {\n         ...\n         JUnitCore.addTestRunListener(new YourListener());\n     }\n     ...\n}\n\npublic class YourListener extends TestRunListener {\n     ...\n}\n\nBrett\n\nTim Felgentreff wrote:\n&gt; Eclipse (and various online sources) tell me the extension point\n&gt; org.eclipse.jdt.junit.testRunListeners is deprecated.\n&gt; After some hours of research I still haven&#39;t found a suitable \n&gt; alternative.\n&gt; I need an additional view on the results of JUnit runs that offers \n&gt; some actions depending on the test results. How would I go about\n&gt; doing that with current JUnit4?\n&gt; The @RunWith annotation is unsuitable for my situation, as I need \n&gt; to run unit tests not written by myself on different systems with \n&gt; different plug-ins. \n&gt; \n&gt; --\n&gt; Regards,\n&gt; Tim\n&gt; \n&gt; \n&gt; \n&gt; ------------------------------------\n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt; \n\n", 
+    "profile": "brettddaniel", 
+    "topicId": 21958, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 416009989, 
+    "prevInTime": 21959, 
+    "contentTrasformed": false, 
+    "postDate": "1255042533", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 21959, 
+    "headers": {
+        "inReplyToHeader": "PDEyNTUwMDU5NjUuMzM0MC4xMi5jYW1lbEBicDIwMDloMXdzMDMuaHBpLnVuaS1wb3RzZGFtLmRlPg==", 
+        "messageIdInHeader": "PDRBQ0U2REU1LjYwNDAwMDVAZ21haWwuY29tPg==", 
+        "referencesHeader": "PDEyNTUwMDU5NjUuMzM0MC4xMi5jYW1lbEBicDIwMDloMXdzMDMuaHBpLnVuaS1wb3RzZGFtLmRlPg=="
+    }
+}

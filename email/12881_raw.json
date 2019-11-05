@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 12882, 
+    "senderId": "ZidfyeffBge7eSEjL835Gx8e7RInx3PH9c-BCmeIvz6exBPpKt_JPw3cWkcO0BfAkIwuYOdpQPZe_MWLZND2A3wZWpGPcaxpCoLT0-ZA", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to test assertXXX() method for multi set of data", 
+    "from": "Harring Figueiredo &lt;harringf@...&gt;", 
+    "authorName": "Harring Figueiredo", 
+    "msgSnippet": "... I am not sure I undestand what you are asking. Nonetheless, this is the point of testing. If you get an unexpected result, it means either you code has a", 
+    "msgId": 12881, 
+    "rawEmail": "Return-Path: &lt;harringf@...&gt;\r\nReceived: (qmail 84471 invoked from network); 17 Feb 2005 13:40:24 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m23.grp.scd.yahoo.com with QMQP; 17 Feb 2005 13:40:24 -0000\r\nReceived: from unknown (HELO n6a.bulk.scd.yahoo.com) (66.94.237.40)\n  by mta2.grp.scd.yahoo.com with SMTP; 17 Feb 2005 13:40:24 -0000\r\nReceived: from [66.218.66.58] by n6.bulk.scd.yahoo.com with NNFMP; 17 Feb 2005 13:39:51 -0000\r\nReceived: from [66.218.66.76] by mailer7.bulk.scd.yahoo.com with NNFMP; 17 Feb 2005 13:39:51 -0000\r\nX-Sender: harringf@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 72136 invoked from network); 16 Feb 2005 21:55:12 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 16 Feb 2005 21:55:12 -0000\r\nReceived: from unknown (HELO web52007.mail.yahoo.com) (206.190.39.63)\n  by mta1.grp.scd.yahoo.com with SMTP; 16 Feb 2005 21:55:12 -0000\r\nReceived: (qmail 76550 invoked by uid 60001); 16 Feb 2005 21:55:11 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nDomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;\n  s=s1024; d=yahoo.com;\n  b=EiFnTFULbBvmLphkyXm3K3+Iv+qPWP75Z2svkUuqu+4O2LNw/EtiigAdyFV8ukNnEwGStAhkURC5FqKSXtItXVSNSbCyZvD1RvRUixUxrIcWYhQp9dc6DFxWqAPx1FjG5oqTThmG0OOwNfpVkivLsjlr5H4Yw6fTEmoes0Id0J8=  ;\r\nMessage-ID: &lt;20050216215511.76548.qmail@...&gt;\r\nReceived: from [12.8.123.244] by web52007.mail.yahoo.com via HTTP; Wed, 16 Feb 2005 13:55:11 PST\r\nDate: Wed, 16 Feb 2005 13:55:11 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;D888720C7AF5D6119D4600B0D03D3329063C80E0@...-technologies.com&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-Remote-IP: 206.190.39.63\r\nFrom: Harring Figueiredo &lt;harringf@...&gt;\r\nSubject: Re: [junit] How to test assertXXX() method for multi set of data\r\nX-Yahoo-Group-Post: member; u=124038550\r\nX-Yahoo-Profile: harringf\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 17 Feb 2005 13:39:49 -0000\r\nX-eGroups-Remote-IP: 66.94.237.40\r\n\r\n\n\n--- Anil Devrao J &lt;anildevrao.jadhav@...&gt; wrote:\n\n&gt; \n&gt; Hi All,\n&gt;  \n&gt; Implementation method:\n&gt;  \n&gt; boolean aMethod(int a, int b)\n&gt;  {\n&gt; ----------;\n&gt; ----------;\n&gt; ----------;\n&gt; return bval;\n&gt; }\n&gt;  \n&gt; I want to test above method for n number of valid data sets. But whenever I\n&gt; am testing it by using following method and if I got any unexpected result\n&gt; in first data set then its not testing for remaining data sets.\n&gt;  \n&gt; public void testaMethod()\n&gt; {\n&gt; int a[] = new int[10];\n&gt; int b[] = new int[10];\n&gt; for(int i =0; i&lt; 10; i++)\n&gt; {\n&gt;     try\n&gt;     {\n&gt;         assertTrue(obj.aMethod(a[i], b[i])\n&gt;     }\n&gt;     catch(Exception e)\n&gt;     {}\n&gt; }\n&gt; \n\n\n  I am not sure I undestand what you are asking. Nonetheless, this is the point\nof testing.\n\n If you get an unexpected result, it means either you code has a bug or your\ntest case is not valid (which blows up the point of testing in the first\nplace).\n\n\n  If you want to test for a input that is not valid then you must created a\nsecond test case (or method) as in the following:\n\n \n int a_valid_input[] = new int[10];\n int b_valid_input[] = new int[10];\n\n int a_invalid_input[] = new int[10];\n int b_invalid_input[] = new int[10];\n\n   \n for(int i =0; i&lt; 10; i++)\n {\n     // test for valid input\n     assertTrue(obj.aMethod(a_valid_input[i], b_valid_input[i]);\n\n     // test for invalid input (It must return false, since it is invalid.\n     //\n     assertFalse(obj.aMethod(a_invalid_input[i], b_invalid_input[i]);\n  \n }\n\n Hope this helps.\n\nHarring Figueiredo.\n \n\n\n\n\n\n\n\n\t\t\n__________________________________ \nDo you Yahoo!? \nYahoo! Mail - Helps protect you from nasty viruses. \nhttp://promotions.yahoo.com/new_mail\n\n\n\n\n", 
+    "profile": "harringf", 
+    "topicId": 12872, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 124038550, 
+    "prevInTime": 12880, 
+    "contentTrasformed": false, 
+    "postDate": "1108590911", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12873, 
+    "headers": {
+        "inReplyToHeader": "PEQ4ODg3MjBDN0FGNUQ2MTE5RDQ2MDBCMEQwM0QzMzI5MDYzQzgwRTBAa3JtZXhjaHNydi5zc2ktdGVjaG5vbG9naWVzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDUwMjE2MjE1NTExLjc2NTQ4LnFtYWlsQHdlYjUyMDA3Lm1haWwueWFob28uY29tPg=="
+    }
+}

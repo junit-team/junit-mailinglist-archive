@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10851, 
+    "senderId": "yVV7ycdXnOdTgSz2kuKUnT3dRqKaQINZHBmvo1lJpXaahOSC9kJ9cWQb_wSXaqWDnhcFD8udn0YCRJAXQN5hr69lyEAW0aNm7JocLksEGQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Question on TestSuite()", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... What about this algorithm makes it a test? It sounds like it s just a suite builder method. If I am right, then that s all you need: public static Test", 
+    "msgId": 10850, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 42700 invoked from network); 14 Apr 2004 21:46:21 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m25.grp.scd.yahoo.com with QMQP; 14 Apr 2004 21:46:21 -0000\r\nReceived: from unknown (HELO fep04-mail.bloor.is.net.cable.rogers.com) (66.185.86.74)\n  by mta6.grp.scd.yahoo.com with SMTP; 14 Apr 2004 21:46:21 -0000\r\nReceived: from rogers.com ([24.156.43.226])\n          by fep04-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040414214514.UPJF167788.fep04-mail.bloor.is.net.cable.rogers.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Wed, 14 Apr 2004 17:45:14 -0400\r\nMessage-ID: &lt;407DB0B5.30104@...&gt;\r\nDate: Wed, 14 Apr 2004 17:44:21 -0400\r\nUser-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;c5k5gf+a9cn@...&gt;\r\nIn-Reply-To: &lt;c5k5gf+a9cn@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep04-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Wed, 14 Apr 2004 17:45:13 -0400\r\nX-eGroups-Remote-IP: 66.185.86.74\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Re: Question on TestSuite()\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nclaudioillanes wrote:\n&gt; --- In junit@yahoogroups.com, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt;\n&gt; wrote:\n&gt;  &gt; claudioillanes wrote:\n&gt;  &gt; &gt;\n&gt;  &gt; &gt; Hi all,\n&gt;  &gt; &gt;\n&gt;  &gt; &gt; I am new to JUnit and I&#39;ve trying to combine a sequence of\n&gt;  &gt; &gt; testSuites. In one of my testXXX methods, I&#39;ve tried to create a\n&gt;  &gt; &gt; TestSuite() (with a listing of  suite.addTest(new TestSuite\n&gt;  &gt; &gt; (XXX.class)) ) and I want this testSuite to run its set of tests\n&gt;  &gt; &gt; before this particular testXXX method completes. What I&#39;ve tried\n&gt; is:\n&gt;  &gt; &gt;\n&gt;  &gt; &gt; TestSuite packageSuite = new TestSuite();\n&gt;  &gt; &gt; packageSuite.addTest( OtherFile.suite() );\n&gt;  &gt; &gt; packageSuite.runTest(packageSuite, new TestResult());\n&gt;  &gt; &gt;\n&gt;  &gt; &gt; Is this right?\n&gt;  &gt;\n&gt;  &gt; No.\n&gt;  &gt;\n&gt;  &gt; You appear to want to execute tests in a particular sequence; is\n&gt; that\n&gt;  &gt; correct? If so, simply add them in the desired sequence.\n&gt;  &gt;\n&gt;  &gt; public static Test suite() {\n&gt;  &gt;      TestSuite packageSuite = new TestSuite();\n&gt;  &gt;      packageSuite.addTest( OtherFile.suite() );\n&gt;  &gt;      packageSuite.addTest( new MyTestCase(&quot;testMethod&quot;) );\n&gt;  &gt;      ...\n&gt;  &gt;      return packageSuite;\n&gt;  &gt; }\n&gt;  &gt;\n&gt;  &gt; JUnit will do the rest.\n&gt;  &gt;\n&gt;  &gt; Do not try to create suites at run time. Create the suite first,\n&gt; then\n&gt;  &gt; let JUnit run it.\n&gt;  &gt; --\n&gt;  &gt; J. B. Rainsberger,\n&gt;  &gt; Diaspar Software Services\n&gt; \n&gt; \n&gt; \n&gt; Ok, I see. The thing is basically that according to a number I get in\n&gt; one of the testXXX, I want to create an intermittent suite() that\n&gt; runs a set of tests n times.  For example, I am running test A, and\n&gt; in test A, I get a value 3 as the number of possible combinations to\n&gt; test. \n\nWhat about this algorithm makes it a test? It sounds like it&#39;s just a \n&quot;suite builder&quot; method. If I am right, then that&#39;s all you need:\n\npublic static Test suite() {\n     // determine how many tests to create\n     // create the suite\n}\n\nIt&#39;s not a test; it&#39;s just a suite builder. Does this method of yours \n/require/ a test being run to be invoked? Can you just invoke it outside \nthe context of running a test?\n\n &gt; I then create a testSuite with a set of tests that will be run\n&gt; referencing data according to their assigned indexes 0, 1, 2 .\n&gt; (Representing three possible paths in the system to test). It may be\n&gt; possible to find these values ahead of time, but that would result in\n&gt; a tremendous increase in processing time, so I figured that if using\n&gt; an intermittent suite() is a possibility, why not do it?\n\nYou could; but not the way you were trying to do it.\n\nIf your &quot;suite builder&quot; really is a test (and sometimes it is), then I \nthink you have a serious design problem. Do something about it.\n\n&gt; BTW: thanks for the rapid response!!\n\nYou&#39;re welcome!\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 10846, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 10849, 
+    "contentTrasformed": false, 
+    "postDate": "1081979061", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10849, 
+    "headers": {
+        "inReplyToHeader": "PGM1azVnZithOWNuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwN0RCMEI1LjMwMTA0QHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PGM1azVnZithOWNuQGVHcm91cHMuY29tPg=="
+    }
+}

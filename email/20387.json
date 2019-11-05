@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20388, 
+    "senderId": "zsfXi-pHSS6l2mX5bW4HoTuUk3UcEfvvJQXb-KXfFi0yw3OP4YMqVe5lUT14kHc2wgwmuhsj33UcLVaQoS0ENRycxAwRIpcn-5jm90mZox9Mzv0E", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Looking for advice on testing scenario", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "If you are using JUnit 4.4 you could do this with theories or a parameterized runner. With theories it would look something like this: @RunWith(Theories) ", 
+    "msgId": 20387, 
+    "profile": "j0hlrogge", 
+    "topicId": 20385, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-1722871889\">If you are using JUnit 4.4 you could do this with theories or a<br/>\nparameterized runner.<br/>\nWith theories it would look something like this:<br/>\n<br/>\n@RunWith(Theories)<br/>\npublic class ValidSqlIsParsed {<br/>\n     public TestData selectAll = new TestData(&quot;Select * from<br/>\nMyTable.MyColumn&quot;, &quot;Select * from MyColumn&quot;);<br/>\n     public TestData selectSpecificField = new TestData(&quot;Select<br/>\nspecifi_field from MyTable.MyColumn&quot;, &quot;Select * from MyColumn&quot;);<br/>\n<br/>\n     @Theory<br/>\n     public void allTestDataYieldsExpectedOutput(TestData testData) {<br/>\n         Parser parser = getParser();<br/>\n         parser.parse(testData.input);<br/>\n         SQLTree tree = parser.getTree();<br/>\n         assertThat(tree.printMe(), is(equalTo(testdata.getExpectedOutput())));<br/>\n     }<br/>\n}<br/>\n<br/>\n<br/>\nthe getParser could return a singleton instance if you don&#39;t want to<br/>\nset it up several times though to me it seems like there would not be<br/>\nmuch of a performance penality to create a new one each time. Assuming<br/>\nthat the parser only parses. If the parser does more than parse then<br/>\nmaybe it could be a good idea to look into how to test the actual<br/>\nparsing in isolation. I&#39;d say you would want to /be able/ to do this<br/>\nin any case even if you choose to test end to end. Perhaps testing a<br/>\nsmall subset of the 120 combinations end to end and the rest with the<br/>\nparser alone?<br/>\n<br/>\nIn your case the parameterized runner would maybe be a better fit, I<br/>\nhave no experience with that one but I read others complain about only<br/>\nbeing presented with the index that failed and not the actual data.<br/>\nThe theory runner gives you the data combination that failed which may<br/>\nmake it a good choice to acomplish what you want to do even if it is<br/>\n&quot;abusing&quot; theories a little.<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thu, Mar 20, 2008 at 11:25 PM, techstuff1971 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:techstuff1971@...\">techstuff1971@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt;  I am new to JUNIT and although I&#39;ve read all of the docs (save the<br/>\n&gt;  javadoc) it&#39;s not entirely clear to me how to proceed or even if JUNIT<br/>\n&gt;  is appropriate for my needs. I will explain the situation and was<br/>\n&gt;  hoping that maybe someone could point me in the right direction.<br/>\n&gt;<br/>\n&gt;  I have written a SQL parser which parses a SQL query and builds an<br/>\n&gt;  object model representation of same which it returns as the result of<br/>\n&gt;  a parse. The object model has the ability to print itself and so long<br/>\n&gt;  as the parser works correctly what it prints will be very close to the<br/>\n&gt;  input query. A single test case then consists of parsing a query,<br/>\n&gt;  calling printMe( ) on the resultant tree and comparing it&#39;s output to<br/>\n&gt;  what was expected, which again, is very similar to but not identical<br/>\n&gt;  to the original query.<br/>\n&gt;<br/>\n&gt;  So, first a general question: I know that his is closer to end to end<br/>\n&gt;  testing than it is to the sort of fine grained class level tests JUNIT<br/>\n&gt;  is designed for. Is JUNIT even appropriate? Assuming the answer is<br/>\n&gt;  yes, I&#39;ll continue.<br/>\n&gt;<br/>\n&gt;  The pseudo code for a single test case would look like this:<br/>\n&gt;<br/>\n&gt;  String orgnlQry = &quot;Select * from MyTable.MyColumn&quot;;<br/>\n&gt;  String expectedQry = &quot;Select * from MyColumn&quot;;<br/>\n&gt;  Parser myParser = new Parser( );<br/>\n&gt;  // A bunch of code to construct Parser and connect to data store<br/>\n&gt;  myParser.parse(orgnlQry);<br/>\n&gt;  SQLTree tree = myParser.getTree( );<br/>\n&gt;  String outQry = tree.printMe( );<br/>\n&gt;  assertEquals(outQry, expectedQry);<br/>\n&gt;<br/>\n&gt;  I&#39;d like all of my test cases to use the same parser instance so that<br/>\n&gt;  I only have to initialize it once. The only variables for each test<br/>\n&gt;  than are the orgnl/expectedQry pairs of which I&#39;ve got about 120.<br/>\n&gt;<br/>\n&gt;  I&#39;m able to get a single test case running but I can&#39;t figure out how<br/>\n&gt;  to eliminate duplicate code. I&#39;m also no sure how to organize the<br/>\n&gt;  tests. Shold there really be 120 different test methods or is there<br/>\n&gt;  some way to call the same test method 120 times with different input<br/>\n&gt;  strings?<br/>\n&gt;<br/>\n&gt;  Thanks in advance for any suggestions anyone can provide.<br/>\n&gt;<br/>\n&gt;  -ts1971<br/>\n&gt;<br/>\n&gt;  <br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\n-----------------------------------------------------<br/>\nJoakim Ohlrogge<br/>\nAgical AB<br/>\nVästerlånggatan 79, 2 tr<br/>\n111 29 Stockholm, SWEDEN<br/>\n<br/>\nMobile: +46-708-754004<br/>\nBlog: johlrogge.wordpress.com<br/>\nE-mail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a> </span></blockquote></div>", 
+    "prevInTime": 20386, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1206189095", 
+    "canDelete": false, 
+    "nextInTopic": 20388, 
+    "prevInTopic": 20385, 
+    "headers": {
+        "inReplyToHeader": "PGZydW84ZStqbnUzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDgwMzIyMDUzMXA2ZDFkNmY5MHNjZDRlM2I0NmNmMmQ1N2VAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGZydW84ZStqbnUzQGVHcm91cHMuY29tPg=="
+    }
+}

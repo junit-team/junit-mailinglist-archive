@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7124, 
+    "senderId": "IydjSh0hqRID-d0OOTzSPEgEi56t0GzG4PdwsBxRaGXxE2GXNuIrQV_YKOydBLlcfBZqXCmw8LXKvjewdzTuTRF2LlUdg9s8eG3UPo3j5m9RJg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to test error handling?", 
+    "from": "&quot;Erik Hanson&quot; &lt;yahoogroups@...&gt;", 
+    "authorName": "Erik Hanson", 
+    "msgSnippet": "... How about extracting your error handling code and testing it by itself: public class Foo { public void bar() { try { // execute my sql query ResultSet rs =", 
+    "msgId": 7123, 
+    "rawEmail": "Return-Path: &lt;listsnospamx@...&gt;\r\nX-Sender: listsnospamx@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_1); 5 Mar 2003 15:30:40 -0000\r\nReceived: (qmail 25120 invoked from network); 5 Mar 2003 15:30:40 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m2.grp.scd.yahoo.com with QMQP; 5 Mar 2003 15:30:40 -0000\r\nReceived: from unknown (HELO pimout2-ext.prodigy.net) (207.115.63.101)\n  by mta1.grp.scd.yahoo.com with SMTP; 5 Mar 2003 15:30:39 -0000\r\nReceived: from nilla (adsl-64-171-255-173.dsl.snfc21.pacbell.net [64.171.255.173])\n\tby pimout2-ext.prodigy.net (8.12.3 da nor stuldap/8.12.3) with SMTP id h25FUa2n034818\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 5 Mar 2003 10:30:39 -0500\r\nMessage-ID: &lt;001f01c2e32c$2b83f690$6500a8c0@nilla&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;20030304175433.66202.qmail@...&gt;\r\nSubject: Re: [junit] Re: How to test error handling?\r\nDate: Wed, 5 Mar 2003 07:30:35 -0800\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.50.4920.2300\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4920.2300\r\nX-eGroups-From: &quot;Erik Hanson&quot; &lt;listsnospamx@...&gt;\r\nFrom: &quot;Erik Hanson&quot; &lt;yahoogroups@...&gt;\r\nX-Yahoo-Group-Post: member; u=138399185\r\nX-Yahoo-Profile: hanson_erik\r\n\r\n&quot;Tung Wai Yip&quot; &lt;tungwaiyip@...&gt; wrote:\n&gt; Let me give a more concrete example.\n&gt; \n&gt;   try {\n&gt;     // execute my sql query\n&gt;     ResultSet rs = sql.executeQuery();\n&gt;     while (rs.next()) {\n&gt;       String name = rs.getString(&quot;name&quot;);\n&gt;       // do my processing\n&gt;     }\n&gt;     sql.close();\n&gt;   }\n&gt;   catch (SQLException e) {\n&gt;     // do my smart error handling here.\n&gt;     //\n&gt;     // however this is never called because it is hard to \n&gt;     // generate a SQLException.\n&gt;   }\n\nHow about extracting your error handling code and testing it by itself: \n\npublic class Foo {\n  public void bar() {\n    try {\n      // execute my sql query\n      ResultSet rs = sql.executeQuery();\n      while (rs.next()) {\n        String name = rs.getString(&quot;name&quot;);\n        //do my processing\n      }\n      sql.close();\n    }\n    catch (SQLException e) {\n      handleSQLException(e);\n    }\n  }\n\n  void handleSQLException(e) {\n    //do my smart error handling here.\n  }\n}\n\npublic class FooTest extends TestCase {\n  public void testBar() {\n    //do whatever tests on bar you want to do\n  }\n\n  public void testHandleSQLException() {\n    Foo f = new Foo();\n    f.handleSQLException(newSQLException(...));\n    //assert that the exeption was handled correctly\n  }\n}\n\n\n\nErik Hanson\n\n\n\n", 
+    "profile": "hanson_erik", 
+    "topicId": 7105, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 138399185, 
+    "prevInTime": 7122, 
+    "contentTrasformed": false, 
+    "postDate": "1046878235", 
+    "canDelete": false, 
+    "nextInTopic": 7125, 
+    "prevInTopic": 7120, 
+    "headers": {
+        "messageIdInHeader": "PDAwMWYwMWMyZTMyYyQyYjgzZjY5MCQ2NTAwYThjMEBuaWxsYT4=", 
+        "referencesHeader": "PDIwMDMwMzA0MTc1NDMzLjY2MjAyLnFtYWlsQHdlYjgwNDAyLm1haWwueWFob28uY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 106, 
+    "nextInTime": 8973, 
+    "senderId": "rxm194OXn9Qp_8flMoF5zEwvjnFwhfVfmTWYD7dthJ_GGUxTYTehUdZK2MfxtPR300nkDXAEerIBkxiQlsLxpldEQL-AnQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ClasspathWalker (even better)", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... I d probably create a MockClasspathWalkerListener, then write a test case that installs it into the ClassPathWalker, and verifies various cases of", 
+    "msgId": 8972, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 33987 invoked from network); 1 Aug 2003 17:30:09 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m14.grp.scd.yahoo.com with QMQP; 1 Aug 2003 17:30:08 -0000\r\nReceived: from unknown (HELO rwcrmhc13.comcast.net) (204.127.198.39)\n  by mta3.grp.scd.yahoo.com with SMTP; 1 Aug 2003 17:29:57 -0000\r\nReceived: from clarkware.com (12-254-54-55.client.attbi.com[12.254.54.55](untrusted sender))\n          by comcast.net (rwcrmhc13) with SMTP\n          id &lt;2003080116363301500mhvave&gt;\n          (Authid: clarkware);\n          Fri, 1 Aug 2003 16:36:33 +0000\r\nMessage-ID: &lt;3F2A96CC.3070904@...&gt;\r\nDate: Fri, 01 Aug 2003 10:35:24 -0600\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] ClasspathWalker (even better)\r\nReferences: &lt;007e01c357cb$1d56c7f0$2878160a@...&gt; &lt;1059742497.2163.85.camel@localhost&gt; &lt;200308021121480678.00560C8C@...&gt; &lt;3F2A8817.2000006@...&gt; &lt;200308021150590456.0070C386@...&gt; &lt;200308021206390327.007F1AE5@...&gt;\r\nIn-Reply-To: &lt;200308021206390327.007F1AE5@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nX-Yahoo-Group-Post: member; u=33026788\r\nX-Yahoo-Profile: clarkware\r\n\r\nJ. B. Rainsberger wrote:\n\n&gt; \n&gt; \n&gt; It occurs to me that to test the second behavior does not require mocking the classpath. We can have a degenerate event/listener design.\n&gt; \n&gt; As the ClasspathWalker walks the classpath, it calls a method to signal that it found something on the classpath. (event source)\n&gt; \n&gt; This signal handling method (event listener) then decides which kind of ClasspathEvent to create and send to the registered ClasspathEventListeners.\n&gt; \n&gt; In this case, you can test the second behavior above without having to actually walk the classpath. Much nicer.\n&gt; \n&gt; So the basic design is this:\n&gt; \n&gt; ClasspathWalker\n&gt;     walkClasspath(classpathRoot):\n&gt;         // iterate over classpath items under the root\n&gt;         // invoke foundSomething() with each thing you find\n&gt; \n&gt;     ClasspathEvent makeClasspathEvent(foundThing):\n&gt;         // decide which kind of ClasspathEvent to generate\n&gt;   \n&gt;     foundSomething(foundThing):\n&gt;         classpathEvent = makeClasspathEvent(foundThing);\n&gt;         notifyListeners(classpathEvent);\n&gt; \n&gt; ClasspathWalkerListener\n&gt;     onClasspathEvent(classpathEvent)\n&gt; \n&gt; My tests would be like this.\n&gt; \n&gt; * One TestCase class to verify ClasspathWalker.walkClasspath that tries various cases of classpath data; probably a parameterized test case -- however many special cases there are\n&gt; \n&gt; * One TestCase class to verify ClasspathWalker.makeClasspathEvent for each different kind of thing I&#39;d find on the classpath\n&gt; \n&gt; * foundSomething is too simple to break\n&gt; \n&gt; * Tests for my implementation of ClasspathWalkerListener: each test simply sends a ClasspathEvent and verifies the behavior of the listener\n&gt; \n\nI&#39;d probably create a MockClasspathWalkerListener, then write a test \ncase that installs it into the ClassPathWalker, and verifies various \ncases of classpath data.  For each variation, the test would ask the \nMockClasspathWalkerListener if it really received the events I was \nexpecting for the variation, as in:\n\npublic void testSomeClasspathVariation() {\n\t\t\n   ClasspathWalker walker = new ClasspathWalker();\n   MockClasspathWalkerListener listener =\n       new MockClasspathWalkerListener();\n   walker.addListener(listener);\n\n   walker.walkClasspath(someClasspathVariation)\n\t\t\n   assertTrue(listener.heard(someExpectedEvent));\n}\n\nSame intent, just a slightly more granular test.  And if I saw red for \nmore than a couple minutes, I&#39;d start taking smaller steps by writing \nfine-grained tests such as those you mentioned.\n\nOr maybe somebody already said this while I was heads-down coding...\n\nMike\n\n-- \nMike Clark\nhttp://clarkware.com\n(303) 589-3812\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 8807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "prevInTime": 8971, 
+    "contentTrasformed": false, 
+    "postDate": "1059755724", 
+    "canDelete": false, 
+    "nextInTopic": 8973, 
+    "prevInTopic": 8970, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwODAyMTIwNjM5MDMyNy4wMDdGMUFFNUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDNGMkE5NkNDLjMwNzA5MDRAY2xhcmt3YXJlLmNvbT4=", 
+        "referencesHeader": "PDAwN2UwMWMzNTdjYiQxZDU2YzdmMCQyODc4MTYwYUBzeWJhc2UuY29tPiA8MTA1OTc0MjQ5Ny4yMTYzLjg1LmNhbWVsQGxvY2FsaG9zdD4gPDIwMDMwODAyMTEyMTQ4MDY3OC4wMDU2MEM4Q0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4gPDNGMkE4ODE3LjIwMDAwMDZAdGVhbWRla2FkZS5jb20+IDwyMDAzMDgwMjExNTA1OTA0NTYuMDA3MEMzODZAc3NtdHAuYmxvb3IuaXMubmV0LmNhYmxlLnJvZ2Vycy5jb20+IDwyMDAzMDgwMjEyMDYzOTAzMjcuMDA3RjFBRTVAc3NtdHAuYmxvb3IuaXMubmV0LmNhYmxlLnJvZ2Vycy5jb20+"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 10157, 
+    "senderId": "X6F-XVYXwnKDP4p_WABOtLEoWqxt1X4tLGEiE3iIWGWZeqKorZDIdMwEtFjRkPqoXCxPx9LLv-WzRGSb_MdxfPblfg", 
+    "systemMessage": false, 
+    "subject": "Security provider problems w/ Junit Swing runner", 
+    "from": "&quot;john w&quot; &lt;john@...&gt;", 
+    "authorName": "john w", 
+    "msgSnippet": "We just ran into something here that I wanted to document for future people who might run into this. Where I work we have our own implementation of", 
+    "msgId": 10156, 
+    "rawEmail": "Return-Path: &lt;john@...&gt;\r\nReceived: (qmail 37527 invoked by uid 7800); 8 Jan 2004 01:45:49 -0000\r\nX-Sender: john@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 72872 invoked from network); 7 Jan 2004 23:28:32 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m10.grp.scd.yahoo.com with QMQP; 7 Jan 2004 23:28:32 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta6.grp.scd.yahoo.com with SMTP; 7 Jan 2004 23:28:32 -0000\r\nReceived: from [66.218.67.152] by n3.grp.scd.yahoo.com with NNFMP; 07 Jan 2004 23:28:32 -0000\r\nDate: Wed, 07 Jan 2004 23:28:19 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;bti4mj+osun@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2140\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.86\r\nFrom: &quot;john w&quot; &lt;john@...&gt;\r\nSubject: Security provider problems w/ Junit Swing runner\r\nX-Yahoo-Group-Post: member; u=126816200\r\nX-Yahoo-Profile: jmufreebase\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 8 Jan 2004 01:45:48 -0000\r\n\r\nWe just ran into something here that I wanted to document for future\npeople who might run into this.\n\nWhere I work we have our own implementation of java.security.Provider.\nThis implementation lives in a jar file that&#39;s signed by us and with\nthe JCE Code Signing thing. (I don&#39;t remember the details, I&#39;m not the\ncryppie guy, but jarsigner -verify -certs -verbose shows that all the\nfiles are signed by both certs)\n\nI had a test that called a method that takes in a string and encrypts\nit with a password using a substitution algorithm. The snippet:\n\n        try\n        {\n            String provider = &quot;name.of.our.crypto.provider.class&quot;;\n            Class providerClass = Class.forName(provider);\n           \njava.security.Security.addProvider((java.security.Provider)\nproviderClass.newInstance());\n        }\n        catch (Throwable t)\n        {\n            t.printStackTrace();\n        }\n\n        SecretKeySpec s = new SecretKeySpec(cipher, &quot;SUBSTITUTION&quot;);\n        SubstAlgorithmParameters p = new SubstAlgorithmParameters();\n        // we set some parameters for this algorithm\n\n        try\n        {\n            Cipher c =\nCipher.getInstance(&quot;SUBSTITUTION&quot;,&quot;name.of.our.crypto.provider&quot;);\n\n\nAnd it was puking on Cipher.getInstance saying that the file might not\nhave been signed. So we put in some simple debugging code:\n\n            String provider = &quot;name.of.our.crypto.provider&quot;;\n            Class providerClass = Class.forName(provider);\n            Object[] signers = providerClass.getSigners();\n            if (signers == null) {\n                System.err.println(&quot;No signers!&quot;);\n                signers = new Object[0];\n            }\n            System.err.println(&quot;Signer count for &quot;+provider+&quot;:\n&quot;+signers.length);\n\nAnd sure enough, signers was null and &quot;No signers!&quot; would appear.\n\nThe same block of code, and all of our tests, run fine both naturally\nand in the textui runner.\n\nSo... there is some funky classloader thing going on here that I don&#39;t\nunderstand. I just wanted to see if this was known (I haven&#39;t found\nanything anywhere else about signed jar files yet) and what people\nthought.\n\nThanks for your time!\n\njohn\n\n\n", 
+    "profile": "jmufreebase", 
+    "topicId": 10156, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126816200, 
+    "prevInTime": 10155, 
+    "contentTrasformed": false, 
+    "postDate": "1073518099", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJ0aTRtaitvc3VuQGVHcm91cHMuY29tPg=="
+    }
+}

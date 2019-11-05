@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 6961, 
+    "senderId": "7cxeZBd1ryxDUDZu_DSNS0FJGASDvpdl5dIGsIbnV6LHrZqU8ZyAyTOsol5nEdk2DrU1f_SCXCl9KxDIejuGfWEQyPrhGUjyrF8P9B35", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] one-time setup", 
+    "from": "Eric Armstrong &lt;eric.armstrong@...&gt;", 
+    "authorName": "Eric Armstrong", 
+    "msgSnippet": "The TestCase is actually exercising a program, so the setup looks like this: public class ReadAndCompareTests extends TestCase { CommentMerge commentMerge; ", 
+    "msgId": 6960, 
+    "profile": "ericsilverlight", 
+    "topicId": 6946, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78994084, 
+    "messageBody": "<div id=\"ygrps-yiv-2047823389\">The TestCase is actually exercising a program,<br/>\nso the setup looks like this:<br/>\n<br/>\npublic class ReadAndCompareTests<br/>\n  extends TestCase<br/>\n{<br/>\n  CommentMerge commentMerge;<br/>\n<br/>\n  StringWriter testWriter;<br/>\n<br/>\n  public ReadAndCompareTests(String name) {<br/>\n    super(name);<br/>\n  }<br/>\n<br/>\n  public CommentMerge createInstance()<br/>\n    throws Exception<br/>\n {<br/>\n    return new CommentMerge();<br/>\n  }<br/>\n<br/>\n  protected void setUp() throws Exception {<br/>\n    super.setUp();<br/>\n    commentMerge = createInstance();<br/>\n  }<br/>\n<br/>\n  protected void tearDown() throws Exception {<br/>\n    commentMerge = null;<br/>\n    super.tearDown();<br/>\n  }<br/>\n<br/>\nWhen running this test, a number of errors are generated. The<br/>\napp&#39;s error-report is then compared to a saved error report.<br/>\nThere is a match, and the test succeeds.<br/>\n  public void test4_HierarchyCompare() throws Exception {<br/>\n    commentMerge.execute(<br/>\n      &quot;-specpath test/specSrc &quot; +<br/>\n      &quot;-codePath test/codeSrc &quot; +<br/>\n      &quot;test/specSrc/AnonClass.java &quot; +<br/>\n      &quot;-subpackages smallpkg &quot; +<br/>\n      &quot;-checkOnly &quot;<br/>\n    );<br/>\n    String result = testWriter.getBuffer() + &quot;&quot;;<br/>\n<br/>\n    DocumentBuffer docBuffer =<br/>\n       nio.readDocument(expected+&quot;4_compareWithError.txt&quot;);<br/>\n    String expect = docBuffer.getCharBuffer()+&quot;&quot;;<br/>\n    assertEquals(&quot;Hierarchy compare&quot;, expect, result);<br/>\n  }<br/>\n<br/>\nThe next test then fails in unexpected fashion, because the<br/>\nErrorHandler object has an &quot;error found&quot; flag set.<br/>\n  public void test2_CodeRead() throws Exception {<br/>\n     commentMerge.execute(<br/>\n      &quot;-specpath test/specSrc &quot; +<br/>\n      &quot;-codePath test/codeSrc &quot; +<br/>\n      &quot;test/specSrc/AnonClass.java &quot; +<br/>\n      &quot;-subpackages smallpkg &quot; +<br/>\n      &quot;-echoCode -lax&quot;<br/>\n    );<br/>\n    String result = testWriter.getBuffer() + &quot;&quot;;<br/>\n    ....<br/>\n<br/>\n(The app dies with &quot;invalid program option&quot;, because after<br/>\nexamining the options -- which in this case are correct --<br/>\nthe program checks to see whether and error has been found.<br/>\nWith a clean, new ErrorHandler, the error flag is clear. (The<br/>\ntest ran perfectly until the one ahead of it was added. The<br/>\ndebugger then showed that the error flag was set when<br/>\nrunning the code.)<br/>\n<br/>\nTo solve the problem, I added this method, and invoked it at<br/>\nthe beginning of each test method:<br/>\n  protected void init() {<br/>\n    commentMerge.errorHandler = new CommentMergeErrorHandler();<br/>\n    testWriter = new StringWriter();<br/>\n    commentMerge.setWriter(testWriter);<br/>\n  }<br/>\n<br/>\nThe tests are now working, but it looks to me like setup() isn&#39;t being<br/>\nrun for each test method.</div>", 
+    "prevInTime": 6959, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1045351664", 
+    "canDelete": false, 
+    "nextInTopic": 6964, 
+    "prevInTopic": 6958, 
+    "headers": {
+        "messageIdInHeader": "PDNFNEVDQ0YwLjg5NDE4OTE5QHN1bi5jb20+", 
+        "referencesHeader": "PDNFNEFFNDc5LkYzRTFENDU5QHN1bi5jb20+"
+    }
+}

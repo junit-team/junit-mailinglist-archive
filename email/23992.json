@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 23993, 
+    "senderId": "a7cROCb9DPnmz4bsgvp2BF1iqQcDCh-63Do1Ju-JmHnfsPHam1UCuK0Ds77iqlSJBFIDNOynDYQe_HBrAW60B9kw", 
+    "systemMessage": true, 
+    "subject": "Re: Tests starting before Logback initialisation complete when run in parallel", 
+    "from": "&quot;hkaipe&quot; &lt;hkaipe@...&gt;", 
+    "authorName": "hkaipe", 
+    "msgSnippet": "... I can see value in a @BeforeSuite-annotation but in general I think test-suites should be administered by the build-tool. - In this case SureFire, which", 
+    "msgId": 23992, 
+    "profile": "hkaipe", 
+    "topicId": 23967, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 478409128, 
+    "messageBody": "<div id=\"ygrps-yiv-1948785793\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, CÃ©dric Beust â&quot; &lt;cedric@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; On Thu, Sep 6, 2012 at 10:38 AM, hkaipe &lt;hkaipe@...&gt; wrote:<br/>\n&gt; <br/>\n&gt; &gt; Surefire is your tool to organize which tests to run when and how.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Right, which is why I think a @BeforeSuite annotation belongs to the<br/>\n&gt; testing framework, not the build tool. How would your build tool create a<br/>\n&gt; connection pool or an executor for your tests to use?<br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt; Cédric<br/>\n<br/>\n </span></blockquote>I can see value in a @BeforeSuite-annotation but in general I think test-suites should be administered by the build-tool. - In this case SureFire, which perhaps should support some suite/category-solution that can be applied to many test-frameworks, not only JUnit.<br/>\n<br/>\nBut Brett&#39;s particular problem is not limited to a test-suite or testing framework. It goes beyond testing. - He can accidently encounter it whenever he starts up a multi-threaded JVM, therewith making JVM-startup his problem domain. Therefore I think that using a javaagent would be a good pattern and - yes - my build tool can do that ... - In the Surefire-configuration you specify an &quot;argLine&quot; for the JVM:<br/>\n<br/>\n&lt;plugin&gt;<br/>\n&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;<br/>\n&lt;configuration&gt;<br/>\n&lt;argLine&gt; -javaagent:${localRepository}/path/to/myagent/1.0-SNAPSHOT/myagent-1.0-SNAPSHOT.jar &lt;/argLine&gt;<br/>\n&lt;/configuration&gt;<br/>\n&lt;/plugin&gt;<br/>\n<br/>\nIn the &quot;Premain-Class&quot; of &quot;myagent&quot; we can define JVM-wide setup and/or tearDown - e.g.<br/>\n<br/>\npublic class GlobalTearDown extends Thread<br/>\n{<br/>\npublic static void premain(String args)<br/>\n{<br/>\nSystem.out.println(&quot;HELLO FROM premain&quot;);<br/>\nRuntime.getRuntime().addShutdownHook(new GlobalTearDown());<br/>\n}<br/>\n<br/>\npublic void run()<br/>\n{<br/>\nSystem.out.println(&quot;TEAR-DOWN EXECUTES HERE&quot;);<br/>\n}<br/>\n}<br/>\n<br/>\nOutput from Maven/Surefire when &quot;GlobalTearDown&quot; is used as &quot;Premain-Class&quot;:<br/>\n---------------------------------------------------------------------<br/>\n[surefire:test]<br/>\nSurefire report directory: /home/me/projects/experiments/target/surefire-reports<br/>\nHELLO FROM premain<br/>\n<br/>\n-------------------------------------------------------<br/>\n T E S T S<br/>\n-------------------------------------------------------<br/>\nRunning org.callbackparams.experiments.DummyTest<br/>\nTests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 sec<br/>\n<br/>\nResults :<br/>\n<br/>\nTests run: 1, Failures: 0, Errors: 0, Skipped: 0<br/>\n<br/>\nTEAR-DOWN EXECUTES HERE<br/>\n---------------------------------------------------------------------<br/>\n<br/>\nI don&#39;t know how the &quot;Premain-Class&quot; should look to solve Brett&#39;s problem but I&#39;m quite sure the problem can be elegantly solved with this pattern. - And his solution can perhaps be easily reused in other projects as well as outside of the testing activities.<br/>\n<br/>\n/Henrik</div>", 
+    "prevInTime": 23991, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1347194327", 
+    "canDelete": false, 
+    "nextInTopic": 23995, 
+    "prevInTopic": 23990, 
+    "headers": {
+        "inReplyToHeader": "PENBT3BoZ0pEVD1BVGg4enVELVYtPW9SVjM1cFVGcDh3R2lXOW5CWG9OZTNqTnFhNnEyd0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PGsyaTJrbitidnJrQGVHcm91cHMuY29tPg=="
+    }
+}

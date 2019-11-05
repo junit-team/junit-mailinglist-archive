@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 18222, 
+    "senderId": "Kv-249u8B9UgMSxobLTU0fH3hRbp26r1r1C7BHd07YWJu8Ow0opeWZ-Er8Dnj83Wk-mFo_HnhZwKgkeLx2Hi5UetkBCHEAAeTVFQEsAMOGnl", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit testing MBeans", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I assume the StateString property is not writable through the public interface of the MBean class? If it /is/ writable, then your test should impersonate", 
+    "msgId": 18221, 
+    "profile": "nails762", 
+    "topicId": 18187, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "messageBody": "<div id=\"ygrps-yiv-900041617\">Ravi wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; My Apologies, I should have put one in before ...<br/>\n&gt; <br/>\n&gt; In the example below, I have shown a method named,<br/>\n&gt; initLocation, you will see this method checks the<br/>\n&gt; state of the MBean before the method proceeds to do<br/>\n&gt; its stuff..<br/>\n&gt; <br/>\n&gt; Please note that this &#39;StateString&#39; is set by JBoss.<br/>\n&gt; <br/>\n&gt; public synchronized String initLocation () {<br/>\n&gt; <br/>\n&gt; /* Check if the StateString has &quot;Started&quot; value.<br/>\n&gt; */<br/>\n&gt; if (!this.getStateString().equals(&quot;Started&quot;))<br/>\n&gt; return &quot;Service currently not started &quot;;<br/>\n&gt; try {<br/>\n&gt; popLocals();<br/>\n&gt; this.running = true;<br/>\n&gt; } catch (Exception e) {<br/>\n&gt; this.running = false;<br/>\n&gt; log.error(&quot;Error invoking popLocals&quot;);<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt;  &gt;From your reply I get the feeling, I might have to end<br/>\n&gt; up using cactus, as this &#39;StateString&#39; is something<br/>\n&gt; which is set by JBoss.<br/>\n<br/>\n </span></blockquote>I assume the StateString property is not writable through the public <br/>\ninterface of the MBean class?<br/>\n<br/>\nIf it /is/ writable, then your test should impersonate JBoss and set it.<br/>\n<br/>\nIf it is /not/ writable, then consider using the &quot;subclass to test&quot; <br/>\ntechnique.<br/>\n<br/>\npublic void testDoNotInitializeIfServiceNotStarted() throws Exception {<br/>\n     MyMBean mbean = new MyMBean() {<br/>\n         protected String getStateString() {<br/>\n             return &quot;Stopped&quot;;    // Something other than &quot;Started&quot;<br/>\n         }<br/>\n     };<br/>\n<br/>\n     mbean.initLocation();<br/>\n     // assert mbean didn&#39;t change to &quot;Started&quot; state...<br/>\n}<br/>\n<br/>\nSomething like that.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.ca\">http://www.jbrains.ca</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 18220, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1161863915", 
+    "canDelete": false, 
+    "nextInTopic": 18228, 
+    "prevInTopic": 18219, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDYxMDI1MjMwODA3LjIzODE5LnFtYWlsQHdlYjUwNjA4Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDQ1NDBBMkVCLjQwMjA0MDNAZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDYxMDI1MjMwODA3LjIzODE5LnFtYWlsQHdlYjUwNjA4Lm1haWwueWFob28uY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 998, 
+    "senderId": "zHKbuoqyX5OPs4ahvvqS3s-1rYJrJD9ihI86bHzF4v_cpib_F3WRqVQUHF-3pkMmUYBsMLUHPDY85RPgw85qx3ex-xGe539enoZx", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does JUnit TestCase terminate threads?", 
+    "from": "James Sinnamon &lt;sinnamon@...&gt;", 
+    "authorName": "James Sinnamon", 
+    "msgSnippet": "Thomas, Thanks for your informative response. ... I couldn t find the Multi-threaded test case you referred to. Is it meant to be in the samples or tests", 
+    "msgId": 997, 
+    "topicId": 986, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-47318215\">Thomas,<br/>\n<br/>\nThanks for your informative response.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; You meant the TestCase to do some response delay validation & behavior<br/>\n&gt; under multi-threading.<br/>\n&gt; Yes in this case the run() methods are synchronized if you read the<br/>\n&gt; documentation well.<br/>\n&gt; If you look well at the source code of the Multi-threaded test cases the<br/>\n&gt; Threads with your Runnable are created & initialized. Then when all the<br/>\n&gt; Threads are ready to run the test case goes over all the Threads & call<br/>\n&gt; the<br/>\n<br/>\n&gt;        Thread.start();<br/>\n<br/>\n&gt; There&#39;s right after that a join() of ALL the Threads hence you don&#39;t<br/>\n&gt; move much further before all the Threads are effectively running out of<br/>\n&gt; their &quot;  run()  &quot; methods.<br/>\n<br/>\n </span></blockquote>I couldn&#39;t find the &#39;Multi-threaded test case&#39; you referred to.<br/>\n<br/>\nIs it meant to be in the &#39;samples&#39; or &#39;tests&#39; subdirectory?<br/>\n... or somewhere  else?<br/>\n<br/>\nPossibly it might show me how to accomplish better what I am doing.<br/>\n<br/>\nHowever  my current method seems<br/>\nto work alright.  If you care to take a look below, and either confirm that you<br/>\nthink I am going about it the right way, or else suggest a better way, I would<br/>\nbe grateful.<br/>\n<br/>\nI am testing a Finite State Automaton within a run() method.<br/>\nI want to be able to set an intial state, and then ensure that it procedes to the<br/>\nnext expected state.  Because only one state causes the loop to terminate,<br/>\nI have to find other ways of stopping execution.  (When in other circumstances<br/>\nit terminated when I had believed that it should NOT have terminated, I became<br/>\nconcerned for a while)<br/>\n<br/>\nTIA<br/>\n<br/>\nJames<br/>\n<br/>\n<br/>\n-------------code follows-------------------------<br/>\n<br/>\npublic class TestBid extends TestCase {<br/>\n<br/>\n// &lt;snip&gt;<br/>\n<br/>\n    // set up preconditions<br/>\n    int enoughRunTime = 40;// milliseconds: if tests start to fail<br/>\n                           // inexplicably, consider increasing this value<br/>\n  public TestBid(String testName) {<br/>\n    super(testName);<br/>\n  }<br/>\n<br/>\n<br/>\npublic void testSTATE_BID_REQUESTSENT() {<br/>\n    // set up preconditions<br/>\n  bidMsgInQ.put(new SimpleMsg(prodnName, actorName, 0,<br/>\n                                 MultipiMsg.PRODN_ALL_MET));<br/>\n    standaloneBid = new Bid(actorName, prodnName, partName, rank,<br/>\n      bidsMsgBoard, agentMsgBoard[rank], bidsReadyTable, bidMsgInQ,<br/>\n      bidMsgOutQ);<br/>\n    standaloneBid.setInitialState(MultipiState.BID_REQUESTSENT);<br/>\n//  etc<br/>\n<br/>\n// run Bid Thread<br/>\n    Thread thr = new Thread(standaloneBid);<br/>\n    thr.start();<br/>\n    try { Thread.sleep(enoughRunTime);} catch (InterruptedException ie) {}<br/>\n    standaloneBid.stopRunning();  // set  flag to force end of Thread execution<br/>\n    try {thr.join();} catch (InterruptedException ie) {}<br/>\n<br/>\n     // test postconditions<br/>\n    assert(&quot;Bid thread should now be in state COMMITSENT&quot;,<br/>\n    standaloneBid.state == MultipiState.BID_COMMITSENT);<br/>\n   //  etc<br/>\n<br/>\n}--<br/>\nJames Sinnamon  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:sinnamon@...\">sinnamon@...</a><br/>\n<br/>\nph 07 46315566,  0412 319669<br/>\nPO Box 517 Darling Heights QLD 4350</div>", 
+    "prevInTime": 996, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987756441", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 996, 
+    "headers": {
+        "messageIdInHeader": "PDNBREZGNzk5LkQwRjA3MjRGQHVzcS5lZHUuYXU+", 
+        "referencesHeader": "PDlibTV1Zytqa3NnQGVHcm91cHMuY29tPiA8M0FERUIzRTUuOTBGRDM0NjdAdXNxLmVkdS5hdT4gPDNBREZBQzQ4LkZCNTI0NDUzQHVzcS5lZHUuYXU+IDwzQURGRDkyQS44QUMwOEQzN0BhbHRlcm4ub3JnPg=="
+    }
+}

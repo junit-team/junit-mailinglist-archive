@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 21001, 
+    "senderId": "56mOvvoFUw0ND9F9wWU5rOGscUgn7SrBEiWz8FOrYF5zwGYzimRr6UsYM5mLnsfGDBEbO27uWUz7hFAbHH5NL9Yb", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Parameterized and Theories overlaps", 
+    "from": "rparree &lt;rparree@...&gt;", 
+    "authorName": "rparree", 
+    "msgSnippet": "Hi, Thanks for the clear responses. What i see is that a theory is a (parametrized) test inside out; you don t specify what will work but you leave out what", 
+    "msgId": 21000, 
+    "profile": "rparree", 
+    "topicId": 20365, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 363885179, 
+    "messageBody": "<div id=\"ygrps-yiv-1635095349\">Hi,<br/>\n<br/>\nThanks for the clear responses. What i see is that a theory is a<br/>\n(parametrized) test inside out; you don&#39;t specify what will work but you<br/>\nleave out what should not be tested (iow assumptions by leaving out the data<br/>\nfor these cases).<br/>\n<br/>\nI do indeed like the syntax of theories better than how parameterized tests<br/>\nshould be expressed. Especially using custom annotations @Between<br/>\n(<a rel=\"nofollow\" target=\"_blank\" href=\"http://popper.tigris.org/tutorial.html)\">http://popper.tigris.org/tutorial.html)</a> are very powerful,  also to supply<br/>\ntest data for parametrized tests. <br/>\n<br/>\nAnyway the difference between them is clear, perhaps a more expressive<br/>\ntechnique for specifying parameter values for a parameterized test will make<br/>\nit into Junit...<br/>\n<br/>\nTx.,<br/>\n<br/>\nRaphael <br/>\n<br/>\n<br/>\n<br/>\nCharlie Poole-2 wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; Hi David,<br/>\n&gt; <br/>\n&gt;&gt; [+CC: Charlie Poole, who might be interested in the example...]<br/>\n&gt; <br/>\n&gt; Thanks - but I&#39;m here too. :-)<br/>\n&gt; <br/>\n&gt;&gt; Joakim is correct.  A theory promises that correct code will <br/>\n&gt;&gt; pass the theory for any parameters you pass in:<br/>\n&gt;&gt; <br/>\n&gt;&gt; @Theory public void additionIsCommutative(int x, int y) {<br/>\n&gt;&gt;    assertEquals(x + y, y + x);<br/>\n&gt;&gt; }<br/>\n&gt;&gt; <br/>\n&gt;&gt; A &quot;Parameterized test&quot; is what I like to call an &quot;answer <br/>\n&gt;&gt; key&quot;.  It can be applied to some different parameters, but <br/>\n&gt;&gt; you have to look at the key to know which are correct.  If we <br/>\n&gt;&gt; converted the Parameterized Runner to behave more like <br/>\n&gt;&gt; theories, it might look like (totally making this up):<br/>\n&gt;&gt; <br/>\n&gt;&gt; // Read top to bottom<br/>\n&gt;&gt; @Answers(&quot;a&quot;) public int[] = {3, 4, 5}<br/>\n&gt;&gt; @Answers(&quot;b&quot;) public int[] = {4, 3, 12}<br/>\n&gt;&gt; @Answers(&quot;c&quot;) public int[] = {5, 5, 13}<br/>\n&gt;&gt; <br/>\n&gt;&gt; @AnswerKey public void pythogoreanTheorem(int a, int b, int c) {<br/>\n&gt;&gt;    assertEquals(c, hypoteneuse(a, b));<br/>\n&gt;&gt; }&gt; <br/>\n&gt;&gt; The Theories interface currently looks different than the <br/>\n&gt;&gt; Parameterized interface because experience with the <br/>\n&gt;&gt; Parameterized Runner made me dissatisfied with the interface.<br/>\n&gt; <br/>\n&gt; I think NUnit has some fairly nice syntax for parameterized tests,<br/>\n&gt; primarily because other people experimented with it first and<br/>\n&gt; I learned from their experience. So, as payback, here are a few<br/>\n&gt; alternatives we currently (2.5 Alpha) support...<br/>\n&gt; <br/>\n&gt; [Test]<br/>\n&gt; public void pythogoreanTheorem(<br/>\n&gt;     [Values(3,4,5)]  int a,<br/>\n&gt;     [Values(4,3,12)] int b,<br/>\n&gt;     [Values(5,5,13)] int c)<br/>\n&gt; {<br/>\n&gt;     Assert.AreEqual(c, hypoteneuse(a, b));<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; OR<br/>\n&gt; <br/>\n&gt; [TestCase(3,4,5)]<br/>\n&gt; [TestCase(4,3,5)]<br/>\n&gt; [TestCase(4,12,13)]<br/>\n&gt; public void pythogoreanTheorem(int a, int b, int c)<br/>\n&gt; {<br/>\n&gt;     Assert.AreEqual(c, hypoteneuse(a, b));<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; OR<br/>\n&gt; <br/>\n&gt; [TestCase(3,4, Returns=5)]<br/>\n&gt; [TestCase(4,3, Returns=5)]<br/>\n&gt; [TestCase(4,12, Returns=13)]<br/>\n&gt; public void pythogoreanTheorem(int a, int b)<br/>\n&gt; {<br/>\n&gt;     return hypoteneuse(a, b);<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; For this particular test, I have a liking for the<br/>\n&gt; last format. Of course, I&#39;m not sure which of these <br/>\n&gt; could be implemented with Java attributes, but I&#39;ll<br/>\n&gt; leave that for somebody else to figure out. :-)<br/>\n&gt; <br/>\n&gt; Charlie<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n </span></blockquote>-- <br/>\nView this message in context: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/Parameterized-and-Theories-overlaps-tp16004982p20109560.html\">http://www.nabble.com/Parameterized-and-Theories-overlaps-tp16004982p20109560.html</a><br/>\nSent from the JUnit - User mailing list archive at Nabble.com.</div>", 
+    "prevInTime": 20999, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1224678050", 
+    "canDelete": false, 
+    "nextInTopic": 21019, 
+    "prevInTopic": 20987, 
+    "headers": {
+        "inReplyToHeader": "PDAwMjkwMWM5MzJlNiQyNzdmMjI4MCQ2NDAxYThjMEBmZXJyYXJpPg==", 
+        "messageIdInHeader": "PDIwMTA5NTYwLnBvc3RAdGFsay5uYWJibGUuY29tPg==", 
+        "referencesHeader": "PGZyOGZ2MSs4MHJrQGVHcm91cHMuY29tPiA8MjAwMjk5MTYucG9zdEB0YWxrLm5hYmJsZS5jb20+IDxiOWVlNWU0MTA4MTAxOTE1MzRpNGQ5MjE2ZjRnZWRkNTk4YjFkNTI3Y2MyNUBtYWlsLmdtYWlsLmNvbT4gPDRmN2RhNmI5MDgxMDIwMTAzOHkxNmUxN2I4YXQ0NjM1MDQzZDQ3ZWVhYmU2QG1haWwuZ21haWwuY29tPiA8MDAyOTAxYzkzMmU2JDI3N2YyMjgwJDY0MDFhOGMwQGZlcnJhcmk+"
+    }
+}

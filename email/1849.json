@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 1850, 
+    "senderId": "zOlg_hn9PdNQvBXNma1hFdU8slDVko1S-NamC1NTrmYwij95MRHaNeMBwJSV9iHbM8jQ8sht6oLnSA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] names for overloading methods", 
+    "from": "rainsber@...", 
+    "authorName": "rainsber@ca.ibm.com", 
+    "msgSnippet": "Step 1: Try to test the *feature* and not just each method. That might solve your problem, by giving you a natural name for those tests. As an example, when I", 
+    "msgId": 1849, 
+    "topicId": 1848, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1987785724\">Step 1: Try to test the *feature* and not just each method. That might<br/>\nsolve your problem, by giving you a natural name for those tests.<br/>\n<br/>\nAs an example, when I test that my data model class handles a data store<br/>\nwith no widgets in it, I generally write a test like:<br/>\n<br/>\ntestNoWidgets() {<br/>\n    MockDataModel model = new MockDataModel();    // MockDataModel extends<br/>\nDataModel<br/>\n    model.ensureNoWidgets();    // special method on mock data model to let<br/>\nme &quot;sneak in&quot; and change things.<br/>\n<br/>\n    // Test public interface of DataModel when there are no widgets.<br/>\n    assertEquals(0, model.countWidgets());<br/>\n<br/>\n    assertTrue(model.collectAllWidgets().isEmpty());<br/>\n<br/>\n    assertTrue(model.collectAllWidgets(new WidgetFilter() {<br/>\n        public void accept(Widget each) {<br/>\n            // Accept all widgets.<br/>\n        }<br/>\n    }).isEmpty());<br/>\n<br/>\n    model.eachWidget(new WidgetBlock() {<br/>\n        public void execute(Widget each) {<br/>\n            fail(&quot;How did I get here?!&quot;);<br/>\n        }<br/>\n    });<br/>\n    ...<br/>\n}<br/>\n<br/>\nNotice that I create a scenario, then test each method under that scenario.<br/>\nThis is an inverse view from writing a separate test for each method, then<br/>\nvarying the scenarios.<br/>\n<br/>\nStep 2: If Step 1 fails because you can&#39;t figure out a good way to do it,<br/>\nthen there is no &quot;rule&quot;. I would suggest naming the test methods by what<br/>\nthe method under test *does* and not its signature.<br/>\n<br/>\ntestEngineDigestReturnsEmptyBuffer() {<br/>\n    // simulate/set up empty buffer...<br/>\n    assertNotNull(&quot;engineDigest() returned null?!&quot;, myObject.engineDigest<br/>\n());<br/>\n    assertEquals(0, myObject.engineDigest().length);<br/>\n}<br/>\n...<br/>\ntestEngineDigestAcceptsEmptyBuffer() {<br/>\n    assertEquals(0, engineDigest(new byte[0], 0, 0));<br/>\n}<br/>\n<br/>\nYou would have similar tests for buffers of different sizes, contents, or<br/>\nwhatever variables might change, given the feature you&#39;re trying to<br/>\nimplement.<br/>\n<br/>\nGood luck,<br/>\nJ. B. Rainsberger  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rainsber@...\">rainsber@...</a>&gt;<br/>\nCommerce Suite Accelerator: Rule Services, IBM Toronto Lab<br/>\n8200 Warden Av, Office A3-735 [A3/FNB/8200/MKM]<br/>\nMarkham ON   L6G 1C7<br/>\n905 413-2501 (969-2501)<br/>\n<br/>\n<br/>\nUwe Guenther &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:uwe@...\">uwe@...</a>&gt;@... on 07/10/2001 16:50:10<br/>\n<br/>\nPlease respond to <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n<br/>\nSent by:  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:uwe@...\">uwe@...</a><br/>\n<br/>\n<br/>\nTo:   <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\ncc:<br/>\nSubject:  [junit] names for overloading methods<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nHello,<br/>\n<br/>\nis there a rule how I should choose the names for overloading<br/>\nmethods like these in my test class:<br/>\n<br/>\nprotected byte[] engineDigest(){}<br/>\nprotected int engineDigest(byte[] buf, int offset, int len){}<br/>\n<br/>\n<br/>\n1. should  I use one test method like:<br/>\n<br/>\npublic void testEngineDigest(){}<br/>\n<br/>\n<br/>\n<br/>\n2. Or should I use  two names with diffrent extensions like these:<br/>\n<br/>\npublic void testEngineDigest_byte(){}<br/>\npublic void testEngineDigest_byte_array(){}<br/>\n<br/>\n--<br/>\nRegards Uwe Guenther</div>", 
+    "prevInTime": 1848, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "994798849", 
+    "canDelete": false, 
+    "nextInTopic": 1850, 
+    "prevInTopic": 1848, 
+    "headers": {
+        "messageIdInHeader": "PE9GNUE4NDA0Q0EuOTg2RUQ0RjItT044NTI1NkE4NS4wMDcyOTI3NEB0b3JvbGFiLmlibS5jb20+"
+    }
+}

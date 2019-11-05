@@ -1,0 +1,29 @@
+{
+    "topicId": 10, 
+    "postDate": "974213588", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Benjamin Schroeder &lt;schroeder@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "ooBMxyvcIy7yLd9t7zFNG01KfaqDUfrjUJmo-RkrKrjaa-K-OX3WmuyPtEpogOhKvUxIiCbkNrdc2v3bDXclc2YCnXFcA4WXh5Byf_V-7HQz", 
+    "nextInTime": 12, 
+    "userId": 0, 
+    "prevInTime": 10, 
+    "prevInTopic": 10, 
+    "headers": {
+        "inReplyToHeader": "PDh1cmN0ZStmdmRhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEI2MzZCQzAxLjE5NUYlc2Nocm9lZGVyQHN1cmZyZWUuY29tPg=="
+    }, 
+    "authorName": "Benjamin Schroeder", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "... If you run the GUI test runner (junit.ui.LoadingTestRunner, for example) with your test cases somewhere on the classpath, you can run them by typing the", 
+    "contentTrasformed": false, 
+    "msgId": 11, 
+    "nextInTopic": 12, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;schroeder@...&gt;\r\nX-Sender: schroeder@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_2_1); 14 Nov 2000 14:54:52 -0000\r\nReceived: (qmail 27396 invoked from network); 14 Nov 2000 14:54:52 -0000\r\nReceived: from unknown (10.1.10.26) by m4.onelist.org with QMQP; 14 Nov 2000 14:54:52 -0000\r\nReceived: from unknown (HELO c008.sfo.cp.net) (209.228.14.202) by mta1 with SMTP; 14 Nov 2000 14:54:52 -0000\r\nReceived: (cpmta 2395 invoked from network); 14 Nov 2000 06:54:50 -0800\r\nReceived: from wall.noteworthyms.com (HELO ?192.168.0.7?) (206.140.113.8) by smtp.surfree.com (209.228.14.202) with SMTP; 14 Nov 2000 06:54:50 -0800\r\nX-Sent: 14 Nov 2000 14:54:50 GMT\r\nUser-Agent: Microsoft-Outlook-Express-Macintosh-Edition/5.02.2022\r\nDate: Tue, 14 Nov 2000 09:53:08 -0500\r\nSubject: Re: [junit] How to hook test cases into GUI testrunner\r\nTo: &lt;junit@egroups.com&gt;\r\nMessage-ID: &lt;B636BC01.195F%schroeder@...&gt;\r\nIn-Reply-To: &lt;8urcte+fvda@...&gt;\r\nMime-version: 1.0\r\nContent-type: text/plain; charset=&quot;US-ASCII&quot;\r\nContent-transfer-encoding: 7bit\r\nFrom: Benjamin Schroeder &lt;schroeder@...&gt;\r\n\r\non 11/14/00 7:58 AM, Paul Michali at pcm@... wrote:\n\n&gt; OK. I just D/Led the V3.2 JUnit and I made a simple application\n&gt; under JBuilder 4.0 (which I&#39;m also trying to come up to speed on)\n&gt; that has a simple unit test case (shown below). I&#39;ve been looking\n&gt; at the cook book HTML pages, but I don&#39;t see how I hook this into\n&gt; the GUI TestRunner. I made a test case and made a suite() function\n&gt; as suggested, but am now stuck on how to tie in one of the GUI\n&gt; TestRunners. There is an example for the batch version of the\n&gt; TestRunner, but I don&#39;t see anything on a GUI version.\n&gt; \n&gt; Can anyone provide some pointers?\n\nIf you run the GUI test runner (junit.ui.LoadingTestRunner, for example)\nwith your test cases somewhere on the classpath, you can run them by typing\nthe name of the test case into the edit box in the UI and hitting &quot;run&quot;.  If\nthe test case has a static suite() method, it&#39;ll run that; otherwise, it\nwill use reflection to find all of the &quot;public void testXXX&quot; methods in your\nclass.\n\nThe LoadingTestRunner runner will reload your test classes each time you hit\n&quot;run&quot;, so you don&#39;t need to start it over all the time.  (It seems to have a\nfew quirks with native code, at least in my experience, though, and doesn&#39;t\nyet load from jars and zips, although I believe that is coming in 3.3.)  A\nnon-loading TestRunner class is also available.\n\n&gt; Can I make use of Reflection to have the TestRunner find all my\n&gt; test cases?\n\nFor an individual TestCase class, this works great in JUnit 3.2.  The runner\nwill find all of the methods in the test case with a signature like &quot;public\nvoid testXXX()&quot; if there is no other suite() method -- this means that you\ndon&#39;t have to build suite() methods for individual classes by hand, at least\nmost of the time.  If you&#39;re building AllTests suites (which I think are\nmentioned somewhere in the documentation) or the like, you can use something\nlike\n\npublic static Test suite()\n{\n    TestSuite suite = new TestSuite();\n\n    suite.add(new TestSuite(YourTestCase.class));\n    suite.add(new TestSuite(AnotherTestCase.class));\n\n    return suite;\n}\n\nto get the same effect with a composite suite.\n\nAs far as finding all the test case classes available in the system, I&#39;m not\naware of anything that does it.  I think that one could do it by examining\nthe classpath (available via System.getProperty()) for .class files and\nusing reflection to determine whether they were TestCases, but I haven&#39;t yet\ntried it.  Anybody have anything that does this?\n\nHope this helps,\nBen Schroeder\nschroeder@...\n\n\n", 
+    "subject": "Re: [junit] How to hook test cases into GUI testrunner"
+}

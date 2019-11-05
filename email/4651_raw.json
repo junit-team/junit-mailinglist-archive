@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4652, 
+    "senderId": "57K7BfIlDr8tCkkQFN0V4UMWYgjgpEPfmljeB50mOcczh_p7B-_m-xto5RBa8XSJR9zlTpB5ZsIHRf6Bhie_dGyUTprQD45enoQ", 
+    "systemMessage": false, 
+    "subject": "Weired problem using java.beans.XMLEncoder and junit", 
+    "from": "&quot;bteichmann&quot; &lt;bteichmann@...&gt;", 
+    "authorName": "bteichmann", 
+    "msgSnippet": "Hi, I have weired problem using java.beans.XMLDecoder in combination with the junit/runner/excluded.properties patch , which is necessary to avoid the", 
+    "msgId": 4651, 
+    "rawEmail": "Return-Path: &lt;bteichmann@...&gt;\r\nX-Sender: bteichmann@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_1); 11 Apr 2002 14:24:40 -0000\r\nReceived: (qmail 60223 invoked from network); 11 Apr 2002 14:23:36 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m4.grp.scd.yahoo.com with QMQP; 11 Apr 2002 14:23:36 -0000\r\nReceived: from unknown (HELO n1.grp.scd.yahoo.com) (66.218.66.64)\n  by mta3.grp.scd.yahoo.com with SMTP; 11 Apr 2002 14:23:36 -0000\r\nReceived: from [66.218.67.131] by n1.grp.scd.yahoo.com with NNFMP; 11 Apr 2002 14:23:20 -0000\r\nDate: Thu, 11 Apr 2002 14:23:19 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Weired problem using java.beans.XMLEncoder and junit\r\nMessage-ID: &lt;a9468n+312m@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2176\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;bteichmann&quot; &lt;bteichmann@...&gt;\r\nX-Yahoo-Group-Post: member; u=70952563\r\nX-Yahoo-Profile: bteichmann\r\n\r\nHi,\nI have weired problem using java.beans.XMLDecoder in combination with \nthe junit/runner/excluded.properties patch , which is necessary to \navoid the &quot;ClassNotFoundException&quot;-problem with log4J.\n\nAfter patching  excluded.properties the &quot;ClassNotFoundException&quot;-\nproblem with log4J disapeared but instead i got a new problem in my \nown source. this problem only occured if i run my source with junit.\n\n(it does not occure, if i run it with eclipes junit runner or if i \nrun the source from its main() without junit.)\n\nthe code lookes like this:\n+++++++++\n  dec =\n      new java.beans.XMLDecoder( \n        new BufferedInputStream(new FileInputStream(file)));\n\t  if (dec == null) throw new UserAgentException(&quot;cound not \ninstanciate XMLdecoder with filename: &quot;+filename);\n    Object readObj = dec.readObject();\n\n    // the next 7 lines are for debugging purposes    \n    Class oc = readObj.getClass();\n    ClassLoader cl1 = oc.getClassLoader();\n    userAgent = new UserAgentImpl();\n    ClassLoader cl2 = userAgent.getClass().getClassLoader();\n    System.out.println(cl1.toString() + &quot;   &quot;+ cl2.toString() \n       + &quot;&#92;n&quot; + userAgent.getClass().getName()\n       + &quot;&#92;n&quot; + readObj.getClass().getName());\n    // this line does not work althought the readObj.class is \n    // the same as for userAgent\n    // the line throws a ClassCastException \n    userAgent = (UserAgentImpl) readObj;\n       \n+++++++\nthe output looks like this:\n*****\nsun.misc.Launcher$AppClassLoader@2f6684   \njunit.runner.TestCaseClassLoader@efe475\nde.xx.useragent.UserAgentImpl\nde.xx.useragent.UserAgentImpl\n*******\nand altthought the class of readObj and userAgent are the same i got \na ClassCastException on the last line &quot;userAgent = (UserAgentImpl) \nreadObj;&quot;\n\nonly if i run the test from a main() class in the TestCase i got \ndifferent classloaders. if i run the TestCase from Eclipses buildin \njunit support the output looks like this no ClassCastException is \nthrown:\n******\nsun.misc.Launcher$AppClassLoader@2f6684   \nsun.misc.Launcher$AppClassLoader@2f6684\nde.multivisual.textlib.useragent.UserAgentImpl\nde.multivisual.textlib.useragent.UserAgentImpl\n*******\n\nAny Ideas to fix this problem ?\n\nBodo \n \n\n\n", 
+    "profile": "bteichmann", 
+    "topicId": 4651, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 70952563, 
+    "prevInTime": 4650, 
+    "contentTrasformed": false, 
+    "postDate": "1018534999", 
+    "canDelete": false, 
+    "nextInTopic": 4653, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGE5NDY4biszMTJtQGVHcm91cHMuY29tPg=="
+    }
+}

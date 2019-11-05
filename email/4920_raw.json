@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4921, 
+    "senderId": "aQNDUkB43QF5ezCpbeJWhzGi2PhEMrtYsnl5ROtt92KaE5ZcDPjN4lEi5B7bmHRiiMtJApOmkshD1HtTzsjfTAryG8Ya1Wr_JLYr5NnjDjI", 
+    "systemMessage": false, 
+    "subject": "Problem with junit TestSetup decorator and ant/batchtest/junitreporter", 
+    "from": "&quot;Christian Cabanero&quot; &lt;chumpboy@...&gt;", 
+    "authorName": "Christian Cabanero", 
+    "msgSnippet": "I ve discovered a weird bug/problem when combining junit and using a TestSetup decorator with ant and a batchtest task within a junit task and then using a", 
+    "msgId": 4920, 
+    "rawEmail": "Return-Path: &lt;chumpboy@...&gt;\r\nReceived: (qmail 77876 invoked from network); 9 May 2002 00:02:51 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m2.grp.scd.yahoo.com with QMQP; 9 May 2002 00:02:51 -0000\r\nReceived: from unknown (HELO n30.grp.scd.yahoo.com) (66.218.66.87)\n  by mta1.grp.scd.yahoo.com with SMTP; 9 May 2002 00:02:51 -0000\r\nX-eGroups-Return: chumpboy@...\r\nReceived: from [66.218.67.169] by n30.grp.scd.yahoo.com with NNFMP; 09 May 2002 00:02:51 -0000\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 09 May 2002 00:02:50 -0000\r\nX-Sender: chumpboy@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 8 May 2002 23:09:56 -0000\r\nReceived: (qmail 53693 invoked from network); 8 May 2002 23:09:55 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m6.grp.scd.yahoo.com with QMQP; 8 May 2002 23:09:55 -0000\r\nReceived: from unknown (HELO smtp012.mail.yahoo.com) (216.136.173.32)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 May 2002 23:09:54 -0000\r\nReceived: from sense-alatron-85.oz.net (HELO thematrix) (chumpboy@216.39.173.85 with login)\n  by smtp.mail.vip.sc5.yahoo.com with SMTP; 8 May 2002 23:09:54 -0000\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: Problem with junit TestSetup decorator and ant/batchtest/junitreporter\r\nDate: Wed, 8 May 2002 16:09:52 -0700\r\nMessage-ID: &lt;001101c1f6e5$7631bf80$e000a8c0@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)\r\nImportance: Normal\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nFrom: &quot;Christian Cabanero&quot; &lt;chumpboy@...&gt;\r\nX-Yahoo-Group-Post: member; u=58842428\r\nX-Yahoo-Profile: Chumpboy\r\n\r\nI&#39;ve discovered a weird bug/problem when combining junit and using a\nTestSetup decorator with ant and a batchtest task within a junit task and\nthen using a junitreport task to convert the test results into an html\nformatted report.  Say you have the following TestCase:\n\npublic class SomeTest extends TestCase {\n\n\t....\n\n\tpublic static Test suite() {\n\t\tTest suite = new TestSuite();\n\t\tsuite.addTestSuite(SomeTest.class);\n\n\t\tTestSetup setup = new TestSetup(suite) {\n\t\t\tprotected void setup() throws Exception {\n\t\t\t\t&lt;code that throws an exception &gt;\n\t\t\t}\n\t\t\tprotected void tearDown() throws Exception {\n\t\t\t...\n\t\t\t}\n\t\t}\n\t\treturn setup;\n\t}\n\n\t...\n}\n\n\nThe problem I found is that if an exception occurs in the setup() method of\nthe TestSetup decorator then the batchtest task actually ends up ignoring\nthe exception and moving happily along creating an empty TEST-SomeTest.xml\nfile. So, when the junitreport task runs after the batchtest task is\ncompleted, it&#39;ll actually IGNORE the TEST-SomeTest.xml file (which has a\nfile size of 0 bytes) and just move on to the next file.  So when you see\nyour test results all formatted nice in html you&#39;ll see no mention of the\nfailed SomeTest.class TestCase and you might mistakenly feel free to commit\nyour code (yes, I found this out the hard way).\n\nSo my question is, has anyone found a good way to get around this problem?\nI&#39;m using the latest versions of junit and ant.  I guess this is really a\nproblem with the batchtest task in ant but I was hoping to see if anyone\nhere has gotten around this.  If anyone is using this combination I&#39;d\ndefinitely suggest taking a look at this to make sure it&#39;s not affecting you\nas it&#39;s incredibly easy to miss.  Just go to your test-results directory and\nlook for any empty TEST*.xml files.\n\nHere&#39;s the relevant section of my ant build script:\n\n&lt;target name=&quot;test&quot; depends=&quot;compile, rebuildtestdbs&quot;&gt;\n    &lt;junit fork=&quot;yes&quot; printsummary=&quot;yes&quot; haltonfailure=&quot;no&quot;&gt;\n        &lt;formatter type=&quot;xml&quot;/&gt;\n\n        &lt;batchtest todir=&quot;test-results&quot;&gt;\n             &lt;fileset dir=&quot;${build.dir}&quot; includes=&quot;**/*Test.class&quot;/&gt;\n        &lt;batchtest&gt;\n    &lt;/junit&gt;\n\n    &lt;junitreport toDir=&quot;${junit.reports.home}&quot;&gt;\n        &lt;fileset dir=&quot;test-results&quot;&gt;\n            &lt;include name=&quot;TEST*.xml&quot;/&gt;\n        &lt;/fileset&gt;\n\n        &lt;report format=&quot;frames&quot; toDir=&quot;${junit.reports.home}&quot;/&gt;\n    &lt;/junitreport&gt;\n&lt;/target&gt;\n\nThanks!\nChristian\n\n\n\n\n", 
+    "profile": "Chumpboy", 
+    "topicId": 4920, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 58842428, 
+    "prevInTime": 4919, 
+    "contentTrasformed": false, 
+    "postDate": "1020899392", 
+    "canDelete": false, 
+    "nextInTopic": 4921, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDAwMTEwMWMxZjZlNSQ3NjMxYmY4MCRlMDAwYThjMEBhbGF0cm9uLmNvbT4="
+    }
+}

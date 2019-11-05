@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 18873, 
+    "senderId": "0t2yGvBzdycS4III8NN_PTqclrRj4xNm5gBugiAkuUrDHXQVA5-V73PypyWv9QSzl5JCEjG1eYCJCPTTHmodDNAndCNR-gnCs44", 
+    "systemMessage": true, 
+    "subject": "testing for completion of a long-running, multi-level, legacy process", 
+    "from": "Thomas L Roche &lt;tlroche@...&gt;", 
+    "authorName": "Thomas L Roche", 
+    "msgSnippet": "I m wondering if/how folks have solved this problem (for all I know it may already be a JUnit Recipe): I m maintaining a complex, headless (fortunately!)", 
+    "msgId": 18872, 
+    "rawEmail": "Return-Path: &lt;tlroche@...&gt;\r\nReceived: (qmail 65705 invoked from network); 12 Feb 2007 22:19:34 -0000\r\nReceived: from unknown (66.218.66.72)\n  by m23.grp.scd.yahoo.com with QMQP; 12 Feb 2007 22:19:34 -0000\r\nReceived: from unknown (HELO n20b.bullet.sp1.yahoo.com) (69.147.64.134)\n  by mta14.grp.scd.yahoo.com with SMTP; 12 Feb 2007 22:19:34 -0000\r\nReceived: from [216.252.122.218] by n20.bullet.sp1.yahoo.com with NNFMP; 12 Feb 2007 22:19:03 -0000\r\nReceived: from [66.218.69.1] by t3.bullet.sp1.yahoo.com with NNFMP; 12 Feb 2007 22:19:03 -0000\r\nReceived: from [66.218.66.90] by t1.bullet.scd.yahoo.com with NNFMP; 12 Feb 2007 22:19:03 -0000\r\nX-Sender: tlroche@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 16332 invoked from network); 12 Feb 2007 20:10:08 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m21.grp.scd.yahoo.com with QMQP; 12 Feb 2007 20:10:08 -0000\r\nReceived: from unknown (HELO e34.co.us.ibm.com) (32.97.110.152)\n  by mta5.grp.scd.yahoo.com with SMTP; 12 Feb 2007 20:10:08 -0000\r\nReceived: from westrelay02.boulder.ibm.com (westrelay02.boulder.ibm.com [9.17.195.11])\n\tby e34.co.us.ibm.com (8.13.8/8.13.8) with ESMTP id l1CJvI8e029756\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 12 Feb 2007 14:57:18 -0500\r\nReceived: from d03av01.boulder.ibm.com (d03av01.boulder.ibm.com [9.17.195.167])\n\tby westrelay02.boulder.ibm.com (8.13.8/8.13.8/NCO v8.2) with ESMTP id l1CJvIfJ539708\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 12 Feb 2007 12:57:18 -0700\r\nReceived: from d03av01.boulder.ibm.com (loopback [127.0.0.1])\n\tby d03av01.boulder.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id l1CJvHSL012009\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 12 Feb 2007 12:57:17 -0700\r\nReceived: from d03nm120.boulder.ibm.com (d03nm120.boulder.ibm.com [9.17.195.146])\n\tby d03av01.boulder.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id l1CJvHwO011951\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 12 Feb 2007 12:57:17 -0700\r\nIn-Reply-To: &lt;1170927895.582.45720.m20@yahoogroups.com&gt;\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nX-Mailer: Lotus Notes Release 7.0 HF85 November 04, 2005\r\nMessage-ID: &lt;OF163EF406.1E34475F-ON87257280.006D5B50-85257280.006D9AE9@...&gt;\r\nDate: Mon, 12 Feb 2007 14:57:09 -0500\r\nX-MIMETrack: Serialize by Router on D03NM120/03/M/IBM(Release 7.0.2HF32 | October 17, 2006) at\n 02/12/2007 12:57:16,\n\tSerialize complete at 02/12/2007 12:57:16\r\nContent-Type: text/plain; charset=&quot;US-ASCII&quot;\r\nX-eGroups-Msg-Info: 1:6:0:0\r\nFrom: Thomas L Roche &lt;tlroche@...&gt;\r\nSubject: testing for completion of a long-running, multi-level, legacy process\r\nX-Yahoo-Group-Post: member; u=112010592; y=GS5ph3psjZf7O1bZXhWhOFElw1GAtafahEMt6pTzb9a2tw\r\nX-Yahoo-Profile: tlroche\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: kentlbeck &lt;kentb@...&gt; via web; 12 Feb 2007 22:19:02 -0000\r\n\r\nI&#39;m wondering if/how folks have solved this problem (for all I know it\nmay already be a JUnit Recipe):\n\nI&#39;m maintaining a complex, headless (fortunately!) legacy batch-mode\napp: a bash script starts an Eclipse RCP app, which runs Ant scripts,\nwhich do stuff (headlessly, fortunately) in a filesystem. We have bugs\nof known cause that we know will make the app infinite-loop, for which\nwe test manually. We have bugs of unknown cause that make the app&#39;s\nruntime tend to increase over time running on the same inputs.\n\nAccordingly I&#39;d like to automate the regression test for that with a\ntest that starts the app and fails if the app does not complete in\nsome defined time. I&#39;m assuming I want to do something like the\nsequence [create a thread, start the app, sleep for given time, fail\nif app not completed], but I&#39;ve never coded that (i.e. I&#39;ll probably\nscrew up :-), so if there&#39;s framework methods I can use, or if someone\ncan point me toward sample code, I&#39;d appreciate it.\n\n\n", 
+    "profile": "tlroche", 
+    "topicId": 18872, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112010592, 
+    "prevInTime": 18871, 
+    "contentTrasformed": false, 
+    "postDate": "1171310229", 
+    "canDelete": false, 
+    "nextInTopic": 18886, 
+    "prevInTopic": 0, 
+    "headers": {
+        "inReplyToHeader": "PDExNzA5Mjc4OTUuNTgyLjQ1NzIwLm0yMEB5YWhvb2dyb3Vwcy5jb20+", 
+        "messageIdInHeader": "PE9GMTYzRUY0MDYuMUUzNDQ3NUYtT044NzI1NzI4MC4wMDZENUI1MC04NTI1NzI4MC4wMDZEOUFFOUB1cy5pYm0uY29tPg=="
+    }
+}

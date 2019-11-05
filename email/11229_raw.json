@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 11230, 
+    "senderId": "6dzNWwYBfVx1wzsg8VqBbOCcGUYMnIKpfTA_3Ya-v_t8efQKYHPLe0Y4RcsxGBZGRW8LWDrIxsPxpvN3GuiE5YOlRj77ilZqfsq8uXMYrw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit tests and common resources", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Not quite. Instead, it instantiates the test case class, invokes setUp(), a test method, then tearDown(). There is no need to subclass anonymously since", 
+    "msgId": 11229, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 73503 invoked from network); 19 Jun 2004 20:33:26 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m23.grp.scd.yahoo.com with QMQP; 19 Jun 2004 20:33:26 -0000\r\nReceived: from unknown (HELO fep01-mail.bloor.is.net.cable.rogers.com) (66.185.86.71)\n  by mta5.grp.scd.yahoo.com with SMTP; 19 Jun 2004 20:33:25 -0000\r\nReceived: from [192.168.1.115] ([24.156.43.226])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040619203247.EMMJ360247.fep01-mail.bloor.is.net.cable.rogers.com@[192.168.1.115]&gt;\n          for &lt;junit@yahoogroups.com&gt;; Sat, 19 Jun 2004 16:32:47 -0400\r\nMessage-ID: &lt;40D4A31E.2010608@...&gt;\r\nDate: Sat, 19 Jun 2004 16:33:34 -0400\r\nUser-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cat50r+3snr@...&gt;\r\nIn-Reply-To: &lt;cat50r+3snr@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep01-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Sat, 19 Jun 2004 16:32:46 -0400\r\nX-eGroups-Remote-IP: 66.185.86.71\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] JUnit tests and common resources\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nyoulian wrote:\n\n&gt; Hi,\n&gt; \n&gt; I hope this has a simple answer...\n&gt; \n&gt; My issue is when I write test cases that exercise code that depends\n&gt; on a common resource. There is couple of things, but the simplest\n&gt; case is a serial port.\n&gt; \n&gt; Lets say that I have a class that implements a protocol with a\n&gt; hardware device over serial port connection. I would like to develop\n&gt; a test to verify that the class implements the protocol correctly.\n&gt; This means, that I will have to have the device connected and\n&gt; operational when running the test, and that is o.k.\n&gt; \n&gt; I could mock the serial connection - I understand this, but this is\n&gt; not my intention. I see little value in this for many reasons. I\n&gt; want to test the real thing.\n&gt; \n&gt; So, I write a simple test suite and test case. The test case invokes\n&gt; different methods - lets say total of three. To simplify, lets say,\n&gt; that those methods each send different command to the device. In\n&gt; order to do that each test method will open the comm port, write a\n&gt; string and close it.\n&gt; \n&gt; Sounds simple enough. However, when using JUnit, all these tests\n&gt; execute in parallel and since the resource is shared, all but one\n&gt; fail with SerialPortInUseException.\n&gt; \n\n\n&gt; I have read the JUnit Cookbook and undesrstand the reason - JUnit\n&gt; via reflection generates dynamically child classes. \n\nNot quite. Instead, it instantiates the test case class, invokes \nsetUp(), a test method, then tearDown(). There is no need to subclass \nanonymously since JUnit 2.0 first appeared.\n\n &gt; For each test\n&gt; method setUp and tearDown is invoked. The log would look something\n&gt; like this:\n&gt; \n&gt; setUp()\n&gt; setUp()\n&gt; setUp()\n&gt; ...\n&gt; test1()\n&gt; test2()\n&gt; testx()\n&gt; ...\n&gt; tearDown()\n&gt; tearDown()\n&gt; tearDown()\n\nNo.\n\nsetUp(), test1(), tearDown();\nsetUp(), test2(), tearDown();\n...\n\n&gt; If I use setUp() or even testX() to open the connection, I always\n&gt; end up in conflict.\n\nYou want to open the connection /once/. The easiest thing you can do \n(for now) is create a Singleton that contains a global connection that \nonly allows itself to be opened once. Let your tests use that connection.\n\nUltimately, what you&#39;d /like/ to do is Extract an Interface representing \nthe API for your resource, then use a mock objects approach to test how \nwell your code interacts with that API. The majority of your tests will \nbe like this. Eventually, you will have a small number of tests that \nactually verify that the /production/ implementation of your new \ninterface uses the serial port API correctly. This does not make your \nproblem go away, but it lessens the problem&#39;s impact, isolating it to a \nsingle class (a well-known part of the code). This is the point of OOP.\n\n&gt; My questions are:\n&gt; Is there a way to explicitly control the order of execution of test\n&gt; methods within a test case, so to control the access to commonly\n&gt; used resources and account for their state? (system ports, JDBC\n&gt; connections, etc.)\n&gt; \n&gt; Is JUnit the tool for such a job?\n\nNo, it isn&#39;t. Still, whenenver I want to do something in my design that \nJUnit makes difficult, it is /usually/ a sign that my design needs \nimprovement.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11214, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11228, 
+    "contentTrasformed": false, 
+    "postDate": "1087677214", 
+    "canDelete": false, 
+    "nextInTopic": 11230, 
+    "prevInTopic": 11216, 
+    "headers": {
+        "inReplyToHeader": "PGNhdDUwciszc25yQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwRDRBMzFFLjIwMTA2MDhAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNhdDUwciszc25yQGVHcm91cHMuY29tPg=="
+    }
+}

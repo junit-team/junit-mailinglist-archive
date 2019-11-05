@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 10338, 
+    "senderId": "uZSSh9uH1FfkZXvb3Fhy7hKg62Wswi4tp5aUQ1nr9kfURjkwY44Oto2RxsysyY6DqX5zVnvyHqRbaUuiPq4S1s-r8KijzuF7ml58eZj32w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] database migration: tests organisation", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Define enormously . 10^5? 10^10? 10^20? ... Is there an infinite recursion somewhere? ... So you are storing test data in a database? Interesting. How", 
+    "msgId": 10337, 
+    "profile": "nails762", 
+    "topicId": 10334, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-41960478\">Bauduin Raphael wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi,<br/>\n&gt; <br/>\n&gt; I am now developing the tests to validate a database migration.<br/>\n&gt; <br/>\n&gt; My main class is this one :<br/>\n&gt; <br/>\n&gt; class TestDatabaseMigration {<br/>\n&gt; <br/>\n&gt;     public static Test suite() {<br/>\n&gt;         TestSuite suite= new TestSuite();<br/>\n&gt;         suite.addTest(CustomersTest.suite());<br/>\n&gt;         return suite;<br/>\n&gt;        <br/>\n&gt;     }<br/>\n&gt;     public static void main (String[] arg){<br/>\n&gt; <br/>\n&gt;         junit.textui.TestRunner.run(suite());<br/>\n&gt; <br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; In the CustomersTest class, I add several tests for each customer, so<br/>\n&gt; the number of tests added is growing enormously, all in the same suite.<br/>\n<br/>\n </span></blockquote>Define &quot;enormously&quot;. 10^5? 10^10? 10^20?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m afraid I won&#39;t be able to add test indefinitively like that (I juste<br/>\n&gt; had a Exception in thread &quot;main&quot; java.lang.OutOfMemoryError, and<br/>\n&gt; wondered if any of you had any suggestions on how to organise tests.<br/>\n<br/>\n </span></blockquote>Is there an infinite recursion somewhere?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m working with Hibernate. For the last test (with CustomerOrdersQuantity)<br/>\n&gt; I need to get the orders of the customer that is tested, meaning even<br/>\n&gt; more memory consumption.<br/>\n&gt; <br/>\n&gt; And here is the interesting par of the class CustomersTest.suite():<br/>\n&gt;    <br/>\n&gt; <br/>\n&gt;             //Iterate on source database<br/>\n&gt;             Iterator iterator = session.iterate(&quot;from Customer&quot;);<br/>\n&gt;             custdb.hibernate.Customer customerPg;<br/>\n&gt;             while (iterator.hasNext())<br/>\n&gt;             {<br/>\n&gt;                 customer=(Customer) iterator.next();<br/>\n&gt;                 //get corresponding customer in destination database<br/>\n&gt;                 customerPg=( custdb.hibernate.Customer) <br/>\n&gt; sessionPg.load(custdb.hibernate.Customer.class, customer.getCustomerId());<br/>\n&gt;                <br/>\n&gt;                 //Test customer name<br/>\n&gt;                 customerSuite.addTest(new <br/>\n&gt; CustomerCompanyName(&quot;customer_name_&quot;+customer.getCustomerId(),customer, <br/>\n&gt; customerPg));<br/>\n&gt;                 //Test customer VAT<br/>\n&gt;                 customerSuite.addTest(new <br/>\n&gt; CustomerVat(&quot;customer_vat_&quot;+customer.getCustomerId(),customer, customerPg));<br/>\n&gt;                 //Test customer description<br/>\n&gt;                 customerSuite.addTest(new <br/>\n&gt; CustomerDescription(&quot;customer_description_&quot;+customer.getCustomerId(),customer, <br/>\n&gt; customerPg));<br/>\n&gt;                 //Test that both customers have the same amount of <br/>\n&gt; orders defined<br/>\n&gt;                 customerSuite.addTest(new <br/>\n&gt; CustomerOrdersQuantity(&quot;customer_orders_quantity&quot;+customer.getCustomerId(),customer, <br/>\n&gt; customerPg));<br/>\n&gt;                 //i++;<br/>\n&gt;             }                      <br/>\n<br/>\n </span></blockquote>So you are storing test data in a database? Interesting. How many <br/>\nrecords? Do you really need to test every record? or just a <br/>\nrepresentative set of records? What if there are 1000 records that all <br/>\ntest the same essential code path?<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 10336, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1075417783", 
+    "canDelete": false, 
+    "nextInTopic": 10347, 
+    "prevInTopic": 10334, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwMTI5MTEzOTE1LkdBNTI3MEByYXBoYWVsPg==", 
+        "messageIdInHeader": "PDQwMTk5MkI3LjQwODAzMDNAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDQwMTI5MTEzOTE1LkdBNTI3MEByYXBoYWVsPg=="
+    }
+}

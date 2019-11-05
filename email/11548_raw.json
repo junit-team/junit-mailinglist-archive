@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 11549, 
+    "senderId": "rfEAD5A4LfxzLGFVV-P6jT-mtqvvv5MED4Sh_xqc-1qpaKs2XSb5Dnu-GNVokJcxrMski1aq_W3BZ4JQf7OkezH4hLmVUliNwzI", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Mock objects...", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "What took me about 10 tries to get through my head was this:  Mock implementations don t have to do any of the work of the components they replace. I often", 
+    "msgId": 11548, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 91823 invoked from network); 16 Jul 2004 21:27:21 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m6.grp.scd.yahoo.com with QMQP; 16 Jul 2004 21:27:21 -0000\r\nReceived: from unknown (HELO web60307.mail.yahoo.com) (216.109.118.118)\n  by mta3.grp.scd.yahoo.com with SMTP; 16 Jul 2004 21:27:21 -0000\r\nMessage-ID: &lt;20040716212720.63296.qmail@...&gt;\r\nReceived: from [207.14.29.3] by web60307.mail.yahoo.com via HTTP; Fri, 16 Jul 2004 14:27:19 PDT\r\nDate: Fri, 16 Jul 2004 14:27:19 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;cd9eat+mhvo@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-Remote-IP: 216.109.118.118\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nSubject: Re: [junit] Re: Mock objects...\r\nX-Yahoo-Group-Post: member; u=82914509\r\nX-Yahoo-Profile: zipwow\r\n\r\nWhat took me about 10 tries to get through my head was this:  Mock\nimplementations don&#39;t have to do any of the work of the components they\nreplace.\n\nI often start with an &quot;empty&quot; mock that does nothing, kind of like some\nof the UI adaptor classes.  They do nothing when called, and anything\nwith a return type either returns null or just fails outright.  Then\n(in typical XP style), I write just enough or just the right sort of\nMockObject to get done what I need.\n\nSo, if I were testing something that should write to a\nJournalDataStore, I&#39;d write this mock:\n\nMockJournalDataStore extends JournalDataStore {\n    List addedMessages = new ArrayList();\n\n    public void addMessage(JournalEntry entry) {\n        addedMessages.add(entry);\n    }\n\n    /** New method for mock implementation */\n    public List getAddedMessages() {\n        return addedMessages();\n    }\n}\n\nUsing that, I&#39;d make assertions about the number and value of added\nmessages.  Notice the new method -- your interface doesn&#39;t have (and\nprobably doesn&#39;t need) a way to return *all* messages.\n\nIn particular to your example, I&#39;d drop all the logic of dates and\nsorted maps.  That looks like practically implementing an in-memory\nJournalDataStore, which isn&#39;t what you want to do.  \n\nSo what do you need?  If you&#39;re testing something that is sending\ndates, you probably want to do two things:\n\n1. Validate the dates passed to the JournalDataStore \n\n2. Test the behavior of your class when it gets zero, one, or many\nresults back from the getDateRange(..) method.  Perhaps other types of\nresults are interesting (a note from your mother, a note from your\nboss, whatever)\n\nWith those things in mind, try this mock implementation of the\ngetDateRange(..) method:\n\npublic SortedSet getDateRange(Date start, Date end) {\n    //record the params submitted, but ignore them\n    startDates.add(start);\n    endDates.add(end);\n\n    return dateRange;\n}\n\n/** new method for mock implementation.  Defines the date range to be\n  * returned by getDateRange()\n  */\npublic void setDateRange(SortedSet dateRange) {\n    this.dateRange = dateRange;\n}\n\npublic List getSubmittedStartDates() {return startDates;}\npublic List getSubmittedEndDates() {return endDates;}\n\nThis mock implementation looks a lot more like a bean that allows you\nto set values to be returned, and a lot less like an in-memory\nimplementation of the JournalDataStore.  I don&#39;t work with sorted sets\nterribly often, either.  Thus for my own abilities, this\nimplementation&#39;s a lot less likely to have a bug, too.\n\nLastly, since your tests set up the SortedSet it wants your unit under\ntest to receive, the state of the MockObject when the test runs is much\nclearer.\n\nHope this helps,\n\nKevin Klinemeier\n\n--- cypherfox &lt;cypherfox@...&gt; wrote:\n&gt; Sure, the most recent example of this to me, was this class:\n&gt;   http://www.vixen.com/code/JournalHash.java\n&gt; implementing\n&gt;   http://www.vixen.com/code/JournalDataStore.java\n&gt; \n&gt; One of the things that isn&#39;t even in there, is the concept of\n&gt; &#39;get most recent &#39;n&#39; entries&#39;, because that would require me\n&gt; to walk backwards through the TreeMap, or add a *third*\n&gt; representation of the same data, as a linked list or something.\n&gt; \n&gt; I found it frustrating to have to do this much work for what\n&gt; was really just a testing class.  It DID let me put off doing\n&gt; the JDBC code until later, however.  Thankfully it was a\n&gt; &#39;generic&#39; enough interface that the code didn&#39;t change\n&gt; noticably when doing the actual DB storage code.\n&gt; \n&gt; --  Morgan Schweers\n&gt; \n&gt; \n\n\n\n\t\t\n__________________________________\nDo you Yahoo!?\nYahoo! Mail - Helps protect you from nasty viruses.\nhttp://promotions.yahoo.com/new_mail\n\n", 
+    "profile": "zipwow", 
+    "topicId": 11542, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "prevInTime": 11547, 
+    "contentTrasformed": false, 
+    "postDate": "1090013239", 
+    "canDelete": false, 
+    "nextInTopic": 11549, 
+    "prevInTopic": 11547, 
+    "headers": {
+        "inReplyToHeader": "PGNkOWVhdCttaHZvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDQwNzE2MjEyNzIwLjYzMjk2LnFtYWlsQHdlYjYwMzA3Lm1haWwueWFob28uY29tPg=="
+    }
+}

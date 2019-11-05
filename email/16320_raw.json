@@ -1,0 +1,28 @@
+{
+    "topicId": 16320, 
+    "postDate": "1142006344", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "BobFedorchak &lt;lists@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "M4_i_gDoN17PwKElsQoJ3idHSdnaSAo5LaccG8fud_6h0o4neE7b7gaj1kWnE2ShuVApJYrhFvtJfSUj_k2L0GAHqA2mdw", 
+    "nextInTime": 16321, 
+    "userId": 222186625, 
+    "prevInTime": 16319, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDMzNDE1MTUucG9zdEB0YWxrLm5hYmJsZS5jb20+"
+    }, 
+    "authorName": "BobFedorchak", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "While looking at JUnit I wrote a quick test that used the @BeforeClass annotation, yet the method never executed when the test was executed. Seeing as I am new", 
+    "contentTrasformed": false, 
+    "msgId": 16320, 
+    "nextInTopic": 16329, 
+    "systemMessage": true, 
+    "rawEmail": "Return-Path: &lt;lists@...&gt;\r\nReceived: (qmail 58559 invoked from network); 15 Mar 2006 20:33:42 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m35.grp.scd.yahoo.com with QMQP; 15 Mar 2006 20:33:42 -0000\r\nReceived: from unknown (HELO n8a.bullet.scd.yahoo.com) (66.94.237.42)\n  by mta3.grp.scd.yahoo.com with SMTP; 15 Mar 2006 20:33:42 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.5] by n8.bullet.scd.yahoo.com with NNFMP; 15 Mar 2006 20:32:49 -0000\r\nReceived: from [66.218.66.77] by t5.bullet.scd.yahoo.com with NNFMP; 15 Mar 2006 20:32:49 -0000\r\nX-Sender: lists@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 13506 invoked from network); 10 Mar 2006 16:02:15 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m25.grp.scd.yahoo.com with QMQP; 10 Mar 2006 16:02:15 -0000\r\nReceived: from unknown (HELO talk.nabble.com) (72.21.53.35)\n  by mta6.grp.scd.yahoo.com with SMTP; 10 Mar 2006 16:02:15 -0000\r\nReceived: from localhost ([127.0.0.1] helo=talk.nabble.com)\n\tby talk.nabble.com with esmtp (Exim 4.50)\n\tid 1FHk1A-0002tq-1G\n\tfor junit@yahoogroups.com; Fri, 10 Mar 2006 07:59:04 -0800\r\nMessage-ID: &lt;3341515.post@...&gt;\r\nDate: Fri, 10 Mar 2006 07:59:04 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nX-Nabble-Sender: bfedorchak@...\r\nX-Nabble-From: BobFedorchak &lt;bfedorchak@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nX-eGroups-From: BobFedorchak &lt;bfedorchak@...&gt;\r\nFrom: BobFedorchak &lt;lists@...&gt;\r\nSubject: @BeforeClass not working\r\nX-Yahoo-Group-Post: member; u=222186625\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 15 Mar 2006 20:32:48 -0000\r\n\r\n\nWhile looking at JUnit I wrote a quick test that used the @BeforeClass\nannotation, yet the method never executed when the test was executed. \nSeeing as I am new to JUnit, I suspected it was my code, so to further test\nI cut/pasted the sample code from the JUnit FAQ and used that instead.  To\nmy surprise, the methods marked with @BeforeClass and @AfterClass did not\nexecute, yet the other test methods did.  Here is the code I used:\n\nimport org.junit.*;\nimport static org.junit.Assert.*;\nimport java.util.*;\nimport junit.framework.TestCase;\nimport java.util.*;\n\npublic class MyTest extends TestCase {\n\n  private Collection collection;\n  \n          @BeforeClass\n          public static void oneTimeSetUp() {\n              // one-time initialization code     \n              System.out.println(&quot;oneTimeSetUp&quot;);\n          }\n  \n          @AfterClass\n          public static void oneTimeTearDown() {\n              // one-time cleanup code\n              System.out.println(&quot;oneTimeTearDown&quot;);\n          }\n  \n          @Before\n          public void setUp() {\n              collection = new ArrayList();\n              System.out.println(&quot;setUp&quot;);\n          }\n  \n          @After\n          public void tearDown() {\n              collection.clear();\n              System.out.println(&quot;tearDown&quot;);\n          }\n  \n          @Test\n          public void testEmptyCollection() {\n              assertTrue(collection.isEmpty());\n          }\n  \n          @Test\n          public void testOneItemCollection() {\n              collection.add(&quot;itemA&quot;);\n              assertEquals(1, collection.size());\n        }\n}\n\nThe only change from the code in the FAQ is the addition of the System.out\ncalls and the fact that MyTest extends TestCase.  As output from this I\nreceived:\n\n.setUp\ntearDown\n.setUp\ntearDown\n\nTime: 0\n\nOK (2 tests)\n\nHas anyone else had aproblem with @BeforeClass?  Any help you can provide\nwould be greatly appreciated.\n\nBob\n\n--\nView this message in context: http://www.nabble.com/%40BeforeClass-not-working-t1259756.html#a3341515\nSent from the JUnit - User forum at Nabble.com.\n\n\n\n\n", 
+    "subject": "@BeforeClass not working"
+}

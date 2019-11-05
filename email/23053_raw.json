@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 23054, 
+    "senderId": "zMGrFvad4Dej2UOizdQoHGMT24-Re74VkkhNwAej1aFQxqZ6Sp0De2XAwZG5Jq23PWLHFLz5Cp-V_cB4h4IzSqRuFnVZT3A1Aw8OO5SNA13rlw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running in parallel with categories", 
+    "from": "Kristian Rosenvold &lt;kristian@...&gt;", 
+    "authorName": "Kristian Rosenvold", 
+    "msgSnippet": "Yes that solution is supported already; you can force surefire to use the 4.7 provider and just run an explicitly coded suite as the build target using", 
+    "msgId": 23053, 
+    "rawEmail": "Return-Path: &lt;kristian@...&gt;\r\nX-Sender: kristian@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 32286 invoked from network); 2 Nov 2010 20:22:19 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 2 Nov 2010 20:22:19 -0000\r\nX-Received: from unknown (HELO server134.penguinhost.net) (69.65.27.134)\n  by mta2.grp.sp2.yahoo.com with SMTP; 2 Nov 2010 20:22:19 -0000\r\nX-Received: from [127.0.0.1] (helo=server139.advancednetworkhosting.com)\n\tby server134.penguinhost.net with esmtpa (Exim 4.69)\n\t(envelope-from &lt;kristian@...&gt;)\n\tid 1PDNN2-0006St-Ie\n\tfor junit@yahoogroups.com; Tue, 02 Nov 2010 15:22:19 -0500\r\nX-Received: from [192.168.1.2] ([81.191.25.199] helo=[192.168.1.2]) with\n\tIPv4:25 by server139.advancednetworkhosting.com; 2 Nov 2010 15:22:15 -0500\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;AANLkTi=cQFKrEW3YHxxpeV2oe0CqArs1W_Au=VAOuXXn@...&gt;\r\nReferences: &lt;i9qgit+387f@...&gt;\n\t &lt;AANLkTi=RmCwuC-2_GfsMKK5LC27iWXn34_ZfR1G2sZp8@...&gt;\n\t &lt;DE2DB28C-D650-4B9A-9805-59713DE59560@...&gt;\n\t &lt;AANLkTimrJ=zoCfTBgkoo3ySaLnpM48-qNONHqHXCVZ=1@...&gt;\n\t &lt;sig.0922a8721b.1288716872.31245.7.camel@chunky&gt;\n\t &lt;AANLkTi=cQFKrEW3YHxxpeV2oe0CqArs1W_Au=VAOuXXn@...&gt;\r\nContent-Type: text/plain; charset=&quot;UTF-8&quot;\r\nDate: Tue, 02 Nov 2010 21:22:14 +0100\r\nMessage-ID: &lt;sig.692290cbe1.1288729334.29395.61.camel@office&gt;\r\nMime-Version: 1.0\r\nX-Mailer: Evolution 2.30.3 \r\nContent-Transfer-Encoding: quoted-printable\r\nX-Assp-ID: server139.advancednetworkhosting.com ()\r\nX-Assp-Version: 1.7.1.3(1.0.1)\r\nX-AntiAbuse: This header was added to track abuse, please include it with any abuse report\r\nX-AntiAbuse: Primary Hostname - server134.penguinhost.net\r\nX-AntiAbuse: Original Domain - yahoogroups.com\r\nX-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]\r\nX-AntiAbuse: Sender Address Domain - rosenvold.com\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Kristian Rosenvold &lt;kristian@...&gt;\r\nSubject: Re: [junit] Running in parallel with categories\r\nX-Yahoo-Group-Post: member; u=403861045; y=RvI8HZhttSUsa5OCuDhCOGnarBhJXpPDrzpKgBXVag3oxAXq3A\r\nX-Yahoo-Profile: krosenvold\r\n\r\nYes that solution is supported already; you can force surefire to use\nthe 4=\r\n.7 provider and just run an explicitly coded suite as the build\ntarget usin=\r\ng &lt;includes&gt; statements.\n\nTo my (relatively limited knowledge) the missing =\r\nfunctionality is really\njust to be able to pass in the category name as a s=\r\ntring parameter,\nprobably using the groups parameter which is implemented f=\r\nor testng\n(http://maven.apache.org/plugins/maven-surefire-plugin/test-mojo.=\r\nhtml#groups). \n\n\nSurefire already scans the entire classpath looking for te=\r\nsts, so I\nassume we&#39;d be able to resolve the string to one or more java cla=\r\nsses\n(possibly working backwards from @Category annotations we find when\nsc=\r\nanning the classpath). Then we could just dynamically create \na test suite =\r\nand send it in, doing something like the answer in this\nquestion:\nhttp://st=\r\nackoverflow.com/questions/1070202/junit-suiteclasses-with-a-static-list-of-=\r\nclasses\n\n\nWould that be the way to go ?\n\nKristian\n \n\n\n\nti., 02.11.2010 kl. =\r\n13.43 -0400, skrev David Saff:\n&gt;   \n&gt; Kristian,\n&gt; \n&gt; That&#39;s a good question=\r\n. If you create a suite using the Categories\n&gt; runner, you should be all se=\r\nt to run it using whatever Computer you\n&gt; want. I assume you&#39;re asking how =\r\none could do this without an\n&gt; explicit categorized suite?\n&gt; \n&gt; David Saff\n=\r\n&gt; \n&gt; On Tue, Nov 2, 2010 at 12:54 PM, Kristian Rosenvold\n&gt; &lt;kristian@rosenv=\r\nold.com&gt; wrote:\n&gt; &gt; I&#39;ve been looking at the possibilities for concurrent t=\r\nest execution\n&gt; in\n&gt; &gt; combination with the use of categories (for maven-su=\r\nrefire\n&gt; &gt; http://jira.codehaus.org/browse/SUREFIRE-656)\n&gt; &gt;\n&gt; &gt; What would=\r\n be the recommended way of doing this? Surefire currently\n&gt; uses\n&gt; &gt; the ru=\r\nn(Computer computer, Class&lt;?&gt;... classes) method on junitcore,\n&gt; and\n&gt; &gt; th=\r\nis seems kind of orthogonal to running with categories.\n&gt; &gt;\n&gt; &gt; Regards\n&gt; &gt;=\r\n\n&gt; &gt; Kristian Rosenvold\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; -----------------------------------=\r\n-\n&gt; &gt;\n&gt; &gt; Yahoo! Groups Links\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; \n&gt; \n&gt; \n&gt; \n\n\n\n", 
+    "profile": "krosenvold", 
+    "topicId": 23023, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 403861045, 
+    "prevInTime": 23052, 
+    "contentTrasformed": false, 
+    "postDate": "1288729334", 
+    "canDelete": false, 
+    "nextInTopic": 23054, 
+    "prevInTopic": 23052, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGk9Y1FGS3JFVzNZSHh4cGVWMm9lMENxQXJzMVdfQXU9VkFPdVhYbkBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PHNpZy42OTIyOTBjYmUxLjEyODg3MjkzMzQuMjkzOTUuNjEuY2FtZWxAb2ZmaWNlPg==", 
+        "referencesHeader": "PGk5cWdpdCszODdmQGVHcm91cHMuY29tPgkgPEFBTkxrVGk9Um1Dd3VDLTJfR2ZzTUtLNUxDMjdpV1huMzRfWmZSMUcyc1pwOEBtYWlsLmdtYWlsLmNvbT4JIDxERTJEQjI4Qy1ENjUwLTRCOUEtOTgwNS01OTcxM0RFNTk1NjBAZWFydGhsaW5rLm5ldD4JIDxBQU5Ma1RpbXJKPXpvQ2ZUQmdrb28zeVNhTG5wTTQ4LXFOT05IcUhYQ1ZaPTFAbWFpbC5nbWFpbC5jb20+CSA8c2lnLjA5MjJhODcyMWIuMTI4ODcxNjg3Mi4zMTI0NS43LmNhbWVsQGNodW5reT4JIDxBQU5Ma1RpPWNRRktyRVczWUh4eHBlVjJvZTBDcUFyczFXX0F1PVZBT3VYWG5AbWFpbC5nbWFpbC5jb20+"
+    }
+}

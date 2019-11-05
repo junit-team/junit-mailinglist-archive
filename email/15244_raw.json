@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 15245, 
+    "senderId": "uS8feVNBDbDfmaGUcaQdr64kxV1adsvvz7-8FW3m_WDSF05m6ZMHSPl-GWGN-2Vxf1i33qzNT2rnwHhwPiK4Uh8jUQaKv4fg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] JUnit 4 issue: NaN handling", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Elliotte, I am unable to reproduce the behavior you are seeing. For several years we have been careful to use Double.compare(), which reports that NaNs are", 
+    "msgId": 15244, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 68175 invoked from network); 22 Oct 2005 02:02:36 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m23.grp.scd.yahoo.com with QMQP; 22 Oct 2005 02:02:36 -0000\r\nReceived: from unknown (HELO smtpauth06.mail.atl.earthlink.net) (209.86.89.66)\n  by mta4.grp.scd.yahoo.com with SMTP; 22 Oct 2005 02:02:36 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth06.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1ET8iR-000234-QE\n\tfor junit@yahoogroups.com; Fri, 21 Oct 2005 22:02:36 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Fri, 21 Oct 2005 19:02:33 -0700\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;UTF-8&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nIn-Reply-To: &lt;4357B31B.9050302@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nThread-Index: AcXViHG2K+b4puSyROW3TxIK5WbWvAA5yMNA\r\nMessage-ID: &lt;E1ET8iR-000234-QE@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478852054ce2b0de0fc95a09155854e4a405128ff2c83426c0e350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] JUnit 4 issue: NaN handling\r\nX-Yahoo-Group-Post: member; u=173198504; y=BqYMO7EUaRDZr0SWAWZvpSqot8CXKH7sM3f1uFwA-zm2vacj\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nElliotte,\n\nI am unable to reproduce the behavior you are seeing. For severa=\r\nl years we have been careful to use Double.compare(), which reports that Na=\r\nNs are equal. Since the behavior of equality testing with NaN is not clear,=\r\n I prefer Charlie&#39;s solution of assertEqualsNaN() or some such for those ti=\r\nmes when you know you are testing for NaN when you are writing the test.\n\nS=\r\nincerely yours,\n\nKent Beck\nThree Rivers Institute \n\n&gt; -----Original Message=\r\n-----\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; Be=\r\nhalf Of Elliotte Harold\n&gt; Sent: Thursday, October 20, 2005 8:09 AM\n&gt; To: ju=\r\nnit@yahoogroups.com\n&gt; Subject: [junit] JUnit 4 issue: NaN handling\n&gt; \n&gt; I t=\r\nhink the handling of NaN by assertEquals(double, double, \n&gt; double) and \n&gt; =\r\nassertEquals(float, float, float)  should be thought out and more \n&gt; carefu=\r\nlly spelled out. For instance, the following assert fails:\n&gt; \n&gt;    assertEq=\r\nuals(Double.NaN, Double.NaN, 0.1);\n&gt; \n&gt; i.e. NaN is not equal to NaN. I&#39;m h=\r\nonestly not sure whether this is \n&gt; correct or not. What does the principle=\r\n of least surprise suggest? If \n&gt; someone understands NaN they may find thi=\r\ns correct but \n&gt; someone who&#39;s not \n&gt; intimately familiar with NaN may be s=\r\nurprised.\n&gt; \n&gt; This edge case does have practical consequences. For one, th=\r\ne Apache \n&gt; Commons Math project has found it necessary to create their \n&gt; =\r\nown double \n&gt; assertEquals methods that do consider NaN to be equal to NaN.=\r\n See\n&gt; \n&gt; http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/math/\n&gt; =\r\ntrunk/src/test/org/apache/commons/math/TestUtils.java?rev=3D2402\n&gt; 45&view=\r\n=3Dmarkup\n&gt; \n&gt; I could go either way on this. However, I do think it&#39;s \n&gt; i=\r\nmportant that a \n&gt; definite decision about how to handle NaN be made, and t=\r\nhat \n&gt; the result \n&gt; of this decision be spelled out in the JavaDoc. Curren=\r\ntly Infinity is \n&gt; addressed but not NaN, and NaN is by far the more confus=\r\ning case.\n&gt; \n&gt; It probably also wouldn&#39;t hurt to patch the JUnit 3 JavaDoc =\r\nat least \n&gt; enough to document the current behavior, whatever that is.\n&gt; \n&gt;=\r\n -- \n&gt; =EF=BB=BFElliotte Rusty Harold  elharo@...\n&gt; XML in a Nu=\r\ntshell 3rd Edition Just Published!\n&gt; http://www.cafeconleche.org/books/xian=\r\n3/\n&gt; http://www.amazon.com/exec/obidos/ISBN=3D0596007647/cafeaulaitA/\n&gt; ref=\r\n=3Dnosim\n&gt; \n&gt; \n&gt; ------------------------ Yahoo! Groups Sponsor \n&gt; --------=\r\n------------~--&gt; \n&gt; Fair play? Video games influencing politics. Click and =\r\ntalk back!\n&gt; http://us.click.yahoo.com/T8sf5C/tzNLAA/TtwFAA/5cFolB/TM\n&gt; ---=\r\n-----------------------------------------------------------\n&gt; ------~-&gt; \n&gt; =\r\n\n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 15230, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 15243, 
+    "contentTrasformed": false, 
+    "postDate": "1129946553", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15243, 
+    "headers": {
+        "inReplyToHeader": "PDQzNTdCMzFCLjkwNTAzMDJAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "messageIdInHeader": "PEUxRVQ4aVItMDAwMjM0LVFFQHNtdHBhdXRoMDYubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

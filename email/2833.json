@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 2834, 
+    "senderId": "mbKmLmB18ZUQjZMh8Ug6QPl8jtiDvIjr8hN0Hg11HCVI26REJyF9NoEcouqsj00PAz5iXET-aRXRQjuWLS9B0qhUYvqt", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ClassPathTestCollector", 
+    "from": "Shane Duan &lt;sduan@...&gt;", 
+    "authorName": "Shane Duan", 
+    "msgSnippet": "Just to share an experience of mine. I tried to do a class loader that will try to load all the none abstract classes that extending the TestCase in the run", 
+    "msgId": 2833, 
+    "topicId": 2825, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-649098453\">Just to share an experience of mine.<br/>\n<br/>\nI tried to do a class loader that will try to load all the none abstract classes that extending the TestCase in the run time but the code became too much to<br/>\nwrite.<br/>\n<br/>\nThen I figured out another simple way of sweeping all the testcases by following these steps.<br/>\n<br/>\n1. Put all the test classes (mock object, test utilities, whatever other than the real code) into a separate folder (I called it &#39;test&#39; and it is in the same<br/>\nfolder as &#39;src&#39;).<br/>\n<br/>\n2. Follow a naming convention.  I named all my test cases and ONLY my test cases with &#39;Test&#39; followed by the class to be tested.<br/>\n<br/>\n3. I wrote a class that will go through the &#39;test&#39; folder (recursively by option) and find all the java files start with a Test, construct the full name of<br/>\nthe class, create a TestSuite for it and add it to the main TestSuite.<br/>\n<br/>\nStep one will free me in naming the classes for the application, step two will make the testcase sweeping easy.<br/>\n<br/>\nPotential risks:<br/>\n1. Test class is not in &#39;test&#39; directory.<br/>\n2. Test class doesn&#39;t start with &#39;Test&#39; or some non-testing class starts with &#39;Test&#39;.<br/>\n3. The source file in test directory doesn&#39;t match the ones in classes path.  (This is not a big problem as along as you compile the project before you run<br/>\nthe test, which is the case).<br/>\n<br/>\nIt sounds a little cheap and un-safe at the first sight.  But it has never caused me problems.  I would think that this is the &#39;simplest possible that<br/>\nworks&#39;.<br/>\n<br/>\nAnd yes, I do have a test case for this. :)<br/>\n<br/>\n<br/>\n&quot;Di Iorio, Matthew (ISS Atlanta)&quot; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; TestFinderSuite is a TestSuite that does the same thing:<br/>\n&gt;<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://sourceforge.net/tracker/index.php?func=detail&aid=420299&group_id=152\">http://sourceforge.net/tracker/index.php?func=detail&aid=420299&group_id=152</a><br/>\n&gt; 78&atid=315278<br/>\n&gt;<br/>\n&gt; Source code:<br/>\n&gt;<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://sourceforge.net/tracker/download.php?group_id=15278&atid=315278&file_\">http://sourceforge.net/tracker/download.php?group_id=15278&atid=315278&file_</a><br/>\n&gt; id=8476&aid=420299<br/>\n&gt;<br/>\n&gt; ClassFinder is the class that compiles a list of classes on the classpath.<br/>\n&gt;<br/>\n&gt; Matt<br/>\n&gt;<br/>\n&gt; -----Original Message-----<br/>\n&gt; From: Matt Munz [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mattmunz@...\">mattmunz@...</a>]<br/>\n&gt; Sent: Wednesday, October 03, 2001 4:06 PM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] ClassPathTestCollector<br/>\n&gt;<br/>\n&gt; Hi all.<br/>\n&gt;<br/>\n&gt;   I&#39;m working on a TestRunner that sweeps up all of the TestCases on the<br/>\n&gt; class path into one TestSuite and then runs it, dumping the results<br/>\n&gt; optionally to a file, System.out, or a gui.  This TestRunner could then be<br/>\n&gt; used in automation and during development with a minimum of setup.<br/>\n&gt;   ClassPathTestCollector does a great job of grabbing up the .class files on<br/>\n&gt; the class path, but it doesn&#39;t dip into the jars to grab those classes also.<br/>\n&gt; I&#39;m about to write some code to add this functionality.  Has anyone already<br/>\n&gt; done this?  If so, could you share code, ideas, or suggestions?<br/>\n&gt;   Thanks.<br/>\n&gt;<br/>\n&gt;   - Matt Munz<br/>\n&gt;     <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mmunz@...\">mmunz@...</a> (please cc: responses to this address)<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n<br/>\n </span></blockquote>--<br/>\nDisclaimer:  I join all the news groups out of my own interest.  All opinions expressed here are my own and not necessarily those of my employer.</div>", 
+    "prevInTime": 2832, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1002144106", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 2832, 
+    "headers": {
+        "messageIdInHeader": "PDNCQkI4MTZBLkI1MzA4QTA3QGJvcmxhbmQuY29tPg==", 
+        "referencesHeader": "PEZENkIwMjQ0NzY2REQ1MTE4QUMwMDAzMDZFMDBCMEIxMkYwQ0I2QG1zZ2F0bDA3Lmlzcy5uZXQ+"
+    }
+}

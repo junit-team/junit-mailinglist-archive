@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 12358, 
+    "senderId": "z6QFAMycWAiTjg4QiIsWLYQZTL6BssgSe3yShIV3yTHFQrks6NGO_bGJiesoc5GWG3Z1GXSlh04ruCZlm5VNx2xBZYV0lQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Virtualmock in practice?", 
+    "from": "Steve Freeman &lt;steve@...&gt;", 
+    "authorName": "Steve Freeman", 
+    "msgSnippet": "... Not directly. jMock is intended to help drive the design of your code, testing existing code is an added bonus if it works. One thing you might consider is", 
+    "msgId": 12357, 
+    "profile": "smg_freeman", 
+    "topicId": 12349, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30618548, 
+    "messageBody": "<div id=\"ygrps-yiv-1976834742\">wellman_daniel wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;ve got the need to test some legacy code which uses some hard-coded <br/>\n&gt; references to other concrete objects, or uses a service <br/>\n&gt; locator/factory to obtain other business objects.  I&#39;m reading J. B. <br/>\n&gt; Rainsberger&#39;s excellent &quot;JUnit Recipes&quot; book and this led me to check <br/>\n&gt; out mock objects.<br/>\n &gt;<br/>\n&gt; 3. Does jMock with CGLib provide the functionality to intercept calls <br/>\n&gt; to concrete objects instantiated by the object under test? (As <br/>\n&gt; virtualmock appears to do)<br/>\n<br/>\n </span></blockquote>Not directly. jMock is intended to help drive the design of your code, <br/>\ntesting existing code is an added bonus if it works.<br/>\n<br/>\nOne thing you might consider is adding helper methods for object <br/>\ncreation within the class, for example:<br/>\n<br/>\nclass Thing {<br/>\n    void doIt(Blob aBlob) {<br/>\n       aBlob.passThrough(new OtherThing());<br/>\n    }<br/>\n}<br/>\n<br/>\nchanges to:<br/>\n<br/>\nclass Thing {<br/>\n    void doIt(Blob aBlob) {<br/>\n       aBlob.passThrough(makeOtherThing());<br/>\n    }<br/>\n    OtherThing makeOtherThing() {<br/>\n       return new OtherThing():<br/>\n    }<br/>\n}<br/>\n<br/>\nYou can then override makeOtherThing() in your test to introduce a mock.<br/>\n<br/>\nThis is not a pretty solution, but it&#39;s a workable interim step until a <br/>\nbetter structure becomes clearer.<br/>\n<br/>\nS.</div>", 
+    "prevInTime": 12356, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1100947821", 
+    "canDelete": false, 
+    "nextInTopic": 12407, 
+    "prevInTopic": 12354, 
+    "headers": {
+        "inReplyToHeader": "PGNubDQydittNXY0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxOUYyMTZELjQwNzA5MDZAbTNwLmNvLnVrPg==", 
+        "referencesHeader": "PGNubDQydittNXY0QGVHcm91cHMuY29tPg=="
+    }
+}

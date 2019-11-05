@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 11998, 
+    "senderId": "4D3OkQqq2PLr2wGgBMlu4qbd-YpqQGWZiFMKsNw5Hap7lEFMnX4TU9Le7vF0Uz3E5cB4HcNf7dAOF9Aiqz2ARcG9H44nqw2FlDggRkk", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] xml output from Junit task", 
+    "from": "Brendan Humphreys &lt;brendan@...&gt;", 
+    "authorName": "Brendan Humphreys", 
+    "msgSnippet": "Hi Craig, To do what you want to do you need to install a custom xsl stylesheet for . To do this follow the steps below. Now that I ve written", 
+    "msgId": 11997, 
+    "profile": "brendan_humphreys", 
+    "topicId": 11990, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 196346082, 
+    "messageBody": "<div id=\"ygrps-yiv-351646886\">Hi Craig,<br/>\n<br/>\nTo do what you want to do you need to install a custom xsl stylesheet <br/>\nfor &lt;junitreport&gt;. To do this follow the steps below. Now that I&#39;ve <br/>\nwritten them out, its a bit of an epic but stay with me and it will work ;-)<br/>\n<br/>\nCheers,<br/>\n-Brendan<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.cenqua.com\">http://www.cenqua.com</a><br/>\n<br/>\n1. extract the default stylesheets from ANT_HOME/lib/ant-junit.jar. The <br/>\ntwo files you need are:<br/>\n    org/apache/tools/ant/taskdefs/optional/junit/xsl/junit-frames.xsl<br/>\n    org/apache/tools/ant/taskdefs/optional/junit/xsl/junit-noframes.xsl<br/>\n<br/>\n2. save these two files into a subdir of your project dir, eg <br/>\nPROJECT_HOME/junitstyle:<br/>\n<br/>\n    junitstyle/junit-frames.xsl<br/>\n    junitstyle/junit-noframes.xsl<br/>\n<br/>\n3. tell &lt;junitreport&gt; where to load its stylesheets in your build.xml:<br/>\n<br/>\n    &lt;junitreport ... styledir=&quot;./junitstyle&quot;/&gt;<br/>\n<br/>\n4. edit the stylesheets (or just the one you use).<br/>\n<br/>\n    Find the template in the file called &quot;display-failures&quot;:<br/>\n     &lt;xsl:template name=&quot;display-failures&quot;&gt;<br/>\n<br/>\n    a few lines into this template, you&#39;ll see<br/>\n<br/>\n        &lt;xsl:value-of select=&quot;@message&quot; /&gt;<br/>\n<br/>\n    you need to change this to<br/>\n<br/>\n        &lt;xsl:value-of select=&quot;@message&quot; disable-output-escaping=&quot;yes&quot;/&gt;<br/>\n<br/>\n5. all done. save the stylesheets and give it a whirl. HTML formatting <br/>\nin  fail() and assert*() messages should now be preserved.<br/>\n<br/>\n<br/>\nCraig Dickson wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; It appears that the XML formatter used by the Ant JUnit task (correctly)<br/>\n&gt; encodes any &#39;&lt;&#39; or &#39;&gt;&#39; characters that appear in the output of the test<br/>\n&gt; method before including it in the XML output file.<br/>\n&gt; <br/>\n&gt; For example, if in my test method I call<br/>\n&gt;      fail(&quot;&lt;b&gt;big problem&lt;/b&gt;&quot;);<br/>\n&gt; <br/>\n&gt; then in the XML document, this will appear as:<br/>\n&gt;      &lt;testcase name=&quot; ... &quot; class=&quot; ... &quot;&gt;<br/>\n&gt;         &lt;failure message=&quot;&lt;b&gt;big problem&lt;/b&gt;&quot; type=&quot; ... &quot;&gt;<br/>\n&gt;            ...<br/>\n&gt;         &lt;/failure&gt;<br/>\n&gt;      &lt;/testcase&gt;<br/>\n&gt; <br/>\n&gt; Now, when the &lt;junit-report&gt; Ant task processes this file, it copies the<br/>\n&gt; encoding over to the HTML document, so that when the report is viewed in<br/>\n&gt; a browser the &lt;b&gt; tag is just interpreted as regular text instead of markup.<br/>\n&gt; <br/>\n&gt; Anyone know how to get markup from a JUnit test across to the output<br/>\n&gt; from the &lt;junit-reprot&gt; task?<br/>\n&gt; <br/>\n&gt; Thanks<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; *Yahoo! Groups Sponsor*<br/>\n&gt; ADVERTISEMENT<br/>\n&gt; click here <br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://us.ard.yahoo.com/SIG=129monjh6/M=298184.5285298.6392945.3001176/D=groups/S=1705006905:HM/EXP=1095433324/A=2319498/R=0/SIG=11thfntfp/*http://www.netflix.com/Default?mqso=60185352&partid=5285298\">http://us.ard.yahoo.com/SIG=129monjh6/M=298184.5285298.6392945.3001176/D=groups/S=1705006905:HM/EXP=1095433324/A=2319498/R=0/SIG=11thfntfp/*http://www.netflix.com/Default?mqso=60185352&partid=5285298</a>&gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------------------------------------------------------<br/>\n&gt; *Yahoo! Groups Links*<br/>\n&gt; <br/>\n&gt;     * To visit your group on the web, go to:<br/>\n&gt;       <a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/\">http://groups.yahoo.com/group/junit/</a><br/>\n&gt;        <br/>\n&gt;     * To unsubscribe from this group, send an email to:<br/>\n&gt;       <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;       &lt;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a>?subject=Unsubscribe&gt;<br/>\n&gt;        <br/>\n&gt;     * Your use of Yahoo! Groups is subject to the Yahoo! Terms of<br/>\n&gt;       Service &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a>&gt;. <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 11996, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1095417178", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 11990, 
+    "headers": {
+        "inReplyToHeader": "PDQxNDg5QTQ0LjYwNTAxMDJAYW9sLmNvbT4=", 
+        "messageIdInHeader": "PDQxNEFCRDVBLjEwNDA0MDdAY2VucXVhLmNvbT4=", 
+        "referencesHeader": "PDQxNDg5QTQ0LjYwNTAxMDJAYW9sLmNvbT4="
+    }
+}

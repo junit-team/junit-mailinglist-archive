@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 19636, 
+    "senderId": "b0Vju2ZM1eMTCocgXzpMsEcJGx5WGVN91EFWA0VKg_QgEO11vLj6V44De-gTA_q08mkEwhmz60vkf2u1DZmzb9RPHaYmOfQD23sQ0Ws0OrxBii9GvNY04nBp0w", 
+    "systemMessage": true, 
+    "subject": "Re: How to automatically verify state of fixture after test run", 
+    "from": "&quot;phil_quitslund&quot; &lt;phil_quitslund@...&gt;", 
+    "authorName": "phil_quitslund", 
+    "msgSnippet": "I actually have a related question: What if you want to wrapper the befores and afters too?  In my case, I d like to wrapper the whole sequence of befores, the", 
+    "msgId": 19635, 
+    "profile": "phil_quitslund", 
+    "topicId": 19603, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224901713, 
+    "messageBody": "<div id=\"ygrps-yiv-298345187\">I actually have a related question:<br/>\n<br/>\nWhat if you want to wrapper the befores and afters too?  In my case,<br/>\nI&#39;d like to wrapper the whole sequence of befores, the test and the<br/>\nafters.  Is overriding JUnit4ClassRunner.invokeTestMethod(Method,<br/>\nRunNotifier) a reasonable way to do this?  Is there a better way?<br/>\n<br/>\nThanks!<br/>\n<br/>\n<br/>\n-phil<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;David Saff&quot; &lt;saff@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Oops.  That code will only work in the current 4.5-snapshot.  This<br/>\n&gt; will work in 4.4, 4.5, and beyond:<br/>\n&gt; <br/>\n&gt;        public static class Mocks extends JUnit4ClassRunner {<br/>\n&gt;                public Mocks(Class&lt;?&gt; klass) throws InitializationError {<br/>\n&gt;                        super(klass);<br/>\n&gt;                }<br/>\n&gt; <br/>\n&gt;                @Override<br/>\n&gt;                protected TestMethod wrapMethod(Method method) {<br/>\n&gt;                        return new TestMethod(method, getTestClass()) {<br/>\n&gt;                                @Override<br/>\n&gt;                                protected void invoke(Object test)<br/>\n&gt;                                                throws<br/>\nIllegalArgumentException,<br/>\n&gt;                                                IllegalAccessException,<br/>\n&gt; InvocationTargetException {<br/>\n&gt;                                        super.invoke(test);<br/>\n&gt;                                        verifyMocks();<br/>\n&gt;                                }<br/>\n&gt;                        };<br/>\n&gt;                }<br/>\n&gt;        }<br/>\n&gt; <br/>\n&gt; Thanks,<br/>\n&gt; <br/>\n&gt;    David Saff<br/>\n&gt; <br/>\n&gt; On 7/23/07, David Saff &lt;saff@...&gt; wrote:<br/>\n&gt; &gt; Nat,<br/>\n&gt; &gt;<br/>\n&gt; &gt; Extending internals of your dependencies in order to give your users a<br/>\n&gt; &gt; better experience is a fact of life.  With 4.4, we took one step<br/>\n&gt; &gt; toward a more extensible design for JUnit4ClassRunner.  In the next<br/>\n&gt; &gt; version, we hope to finish, and stabilize, the object structure, so<br/>\n&gt; &gt; that extenders can depend on it.  The way to do what you want in JUnit<br/>\n&gt; &gt; 4.4 and beyond should look like this:<br/>\n&gt; &gt;<br/>\n&gt; &gt;         public static class Mocks extends JUnit4ClassRunner {<br/>\n&gt; &gt;                 public Mocks(Class&lt;?&gt; klass) throws<br/>\nInitializationError {<br/>\n&gt; &gt;                         super(klass);<br/>\n&gt; &gt;                 }<br/>\n&gt; &gt;<br/>\n&gt; &gt;                 @Override<br/>\n&gt; &gt;                 protected TestMethod wrapMethod(Method method) {<br/>\n&gt; &gt;                         return new TestMethod(method,<br/>\ngetTestClass()) {<br/>\n&gt; &gt;                                 @Override<br/>\n&gt; &gt;                                 protected void invoke(Roadie context)<br/>\n&gt; &gt;                                                 throws<br/>\nIllegalArgumentException,<br/>\n&gt; &gt;                                                <br/>\nIllegalAccessException, InvocationTargetException {<br/>\n&gt; &gt;                                         super.invoke(context);<br/>\n&gt; &gt;                                         verifyMocks();<br/>\n&gt; &gt;                                 }<br/>\n&gt; &gt;                         };<br/>\n&gt; &gt;                 }<br/>\n&gt; &gt;         }<br/>\n&gt; &gt;<br/>\n&gt; &gt; The Roadie class is new in 4.4: it sets up for the test, tears down<br/>\n&gt; &gt; after the test, and records what&#39;s going on while the test is<br/>\n&gt; &gt; performing.  (For cultural background to the metaphor, see:<br/>\n&gt; &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://en.wikipedia.org/wiki/Roadie)\">http://en.wikipedia.org/wiki/Roadie)</a><br/>\n&gt; &gt;<br/>\n&gt; &gt; Thanks,<br/>\n&gt; &gt;<br/>\n&gt; &gt;    David Saff<br/>\n&gt; &gt;<br/>\n&gt; &gt; On 7/23/07, Nat Pryce &lt;nat.pryce@...&gt; wrote:<br/>\n&gt; &gt; &gt; Hi all.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; It&#39;s our own fault I know, but the new JUnit 4.4 release breaks<br/>\njMock<br/>\n&gt; &gt; &gt; 2 because we extended the internal runner classes to verify mock<br/>\n&gt; &gt; &gt; objects at the end of the test but before the @After methods are<br/>\n&gt; &gt; &gt; called to tear down the fixtures.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; The classes we extended no longer exist.  What&#39;s the new,<br/>\napproved way<br/>\n&gt; &gt; &gt; of doing this?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; --Nat<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19634, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1185575993", 
+    "canDelete": false, 
+    "nextInTopic": 19735, 
+    "prevInTopic": 19622, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwNzI2MTI1MnkyNjQzMTE1MHg1ZWIwOThmMDhmMDhlYTYzQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGY4ZHM3cCtwbWNnQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8013, 
+    "senderId": "ZqTLZ1901orKyjFQAX-xdR3eQJWtZmxWDz8YkGm_8i_K1TFF5f45eh8q9P40fVomgByX__Wgi4NwZ9wDMqwlAaxbvxHWga3ogkxtlu815g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does Static Invocation call setUp()/tearDown()?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... It must be more useful than that. Why use reflection if you don t need to? Say you want to parameterize a test and create a test suite based on that", 
+    "msgId": 8012, 
+    "profile": "nails762", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-820446044\"><blockquote><span title=\"ireply\">&gt;So said Vladimir R. Bossicard on 2003-05-09 --------------------<br/>\n&gt;&gt;&gt;I don&#39;t see why on earth you would write a test by overwriting runTest, <br/>\n&gt;&gt;&gt;but let&#39;s take that as an example.<br/>\n&gt;&gt; <br/>\n&gt;&gt; It&#39;s in Test Infected, Vladimir. Your assignment is to re-read the<br/>\n&gt;article. :)<br/>\n&gt;<br/>\n&gt;Wow!  In fact it&#39;s documented.  It&#39;s maybe useful when you don&#39;t have <br/>\n&gt;reflection (J2ME?) but I must admit that I never used this static way of <br/>\n&gt;executing a single test.  Maybe because I have more than one single test <br/>\n&gt;to execute :-)<br/>\n<br/>\n </span></blockquote>It must be more useful than that. Why use reflection if you don&#39;t need to?<br/>\n<br/>\nSay you want to parameterize a test and create a test suite based on that parameterized test that depends on external data or runtime information. In that case, new MyTestCase(&quot;myTestMethod&quot;) doesn&#39;t help.<br/>\n<br/>\nNow you *could* provide an additional constructor for your TestCase class to create the tests... or simply override runTest when you create the TestCase to add to the TestSuite.<br/>\n<br/>\npublic static Test suite() {<br/>\n    TestSuite suite = new TestSuite();<br/>\n<br/>\n    Set dataSets = getDataSets(somewhereOnTheFileSystem);<br/>\n    for (Iterator i = dataSets.iterator(); i.hasNext(); ) {<br/>\n        final DataSet each = (DataSet) i.next();<br/>\n        suite.addTest(new MyTestCase(&quot;DataTest&quot; + each.toString()) {<br/>\n            protected void runTest() {<br/>\n                // Use &#39;each&#39; here.<br/>\n            }<br/>\n        }<br/>\n    }<br/>\n    return suite;<br/>\n}<br/>\n<br/>\nThe alternative is:<br/>\n<br/>\npublic static Test suite() {<br/>\n    TestSuite suite = new TestSuite();<br/>\n<br/>\n    Set dataSets = getDataSets(somewhereOnTheFileSystem);<br/>\n    for (Iterator i = dataSets.iterator(); i.hasNext(); ) {<br/>\n        final DataSet each = (DataSet) i.next();<br/>\n        suite.addTest(new MyTestCase(&quot;DataTest&quot; + each.toString(), each);<br/>\n    }<br/>\n    return suite;<br/>\n}<br/>\n<br/>\nprotected MyTestCase(String name, DataSet dataSet) {<br/>\n    // initialize stuff...<br/>\n}<br/>\n<br/>\n<br/>\nIn the second choice, the test is using global data that is set in one spot and used in another. With the first choice, the data is used within its scope, or at least it looks that way.<br/>\n<br/>\nI prefer the first.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;Anyway I&#39;m the living proof that you don&#39;t have to know this technique <br/>\n&gt;to write/execute tests :-)<br/>\n<br/>\n </span></blockquote>Not writing very advanced tests, are we now? :) :) :)<br/>\n<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 8011, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1052515685", 
+    "canDelete": false, 
+    "nextInTopic": 8014, 
+    "prevInTopic": 8010, 
+    "headers": {
+        "inReplyToHeader": "PDNFQkJFMUM0LjEwODA0MDNAYm9zc2ljYXJkLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNTA5MTcyODA1MDAzNi4wMThFMUM5NkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4gPDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4gPDIwMDMwNTA5MTMwMTUzMDA5OS4wMDlBNjYzNUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4gPDNFQkJFMUM0LjEwODA0MDNAYm9zc2ljYXJkLmNvbT4="
+    }
+}

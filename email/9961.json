@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 9962, 
+    "senderId": "9f5xRAXPC1NpjYXDdY9PnshFWinHVhBk5gFp8V6nLPKsOMh-Qr3pmxh4mZmi5NtLC2RGPBuhX-YHYhcUpvKjmvhFXUFHm2JqwN_AIJF2ORt3Jio", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Parameterized Test Case example", 
+    "from": "Lasitha Ranatunga &lt;lranatun@...&gt;", 
+    "authorName": "Lasitha Ranatunga", 
+    "msgSnippet": "I ve been solving this kind of duplication by creating my own assertions. As an example, see my version of CalculateAgeTest below.  I m curious about the", 
+    "msgId": 9961, 
+    "profile": "lranatunga", 
+    "topicId": 9954, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 118806566, 
+    "messageBody": "<div id=\"ygrps-yiv-2085038404\">I&#39;ve been solving this kind of duplication by creating my own assertions.<br/>\nAs an example, see my version of CalculateAgeTest below.  I&#39;m curious about<br/>\nthe pros/cons of each approach?<br/>\n<br/>\ncheers, lasitha.<br/>\n<br/>\n----------------<br/>\npackage ca.bluejays.scouting.amateur.model.test;<br/>\n<br/>\nimport java.util.Date;<br/>\n<br/>\nimport junit.framework.*;<br/>\nimport XXX.BiographicalReport;<br/>\nimport XXX.PlayerFactory;<br/>\n<br/>\nimport com.diasparsoftware.java.util.DateUtil;<br/>\n<br/>\npublic class CalculateAgeTest2 extends TestCase {<br/>\n<br/>\n    public void testBirthday() {<br/>\n        assertCorrectAge(30, DateUtil.makeDate(2004, 5, 4));<br/>\n    }<br/>\n<br/>\n    public void testDayBeforeBirthday() {<br/>\n        assertCorrectAge(29, DateUtil.makeDate(2004, 5, 3));<br/>\n    }<br/>\n<br/>\n    public void testDayAfterBirthday() {<br/>\n        assertCorrectAge(30, DateUtil.makeDate(2004, 5, 5));<br/>\n    }<br/>\n<br/>\n    public void testDateOfBirth() {<br/>\n        assertCorrectAge(0, DateUtil.makeDate(1974, 5, 4));<br/>\n    }<br/>\n<br/>\n    public void testInvalidFutureDate() {<br/>\n        assertCorrectAge(0, DateUtil.makeDate(1974, 5, 3));<br/>\n    }<br/>\n<br/>\n    private void assertCorrectAge(int expectedAge, Date futureDate) {<br/>\n        BiographicalReport biographicalReport = PlayerFactory<br/>\n                .makeBiographicalReport(&quot;Joe&quot;, &quot;Rainsberger&quot;, DateUtil<br/>\n                    .makeDate(1974, 5, 4));<br/>\n<br/>\n        assertEquals(new Integer(expectedAge), <br/>\n                     biographicalReport.getAgeAsOf(futureDate));<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: J. B. Rainsberger [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>]<br/>\nSent: Thursday, November 20, 2003 3:20 PM<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; This is what I mean by a parameterized test case. The feature &quot;calculate <br/>\n&gt; a person&#39;s age by a given date.&quot; Each test is a single assertion, but <br/>\n&gt; since only the data changes, this test is data-driven, rather than <br/>\n&gt; duplicating the invocation of &quot;getAgeAsOf()&quot; in five tests.<br/>\n&gt; <br/>\n&gt; -------------------<br/>\n&gt; package ca.bluejays.scouting.amateur.model.test;<br/>\n&gt; <br/>\n&gt; import java.util.Date;<br/>\n&gt; <br/>\n&gt; import junit.framework.*;<br/>\n&gt; import XXX.BiographicalReport;<br/>\n&gt; import XXX.PlayerFactory;<br/>\n&gt; <br/>\n&gt; import com.diasparsoftware.java.util.DateUtil;<br/>\n&gt; <br/>\n&gt; public class CalculateAgeTest extends TestCase {<br/>\n&gt;      private int expectedAge;<br/>\n&gt;      private Date futureDate;<br/>\n&gt; <br/>\n&gt;      public CalculateAgeTest(String testName, int expectedAge,<br/>\n&gt;              Date futureDate) {<br/>\n&gt; <br/>\n&gt;          super(testName);<br/>\n&gt;          this.expectedAge = expectedAge;<br/>\n&gt;          this.futureDate = futureDate;<br/>\n&gt;      }<br/>\n&gt; <br/>\n&gt;      public static Test suite() {<br/>\n&gt;          TestSuite suite = new TestSuite(&quot;Calculate Age&quot;);<br/>\n&gt;          suite.addTest(new CalculateAgeTest(&quot;birthday&quot;, 30, DateUtil<br/>\n&gt;                  .makeDate(2004, 5, 4)));<br/>\n&gt;          suite.addTest(new CalculateAgeTest(&quot;day before birthday&quot;, 29,<br/>\n&gt;                  DateUtil.makeDate(2004, 5, 3)));<br/>\n&gt;          suite.addTest(new CalculateAgeTest(&quot;day after birthday&quot;, 30,<br/>\n&gt;                  DateUtil.makeDate(2004, 5, 5)));<br/>\n&gt;          suite.addTest(<br/>\n&gt;                  new CalculateAgeTest(&quot;date of birth&quot;, 0, DateUtil<br/>\n&gt;                          .makeDate(1974, 5, 4)));<br/>\n&gt;          suite.addTest(<br/>\n&gt;                  new CalculateAgeTest(&quot;invalid future date&quot;, 0, DateUtil<br/>\n&gt;                          .makeDate(1974, 5, 3)));<br/>\n&gt;          return suite;<br/>\n&gt;      }<br/>\n&gt; <br/>\n&gt;      protected void runTest() throws Exception {<br/>\n&gt;          BiographicalReport biographicalReport = PlayerFactory<br/>\n&gt;                  .makeBiographicalReport(&quot;Joe&quot;, &quot;Rainsberger&quot;, DateUtil<br/>\n&gt;                          .makeDate(1974, 5, 4));<br/>\n&gt; <br/>\n&gt;          assertEquals(new Integer(expectedAge), biographicalReport<br/>\n&gt;                  .getAgeAsOf(futureDate));<br/>\n&gt;      }<br/>\n&gt; } </span></blockquote></div>", 
+    "prevInTime": 9960, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1069365743", 
+    "canDelete": false, 
+    "nextInTopic": 9964, 
+    "prevInTopic": 9954, 
+    "headers": {
+        "messageIdInHeader": "PDZFRDcyRjk2NDhFOUQ5NEE5MjUwMzM0OTU0REI3Q0JGQkJCRjE0QGlzbGNvbTJrLmlzbGxjbmV0cy5zdHVkZW50bG9hbi5vcmc+"
+    }
+}

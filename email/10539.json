@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 10540, 
+    "senderId": "lmJsideHgUxlOC4ZVPGMvZduDYHcKhaFhB-2HWF8QmpAriz4PXKpY1Z1w5HXZg2hmqWj-dvV6QthGFc8R5M", 
+    "systemMessage": false, 
+    "subject": "Re: LogConfigurationException", 
+    "from": "&quot;bofar&quot; &lt;sid@...&gt;", 
+    "authorName": "bofar", 
+    "msgSnippet": "... It is not much help, but I am seeing the same problem and have written a short test program to illustrate it. The program works when called normally, but", 
+    "msgId": 10539, 
+    "profile": "bofar", 
+    "topicId": 10470, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112444660, 
+    "messageBody": "<div id=\"ygrps-yiv-1978446476\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;moe_morten&quot; &lt;mortenmoe@m...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I have a problem using JUnit with apache axis. When I run my test I <br/>\n&gt; get an exception like this:<br/>\n&gt; <br/>\n&gt; java.lang.ExceptionInInitializerError: <br/>\n&gt; org.apache.commons.logging.LogConfigurationException: <br/>\n&gt; org.apache.commons.logg.....<br/>\n&gt; <br/>\n&gt; Anybody seen anything like this? <br/>\n&gt; <br/>\n&gt; I am using the latest version of JUnit(3.8.1) integrated into <br/>\n&gt; Intellij, with apache axis 1.1.<br/>\n&gt; <br/>\n&gt; Thanks for any help..<br/>\n<br/>\n </span></blockquote>It is not much help, but I am seeing the same problem and have written<br/>\na short test program to illustrate it. The program works when called<br/>\nnormally, but fails when called as a JUnit test case. I will try to<br/>\nput together an Ant script to run the test outside of Idea today. Is<br/>\nthere someone in the Junit organization who will look at it? Here are<br/>\nthe details:<br/>\n<br/>\nIdea 3.0.1 build 688<br/>\nJava SDK 1.4.2_03<br/>\nJunit Release 3.8.1<br/>\nApache Jakarta Commons Collections 3.0<br/>\nApache Jakarta Commons Logging 1.0.3<br/>\n<br/>\nThe problem occurs when the class<br/>\norg.apache.commons.logging.impl.LogFactoryImpl throws an exception in<br/>\nthe getInstance method when the code excerpted below fails. Note that<br/>\nthe instance held by logClass is an instance of<br/>\norg.apache.commons.logging.impl.Jdk14Logger. This class does implement<br/>\nthe Log interface, so the test should not fail (and does not fail<br/>\noutside of JUnit). <br/>\n<br/>\nif (!Log.class.isAssignableFrom(logClass)) {<br/>\n        throw new LogConfigurationException<br/>\n            (&quot;Class &quot; + logClassName + &quot; does not implement Log&quot;);<br/>\n}<br/>\n<br/>\nThe isAssignableFrom method is a native method, so I could not trace<br/>\nthe execution any further. To be clear, the isAssignable method should<br/>\nreturn true here. It does return true when run outside of JUnit, it<br/>\ndoesn&#39;t when run inside of JUnit. This is a problem caused by JUnit.<br/>\n<br/>\nThe three classes in the test program are appended here.<br/>\n====<br/>\npackage com.tinyfrog.TestLogger;<br/>\n<br/>\nimport org.apache.commons.logging.Log;<br/>\nimport org.apache.commons.logging.LogFactory;<br/>\n<br/>\npublic class Startup {<br/>\n<br/>\n    public final static Log commonsLog = LogFactory.getLog(&quot;Silly&quot;);<br/>\n<br/>\n    public static void main (final String Args []) {<br/>\n        commonsLog.info (&quot;Started main&quot;);<br/>\n     }<br/>\n}<br/>\n<br/>\n====<br/>\npackage com.tinyfrog.TestLogger;<br/>\n<br/>\nimport org.apache.commons.logging.Log;<br/>\nimport org.apache.commons.logging.LogFactory;<br/>\n<br/>\npublic class SillyClass {<br/>\n    public void sillyMethod () {<br/>\n        Log log = LogFactory.getLog (this.getClass().getName());<br/>\n        log.info (&quot;Message from sillyMethod&quot;);<br/>\n    }<br/>\n}<br/>\n====<br/>\npackage com.tinyfrog.TestLogger;<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\nimport org.apache.commons.logging.Log;<br/>\nimport org.apache.commons.logging.LogFactory;<br/>\n<br/>\npublic class SillyClassTest extends TestCase{<br/>\n<br/>\n    public SillyClassTest (final String name) {<br/>\n        super (name);<br/>\n    }<br/>\n<br/>\n    Log log = null;<br/>\n    <br/>\n    public void setUp () {<br/>\n       log = LogFactory.getLog (this.getClass().getName ());<br/>\n        log.info (&quot;Hi from setUp&quot;);<br/>\n    }<br/>\n<br/>\n    public void testSillyClass () {<br/>\n       log.info (&quot;Hi from testSillyClass&quot;);<br/>\n    }<br/>\n}</div>", 
+    "prevInTime": 10538, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1077883845", 
+    "canDelete": false, 
+    "nextInTopic": 10854, 
+    "prevInTopic": 10470, 
+    "headers": {
+        "inReplyToHeader": "PGMwaWkxcitrOTNsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGMxbmM0NSt1Y2ZpQGVHcm91cHMuY29tPg=="
+    }
+}

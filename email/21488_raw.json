@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21489, 
+    "senderId": "udqGpCdL4F87ZzE781G0x9QKf-QwfQSEJOjo3_D-FoprN9N9q7XhNXaAb2bRe_GxhmteRXgQFvi4gMQj8ZbZQtDqLxo", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Race condition with timeouts", 
+    "from": "&quot;kentb&quot; &lt;kentb@...&gt;", 
+    "authorName": "kentb", 
+    "msgSnippet": "Oops, sorry about the formatting. I m afraid you ll have to go look at the JUnit source to read it easily. Regards, Kent _____ From: junit@yahoogroups.com", 
+    "msgId": 21488, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 3401 invoked from network); 9 Apr 2009 20:57:17 -0000\r\nX-Received: from unknown (69.147.108.201)\n  by m3.grp.re1.yahoo.com with QMQP; 9 Apr 2009 20:57:17 -0000\r\nX-Received: from unknown (HELO elasmtp-dupuy.atl.sa.earthlink.net) (209.86.89.62)\n  by mta2.grp.re1.yahoo.com with SMTP; 9 Apr 2009 20:57:16 -0000\r\nX-Received: from [65.100.4.215] (helo=kentspavilion)\n\tby elasmtp-dupuy.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1Ls1JC-0005j3-Vv\n\tfor junit@yahoogroups.com; Thu, 09 Apr 2009 16:57:16 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;CFB57F117CE94B0196CD8BF65B8F70DE@kentspavilion&gt;\r\nDate: Thu, 9 Apr 2009 13:57:10 -0700\r\nMessage-ID: &lt;00E934364B9D4F198FADEFC8647F0362@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nThread-Index: Acm5VRvvSl52Q7GyRgqJV3h9e3HzNAAAGFpw\r\nIn-Reply-To: &lt;CFB57F117CE94B0196CD8BF65B8F70DE@kentspavilion&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5579\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d4787bfcd67ff3a01a6e9732710ec0bcdc10ddc7f265eccadb89350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;kentb&quot; &lt;kentb@...&gt;\r\nReply-To: &lt;kentb@...&gt;\r\nSubject: RE: [junit] Race condition with timeouts\r\nX-Yahoo-Group-Post: member; u=173198504; y=_S8xMbPF4cpsatznHTkF_t6-Pg6mG_GnS5k-_iEe1CjUjmDL\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nOops, sorry about the formatting. I&#39;m afraid you&#39;ll have to go look at the\nJUnit source to read it easily.\n \nRegards,\n \nKent\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nkentb\nSent: Thursday, April 09, 2009 1:53 PM\nTo: junit@yahoogroups.com\nSubject: [junit] Race condition with timeouts\n\n\n\n\n\nAll,\n\nThis is a test of the &quot;with enough eyeballs, all bugs are shallow&quot;\nhypothesis.\n\nI am experiencing a race condition with timeouts. Say I have a test like\nthis:\n\npublic class WaitTooLong {\n@Test(timeout=10) public void ripVanWinkle() throws\nInterruptedException {\nThread.sleep(100);\n}\n}\n\nWhen I run this I get one of two errors, non-deterministically:\n\njava.lang.InterruptedException: sleep interrupted\nat java.lang.Thread.sleep(Native Method)\nat UnpredictableTest.takeTen(UnpredictableTest.java:5)\n...\n\nor\n\njava.lang.Exception: test timed out after 10 milliseconds\nat\norg.junit.internal.runners.statements.FailOnTimeout.evaluate(FailOnTimeout.j\nava:48)\n...\n\nHere&#39;s the relevant code in JUnit (FailOnTimeout):\n\npublic void evaluate() throws Throwable {\nExecutorService service=\nExecutors.newSingleThreadExecutor();\nCallable&lt;Object&gt; callable= new Callable&lt;Object&gt;() {\npublic Object call() throws Exception {\ntry {\nfNext.evaluate();\n} catch (Throwable e) {\nthrow new ExecutionException(e);\n}\nreturn null;\n}\n};\nFuture&lt;Object&gt; result= service.submit(callable);\nservice.shutdown();\ntry {\nboolean terminated=\nservice.awaitTermination(fTimeout, TimeUnit.MILLISECONDS);\nif (!terminated)\nservice.shutdownNow();\nresult.get(0, TimeUnit.MILLISECONDS); // throws the\nexception if one occurred during the invocation\n} catch (TimeoutException e) {\nthrow new Exception(String.format(&quot;test timed out\nafter %d milliseconds&quot;, fTimeout));\n} catch (ExecutionException e) {\nthrow unwrap(e);\n}\n}\n\nIt seems that sometimes the TimeoutException gets thrown and caught and the\nException thrown. Sometimes, though, the InterruptedException that is\nterminating the test-running thread gets thrown/caught first. I&#39;ve stared at\nthis enough minutes to be ready for help.\n\nOne strangeness is that if I run the test programmatically\n(&quot;JUnitCore.runClass(WaitTooLong.class)&quot;) the Exception is always thrown. If\nI run the test with the Eclipse JUnit runner or with JUnit Max, the results\nare non-deterministic.\n\nAny ideas for making this deterministic? I would prefer the second result\nabove, if I can get it.\n\nRegards,\n\nKent Beck\nThree Rivers Institute\n\n\n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 21487, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 21487, 
+    "contentTrasformed": false, 
+    "postDate": "1239310630", 
+    "canDelete": false, 
+    "nextInTopic": 21489, 
+    "prevInTopic": 21487, 
+    "headers": {
+        "inReplyToHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PDAwRTkzNDM2NEI5RDRGMTk4RkFERUZDODY0N0YwMzYyQGtlbnRzcGF2aWxpb24+", 
+        "referencesHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+"
+    }
+}

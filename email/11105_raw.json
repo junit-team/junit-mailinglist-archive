@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11106, 
+    "senderId": "uq5qkqSXbzgcZOPSOTKJfbki9KZjM5Rraysjf6jVmIdguLHZZhl_uAQYTyKOGEEAhgWPEyOoxyOy6WCaQqWHqCK0AE6Usw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit on large scale", 
+    "from": "Steve Freeman &lt;steve@...&gt;", 
+    "authorName": "Steve Freeman", 
+    "msgSnippet": "... If you mean lots of mocks with complicated set up, then I agree there s a problem, but there are other ways to look at it. ... The problem here is not the", 
+    "msgId": 11105, 
+    "rawEmail": "Return-Path: &lt;steve@...&gt;\r\nX-Sender: steve@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 72212 invoked from network); 3 Jun 2004 12:41:51 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m21.grp.scd.yahoo.com with QMQP; 3 Jun 2004 12:41:51 -0000\r\nReceived: from unknown (HELO rs6.luxsci.com) (65.61.162.184)\n  by mta1.grp.scd.yahoo.com with SMTP; 3 Jun 2004 12:41:51 -0000\r\nReceived: from m3p.co.uk ([217.150.124.12])\n\t(authenticated bits=0)\n\tby rs6.luxsci.com (8.12.11/8.12.10) with ESMTP id i53CfjUL021120\n\t(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT)\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 3 Jun 2004 07:41:46 -0500\r\nMessage-ID: &lt;40BF1C86.9080400@...&gt;\r\nDate: Thu, 03 Jun 2004 13:41:42 +0100\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.6b) Gecko/20031208\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;NEBBIKBMILEEMNGFDNNIOEABCMAA.kosullivan@...&gt; &lt;5F36B748-B4A9-11D8-B42A-000A95A547BC@...&gt;\r\nIn-Reply-To: &lt;5F36B748-B4A9-11D8-B42A-000A95A547BC@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 65.61.162.184\r\nFrom: Steve Freeman &lt;steve@...&gt;\r\nSubject: Re: [junit] junit on large scale\r\nX-Yahoo-Group-Post: member; u=30618548\r\nX-Yahoo-Profile: smg_freeman\r\n\r\nMike Clark wrote:\n&gt;&gt;One of the concerns that I (and\n&gt;&gt;developers) have is that we will end up with thousands of test cases, \n&gt;&gt;many\n&gt;&gt;of which will involve using substantial amounts of MockObjects to set \n&gt;&gt;up\n&gt;&gt;test cases and that all this will become too much of an overhead to \n&gt;&gt;manage &\n&gt;&gt;maintain.\n&gt; \n&gt; Substantial amounts of MockObjects raises a red flag for me.  It means \n&gt; that there may be areas where an object needing to be mocked has taken \n&gt; too much control in the system.  I can&#39;t speak to your system of \n&gt; course, but here&#39;s something I see regularly:\n\nIf you mean lots of mocks with complicated set up, then I agree there&#39;s \na problem, but there are other ways to look at it.\n\n&gt; Say we have a method that takes a BigObject and does something with a \n&gt; subset of the data in that object:\n&gt; \n&gt;     public void doSomething(BigObject o) {\n&gt;        String s = o.getStringValue();\n&gt;        int i = o.getIntValue();\n&gt;        // do something with &#39;s&#39; and &#39;i&#39;\n&gt;     }\n&gt; \n&gt; There are several other methods like doSomething() in the system, so \n&gt; the initial reaction is to mock BigObject so that we can pass it into \n&gt; doSomething() and the other methods.  BigObject has a lot of setup \n&gt; involved to put it into a test state, but with some effort we can \n&gt; create a MockBigObject.\n\nThe problem here is not the mocking of BigObject, but the complex setup \nthat requires, because it&#39;s doing too much work or is too tightly \ncoupled, or something. What if BigObject were an interface which would \nmake mocking up trivial?\n\n&gt; But the doSomething() method is really trying to tell us that it \n&gt; doesn&#39;t want a BigObject.  It just wants a String and an int:\n&gt; \n&gt;     public void doSomething(String s, int i) {\n&gt;        // do something with &#39;s&#39; and &#39;i&#39;\n&gt;     }\n&gt; \n&gt; OK, now we only have to initialize a String and an int to pass into \n&gt; doSomething() during the test.  Can we do the same thing with other \n&gt; methods that take a BigObject?  Or do those methods share the need for \n&gt; a subset of data we can package in a SmallerObject?\n\nExtracting subtypes is exactly the right thing to do, normally I&#39;d \nprefer to do this with an interface. I have doubts about unpacking \nindividual fields because that&#39;s a loss of information. The type system \nno longer tells us about the relationships between whatever the string \nand int represent, and I find myself increasingly distrusting the use of \nbasic types in Java.\n\nAgain, once you have an interface, mocking becomes trivial.\n\n&gt; I would suggest mocking as a last resort as often times it&#39;s a band-aid \n &gt; for what the system really wants. I find that if I reach for mocking\n &gt; first, then I miss those design opportunities.\n\nThat makes sense to me only if you&#39;re talking about mocking unpleasant \nexisting featuers. On the other hand, struggling to do so often \nhighlights the dependencies you need to untangle.\n\nS\n\n", 
+    "profile": "smg_freeman", 
+    "topicId": 11060, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30618548, 
+    "prevInTime": 11104, 
+    "contentTrasformed": false, 
+    "postDate": "1086266502", 
+    "canDelete": false, 
+    "nextInTopic": 11133, 
+    "prevInTopic": 11099, 
+    "headers": {
+        "inReplyToHeader": "PDVGMzZCNzQ4LUI0QTktMTFEOC1CNDJBLTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "messageIdInHeader": "PDQwQkYxQzg2LjkwODA0MDBAbTNwLmNvLnVrPg==", 
+        "referencesHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VBQkNNQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPiA8NUYzNkI3NDgtQjRBOS0xMUQ4LUI0MkEtMDAwQTk1QTU0N0JDQGNsYXJrd2FyZS5jb20+"
+    }
+}

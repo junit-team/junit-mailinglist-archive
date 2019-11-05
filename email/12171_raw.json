@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 12172, 
+    "senderId": "P1OyMuGbk_ZzcUtPmVYafbZEXU5iq-fQryhVkoLQwCfyd0SpJ9pSZnXsaIzAefIivlHli1wCMGWunjpj90hfmMQ-_MX9no2qUOUTo_fNNQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Perform something before and after a complete test", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I strongly disagree. Certainly you can. Read on. ... What you re doing here defeats the purpose of one-time setup/teardown. Usually, one does this: public", 
+    "msgId": 12171, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 30339 invoked from network); 21 Oct 2004 19:47:05 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m3.grp.scd.yahoo.com with QMQP; 21 Oct 2004 19:47:05 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta3.grp.scd.yahoo.com with SMTP; 21 Oct 2004 19:47:05 -0000\r\nReceived: from unknown (HELO ?192.168.1.114?) (srainsberger5790@24.156.43.226 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 21 Oct 2004 19:46:28 -0000\r\nMessage-ID: &lt;41781167.1050403@...&gt;\r\nDate: Thu, 21 Oct 2004 15:43:35 -0400\r\nUser-Agent: Mozilla Thunderbird 0.8 (X11/20040913)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cl2h10+q5bh@...&gt;\r\nIn-Reply-To: &lt;cl2h10+q5bh@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.81\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Perform something before and after a complete test\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nhaefeleuser wrote:\n\n&gt; I posted this question half a year ago. The answer that I received\n&gt; was to use a decorator. It works this way. But I cannot execute a\n&gt; test with its decorator in Eclipse. So I cannot use it.\n\nI strongly disagree. Certainly you can. Read on.\n\n&gt; I&#39;ve coded something like this in the main method to solve the\n&gt; problem:\n&gt; TestDecorator myTestSetup = new MyTestSetup(new SupplierArticleTest\n&gt; (&quot;testInitialValidation&quot;));\n&gt; junit.textui.TestRunner.run(myTestSetup);\n\nWhat you&#39;re doing here defeats the purpose of one-time setup/teardown. \nUsually, one does this:\n\npublic class DecoratedTestSuite {\n     public static Test suite() {\n         return new MyTestSetup(new TestSuite(TestCaseToDecorate.class));\n     }\n}\n\nNow MyTestSetup.setUp() executes, then all the tests in \nTestCaseToDecorator, followed at last by MyTestSetup.tearDown(). Is this \nwhat you want?\n\nIf so, then you should be able to right-click DecoratedTestSuite in \nEclipse and run it as JUnit tests, because it has a suite() method.\n\n&lt;pause /&gt;\n\nI just tried it, and it works.\n\n&gt; The most straightforward thing would have been if I had two\n&gt; additional methods in the TestCase: setUpTestCase() and\n&gt; tearDownTestCase(). Both would be called only once, the first, when\n&gt; the test (all test methods in a TestCase) starts and the last when\n&gt; the test ends (all test methods in a TestCase).\n\nThat&#39;s exactly what TestSetup already does, so there&#39;s no need to add \nthat behavior to TestCase.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nPredictable, repeatable, quality delivery\n\n", 
+    "profile": "nails762", 
+    "topicId": 11100, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12170, 
+    "contentTrasformed": false, 
+    "postDate": "1098387815", 
+    "canDelete": false, 
+    "nextInTopic": 12174, 
+    "prevInTopic": 12165, 
+    "headers": {
+        "inReplyToHeader": "PGNsMmgxMCtxNWJoQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxNzgxMTY3LjEwNTA0MDNAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNsMmgxMCtxNWJoQGVHcm91cHMuY29tPg=="
+    }
+}

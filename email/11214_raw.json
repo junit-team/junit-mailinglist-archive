@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 11215, 
+    "senderId": "yxItqmo3nb-rEEF3TI0bG7TZGwRXeArsJwh3o8dUi47rY0TNdc1pA9zS6QvIy66dPzIzJA5pE-7hr-dlEQVQJmqmrHpFtGdBpA", 
+    "systemMessage": false, 
+    "subject": "JUnit tests and common resources", 
+    "from": "&quot;youlian&quot; &lt;julian@...&gt;", 
+    "authorName": "youlian", 
+    "msgSnippet": "Hi, I hope this has a simple answer... My issue is when I write test cases that exercise code that depends on a common resource. There is couple of things, but", 
+    "msgId": 11214, 
+    "rawEmail": "Return-Path: &lt;julian@...&gt;\r\nReceived: (qmail 7634 invoked from network); 17 Jun 2004 23:47:01 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m4.grp.scd.yahoo.com with QMQP; 17 Jun 2004 23:47:01 -0000\r\nReceived: from unknown (HELO n40.grp.scd.yahoo.com) (66.218.66.108)\n  by mta1.grp.scd.yahoo.com with SMTP; 17 Jun 2004 23:47:00 -0000\r\nX-eGroups-Return: julian@...\r\nReceived: from [66.218.66.113] by n40.grp.scd.yahoo.com with NNFMP; 17 Jun 2004 23:46:45 -0000\r\nX-Sender: julian@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 6830 invoked from network); 17 Jun 2004 22:12:50 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m12.grp.scd.yahoo.com with QMQP; 17 Jun 2004 22:12:50 -0000\r\nReceived: from unknown (HELO n30.grp.scd.yahoo.com) (66.218.66.87)\n  by mta2.grp.scd.yahoo.com with SMTP; 17 Jun 2004 22:12:49 -0000\r\nReceived: from [66.218.67.146] by n30.grp.scd.yahoo.com with NNFMP; 17 Jun 2004 22:12:45 -0000\r\nDate: Thu, 17 Jun 2004 22:12:43 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cat50r+3snr@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2410\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.87\r\nFrom: &quot;youlian&quot; &lt;julian@...&gt;\r\nSubject: JUnit tests and common resources\r\nX-Yahoo-Group-Post: member; u=147836653\r\nX-Yahoo-Profile: youlian\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 17 Jun 2004 23:46:44 -0000\r\nX-eGroups-Remote-IP: 66.218.66.108\r\n\r\nHi,\n\nI hope this has a simple answer...\n\nMy issue is when I write test cases that exercise code that depends \non a common resource. There is couple of things, but the simplest \ncase is a serial port.\n\nLets say that I have a class that implements a protocol with a \nhardware device over serial port connection. I would like to develop \na test to verify that the class implements the protocol correctly. \nThis means, that I will have to have the device connected and \noperational when running the test, and that is o.k.\n\nI could mock the serial connection - I understand this, but this is \nnot my intention. I see little value in this for many reasons. I \nwant to test the real thing.\n\nSo, I write a simple test suite and test case. The test case invokes \ndifferent methods - lets say total of three. To simplify, lets say, \nthat those methods each send different command to the device. In \norder to do that each test method will open the comm port, write a \nstring and close it.\n\nSounds simple enough. However, when using JUnit, all these tests \nexecute in parallel and since the resource is shared, all but one \nfail with SerialPortInUseException.\n\nI have read the JUnit Cookbook and undesrstand the reason - JUnit \nvia reflection generates dynamically child classes. For each test \nmethod setUp and tearDown is invoked. The log would look something \nlike this:\n\nsetUp()\nsetUp()\nsetUp()\n...\ntest1()\ntest2()\ntestx()\n...\ntearDown()\ntearDown()\ntearDown()\n\nIf I use setUp() or even testX() to open the connection, I always \nend up in conflict.\n\nThere are two possible workarounds that I can think of:\na/ To have only one testX method from which to call the other tests \nin sequence and in the order I want. That is ugly for many reasons, \nmost of which that I cannot execute individual tests, etc.\nb/ To use a custom TestSetup wrapper in the suite. The problem here \nis that now I have my fixture in the suite, not in the test case \nwhere it belongs. Also, it only partially solves the issue. I will \nresolve the issue with opening the port, however if any of my tests \ndepend on the state of the resource, then I am back to square one.\n\nMy questions are:\nIs there a way to explicitly control the order of execution of test \nmethods within a test case, so to control the access to commonly \nused resources and account for their state? (system ports, JDBC \nconnections, etc.)\n\nIs JUnit the tool for such a job?\n\n\n\n\n\n\n\n", 
+    "profile": "youlian", 
+    "topicId": 11214, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 147836653, 
+    "prevInTime": 11213, 
+    "contentTrasformed": false, 
+    "postDate": "1087510363", 
+    "canDelete": false, 
+    "nextInTopic": 11216, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGNhdDUwciszc25yQGVHcm91cHMuY29tPg=="
+    }
+}

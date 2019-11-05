@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 6678, 
+    "senderId": "IBCUz6HwCPkeukAlGKUmdsTSwa93r3WbylHDVRnVJxrPQriZxtLzzwouYP-zX47C2nhyBgnziRAsh2-oZQBzp-T3bzaf1jYTx_XEY1MJJDqYJ9-u--RSZv1RB1Q", 
+    "systemMessage": false, 
+    "subject": "tearDown() even if setUp() throws unexpected exception?", 
+    "from": "&quot;Paul Holser &lt;pholser@...&gt;&quot; &lt;pholser@...&gt;", 
+    "authorName": "Paul Holser &lt;pholser@yahoo.com&gt;", 
+    "msgSnippet": "... import java.sql.*; import junit.framework.*; public class FooTest extends TestCase { private Connection dbConnection; private Foo aFoo; protected void", 
+    "msgId": 6677, 
+    "rawEmail": "Return-Path: &lt;pholser@...&gt;\r\nX-Sender: pholser@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 21 Jan 2003 18:09:26 -0000\r\nReceived: (qmail 81032 invoked from network); 21 Jan 2003 18:09:25 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m9.grp.scd.yahoo.com with QMQP; 21 Jan 2003 18:09:25 -0000\r\nReceived: from unknown (HELO n18.grp.scd.yahoo.com) (66.218.66.73)\n  by mta2.grp.scd.yahoo.com with SMTP; 21 Jan 2003 18:09:26 -0000\r\nReceived: from [66.218.67.180] by n18.grp.scd.yahoo.com with NNFMP; 21 Jan 2003 18:09:25 -0000\r\nDate: Tue, 21 Jan 2003 18:09:23 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: tearDown() even if setUp() throws unexpected exception?\r\nMessage-ID: &lt;b0k2cj+9r8o@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1252\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;Paul Holser &lt;pholser@...&gt;&quot; &lt;pholser@...&gt;\r\nX-Yahoo-Group-Post: member; u=66805313\r\nX-Yahoo-Profile: pholser\r\n\r\nimagine the following test class:\n\n---\nimport java.sql.*;\nimport junit.framework.*;\n\npublic class FooTest extends TestCase {\n  private Connection dbConnection;\n  private Foo aFoo;\n\n  protected void setUp() throws Exception {\n    this.dbConnection = getConnection();  // from somewhere\n    this.aFoo = new Foo( 23 );  // could throw an exception\n  }\n\n  protected void tearDown() throws Exception {\n    try {\n      dbConnection.close();\n    }\n    finally {\n      super.tearDown();\n    }\n  }\n\n  // test methods here...\n}\n---\n\nif Foo&#39;s ctor starts throwing exceptions, all of a sudden the test \nclass is leaking connections, since tearDown() is not called if setUp\n() throws an unexpected exception.\n\nshould the developer exercise extra caution in such circumstances, \nperhaps by wrapping the remainder of the fixture set up thusly:\n\n  try {\n    // remainder of set up\n  }\n  catch ( Exception ex ) {\n    dbConnection.close();\n    throw ex;\n  }\n\nor, subclass TestCase and override runBare() to call setUp() in the \nsame try block as runTest()?\n\nhow best to handle this situation?  (let&#39;s suppose for the sake of \nargument that i&#39;m doing functional testing against a real DBMS and am \nthus not mocking the connection.)\n\nthanks for your guidance.\n\ncheers,\np\n\n\n\n", 
+    "profile": "pholser", 
+    "topicId": 6677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 66805313, 
+    "prevInTime": 6676, 
+    "contentTrasformed": false, 
+    "postDate": "1043172563", 
+    "canDelete": false, 
+    "nextInTopic": 6678, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGIwazJjais5cjhvQGVHcm91cHMuY29tPg=="
+    }
+}

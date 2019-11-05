@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 15704, 
+    "senderId": "Urj7aZz0hNcc1O4mJ7O06zGFLXvDZxLzkBcylzpMFgt3l_CLwIFS05tzkM2KUn4YZkWGbVI_V9t8u3szYX22Ygx23ZudNE7Ar2CpMxNRDw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Class.getClassLoader().getResourceAsStream() fails in GUI test runners?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... What type is this ? Foo? Try this: foo = new Foo(Foo.class, some/path ) Once you do this 3 times, refactor to a named constructor: foo =", 
+    "msgId": 15703, 
+    "profile": "nails762", 
+    "topicId": 15698, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-573513484\">jason r tibbetts wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m trying to test a class that loads a properties file in a special<br/>\n&gt; way. Because this class can be used in servlets (where<br/>\n&gt; this.getClass().getResourceAsStream() doesn&#39;t work, because of<br/>\n&gt; classloader issues) as well as in ordinary contexts, it takes a Class<br/>\n&gt; argument in its constructor. This Class&#39;s class loader is used to get<br/>\n&gt; the resource, as in<br/>\n&gt; <br/>\n&gt;    public Foo(Class cls, String propFilePath) {<br/>\n&gt;      ClassLoader loader = cls.getClassLoader();<br/>\n&gt;      InputStream in = loader.getResourceAsStream(propFilePath);<br/>\n&gt;    }<br/>\n&gt; <br/>\n&gt; It&#39;s usually sufficient for the caller to simply pass in<br/>\n&gt; this.getClass(). It&#39;s sufficient enough for the TestCase that tests it,<br/>\n&gt; anyway, /except/ when the test is run in the GUI TestRunner, or in code<br/>\n&gt; coverage tools like jcoverage and EMMA. In all three cases, the tests<br/>\n&gt; fail because the loader.getResourceAsStream() call returns null. The<br/>\n&gt; TestCase&#39;s setUp() constructs the Foo by passing in the TestCase&#39;s own<br/>\n&gt; class, as in:<br/>\n&gt; <br/>\n&gt;    foo = new Foo(this.getClass(), &quot;some/path&quot;);<br/>\n&gt; <br/>\n&gt; Other tests that load properties (in the usual way, via<br/>\n&gt; this.getClass.getResourceAsStream()) work just fine in all scenarios.<br/>\n&gt; <br/>\n&gt; I&#39;ve read the JUnit FAQ, mailing list archives, J.B.&#39;s book, the<br/>\n&gt; jcoverage and EMMA docs, etc., all to no avail. I know that the JUnit<br/>\n&gt; GUI test runners do use a custom classloader, but the custom<br/>\n&gt; functionality in that classloader don&#39;t appear to be relevant here. Nor<br/>\n&gt; do I want to add Foo&#39;s package to the excluded.properties, because<br/>\n&gt; that&#39;s a package that I&#39;m actively testing.<br/>\n<br/>\n </span></blockquote>What type is &#39;this&#39;? Foo? Try this:<br/>\n<br/>\nfoo = new Foo(Foo.class, &quot;some/path&quot;)<br/>\n<br/>\nOnce you do this 3 times, refactor to a named constructor:<br/>\n<br/>\nfoo = Foo.forPath(&quot;some/path&quot;);<br/>\n<br/>\nstatic Foo forPath(String path) {<br/>\n     return new Foo(Foo.class, path);<br/>\n}<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 15702, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1134706350", 
+    "canDelete": false, 
+    "nextInTopic": 15705, 
+    "prevInTopic": 15698, 
+    "headers": {
+        "inReplyToHeader": "PDQzQTE4NzZBLjEwNTA2MDNAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDQzQTIzRUFFLjkwNDAxMDJAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDQzQTE4NzZBLjEwNTA2MDNAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 7272, 
+    "senderId": "Efe-DnMLiXI_MvRPTFswiIRQhpRgFj9TqBIIt-yGGOAZ9HUiXWzbeacCq9b4AGvlsZsrlZjzHlXJ5Zq4UkC5ee-Q7phhoSRX-zwfqpq_V4IYC6MEPI23", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit Design?", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... my reply will not be so long... ... the cook s tour in the JUnit doc explains how the framework matured.  If you look at the whole picture, the framework", 
+    "msgId": 7271, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 20 Mar 2003 01:25:53 -0000\r\nReceived: (qmail 97923 invoked from network); 20 Mar 2003 01:25:51 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m3.grp.scd.yahoo.com with QMQP; 20 Mar 2003 01:25:51 -0000\r\nReceived: from unknown (HELO unet.scdi.org) (66.93.79.215)\n  by mta1.grp.scd.yahoo.com with SMTP; 20 Mar 2003 01:25:51 -0000\r\nReceived: from unet.scdi.org (localhost [127.0.0.1])\n\tby unet.scdi.org (8.12.3/8.12.3/Debian-5) with ESMTP id h2K1PlEo007238\n\t(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO)\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 19 Mar 2003 17:25:47 -0800\r\nReceived: (from www-data@localhost)\n\tby unet.scdi.org (8.12.3/8.12.3/Debian-5) id h2K1Pl2c007236\n\tfor junit@yahoogroups.com; Wed, 19 Mar 2003 17:25:47 -0800\r\nX-Authentication-Warning: unet.scdi.org: www-data set sender to vladimir@... using -f\r\nReceived: from 63.161.242.34 ( [63.161.242.34])\n\tas user vbossica@localhost by mail.scdi.org with HTTP;\n\tWed, 19 Mar 2003 17:25:46 -0800\r\nMessage-ID: &lt;1048123546.3e79189ab1e06@...&gt;\r\nDate: Wed, 19 Mar 2003 17:25:46 -0800\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] JUnit Design?\r\nReferences: &lt;3E7907EA.BD38EC4B@...&gt;\r\nIn-Reply-To: &lt;3E7907EA.BD38EC4B@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nUser-Agent: Internet Messaging Program (IMP) 3.0\r\nX-Spam-Status: No\r\nX-Scanned-By: MIMEDefang 2.21 (www . roaringpenguin . com / mimedefang)\r\nFrom: &quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;\r\nX-Yahoo-Group-Post: member; u=43178095\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; (lengthy, philosophical, article-length)\n\nmy reply will not be so long...\n\n&gt; Conceptual Underpinnings\n&gt; ------------------------\n&gt; \n&gt; So if SuiteRunner seems to be more intuitive in this\n&gt; respect, it makes me wonder what it is that motivated\n&gt; JUnit&#39;s current architecture?\n\nthe &quot;cook&#39;s tour&quot; in the JUnit doc explains how the framework matured.  If you\nlook at the whole picture, the framework can be quite complicated but if you\nstart from the beginning and add one feature at a time, things become clearer.\n\nJUnit was designed to not need a runner to execute the tests (and this\ninfluenced the design with the TestResult).  But today everyone uses a runner so\nthe design of a new framework (SuiteRunner) would most likely be different.\n\n&gt; Test Sequencing\n&gt; ---------------\n&gt;\n&gt; But it&#39;s clear that a lot of thought went into JUnit&#39;s design.\n&gt; So what is it that makes &quot;sequential tests&quot; undesirable?\n\nif every test share the same resources, you can potentially have some very\ntricky problems:\n\n   your testA screws up one field of your suite\n   testB.... testY run perfectly\n   testZ fails\n\nit can be really difficult to discover that testZ was failing because of testA.\n\n&gt; Assertion Syntax\n&gt; ----------------\n&gt; \n&gt; I&#39;m not very fond of that, actually, because it&#39;s not as\n&gt;\n&gt; But where JUnit provides a bevy of assertion statements:\n&gt;   * assertTrue\n&gt;   * ...\n&gt;   * failNotEquals(Object, Object)\n&gt; \n&gt; SuiteRunner chose to implement only a few:\n&gt;     verify(x)\n&gt;     fail\n&gt; \n&gt; In general, I&#39;m in favor of that simplification. I don&#39;t\n&gt; see any compelling need to specify:\n&gt;     assertEquals(x,y)\n&gt; \n&gt; rather than\n&gt;     verify(x == y)\n\nAfter speaking with Bill, I think that it depends on the developer.  I\npersonally don&#39;t like when a test fails and don&#39;t give me any clue about what\nwent wrong.  Simple example:  verify(myVector.contains(myObject)) [or\nassertTrue(myVector.contains(myObject))] doesn&#39;t give you any clue about what&#39;s\nin the vector.  You find yourself writing some System.out to discover what&#39;s in\nthe vector.\n\nI prefer to have some clues about what&#39;s going on so I like to have plenty of\nadditional assert methods and classes for my tests (see JUnit-addons and you&#39;ll\nunderstand).  For example, I just wrote yesterday a ListAssert class to deal\nwith the problem.\n\nFor the famous rainbow example:\n\n  ListAssert.assertContains(rainbow, Color.orange) returns, if it fails \n\n  &quot;&lt;expect containing &lt;orange&gt; in &lt;blue, yellow, red, green [...]&gt;&quot;\n\nand I can tell you that it saved my day today.\n\nThe answer was in fact quite short. :-)\n\n-Vladimir\n\n-- \nVladimir R. Bossicard\nwww.bossicard.com\n\n", 
+    "profile": "vbossica", 
+    "topicId": 7266, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "prevInTime": 7270, 
+    "contentTrasformed": false, 
+    "postDate": "1048123546", 
+    "canDelete": false, 
+    "nextInTopic": 7275, 
+    "prevInTopic": 7266, 
+    "headers": {
+        "inReplyToHeader": "PDNFNzkwN0VBLkJEMzhFQzRCQHN1bi5jb20+", 
+        "messageIdInHeader": "PDEwNDgxMjM1NDYuM2U3OTE4OWFiMWUwNkBtYWlsLnNjZGkub3JnPg==", 
+        "referencesHeader": "PDNFNzkwN0VBLkJEMzhFQzRCQHN1bi5jb20+"
+    }
+}

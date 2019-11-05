@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 7244, 
+    "senderId": "8uL4lr8GtPBbx_sFy_gtsIPNB4xF0sQXmmLzBdks46PYxNCyK4goufimmnwiizeUDa3g6xeKq0Ia3WHyMhe6Rlok3xzBuqteI0HVuDol", 
+    "systemMessage": false, 
+    "subject": "Memory Leak in JUnit?", 
+    "from": "Eric Armstrong &lt;eric.armstrong@...&gt;", 
+    "authorName": "Eric Armstrong", 
+    "msgSnippet": "My test suite was running out of memory after 6 or 7 tests. I m doing a lot of nio channel opens and closes, so I thought either my app or nio had a memory", 
+    "msgId": 7243, 
+    "rawEmail": "Return-Path: &lt;eric.armstrong@...&gt;\r\nX-Sender: eric.armstrong@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_1); 18 Mar 2003 21:18:12 -0000\r\nReceived: (qmail 59674 invoked from network); 18 Mar 2003 21:18:12 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m14.grp.scd.yahoo.com with QMQP; 18 Mar 2003 21:18:12 -0000\r\nReceived: from unknown (HELO nwkea-mail-2.sun.com) (192.18.42.14)\n  by mta1.grp.scd.yahoo.com with SMTP; 18 Mar 2003 21:18:12 -0000\r\nReceived: from ha1sca-mail1.SFBay.Sun.COM ([129.145.155.51])\n\tby nwkea-mail-2.sun.com (8.9.3+Sun/8.9.3) with ESMTP id NAA03381\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 18 Mar 2003 13:18:11 -0800 (PST)\r\nReceived: from sun.com (d-usca14-129-126 [129.145.129.126])\n\tby ha1sca-mail1.SFBay.Sun.COM (8.11.6+Sun/8.10.2/ENSMAIL,v2.1p1) with ESMTP id h2ILIBr24341\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 18 Mar 2003 13:18:11 -0800 (PST)\r\nMessage-ID: &lt;3E778D12.240C6F4F@...&gt;\r\nDate: Tue, 18 Mar 2003 13:18:10 -0800\r\nX-Mailer: Mozilla 4.8 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: JUnit &lt;junit@yahoogroups.com&gt;\r\nSubject: Memory Leak in JUnit?\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Eric Armstrong &lt;eric.armstrong@...&gt;\r\nX-Yahoo-Group-Post: member; u=78994084\r\nX-Yahoo-Profile: ericsilverlight\r\n\r\nMy test suite was running out of memory after\n6 or 7 tests. I&#39;m doing a lot of nio channel\nopens and closes, so I thought either my app or nio\nhad a memory leak. OptimizeIt showed that char[]&#39;s \nwere consuming a ton of memory (1900 allocated, about \nhalf that freed, consuming 139,425 KB).\n\n  Note:\n  It turned out that my IDE settings was compiling with\n  &quot;-target 1.3&quot;. Changing the target to 1.4, cut the \n  char[] count is down to 452, with 116 freed. Still not\n  great, but a lot better.\n\nTracing the allocation chain in the original version \n(targeted at 1.3) showed this distribution of allocations:\n %   in\n---  ------ \n44%  junit.textui.ResultPrinter.elapsedTimeAsString()\n2.5% junit.textui.ResultPrinter.printeDefect()\n2.5% junit.textui.TestRunner.createTestResult()\n2.0% junit.textui.TestRunner.junit.textui.TestRunner()\n     (huh????)\n\nSimilarly, out of 1624 strings allocated, for 80K,\n51% were in junit.textui.ResultPrinter.elapsedTimeAsString()\n(the numbers are probably related)\n\nUnfortunately, the percentages refer to instance counts,\nrather than amount of memory, so it&#39;s not possible to be\ntotally specific as to where the memory is going.\n\nInspection of the results shows that the elapsedTimeAsString\nstrings are hanging around in droves, anywhere from 2 to 32\nchars long. (mostly 2, as far as I can tell).\n\nSo I modified the main() method to create an instance\nof the test and invoke each of the test methods. That cut\nthe char[] instances down to 410, with 372 freed, for a\ntotal of 188,445 K. (Running that version with target=1.4\nresulted in 288 allocated, 75 freed.\n\nHere is a table showing allocated/freed:\n\n    MAIN: Invoke            Invoke Test\nTARGET    TestRunner.run()  Methods Directly\n------    ----------------  ----------------\n  1.3        1900/800           410/372\n  1.4         452/116            288/75\n\n", 
+    "profile": "ericsilverlight", 
+    "topicId": 7243, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78994084, 
+    "prevInTime": 7242, 
+    "contentTrasformed": false, 
+    "postDate": "1048022290", 
+    "canDelete": false, 
+    "nextInTopic": 7247, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNFNzc4RDEyLjI0MEM2RjRGQHN1bi5jb20+"
+    }
+}

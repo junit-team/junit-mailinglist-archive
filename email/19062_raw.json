@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 19063, 
+    "senderId": "9-sy7OmgJHR__XOWqPLT5Sr7zPVbkViOp6g5c5mvFx50NDNbIP9JbcIBlEY_FJuXVrUpJWs1RAwG-a3xnWUxIcL2IGE9R7s", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Ignore without recompile?", 
+    "from": "&quot;Wayne Fay&quot; &lt;waynefay@...&gt;", 
+    "authorName": "Wayne Fay", 
+    "msgSnippet": "Ideally you would have some separation of concerns in your code and tests such that the tests which interact with your database have a common attribute (all", 
+    "msgId": 19062, 
+    "rawEmail": "Return-Path: &lt;waynefay@...&gt;\r\nReceived: (qmail 41858 invoked from network); 7 Mar 2007 23:46:25 -0000\r\nReceived: from unknown (66.218.67.36)\n  by m45.grp.scd.yahoo.com with QMQP; 7 Mar 2007 23:46:25 -0000\r\nReceived: from unknown (HELO n22a.bullet.scd.yahoo.com) (66.94.237.51)\n  by mta10.grp.scd.yahoo.com with SMTP; 7 Mar 2007 23:46:25 -0000\r\nReceived: from [209.73.164.86] by n22.bullet.scd.yahoo.com with NNFMP; 07 Mar 2007 23:46:21 -0000\r\nReceived: from [66.218.66.75] by t8.bullet.scd.yahoo.com with NNFMP; 07 Mar 2007 23:46:21 -0000\r\nX-Sender: waynefay@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 79809 invoked from network); 7 Mar 2007 15:29:27 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m36.grp.scd.yahoo.com with QMQP; 7 Mar 2007 15:29:27 -0000\r\nReceived: from unknown (HELO ug-out-1314.google.com) (66.249.92.174)\n  by mta5.grp.scd.yahoo.com with SMTP; 7 Mar 2007 15:29:26 -0000\r\nReceived: by ug-out-1314.google.com with SMTP id y2so670933uge\n        for &lt;junit@yahoogroups.com&gt;; Wed, 07 Mar 2007 07:13:17 -0800 (PST)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;\n        b=Ij0CsjGttGmU17aW1q4EK7iKUrbZUtvG9f+jGwTiUgpUSp8038sRyymVrzs0atrV7u4/99ynA4Br6lYCkXGM04dpVHGGY1KtEpQr7r0c4IMn7sO2UzQjfL0ySXHFIK7KEOirUMJPeUO04+7Pmg+UW0rgKVMFblm793B7qgleBk0=\r\nReceived: by 10.115.60.1 with SMTP id n1mr2207960wak.1173280397160;\n        Wed, 07 Mar 2007 07:13:17 -0800 (PST)\r\nReceived: by 10.114.158.3 with HTTP; Wed, 7 Mar 2007 07:13:17 -0800 (PST)\r\nMessage-ID: &lt;52bab8690703070713u3209b73bp3ac4a1b491c48b60@...&gt;\r\nDate: Wed, 7 Mar 2007 09:13:17 -0600\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;eslv3f+jtk9@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;eslv3f+jtk9@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Wayne Fay&quot; &lt;waynefay@...&gt;\r\nSubject: Re: [junit] Ignore without recompile?\r\nX-Yahoo-Group-Post: member; u=223563202; y=BLbusX0xxBMX-BGoH9la9q7mkZ_TJmkfEO-swkOWvh5CV-Ou\r\nX-Yahoo-Profile: jaeger321\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 07 Mar 2007 23:46:20 -0000\r\n\r\nIdeally you would have some separation of concerns in your code and\ntests such that the tests which interact with your database have a\ncommon attribute (all named Db....Test.java, or all are located in\n**/db/**.java) which you could use in your FileSet to specify which\ntests to run.\n\nWithout this separation, it certainly makes grouping tests like you&#39;re\ntrying to do much more complicated. (TestNG has more &quot;test grouping&quot;\nfeatures so you may want to look into it.)\n\nAs for automating the testing, I&#39;d suggest that you look into a real\nContinuous Integration server like CruiseControl or Continuum. Cron is\ngreat for simple stuff but most people benefit from real CI.\n\nWayne\n\nOn 3/7/07, niklassaers &lt;niklassaers@...&gt; wrote:\n&gt; Hi guys,\n&gt; for our project me and a friend are using JUnit heavily. Our\n&gt; application is a client that collects data and a backend that\n&gt; organizes and analyses it. Lately we have started to use JUnit tests\n&gt; to ensure that our database is sane, and these tests take quite a\n&gt; while. Now, I don&#39;t actually need to know that the database is still\n&gt; sane every time I recompile, so I&#39;d like to ignore them. But adding\n&gt; and removing @Ignore&#39;s will fill up our CVS repo quickly. Besides,\n&gt; I&#39;ve also set up a box to run tests from cron, and I&#39;d like to i.e. do\n&gt; most tests every 15 minutes (gives me a nice little pop-up when\n&gt; something breaks) and only run the DB sanity every four hours. How can\n&gt; I make a testing schedule? Should I do this through ANT? Can I make a\n&gt; property-file for JUnit that checks if a certain time has elapsed? At\n&gt; the moment my fileset is just &lt;include name=&quot;**/test/**/*.java&quot;/&gt;  I\n&gt; hope I don&#39;t have to make individual ant targets and list the files\n&gt; manually! :-) What are my options?\n&gt;\n&gt; Cheers\n&gt;\n&gt;   Nik\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "jaeger321", 
+    "topicId": 19047, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 223563202, 
+    "prevInTime": 19061, 
+    "contentTrasformed": false, 
+    "postDate": "1173280397", 
+    "canDelete": false, 
+    "nextInTopic": 19065, 
+    "prevInTopic": 19055, 
+    "headers": {
+        "inReplyToHeader": "PGVzbHYzZitqdGs5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDUyYmFiODY5MDcwMzA3MDcxM3UzMjA5YjczYnAzYWM0YTFiNDkxYzQ4YjYwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVzbHYzZitqdGs5QGVHcm91cHMuY29tPg=="
+    }
+}

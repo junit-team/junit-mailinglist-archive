@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 20309, 
+    "senderId": "VumWQ1cWqQnfXLE1RsbLPaYMp3K4RKrKz4J6zcBmroeo2sgpVVdZzEKW6urAwO8VjNLMGhLkP_7e7G4iz_tahmO9HpVqHC0qzGrX86Tq-23b", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing a listener", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... You have already received some answers, but here is a summary of the technique I use. I like to check that the event source is generating the right events ", 
+    "msgId": 20308, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 21019 invoked from network); 11 Feb 2008 19:35:44 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m50.grp.scd.yahoo.com with QMQP; 11 Feb 2008 19:35:44 -0000\r\nX-Received: from unknown (HELO ti-out-0910.google.com) (209.85.142.186)\n  by mta17.grp.scd.yahoo.com with SMTP; 11 Feb 2008 19:35:44 -0000\r\nX-Received: by ti-out-0910.google.com with SMTP id y6so364930tia.13\n        for &lt;junit@yahoogroups.com&gt;; Mon, 11 Feb 2008 11:35:43 -0800 (PST)\r\nX-Received: by 10.150.216.8 with SMTP id o8mr125127ybg.138.1202758542035;\n        Mon, 11 Feb 2008 11:35:42 -0800 (PST)\r\nReturn-Path: &lt;jbrains762@...&gt;\r\nX-Received: from ?192.168.16.101? ( [64.93.98.176])\n        by mx.google.com with ESMTPS id e17sm14915325qbe.1.2008.02.11.11.35.40\n        (version=TLSv1/SSLv3 cipher=OTHER);\n        Mon, 11 Feb 2008 11:35:40 -0800 (PST)\r\nMessage-Id: &lt;EA3D0DE8-00CB-4C0A-A368-985E0563089C@...&gt;\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;27a624370802021337k131a318es18d9c550bc52d0df@...&gt;\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes\r\nContent-Transfer-Encoding: 7bit\r\nMime-Version: 1.0 (Apple Message framework v915)\r\nDate: Mon, 11 Feb 2008 13:35:38 -0600\r\nReferences: &lt;27a624370802021337k131a318es18d9c550bc52d0df@...&gt;\r\nX-Mailer: Apple Mail (2.915)\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\nSubject: Re: [junit] Testing a listener\r\nX-Yahoo-Group-Post: member; u=282027414; y=SZnGerr3Qs5QawGxpKcUf88m-qPV5S5jwxmf7YRIkiXCc2E\r\nX-Yahoo-Profile: nails762\r\n\r\nOn Feb 2, 2008, at 15:37 , Jason Davis wrote:\n&gt; I am trying to test a parser class I wrote. In my test method I\n&gt; invoke the parser method I want to test with\n&gt; a string of data. However , the method returns nothing. Its result is\n&gt; sent to a listener. How can I test this method\n&gt; based on the results it sends to the listener. I hope this makes  \n&gt; sense :s\n&gt;\nYou have already received some answers, but here is a summary of the  \ntechnique I use.\n\nI like to check that the event source is generating the right events  \nat the right times by attaching a mock Listener and intercepting  \nmethod calls. In the case of an XML SAX-style parser, you might have a  \ntest like this pseudo-Java test:\n\ntestBeginTag:\n     mock = mock(ParserListener.class);\n     parser = Parser.withListener(mock.proxy());\n\n     mock.expects(once()).method(&quot;handleEvent&quot;).with(eq(new  \nBeginTagEvent(&quot;html&quot;)));\n\n     parser.parse(&quot;&lt;html&gt;&quot;);\n\nThese tests help me know whether Parser sends the right event at the  \nright time. I might have one more test for multiple listeners:\n\ntestMultipleListeners:\n     mocks = [mock(ParserListener.class), mock(ParserListener.class),  \nmock(ParserListener.class)]\n     parser = Parser.withManyListeners(mocks.collect { |each|  \neach.proxy() })\n     event = new Event();\n\n     mocks.each { |each|  \neach.expects(once()).method(&quot;handleEvent&quot;).with(same(event))) }\n\n     parser.notifyAll(event);\n\nThis test helps me know the mechanics of notifying listeners works.\n\nFinally, there is no &quot;testing the listener&quot;: the listener is just a  \nJava class, so there&#39;s nothing special you need to do to test it. Just  \ninvoke its handleEvent() method with various event objects and check  \nwhat it does. I usually design my listeners as simple delegates to  \nmore model-like classes, so that handleEvent() acts as a Mediator.\n\nI hope this helps.\n----\nJ. B. (Joe) Rainsberger :: http://www.jbrains.ca\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contributions to Agile Software Practice\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 20278, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "prevInTime": 20307, 
+    "contentTrasformed": false, 
+    "postDate": "1202758538", 
+    "canDelete": false, 
+    "nextInTopic": 20708, 
+    "prevInTopic": 20307, 
+    "headers": {
+        "inReplyToHeader": "PDI3YTYyNDM3MDgwMjAyMTMzN2sxMzFhMzE4ZXMxOGQ5YzU1MGJjNTJkMGRmQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PEVBM0QwREU4LTAwQ0ItNEMwQS1BMzY4LTk4NUUwNTYzMDg5Q0BnbWFpbC5jb20+", 
+        "referencesHeader": "PDI3YTYyNDM3MDgwMjAyMTMzN2sxMzFhMzE4ZXMxOGQ5YzU1MGJjNTJkMGRmQG1haWwuZ21haWwuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11141, 
+    "senderId": "rkVi9Wj_0zRX1hbi7GZSn-6fDZ41-A5rAL5TWuZ8OjJOLP28QyFQTZ1EJBRI-jSdQNMrtb_0AJz1wkOqFZuhr5q5t8rBLrfkM1utZOakQA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit on large scale", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... However, in this particular example, doSomething() displays some pretty strong Feature Envy and probably ought to be moved to BigObject itself, which may", 
+    "msgId": 11140, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 16511 invoked from network); 7 Jun 2004 19:34:10 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m20.grp.scd.yahoo.com with QMQP; 7 Jun 2004 19:34:10 -0000\r\nReceived: from unknown (HELO fep04-mail.bloor.is.net.cable.rogers.com) (66.185.86.74)\n  by mta3.grp.scd.yahoo.com with SMTP; 7 Jun 2004 19:34:10 -0000\r\nReceived: from [192.168.1.112] ([24.156.43.226])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040607144446.BMXM63200.fep02-mail.bloor.is.net.cable.rogers.com@[192.168.1.112]&gt;\n          for &lt;junit@yahoogroups.com&gt;; Mon, 7 Jun 2004 10:44:46 -0400\r\nMessage-ID: &lt;40C47FD6.6020907@...&gt;\r\nDate: Mon, 07 Jun 2004 10:46:46 -0400\r\nUser-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;NEBBIKBMILEEMNGFDNNIOEABCMAA.kosullivan@...&gt; &lt;5F36B748-B4A9-11D8-B42A-000A95A547BC@...&gt; &lt;Pine.NEB.4.58.0406071247230.448@...&gt; &lt;D84F09E0-B88E-11D8-A734-000A95A547BC@...&gt;\r\nIn-Reply-To: &lt;D84F09E0-B88E-11D8-A734-000A95A547BC@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Mon, 7 Jun 2004 10:44:46 -0400\r\nX-eGroups-Remote-IP: 66.185.86.74\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] junit on large scale\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nMike Clark wrote:\n\n&gt; \n&gt; On Jun 6, 2004, at 9:53 PM, Curt Sampson wrote:\n&gt; \n&gt;  &gt; It seems to me little effort at all to create an appropriate\n&gt;  &gt; MockBigObject, if you set up your system right. Let&#39;s say your\n&gt;  &gt; doSomething looks like this:\n&gt;  &gt;\n&gt;  &gt;     public void doSomething(BigObject biggie) {\n&gt;  &gt;       String s = biggie.getStringValue();\n&gt;  &gt;       int i = biggie.getIntValue();\n&gt;  &gt;       if (s == null && i == 0)\n&gt;  &gt;           biggie.setResult(true);\n&gt;  &gt;       else\n&gt;  &gt;           biggie.setResult(false);\n&gt;  &gt;     }\n&gt;  &gt;\n&gt;  &gt; Test it with:\n&gt;  &gt;\n&gt;  &gt;     BigObject mock = new BigObject() {\n&gt;  &gt;       public String getStringValue() {\n&gt;  &gt;           return null;\n&gt;  &gt;       }\n&gt;  &gt;       public int getIntValue() {\n&gt;  &gt;           return 0;\n&gt;  &gt;       }\n&gt;  &gt;       public void setResult(boolean result) {\n&gt;  &gt;           assertTrue(result);\n&gt;  &gt;       }\n&gt;  &gt;     }\n&gt;  &gt;     objectUnderTest.doSomething(mock);\n&gt; \n&gt; Yes, I agree that this can be a powerful and effective mocking\n&gt; technique.\n&gt; \n&gt; Sometimes I find it&#39;s just too easy to create a mock.  I want to first\n&gt; answer the question: &quot;Does this method need to take BigObject as a\n&gt; parameter?&quot;  If the answer is yes, then answer: &quot;How do I mock\n&gt; BigObject?&quot;  I have to force myself to ask the first question; the\n&gt; second question seems to want to be the first question.\n\nHowever, in this particular example, doSomething() displays some pretty \nstrong Feature Envy and probably ought to be moved to BigObject itself, \nwhich may remove the need for a mock. :)\n\n&gt;  &gt; The secret to mocking, IMHO, is to make mocks that do the bare minimum\n&gt;  &gt; necessary to test the functionality in question, rather than trying to\n&gt;  &gt; make ones that actually look or act anything like the real object.\n&gt; \n&gt; Great point!\n\nThis is why I like jMock (dynamic mocks in general): it forces me to \nthink about request/response pairs, rather than the logic I need to get \nthe right response to the right request. All return values are hardcoded.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11060, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11139, 
+    "contentTrasformed": false, 
+    "postDate": "1086619606", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 11136, 
+    "headers": {
+        "inReplyToHeader": "PEQ4NEYwOUUwLUI4OEUtMTFEOC1BNzM0LTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "messageIdInHeader": "PDQwQzQ3RkQ2LjYwMjA5MDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VBQkNNQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPiA8NUYzNkI3NDgtQjRBOS0xMUQ4LUI0MkEtMDAwQTk1QTU0N0JDQGNsYXJrd2FyZS5jb20+IDxQaW5lLk5FQi40LjU4LjA0MDYwNzEyNDcyMzAuNDQ4QGFuZ2VsaWMtdnRmdy5jdnBuLmN5bmljLm5ldD4gPEQ4NEYwOUUwLUI4OEUtMTFEOC1BNzM0LTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg=="
+    }
+}

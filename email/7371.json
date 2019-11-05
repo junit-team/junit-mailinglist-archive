@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 7372, 
+    "senderId": "_Rie5eWk8dAosMSBCUZI63o9ST73lQT-bu0OTdXi34a29d2kZo0_KOdu5nsnkx54Ol9knKVWWdGaCCyjP9LG6cV-Ki-hU7y0Y_yIDG8cT94", 
+    "systemMessage": false, 
+    "subject": "Re: JUnit Design?", 
+    "from": "&quot;roger_k_white&quot; &lt;roger_k_white@...&gt;", 
+    "authorName": "roger_k_white", 
+    "msgSnippet": "... close ... I think the way to do this within the JUnit framework is to use the TestSuite to group tests.  Looks something like this: public class DBTestCase", 
+    "msgId": 7371, 
+    "profile": "roger_k_white", 
+    "topicId": 7266, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78198439, 
+    "messageBody": "<div id=\"ygrps-yiv-962703846\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Bill Venners &lt;bv@a...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; One significant difference between the static member approach to  <br/>\n&gt; fixture sharing in JUnit and SuiteRunner is that I know how to <br/>\n </span></blockquote>close  <br/>\n<blockquote><span title=\"ireply\"> &gt; the connection when I&#39;m done in SuiteRunner, but not in JUnit. If  <br/>\n&gt; anyone has a way to do that, please reply.<br/>\n<br/>\n </span></blockquote>I think the way to do this within the JUnit framework is to use the <br/>\nTestSuite to group tests.  Looks something like this:<br/>\n<br/>\npublic class DBTestCase extends TestCase {<br/>\n    String connectString<br/>\n    DB_Connection connection;<br/>\n    <br/>\n    DBTestCase(String name, String connectIn) {<br/>\n        super(name);<br/>\n        connectString = connectIn;<br/>\n    }<br/>\n    protected void setUp() {<br/>\n        // open connection<br/>\n    }<br/>\n    protected void tearDown() {<br/>\n        // close connection<br/>\n    }<br/>\n    protected void runTest(){<br/>\n        // grab all public methods starting with &quot;test&quot;<br/>\n        TestSuite allDBTests = new TestSuite(getClass());<br/>\n        allDBTests.run();<br/>\n    }         <br/>\n}<br/>\n<br/>\nThen you add a bunch of testXXXX() methods.  Better yet, you could <br/>\nextend DBTestCase, and just write all the testXXXX methods in the <br/>\nsubclass--that way you can have different sets of db tests, and <br/>\nreuse the DBTestCase. <br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Another difference is really one of design taste I suspect. I <br/>\n </span></blockquote>just  <br/>\n<blockquote><span title=\"ireply\"> &gt; found it non-intuitive that JUnit gave each test method invocation <br/>\n </span></blockquote>its  <br/>\n<blockquote><span title=\"ireply\"> &gt; own instance, especially when they also provided the setUp() <br/>\n </span></blockquote>method.  <br/>\n<br/>\nWhen you say JUnit gives each test method invocation it&#39;s own <br/>\ninstance, I&#39;m assuming you are refering to the default way <br/>\nTestCase.runTest() works (trying to run a method with the same name <br/>\nas the test case).  I hardly ever use the default runTest()--my <br/>\nguess is that it is only left in there for backward-compatibility.<br/>\n<br/>\nI find the type of runTest() I showed above much more useful.<br/>\nWould this solution address the problems you were concerned with?</div>", 
+    "prevInTime": 7370, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1048870006", 
+    "canDelete": false, 
+    "nextInTopic": 7375, 
+    "prevInTopic": 7361, 
+    "headers": {
+        "inReplyToHeader": "PEE3RTE2QkRELTVFNUYtMTFENy1BMzI4LTAwMDM5MzAxRDQ0NkBhcnRpbWEuY29tPg==", 
+        "messageIdInHeader": "PGI2MXU5bStxajRuQGVHcm91cHMuY29tPg=="
+    }
+}

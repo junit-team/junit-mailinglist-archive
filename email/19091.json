@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 19092, 
+    "senderId": "MpvPYSwq4htdZnJ2M1bjEOOu_ln-Xy5rMmUv_kmyuc3oimffrt8vOhSPlznOH5RxtfjQgxLUMHgQNtsYbjN8oGSX", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Custom runner in a creation loop", 
+    "from": "Dani Zweig &lt;dani@...&gt;", 
+    "authorName": "Dani Zweig", 
+    "msgSnippet": "... That was it, thanks. The actual goal was to filter out tests annotated as @Optional unless a flag was set, so the runner wound up looking like this: public", 
+    "msgId": 19091, 
+    "profile": "danizweig", 
+    "topicId": 19082, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 28278056, 
+    "messageBody": "<div id=\"ygrps-yiv-2004198466\"><blockquote><span title=\"ireply\">&gt;Here, Request.aClass(testClass).getRunner() will look at the @RunWith<br/>\n&gt;annotation, and will attempt to assign to delegate, you guessed it,<br/>\n&gt;another VerboseRunner, which will call<br/>\n&gt;Request.aClass(testClass).getRunner(), which will...<br/>\n<br/>\n&gt;Probably what you want here is<br/>\n<br/>\n&gt;delegate= new TestClassRunner(testClass);<br/>\n<br/>\n&gt;Let me know if that nails it,<br/>\n&gt;   David Saff<br/>\n<br/>\n </span></blockquote>That was it, thanks.<br/>\n<br/>\nThe actual goal was to filter out tests annotated as @Optional unless a flag<br/>\nwas set, so the runner wound up looking like this:<br/>\n<br/>\n    public OptionalRunner(Class&lt;?&gt; testClass) throws Exception {<br/>\n        delegate = new TestClassRunner(testClass);<br/>\n        new OptionalFilter().apply(delegate);<br/>\n    }<br/>\n<br/>\nand the filter wound up with:<br/>\n<br/>\n    @Override<br/>\n    public boolean shouldRun(Description description) {<br/>\n        return (runAll() || !isOptional(description));<br/>\n    } // shouldRun<br/>\n<br/>\nThis works, though the isOptional() method is clunky, since it parses the<br/>\ndescription string to get the class to get the method to get the<br/>\nannotations.<br/>\n<br/>\nAgain, thanks.<br/>\n<br/>\n- Dani Zweig<br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:dani@...\">dani@...</a><br/>\n<br/>\n<br/>\n-- <br/>\nView this message in context: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/Custom-runner-in-a-creation-loop-tf3376116.html#a9437749\">http://www.nabble.com/Custom-runner-in-a-creation-loop-tf3376116.html#a9437749</a><br/>\nSent from the JUnit - User mailing list archive at Nabble.com.</div>", 
+    "prevInTime": 19090, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1173716504", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19087, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwMzA5MjI1M3Q1ZWFjZTlkZGhlYzI5ODMyNTdkNmVmNTYwQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDk0Mzc3NDkucG9zdEB0YWxrLm5hYmJsZS5jb20+", 
+        "referencesHeader": "PDkzOTU4MjUucG9zdEB0YWxrLm5hYmJsZS5jb20+IDw0ZjdkYTZiOTA3MDMwOTIyNTN0NWVhY2U5ZGRoZWMyOTgzMjU3ZDZlZjU2MEBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 3184, 
+    "senderId": "cflxSV8pznqsmvB916dYEcT2j0fqc2x63c9gmqOLQWmPinlC0pP8NP3IVn2z8gO4bWZdo6Epu7ZkLipdADcR3QPStFPu4nITFPZkj6rDqn0QqL4", 
+    "systemMessage": false, 
+    "subject": "RE: Who can tell me the scape of unit test of class.", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Actually, it *can* break, depending on your naming conventions. public class Broken { private String message; public Broken(String message) { message =", 
+    "msgId": 3183, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 6 Nov 2001 16:38:47 -0000\r\nReceived: (qmail 50069 invoked from network); 6 Nov 2001 16:38:46 -0000\r\nReceived: from unknown (216.115.97.171)\n  by m10.grp.snv.yahoo.com with QMQP; 6 Nov 2001 16:38:46 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.149.11)\n  by mta3.grp.snv.yahoo.com with SMTP; 6 Nov 2001 16:38:47 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Tue, 6 Nov 2001 08:38:47 -0800\r\nReceived: from 199.246.40.54 by lw4fd.law4.hotmail.msn.com with HTTP;\n\tTue, 06 Nov 2001 16:38:47 GMT\r\nTo: junit@yahoogroups.com\r\nBcc: \r\nSubject: RE: Who can tell me the scape of unit test of class.\r\nDate: Tue, 06 Nov 2001 16:38:47 +0000\r\nMime-Version: 1.0\r\nContent-Type: text/plain; format=flowed\r\nMessage-ID: &lt;F11dpxcSycwopYHTlx400009890@...&gt;\r\nX-OriginalArrivalTime: 06 Nov 2001 16:38:47.0331 (UTC) FILETIME=[81BB8730:01C166E1]\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\nX-Yahoo-Profile: nails762\r\n\r\nActually, it *can* break, depending on your naming conventions.\n\npublic class Broken {\n    private String message;\n    public Broken(String message) {\n        message = message;\n    }\n    public String getMessage() { return message; }\n    public void setMessage() { message = message; }\n}\n\nThis class is broken, but this simple test would expose the bug.\n\npublic class BrokenTestCase extends TestCase {\n    public BrokenTestCase(String name) { super(name); }\n    public void testCreate() {\n        Broken b = new Broken(&quot;Hello&quot;);\n        assertEquals(&quot;Hello&quot;, b.getMessage());\n        b.setMessage(&quot;Hello2&quot;);\n        assertEquals(&quot;Hello2&quot;, b.getMessage());\n    }\n}\n\nNow you will likely write, &quot;I would never make that mistake.&quot; You might, if \nyou do a global search-and-replace on your code and the end result is the \ncode above. I leave it as an exercise to the reader to imagine how that \ncould happen. HINT: It happened to me. :)\n\nMy suggestions:\n\n1. Use the immutable object idiom. (No setX() methods. If you need a new \nvalue, make a new object.)\n2. Write a simple test to ensure that what you pass to the constructor is \nwhat the getX() methods answer.\n\nDo this until you start writing perfect code all the time. :)\n\nJBR.\n\n----- Begin original message -----\nHow about a class that can&#39;t possibly break?  Say a class with only setters\nand getters?\n\n\n\n_________________________________________________________________\nGet your FREE download of MSN Explorer at http://explorer.msn.com/intl.asp\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 3167, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3182, 
+    "contentTrasformed": false, 
+    "postDate": "1005064727", 
+    "canDelete": false, 
+    "nextInTopic": 3184, 
+    "prevInTopic": 3178, 
+    "headers": {
+        "messageIdInHeader": "PEYxMWRweGNTeWN3b3BZSFRseDQwMDAwOTg5MEBob3RtYWlsLmNvbT4="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5187, 
+    "senderId": "uRkPT-nRFclbFZcDmbc8_qjp4VUr_u8GC-eW-faV0febjAvKOVj61C30ZHbGMk2b44gCNaMHNsAnvtQkQGE9QuXnOzo", 
+    "systemMessage": false, 
+    "subject": "exceptions and distinguishing between failures and errors", 
+    "from": "&quot;pholser&quot; &lt;pholser@...&gt;", 
+    "authorName": "pholser", 
+    "msgSnippet": "hi all... i ve been reading some of the threads regarding testing for thrown exceptions, and read the wiki page http://c2.com/cgi/wiki? ", 
+    "msgId": 5186, 
+    "rawEmail": "Return-Path: &lt;pholser@...&gt;\r\nX-Sender: pholser@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 17 Jun 2002 13:38:49 -0000\r\nReceived: (qmail 71202 invoked from network); 17 Jun 2002 13:38:49 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m4.grp.scd.yahoo.com with QMQP; 17 Jun 2002 13:38:49 -0000\r\nReceived: from unknown (HELO n25.grp.scd.yahoo.com) (66.218.66.81)\n  by mta1.grp.scd.yahoo.com with SMTP; 17 Jun 2002 13:38:49 -0000\r\nReceived: from [66.218.67.167] by n25.grp.scd.yahoo.com with NNFMP; 17 Jun 2002 13:38:49 -0000\r\nDate: Mon, 17 Jun 2002 13:38:49 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: exceptions and distinguishing between failures and errors\r\nMessage-ID: &lt;aekop9+29mv@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2822\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;pholser&quot; &lt;pholser@...&gt;\r\nX-Yahoo-Group-Post: member; u=66805313\r\nX-Yahoo-Profile: pholser\r\n\r\nhi all...\n\ni&#39;ve been reading some of the threads regarding testing for\nthrown exceptions, and read the wiki page http://c2.com/cgi/wiki?\nCodingJavaUnitExceptionTests.  i&#39;m wondering whether, in the face\nof exceptions (or otherwise), anyone really distinguishes between\nfailures and errors.\n\ni used to do this:\n\npublic void testForThrownException() {\n  try {\n    new ArrayList( 10 ).get( 11 );\n    fail( &quot;should have thrown IndexOutOfBoundsException&quot; );\n  }\n  catch ( IndexOutOfBoundsException shouldBeThrown ) {\n  }\n  catch ( Exception ex ) {\n    fail( &quot;threw wrong exception: &quot; + ex );\n  }\n}\n\nafter reading the material mentioned above, i&#39;m leaning toward:\n\npublic void testForThrownException() throws Exception {\n  try {\n    new ArrayList( 10 ).get( 11 );\n    fail( &quot;should have thrown IndexOutOfBoundsException&quot; );\n  }\n  catch ( IndexOutOfBoundsException shouldBeThrown ) {\n  }\n}\n\nletting JUnit handle unexpected exceptions, treating them as errors\ninstead of failures.\n\nnow, imagine a class-under-test:\n\npublic class Foo {\n  public void bar( int i ) throws FooException, BarException {\n    // ...\n  }\n}\n\nand a test intended to yield a FooException:\n\npublic void testForThrownFooException throws Exception {\n  try {\n    new Foo().bar( -1 );\n  }\n  catch ( FooException shouldBeThrown ) {\n  }\n}\n\nsince BarException is a &quot;could happen but shouldn&#39;t&quot;, should i treat\nthat as a failure instead of an error by adding a catch/fail\nsequence for BarException?  does it really matter, since if i&#39;m\ndoing TDD i know that the last code change i made should be the\ncause of the fault, so i know where to look?  when running all unit\ntests, does anyone really go &quot;uh-oh, i got three _errors_, that&#39;s way\nmore troublesome than three _failures_&quot;?\n\nmy gut tells me to treat &quot;could be thrown but shouldn&#39;t&quot; exceptions--\nthat is, those advertised in the throws clauses of methods invoked\nin the test, plus any runtime exceptions known to be thrown under\ncertain conditions (for example, IllegalArgumentException for\ninteger arguments out of range)--as failures, and anything else as\nerrors.  this goes for tests whose successful outcome doesn&#39;t involve\nthe throwing of a specific exception, too.  i get the feeling most\ndevelopers don&#39;t do that because they perceive the extra code\ninvolved to be too much of a whipping to create and maintain.\nor, the failure/error distinction is not important to them.  i&#39;ve\nbeen trying to distinguish between failures and errors with these\nkinds of tests, and maybe i shouldn&#39;t be.\n\ni wonder if writing exception tests in this way can sniff out &quot;smells&quot;\nthat using a particular method might be too noisy?  that is, instead\nof throwing three different, possibly unrelated exceptions, maybe\nhave the method declare one wrapping exception be thrown?\n\neager to hear your thoughts.\n\ncheers,\np\n\nPaul Holser\n\n\n\n", 
+    "profile": "pholser", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 66805313, 
+    "prevInTime": 5185, 
+    "contentTrasformed": false, 
+    "postDate": "1024321129", 
+    "canDelete": false, 
+    "nextInTopic": 5188, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFla29wOSsyOW12QGVHcm91cHMuY29tPg=="
+    }
+}

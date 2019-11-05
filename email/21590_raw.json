@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 21591, 
+    "senderId": "a0E0Sg6pOgYVhXPrWx4HitFDekpDinDPyq07PJZF7-3kSqWlEojWRgAem7hsKlotqFpP3N1oFNtNt2_OmW3zp-UA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] What happened to getName()?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "In the latest 4.7 release, this would be: @RunWith(Interceptors.class) public class NameTest { @Interceptor public TestName name = new TestName(); @Test public", 
+    "msgId": 21590, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 21526 invoked from network); 12 May 2009 03:57:06 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m7.grp.re1.yahoo.com with QMQP; 12 May 2009 03:57:06 -0000\r\nX-Received: from unknown (HELO mail-fx0-f159.google.com) (209.85.220.159)\n  by mta3.grp.re1.yahoo.com with SMTP; 12 May 2009 03:57:06 -0000\r\nX-Received: by fxm3 with SMTP id 3so3204932fxm.28\n        for &lt;junit@yahoogroups.com&gt;; Mon, 11 May 2009 20:56:05 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.239.141.13 with SMTP id z13mr621430hbz.77.1242100565792; Mon, \n\t11 May 2009 20:56:05 -0700 (PDT)\r\nIn-Reply-To: &lt;D6750594B82E406493C206A0DD0908FF@kentspavilion&gt;\r\nReferences: &lt;gu1kc6+d20o@...&gt;\n\t &lt;D6750594B82E406493C206A0DD0908FF@kentspavilion&gt;\r\nDate: Mon, 11 May 2009 23:56:05 -0400\r\nX-Google-Sender-Auth: 0434785d22d8d893\r\nMessage-ID: &lt;4f7da6b90905112056i3e129628gbd0c6aa0d819f5f6@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 2:3:4:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] What happened to getName()?\r\nX-Yahoo-Group-Post: member; u=341876227; y=kVwHL1Y1yQCZ9OksWQWDLU19Cqtc6zP7BgzrUDHXOrE\r\nX-Yahoo-Profile: dsaff\r\n\r\nIn the latest 4.7 release, this would be:\n\n\t@RunWith(Interceptors.class)\n\tp=\r\nublic class NameTest {\n\t\t@Interceptor public TestName name =3D new TestName=\r\n();\n\t\t\n\t\t@Test public void funnyName() {\n\t\t\tassertEquals(&quot;funnyName&quot;, name.=\r\ngetMethodName());\n\t\t}\n\t}\n\nShare and Enjoy,\n\n   David Saff\n\nOn Sat, May 9, 2=\r\n009 at 3:59 PM, kentb &lt;kentb@...&gt; wrote:\n&gt; Chaz,\n&gt;\n&gt; GetName() wa=\r\ns removed in the move to a DSL-style interface with JUnit 4. The\n&gt; tradeoff=\r\n was that if we dropped getName(), programmers would be free to\n&gt; subclass =\r\nfrom anything for their test classes. I haven&#39;t subsequently used\n&gt; this fr=\r\needom to any good effect, but it seemed like a good idea at the time.\n&gt;\n&gt; W=\r\nith 4.7 (available from GitHub or the 4.7 snapshot on SourceForge), you can=\r\n\n&gt; use interceptors to capture the test&#39;s name. It&#39;s easy, if you already k=\r\nnow\n&gt; about interceptors that is and you don&#39;t waste 15 minutes remembering=\r\n that\n&gt; interceptors have to be public and that you still have to run with =\r\nthe\n&gt; Interceptors runner. They say that memory is the second thing to go..=\r\n.\n&gt;\n&gt; @RunWith(Interceptors.class)\n&gt; public class NameTest {\n&gt; =A0String na=\r\nme;\n&gt; =A0@Interceptor\n&gt; =A0public StatementInterceptor namer=3D new Stateme=\r\nntInterceptor(){\n&gt; =A0 =A0@Override\n&gt; =A0 =A0public Statement intercept(Sta=\r\ntement base, FrameworkMethod method) {\n&gt; =A0 =A0 =A0name=3D method.getName(=\r\n);\n&gt; =A0 =A0 =A0return base;\n&gt; =A0 =A0}\n&gt; =A0};\n&gt; =A0@Test\n&gt; =A0public void=\r\n funnyName() {\n&gt; =A0 =A0assertEquals(&quot;funnyName&quot;, name);\n&gt; =A0}\n&gt; }\n&gt;\n&gt; Thi=\r\ns suffers from cleverness, but it doesn&#39;t get the problem solved without\n&gt; =\r\nan entire new runner, which was the point of interceptors in the first\n&gt; pl=\r\nace.\n&gt;\n&gt; Regards,\n&gt;\n&gt; Kent\n&gt; ________________________________\n&gt;\n&gt; From: jun=\r\nit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of chaz\n&gt; Sent:=\r\n Friday, May 08, 2009 8:51 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit=\r\n] What happened to getName()?\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Hi,\n&gt; I was wondering, is there a=\r\n particularly good reason why the most useful\n&gt; method getName() was remove=\r\nd in junit 4.x? Is there another method or way\n&gt; for me to get the current =\r\nname of the method executing for reporting\n&gt; purposes?\n&gt;\n&gt; Thanks,\n&gt;\n&gt; chaz=\r\n\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Lin=\r\nks\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21577, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21589, 
+    "contentTrasformed": false, 
+    "postDate": "1242100565", 
+    "canDelete": false, 
+    "nextInTopic": 21617, 
+    "prevInTopic": 21588, 
+    "headers": {
+        "inReplyToHeader": "PEQ2NzUwNTk0QjgyRTQwNjQ5M0MyMDZBMEREMDkwOEZGQGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNTExMjA1NmkzZTEyOTYyOGdiZDBjNmFhMGQ4MTlmNWY2QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGd1MWtjNitkMjBvQGVHcm91cHMuY29tPgkgPEQ2NzUwNTk0QjgyRTQwNjQ5M0MyMDZBMEREMDkwOEZGQGtlbnRzcGF2aWxpb24+"
+    }
+}

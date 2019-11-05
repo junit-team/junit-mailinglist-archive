@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20678, 
+    "senderId": "YxHY--L1jdtiVq_xhPlqXXXJPQWC8AckasbM0Ei8XIVzPpZmJT5RlYu5A70Bber1RHISJtap-rd0BIOB0efmufI0rm6uvUCL", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Parameterized Tests, a proposal", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Malte, I agree that the current arrangement for parameterized tests is clunky. However, the solution you propose--different tests in the same class being ", 
+    "msgId": 20677, 
+    "profile": "kentlbeck", 
+    "topicId": 20667, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-356146313\">Malte,<br/>\n <br/>\nI agree that the current arrangement for parameterized tests is clunky.<br/>\nHowever, the solution you propose--different tests in the same class being<br/>\nparameterized by different (or even no) data, contradicts a fundamental<br/>\nelement of JUnit&#39;s design: one class/one fixture. Your proposal is akin, it<br/>\nseems to me, to having different tests in the same class use different sets<br/>\nof @Befores. You could do that using a similar syntax to that outlined<br/>\nbelow, but it would make it harder to read tests declaratively. With the<br/>\ncurrent design, if I want to know what data a test will have available, I<br/>\nread the @Befores (and @Parameters). Then I can read all the tests assuming<br/>\nthose are the conditions under which it will execute. If I have a diffferent<br/>\nfixture, I go to a different class.<br/>\n <br/>\nCan you tell me a little more about what benefits you see from your proposed<br/>\narrangement and in which circumstances it would be superior to having tests<br/>\nwith different fixtures in different classes?<br/>\n <br/>\nRegards,<br/>\n <br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n  _____  <br/>\n<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\nMalte Finsterwalder<br/>\nSent: Wednesday, July 09, 2008 12:01 AM<br/>\nTo: junit YahooGroup<br/>\nSubject: [junit] Parameterized Tests, a proposal<br/>\n<br/>\n<br/>\n<br/>\nHi,<br/>\n<br/>\nI just got around to looking into parameterized tests a little more.<br/>\nBut it confirmed the impression I got when they came out with JUnit 4.<br/>\nThey are sooo clunky, that I rather write a test that calls a <br/>\nhelper-method with parameters instead.<br/>\n<br/>\nBut this time I had time to ask myself: Why is it so clunky?<br/>\nIn what way could it be better.<br/>\n<br/>\nSo I came up with an idea, how I would like it to be.<br/>\nAnd here is an example:<br/>\n<br/>\n@RunWith(Parameterized.class)<br/>\npublic class MyParameterizedTest {<br/>\n<br/>\nprivate Object[] data = new Object[][] {<br/>\n{&quot;param1&quot;, 2, 3},<br/>\n{&quot;other&quot;, 5, 99},<br/>\n{&quot;more&quot;, 234, 5875727343}<br/>\n};<br/>\n<br/>\n// The parameter given as &quot;data&quot; here, specifies that<br/>\n// attribute, that contains the parameters for the test<br/>\n@ParameterizedTest(&quot;data&quot;)<br/>\npublic void testWhatever(String str, int i, long j) {<br/>\n// This method gets called 3 times<br/>\n// once for each line in the above Object[]<br/>\n<br/>\n// do whatever here<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void plainNonParameterizedTest() {<br/>\n// this is a normal unit test that is<br/>\n// called just once<br/>\n}<br/>\n} <br/>\n<br/>\nI think it&#39;s a lot easier this way.<br/>\nIt allows mixing of parameterized tests and non parameterized tests, if <br/>\nyou like.<br/>\nI allows for several parameterized tests in a single class.<br/>\nAnd I don&#39;t see disadvantages.<br/>\n<br/>\nIt could be even simpler, if it were incorporated into the existing <br/>\nJUnit Test-annotation, like so:<br/>\n<br/>\n// no @RunWith-Annotation here<br/>\npublic class MyParameterizedTest {<br/>\n<br/>\nprivate Object[] data = new Object[][] {<br/>\n{&quot;param1&quot;, 2, 3},<br/>\n{&quot;other&quot;, 5, 99},<br/>\n{&quot;more&quot;, 234, 5875727343}<br/>\n};<br/>\n<br/>\n// The parameter given as &quot;data&quot; here, specifies that<br/>\n// attribute, that contains the parameters for the test<br/>\n// Use of standard Test-annotation with a new parameter<br/>\n@Test(parameterized=&quot;data&quot;)<br/>\npublic void testWhatever(String str, int i, long j) {<br/>\n// This method gets called 3 times<br/>\n// once for each line in the above Object[]<br/>\n<br/>\n// do whatever here<br/>\n}<br/>\n}<br/>\n<br/>\nWhat do you think?<br/>\n<br/>\nI already tried to implement the first version, since it&#39;s non <br/>\nintrusive, but looking into extending JUnit, I found that it&#39;s a pain in <br/>\nthe behind, if you don&#39;t want to extends internals-stuff.<br/>\nBut maybe I&#39;m just misunderstanding or missing things.<br/>\nBut that&#39;s another story for another post... shortly...<br/>\n<br/>\nGreetings,<br/>\nMalte<br/>\n<br/>\n<br/>\n <br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 20676, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1215715891", 
+    "canDelete": false, 
+    "nextInTopic": 20682, 
+    "prevInTopic": 20667, 
+    "headers": {
+        "inReplyToHeader": "PDQ4NzQ2MjExLjMwNjAxMDBAZmluc3RlcndhbGRlci5uYW1lPg==", 
+        "messageIdInHeader": "PDAxOWMwMWM4ZTJiZCRmODhmMzQxMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PDQ4NzQ2MjExLjMwNjAxMDBAZmluc3RlcndhbGRlci5uYW1lPg=="
+    }
+}

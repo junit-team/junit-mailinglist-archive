@@ -1,0 +1,29 @@
+{
+    "topicId": 3017, 
+    "postDate": "1003709866", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Chester Kustarz 2 &lt;chester@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "dUoMdCVmwb1-34gTGmwgjvDmMZalnl7qqEiz36LO5OU1duRU2WlGy95gayGQ_DAcxd3L2yiS_mgcn1Xti1cnahKuv84TyyGlMrrdWbY", 
+    "nextInTime": 3038, 
+    "userId": 0, 
+    "prevInTime": 3036, 
+    "prevInTopic": 3024, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDExMDE5MTk1NjA4LjI5Njg2LnFtYWlsQHdlYjExNjA0Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuQlNPLjQuMzMuMDExMDIxMTk1OTI0MC4yNzQ5OS0xMDAwMDBAbmF1Z2h0eS5tb25rZXkub3JnPg=="
+    }, 
+    "authorName": "Chester Kustarz 2", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "... Thanks for the suggestions and information (I was the poster of the original question). I thought I would share my solution with the list. I too ended up", 
+    "contentTrasformed": false, 
+    "msgId": 3037, 
+    "nextInTopic": 3038, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;chester@...&gt;\r\nX-Sender: chester@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 22 Oct 2001 00:17:50 -0000\r\nReceived: (qmail 64022 invoked from network); 22 Oct 2001 00:17:50 -0000\r\nReceived: from unknown (10.1.10.27)\n  by l8.egroups.com with QMQP; 22 Oct 2001 00:17:50 -0000\r\nReceived: from unknown (HELO naughty.monkey.org) (204.181.64.8)\n  by mta2 with SMTP; 22 Oct 2001 00:17:49 -0000\r\nReceived: by naughty.monkey.org (Postfix, from userid 1114)\n\tid D2B433D4AC1; Sun, 21 Oct 2001 20:17:46 -0400 (EDT)\r\nReceived: from localhost (localhost [127.0.0.1])\n\tby naughty.monkey.org (Postfix) with ESMTP id D16DF3D4AA5\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 21 Oct 2001 20:17:46 -0400 (EDT)\r\nDate: Sun, 21 Oct 2001 20:17:46 -0400 (EDT)\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: Re: [junit] Testing GUI Classes with no X-Display\r\nIn-Reply-To: &lt;20011019195608.29686.qmail@...&gt;\r\nMessage-ID: &lt;Pine.BSO.4.33.0110211959240.27499-100000@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: Chester Kustarz 2 &lt;chester@...&gt;\r\n\r\nOn Fri, 19 Oct 2001, Robert Sartin wrote:\n&gt; We&#39;re converting to an automatic test detection system that marks test\n&gt; types and we plan to mark tests that require GUI code to run and only\n&gt; run them in environments that have the GUI.\n\nThanks for the suggestions and information (I was the poster of the\noriginal question). I thought I would share my solution with the list.\n\nI too ended up with a &quot;test detection system&quot; for a couple of reasons, the\nmain one being I cannot install virtual X displays on some of the systems\nI work on. So then I tried to break apart my AllUnitTests suite into\nGUI and non-GUI unit tests. However, I figured there was a better way\nto solve this issue. Since the problem arises in junit itself, I thought\nthat would be a great place to test for the problem. The &quot;solution&quot; I came\nup with is really simple:\n\npackage foo.applets.test;\nimport junit.framework.*;\n/**\n * Test suite for all unit tests for foo.applets package.\n */\npublic class AllTests { /* test suite */\n\tpublic static Test suite() {\n\t\tTestSuite suite = new TestSuite(&quot;Applet tests&quot;);\n\t\t// Add in non-GUI tests\n\t\tsuite.addTest(FormatterTest.suite());\n\t\t// Only add in GUI tests if we are not running on\n\t\t// a headless system (no display)\n\t\ttry {\n\t\t\t// Use GUI stuff -- if it throws an Error\n\t\t\t// ten we are running on a headless system\n\t\t\tnew foo.applets.Settings();\n\t\t\t\t/*\n\t\t\t\t * Settings is a class that has\n\t\t\t\t * AWT Fonts and Colors etc. in it.\n\t\t\t\t * On a headless system an Error will\n\t\t\t\t * be thrown here.\n\t\t\t\t */\n\t\t\t// Add in GUI tests\n\t\t\tsuite.addTest(QueryPanelTest.suite());\n\t\t\tsuite.addTest(FieldSelectionTest.suite());\n\t\t\t...\n\t\t} catch (Error e) {\n\t\t\t// ok, we just won&#39;t add the GUI tests\n\t\t\tSystem.out.println(&quot;Caught error &quot; + e);\n\t\t\tSystem.out.println(&quot;Ignoring GUI tests&quot;);\n\t\t}\n\t\treturn suite;\n\t}\n}\n\n----------------------------------------------------------------------\nWithout X-Display server (headless setup):\n\nCaught error java.lang.InternalError: Can&#39;t connect to X11 window server using &#39;foo.bar.com:0.0&#39; as the value of the DISPLAY variable.\nIgnoring GUI tests\n................[0, 1, 2]\n..[0, 1, 2]\n......\nTime: 0.963\n\nOK (25 tests)\n\n----------------------------------------------------------------------\nWith X-Display server (or the same as running in windows):\n\n...\n...............[0, 1, 2]\n..[0, 1, 2]\n......\nTime: 5.673\n\n\nOK (64 tests)\n\n\n\n-- \nChester Kustarz 2\nhttp://www.monkey.org/~chester\n\n\n", 
+    "subject": "Re: [junit] Testing GUI Classes with no X-Display"
+}

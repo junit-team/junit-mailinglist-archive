@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 14067, 
+    "senderId": "puD5lzsb0c2oW8M_Y_W84MuuLszx6Vf1_mKyC04L_m4VqrU3tfoyz7VCknUV9cFVva_kYBl6C98RjCKcD8OnHln_Dw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing memory usage", 
+    "from": "twall &lt;twall@...&gt;", 
+    "authorName": "twall", 
+    "msgSnippet": "... There s the standard hack for measuring the size of individual objects.  I use this to keep the size of individual objects within reason.  Of course, it", 
+    "msgId": 14066, 
+    "profile": "timothyrwall", 
+    "topicId": 14065, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106503903, 
+    "messageBody": "<div id=\"ygrps-yiv-1650425061\">On Thu, 30 Jun 2005 at 09:29:46, Elliotte Harold wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Has anyone done any work on unit test for memory usage of objects?<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>There&#39;s the standard hack for measuring the size of individual objects.  I use this to keep the size of <br/>\nindividual objects within reason.  Of course, it doesn&#39;t get anywhere near measuring operational usage <br/>\nor groups of allocations...<br/>\n<br/>\nThe following class does a &quot;sizeof&quot; calculation given either a class with no-args ctor or an object which <br/>\ncreates instances of the desired class:<br/>\n<br/>\npackage test;<br/>\n<br/>\nimport java.lang.ref.*;<br/>\nimport java.util.*;<br/>\n<br/>\npublic class SizeOf {<br/>\n<br/>\n    /** For use with constructors which require arguments. */<br/>\n    public static interface ObjectCreator {<br/>\n        Object create();<br/>\n    }<br/>\n<br/>\n    private static class ClassCreator implements ObjectCreator {<br/>\n        private Class cls;<br/>\n        public ClassCreator(Class cls) {<br/>\n            this.cls = cls;<br/>\n        }<br/>\n        public Object create() {<br/>\n            try {<br/>\n                return cls.newInstance();<br/>\n            }<br/>\n            catch(IllegalAccessException e) {<br/>\n                String msg = &quot;No-argument constructor is &quot;<br/>\n                    + &quot;private for &quot; + cls;<br/>\n                throw new IllegalArgumentException(msg);<br/>\n            }<br/>\n            catch(InstantiationException e) {<br/>\n                String msg = &quot;Can&#39;t create an instance of &quot; + cls;<br/>\n                throw new IllegalArgumentException(msg);<br/>\n            }<br/>\n            catch(Exception e) {<br/>\n                e.printStackTrace();<br/>\n                String msg = &quot;Can&#39;t obtain size of &quot; + cls;<br/>\n                throw new IllegalArgumentException(msg);<br/>\n            }<br/>\n        }<br/>\n    }<br/>\n<br/>\n    private static final int GCCOUNT = 2;<br/>\n<br/>\n    private static void gc() {<br/>\n        try {<br/>\n            System.gc(); Thread.sleep(100);<br/>\n            System.runFinalization(); Thread.sleep(100);<br/>\n        }<br/>\n        catch(InterruptedException e) {<br/>\n        }<br/>\n    }<br/>\n<br/>\n    private static void gc(int n) {<br/>\n        for (int i=0;i &lt; n;i++) { gc(); }<br/>\n    }<br/>\n<br/>\n    public static long getMemoryUse() {<br/>\n        gc(GCCOUNT);<br/>\n        long total = Runtime.getRuntime().totalMemory();<br/>\n        long free = Runtime.getRuntime().freeMemory();<br/>\n        return total - free;<br/>\n    }<br/>\n    /** Return the approximate size in bytes of the object returned by the<br/>\n        given ObjectCreator.<br/>\n    */<br/>\n    public static long sizeof(ObjectCreator oc) {<br/>\n        final int SIZE = 1000;<br/>\n        ArrayList list = new ArrayList(SIZE);<br/>\n        long before = getMemoryUse();<br/>\n        for (int i=0;i &lt; SIZE;i++) {<br/>\n            list.add(oc.create());<br/>\n        }<br/>\n        long after = getMemoryUse();<br/>\n        return (after - before) / SIZE;<br/>\n    }<br/>\n<br/>\n    /** Return the approximate size in bytes of an instance of the given<br/>\n        class.  The class &lt;em&gt;must&lt;/em&gt; provide a no-args constructor.<br/>\n    */<br/>\n    public static long sizeof(Class cls) {<br/>\n        return sizeof(new ClassCreator(cls));<br/>\n    }<br/>\n<br/>\n    /** Display the approximate size (in bytes) of the class given in the<br/>\n        first argument.<br/>\n    */<br/>\n    public static void main(String[] args) {<br/>\n        try {<br/>\n            if (args.length != 1) {<br/>\n                System.err.println(&quot;Use with a single class name argument&quot;);<br/>\n                System.exit(1);<br/>\n            }<br/>\n            Class cls = Class.forName(args[0]);<br/>\n            System.out.println(&quot;Class &quot; + cls.getName()<br/>\n                               + &quot; size is &quot; + sizeof(cls) + &quot; bytes&quot;);<br/>\n        }<br/>\n        catch(Throwable e) {<br/>\n            e.printStackTrace();<br/>\n            System.exit(1);<br/>\n        }<br/>\n    }<br/>\n}</div>", 
+    "prevInTime": 14065, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1120138716", 
+    "canDelete": false, 
+    "nextInTopic": 14068, 
+    "prevInTopic": 14065, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDUwNjMwMTMzOC5qNVVEY2FEMjUwODdAaHR0cDAxLmludC5vY3VsdXN0ZWNoLmNvbT4="
+    }
+}

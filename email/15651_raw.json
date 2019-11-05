@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 15652, 
+    "senderId": "5Fv8jXmMELOesubxSIuB_XObHloJD1yDWHpMG2sTgGoogoI4f7xYbaVDxihj4ikU_cq_BlzcZg2ElenUF6_xLxdpBdTIr9k1095_yS_54Owl8v3k6WnY8Hu0Rh9lWT-39bMC", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Clarifying how to use unit tests", 
+    "from": "=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "... Interface:  absolutely. Implementation:  depends. Ideally, the business logic of your test should run against the interface exclusively and which", 
+    "msgId": 15651, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 13554 invoked from network); 8 Dec 2005 16:21:08 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m33.grp.scd.yahoo.com with QMQP; 8 Dec 2005 16:21:08 -0000\r\nReceived: from unknown (HELO smtp-out.google.com) (216.239.45.12)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 Dec 2005 16:21:08 -0000\r\nReceived: from brian.corp.google.com (brian.corp.google.com [172.24.0.122])\n\tby smtp-out.google.com with ESMTP id jB8GL3oH027956\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 8 Dec 2005 08:21:03 -0800\r\nReceived: from smtp-out2.google.com (epa7.prod.google.com [10.253.129.7])\n\tby brian.corp.google.com with ESMTP id jB8GGR3G003507\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 8 Dec 2005 08:20:57 -0800\r\nReceived: by smtp-out2.google.com with SMTP id 7so44629epa\n        for &lt;junit@yahoogroups.com&gt;; Thu, 08 Dec 2005 08:20:57 -0800 (PST)\r\nReceived: by 10.253.130.16 with SMTP id 16mr5374epb;\n        Thu, 08 Dec 2005 08:20:57 -0800 (PST)\r\nReceived: by 10.253.129.12 with HTTP; Thu, 8 Dec 2005 08:20:57 -0800 (PST)\r\nMessage-ID: &lt;b86b6a9c0512080820v53ec6164gba4e57f72a0079e9@...&gt;\r\nDate: Thu, 8 Dec 2005 08:20:57 -0800\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;439842C4.8090700@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;4380CEC9.6000704@...&gt;\n\t &lt;1132583193.4381d919cef10@...&gt;\n\t &lt;439842C4.8090700@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: =?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;\r\nSubject: Re: [junit] Clarifying how to use unit tests\r\nX-Yahoo-Group-Post: member; u=199443513; y=XpejA1pQICJ0BaMboX3gvnXOJEeC2yhcNFU6OzdfAeUb\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nOn 12/8/05, Rakesh Patel &lt;rakesh.mailgroups@...&gt; wrote:\n&gt;\n&gt;\n&gt; So here=\r\n&#39;s my initial design.\n&gt;\n&gt; public interface PostcodeService {\n&gt;     public S=\r\ntring getAddressAsXML(String postcode);\n&gt; }\n&gt;\n&gt; now, should I write a test =\r\nclass against the\n&gt; interface(PostcodeServiceTest) or against the implement=\r\nation\n&gt; class(PostcodeServiceImplTest)?\n\n\nInterface:  absolutely.\nImplement=\r\nation:  depends.\n\nIdeally, the business logic of your test should run again=\r\nst the interface\nexclusively and which implementation is being used can the=\r\nn be decided at\nsetUp time, via dependency injection or data providers:\n\npr=\r\nivate PostCodeService m_postCodeService;\n\n@Configuration(beforeTestClass =\r\n=3D true)\npublic void classSetUp() {\n  m_postCodeService =3D new PostCodeSe=\r\nrviceImpl();\n}\n\n@Test\npublic void verifyAddressAsXml(String postCode) {\n  m=\r\n_postCodeService.foo(postCode);\n  // assert\n}\n\nIn this example, classSetUp(=\r\n) hardcodes the implementation to be used but\nyou could imagine making this=\r\n more flexible (depending on a parameter, a\ntest group, etc...).  Also, sep=\r\narating your tests from your set up (e.g.\nbase class / child class) will gi=\r\nve you even more flexibility to switch\nimplementations at runtime without a=\r\nltering the business logic that tests\nyour interface.\n\n\n\n&gt; I am spending wa=\r\ny too long thinking about this rather than writing code\n&gt; which has me a bi=\r\nt worried.\n\n\nSometimes, spending a lot of time thinking about a problem cau=\r\nses you to\nwrite less code in the end.  Hopefully, this is one of these cas=\r\nes :-)\n\n--\nC=E9dric\nhttp://testng.org\n\n\n[Non-text portions of this message =\r\nhave been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 15467, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 15650, 
+    "contentTrasformed": false, 
+    "postDate": "1134058857", 
+    "canDelete": false, 
+    "nextInTopic": 15653, 
+    "prevInTopic": 15647, 
+    "headers": {
+        "inReplyToHeader": "PDQzOTg0MkM0LjgwOTA3MDBAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDUxMjA4MDgyMHY1M2VjNjE2NGdiYTRlNTdmNzJhMDA3OWU5QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PDQzODBDRUM5LjYwMDA3MDRAZ21haWwuY29tPgkgPDExMzI1ODMxOTMuNDM4MWQ5MTljZWYxMEBpbWFwLmNzYWlsLm1pdC5lZHU+CSA8NDM5ODQyQzQuODA5MDcwMEBnbWFpbC5jb20+"
+    }
+}

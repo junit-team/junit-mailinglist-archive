@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 16406, 
+    "senderId": "5kc4oA5_XuqV_TgODJMJ0cDehNwK8m45PTm8qkvydZkPOF1mMeQ_ih7uQLyfa1_glVshVU7QORe4ISjk3hj51O7lCkfMyg8bCHgXJQ5w3w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test a recursive method", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... This is an interesting example. Let s try testing this with a fake or a mock. We know the basic rule of factorial(n) is this: 1. If n  2, then", 
+    "msgId": 16405, 
+    "profile": "nails762", 
+    "topicId": 16390, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1593373377\">Simon Chappell wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; On 3/24/06, amine achergui &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:amine.achergui@...\">amine.achergui@...</a>&gt; wrote:<br/>\n&gt;  &gt; Hi folks,<br/>\n&gt;  &gt; Is there any test pattern to test a recursive method ( in my case,<br/>\n&gt;  &gt; the method&#39;s body calls  collaborators thus in the test method i use <br/>\n&gt; mocks).<br/>\n&gt;  &gt; Is there any pattern or recipe to solve this?<br/>\n&gt;  &gt; Thx.<br/>\n&gt;  &gt; Amine<br/>\n&gt; <br/>\n&gt; Perhaps J.B. has a specific recipe for this. I do have his book, but<br/>\n&gt; it&#39;s at work and I&#39;m at home right now.<br/>\n&gt; <br/>\n&gt; Anyway, to a certain extent, JUnit doesn&#39;t actually care how the<br/>\n&gt; method that it calls does it&#39;s job. If you are testing<br/>\n&gt; Library.recursiveMethod() and it returns a result, then just test the<br/>\n&gt; result. If there are some standard &quot;easy&quot; results then start by<br/>\n&gt; getting those to work right.<br/>\n&gt; <br/>\n&gt; A more concrete example perhaps: Take the factorial calculation. The<br/>\n&gt; input values of zero and one give known, defined, values. So when<br/>\n&gt; writing a version of factorial, I&#39;d start with those and ensure that<br/>\n&gt; they worked before progressing on to the calculated values.<br/>\n&gt; <br/>\n&gt; assertEquals(0, Factorial.calculate(0));<br/>\n&gt; <br/>\n&gt; and<br/>\n&gt; <br/>\n&gt; assertEquals(1, Factorial.calculate(1));<br/>\n&gt; <br/>\n&gt; Then, when those tests pass, move onto the input values that you know<br/>\n&gt; will force recursive calculations.<br/>\n<br/>\n </span></blockquote>This is an interesting example. Let&#39;s try testing this with a fake or a <br/>\nmock.<br/>\n<br/>\nWe know the basic rule of factorial(n) is this:<br/>\n<br/>\n1. If n &gt; 2, then factorial(n) = n * factorial(n-1).<br/>\n2. If n is 0 or 1, then factorial(n) = 1.<br/>\n<br/>\nSo the test that might involve a mock would look like this:<br/>\n<br/>\ntest2:<br/>\n     Mock mock = mock(MyMath.class);    // a silly name, I know<br/>\n     mock.expects(once()).method(&quot;factorial&quot;).with(eq(1));<br/>\n     MyMath myMath = (MyMath) mock.proxy();<br/>\n<br/>\n     ???<br/>\n<br/>\nWhat do we do here? If we invoke myMath.factorial(2), then the mock will <br/>\nblow up because there&#39;s no expectation for factorial(2).<br/>\n<br/>\nIf we add a stub for factorial(2), then we are no longer testing the <br/>\nimplementation of factorial(n).<br/>\n<br/>\nThere doesn&#39;t seem to be a way to do this. This is a case where <br/>\ninteraction-based testing might help, but we&#39;re stuck.<br/>\n<br/>\nThe next option I can imagine is splitting the factorial() method like this:<br/>\n<br/>\nfactorial(n):<br/>\n     if n &lt; 0 blow up;<br/>\n     if n &lt;= 1 return 1;<br/>\n     return computeFactorialForNAtLeast2(n);<br/>\n<br/>\ncomputeFactorialForNAtLeast2(n):    // another bad name<br/>\n     return n * nextFactor(n - 1);<br/>\n<br/>\nThis way we would mock computeFactorialForNAtLeast2() while testing <br/>\nfactorial(n). The method factorial() becomes a lookup table to decide <br/>\nwhich computation method to use: either computeFactorialForNAtLeast2() <br/>\nor &quot;return 1&quot; or &quot;blow up&quot;.<br/>\n<br/>\nIn this small example, the separation of the computation algorithms from <br/>\nthe algorithm to choose among them looks silly, but it&#39;s a design <br/>\ndecision we make in other contexts all the time: one method switches on <br/>\ninput, then decides which of a selection of other methods to invoke. <br/>\nThis is just a very simple case of it.<br/>\n<br/>\nLet us remember that the reason to choose interaction-based testing is <br/>\n(in part) to substitute for state-based testing when testing the state <br/>\nis not what we&#39;re principally interested in. With something that <br/>\ncomputes a mathematical quantity, I imagine state is /all/ that matters.<br/>\n<br/>\nAlso, we&#39;re not trying to avoid some great expensive external resource <br/>\nhere. If, by chance, the factorial computing algorithm were a gateway to <br/>\nsome parallel processing system to compute the factorials of large <br/>\nnumbers (say over 500), then we might certainly extract <br/>\ncomputeFactorialForNAtLeast2() into an interface and hide the parallel <br/>\nprocessing system behind it. But for this case, I wouldn&#39;t bother.<br/>\n<br/>\nWhat would interest me is a recursive method that doesn&#39;t fall into the <br/>\nsame category as factorial(). Tree algorithms or sorting algorithms <br/>\nmight fit, but while I think about how I would test them, I can&#39;t see <br/>\nmocks helping me write better tests.<br/>\n<br/>\nAny examples from the group?<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 16404, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1143422613", 
+    "canDelete": false, 
+    "nextInTopic": 16406, 
+    "prevInTopic": 16404, 
+    "headers": {
+        "inReplyToHeader": "PDhlZDczMzkwMDYwMzI1MTU1M3M2MTc3ZjJhNXM4ODJiNTdjZDhmMzkwZjg4QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQ0MjczRTk1LjgwMjAzMDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGEwM2EyMDkzMDYwMzI0MDk0OGw3OTIzMTJhMnRhZDQ4Y2I0MTNkYmM4YTZiQG1haWwuZ21haWwuY29tPiA8OGVkNzMzOTAwNjAzMjUxNTUzczYxNzdmMmE1czg4MmI1N2NkOGYzOTBmODhAbWFpbC5nbWFpbC5jb20+"
+    }
+}

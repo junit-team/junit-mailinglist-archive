@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 23, 
+    "nextInTime": 22180, 
+    "senderId": "2M3dkvc8_tuC9c2fJTiJ9Q8n5y443WVTglR0aQdBEvQ1_-UuQe4Njlu_5gYEJjpHtQsitFVc0AWVBvV6gCldBQPxdZLa3nggLkDLD1oanQe-Vg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Global Rule, active for all tests", 
+    "from": "Joakim Ohlrogge &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Hi Bogdan, I can see where you re coming from with system properties to solve this. I would much rather have some way of solving this where you would not have ", 
+    "msgId": 22179, 
+    "profile": "j0hlrogge", 
+    "topicId": 22133, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-301906189\">Hi Bogdan,<br/>\n<br/>\nI can see where you&#39;re coming from with system properties to solve this.<br/>\nI would much rather have some way of solving this where you would not have<br/>\nto rely on a property being set at the JVM-level. The reason is that it&#39;s<br/>\nvery inconvenient to have to set run parameters if you just want to rerun a<br/>\nsingle test (in eclipse that&#39;s a run configuration rather than just<br/>\nrightclicking on a test in the runner). If JUnit instead would look for a<br/>\nstandard property-file or similar (like junit-rules.properties in the root<br/>\nof your class-path and merge all found resources found like<br/>\ngetClass().getClassLoader().getResources(&quot;/junit-rules.properties&quot;) then it<br/>\nwould just work with no external configuration like launch parameters or<br/>\nscript parameters.<br/>\n<br/>\nWith VM-parameters I don&#39;t see that the feature would be useful for anything<br/>\nthat influences the testrun, just for collecting information about the run.<br/>\n<br/>\n<br/>\n-----------------------------------------------------<br/>\nJoakim Ohlrogge<br/>\nAgical AB<br/>\nV�sterl�nggatan 79, 2 tr<br/>\n111 29 Stockholm, SWEDEN<br/>\n<br/>\nMobile: +46-708-754004<br/>\nBlog: johlrogge.wordpress.com<br/>\nE-mail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a><br/>\n<br/>\n<br/>\nOn Sat, Dec 5, 2009 at 8:46 PM, Bogdan &lt;<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bogdan.mocanu.notifications@...\">bogdan.mocanu.notifications@...</a>&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;<br/>\n&gt; Hi guys,<br/>\n&gt;<br/>\n&gt; thank you very much for your responses.<br/>\n&gt;<br/>\n&gt; I didn&#39;t know about the RunListener, so I will definitely take a look at<br/>\n&gt; it, and come back with an answer regarding it.<br/>\n&gt;<br/>\n&gt; What I was thinking about the global rules is to be able to configure<br/>\n&gt; something like global rules, that are specified as a startup parameter (read<br/>\n&gt; Java option) when starting the test (in the project at my office, we have<br/>\n&gt; like 750 tests, and therefore would work just nice to configure this option<br/>\n&gt; just for my env; probably the RunListener will work just like that, so as I<br/>\n&gt; said, I will read about this).<br/>\n&gt;<br/>\n&gt; I was thinking about something like this:<br/>\n&gt;<br/>\n&gt; java<br/>\n&gt; -Djunit.globalRules=com.test.myrules.SomeNiceRule,com.test.myrules.SomeNiceRule2<br/>\n&gt; ..........<br/>\n&gt;<br/>\n&gt; Cheers,<br/>\n&gt; Bogdan<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> &lt;junit%40yahoogroups.com&gt;, &quot;Bogdan&quot;<br/>\n&gt; &lt;bogdan.mocanu.notifications@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hi everyone,<br/>\n&gt; &gt;<br/>\n&gt; &gt; as we have it currently, we can place a Rule in a test, and that rule<br/>\n&gt; will be activated for that test. To have the rule working in several tests,<br/>\n&gt; you have to place the Rule in each test.<br/>\n&gt; &gt;<br/>\n&gt; &gt; However, I am searching for a way to activate a Rule for all the tests<br/>\n&gt; that are executed, without needing to add the rule to each test. Perhaps by<br/>\n&gt; specifying a Java property parameter when running the tests (I could also<br/>\n&gt; set this as a global Java option, therefore being used upon each execution<br/>\n&gt; of the JVM).<br/>\n&gt; &gt;<br/>\n&gt; &gt; Do you know if this is possible?<br/>\n&gt; &gt;<br/>\n&gt; &gt; The reason why I need this, is: I am making the plans and gathering the<br/>\n&gt; ideas for creating a simple Swing application that will display the results<br/>\n&gt; of the executed tests (just like the JUnit view in Eclipse/Idea/Netbeans,<br/>\n&gt; but perhaps with more details, and also available for anyone, not just IDE<br/>\n&gt; users). Currently I developed a small agent rule, that you can place in your<br/>\n&gt; test, and it will report to the console the status of your tests (the Swing<br/>\n&gt; console runs remotely).<br/>\n&gt; &gt;<br/>\n&gt; &gt; This is ok, but it means that you will have to add this rule to each and<br/>\n&gt; every test that you have. It also means that will not be an easy task to<br/>\n&gt; disable this rule, if you don&#39;t want it anymore.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Therefore a possibility to enable Rules globally for all tests I think is<br/>\n&gt; the best solution for my case, and also a good tool to have for various<br/>\n&gt; other tasks.<br/>\n&gt; &gt;<br/>\n&gt; &gt; What do you think? Also, what do you think about the Swing console idea?<br/>\n&gt; &gt;<br/>\n&gt; &gt; Cheers,<br/>\n&gt; &gt; Bogdan<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 22178, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1260711797", 
+    "canDelete": false, 
+    "nextInTopic": 22180, 
+    "prevInTopic": 22138, 
+    "headers": {
+        "inReplyToHeader": "PGhmZWRiZytibmEyQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDkxMjEzMDU0M2c1NjNkNmI0bDc2Y2FiNWVkNjQwNWI3ZTNAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGhmYmE1YSs0bTB1QGVHcm91cHMuY29tPiA8aGZlZGJnK2JuYTJAZUdyb3Vwcy5jb20+"
+    }
+}

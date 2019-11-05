@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 22226, 
+    "senderId": "FHBR0tum9eZVDhJYAXqGUS9v-xT6TXYA957uViqnVQVoK4QI0-ElANgG-pWiE-SPZ2zTTrNvihNyUlRjQB7CIci9CoQKb3fTowGTHbML3w3Kvwud_ZUPDNhRul-z5_Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Order of execution for tests", 
+    "from": "=?UTF-8?B?Q8OpZHJpYyBCZXVzdCDimZQ=?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "Hi Kent, A few precisions: ... I found that if the testing framework takes care of removing certain practical obstacles, dependent testing is actually very", 
+    "msgId": 22225, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 51927 invoked from network); 23 Dec 2009 21:09:20 -0000\r\nX-Received: from unknown (66.196.94.106)\n  by m4.grp.sp2.yahoo.com with QMQP; 23 Dec 2009 21:09:20 -0000\r\nX-Received: from unknown (HELO smtp-out.google.com) (216.239.33.17)\n  by mta2.grp.re1.yahoo.com with SMTP; 23 Dec 2009 21:09:19 -0000\r\nX-Received: from spaceape12.eur.corp.google.com (spaceape12.eur.corp.google.com [172.28.16.146])\n\tby smtp-out.google.com with ESMTP id nBNL9JY6006935\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 23 Dec 2009 21:09:19 GMT\r\nX-Received: from ywh13 (ywh13.prod.google.com [10.192.8.13])\n\tby spaceape12.eur.corp.google.com with ESMTP id nBNL9HsA026999\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 23 Dec 2009 13:09:18 -0800\r\nX-Received: by ywh13 with SMTP id 13so7806791ywh.29\n        for &lt;junit@yahoogroups.com&gt;; Wed, 23 Dec 2009 13:09:17 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.150.47.42 with SMTP id u42mr6747742ybu.173.1261602557069; Wed, \n\t23 Dec 2009 13:09:17 -0800 (PST)\r\nIn-Reply-To: &lt;9BC04D49-1427-4B69-A8CF-09B834300F7B@...&gt;\r\nReferences: &lt;26877097.post@...&gt; &lt;9BC04D49-1427-4B69-A8CF-09B834300F7B@...&gt;\r\nDate: Wed, 23 Dec 2009 13:08:57 -0800\r\nMessage-ID: &lt;b86b6a9c0912231308j23419c34i6ad198524890fe1@...&gt;\r\nTo: junit@yahoogroups.com\r\nX-System-Of-Record: true\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: =?UTF-8?B?Q8OpZHJpYyBCZXVzdCDimZQ=?= &lt;cbeust@...&gt;\r\nSubject: Re: [junit] Order of execution for tests\r\nX-Yahoo-Group-Post: member; u=199443513; y=-Q-rdomULftaQOXPlQ7m5baKtTwF0Zkuei9e30JrJV08\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nHi Kent,\n\nA few precisions:\n\nOn Wed, Dec 23, 2009 at 7:50 AM, Kent Beck &lt;ke=\r\nntb@...&gt; wrote:\n\n&gt; Tests are executed in an unspecified order. Th=\r\nere is no way to define an\n&gt; order, because in my experience independent te=\r\nsts are much more valuable\n&gt; than order-dependent tests.\n&gt;\n&gt; Every time I&#39;v=\r\ne had order dependencies I have had a problem with the design\n&gt; of the unde=\r\nrlying system. Investing my available time in improving the\n&gt; design has ha=\r\nd a much higher payoff than investing that same time into\n&gt; shuffling tests=\r\n around.\n&gt;\n\nI found that if the testing framework takes care of removing ce=\r\nrtain\npractical obstacles, dependent testing is actually very easy to imple=\r\nment\nand to use.  For example, if method c() depends on b() and a() and you=\r\n only\nwant to run c(), you should be able to say &quot;run c()&quot; and the framewor=\r\nk will\nfigure out which dependencies need to be run.\n\nMy experience with Te=\r\nstNG showed me that the fears often associated with\ntest dependencies are v=\r\nery overstated, and dependent testing is actually\nextremely useful for a lo=\r\nt of scenarios such as web testing (where\nnavigating from page to page adds=\r\n state at each step, and having to recreate\nthat state from scratch would b=\r\ne very expensive).  Users of Selenium +\nTestNG with dependencies can probab=\r\nly make a good case at giving you more\ndetails on this.\n\n\n\n&gt;\n&gt; Independent =\r\ntests enable interesting transformations like parallel\n&gt; execution or the k=\r\nind of dynamic reordering that let JUnit Max deliver\n&gt; failures more quickl=\r\ny.\n&gt;\n\nDependencies and parallelism are actually not mutually exclusive at a=\r\nll.\n Here are a couple of articles I wrote that describe the multithreaded\n=\r\ntopological sort algorithm that I implemented in TestNG:\n\nhttp://beust.com/=\r\nweblog/archives/000535.html\nhttp://beust.com/weblog/archives/000536.html\n\nT=\r\nhis should be especially of interest to developers interested in hard\nconcu=\r\nrrency issues, but all this complexity is completely hidden away from\nusers=\r\n.\n\nWith TestNG, you specify your dependencies (e.g. &quot;@Test(dependsOnMethods=\r\n =3D\n&quot;f&quot;)), then your thread pool size (thread-pool-size=3D15) and TestNG w=\r\nill\nfigure out how to run all your tests (both dependent and non dependent =\r\nones)\nin the most efficient parallel manner by using the threads you suppli=\r\ned as\nwell as possible.\n\n-- \n***C=E9dric\n*\n\n\n[Non-text portions of this mes=\r\nsage have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 22219, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 22224, 
+    "contentTrasformed": false, 
+    "postDate": "1261602537", 
+    "canDelete": false, 
+    "nextInTopic": 22226, 
+    "prevInTopic": 22221, 
+    "headers": {
+        "inReplyToHeader": "PDlCQzA0RDQ5LTE0MjctNEI2OS1BOENGLTA5QjgzNDMwMEY3QkBlYXJ0aGxpbmsubmV0Pg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDkxMjIzMTMwOGoyMzQxOWMzNGk2YWQxOTg1MjQ4OTBmZTFAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDI2ODc3MDk3LnBvc3RAdGFsay5uYWJibGUuY29tPiA8OUJDMDRENDktMTQyNy00QjY5LUE4Q0YtMDlCODM0MzAwRjdCQGVhcnRobGluay5uZXQ+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 7957, 
+    "senderId": "F4P1om7zzNiaPNYAUItJjt_YhgvEXfBG4XVr8jCY-yAM-JhLhUk1w9-xmKUyzHCFKTfL3L61upvioq9rujaN9Fre2q9imwpdQq0", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] question about Assert.assertEquals", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "... Well, kind of.  What I m saying is that when you re subclassing equals from anywhere but Object, you have to decide which way you want it to break. ... I", 
+    "msgId": 7956, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nReceived: (qmail 23992 invoked from network); 7 May 2003 06:02:33 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m5.grp.scd.yahoo.com with QMQP; 7 May 2003 06:02:33 -0000\r\nReceived: from unknown (HELO n24.grp.scd.yahoo.com) (66.218.66.80)\n  by mta1.grp.scd.yahoo.com with SMTP; 7 May 2003 06:02:33 -0000\r\nX-eGroups-Return: zipwow@...\r\nReceived: from [66.218.66.112] by n24.grp.scd.yahoo.com with NNFMP; 07 May 2003 06:02:32 -0000\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 7 May 2003 00:09:14 -0000\r\nReceived: (qmail 87912 invoked from network); 7 May 2003 00:08:50 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m8.grp.scd.yahoo.com with QMQP; 7 May 2003 00:08:50 -0000\r\nReceived: from unknown (HELO web80510.mail.yahoo.com) (66.218.79.80)\n  by mta2.grp.scd.yahoo.com with SMTP; 7 May 2003 00:08:50 -0000\r\nMessage-ID: &lt;20030507000850.23658.qmail@...&gt;\r\nReceived: from [207.14.29.3] by web80510.mail.yahoo.com via HTTP; Tue, 06 May 2003 17:08:50 PDT\r\nDate: Tue, 6 May 2003 17:08:50 -0700 (PDT)\r\nSubject: Re: [junit] question about Assert.assertEquals\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;200305061850180828.0052A5E2@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nX-Yahoo-Group-Post: member; u=82914509\r\nX-Yahoo-Profile: zipwow\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 07 May 2003 06:02:32 -0000\r\n\r\n\n--- &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt; wrote:\n&gt; I read your conclusion to be that it is therefore all right to code\n&gt; equals() in such a way as to report falsely that two objects are\n&gt; equal, because there&#39;s no way to make a superclass and subclass\n&gt; follow the equals() contract. Is that what you are saying? \n\nWell, kind of.  What I&#39;m saying is that when you&#39;re subclassing equals\nfrom anywhere but Object, you have to decide which way you want it to\nbreak.\n\n&gt; If it is,\n&gt; then I think it&#39;s all the more important to implement equals() in a\n&gt; failsafe way, since Bloch claims (and I don&#39;t doubt him, but I would\n&gt; need to think about it) that a subclass with more attributes than its\n&gt; superclass cannot be equal to it.\n\nI think this is the confusion... What he&#39;s said is that you cannot\noverride equals without breaking either symmetry or transitivity (which\nis what I&#39;m interpreting you to mean when you say &#39;in a failsafe way&#39;).\n \n\nYou can write a subclass that reports itself equal to the superclass. \nIn fact, you can&#39;t avoid it, and that&#39;s the problem.\n\nIf you use the instanceof approach, then (as you point out) you&#39;re\nbreaking symmetry.\n\nHowever, if you go with a different approach, say ignoring the added\ncharacteristic, you break transitivity.  Bloch&#39;s example from Effective\nJava has a ColoredPoint that has a new attribute color.  ColoredPoints\nneed to be different if they&#39;re different colors.  But what happens\nwhen they&#39;re compared to regular Points?\n\ninstanceof approach (breaks symmetry)\n\npublic boolean equals(Object o) {\n  if (o ! instanceof ColoredPoint) {\n     return false;\n  }...\n}\n\nI think this is the one you&#39;re warning about.  If you have a Point and\na ColoredPoint of the same coordinates:\n\npoint.equals(coloredPoint)  (true)\ncoloredPoint.equals(point)  (false)\n\nSo, how do you fix that?  Do you special-case the subclass?\n\npublic boolean equals(Object o) {\n  if (o instanceof Point) {\n     //do color-blind comparison\n  }...\n}\n\nThis gives you equals for both cases, but consider the following with a\nred, blue, and uncolored point:\n\nbluePoint.equals(point);  (true)\npoint.equals(redPoint); (true)\nbluePoint.equals(redPoint) (false)\n\nThis breaks transitivity (if x=y and y=z, then x = z must be true).\n\nI guess if you change the equals clause of Point to return false for\nColoredPoints you can solve this, but then you&#39;re polluting your\nsuperclass equals method with knowledge of each subclass.\n\nSo, in summary, I&#39;m saying that if you subclass an equals for anything\nbut Object, you&#39;re going to break it.  Be sure that you break it in a\nway that you expect.  Does that make sense?\n\nOh, Bloch recommends that in this case you &quot;favor composition over\ninheritence&quot;, and have ColoredPoint not extend Point, but pass through\nall the common methods to Point, and provide a view method called\nasPoint().  I haven&#39;t thought through the ramifications of that.\n\nLastly, for the original poster, before J.B. reminds me of it:  be sure\nyou override hashCode as well, or funny things will happen in your\nmaps.\n\n-Kevin\n\n__________________________________\nDo you Yahoo!?\nThe New Yahoo! Search - Faster. Easier. Bingo.\nhttp://search.yahoo.com\n\n\n", 
+    "profile": "zipwow", 
+    "topicId": 7948, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "prevInTime": 7955, 
+    "contentTrasformed": false, 
+    "postDate": "1052266130", 
+    "canDelete": false, 
+    "nextInTopic": 7961, 
+    "prevInTopic": 7953, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNTA2MTg1MDE4MDgyOC4wMDUyQTVFMkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNTA3MDAwODUwLjIzNjU4LnFtYWlsQHdlYjgwNTEwLm1haWwueWFob28uY29tPg=="
+    }
+}

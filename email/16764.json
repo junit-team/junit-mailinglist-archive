@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 16765, 
+    "senderId": "guLfOkqMiJTA3IG14yy7dJm0EvLxyGn9KVKWbcmeln2YeNR-KaXQkGDqWwvtvx6wPQ2RI3IckItgifwUNaMCObQgPYzEngWn", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] JUnit4 and legacy classes with static Test suite()", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Dear Mirko, Thank you for the defect report. You are correct that JUnitCore is not running 3.8.x test classes with a suite() method. I think this behavior is ", 
+    "msgId": 16764, 
+    "profile": "kentlbeck", 
+    "topicId": 16743, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-853214139\">Dear Mirko,<br/>\n<br/>\nThank you for the defect report. You are correct that JUnitCore is not<br/>\nrunning 3.8.x test classes with a suite() method. I think this behavior is<br/>\nincorrect. We will look at this during our next coding session.<br/>\n<br/>\nThe following test should pass (and doesn&#39;t):<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\n<br/>\nimport org.junit.runner.JUnitCore;<br/>\nimport org.junit.runner.Result;<br/>\nimport org.junit.runner.RunWith;<br/>\nimport org.junit.runners.AllTests;<br/>\n<br/>\n<br/>\npublic class JUnitCoreShouldRunSuite extends TestCase {<br/>\n\tpublic static class Tests extends TestCase {<br/>\n\t\tpublic void testNothing1() {<br/>\n\t\t}<br/>\n\t\tpublic void testNothing2() {<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n\t// @RunWith(AllTests.class) If you uncomment this line the test will<br/>\npass<br/>\n\tpublic static class SuiteClass {<br/>\n\t\tpublic static junit.framework.Test suite() {<br/>\n\t\t\tTestSuite result= new TestSuite();<br/>\n\t\t\tresult.addTestSuite(Tests.class);<br/>\n\t\t\treturn result;<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testJUnitCoreRunsSuites() {<br/>\n\t\tResult result= JUnitCore.runClasses(SuiteClass.class);<br/>\n\t\tassertEquals(2, result.getRunCount());<br/>\n\t\tassertEquals(0, result.getFailureCount());<br/>\n\t}<br/>\n}<br/>\n<br/>\nAlso, I have updated the cookbook.<br/>\n<br/>\nThank you again.<br/>\n<br/>\nSincerely yours,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of Mirko N.<br/>\n&gt; Sent: Monday, May 29, 2006 4:17 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] JUnit4 and legacy classes with static Test suite()<br/>\n&gt; <br/>\n&gt; Hi,<br/>\n&gt; <br/>\n&gt; I&#39;m doing some tests to see how easy it would be for us to upgrade to<br/>\n&gt; JUnit4. Ideally the new runner should be able to run all of our<br/>\n&gt; existing JUnit3.8 tests without modifications.<br/>\n&gt; <br/>\n&gt; The Cookbook suggests to use<br/>\n&gt; org.junit.runner.TextListener.run(TestClass1.class, ...) as<br/>\n&gt; TestRunner; but looks like that bit of documentation is out of date.<br/>\n&gt; <br/>\n&gt; Apparently JUnitCore is the class that does the job. In fact it works<br/>\n&gt; very well with regular TestCases. But it doesn&#39;t seem to recognize<br/>\n&gt; classes with a static Test suite() method. E.g.<br/>\n&gt; <br/>\n&gt;  $ java org.junit.runner.JUnitCore some.junit38.tests.StaticSuiteTest<br/>\n&gt;  JUnit version 4.1<br/>\n&gt;  .E<br/>\n&gt;  Time: 0.018<br/>\n&gt;  There was 1 failure:<br/>\n&gt;  1) warning(junit.framework.TestSuite$1)<br/>\n&gt; junit.framework.AssertionFailedError: No tests found in<br/>\n&gt; some.junit38.tests.StaticSuiteTest<br/>\n&gt; <br/>\n&gt; while with the old runner<br/>\n&gt; <br/>\n&gt;  $ java junit.textui.TestRunner some.junit38.tests.StaticSuiteTest<br/>\n&gt;  ..........<br/>\n&gt;  Time: 0.004<br/>\n&gt;  OK (10 tests)<br/>\n&gt; <br/>\n&gt; If I annotate the legacy StaticSuiteTest with @RunWith(AllTests.class)<br/>\n&gt; then the new runner is happy. But that means having to find out all<br/>\n&gt; classes using static suite() in our codebase, annotate and <br/>\n&gt; recompile them.<br/>\n&gt; <br/>\n&gt; Before delving into the new JUnit code, is this behaviour expected?<br/>\n&gt; <br/>\n&gt; Thanks<br/>\n&gt; <br/>\n&gt; Mirko<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------ Yahoo! Groups Sponsor <br/>\n&gt; --------------------~--&gt; <br/>\n&gt; Home is just a click away.  Make Yahoo! your home page now.<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/DHchtC/3FxNAA/yQLSAA/5cFolB/TM\">http://us.click.yahoo.com/DHchtC/3FxNAA/yQLSAA/5cFolB/TM</a><br/>\n&gt; --------------------------------------------------------------<br/>\n&gt; ------~-&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 16763, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1149038400", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16743, 
+    "headers": {
+        "inReplyToHeader": "PGU1ZWw3ays0dDUxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwYWYwMWM2ODQ1MCQ1NmU2ZTM2MCQ2NDAxYThjMEBUNDI+"
+    }
+}

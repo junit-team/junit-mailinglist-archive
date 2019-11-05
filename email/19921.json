@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 19, 
+    "nextInTime": 19922, 
+    "senderId": "Bqi4q_137Wty1oaApHk0NJdzFZCSjXjiH14bWbFLNE0cL_F-QIi9Osq4L7cn0NCsGVXL16rHa_mF4-B3S9sjOAbEKLM", 
+    "systemMessage": true, 
+    "subject": "Re: How to change dynamically (runtime) the classpath for a given test", 
+    "from": "&quot;David&quot; &lt;achepati67@...&gt;", 
+    "authorName": "David", 
+    "msgSnippet": "... Dear Lasse, Your solution, assumes two facts: 1. Previous to running the test, there must exist a file on classpath. 2. The source files are on classpath", 
+    "msgId": 19921, 
+    "profile": "achepati67", 
+    "topicId": 19905, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 152694144, 
+    "messageBody": "<div id=\"ygrps-yiv-705233083\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hi David,<br/>\n&gt;<br/>\n&gt; On 9/21/07, David achepati67@... wrote:<br/>\n&gt; &gt; Thanks for your reply, but you are assuming to much, because you<br/>\n&gt; &gt; have to modify the classpath by hand. For example under eclipse the<br/>\n&gt; &gt; current folder (.) is not on the classpath, so you have addapt the<br/>\n&gt; &gt; test to the IDE configuration. I know this can be done very easy<br/>\n&gt; &gt; using Ant, but I don&#39;t want to impose to use such tools for this<br/>\n&gt; &gt; particular example.<br/>\n&gt;<br/>\n&gt; Actually, I don&#39;t need to modify the classpath by hand because under<br/>\n&gt; Eclipse the source folders are in the class path. For example, you can<br/>\n&gt; do the following successfully in your tests:<br/>\n&gt;<br/>\n&gt; getClass().getResource(&quot;/com/acme/stuff/testdata.txt&quot;);<br/>\n&gt;<br/>\n&gt; ...which will give you access to the testdata.txt file you&#39;ve placed<br/>\n&gt; under your source directory:<br/>\n&gt;<br/>\n&gt; ${basedir}/src/com/acme/stuff/testdata.txt<br/>\n&gt;<br/>\n&gt; Or maybe I misunderstood what you meant?<br/>\n&gt;<br/>\n&gt; Lasse<br/>\n&gt;<br/>\n&gt; --<br/>\n&gt; Lasse Koskela<br/>\n&gt; * Author of &quot;Test Driven&quot; (Manning Publications, 2007) *<br/>\n&gt; * Reaktor Innovations * <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.ri.fi/en\">http://www.ri.fi/en</a> *<br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>Dear Lasse,<br/>\n<br/>\nYour solution, assumes two facts:<br/>\n<br/>\n1. Previous to running the test, there must exist a file on classpath.<br/>\n<br/>\n2. The source files are on classpath (that is valid for Eclipse, but for<br/>\nothers...)<br/>\n<br/>\nWhat I would like is to write a test that has less assumptions, because<br/>\nthere is no way to modify the classpath under jUnit test, my solution<br/>\nthen would assume:<br/>\n<br/>\nThat at least on classpath exist a directory location. It is a weaker<br/>\nconstraint, because a classpath can contain only files, but is less<br/>\nussual. In case that such assumption doesn&#39;t hold, then an exception<br/>\nwill be thrown (not a fail, because it is a pre condition only).<br/>\n<br/>\nThe following test, works and is less restrictive:<br/>\n<br/>\nimport java.io.File;<br/>\nimport java.io.FileNotFoundException;<br/>\nimport junit.framework.TestCase;<br/>\n<br/>\n<br/>\npublic class TestFileUtils extends TestCase {<br/>\n<br/>\n     final String testFileName = &quot;fileInClassPath.txt&quot;;<br/>\n     File dirOnClasspath = null;<br/>\n<br/>\n     /**<br/>\n      * {@link &lt;mailto:{@link&gt; <br/>\ncom.b2b2000.FileUtils#findFileInClasspath(java.lang.String)}.<br/>\n      *<br/>\n      */<br/>\n     public void testFindFileInClasspath() throws Exception {<br/>\n         File newFile = new File(this.dirOnClasspath, testFileName);<br/>\n         newFile.createNewFile();<br/>\n         File foundFile = FileUtils.findFileInClasspath(testFileName);<br/>\n         assertTrue(foundFile.exists());<br/>\n     }<br/>\n<br/>\n     protected void setUp() throws Exception {<br/>\n      this.dirOnClasspath = findDirectoryOnClasspath();<br/>\n      if (this.dirOnClasspath == null) {<br/>\n       throw new Exception(&quot;There is no directory on classpath, test<br/>\ncan&#39;t work, it assumes at least one directory on classpath&quot;);<br/>\n      }<br/>\n         File newFile = new File(this.dirOnClasspath, testFileName);<br/>\n         if (newFile.exists()) {<br/>\n             if (!newFile.delete()) {<br/>\n                 throw new FileNotFoundException(newFile.toString());<br/>\n<br/>\n             }<br/>\n         }<br/>\n         super.setUp();<br/>\n     }<br/>\n<br/>\n     protected void tearDown() throws Exception {<br/>\n         File file = new File(this.dirOnClasspath, testFileName);<br/>\n         file.deleteOnExit();<br/>\n         super.tearDown();<br/>\n     }<br/>\n<br/>\n     private File findDirectoryOnClasspath() {<br/>\n      final String classpath = System.getProperty(&quot;java.class.path&quot;);<br/>\n      final String[] members = classpath.split(File.pathSeparator);<br/>\n      File file = null;<br/>\n      for (int i = 0; i &lt;= members.length; i++) {<br/>\n       file = new File(members[i]);<br/>\n       if (file.isDirectory()) {<br/>\n        break;<br/>\n       }<br/>\n      }<br/>\n      return file;<br/>\n     }<br/>\n}<br/>\n<br/>\n<br/>\nThanks to every body has replied this thread,<br/>\n<br/>\nDavid<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 19920, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1190575457", 
+    "canDelete": false, 
+    "nextInTopic": 19922, 
+    "prevInTopic": 19920, 
+    "headers": {
+        "inReplyToHeader": "PDM5NzVlMmQxMDcwOTIxMDAxNW81ZTNkOGU5N2k0MTg1ZDdiZGY0YTRkNTkyQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGZkNmVoMStyOGM5QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 12261, 
+    "senderId": "mAPur-K5pXFr2qj1XtJ-l9jU4IH4d_K751HLG4KixTdGopBs2b7KUw76Y7M8SNVhBlJq3tyJkoGt3akSZPSzPa2w2zmJcuc90rc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] how can make an exception as a true condition", 
+    "from": "Chris Dollin &lt;kers@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... Don t try. Write two tests. Write a test to ensure that correct width-setting works: public void testValidWidthSetting() { MyRectangle rect = new", 
+    "msgId": 12260, 
+    "rawEmail": "Return-Path: &lt;kers@...&gt;\r\nX-Sender: kers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 25172 invoked from network); 5 Nov 2004 15:07:43 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m22.grp.scd.yahoo.com with QMQP; 5 Nov 2004 15:07:43 -0000\r\nReceived: from unknown (HELO palrel11.hp.com) (156.153.255.246)\n  by mta3.grp.scd.yahoo.com with SMTP; 5 Nov 2004 15:07:43 -0000\r\nReceived: from timmay.hpl.hp.com (timmay.hpl.hp.com [15.144.30.251])\n\tby palrel11.hp.com (Postfix) with ESMTP id 6FD89A838\n\tfor &lt;junit@yahoogroups.com&gt;; Fri,  5 Nov 2004 07:07:02 -0800 (PST)\r\nReceived: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [15.144.90.22])\n\tby timmay.hpl.hp.com (8.11.1 (Revision 1.6) /8.9.3 SMKit7.1.0) with ESMTP id iA5F6fK10792\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 5 Nov 2004 15:06:41 GMT\r\nOrganization: HPLB\r\nTo: junit@yahoogroups.com\r\nDate: Fri, 5 Nov 2004 15:06:40 +0000\r\nUser-Agent: KMail/1.5\r\nReferences: &lt;cmf4cm+tj2u@...&gt;\r\nIn-Reply-To: &lt;cmf4cm+tj2u@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200411051506.40568.kers@...&gt;\r\nX-HPLB-IMAP-MailScanner-Information: Please contact the Helpdesk for more information\r\nX-HPLB-IMAP-MailScanner: Found to be clean\r\nX-HPLB-IMAP-MailScanner-SpamCheck: not spam, SpamAssassin (score=0,\n\trequired 5)\r\nX-eGroups-Remote-IP: 156.153.255.246\r\nFrom: Chris Dollin &lt;kers@...&gt;\r\nSubject: Re: [junit] how can make an exception as a true condition\r\nX-Yahoo-Group-Post: member; u=88056088\r\nX-Yahoo-Profile: anover_alias\r\n\r\nOn Friday 05 November 2004 05:51, timotius_pamungkas wrote:\n&gt; Hi all,\n&gt;\n&gt; I&#39;m new in JUnit and want to ask a question. Suppose I have a\n&gt; MyRectangle class with this method :\n&gt;\n&gt; public void setWidth(int w) throws IllegalArgumentException {\n&gt;     if (w &lt; 1) {\n&gt;         throw new IllegalArgumentException();\n&gt;     }\n&gt;     width = w;\n&gt; }\n&gt;\n&gt; and this junit method :\n&gt;\n&gt; public void testSetWidth() {\n&gt;     MyRectangle rect = new MyRectangle();\n&gt;\n&gt;     Assert.assertNotNull(rect);\n&gt;     rect.setWidth(-5);\n&gt;     Assert.assertEquals(-5, rect.getWidth());\n&gt;     rect.setWidth(4);\n&gt;     Assert.assertEquals(4, rect.getWidth());\n&gt; }\n&gt;\n&gt; When I call rect.setWidth(-5), it should be throw an exception, and\n&gt; it really throw an exception. The problem is, my test stop at that\n&gt; point, so rect.setWidtt(4) never executed. But all I need is it\n&gt; really throw an exception or not. If it&#39;s throws an exception, that\n&gt; means the method is correct, and the JUnit should continue with next\n&gt; test. But if it didn&#39;t throw any exception, that means the code is\n&gt; wrong (maybe I forget to check the parapmeter), so if this happen, my\n&gt; Junit will stop. How can i create this kind of test?\n\nDon&#39;t try. Write two tests.\n\nWrite a test to ensure that correct width-setting works:\n\n    public void testValidWidthSetting()\n        {\n        MyRectangle rect = new MyRectangle();\n        rect.setWidth( 17 );\n        assertEquals( 17, rect.getWidth() );\n        }\n\n[You *don&#39;t* need to check `rect` is non-null; if it is, the\n JVM is broken; all bets are off, anyway.]\n\nAnd another to check that the exception gets thrown:\n\n    public void testInvalidWidthException()\n        {\n        MyRectangle rect = new MyRectangle();\n        try { rect.setWidth( -42 ); fail( &quot;illegal width should be detected&quot; ); }\n        catch (IllegalArgumentException e) { /* yes, nothing */ }\n        }\n\nAnd if a lot of your tests start with \n\n        MyRectangle rect = new MyRectangle();\n\nmake it a fixture of your TestCase.\n\n-- \nChris &quot;electric hedgehog&quot; Dollin\n\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 12256, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88056088, 
+    "prevInTime": 12259, 
+    "contentTrasformed": false, 
+    "postDate": "1099667200", 
+    "canDelete": false, 
+    "nextInTopic": 12261, 
+    "prevInTopic": 12259, 
+    "headers": {
+        "inReplyToHeader": "PGNtZjRjbSt0ajJ1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDQxMTA1MTUwNi40MDU2OC5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "referencesHeader": "PGNtZjRjbSt0ajJ1QGVHcm91cHMuY29tPg=="
+    }
+}

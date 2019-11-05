@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 24069, 
+    "senderId": "biDvL1zAHecXcDcGlUwsB_4-aRpy19mt4LMwIo0TeTOAdhQs3ex2o47O_Rzg8pM_NyJmhfCZj8tS3YoNFSPjkBNVvg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Custom failed test handling", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Actually, you should be able to reuse the same extension.  On classes where you want to close the browser after each test, use the strategy I outlined above.", 
+    "msgId": 24068, 
+    "profile": "saffatgoogle", 
+    "topicId": 24065, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 525765722, 
+    "messageBody": "<div id=\"ygrps-yiv-277444658\">Actually, you should be able to reuse the same extension.  On classes where<br/>\nyou want to close the browser after each test, use the strategy I outlined<br/>\nabove.  On classes where you want to only close the browser after the whole<br/>\nclass, you&#39;ll use:<br/>\n<br/>\n@Rule public TestRule screenShotter = new Screenshotter();<br/>\n@ClassRule public static TestRule closer = new BrowserCloser();<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, Oct 24, 2012 at 11:14 AM, j.kieley &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:j.kieley@...\">j.kieley@...</a>&gt; wrote:<br/>\n<br/>\n&gt; **<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Thank you so much for the quick reply!<br/>\n&gt;<br/>\n&gt; Thats a great approach! The only thing is that some of our tests use<br/>\n&gt; @After to close the browser, while others use @AfterClass to close the<br/>\n&gt; browser. I would like to apply this custom test failure handling globally<br/>\n&gt; if possible.<br/>\n&gt; The way you&#39;ve suggested would allow us to do it for all of the Test<br/>\n&gt; Classes that use the @After to close the browser (Which I think i&#39;ll start<br/>\n&gt; doing now) however it would cause all the test classes that use @AfterClass<br/>\n&gt; to close the browser to break.<br/>\n&gt; Unless I made two separate extensions from TestWatcher... One for the<br/>\n&gt; @After close browser and one for the @AfterClass..... wow I think that<br/>\n&gt; would work nicely...<br/>\n&gt; Is that what you would suggest?<br/>\n&gt;<br/>\n&gt; Thanks a lot<br/>\n&gt; -James<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;saff@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; J,<br/>\n&gt; &gt;<br/>\n&gt; &gt; Here&#39;s how I&#39;d approach it. I&#39;ll assume you already have some kind of<br/>\n&gt; &gt;<br/>\n&gt; &gt; class Screenshotter extends TestWatcher { ... }<br/>\n&gt; &gt;<br/>\n&gt; &gt; You&#39;ll need to take the logic from your after method, and put it into an<br/>\n&gt; &gt; ExternalResource:<br/>\n&gt; &gt;<br/>\n&gt; &gt; public class BrowserCloser extends ExternalResource {<br/>\n&gt; &gt; @Override protected void after() {<br/>\n&gt; &gt; // close the browser<br/>\n&gt; &gt; }<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; And then, in your test class, you can include both with a RuleChain:<br/>\n&gt; &gt;<br/>\n&gt; &gt; @Rule public TestRule chain = TestRule.outerRule(new<br/>\n&gt; &gt; BrowserCloser()).around(new Screenshotter());<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hope that helps,<br/>\n&gt; &gt;<br/>\n&gt; &gt; David<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; On Tue, Oct 23, 2012 at 3:11 PM, j.kieley &lt;j.kieley@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt; **<br/>\n&gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I am Selenium Developer. I was trying to override the class:<br/>\n&gt; TestWatcher<br/>\n&gt; &gt; &gt; method: failed. To add some custom test failure handling (take a<br/>\n&gt; screenshot<br/>\n&gt; &gt; &gt; on test failure). However I noticed that the failed() method is invoked<br/>\n&gt; &gt; &gt; after the @after method is executed. Currently we are using the @after<br/>\n&gt; &gt; &gt; method to close the browser. So we need to execute takeAScreenShot()<br/>\n&gt; after<br/>\n&gt; &gt; &gt; a test has failed, and before the @after method is exeuted. Any<br/>\n&gt; &gt; &gt; suggestions? I didn&#39;t see a way to do this, without making some major<br/>\n&gt; &gt; &gt; changes to TestWatcher.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; [Non-text portions of this message have been removed]<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 24067, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1351096910", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 24067, 
+    "headers": {
+        "inReplyToHeader": "PGs2OTBrZis0amNxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBTHJ3LVB5cW92MS1SeU1OdG5wdTN6cFFZajlLNnpweWtMMXlDQjB1WXM5Rm9XaWVKd0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBTHJ3LVB3WnVkUXROQlRPYTE3UEtzOU1laW1ROVk3a3ZpNVJGRHlkbjZ4cy1QdW9VZ0BtYWlsLmdtYWlsLmNvbT4gPGs2OTBrZis0amNxQGVHcm91cHMuY29tPg=="
+    }
+}

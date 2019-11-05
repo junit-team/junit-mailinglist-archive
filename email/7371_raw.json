@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 7372, 
+    "senderId": "I_VAgUNB1jby1PDBjMSNl2lDMfQRBV8ZZ2FUT9wp_a6jiiQ96wGRZS3iTAjgJMO4bdYN_3M12PtmhndpPIZwnThRqubm78pe4vz0G5AKq08", 
+    "systemMessage": false, 
+    "subject": "Re: JUnit Design?", 
+    "from": "&quot;roger_k_white&quot; &lt;roger_k_white@...&gt;", 
+    "authorName": "roger_k_white", 
+    "msgSnippet": "... close ... I think the way to do this within the JUnit framework is to use the TestSuite to group tests.  Looks something like this: public class DBTestCase", 
+    "msgId": 7371, 
+    "rawEmail": "Return-Path: &lt;roger_k_white@...&gt;\r\nReceived: (qmail 91884 invoked from network); 2 Apr 2003 00:20:32 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m8.grp.scd.yahoo.com with QMQP; 2 Apr 2003 00:20:32 -0000\r\nReceived: from unknown (HELO n18.grp.scd.yahoo.com) (66.218.66.73)\n  by mta2.grp.scd.yahoo.com with SMTP; 2 Apr 2003 00:20:31 -0000\r\nX-eGroups-Return: roger_k_white@...\r\nReceived: from [66.218.67.153] by n18.grp.scd.yahoo.com with NNFMP; 02 Apr 2003 00:20:30 -0000\r\nX-Sender: roger_k_white@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 28 Mar 2003 17:08:47 -0000\r\nReceived: (qmail 39580 invoked from network); 28 Mar 2003 16:46:46 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m10.grp.scd.yahoo.com with QMQP; 28 Mar 2003 16:46:46 -0000\r\nReceived: from unknown (HELO n13.grp.scd.yahoo.com) (66.218.66.68)\n  by mta2.grp.scd.yahoo.com with SMTP; 28 Mar 2003 16:46:46 -0000\r\nReceived: from [66.218.67.139] by n13.grp.scd.yahoo.com with NNFMP; 28 Mar 2003 16:46:46 -0000\r\nDate: Fri, 28 Mar 2003 16:46:46 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: JUnit Design?\r\nMessage-ID: &lt;b61u9m+qj4n@...&gt;\r\nIn-Reply-To: &lt;A7E16BDD-5E5F-11D7-A328-00039301D446@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1878\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;roger_k_white&quot; &lt;roger_k_white@...&gt;\r\nX-Yahoo-Group-Post: member; u=78198439\r\nX-Yahoo-Profile: roger_k_white\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 02 Apr 2003 00:20:30 -0000\r\n\r\n--- In junit@yahoogroups.com, Bill Venners &lt;bv@a...&gt; wrote:\n&gt; \n&gt; One significant difference between the static member approach to  \n&gt; fixture sharing in JUnit and SuiteRunner is that I know how to \nclose  \n&gt; the connection when I&#39;m done in SuiteRunner, but not in JUnit. If  \n&gt; anyone has a way to do that, please reply.\n\nI think the way to do this within the JUnit framework is to use the \nTestSuite to group tests.  Looks something like this:\n\npublic class DBTestCase extends TestCase {\n    String connectString\n    DB_Connection connection;\n    \n    DBTestCase(String name, String connectIn) {\n        super(name);\n        connectString = connectIn;\n    }\n    protected void setUp() {\n        // open connection\n    }\n    protected void tearDown() {\n        // close connection\n    }\n    protected void runTest(){\n        // grab all public methods starting with &quot;test&quot;\n        TestSuite allDBTests = new TestSuite(getClass());\n        allDBTests.run();\n    }         \n}\n\nThen you add a bunch of testXXXX() methods.  Better yet, you could \nextend DBTestCase, and just write all the testXXXX methods in the \nsubclass--that way you can have different sets of db tests, and \nreuse the DBTestCase. \n\n\n&gt; Another difference is really one of design taste I suspect. I \njust  \n&gt; found it non-intuitive that JUnit gave each test method invocation \nits  \n&gt; own instance, especially when they also provided the setUp() \nmethod.  \n\nWhen you say JUnit gives each test method invocation it&#39;s own \ninstance, I&#39;m assuming you are refering to the default way \nTestCase.runTest() works (trying to run a method with the same name \nas the test case).  I hardly ever use the default runTest()--my \nguess is that it is only left in there for backward-compatibility.\n\nI find the type of runTest() I showed above much more useful.\nWould this solution address the problems you were concerned with?\n\n\n\n\n\n", 
+    "profile": "roger_k_white", 
+    "topicId": 7266, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78198439, 
+    "prevInTime": 7370, 
+    "contentTrasformed": false, 
+    "postDate": "1048870006", 
+    "canDelete": false, 
+    "nextInTopic": 7375, 
+    "prevInTopic": 7361, 
+    "headers": {
+        "inReplyToHeader": "PEE3RTE2QkRELTVFNUYtMTFENy1BMzI4LTAwMDM5MzAxRDQ0NkBhcnRpbWEuY29tPg==", 
+        "messageIdInHeader": "PGI2MXU5bStxajRuQGVHcm91cHMuY29tPg=="
+    }
+}

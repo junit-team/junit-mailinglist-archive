@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 15219, 
+    "senderId": "MGggR9TIsWIKOhcYZD6rOnKX4KBpyC0zDoJXB0x_rZwbabLNFcOF8S9C8c9mcZEmnNu6y_ucCnu0C1KFbDhQVg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Test Names and rerunning Test instances for Parameterized Tests", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... I m not saying that it s impossible to make improvement, but that it s impossible to handle every conceiveable situation, so we need a concrete example of", 
+    "msgId": 15218, 
+    "rawEmail": "Return-Path: &lt;saff@...&gt;\r\nX-Sender: saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 30485 invoked from network); 19 Oct 2005 19:14:41 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m14.grp.scd.yahoo.com with QMQP; 19 Oct 2005 19:14:41 -0000\r\nReceived: from unknown (HELO rozz.csail.mit.edu) (128.30.2.16)\n  by mta5.grp.scd.yahoo.com with SMTP; 19 Oct 2005 19:14:41 -0000\r\nReceived: from c-24-147-177-124.hsd1.ma.comcast.net ([24.147.177.124] helo=[192.168.2.25])\n\tby rozz.csail.mit.edu with esmtpa (Exim 4.50)\n\tid 1ESJLX-0001YP-Nb\n\tfor junit@yahoogroups.com; Wed, 19 Oct 2005 15:11:31 -0400\r\nMessage-ID: &lt;43569A62.9040909@...&gt;\r\nDate: Wed, 19 Oct 2005 15:11:30 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;dj61in+k7u3@...&gt; &lt;43569232.1050709@...&gt; &lt;435696B8.1030700@...&gt;\r\nIn-Reply-To: &lt;435696B8.1030700@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: David Saff &lt;saff@...&gt;\r\nSubject: Re: [junit] Re: Test Names and rerunning Test instances for Parameterized\n Tests\r\nX-Yahoo-Group-Post: member; u=139771899; y=BkiJtHf1E9iaw0AcezopbDgOU9fvAyqUvwtXylipSCI\r\nX-Yahoo-Profile: dsaff\r\n\r\nEugene Kuleshov wrote:\n\n&gt; David Saff wrote:\n&gt;\n&gt; &gt; I&#39;m a little uncomfortable calling it a bug.  Since JUnit 3 allows \n&gt; fully\n&gt; &gt; dynamic test tree generation, it can be undecidable in advance \n&gt; whether a\n&gt; &gt; given test case will even be included in the suite that is run, and \n&gt; more\n&gt; &gt; difficult than that to actually dynamically reconstruct the test case\n&gt; &gt; alone without running the rest of the suite.\n&gt;\n&gt;    That is true, but from other hand you don&#39;t really have to _run_\n&gt; tests to see that test cases will be included into suite. Note that I\n&gt; am not talking about completely random suites and in 99.9% suite()\n&gt; method will return the same set od test cases. So, IDE or other test\n&gt; runner could of kept these instances alive or even easier - recreate\n&gt; only this instance using number of the test in the suite as a key.\n\nI&#39;m not saying that it&#39;s impossible to make improvement, but that it&#39;s \nimpossible to handle every conceiveable situation, so we need a concrete \nexample of the situation we&#39;re trying to address.  See below.\n\n&gt; &gt; Eclipse will work correctly rerunning tests on suites made up of\n&gt; &gt; TestCases and TestSuites constructed in the usual way, such as\n&gt; &gt; suite.addTestCase(MyTest.class).  This seems to be a good way to cover\n&gt; &gt; 80% of what users want.  Is there another JUnit 3 pattern so prevalent\n&gt; &gt; that addressing it would up that coverage to 90%?\n&gt;\n&gt;    Heh. Most of the users don&#39;t even run tests from the IDE (those run\n&gt; on continuous integration server using Ant or Maven). That may quite\n&gt; change the estimate you gave before. \n\nThat feels irrelevant to me.  I&#39;m thinking about the integration between \nJUnit and the IDE (something I do a lot of these days).  People who use \nthese products integrated are the only ones I&#39;m hoping to please right \nnow.  Or did I misunderstand?\n\n&gt; In any case where did you get\n&gt; such numbers anyways? :-)\n\nSame place as your 99.9% above  :)  I was serious about my question, \nthough--if any of the users on this list are right now frustrated by a \ntest suite that they often use in Eclipse, and can&#39;t rerun individual \ntests in, that&#39;s a good starting point for a guess as to the next kind \nof test suites that Eclipse should handle.  Please log a bug in Eclipse, \nand CC the list (I&#39;m currently spending some time on Eclipse/JUnit patches).\n\n&gt; &gt; One cool thing about JUnit 4 is that while you should be able to do\n&gt; &gt; arbitrary test-creation cleverness using the @RunWith annotation, this\n&gt; &gt; is a static annotation that IDE&#39;s can easily check.  So version 17.1 of\n&gt; &gt; some IDE might be able to rerun tests run with TestClassRunner (JUnit 4\n&gt; &gt; default) and OldTestClassRunner (JUnit 3 default), and if it turns \n&gt; out a\n&gt; &gt; lot of people are using Parameterized, 17.2 could add support for that.\n&gt;\n&gt;    It seems violating the concept of annotations. You should not\n&gt; annotate the behaviour, but rather define enough metadata that can be\n&gt; used by the tool to decide how to behave. \n\nTricky, maybe, but violating is a strong word.  :)  Can you give an \nexample of how using annotations to identify the Runner that should be \nused by a particular class might be a problem?  Thanks,\n\n    David Saff\n\n", 
+    "profile": "dsaff", 
+    "topicId": 15110, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 15217, 
+    "contentTrasformed": false, 
+    "postDate": "1129749090", 
+    "canDelete": false, 
+    "nextInTopic": 15219, 
+    "prevInTopic": 15217, 
+    "headers": {
+        "inReplyToHeader": "PDQzNTY5NkI4LjEwMzA3MDBAbWQucHAucnU+", 
+        "messageIdInHeader": "PDQzNTY5QTYyLjkwNDA5MDlAbWl0LmVkdT4=", 
+        "referencesHeader": "PGRqNjFpbitrN3UzQGVHcm91cHMuY29tPiA8NDM1NjkyMzIuMTA1MDcwOUBtaXQuZWR1PiA8NDM1Njk2QjguMTAzMDcwMEBtZC5wcC5ydT4="
+    }
+}

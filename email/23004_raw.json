@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 23005, 
+    "senderId": "eHKV8OQMBo3SyfG0SfCI-TBDph2hlySiWiF8ehhnegCcGrpjI4raE16Uc8piUiC8PMemsi3HK59iAHZkmIy5pytICEU", 
+    "systemMessage": true, 
+    "subject": "Running test with guaranteed method order -&gt; cookbook/FAQ?", 
+    "from": "&quot;tiaraki&quot; &lt;tiaraki@...&gt;", 
+    "authorName": "tiaraki", 
+    "msgSnippet": "Hello Although junit is designed to run the test methods in arbitrary order, e.g. for sorting often failing ones first or just to be safe that there are not", 
+    "msgId": 23004, 
+    "rawEmail": "Return-Path: &lt;tiaraki@...&gt;\r\nReceived: (qmail 1784 invoked from network); 11 Oct 2010 02:17:23 -0000\r\nReceived: from unknown (98.137.34.45)\n  by m3.grp.sp2.yahoo.com with QMQP; 11 Oct 2010 02:17:23 -0000\r\nReceived: from unknown (HELO n39b.bullet.mail.sp1.yahoo.com) (66.163.168.153)\n  by mta2.grp.sp2.yahoo.com with SMTP; 11 Oct 2010 02:17:23 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1286763442; bh=KugvKaWu8Zv1lYrQDHeG1kQkV2MEVZx/7NOOnShcjYk=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:X-Received:Date:To:Message-ID:User-Agent:MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer:X-Yahoo-Newman-Property:X-Originating-IP:X-eGroups-Msg-Info:X-Yahoo-Post-IP:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:X-YGroups-SubInfo:Sender:X-eGroups-Approved-By:X-eGroups-Auth; b=OBHxmf4T0NStUVq19A9jKkOR7U3Z9UNVTd2vDGuGr0RpxS7EqgmhELDMFELO8AnNOpdiINgGd6fKnWzSqTA/kARaDQWQ2iwDEoO1D9FgBu2FO4WMfgb+hswxgUJCw2cy\r\nReceived: from [69.147.65.150] by n39.bullet.mail.sp1.yahoo.com with NNFMP; 11 Oct 2010 02:17:22 -0000\r\nReceived: from [98.137.34.36] by t7.bullet.mail.sp1.yahoo.com with NNFMP; 11 Oct 2010 02:17:22 -0000\r\nX-Sender: tiaraki@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 67645 invoked from network); 11 Oct 2010 01:10:21 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m4.grp.sp2.yahoo.com with QMQP; 11 Oct 2010 01:10:21 -0000\r\nX-Received: from unknown (HELO n43d.bullet.mail.sp1.yahoo.com) (66.163.169.157)\n  by mta2.grp.sp2.yahoo.com with SMTP; 11 Oct 2010 01:10:21 -0000\r\nX-Received: from [69.147.65.148] by n43.bullet.mail.sp1.yahoo.com with NNFMP; 11 Oct 2010 01:10:20 -0000\r\nX-Received: from [98.137.34.36] by t11.bullet.mail.sp1.yahoo.com with NNFMP; 11 Oct 2010 01:10:20 -0000\r\nDate: Mon, 11 Oct 2010 01:10:18 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;i8to5q+eqb4@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;tiaraki&quot; &lt;tiaraki@...&gt;\r\nSubject: Running test with guaranteed method order -&gt; cookbook/FAQ?\r\nX-Yahoo-Group-Post: member; u=467781574; y=1VXY6Ibx26B5GstnTImfl5x7XGO-Z-vS6Qw1YigKzsE5PA\r\nX-Yahoo-Profile: tiaraki\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 11 Oct 2010 02:17:21 -0000\r\n\r\nHello\n\nAlthough junit is designed to run the test methods in arbitrary orde=\r\nr,\ne.g. for sorting often failing ones first or just to be safe that there =\r\nare not dependencies, every now and then someone has a valid case where it =\r\ncould indeed be useful.\n\nOne solution is offered in the API docs of Request=\r\n.sortWith()=C2=B9 but the\nexample seems only to work for standalone calls n=\r\not for running the tests with @test annotations from an IDE or automated to=\r\nol. For these cases it would be nice if you could write an example like the=\r\n one below in the FAQ or the cookbook as it took me a while to figure out h=\r\now to do it.\n\nbye\ntiaraki\n\n\nimport java.util.Collections;\nimport java.util.=\r\nComparator;\nimport java.util.List;\n\nimport org.junit.runners.BlockJUnit4Cla=\r\nssRunner;\nimport org.junit.runners.model.FrameworkMethod;\nimport org.junit.=\r\nrunners.model.InitializationError;\n\npublic class SortByMethodNameRunner ext=\r\nends BlockJUnit4ClassRunner {\n\n    private static class NameCmp implements =\r\nComparator&lt;FrameworkMethod&gt; {\n        @Override\n        public int compare(=\r\nFrameworkMethod o1, FrameworkMethod o2) {\n            return o1.getName().c=\r\nompareTo(o2.getName());\n        }\n    }\n\n    public SortByMethodNameRunner(=\r\nClass&lt;?&gt; clazz) throws InitializationError {\n        super(clazz);\n    }\n\n =\r\n   @Override\n    protected List&lt;FrameworkMethod&gt; computeTestMethods() {\n   =\r\n     List&lt;FrameworkMethod&gt; list =3D super.computeTestMethods();\n        Col=\r\nlections.sort(list, new NameCmp());\n        return list;\n    }\n}\n\n=C2=B9: h=\r\nttp://junit.sourceforge.net/javadoc/org/junit/runner/Request.html#sortWith%=\r\n28java.util.Comparator%29\n\n\n", 
+    "profile": "tiaraki", 
+    "topicId": 23004, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 467781574, 
+    "prevInTime": 23003, 
+    "contentTrasformed": false, 
+    "postDate": "1286759418", 
+    "canDelete": false, 
+    "nextInTopic": 23007, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGk4dG81cStlcWI0QGVHcm91cHMuY29tPg=="
+    }
+}

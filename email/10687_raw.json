@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 10688, 
+    "senderId": "owH7CkV2KnrgD8U-8HpZck873t4kobRNpnF7p6mnpB7dAEC1Bce_VK4qFq4nvqf2jXzJqey-7WfLdie1iZAjKaym9NnJwA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Again... with testing interfaces...", 
+    "from": "&quot;Thomas Robbs&quot; &lt;tom@...&gt;", 
+    "authorName": "Thomas Robbs", 
+    "msgSnippet": "Joe and Group: I ve thought about this some more.  While the situation below works, it still doesn t meet one of the goals I had when asking the original ", 
+    "msgId": 10687, 
+    "rawEmail": "Return-Path: &lt;Thomas.Robbs@...&gt;\r\nX-Sender: Thomas.Robbs@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 51158 invoked from network); 22 Mar 2004 15:38:58 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m20.grp.scd.yahoo.com with QMQP; 22 Mar 2004 15:38:58 -0000\r\nReceived: from unknown (HELO main-srv.CASERO.COM) (149.99.33.26)\n  by mta3.grp.scd.yahoo.com with SMTP; 22 Mar 2004 15:38:57 -0000\r\nX-MimeOLE: Produced By Microsoft Exchange V6.0.6487.1\r\ncontent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nDate: Mon, 22 Mar 2004 10:38:41 -0500\r\nMessage-ID: &lt;CC77B3857637EE4CB76EA8427B18F0B52C6812@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] Again... with testing interfaces...\r\nThread-Index: AcQN4RjcfFlGj7jLQkaGCq4DorCT6wCQqXsw\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nX-eGroups-Remote-IP: 149.99.33.26\r\nX-eGroups-From: &quot;Thomas Robbs&quot; &lt;Thomas.Robbs@...&gt;\r\nFrom: &quot;Thomas Robbs&quot; &lt;tom@...&gt;\r\nSubject: RE: [junit] Again... with testing interfaces...\r\nX-Yahoo-Group-Post: member; u=177492222\r\nX-Yahoo-Profile: trobbs2\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nJoe and Group:\n \nI&#39;ve thought about this some more.  While the situation below works, it\nstill doesn&#39;t meet one of the goals I had when asking the original\nquestion.\n \nWhat I was attempting to achieve was the following:\n \nIf a developer writes a new class Y, which extends X (which implements\nI), it would be nice if she only had to extend TX, override TX&#39;s factory\nmethod, createX(), and have it return a Y instead.  Since TX.TI would be\nset up in such a way that TX.TI.createI() calls TX.createX(), TY would\nend up with a suite which would run the inherited tests from TI against\na Y, and the tests for TX against a Y.\n \nThis just means that a developer doesn&#39;t have to look back in the class\nheirarchy to see what interfaces have been implemented to get their test\nclasses setup properly for testing the default functionality (i.e. that\nwhich exists before any methods are overriden, etc.).\n \nThis is a rare case for me right now, but as I was backfilling (I know,\nouch) some test cases, I noticed it would save me a bit of time if I\ncould set this up and it got me thinking / experimenting.\n \nThe approach below doesn&#39;t seem to gain me anything over the inner class\napproach.  The seem equivalent with the exception of the number of test\nclasses that you end up with.  Am I misled?\n \nThanks again for the response.\n \nCheers,\n \nTom\n\n\t-----Original Message-----\n\tFrom: J. B. Rainsberger [mailto:jbrains@...] \n\tSent: Friday, March 19, 2004 1:33 PM\n\tTo: junit@yahoogroups.com\n\tSubject: Re: [junit] Again... with testing interfaces...\n\t\n\t\n\tThomas Robbs wrote:\n\t\n\t&gt; Imagine an interface I.  Class X implements I.  Class Y\nextends X.\n\t\n\tIf you want to test whether X and Y each correctly respect the\ncontract \n\tof I, then build an Abstract Test Case for I (TI) which you\nextend to \n\tTXAsI and TYAsI, two separate suites that create an X and a Y, \n\trespectively, and hand it to the tests in TI.\n\t\n\tTI is abstract and defines all the tests for the methods in I\nplus \n\tabstract creation methods.\n\t\n\tTXAsI extends TI and implements the creation methods to return X\n\n\tobjects. TYAsI does the corresponding for Y.\n\t\n\tIf Y does not change any of the I-related behavior in X, then\nTYAsI \n\tduplicates TXAsI. That&#39;s not necessarily a /bad/ thing, but it&#39;s\nworth \n\tseeing.\n\t\n\tIf X or Y provide additional testable behavior beyond the\ncontract of I, \n\tthen add separate test suites for each.\n\t\n\tI don&#39;t like the nested class approach, and it seems to be\nvexing you, \n\tso I vote to abandon it.\n\t-- \n\tJ. B. Rainsberger,\n\tDiaspar Software Services\n\thttp://www.diasparsoftware.com :: +1 416 791-8603\n\tLet&#39;s write software that people understand\n\t\n\t\nYahoo! Groups Sponsor\t\nADVERTISEMENT\nclick here\n&lt;http://rd.yahoo.com/SIG=12c7bj7ge/M=281792.4727319.5879690.1261774/D=eg\nroupweb/S=1705006905:HM/EXP=1079807712/A=2058224/R=0/SIG=116652qbq/*http\n://my.yahoo.com/promo/ppets.html&gt; \t\n \n&lt;http://us.adserver.yahoo.com/l?M=281792.4727319.5879690.1261774/D=egrou\npweb/S=:HM/A=2058224/rand=723214290&gt; \t\n\n\t\n  _____  \n\n\tYahoo! Groups Links\n\t\n\n\t*\tTo visit your group on the web, go to:\n\t\thttp://groups.yahoo.com/group/junit/\n\t\t  \n\t*\tTo unsubscribe from this group, send an email to:\n\t\tjunit-unsubscribe@yahoogroups.com\n&lt;mailto:junit-unsubscribe@yahoogroups.com?subject=Unsubscribe&gt; \n\t\t  \n\t*\tYour use of Yahoo! Groups is subject to the Yahoo! Terms\nof Service &lt;http://docs.yahoo.com/info/terms/&gt; . \n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "trobbs2", 
+    "topicId": 10664, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 177492222, 
+    "prevInTime": 10686, 
+    "contentTrasformed": false, 
+    "postDate": "1079969921", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10672, 
+    "headers": {
+        "messageIdInHeader": "PENDNzdCMzg1NzYzN0VFNENCNzZFQTg0MjdCMThGMEI1MkM2ODEyQG1haW4tc3J2LmNhc2Vyby5jb20+"
+    }
+}

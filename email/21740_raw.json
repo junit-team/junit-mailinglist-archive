@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 21741, 
+    "senderId": "qkLY6duQQFpdFA7XUvg81ipF98VjqCWwVeYY_UTVyF6TMyNRlh5_2ss7fQASyX2GAmku6r8qBH6_CT_Ux8JHUtW2", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Asserts after every test", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "In the latest JUnit 4.7 snapshot, you ll be able to use the @Interceptor notation to do the following: public static class ErrorLogVerifier() { private", 
+    "msgId": 21740, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 15905 invoked from network); 11 Jun 2009 13:07:58 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m3.grp.sp2.yahoo.com with QMQP; 11 Jun 2009 13:07:58 -0000\r\nX-Received: from unknown (HELO mail-fx0-f206.google.com) (209.85.220.206)\n  by mta3.grp.re1.yahoo.com with SMTP; 11 Jun 2009 13:07:58 -0000\r\nX-Received: by fxm2 with SMTP id 2so1477141fxm.36\n        for &lt;junit@yahoogroups.com&gt;; Thu, 11 Jun 2009 06:06:48 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.239.135.11 with SMTP id b11mr222048hbb.45.1244725607821; Thu, \n\t11 Jun 2009 06:06:47 -0700 (PDT)\r\nIn-Reply-To: &lt;h0poij+tf1n@...&gt;\r\nReferences: &lt;4f7da6b90906101823h38ac8452y86390986175e9fd@...&gt;\n\t &lt;h0poij+tf1n@...&gt;\r\nDate: Thu, 11 Jun 2009 09:06:47 -0400\r\nX-Google-Sender-Auth: e5e9c5d471253647\r\nMessage-ID: &lt;4f7da6b90906110606q6d4382e6m1618ccb22735dfd5@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Re: Asserts after every test\r\nX-Yahoo-Group-Post: member; u=341876227; y=D6Clp3Hc453dO1zxUWfviB6_RbQ6oKW-LrC67oxDvno\r\nX-Yahoo-Profile: dsaff\r\n\r\nIn the latest JUnit 4.7 snapshot, you&#39;ll be able to use the\n@Interceptor no=\r\ntation to do the following:\n\n   public static class ErrorLogVerifier() {\n  =\r\n    private ErrorLog errorLog =3D new ErrorLog();\n\n      @Interceptor\n     =\r\n public Verifier verifier =3D new Verifier() {\n         @Override public vo=\r\nid verify() {\n            // only run if the test was successful\n          =\r\n  assertTrue(errorLog.isEmpty());\n         }\n      }\n\n      @Test public vo=\r\nid testThatMightWriteErrorLog() {\n         // ...\n      }\n   }\n\nThe 4.7 rel=\r\nease is pretty stable at this point, except for the typing\non assertThat, s=\r\no I feel fairly comfortable recommending its use.\n\n   David Saff\n\nOn Wed, J=\r\nun 10, 2009 at 10:01 PM, paulrsnh&lt;paulrs@...&gt; wrote:\n&gt; David,\n&gt;=\r\n\n&gt; =A0Thank you very much for the reply. =A0I am using JUnit 4 with the @Af=\r\nter annotation. =A0I can&#39;t quite tell what the issue is, but it seems that =\r\nmaybe IDEA and/or TeamCity is not always reporting all of the errors when t=\r\nhere is a multiple exception scenario. =A0I was doing some testing after my=\r\n original post, and the behavior was inconsistent.\n&gt;\n&gt; =A0Regardless, am I =\r\nmissing anything here with respect to a way to assert state after any test =\r\nin a class is run? =A0I&#39;ve seen many posts where people preach about not as=\r\nserting in tearDown/@After, but no one seems to offer any alternatives. =A0=\r\nIs this simply something not currently available in JUnit? =A0If not, I won=\r\nder if this is something the current maintainers would consider useful. =A0=\r\nMaybe an @AfterAssert or something that notes a method that should be run a=\r\nfter the test only if the test did not have any assertion failures itself.\n=\r\n&gt;\n&gt; Regards,\n&gt; Paul\n&gt;\n&gt; --- In junit@yahoogroups.com, David Saff &lt;david@...=\r\n&gt; wrote:\n&gt;&gt;\n&gt;&gt; Can you use JUnit 4? =A0Asserts in @After methods are handle=\r\nd more\n&gt;&gt; cleanly than in JUnit 3. =A0Especially fun will be 4.7, where you=\r\n can\n&gt;&gt; write a single interceptor to be shared across all test classes tha=\r\nt\n&gt;&gt; need this behavior.\n&gt;&gt;\n&gt;&gt; =A0 =A0David Saff\n&gt;&gt;\n&gt;&gt; On Wed, Jun 10, 2009=\r\n at 3:30 PM, paulrsnh&lt;paulrs@...&gt; wrote:\n&gt;&gt; &gt; All,\n&gt;&gt; &gt;\n&gt;&gt; &gt; =A0I have a se=\r\nt of test cases. =A0After all of these test cases, I need to verify that a =\r\nparticular condition is true. =A0My understanding is that tearDown should n=\r\not be used to assert anything, because, among other reasons, if your test c=\r\nase had an assertion failure, it would/could be masked by an assertion fail=\r\nure in tearDown. =A0However, aside from manually adding calls at the end of=\r\n each and every one of my tests (which is obviously redundant and error pro=\r\nne and as such unacceptable), how can I assert something after each test is=\r\n run?\n&gt;&gt; &gt;\n&gt;&gt; &gt; Thanks\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt; ---------------------------=\r\n---------\n&gt;&gt; &gt;\n&gt;&gt; &gt; Yahoo! Groups Links\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt; &gt;\n&gt;&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; --=\r\n----------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21733, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21739, 
+    "contentTrasformed": false, 
+    "postDate": "1244725607", 
+    "canDelete": false, 
+    "nextInTopic": 21741, 
+    "prevInTopic": 21739, 
+    "headers": {
+        "inReplyToHeader": "PGgwcG9pait0ZjFuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNjExMDYwNnE2ZDQzODJlNm0xNjE4Y2NiMjI3MzVkZmQ1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRmN2RhNmI5MDkwNjEwMTgyM2gzOGFjODQ1Mnk4NjM5MDk4NjE3NWU5ZmRAbWFpbC5nbWFpbC5jb20+CSA8aDBwb2lqK3RmMW5AZUdyb3Vwcy5jb20+"
+    }
+}

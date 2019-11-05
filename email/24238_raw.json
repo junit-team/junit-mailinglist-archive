@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 26, 
+    "nextInTime": 24239, 
+    "senderId": "VzH9w891rmwgt1Th60UCtsqPLXKzDkmF9EykgZkAR0Wfdq2bvYhs883kp4ExqqqoffLwR9TV77ZwcDwE3J_tR--X2lvBRuRdf0zOMXw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit 5, Lambas and Fundamentals", 
+    "from": "Charlie Poole &lt;charliepoole@...&gt;", 
+    "authorName": "Charlie Poole", 
+    "msgSnippet": "Hi All, I ve been holding my peace, since I figure you all don t particularly want a long dissertation about another test framework, running in a different", 
+    "msgId": 24238, 
+    "rawEmail": "Return-Path: &lt;charliepoole@...&gt;\r\nX-Sender: charliepoole@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 97596 invoked from network); 24 Jan 2013 00:41:39 -0000\r\nX-Received: from unknown (10.193.84.150)\n  by m7.grp.bf1.yahoo.com with QMQP; 24 Jan 2013 00:41:39 -0000\r\nX-Received: from unknown (HELO mail-ee0-f46.google.com) (74.125.83.46)\n  by mta2.grp.bf1.yahoo.com with SMTP; 24 Jan 2013 00:41:38 -0000\r\nX-Received: by mail-ee0-f46.google.com with SMTP id e49so4257434eek.19\n        for &lt;junit@yahoogroups.com&gt;; Wed, 23 Jan 2013 16:41:38 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.14.223.135 with SMTP id v7mr228577eep.41.1358988098291; Wed,\n 23 Jan 2013 16:41:38 -0800 (PST)\r\nX-Received: by 10.223.60.207 with HTTP; Wed, 23 Jan 2013 16:41:38 -0800 (PST)\r\nIn-Reply-To: &lt;CAOBkoFVfawo9=1BBTU7_rvERgoaLmtQTRL3L3hN2mnOboWr7QQ@...&gt;\r\nReferences: &lt;CA+UdPQ8LpADsK6_FkhTQkqMsmP0QzVy5kNK=pA1hVG6wY0=W-A@...&gt;\n\t&lt;CAKi4273Y_mMeHVhEhhcMoKVN1PwenU=xJtY3fMBFhvVnuX4kzQ@...&gt;\n\t&lt;50FDAF5F.8050803@...&gt;\n\t&lt;CAA3E+eXXc=1dND4PmNAFiftpa6tGXoiHAsSz3YKSyZFWEAfVGQ@...&gt;\n\t&lt;CA+UdPQ8xDGSp_h7koy+yhVS9XYCfPf-Py40SF2OKeF0Mk=Uksg@...&gt;\n\t&lt;CAOBkoFVfawo9=1BBTU7_rvERgoaLmtQTRL3L3hN2mnOboWr7QQ@...&gt;\r\nDate: Wed, 23 Jan 2013 16:41:38 -0800\r\nMessage-ID: &lt;CAJ+=fji3i6ZNL0Kt5xzWH2JpXfRjkKff=Q3SaNGednudrm--Xw@...&gt;\r\nTo: junit &lt;junit@yahoogroups.com&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Charlie Poole &lt;charliepoole@...&gt;\r\nSubject: Re: [junit] JUnit 5, Lambas and Fundamentals\r\nX-Yahoo-Group-Post: member; u=472478494; y=gKrHp6ca8GbDlei4svj_X0lC845z-o5yPCqvKE3Cm3R_Tf4o4dI\r\nX-Yahoo-Profile: cpoole98370\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHi All,\n\nI&#39;ve been holding my peace, since I figure you all don&#39;t particularly want\na long\ndissertation about another test framework, running in a different language.\nHowever, Matthew&#39;s question seems to call for a clear answer so you can\nfigure out which way you want to go.\n\nOn Wed, Jan 23, 2013 at 10:57 AM, Matthew Farwell &lt;matthew@...&gt;wrote:\n\n&gt; **\n&gt;\n&gt;\n&gt; Ok. I&#39;m trying to understand what actually happens with NUnit. I mark a\n&gt; test as &quot;slow&quot;, and run all of the tests in my project. Are you saying that\n&gt; without selecting the category of tests to run, the IDE doesn&#39;t run the\n&gt; slow tests, that is it only runs tests which are not marked as slow? If\n&gt; this is so, how does it know which are the slow tests?\n&gt;\nIn NUnit, I can mark a test as slow by annotating it [Category(&quot;Slow&quot;)].\nNUnit\nhas no idea what &quot;Slow&quot; means or what to do with it. It&#39;s just a tag. In\norder\nto make use of the category I have to either specify it using a command-line\noption or select it in the Categories window of the NUnit Gui. In either\ncase,\nI can choose to run all tests or just some categories. I can also choose to\nexclude some categories. There&#39;s actually more flexibility at the command\nline than in the Gui, since I can specify boolean combinations of categories\nthere like &quot;Data-Slow&quot;, which means run all the Data category except those\nalso marked as Slow.\n\nHere are differences in the implementations, as I have observed them. It may\nnot be complete and could even be dead wrong in the case of JUnit, so please\ncorrect me if I&#39;m off base:\n\n1. NUnit categories are strings. JUnit&#39;s are classes.\n2. NUnit controls what categories to execute at runtime, without changing\nthe code.\nJUnit requires changing the code or at least setting up suites for each of\nyour commonly\nused categories in advance. I suppose some IDEs may allow runtime selection\nof categories for JUnit.\n\nThese two differences appear to be orthogonal.\n\nRegarding the first difference: I once spent some time considering emulating\nJUnit and using a Type rather than a string to represent a category. Use of\na\nType (class) is more sophisticated and appealed to me at first. In the end,\nI\ncouldn&#39;t really point to an solid advantage to the user, so we still use\nstrings.\n\nRegarding the second difference: Runtime category selection is something\nNUnit users wouldn&#39;t want to do without these days. There seems to be no\nobstacle to allowing it in JUnit while retaining the ability to define\nsuites as now.\nThat&#39;s what I would do...\n\nCharlie\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "cpoole98370", 
+    "topicId": 24226, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 472478494, 
+    "prevInTime": 24237, 
+    "contentTrasformed": false, 
+    "postDate": "1358988098", 
+    "canDelete": false, 
+    "nextInTopic": 24239, 
+    "prevInTopic": 24237, 
+    "headers": {
+        "inReplyToHeader": "PENBT0Jrb0ZWZmF3bzk9MUJCVFU3X3J2RVJnb2FMbXRRVFJMM0wzaE4ybW5PYm9XcjdRUUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBSis9ZmppM2k2Wk5MMEt0NXh6V0gySnBYZlJqa0tmZj1RM1NhTkdlZG51ZHJtLS1Yd0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBK1VkUFE4THBBRHNLNl9Ga2hUUWtxTXNtUDBRelZ5NWtOSz1wQTFoVkc2d1kwPVctQUBtYWlsLmdtYWlsLmNvbT4JPENBS2k0MjczWV9tTWVIVmhFaGhjTW9LVk4xUHdlblU9eEp0WTNmTUJGaHZWbnVYNGt6UUBtYWlsLmdtYWlsLmNvbT4JPDUwRkRBRjVGLjgwNTA4MDNAbWxldmlzb24uY29tPgk8Q0FBM0UrZVhYYz0xZE5ENFBtTkFGaWZ0cGE2dEdYb2lIQXNTejNZS1N5WkZXRUFmVkdRQG1haWwuZ21haWwuY29tPgk8Q0ErVWRQUTh4REdTcF9oN2tveSt5aFZTOVhZQ2ZQZi1QeTQwU0YyT0tlRjBNaz1Va3NnQG1haWwuZ21haWwuY29tPgk8Q0FPQmtvRlZmYXdvOT0xQkJUVTdfcnZFUmdvYUxtdFFUUkwzTDNoTjJtbk9ib1dyN1FRQG1haWwuZ21haWwuY29tPg=="
+    }
+}

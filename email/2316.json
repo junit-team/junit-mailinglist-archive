@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 2317, 
+    "senderId": "aV-qH23qTO5Q8XmgU7QiKag1cDANXeJleeLr42RSYn-9ZeG5i41Im8VuuyvqfPj8K7LfYYjI_3g3HO0TL9U2AliYEpWknoq_qGg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: ClassCastException only using swing/awt ui", 
+    "from": "&quot;Eric George&quot; &lt;zymurgist2@...&gt;", 
+    "authorName": "Eric George", 
+    "msgSnippet": "The solution here is to make sure the shared classes are in the *classpath* of the JUnit. The problem is actually caused by the hierarchical class loading", 
+    "msgId": 2316, 
+    "topicId": 1943, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1833194419\">The solution here is to make sure the shared classes are in the *classpath*<br/>\nof the JUnit.<br/>\n<br/>\nThe problem is actually caused by the hierarchical class loading mechanism<br/>\nin JDK 1.3+.  Since JUnit uses a custom class loader, and RMI uses a custom<br/>\nclass loader, any class that is loaded by JUnit *and* loaded automatically<br/>\nduring a remote call will come from two different class loaders and will<br/>\nfail a class comparison.  It is a bizarre thing, but I have come accross it<br/>\nmay times when RMI client classes are loaded by any custom classloader.  It<br/>\nhappens often with RMI clients that are servlets since servlets are usually<br/>\nloaded by the servlet containers&#39; custom class loader.<br/>\n<br/>\nThe real solution would be to set the RMIClassLoader&#39;s parent classloader to<br/>\nthat of the JUnit custom class loader.  This is not possible however, so the<br/>\nRMIClassLoader&#39;s parent is *always* the system classloader.  There are<br/>\nseveral bugs logged against the RMI subsystem because of this.<br/>\n<br/>\nIn the meantime, the only workaround is to ensure all classes that are<br/>\nshared between the server and the custom-class-loaded client are available<br/>\nin the client&#39;s classpath.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> ----- Original Message -----<br/>\nFrom: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:reply_das@...\">reply_das@...</a>&gt;<br/>\nTo: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\nSent: Thursday, August 09, 2001 1:54 PM<br/>\nSubject: [junit] Re: ClassCastException only using swing/awt ui<br/>\n<br/>\n<br/>\n&gt; --- In junit@y..., Scott Stirling &lt;sstirling@m...&gt; wrote:<br/>\n&gt; &gt; The solution would be to exclude your EJB&#39;s interface classes<br/>\n&gt; &gt; from being<br/>\n&gt; &gt; loaded by the JUnit custom class loader by adding them to the<br/>\n&gt; &gt; excluded.properties in junit.jar.  Granted, not a very nice<br/>\n&gt; &gt; solution unless,<br/>\n&gt; &gt; perhaps, it were easier to modify the exclusion list.  I hear<br/>\n&gt; &gt; in JUnit 4.0<br/>\n&gt; &gt; that one idea is to make it easy to define exclusions in TestCases<br/>\n&gt; &gt; themselves.<br/>\n&gt;<br/>\n&gt; Hi,<br/>\n&gt; I was getting a ClassCastException with my EJBHome stubs and came<br/>\n&gt; across this mail. It solved this particular problem. Thanks!<br/>\n&gt;<br/>\n&gt; Of course I have another problem. My client and EJB classes share<br/>\n&gt; some common classes. When the client makes an EJB call and the bean<br/>\n&gt; returns these common classes, I get another ClassCastException. These<br/>\n&gt; are not home stubs but just ordinary Java classes.<br/>\n&gt;<br/>\n&gt; You had mentioned in your solution that we need to exclude the EJB<br/>\n&gt; interface classes. Does this mean I should exclude the EJB interface<br/>\n&gt; classes *alone*. Currently I&#39;m excluding every class in the EJB<br/>\n&gt; package from being loaded under the assumption that what is true for<br/>\n&gt; the EJB interfaces should be valid for the other classes too ... Or<br/>\n&gt; am I wrong?<br/>\n&gt;<br/>\n&gt; Also, is this behavior specific to the JUnit 3.7 release?<br/>\n&gt; Any input would be appreciated!<br/>\n&gt; Thanks,<br/>\n&gt; --Das<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 2315, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "997391892", 
+    "canDelete": false, 
+    "nextInTopic": 2321, 
+    "prevInTopic": 2314, 
+    "headers": {
+        "messageIdInHeader": "PDAwMTUwMWMxMjExOCRjYmYwNzYzMCRmODk3YjMxOEBkZW5jb3JwLnRmc20uY29tPg==", 
+        "referencesHeader": "PDlrdXBwbituZXR2QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 161, 
+    "postDate": "978016405", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Stephen P Peterson&quot; &lt;stephen.peterson@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "knPJ6ARpp4vWcK_WCaOOOvuyZRGEePa_8wJf1b9bs6C6nm9qgCY6iwqtFnlh0Iob98r9p0sUMtfz2ry-sEJUa7TbLA428KgZrot9dyMu4ppRfU2a2veydrHa", 
+    "nextInTime": 172, 
+    "userId": 0, 
+    "prevInTime": 170, 
+    "prevInTopic": 166, 
+    "headers": {
+        "messageIdInHeader": "PDg1MjU2OUMzLjAwNTFDQjQxLjAwQHVoY25oMDAyLnVoYy5jb20+"
+    }, 
+    "authorName": "Stephen P Peterson", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "Hi Charlie, Thanks - this comment and example is illuminating.  But I have a followup question.  Again, I m pretty new to java so this is a bit of a", 
+    "contentTrasformed": false, 
+    "msgId": 171, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;stephen_p_peterson@...&gt;\r\nX-Sender: stephen_p_peterson@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_3_1_3); 28 Dec 2000 15:13:42 -0000\r\nReceived: (qmail 49530 invoked from network); 28 Dec 2000 15:13:41 -0000\r\nReceived: from unknown (10.1.10.27) by l8.egroups.com with QMQP; 28 Dec 2000 15:13:41 -0000\r\nReceived: from unknown (HELO fw2.uhc.com) (168.183.16.136) by mta2 with SMTP; 28 Dec 2000 15:13:41 -0000\r\nReceived: from fw2.uhc.com (root@localhost) by fw2.uhc.com with ESMTP id JAA02431 for &lt;junit@egroups.com&gt;; Thu, 28 Dec 2000 09:05:34 -0600 (CST)\r\nReceived: from uhcnh002.uhc.com (uhcnh002.uhc.com [10.6.188.127]) by fw2.uhc.com with SMTP id JAA02423 for &lt;junit@egroups.com&gt;; Thu, 28 Dec 2000 09:05:34 -0600 (CST)\r\nReceived: by uhcnh002.uhc.com(Lotus SMTP MTA v1.2  (600.1 3-26-1998))  id 862569C3.00537AA2 ; Thu, 28 Dec 2000 09:11:48 -0600\r\nX-Lotus-FromDomain: UNITEDMAIL\r\nTo: junit@egroups.com\r\nMessage-ID: &lt;852569C3.0051CB41.00@...&gt;\r\nDate: Thu, 28 Dec 2000 10:13:25 -0500\r\nSubject: Re: [junit] Re: newbie question: how to avoid rerunning fixture code on every test\r\nMime-Version: 1.0\r\nContent-type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nX-eGroups-From: &quot;Stephen P Peterson&quot; &lt;&quot;stephen_p_peterson&quot;@...&gt;\r\nFrom: &quot;Stephen P Peterson&quot; &lt;stephen.peterson@...&gt;\r\n\r\nHi Charlie,\nThanks - this comment and example is illuminating.  But I have a followup\nquestion.  Again, I&#39;m pretty new to java so this is a bit of a brain-teaser for\nme.\n\nIn your example, I think you are assuming a class variable &#39;Connection&#39; in the\nMyTestSetup class, as follows:\n\nclass MyTestSetup extends TestSetup {\n  Connection connection;\n  public MyTestSetup( Test t ) {\n    super(t);\n  }\n\n  protected void setUp() {\n    connection = DriverManager.getConnection(&quot;jdbc:url&quot;);\n  }\n\n  protected void tearDown() {\n  }\n}\n\nSo in the MyTest class there is a unit-test called &#39;testOne()&#39;.  To extend your\nexample, this unit-test needs a reference to the Connection instance saved in\nthe &#39;MyTestSetup&#39; class.  How does it get it?  I am guessing that class\nvariables are also needed in the MyTest class just like in the MyTestSetup\nclass, and maybe the &#39;MyTest.setup&#39; method needs to initialize the\nMyTest.connection class variable before each test starts.  But how does the\nMyTest find a reference to the MyTestSetup instance?\n\nthanks\n\n\n\n\n\n\ncharliehubbard76@... on 12/26/2000 10:13:04 AM\n\nPlease respond to junit@egroups.com\n\nTo:   junit@egroups.com\ncc:    (bcc: Stephen P Peterson/CT/Unitedmail)\nSubject:  [junit] Re: newbie question: how to avoid rerunning fixture code on\n      every test\n\n\n\n\n--- In junit@egroups.com, &quot;Stephen P Peterson&quot;\n&lt;stephen.peterson@i...&gt; wrote:\n&gt; What if the setup logic involves connecting to databases and\n&gt; running queries that tends to be a bit slow for doing on every\n&gt; single test?  Is an explanation available anywhere on the web\n&gt; telling how to get tests to run faster by executing slow\n&gt; initialization code only once before all the tests?\n\nStephen,\n\nWhat you want to do is create a class that extends TestSetup.\nTestSetups allow you to do some initilization/de-initilization around\na test suite just as you described.\n\nclass MyTestSetup extends TestSetup {\n  public MyTestSetup( Test t ) {\n    super(t);\n  }\n\n  protected void setUp() {\n    Connection = DriverManager.getConnection(&quot;jdbc:url&quot;);\n  }\n\n  protected void tearDown() {\n  }\n}\n\nclass MyTest extends TestCase {\n  public MyTest( String name ) {\n    super( name );\n  }\n\n  public void testOne() {\n  }\n\n  public static Test suite() {\n     return new MyTestSetup( new TestSuite( MyTest.class ) );\n  }\n\n  public static void main( String args[] ) {\n     TestRunner.run( suite() );\n  }\n}\n\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@egroups.com\n\n\n\n\n\n\n\n\n\n", 
+    "subject": "Re: [junit] Re: newbie question: how to avoid rerunning fixture code on every test"
+}

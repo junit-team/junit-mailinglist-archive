@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 18772, 
+    "senderId": "0Ag0IJ-ZKy-lkptGkykXnKiI_U4seehQ1A3mbSRhI__0NZuadr-7nh4Vb36Y9JhxAwOiqCISj6sQS90aGr9UNLlX", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Our tests are not compatibel with JUnit 3.8.1, why?", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Hans, Sorry, it took me a couple times to get my head around what you were really asking.  Try this: @RunWith(TestClassRunner.class) public class", 
+    "msgId": 18771, 
+    "profile": "dsaff", 
+    "topicId": 18760, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-983809667\">Hans,<br/>\n<br/>\nSorry, it took me a couple times to get my head around what you were<br/>\nreally asking.  Try this:<br/>\n<br/>\n@RunWith(TestClassRunner.class)<br/>\n public class OurOwnMockObjectTestCase extends MockObjectTestCase {<br/>\n  @After public void setUp() { super.setUp() }<br/>\n  @Before public void tearDown() { super.tearDown() }<br/>\n<br/>\n  // ... other helper methods<br/>\n }<br/>\n<br/>\nNow, subclasses of OurOwnMockObjectTestCase should behave as you<br/>\nexpect, while you still get the inherited methods and behaviors of<br/>\nMockObjectTestCase.  However, you will have to annotate all your test<br/>\nmethods with @Test if you do this--there is no way to mix &quot;testFoo()&quot;<br/>\nand &quot;@Test bar()&quot; in the same class and have both run.<br/>\n<br/>\nLet me know if that&#39;s closer to a solution.  Thanks,<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 1/24/07, Hans Schwaebli &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:hans_schwaebli@...\">hans_schwaebli@...</a>&gt; wrote:<br/>\n&gt; I try to explain it in a different way. Please look at this:<br/>\n&gt;<br/>\n&gt;   import junit.framework.TestCase;<br/>\n&gt;   import org.junit.Test;<br/>\n&gt;<br/>\n&gt;   public class MyTest extends TestCase {<br/>\n&gt;   @Test<br/>\n&gt;   public void foo() {<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   When I start this test, I get this error message: junit.framework.AssertionFailedError: No tests found in MyTest<br/>\n&gt;<br/>\n&gt;   I run it on Eclipse 3.3 M4 with JUnit 4.2 in classpath.<br/>\n&gt;<br/>\n&gt;   As soon as I remove &quot;extends TestCase&quot;, the test runs with no error! But this behaviour is deadly for migrating from JUnit 3 to JUnit 4!<br/>\n&gt;<br/>\n&gt;   I don&#39;t believe that Beck and Gamma did cause such migration problems. Or did they? If not, what is the solution?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n&gt;           Hans,<br/>\n&gt;<br/>\n&gt; There may be ways to do what you want. I&#39;d like to be sure I know<br/>\n&gt; what that is, though. It sounds like you&#39;d like to use JUnit 4 to run<br/>\n&gt; JUnit 3 tests, but having the @Ignore annotation observed. Is this<br/>\n&gt; true? Are there other features you&#39;d like to be able to use? Thanks,<br/>\n&gt;<br/>\n&gt; David Saff<br/>\n&gt;<br/>\n&gt; On 1/23/07, hans_schwaebli &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:hans_schwaebli@...\">hans_schwaebli@...</a>&gt; wrote:<br/>\n&gt; &gt; Our old JUnit tests are written for JUnit 3.8.1.<br/>\n&gt; &gt;<br/>\n&gt; &gt; They first extended TestCase. After we introduced JMock, all our<br/>\n&gt; &gt; TestCases extend MockObjectTestCase.<br/>\n&gt; &gt;<br/>\n&gt; &gt; This is because we extend from our own JUnit test helper class which<br/>\n&gt; &gt; extends from MockObjectTestCase.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Now we use the .jar file from JUnit 4.2 and JMock 1.1.<br/>\n&gt; &gt;<br/>\n&gt; &gt; But only if we write new tests, which don&#39;t extend MockObjectTestCase<br/>\n&gt; &gt; and TestCase and insert the method below for Eclipse 3.1.2, the tests<br/>\n&gt; &gt; are run as JUnit 4 tests. Otherwise they are run as JUnit 3 tests.<br/>\n&gt; &gt;<br/>\n&gt; &gt; public static junit.framework.Test suite()<br/>\n&gt; &gt; {<br/>\n&gt; &gt; return new JUnit4TestAdapter(MyTest.class);<br/>\n&gt; &gt; }<br/>\n&gt; &gt;<br/>\n&gt; &gt; It would be much work to refactor our old test. I thought it would be<br/>\n&gt; &gt; easy to use the new JUnit 4 features on them like @Ignore.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Why are our tests always run as JUnit 3 tests if they extend from<br/>\n&gt; &gt; TestCase? Does anyone has a solution for us for using the new JUnit 4<br/>\n&gt; &gt; features without refactoring our tests very much?<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ---------------------------------<br/>\n&gt; TV dinner still cooling?<br/>\n&gt; Check out &quot;Tonight&#39;s Picks&quot; on Yahoo! TV.<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 18770, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1169665704", 
+    "canDelete": false, 
+    "nextInTopic": 18775, 
+    "prevInTopic": 18769, 
+    "headers": {
+        "inReplyToHeader": "PDk1NTYzNy41MjY1Mi5xbUB3ZWIzOTcxNC5tYWlsLm11ZC55YWhvby5jb20+", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwMTI0MTEwOGw1Nzk2N2YzYm05MTdkYmJhOGRjNjY5MTY0QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRmN2RhNmI5MDcwMTIzMTA1MWcyMWVkMGY0MGphZWQxZWY1ZTY0ZWNjN2RmQG1haWwuZ21haWwuY29tPgkgPDk1NTYzNy41MjY1Mi5xbUB3ZWIzOTcxNC5tYWlsLm11ZC55YWhvby5jb20+"
+    }
+}

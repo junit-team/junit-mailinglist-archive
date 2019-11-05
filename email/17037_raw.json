@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 17038, 
+    "senderId": "z64mK7V5ldTFgqzU37AeAYlOYGCCgIcMTWOZrAgJiZTxKlts4Fh4eU_wcvOCLA8-TqVmynxYs0ewj9c2_WSkyVE2SiVAw5wfhZg", 
+    "systemMessage": true, 
+    "subject": "RE: [junit] problems due to lack of annotation inheritance for methods", 
+    "from": "&quot;Eric Silber&quot; &lt;esilber@...&gt;", 
+    "authorName": "Eric Silber", 
+    "msgSnippet": "Thanks for the responses to my question. Apparently the original specs for Java annotations mandated inheritance of annotations, but some implementation issues", 
+    "msgId": 17037, 
+    "rawEmail": "Return-Path: &lt;esilber@...&gt;\r\nReceived: (qmail 60719 invoked from network); 28 Jun 2006 18:29:52 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m32.grp.scd.yahoo.com with QMQP; 28 Jun 2006 18:29:52 -0000\r\nReceived: from unknown (HELO n25.bullet.scd.yahoo.com) (66.94.237.54)\n  by mta3.grp.scd.yahoo.com with SMTP; 28 Jun 2006 18:29:52 -0000\r\nReceived: from [66.218.69.4] by n25.bullet.scd.yahoo.com with NNFMP; 28 Jun 2006 18:29:36 -0000\r\nReceived: from [66.218.66.92] by t4.bullet.scd.yahoo.com with NNFMP; 28 Jun 2006 18:29:36 -0000\r\nX-Sender: esilber@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 30468 invoked from network); 28 Jun 2006 18:12:12 -0000\r\nReceived: from unknown (66.218.67.36)\n  by m28.grp.scd.yahoo.com with QMQP; 28 Jun 2006 18:12:12 -0000\r\nReceived: from unknown (HELO winsvr.bitpass-inc.com) (71.4.63.38)\n  by mta10.grp.scd.yahoo.com with SMTP; 28 Jun 2006 18:12:12 -0000\r\nX-MimeOLE: Produced By Microsoft Exchange V6.5\r\nContent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nDate: Wed, 28 Jun 2006 11:11:28 -0700\r\nMessage-ID: &lt;96E9D60A6B76344B96FA3144BD1E79D64518F1@...-inc.com&gt;\r\nIn-Reply-To: &lt;b86b6a9c0606280928v2d3f4b93sc1e1b4caf9921af4@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] problems due to lack of annotation inheritance for methods\r\nThread-Index: Acaa1dm+YOlScAfORkay4bcSzN/1IgABp/Hg\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Eric Silber&quot; &lt;esilber@...&gt;\r\nSubject: RE: [junit] problems due to lack of annotation inheritance for methods\r\nX-Yahoo-Group-Post: member; u=273620724; y=KEdkaXbSVygnl-Wy0hXneAYGBVoOrvz8wfyWGuaGetqTEw\r\nX-Yahoo-Profile: eks9494\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via web; 28 Jun 2006 18:29:36 -0000\r\n\r\nThanks for the responses to my question.\r\n\r\nApparently the original specs for Java annotations mandated inheritance of=\r\n annotations, but\r\n\r\nsome implementation issues caused that to be scrapped ( ??? ).   Probably =\r\nsome performance issue?\r\n\r\nIf  TestNG supports annotation inheritance, has it implemented a feature w=\r\nhich the Java folks specifically\r\n\r\nkept out of javac ? =20\r\n\r\n=20\r\n\r\n=20\r\n\r\n________________________________\r\n\r\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of C=\r\n=C3=A9dric Beust ?=20\r\nSent: Wednesday, June 28, 2006 9:28 AM\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] problems due to lack of annotation inheritance for me=\r\nthods\r\n\r\n=20\r\n\r\nOn 6/28/06, David Saff &lt;saff@... &lt;mailto:saff%40mit.edu&gt; &gt; wrote:\r\n&gt;\r\n&gt;\r\n&gt; You&#39;ve had to do _this_ (a compile-time check that every test class has\r\n&gt; a @Before method), or something else that also involves annotations and\r\n&gt; inheritance?\r\n\r\nThe latter.\r\n\r\nImagine that you are writing a bunch of test methods that should all belon=\r\ng\r\nto the group &quot;database&quot;. Instead of having to do this for every single\r\nmethod, you do it on the class and the annotation applies to all the publi=\r\nc\r\nmethods of your class:\r\n\r\n@Test(groups =3D {&quot;database&quot;})\r\npublic void DataBaseTest {\r\npublic void test1() { ... }\r\npublic void test2() { ... }\r\n}\r\n\r\nThat&#39;s not bad, but if somebody creates a new test class, they still need =\r\nto\r\nremember to put the annotation at the class level.\r\n\r\nEnter inheritance:\r\n\r\n@Test(groups =3D {&quot;database&quot;})\r\npublic class BaseDataBaseTest {\r\n}\r\n\r\npublic void DataBaseTest extends BaseDataBaseTest {\r\npublic void test1() { ... }\r\npublic void test2() { ... }\r\n}\r\n\r\npublic void DataBase2Test extends BaseDataBaseTest {\r\npublic void test3() { ... }\r\npublic void test4() { ... }\r\n}\r\n\r\nNotice something? The child test classes are pure POJO&#39;s! No annotations\r\nanywhere, no potential for error. Just tell the developers in your team to\r\nextend that class that contains the base annotations and the entire set up\r\nis done for them automatically.\r\n\r\n--=20\r\nC=E9=A4=B2ic\r\nhttp://testng.org &lt;http://testng.org&gt;=20\r\n\r\n[Non-text portions of this message have been removed]\r\n\r\n=20\r\n\r\n\n\n[Non-text portions of this message have been removed]\n\n\n\n\n", 
+    "profile": "eks9494", 
+    "topicId": 17020, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 273620724, 
+    "prevInTime": 17036, 
+    "contentTrasformed": false, 
+    "postDate": "1151518288", 
+    "canDelete": false, 
+    "nextInTopic": 17038, 
+    "prevInTopic": 17036, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYwNjI4MDkyOHYyZDNmNGI5M3NjMWUxYjRjYWY5OTIxYWY0QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDk2RTlENjBBNkI3NjM0NEI5NkZBMzE0NEJEMUU3OUQ2NDUxOEYxQHdpbnN2ci5iaXRwYXNzLWluYy5jb20+"
+    }
+}

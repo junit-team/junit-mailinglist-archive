@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 3960, 
+    "senderId": "xarJsPLYcH5qYzHv7V8lGq0wr2rIWZqeyxuIneVMQNCRV44PVs-mjrBMjIXlVJ3Dnw9qaKjZ5HJwZDMPyThsqz1lIraGN47Z3TY", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to get fixture from TestSetup", 
+    "from": "Shane Celis &lt;shane@...&gt;", 
+    "authorName": "Shane Celis", 
+    "msgSnippet": "It sounds like what you want is to run your tests on one instance of the TestCase, rather than a different instance for every test as JUnit s standard behavior", 
+    "msgId": 3959, 
+    "topicId": 3909, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 76541257, 
+    "messageBody": "<div id=\"ygrps-yiv-732590643\">It sounds like what you want is to run your tests on one instance of the <br/>\nTestCase, rather than a different instance for every test as JUnit&#39;s <br/>\nstandard behavior dictates.  This would relieve you from any reliance on <br/>\nstatic/globals.  I found this to be necessary for my own functional <br/>\ntesting.  Take a look at this page and see if it gives you the kind of <br/>\nflexibility you need in your testing.  (Note: I&#39;ve never relied much on <br/>\nthe setUp and tearDown methods so I can&#39;t say if they&#39;ll behave as <br/>\nexpected.)<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://gnufoo.org/junit/\">http://gnufoo.org/junit/</a><br/>\n<br/>\nMany times over JUnit seems to be employed for <br/>\nfunctional/acceptance/integration testing (usually somewhat awkwardly).  <br/>\nAre there any testing approaches or frameworks that can be suggested for <br/>\nthis sort of testing?  Because many of the methodologies suggested for <br/>\nunit testing aren&#39;t applicable to this sort of testing.  Have the xUnit <br/>\npeople, or anyone else for that matter, addressed this problem space?<br/>\n<br/>\n-shane<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt;&gt; You could have class-level attributes on the TestCase class and let the<br/>\n&gt;&gt; setUp() and tearDown() methods of the TestSetup assign values to those<br/>\n&gt;&gt; class-level attributes. For example, suppose you want to establish a<br/>\n&gt;&gt; single database connection and use it for all tests. You have two<br/>\n&gt;&gt; choices:<br/>\n&gt;<br/>\n&gt; Well, yeah... But!  Forgive me, but that¹s an extremely smelly solution.<br/>\n&gt; I find it hard to believe the otherwise-brilliant creators of JUnit <br/>\n&gt; would<br/>\n&gt; give us a design that forces the use of global variables!<br/>\n&gt;<br/>\n&gt;&gt; public class MyDatabaseTestCase extends TestCase {<br/>\n&gt;&gt;   private static Connection connection;<br/>\n&gt;&gt;<br/>\n&gt;&gt;   public static Test suite() {<br/>\n&gt;&gt;       return new TestSetup(new TestSuite(MyDatabaseTestCase.class)) {<br/>\n&gt;&gt;           protected void setUp() throws Exception {<br/>\n&gt;&gt;               connection = DriverManager.getConnection(...);<br/>\n&gt;&gt;           }<br/>\n&gt;&gt;<br/>\n&gt;&gt;           protected void tearDown() throws Exception {<br/>\n&gt;&gt;               connection.close();<br/>\n&gt;&gt;               connection = null;<br/>\n&gt;&gt;           }<br/>\n&gt;&gt;       };<br/>\n&gt;&gt;   }<br/>\n&gt;&gt; }<br/>\n&gt;<br/>\n&gt; Ahh... You&#39;re using an inner class for the TestSetup.  This is close,<br/>\n&gt; but it still makes me very uncomfortable.<br/>\n&gt;<br/>\n&gt;&gt; or, perhaps...<br/>\n&gt;&gt;<br/>\n&gt;&gt; // Danger -- connection not closed! Shutdown hook, perhaps?<br/>\n&gt;&gt; public class MyDatabaseTestCase extends TestCase {<br/>\n&gt;&gt;   private static Connection connection;<br/>\n&gt;&gt;<br/>\n&gt;&gt;   protected void setUp() throws Exception {<br/>\n&gt;&gt;       if (connection == null) {<br/>\n&gt;&gt;           connection = DriverManager.getConnection(...);<br/>\n&gt;&gt;       }<br/>\n&gt;&gt;   }<br/>\n&gt;&gt; }<br/>\n&gt;<br/>\n&gt; As you note, this doesn&#39;t properly tearDown after the tests are run,<br/>\n&gt; which<br/>\n&gt; is where TestSetup.tearDown would come into play.<br/>\n&gt;<br/>\n&gt;&gt; Does that help?<br/>\n&gt;<br/>\n&gt; Well, it&#39;s a workable solution, but there&#39;s *got* to be a clean way that<br/>\n&gt; doesn&#39;t involve static variables.  Anybody else have ideas?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; .T.<br/>\n&gt;<br/>\n&gt; Todd V. Jonker<br/>\n&gt; Inpath Solutions, LLC<br/>\n&gt; www.inpathsol.com </span></blockquote></div>", 
+    "prevInTime": 3958, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1012865780", 
+    "canDelete": false, 
+    "nextInTopic": 3977, 
+    "prevInTopic": 3958, 
+    "headers": {
+        "messageIdInHeader": "PEZERTkxRjM4LTE5QzctMTFENi05MDlELTAwMzA2NUY5QTgwRUB0ZXJyYXNwcmluZy5jb20+"
+    }
+}

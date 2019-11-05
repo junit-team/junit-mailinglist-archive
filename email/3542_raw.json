@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 3543, 
+    "senderId": "5GYpzsl5sHZVIJ_QiAJPlNX_BUBaBfEhU7xXMDpp55xhE0D4GS5dZ36rlA1GFlkxGWemfDTjrHXBwQuzLdl_6gUXYQSAs5enm-isfjNqPp2cqzVy", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Invariants: method within class or within test class?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Hm. An alternate idea is a decorator or subclass that exposes assertInvariants() . This appears to me the best of both worlds: the original class exposes the", 
+    "msgId": 3542, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_1_3); 16 Dec 2001 16:03:19 -0000\r\nReceived: (qmail 45461 invoked from network); 16 Dec 2001 16:03:18 -0000\r\nReceived: from unknown (216.115.97.171)\n  by m3.grp.snv.yahoo.com with QMQP; 16 Dec 2001 16:03:18 -0000\r\nReceived: from unknown (HELO tomts19-srv.bellnexxia.net) (209.226.175.73)\n  by mta3.grp.snv.yahoo.com with SMTP; 16 Dec 2001 16:03:18 -0000\r\nReceived: from diasparsoftware.com ([64.228.114.146])\n          by tomts19-srv.bellnexxia.net\n          (InterMail vM.4.01.03.16 201-229-121-116-20010115) with ESMTP\n          id &lt;20011216160317.VMNH9690.tomts19-srv.bellnexxia.net@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Sun, 16 Dec 2001 11:03:17 -0500\r\nMessage-ID: &lt;3C1CC606.1070407@...&gt;\r\nDate: Sun, 16 Dec 2001 11:04:22 -0500\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.2) Gecko/20010726 Netscape6/6.1\r\nX-Accept-Language: en-us\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Invariants: method within class or within test class?\r\nReferences: &lt;379250A13595D31190660090278AC63C06BE5317@corpismsg02&gt;\r\nContent-Type: multipart/related;\n boundary=&quot;------------050006080703020007060502&quot;\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\n\r\n--------------050006080703020007060502\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHm. An alternate idea is a decorator or subclass that exposes \n&quot;assertInvariants()&quot;. This appears to me the best of both worlds: the \noriginal class exposes the invariant conditions as protected methods, so \nthey are not available in other packages; however they are available to \nthe subclass, which can live in the testing package.\n\nclass Thing {\n    protected boolean isInvariant1True() { ... }\n    protected boolean isInvariant2True() { ... }\n    ...\n    protected boolean isInvariantNTrue() { ... }\n}\n\nclass TestableThing extends Thing {\n    public void assertInvariants() {\n        return isInvariant1True() && ....;\n    }\n}\n\nclass ThingTest extends TestCase {\n    private TestableThing createThing(...) {\n        return new TestableThing(...);\n    }\n    ....\n    public void testSomething() {\n        final TestableThing thing = createThing(....);\n        thing.assertInvariants();\n        ....\n    }\n}\n\nTrue, there is dead production code in Thing, but at least it&#39;s not \npublic, dead production code!\n\nJBR.\n\nRobertson, Don wrote:\n\n&gt; Let&#39;s assume that invoking an assertInvariants() method within your \n&gt; class&#39;s methods is too expensive to be practical, but you want it for \n&gt; the purpose of unit testing anyway. Would it be structurally superior to :\n&gt;\n&gt; 1) Implement such a method within the actual class and invoke it from \n&gt; the test case. The main benefits I see are minimal exposure of the \n&gt; class&#39;s internals (although it *is* white box testing after all), and \n&gt; visual proximity of the invariant conditions for \n&gt; implementors/modifiers. The negative is that there is &quot;dead code&quot; \n&gt; (from a runtime perspective) within the class.\n&gt;\n&gt; 2) Allow access to internal state within the class and write the \n&gt; assertInvariants() method within the test class(es). The benefits are \n&gt; visual proximity of the invariant conditions with the other functional \n&gt; description of the class, and no dead code in the runtime class. The \n&gt; negative is the need for exposure of more internal state.\n&gt;\n&gt; Opinions?\n&gt;\n&gt;\n&gt; A second &quot;meta&quot; question might be whether you think it is worthwhile \n&gt; to check invariant conditions within your unit tests as a default \n&gt; behavior, or is it overkill?\n&gt;\n&gt; Don\n&gt;\n&gt;  \n&gt;\n&gt;\n&gt; Yahoo! Groups Sponsor\n&gt; ADVERTISEMENT\n&gt; &lt;http://rd.yahoo.com/M=178320.1681224.3270152.1261774/D=egroupweb/S=1705007181:HM/A=879173/R=0/*http://www.fastweb.com/ib/yahoo-76f&gt; \n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service \n&gt; &lt;http://docs.yahoo.com/info/terms/&gt; .\n\n\n\r\n--------------050006080703020007060502--\r\n\n", 
+    "profile": "nails762", 
+    "topicId": 3542, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 3541, 
+    "contentTrasformed": false, 
+    "postDate": "1008518662", 
+    "canDelete": false, 
+    "nextInTopic": 3558, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNDMUNDNjA2LjEwNzA0MDdAZGlhc3BhcnNvZnR3YXJlLmNvbT4=", 
+        "referencesHeader": "PDM3OTI1MEExMzU5NUQzMTE5MDY2MDA5MDI3OEFDNjNDMDZCRTUzMTdAY29ycGlzbXNnMDI+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19479, 
+    "senderId": "HQeIHD8cxYDw7_BDWW1ZXj82vaddK-gmKkqkFKU1TWC2Ukk5otlhi9_hQ42B9OVrQKU42pSq_CMU9SyztJJCDqczFY3WMSZVQ-Mbutm1QxodvsQ", 
+    "systemMessage": false, 
+    "subject": "The problem when I use MockStrutsTestCase.", 
+    "from": "=?iso-8859-1?B?zfXB6Luq?= &lt;hut@...&gt;", 
+    "authorName": "ÍõÁè»ª", 
+    "msgSnippet": "Hi, All, Prediction: Struts, Ibatis. The structure of table siteconfig: Column: SiteID, ItemName,ItemValue,LastModifiedTime. The item named item1 s value is 1", 
+    "msgId": 19478, 
+    "profile": "wanglinghua2008", 
+    "topicId": 19478, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 300426891, 
+    "messageBody": "<div id=\"ygrps-yiv-2090901129\">Hi, All,<br/>\n<br/>\nPrediction: Struts, Ibatis.<br/>\n<br/>\nThe structure of table siteconfig:<br/>\n<br/>\nColumn: SiteID, ItemName,ItemValue,LastModifiedTime.<br/>\n<br/>\nThe item named item1&#39; s value is 1 by default in database.<br/>\n<br/>\n<br/>\nTo avoid to update database directly, we are manage to implement all<br/>\nchanges/configuration in a transaction.<br/>\nIf we try to configure a specific condition for our test case, we just<br/>\ndo.<br/>\n<br/>\n            a. Start a transation.<br/>\n<br/>\n            b. Execute some sqls.<br/>\n<br/>\n            c. Rollback the transation.<br/>\n<br/>\nThen we can meet our requests without any actual changes of database.<br/>\n<br/>\nBut I met a problem during using MockStrutsTestCase!<br/>\n<br/>\nMy test class extends MockStrutsTestCase,  what I have done is :<br/>\n<br/>\n------------------------------------------------------------------------&#92;<br/>\n------------------------------------------------------------------------&#92;<br/>\n-------------------<br/>\n        ...<br/>\n        private SiteConfig siteConfig;<br/>\n         private SiteConfigDao siteConfigDao = ...<br/>\n<br/>\n        public void setUp() throws Exception {<br/>\n                     super.setUp();<br/>\n                     wbxDaoManager.startTransaction();<br/>\n                    long siteid = this.getUTConfig().getSiteId();<br/>\n<br/>\n                     // Get site configuration for a specified site<br/>\n                     siteConfig =<br/>\nBizFactory.getSiteMgr().getSiteConfig(siteid);<br/>\n        }<br/>\n<br/>\n        /**<br/>\n      * @throws Exception Exception<br/>\n      */<br/>\n        public void mytest() throws Exception {<br/>\n                     // Execute a sql to update item named item1. =<br/>\n&quot;update siteconfig set itemvalue=&#39;1&#39; where siteid=** and<br/>\nitemvalue=&#39;item1&#39; &quot;<br/>\n                // Change the itemvalue named item1 to 0.<br/>\n                   <br/>\nsiteConfigDao.setConfigItem(this.getUTConfig().getSiteId(),<br/>\n&quot;item1&quot;,&quot;0&quot;);<br/>\n<br/>\n                     setRequestPathInfo(&quot;/queue&quot;);<br/>\n                 actionPerform();<br/>\n                     verifyForward(&quot;notsupportitem1&quot;);<br/>\n        }<br/>\n<br/>\n<br/>\n        /**<br/>\n      *@throws Exception Exception<br/>\n      */<br/>\n     public void tearDown() throws Exception {<br/>\n         super.tearDown();<br/>\n<br/>\n         // RollBack Transaction<br/>\n         wbxDaoManager.rollbackTransaction();<br/>\n<br/>\n         // Release Transaction.<br/>\n         wbxDaoManager.releaseTransaction();<br/>\n     }<br/>\n<br/>\nactionPerform() method will guide to struts action that &#39;/queue&#39; path<br/>\npoint to, but in this action,<br/>\n<br/>\nWhen I try to get siteconfig object as :<br/>\n<br/>\nSiteConfig siteConfig = BizFactory.getSiteMgr().getSiteConfig(siteid);<br/>\nsiteConfig.getItem1(); // MainTain the unchange value : 1.<br/>\n<br/>\nIt seems that my started transaction have lost, any idea?<br/>\n<br/>\nThanks for your patient.<br/>\n<br/>\nRegards & Thanks,<br/>\n<br/>\n-Hut<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 19477, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1182243100", 
+    "canDelete": false, 
+    "nextInTopic": 19482, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGY1ODVlcyttcjlsQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12405, 
+    "senderId": "OaXO19F0TvV2L-Y2QJxQ8NnSXT6vlgIvgyKImy_q-RPWToPHBO0ZiHph3-SnysVEmnnqmCQ9lkfKBRk5ejI6JKt9Pw_UEB0m6ZSrB4n8F6RL", 
+    "systemMessage": true, 
+    "subject": "Reusable TestSuite facilities.", 
+    "from": "&quot;mark_l_salter&quot; &lt;marksalter@...&gt;", 
+    "authorName": "mark_l_salter", 
+    "msgSnippet": "I am attempting to construct a test suite that has a common component referenced and used from within tests in the suite, which is set-up once. The common", 
+    "msgId": 12404, 
+    "rawEmail": "Return-Path: &lt;marksalter@...&gt;\r\nReceived: (qmail 26090 invoked from network); 2 Dec 2004 00:42:13 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m23.grp.scd.yahoo.com with QMQP; 2 Dec 2004 00:42:13 -0000\r\nReceived: from unknown (HELO n8a.bulk.scd.yahoo.com) (66.94.237.42)\n  by mta6.grp.scd.yahoo.com with SMTP; 2 Dec 2004 00:42:13 -0000\r\nReceived: from [66.218.69.2] by n8.bulk.scd.yahoo.com with NNFMP; 02 Dec 2004 00:41:49 -0000\r\nReceived: from [66.218.67.190] by mailer2.bulk.scd.yahoo.com with NNFMP; 02 Dec 2004 00:41:49 -0000\r\nX-Sender: marksalter@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 599 invoked from network); 30 Nov 2004 23:46:13 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m14.grp.scd.yahoo.com with QMQP; 30 Nov 2004 23:46:13 -0000\r\nReceived: from unknown (HELO n14a.bulk.scd.yahoo.com) (66.94.237.28)\n  by mta1.grp.scd.yahoo.com with SMTP; 30 Nov 2004 23:46:12 -0000\r\nReceived: from [66.218.69.2] by n14.bulk.scd.yahoo.com with NNFMP; 30 Nov 2004 23:46:04 -0000\r\nReceived: from [66.218.66.119] by mailer2.bulk.scd.yahoo.com with NNFMP; 30 Nov 2004 23:46:04 -0000\r\nDate: Tue, 30 Nov 2004 23:46:01 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;coj0np+oqag@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1808\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Remote-IP: 66.94.237.28\r\nFrom: &quot;mark_l_salter&quot; &lt;marksalter@...&gt;\r\nSubject: Reusable TestSuite facilities.\r\nX-Yahoo-Group-Post: member; u=180351433\r\nX-Yahoo-Profile: mark_l_salter\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 02 Dec 2004 00:41:45 -0000\r\nX-eGroups-Remote-IP: 66.94.237.42\r\n\r\n\n\nI am attempting to construct a test suite that has a common component\nreferenced and used from within tests in the suite, which is set-up\nonce.\n\nThe &#39;common&#39; component is a network connection to a remote server\n(under test).  The important aspect (to me) for the majority of tests\nis not the connection, but getting a number of messages into and back\nfrom the remote system.  I am in the position of being able to predict\nwhat response the remote system should give for a particular request.\nI feel the connection establishment and management can (and should?)\nbe tested separately.\n\nWhat I can&#39;t see is where to put the &#39;common&#39; object and how to\nreference it from a test level.  I feel like I am missing the obvious,\nand probably it&#39;s java rather than JUnit related!\n\nThe FAQ holds some guidance, and I have attempted to add some code to\nillustrate my non-conception...\n\nimport junit.framework.*;\nimport junit.extensions.TestSetup;\n\npublic class AllTestsOneTimeSetup {\n\n    Connection c = null;\n\n    public static Test suite() {\n\n        TestSuite suite = new TestSuite();\n\n        suite.addTest(SomeTest.suite());\n        suite.addTest(AnotherTest.suite());\n\n        TestSetup wrapper = new TestSetup(suite) {\n\n            protected void setUp() {\n                oneTimeSetUp();\n            }\n\n            protected void tearDown() {\n                oneTimeTearDown();\n            }\n        };\n\n        return wrapper;\n    }\n\n    public static void oneTimeSetUp() {\n        // one-time initialization code\n\n        c = new Connection(&quot;remoteIP&quot;);\n        c.open();\n    }\n\n    public static void oneTimeTearDown() {\n        // one-time cleanup code\n        c.close();\n    }\n}\n\nWithin SomeTest and AnotherTest I hope to use c.send(msg), but do not\nknow how to qualify or resolve c within SomeTest.\n\n--Mark\n\n\n\n\n\n\n\n", 
+    "profile": "mark_l_salter", 
+    "topicId": 12404, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 180351433, 
+    "prevInTime": 12403, 
+    "contentTrasformed": false, 
+    "postDate": "1101858361", 
+    "canDelete": false, 
+    "nextInTopic": 12410, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGNvajBucCtvcWFnQGVHcm91cHMuY29tPg=="
+    }
+}

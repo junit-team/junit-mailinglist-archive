@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14130, 
+    "senderId": "YDEEVt-q4tsxZ8vGv6u4p-q_lxyZyw6vDFH82KJRU2O0qwRR8tUJOsO2UPrlKcGqJodIWquX6IDXAWZRKzqNbbMXIUlHdnwP7SX4cfum", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TDD Design advice on an HTTPClient-driven service", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... It seems like you have a few issues/concerns here, but I will tackle this one (since it s the easiest and I have a terrible head cold at the moment). Short", 
+    "msgId": 14129, 
+    "profile": "jacaetev", 
+    "topicId": 14126, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "messageBody": "<div id=\"ygrps-yiv-720098042\">etl_dan wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Beyond this I start to get lost.  An HttpClient is a class with no<br/>\n&gt; implemented interface, so perhaps I could wrap its core required<br/>\n&gt; functionality in an interface without actually exposing the<br/>\n&gt; HttpClient, then substitute a mock in for testing? (Such as described<br/>\n&gt; in Michael Feathers&#39; book)<br/>\n<br/>\n<br/>\n </span></blockquote>It seems like you have a few issues/concerns here, but I will tackle <br/>\nthis one (since it&#39;s the easiest and I have a terrible head cold at the <br/>\nmoment).<br/>\n<br/>\nShort answer: I would do just that.  Create an interface that will <br/>\nrespond to the Requests (not HTTPRequests) with a Response (another <br/>\ninterface).  You should be able to send that Response back into your <br/>\ninterface (don&#39;t know what it&#39;s called) and get yet another Response.  <br/>\nWhen you have finished requesting and responding unwrap your Response in <br/>\nwhatever way seems correct.<br/>\n<br/>\nIn the test, the thing that receives Requests and returns Responses is a <br/>\nmock returning canned data, in production code it uses HTTPClient.  <br/>\nBelow is some totally bogus code which I suspect you will not use, but <br/>\nit may help when starting to write your test to be able to see something <br/>\nto which you /might/ allow your tests to lead you.<br/>\n<br/>\npublic interface Request {<br/>\n    public Collection arguments();<br/>\n    public String body(); /* don&#39;t know if this is appropriate type  */<br/>\n}<br/>\n<br/>\npublic interface Response {<br/>\n    public String unravel(); /* don&#39;t know if this is appropriate type  */<br/>\n}<br/>\n<br/>\npublic class Controller {<br/>\n    public Response doThing() {<br/>\n        RequestServer server = RequestServerFactory.instance(); /* your <br/>\ntest sets up a mock */<br/>\n        Response response = server.sendRequest(new BasicRequest());<br/>\n        response = server.sendRequest(response);<br/>\n        response = server.sendRequest(response);<br/>\n        response = server.sendRequest(response);<br/>\n        return response;<br/>\n    }<br/>\n}<br/>\n<br/>\n-- <br/>\nJason Rogers<br/>\n<br/>\n&quot;I am crucified with Christ: nevertheless I live; yet not I,<br/>\nbut Christ liveth in me: and the life which I now live in <br/>\nthe flesh I live by the faith of the Son of God, who loved <br/>\nme, and gave himself for me.&quot;<br/>\n    Galatians 2:20</div>", 
+    "prevInTime": 14128, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1121429077", 
+    "canDelete": false, 
+    "nextInTopic": 14188, 
+    "prevInTopic": 14126, 
+    "headers": {
+        "inReplyToHeader": "PGRiNzd1dSs5Z240QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyRDdBNjU1LjMwMzAyMDdAZmFzdC1tYWlsLm9yZz4=", 
+        "referencesHeader": "PGRiNzd1dSs5Z240QGVHcm91cHMuY29tPg=="
+    }
+}

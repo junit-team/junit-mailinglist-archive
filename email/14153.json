@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 14154, 
+    "senderId": "U9xS5Szdne9AWWPaSo94veloO8ZOl5TDVXyHbbjh8CNFggygaiVtouFdnWjqFQ54e1XxrIfzI4y4PZ1GmlCLHZmTlEg", 
+    "systemMessage": false, 
+    "subject": "Re: Unit testing a method that contains objects", 
+    "from": "&quot;etl_dan&quot; &lt;etl_dan@...&gt;", 
+    "authorName": "etl_dan", 
+    "msgSnippet": "The difficulty is in two places: 1. Actually creating a mock of the third party service 2. Providing your code under test with a mock version of the third ", 
+    "msgId": 14153, 
+    "profile": "etl_dan", 
+    "topicId": 14150, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 86431363, 
+    "messageBody": "<div id=\"ygrps-yiv-1998169231\">The difficulty is in two places:<br/>\n1. Actually creating a mock of the third party service<br/>\n2. Providing your code under test with a mock version of the third<br/>\nparty service<br/>\n<br/>\nFor #1, you need to figure out how to actually make a version of this<br/>\nthird party service.  It&#39;s easiest if there is an interface that<br/>\nSomeClass implements; then you can simply create a mock implementation<br/>\nof that interface by hand or by using libraries such as jMock,<br/>\nEasyMock, etc.<br/>\n<br/>\nIf the third party class doesn&#39;t provide this, then it gets trickier.<br/>\n You might be able to subclass the third party class and override<br/>\nthe methods you want - but this is often very dangerous and brittle,<br/>\nif it will even work at all.  You might be able to use a bytecode<br/>\ngeneration tool like jMock with CGLib to create mocks of classes,<br/>\nthough it&#39;s almost always easier to build off an interface.<br/>\n<br/>\n<br/>\nOnce you have a mock object, then you need to figure out how to plug<br/>\nthat mock into your code under test (#2 above).  If you are directly<br/>\nconstructing the class in the method that you are testing, as in the<br/>\nfetchSomething() class you describe below, then it will be extremely<br/>\ndifficult to do this (You&#39;ll need to use some tool to intercept<br/>\nclass-level calls, like VirtualMock.)  <br/>\n<br/>\nIt&#39;s easiest to do this via a setter method or parameter to your<br/>\nobject&#39;s constructor.  Your production code could use to provide the<br/>\nproduction version, and your test code could provide a mock version. <br/>\nThis process of inserting parameters is called dependency injection or<br/>\ninversion of control, and projects like Spring are built on this<br/>\nfundamental idea.  <br/>\n<br/>\n<br/>\nHopefully #2 is under your control and you can modify the code to<br/>\naccept a different implementation of the third party tool.  If #1 is a<br/>\nclass, you can use brute force methods like jMock with CGLib or<br/>\nVirtualMock, or use some of the dependency-breaking techniques<br/>\ndescribed in Michael Feathers&#39; excellent book &quot;Working Effectively<br/>\nwith Legacy Code&quot;, ISBN #0131177052.<br/>\n<br/>\n<br/>\nDan<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;lzhao75&quot; &lt;sourceforgedev@g...&gt; wrote:<br/>\n&gt; Hi All,<br/>\n&gt; <br/>\n&gt; I just got started with TDD and would like seek help you from the<br/>\n&gt; experts in this mailing-list.<br/>\n&gt; <br/>\n&gt; I have a business service layer that calls a third party<br/>\napplication:<br/>\n&gt; <br/>\n&gt; public Object fetchSomething() {<br/>\n&gt; <br/>\n&gt;   SomeClass obj = new SomeClasss();<br/>\n&gt; <br/>\n&gt;   obj.set(...);<br/>\n&gt; <br/>\n&gt;   Object returnObj = obj.retrieveSomething();<br/>\n&gt; <br/>\n&gt;   return Obj;<br/>\n&gt; <br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; When writing a test case, I don&#39;t know how to mock the third party<br/>\n&gt; object to return data for testing purposes. Could someone gives let<br/>\nme<br/>\n&gt; know what is the best approach to test the above code using JUnit?<br/>\n&gt; <br/>\n&gt; Thank you in advance for your help.<br/>\n&gt; <br/>\n&gt; Regarads,<br/>\n&gt; Lee </span></blockquote></div>", 
+    "prevInTime": 14152, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1121626219", 
+    "canDelete": false, 
+    "nextInTopic": 14159, 
+    "prevInTopic": 14150, 
+    "headers": {
+        "inReplyToHeader": "PGRiY21rMStjN2E4QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGRiZTk5Yis4ZjE5QGVHcm91cHMuY29tPg=="
+    }
+}

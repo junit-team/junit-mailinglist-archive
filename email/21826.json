@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 21827, 
+    "senderId": "c1uRouZ2j7L3P778d0LqzQvxuQgoj9IYGYBu6tZGMkRBLwn8OyjK25DZC0hCzRmPPlBEGDY7JjO3xrkrg_tfChF6", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Can I capture Stdandard Output of a test", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Please excuse late-Friday flippancy in advance. 1) See if you can change the parser to take (at least optionally) an OutputStream parameter to write output to,", 
+    "msgId": 21826, 
+    "profile": "dsaff", 
+    "topicId": 21819, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1273234754\">Please excuse late-Friday flippancy in advance.<br/>\n<br/>\n1) See if you can change the parser to take (at least optionally) an<br/>\nOutputStream parameter to write output to, rather than going straight<br/>\nto System.out.  This will make testing easier now, and extending<br/>\neasier in the future, when you use the parser directly from a GUI or<br/>\nweb app.<br/>\n<br/>\n2) If you said no in under 15 seconds, try one more time to see if you<br/>\ncan change the parser.<br/>\n<br/>\n3) OK, if you really can&#39;t change the parser, can you use JUnit 4.7?<br/>\nYou could create a CapturedOutput rule like this:<br/>\n<br/>\npublic class CapturedOutput extends ExternalResource {<br/>\n   private ByteArrayOutputStream out = new ByteArrayOutputStream();<br/>\n   private ByteArrayOutputStream err = new ByteArrayOutputStream();<br/>\n<br/>\n   private OutputStream originalOut;<br/>\n   private OutputStream originalErr;<br/>\n<br/>\n   public String getOut() { return out.asString(); // API questionable? }<br/>\n   public String getErr() { return err.asString(); // API questionable? }<br/>\n<br/>\n   public void setUp() {<br/>\n     originalOut = System.out;<br/>\n     System.out = this.out;<br/>\n     originalErr = System.err;<br/>\n     System.err = this.err;<br/>\n   }<br/>\n<br/>\n   public void tearDown() {<br/>\n     System.out = originalOut;<br/>\n     System.err = originalErr;<br/>\n   }<br/>\n}<br/>\n<br/>\nAnd use it like this:<br/>\n<br/>\npublic class AssertOnStdout {<br/>\n   @Rule CapturedOutput output = new CapturedOutput();<br/>\n<br/>\n   @Test public void massiveComputationGreetsTheWorld() {<br/>\n      new Supercomputer().massiveComputation();<br/>\n      assertThat(output.getOut(), containsString(&quot;Hello, world!&quot;));<br/>\n   }<br/>\n}<br/>\n<br/>\nWould that do it?<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Fri, Jul 17, 2009 at 3:19 PM, cant_jim&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jimcant@...\">jimcant@...</a>&gt; wrote:<br/>\n&gt; How can I capture the standard output of test?  I need to check that the messages from the class I&#39;m testing are correct.  For example if my class class calls a parser that print &quot;invalid input at line xx&quot; when it fails, I want to be able go catch that output and compare it to the expected value.  If it could be directed to a file on a per-test basis, I could do a diff to check it.<br/>\n&gt;<br/>\n&gt; Any suggestions would be appreciated.<br/>\n&gt;<br/>\n&gt; Thanks,<br/>\n&gt;<br/>\n&gt; Jim Cant<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21825, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1247960649", 
+    "canDelete": false, 
+    "nextInTopic": 21827, 
+    "prevInTopic": 21825, 
+    "headers": {
+        "inReplyToHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNzE4MTY0NHU2MjhkMGY3Y3E0OGJjNWFiNTM5ZGQ2NmQyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg=="
+    }
+}

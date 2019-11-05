@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 18186, 
+    "senderId": "5McAOEXp0NG9g2RMoK8IuZHg9kpTP0pN53CS_NSvHBmNg9oP4PYtrI4TprDkgBWzNyF9z3dYxpgnxjjvyIXZm9WVBNDtlqFsZLdLV3tK0kiRMI7c", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Could not find class:", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "I think reading through this JUnit 4 in 10 minutes will take you a long way: ", 
+    "msgId": 18185, 
+    "rawEmail": "Return-Path: &lt;joakim.ohlrogge@...&gt;\r\nX-Sender: joakim.ohlrogge@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 65283 invoked from network); 22 Oct 2006 20:07:44 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m22.grp.scd.yahoo.com with QMQP; 22 Oct 2006 20:07:44 -0000\r\nReceived: from unknown (HELO nf-out-0910.google.com) (64.233.182.190)\n  by mta1.grp.scd.yahoo.com with SMTP; 22 Oct 2006 20:07:43 -0000\r\nReceived: by nf-out-0910.google.com with SMTP id o60so2172585nfa\n        for &lt;junit@yahoogroups.com&gt;; Sun, 22 Oct 2006 13:04:32 -0700 (PDT)\r\nReceived: by 10.78.160.2 with SMTP id i2mr6111467hue;\n        Sun, 22 Oct 2006 13:04:31 -0700 (PDT)\r\nReceived: by 10.78.203.3 with HTTP; Sun, 22 Oct 2006 13:04:31 -0700 (PDT)\r\nMessage-ID: &lt;b9ee5e410610221304i96fa490j6720757bdf104c31@...&gt;\r\nDate: Sun, 22 Oct 2006 22:04:31 +0200\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;ehg7rk+6ffo@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;ehg7rk+6ffo@...&gt;\r\nX-Google-Sender-Auth: d1fe54908f4c6a2f\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nX-eGroups-From: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nFrom: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nReply-To: joakim.ohlrogge@...\r\nSubject: Re: [junit] Could not find class:\r\nX-Yahoo-Group-Post: member; u=261856052; y=KqfdlMk7zdIfF6Xb_jS10Nw6yHfbcX5crtKjUby-cfqkmiFB\r\nX-Yahoo-Profile: j0hlrogge\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nI think reading through this &quot;JUnit 4 in 10 minutes&quot; will take you a long\nway:\nhttp://www.instrumentalservices.com/index.php?option=com_content&task=view&id=45&Itemid=52\nGoogle or the JUnit FAQ would have gotten you some answers much faster.\n\nHaving that said I see several issues:\n\n1. You need to descide wether you want to use the JUnit 4 or the JUnit 3\nstyle for your tests. If you extend TestCase jUnit will run your tests as\n3.X meaning that each test is a public, void menthod, with a name that\nstarts with test and takes 0 arguments. Annotations will be ignored.\nIf you want to use the 4.x style then don&#39;t extend testcase.\n\n2. As far as I know JUnit 4 methods also need to take 0 arguments and they\ncan&#39;t be static so even if you don&#39;t extend TestCase main will not be\nidentified as a test.\n\nI haven&#39;t used jUnit 4 yet so if you want solid answers follow the first\nlink I posted.\nI hope this helps.\n\n\nOn 10/22/06, Magnus &lt;t703093@...&gt; wrote:\n&gt;\n&gt;   Hello,\n&gt; anybody knows how I can solve this:\n&gt;\n&gt; I run this from my cammandline:\n&gt;\n&gt; $java org.junit.runner.JUintCore TestX\n&gt;\n&gt; or\n&gt;\n&gt; $java org.junit.runner.JUintCore junit.samples.SimpleTest\n&gt;\n&gt; But I get errormsg:\n&gt;\n&gt; &quot;No tests found in TestX&quot;\n&gt;\n&gt; I have also tried to move around in the directorys to stand where\n&gt; SimpleTest is (i.e. the directory whicj contains SimpleTest).\n&gt;\n&gt; My path variables are set right I think:\n&gt;\n&gt; CLASSPATH:\n&gt;\n&gt; C:&#92;junit4.1&#92;junit-4.1.jar;.org.junit.runner.JUnitCore;\n&gt;\n&gt; My classes look like this:\n&gt;\n&gt; import java.lang.annotation.Annotation;\n&gt; //import junit.framework.Test;\n&gt; //import junit.framework.TestCase;\n&gt; //import junit.framework.TestSuite;\n&gt; import static org.junit.Assert.*;\n&gt; import org.junit.*;\n&gt; import java.util.*;\n&gt;\n&gt; public class X {\n&gt; @Test\n&gt; public int met (int number) {\n&gt; int num = number;\n&gt; if (num &gt; 1)\n&gt; return num*2;\n&gt; else{\n&gt; return 666;\n&gt; }\n&gt; }\n&gt; }\n&gt;\n&gt; ////////////////////////////////////////////////////\n&gt;\n&gt; import java.lang.annotation.Annotation;\n&gt; //import junit.framework.Test;\n&gt; import junit.framework.TestCase;\n&gt; //import junit.framework.TestSuite;\n&gt; import static org.junit.Assert.*;\n&gt; import org.junit.*;\n&gt; import java.util.*;\n&gt;\n&gt; public class TestX extends TestCase {\n&gt; @Test\n&gt; public static void main (String args[]){\n&gt; X y = new X();\n&gt; System.out.println(y.met(1));\n&gt; }\n&gt; }\n&gt;\n&gt; I hope someone can help me with this?\n&gt;\n&gt; Magnus\n&gt;\n&gt;  \n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "j0hlrogge", 
+    "topicId": 18182, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "prevInTime": 18184, 
+    "contentTrasformed": false, 
+    "postDate": "1161547471", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18182, 
+    "headers": {
+        "inReplyToHeader": "PGVoZzdyays2ZmZvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYxMDIyMTMwNGk5NmZhNDkwajY3MjA3NTdiZGYxMDRjMzFAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGVoZzdyays2ZmZvQGVHcm91cHMuY29tPg=="
+    }
+}

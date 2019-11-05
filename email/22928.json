@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 22929, 
+    "senderId": "zjo9PCL5qdvAi-78xTtbs9l1PZZtb_CZeJPYC1D-glUI3xZIZRG3X5AeGUS8r6OvxduT-P8RxF9-36iNZEIRiIwu", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Future of JUnit & Hamcrest", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Stefan, That sounds very familiar.  Thank you for digging that up. David Saff On Tue, Sep 7, 2010 at 11:12 AM, Stefan Bodewig", 
+    "msgId": 22928, 
+    "profile": "dsaff", 
+    "topicId": 22867, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1593624913\">Stefan,<br/>\n<br/>\nThat sounds very familiar.  Thank you for digging that up.<br/>\n<br/>\n   David Saff<br/>\n<br/>\nOn Tue, Sep 7, 2010 at 11:12 AM, Stefan Bodewig<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:stefan.bodewig@...\">stefan.bodewig@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; On 2010-09-07, David Saff wrote:<br/>\n&gt;<br/>\n&gt;&gt; 2010/9/6 Alexandru Popescu ☀ &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:the.mindstorm.mailinglist@...\">the.mindstorm.mailinglist@...</a>&gt;:<br/>\n&gt;<br/>\n&gt;&gt;&gt; I know this is a bit late, but I was wondering if you have some pointers to<br/>\n&gt;&gt;&gt; the API/type changes that would lead to this issue? I&#39;d really like to be<br/>\n&gt;&gt;&gt; able to use the latest version of hamcrest with junit (and I don&#39;t have a<br/>\n&gt;&gt;&gt; large test case suite to worry about it).<br/>\n&gt;<br/>\n&gt;&gt; I may be able to dig up the thread later today.  I&#39;ll try.<br/>\n&gt;<br/>\n&gt; I remember XMLUnit&#39;s tests were one affected, see<br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/KentBeck/junit/issues/issue/9\">http://github.com/KentBeck/junit/issues/issue/9</a>&gt; and the thread that<br/>\n&gt; lead to it as well as<br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://sourceforge.net/mailarchive/message.php?msg_name=20090531082343.B4FAAAB40C1%40vmgump.apache.org\">http://sourceforge.net/mailarchive/message.php?msg_name=20090531082343.B4FAAAB40C1%40vmgump.apache.org</a>&gt;<br/>\n&gt;<br/>\n&gt; If you take svn revision 342 of XMLUnit it won&#39;t compile with Hamcrest<br/>\n&gt; 1.2 but with Hamcrest 1.1.  To see what I had to change to make things<br/>\n&gt; work with Hamcrest 1.2:<br/>\n&gt; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://xmlunit.svn.sourceforge.net/viewvc/xmlunit?view=revision&revision=343\">http://xmlunit.svn.sourceforge.net/viewvc/xmlunit?view=revision&revision=343</a>&gt;<br/>\n&gt;<br/>\n&gt; Basically I had code like<br/>\n&gt;<br/>\n&gt; Source s = ... code creating an instance of the Source interface ...<br/>\n&gt; assertThat(s, is(DOMSource.class))<br/>\n&gt;<br/>\n&gt; and this is what happened<br/>\n&gt;<br/>\n&gt;    [javac] /srv/gump/public/workspace/xmlunit/src/tests/java-core/net/sf/xmlunit/builder/InputTest.java:48: cannot find symbol<br/>\n&gt;    [javac] symbol  : method assertThat(javax.xml.transform.Source,org.hamcrest.Matcher&lt;capture#983 of ? super javax.xml.transform.dom.DOMSource&gt;)<br/>\n&gt;    [javac] location: class net.sf.xmlunit.builder.InputTest<br/>\n&gt;    [javac]         assertThat(s, is(DOMSource.class));<br/>\n&gt;<br/>\n&gt; in Hamcrest 1.1 the is method in question was<br/>\n&gt;<br/>\n&gt;   public static Matcher&lt;Object&gt; is(Class&lt;?&gt; type)<br/>\n&gt;<br/>\n&gt; in 1.2 it became<br/>\n&gt;<br/>\n&gt;   public static &lt;T&gt; Matcher&lt;? super T&gt; is(Class&lt;T&gt; type)<br/>\n&gt;<br/>\n&gt; Together with<br/>\n&gt;<br/>\n&gt;   public static &lt;T&gt; void assertThat(T actual, Matcher&lt;T&gt; matcher)<br/>\n&gt;<br/>\n&gt; javac&#39;s type inferencer is running into trouble.<br/>\n&gt;<br/>\n&gt; The changed code in XMLUnit now uses<br/>\n&gt;<br/>\n&gt; assertThat(s, instanceOf(DOMSource.class));<br/>\n&gt;<br/>\n&gt; which was<br/>\n&gt;<br/>\n&gt;  public static Matcher&lt;Object&gt; instanceOf(Class&lt;?&gt; type)<br/>\n&gt;<br/>\n&gt; in Hamcrest 1.1 and became<br/>\n&gt;<br/>\n&gt;  public static &lt;T&gt; Matcher&lt;T&gt; instanceOf(Class&lt;?&gt; type)<br/>\n&gt;<br/>\n&gt; The problem with the is() method is that it assumes a relation between<br/>\n&gt; the class and the object you want to match at compile time while the<br/>\n&gt; instanceOf doesn&#39;t assume anything like this.<br/>\n&gt;<br/>\n&gt; With Hamcrest 1.2 you get a compile time error for<br/>\n&gt;<br/>\n&gt;  assertThat(&quot;foo&quot;, is(Integer.class))<br/>\n&gt;<br/>\n&gt; and with 1.1 you get a failed assertion.<br/>\n&gt;<br/>\n&gt; Not sure if this is the problem David had in mind.<br/>\n&gt;<br/>\n&gt; Stefan<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22927, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1283872761", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22927, 
+    "headers": {
+        "inReplyToHeader": "PDg3Znd4bGsyb2guZnNmQHYzNTUxNi4xYmx1LmRlPg==", 
+        "messageIdInHeader": "PEFBTkxrVGltWE1EY1R1LXM4Rjl5Y1BYczhHN3AxX1ltRGg0M0w0enhCMGpCV0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGk0ZjJldSs1N2ZqQGVHcm91cHMuY29tPgk8QUFOTGtUaT05amZzZz1XOXBVeWNPQWNrdlpRYk52Y0dvLUdVcDJTZ0NUV284QG1haWwuZ21haWwuY29tPgk8QUFOTGtUaW1KN3ljWEsrU3FyRUp2PT1WZ3NyM3Jvcy15cEcwdG5raHk5SktDQG1haWwuZ21haWwuY29tPgk8QUFOTGtUaWs5cU9QS3hVY0h5ZkRoVmF0a2p2bkg3UDI3WjJQblhSSHc9ZnVyQG1haWwuZ21haWwuY29tPgk8ODdmd3hsazJvaC5mc2ZAdjM1NTE2LjFibHUuZGU+"
+    }
+}

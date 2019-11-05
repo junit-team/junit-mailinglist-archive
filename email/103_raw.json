@@ -1,0 +1,28 @@
+{
+    "topicId": 103, 
+    "postDate": "976299050", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Robert Sartin&quot; &lt;sartin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "MVD1hcZuyvSPoHy6dnUm9eIZqQa9XqfIJn9kNowhndb6eDeoQ03ZwF-t_U2pd6OzBrkYg71MBwjnUX7qw1BvjQYykf1O2zM", 
+    "nextInTime": 104, 
+    "userId": 0, 
+    "prevInTime": 102, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDkwcjg3YStscjM1QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Robert Sartin", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "This is related to the recent dicussion about testing abstract classes, but doesn t seem to have quite been covered. I have an abstract class Foo and", 
+    "contentTrasformed": false, 
+    "msgId": 103, 
+    "nextInTopic": 104, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;sartin@...&gt;\r\nX-Sender: sartin@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_3_1_3); 8 Dec 2000 18:12:13 -0000\r\nReceived: (qmail 3896 invoked from network); 8 Dec 2000 18:12:13 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 8 Dec 2000 18:12:13 -0000\r\nReceived: from unknown (HELO jk.egroups.com) (10.1.10.92) by mta1 with SMTP; 8 Dec 2000 18:12:13 -0000\r\nX-eGroups-Return: sartin@...\r\nReceived: from [10.1.10.63] by jk.egroups.com with NNFMP; 08 Dec 2000 18:12:12 -0000\r\nDate: Fri, 08 Dec 2000 18:10:50 -0000\r\nTo: junit@egroups.com\r\nSubject: Testing abstract class implementations\r\nMessage-ID: &lt;90r87a+lr35@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2738\r\nX-Mailer: eGroups Message Poster\r\nFrom: &quot;Robert Sartin&quot; &lt;sartin@...&gt;\r\n\r\nThis is related to the recent dicussion about testing abstract \nclasses, but doesn&#39;t seem to have quite been covered.\n\nI have an abstract class Foo and (currently) two implementations of \nit: FooImpl and FooSpecialImpl. As it turns out FooSpecialImpl is a \nproxy too FooImpl. Currently I suspect that other Foo implementations \nwill also be proxies, but I&#39;m not sure. Foo instances are returned by \na Bar (which is a Builder of sorts). The pattern of variation looks \nlike &quot;run exactly the same tests as for Foo, except do this extra \nwork at a predefined place in the middle of the test.&quot;\n\nGoals:\n\n1. Must have all &quot;generic&quot; Foo tests to run for each kind of proxy \ncreated without any extra coding beyond adding the new types to a \nlist. Otherwise it&#39;s too easy to add a new Foo test and forget to \nconfigure it for each Foo subclass, or too easy to add a new subclass \nand forget to add every Foo test to its tests.\n\n2. Must allow for per-test variations in builder configuration. \nStrongly prefer to do that without forcing it into setUp because \nthere are about 20 unique test configurations and I&#39;d hate to have to \ndo 20 test classes.\n\n3. Must allow addition of specific tests for a Foo subclass (for \nexample the FooSpecialImpl is to ensure that Foo methods run in a \ndesignated thread, we will want some tests that verify that happens). \nOK to have them in a different TestCase subclass.\n\n4. Somewhat desire that each test remains a separate test method. If \nnot possible to achieve other goals with this one could accept a \nsolution that collapses all Foo tests into a single testFoo method.\n\nMy current tests look something like this:\n\npublic class FooTest extends TestCase {\n  private Foo fooUnderTest = null;\n\n  /** Set up common infrastructure. */\n  public void setUp() {\n    Bar builder = new Bar;\n    // Do some manipulations to builder common to all tests.\n  }\n\n  /** Stimulate a Foo and check its responses. */\n  public void runFooTest() {\n    // ...\n  }\n\n  public Foo getFoo() {\n    return builder.constructFoo();\n  }\n\n  public void testSpecificFeature() {\n    // set specificStuff to configuration items specific to test\n    builder.configure(specificStuff);\n    fooUnderTest = getFoo();\n\n    // Set some instance variables to configure test details\n    // and expected results\n    runFooTest();\n  }\n}\n\n\nWhat I really wanted to do was create a FooSpecialTest that extends \nFooTest and just reimplements getFoo. Unfortunately, that does not \nwork (the error is &#39;1) warning(junit.framework.TestSuite$1) &quot;No tests \nfound in FooSpecialTest&quot;&#39;).\n\nAny suggestions? Solutions that meet all requirements are preferred. \nReasons to change the requirements and accompanying solutions are a \ngood second choice.\n\nRegards,\n\nRob\n\n\n\n\n\n", 
+    "subject": "Testing abstract class implementations"
+}

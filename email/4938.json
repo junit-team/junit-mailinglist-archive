@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 4939, 
+    "senderId": "igDaPm05XU6dUGMdNBWX0AgipClwmoFWgVF1nEo8_dPKgJjBfwXc6eYAG-R6zeYHYc_HZp0asrqPhgAnoQ1k3Jd9GR1Chv4", 
+    "systemMessage": false, 
+    "subject": "Re: unit testing philosophy", 
+    "from": "&quot;tcfolsom&quot; &lt;Todd.Folsom@...&gt;", 
+    "authorName": "tcfolsom", 
+    "msgSnippet": "Go to www.mockmaker.org and download the mockmaker tool. Then apply it to interfaces or classes for which you need mocks. These new mocks will have methods for", 
+    "msgId": 4938, 
+    "profile": "tcfolsom", 
+    "topicId": 4923, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106851668, 
+    "messageBody": "<div id=\"ygrps-yiv-1923784348\">Go to www.mockmaker.org and download the mockmaker tool. Then apply <br/>\nit to interfaces or classes for which you need mocks. These new mocks <br/>\nwill have methods for setting their state, and all support the verify<br/>\n() method. YOur mockRepository can be configured to return a <br/>\nmockRepositoryView and to verify that a call was made to that method. <br/>\nFor instance if your code should call getRepositoryView(), you set up <br/>\nMockRepository with setExpectedGetRepositoryViewCalls(1). This method <br/>\nis built in the mock for you by the mockmaker tool. Verify() will <br/>\ncheck that a single call of getRepositoryView was made on the mock. <br/>\n  This is very useful stuff. However you may have to refactor your <br/>\ncode to make it possible to supply a mock object instead of the real <br/>\nobject. If you work from interfaces, it is easier to handle mocks. <br/>\nFor example if getRepostoryView returns a RepositoryViewInterface <br/>\nrather than a RepositoryView, it is easy to return a <br/>\nMockRepositoryView which implemented RepositoryViewInterface.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In junit@y..., &quot;cilqproj&quot; &lt;cilqproj@y...&gt; wrote:<br/>\n&gt; The problem is that I&#39;m struggling to test a pretty complex piece of<br/>\n&gt; code and I&#39;m trying to get some advice ( hints, help, etc .. ) to <br/>\nhelp<br/>\n&gt; me tackle it.  <br/>\n&gt; <br/>\n&gt; In the real world, I use ATG Dynamo.  If you&#39;ve heard of it or used<br/>\n&gt; it, it&#39;s an App Server / EJB Container.   Dynamo&#39;s entire framework <br/>\nis<br/>\n&gt; based off this component known as Nucleus, which does a lot of work <br/>\nin<br/>\n&gt; terms of instantiating classes, setting properties, etc..  It&#39;s also<br/>\n&gt; very slow and to test - build - test takes forever if I have to <br/>\nstart<br/>\n&gt; and stop the app-server for every change in the code. <br/>\n&gt; <br/>\n&gt; That&#39;s where MockObjects come in.  Dynamo is a very Java Beans heavy<br/>\n&gt; framework, that relies a lot on setters and getters.  ( In fact, the<br/>\n&gt; MockObjects guys at SF have started putting together some Dynamo<br/>\n&gt; MockObjects. ) I was looking into MockObjects as a way to lessen my<br/>\n&gt; reliance on the Nucleus namespace so that I could code quickly and<br/>\n&gt; only integrate with the Nucleus namespace at the latest possible <br/>\ntime.<br/>\n&gt; <br/>\n&gt; However, I can&#39;t get my head around the fact that in certain cases <br/>\nmy<br/>\n&gt; mock code will need to generate other mock code <br/>\n&gt; <br/>\n&gt; Here&#39;s a method from a piece of old code that I wrote before I <br/>\ndecided<br/>\n&gt; to start using JUnit:<br/>\n&gt; <br/>\n&gt;     public  Map generateEmptyPreferencesMap( Map m ) throws<br/>\n&gt; RepositoryException {<br/>\n&gt; <br/>\n&gt; \t// get the list of possible preferences<br/>\n&gt; \tRepositoryView contactMethodView = getPreferencesRepository<br/>\n().getView(<br/>\n&gt; CONTACT_METHOD_REPOSITORY_ITEM );<br/>\n&gt; \tRepositoryItem[] contactMethods = <br/>\ncontactMethodView.executeQuery(<br/>\n&gt; contactMethodView.getQueryBuilder().createUnconstrainedQuery() );<br/>\n&gt; \t<br/>\n&gt; \tif ( ( contactMethods != null ) && ( contactMethods.length &gt; <br/>\n0 ) )  {<br/>\n&gt; \t    // add each one to the map<br/>\n&gt; \t    for ( int i = 0 ; i &lt; contactMethods.length ; i++ ) {<br/>\n&gt; \t\tm.put( contactMethods[i].getPropertyValue(<br/>\n&gt; CONTACT_METHOD_CODE_PROPERTY_NAME ), new BooleanPlaceHolder() );<br/>\n&gt; \t    }<br/>\n&gt; \t}<br/>\n&gt;      return m;<br/>\n&gt;     }<br/>\n&gt;      <br/>\n&gt; <br/>\n&gt; The Repository API is Dynamo&#39;s object-oriented data abstraction <br/>\napi. <br/>\n&gt; In this case, I assume I would setPreferencesRepository( new<br/>\n&gt; MyMockRepository()  )<br/>\n&gt; <br/>\n&gt; but that MockRepository needs to return a MockRepositoryView which <br/>\nin<br/>\n&gt; turn needs to return a MockQueryBuilder, or so I seem to believe.<br/>\n&gt; <br/>\n&gt; In a sentence:  how would one test this?  <br/>\n&gt; <br/>\n&gt; As before,<br/>\n&gt; Any and all help is greatly appreciated.<br/>\n&gt; <br/>\n&gt; I apologize for any unnecessary lengthiness.<br/>\n&gt; <br/>\n&gt; Thanks,<br/>\n&gt; <br/>\n&gt; Aadi<br/>\n&gt; <br/>\n&gt; --- In junit@y..., Bob Koss &lt;koss@o...&gt; wrote:<br/>\n&gt; &gt; <br/>\n&gt; &gt; It would help if you&#39;d tell us what the problem is instead of <br/>\npresenting<br/>\n&gt; &gt; your solution of the problem as the problem.<br/>\n&gt; &gt; <br/>\n&gt; &gt; I&#39;ve never needed mocks inside of mocks - it doesn&#39;t even make <br/>\nsense.<br/>\n&gt; &gt; <br/>\n&gt; &gt; </span></blockquote></div>", 
+    "prevInTime": 4937, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1021061495", 
+    "canDelete": false, 
+    "nextInTopic": 8749, 
+    "prevInTopic": 4925, 
+    "headers": {
+        "inReplyToHeader": "PGFiZjN1cys1YzFsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGFiaDlobitoZnY4QGVHcm91cHMuY29tPg=="
+    }
+}

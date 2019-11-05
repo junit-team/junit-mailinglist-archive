@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 21897, 
+    "senderId": "GYPR6RHoR1HZsmljbEt0v6_TvRj3wAYWIvl7vaLTLC1ZU3AmDJd9cU37l-TNIlDJ-VwPjl8HJ4BEx4wzh-5RnkJLHzTrNjx3BOL5dCwhoE4", 
+    "systemMessage": false, 
+    "subject": "Re: Rule annotation", 
+    "from": "&quot;yme0987654321&quot; &lt;yme0987654321@...&gt;", 
+    "authorName": "yme0987654321", 
+    "msgSnippet": "The external resource rule didn t seem to work for me. If there are two rules, does it run both? How does it determine order? If there can only be one rule,", 
+    "msgId": 21896, 
+    "profile": "yme0987654321", 
+    "topicId": 21887, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 386557907, 
+    "messageBody": "<div id=\"ygrps-yiv-658857376\">The external resource rule didn&#39;t seem to work for me. If there are two rules, does it run both? How does it determine order? If there can only be one rule, then I could extend external resource except that its apply method is final. I could make a combination rule and get around the problem, it is just starting to get a bit ugly.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;yme0987654321&quot; &lt;yme0987654321@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; That should be doable. I&#39;ll confirm. Probably better than the @Before given that I need inheritance anyway.<br/>\n&gt; <br/>\n&gt; In the mean time, I had put an assumeThat on the @Before method, and that worked fine (subclasses call super and redeclare the annotation, so all is well). However, for the @After method, the assumeThat method just makes the test fail. I guess it was somewhat surprising that the teardown is run even if the setup fails an assumeThat assumption, but I can certainly understand that. But why not tollerate an assumeThat in teardown? I agree it is somewhat strange that you already ran the test and still want to assume it away, but I would still think that assume should stop a test at all three levels (@Before, the test and @After). What do you think?<br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; That&#39;s right: Rules can affect the processing after @Before and before<br/>\n&gt; &gt; @After.  Could you replace your setup/teardown with an<br/>\n&gt; &gt; ExternalResource rule?<br/>\n&gt; &gt; <br/>\n&gt; &gt;    David Saff<br/>\n&gt; &gt; <br/>\n&gt; &gt; On Thu, Aug 20, 2009 at 11:11 AM, yme0987654321&lt;yme0987654321@&gt; wrote:<br/>\n&gt; &gt; &gt; OK, I figured out the problem. What happens is that I have a custom runner that suppresses the test (these are slow tests, so they are only run at check-in, not by the developer while developing).<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; However, when I replace that with a Rule, the setup method is still run (looks slow). So I guess the conclusion is that @Rule can&#39;t interrupt or override the setup and teardown process, so if you need to do that you are back to a Runner? (Or making your own setups rule-aware I guess).<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@&gt; wrote:<br/>\n&gt; &gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; Yishai,<br/>\n&gt; &gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; I just ran a test, and the Rules in the superclass were picked up.<br/>\n&gt; &gt; &gt;&gt; Can you post a small example?  Thanks,<br/>\n&gt; &gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt;    David Saff<br/>\n&gt; &gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; On Thu, Aug 20, 2009 at 10:21 AM, David Saff&lt;david@&gt; wrote:<br/>\n&gt; &gt; &gt;&gt; &gt; Yishai,<br/>\n&gt; &gt; &gt;&gt; &gt;<br/>\n&gt; &gt; &gt;&gt; &gt; Sounds like a bug.  Can you file it at github?  Sorry for the oversight,<br/>\n&gt; &gt; &gt;&gt; &gt;<br/>\n&gt; &gt; &gt;&gt; &gt;   David Saff<br/>\n&gt; &gt; &gt;&gt; &gt;<br/>\n&gt; &gt; &gt;&gt; &gt; On Wed, Aug 19, 2009 at 8:26 PM, yme0987654321&lt;yme0987654321@&gt; wrote:<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; I&#39;m looking at the new Rule annotation in JUnit4. It&#39;s pretty nice, but it doesn&#39;t seem to inherit.<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; That is if I have a super class that has the @Rule, sub class tests don&#39;t run the rule on its tests.<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; Combined with the requirement that the rules field be public, this is surprising.<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; The practical effect for me is that it can&#39;t really replace my custom runner, as the @RunWith annotation is inherited by subclasses.<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; Am I missing something?<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; Yishai.<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; ------------------------------------<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt; Yahoo! Groups Links<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;&gt;<br/>\n&gt; &gt; &gt;&gt; &gt;<br/>\n&gt; &gt; &gt;&gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; ------------------------------------<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21895, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1250785547", 
+    "canDelete": false, 
+    "nextInTopic": 21897, 
+    "prevInTopic": 21895, 
+    "headers": {
+        "inReplyToHeader": "PGg2anE0MStubjRtQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGg2anRlYis1bDBoQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 11627, 
+    "senderId": "wWhYCpZziaKxm4zzf_CxwJRV3zXDSSak-aGhUcRQR_FOCp_1TLEGSxK0uWwf2glfN3ngr9OFwVbqDAbHZOqR_bSaoRdYOLgLMGD_nrorW7Y", 
+    "systemMessage": false, 
+    "subject": "Re: Using JMock, example of the after() MatchBuilder?", 
+    "from": "&quot;cliftonccraig&quot; &lt;cliftonccraig@...&gt;", 
+    "authorName": "cliftonccraig", 
+    "msgSnippet": "J.B. Thanx for all your help. This is the part where I get too deeply involved with the project and my interests begin to feign. (I ll try to stay in tune this", 
+    "msgId": 11626, 
+    "profile": "cliftonccraig", 
+    "topicId": 11604, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190580959, 
+    "messageBody": "<div id=\"ygrps-yiv-1329345555\">J.B.<br/>\n<br/>\nThanx for all your help. This is the part where I get too deeply<br/>\ninvolved with the project and my interests begin to feign. (I&#39;ll try<br/>\nto stay in tune this time.) I&#39;m getting so comfortable with the JMock<br/>\nsyntax that I&#39;ve found a subtle &quot;feature&quot; that may appear as a<br/>\ngot&#39;cha. When nesting a StubSequence  in a StubSequence the nested<br/>\nsequence is treated as a stub and not as a sequence. What I mean is this.<br/>\n<br/>\n        mockParserController.expects(exactly(5))<br/>\n                .method(&quot;nextDataModel&quot;)<br/>\n                .withNoArguments()<br/>\n                .will(<br/>\n                    onConsecutiveCalls(<br/>\n                        returnArrayValuesInSequence(stubbedDataModels),<br/>\n                        returnValue(null)<br/>\n                    )<br/>\n                );<br/>\n<br/>\nWhere returnArrayValuesInSequence() is defined below:<br/>\n<br/>\n    public Stub returnArrayValuesInSequence(Object[] values)<br/>\n    {<br/>\n        Stub[] stubSeq = new Stub[values.length];<br/>\n        for(int i = 0; i &lt; stubSeq.length; i++)<br/>\n            stubSeq[i] = returnValue(values[i]);<br/>\n        return new StubSequence(stubSeq);<br/>\n    }<br/>\n<br/>\nThe intent here is to create a sequence consisting of 5 stubs. The<br/>\nonConsecutiveCalls() method only takes a max of 4 stub objects. It<br/>\nwraps all parameters in a StubSequence. It would appear natural that<br/>\nthe above logic would cause the mock to cycle through all of the stubs<br/>\nin the nested sequence prior to calling the next stub in the outer<br/>\nsequence. It came to me almost immediately that this was the intent<br/>\ndue to how StubSequence extends Stub and can be easily given to the<br/>\nonConsecutiveCalls() method. But here&#39;s the twist. This logic only<br/>\ncreates two &quot;Stub&quot; objects in the internal mocker. The 1st of which is<br/>\na sequence and the 2nd a normal Stub. The resulting behaviour is<br/>\ncounter-intuitive where the mocker invokes the 1st StubSequence as a<br/>\nStub which invokes its nested stub. Since the rest of the internal<br/>\nsequence are not flattened to the internal Stub array the next<br/>\ninvocation goes to the next Stub in teh outer-most sequence completely<br/>\nbypassing all of the nested Stubs in the inner Sequence. <br/>\n<br/>\nBottom line is a StubSequence nested in another StubSequence is<br/>\ntreated as a plain Stub and not as a sequence. My immediate solution<br/>\nwas to patch the onConsecutiveCalls() method to flatten out all nested<br/>\nsequences into one. Something in my gut (experience?) is telling me<br/>\nthat this is not the optimal solution and may cause other undesirable<br/>\nfeatures. Like I said, this is where I end up getting to roped into<br/>\nthese open source projects and then when the going gets tough I go<br/>\naway. I&#39;ve had a similar experience with XDoclet finding a bug but not<br/>\nbeing able to commit the patch. What I&#39;m really trying to say here is<br/>\nthat I&#39;d love to enhance this feature and work on the project myself<br/>\nand with this feature I have a strong urge to do so. However, it<br/>\nreally isn&#39;t practical for me to do so at this point in time. (Unless<br/>\nfixing the bug was as easy as uploading a code snippet.)<br/>\n<br/>\nCliff<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; wrote:<br/>\n&gt; cliftonccraig wrote:<br/>\n&gt; <br/>\n&gt; &gt; I think I know what&#39;s up! I was reading the changelist wrong. I<br/>\n&gt; &gt; thought the change list was saying the new exactly() method was in<br/>\n&gt; &gt; version-1.0.1 but it appears above the version-1.0.1 title which, I<br/>\n&gt; &gt; guess, means that it&#39;s in a later version. I&#39;ll look into the snapshot<br/>\n&gt; &gt; version. I know it&#39;ll be in there. I just get a little leary using<br/>\n&gt; &gt; snapshots and/or nightly builds.<br/>\n&gt; <br/>\n&gt; If you want the latest and greatest features....<br/>\n&gt; <br/>\n&gt; At any rate, in the worst case, you could have built your own <br/>\n&gt; InvocationMatcher, or whatever that thing is. A little scary at first, <br/>\n&gt; but likely not too difficult. Note that once() and exactly() are merely <br/>\n&gt; convenience methods to make the syntax easier on the eyes. They just <br/>\n&gt; create InvocationMatcher objects (or whatever they really are) that <br/>\n&gt; match the number of invocations on verify().<br/>\n&gt; -- <br/>\n&gt; J. B. Rainsberger,<br/>\n&gt; Diaspar Software Services<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\n&gt; Let&#39;s write software that people understand </span></blockquote></div>", 
+    "prevInTime": 11625, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1090439713", 
+    "canDelete": false, 
+    "nextInTopic": 11628, 
+    "prevInTopic": 11622, 
+    "headers": {
+        "inReplyToHeader": "PDQwRkU5ODBCLjkwNjA3MDNAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGNkbWhuMStzdWsxQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12236, 
+    "senderId": "K0gnjQv4E7Dr_AbM34OLuR1AnNntKF-9909V3nqAVVXv44U6duQQB5QIwhR6GK1R92_xN9mImAU8ZAhbUwyb_jwsUdnZSxm7gerzWITSWA", 
+    "systemMessage": false, 
+    "subject": "Re: Testing Rules Changes", 
+    "from": "Paul Hodgetts &lt;phodgetts@...&gt;", 
+    "authorName": "Paul Hodgetts", 
+    "msgSnippet": "... Sure.  Write your unit tests to go against a common rules engine interface.  Either use your current interface for your current rules implementation, or", 
+    "msgId": 12235, 
+    "profile": "agilelogic", 
+    "topicId": 12234, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 99684438, 
+    "messageBody": "<div id=\"ygrps-yiv-21173723\">Rob Rambusch wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\">  &gt; We are considering purchasing a rules engine. We are in the business<br/>\n &gt; of making loans and have a non-trivial number of rules and mitigants<br/>\n &gt; for credit checking. If we had an extensive series of unit tests to<br/>\n &gt; check that we applied our current rules correctly (which we don&#39;t)<br/>\n &gt; and we stuck a rules engine in the mix - is there a way I could<br/>\n &gt; leverage those mythical unit tests to compare the results of my<br/>\n &gt; current code against the rules-based results ? Is there a way I could<br/>\n &gt; measure the impact of a rules change by comparing the unit tests<br/>\n &gt; results of the before and after versions of the rules ?<br/>\n<br/>\n </span></blockquote>Sure.  Write your unit tests to go against a common rules engine<br/>\ninterface.  Either use your current interface for your current<br/>\nrules implementation, or adjust it to be an interface that would<br/>\nwork for both your current implementation and the new purchased<br/>\nengine.<br/>\n<br/>\nIf your rules are currently scattered about the code, you&#39;ll need<br/>\nto do some refactoring to gather them up under the interface.<br/>\nMichael Feather&#39;s new book Working Effectively With Legacy Code<br/>\nhas some great techniques for doing things like this.<br/>\n<br/>\nMake sure you have a sufficient safety net of unit tests around<br/>\nyour current implementation.  It sounds like those tests will<br/>\ncause you to fix some current issues, based on your comment.<br/>\n<br/>\nThen implement the purchased rules engine under the interface.<br/>\nYou will likely need some delegate code to map the interface to<br/>\nthe interface of the new rules engine, unless the two engines<br/>\nhave very similar interfaces.<br/>\n<br/>\nRun the same unit tests and see if the results are the same.<br/>\nIf not, the assertions that fail point you to the problems.<br/>\n<br/>\nOnce you have unit tests for your rules, changing a rule&#39;s<br/>\nbehavior should have some effect on the tests.  The assertions<br/>\nthat break tell you what the behavioral change was.  If nothing<br/>\nbreaks, perhaps that says the test coverage is not sufficient,<br/>\nor the rule change had no practical effect.<br/>\n<br/>\nIf you can&#39;t separate out your rules into a testable module,<br/>\nyou&#39;ll have to rely on higher-level unit or acceptance tests to<br/>\nshow you if the rules still behave the same.  For example, you<br/>\nmay have a test that shows a credit application rejected due to<br/>\nsome ratio of debt to income (that&#39;s implemented by a rule).<br/>\nIf the test works, and then you switch to using the purchased<br/>\nrules engine, the test should still work.  IMHO, it&#39;s better to<br/>\nisolate the rules engine at a lower level and have more specific<br/>\ntests, though.  It&#39;s much easier to pinpoint issues that way.<br/>\n<br/>\nWe&#39;d still have to rely on testing to prove the new engine works<br/>\nwithout unit tests.  With unit tests, we trade off all the manual<br/>\ntesting time for the time spent creating the unit tests, and then<br/>\ngain dividends into the future because we can run all the tests<br/>\nrepeatedly for very little cost every time we want to see if<br/>\neverything still works.<br/>\n<br/>\nPaul<br/>\n-----<br/>\nPaul Hodgetts -- CEO, Principal Consultant<br/>\nAgile Logic  -- www.agilelogic.com<br/>\nConsulting, Coaching, Training -- On-Site & Out-Sourced Development<br/>\nAgile Processes/Lean/XP/Scrum -- Java/J2EE, C++, OOA/D, UI/IA, XML</div>", 
+    "prevInTime": 12234, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1099162935", 
+    "canDelete": false, 
+    "nextInTopic": 12236, 
+    "prevInTopic": 12234, 
+    "headers": {
+        "inReplyToHeader": "PDEwOTkxNTgzMDUuMzc1My4zNDg2My5tMTJAeWFob29ncm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDYuMi4wLjguMi4yMDA0MTAzMDExMzczMi4wM2E1MmI2MEBtYWlsLnp6eXp4dGVrLmNvbT4=", 
+        "referencesHeader": "PDEwOTkxNTgzMDUuMzc1My4zNDg2My5tMTJAeWFob29ncm91cHMuY29tPg=="
+    }
+}

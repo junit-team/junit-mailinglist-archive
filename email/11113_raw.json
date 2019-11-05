@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 11114, 
+    "senderId": "DOZO47u2Y4gI0jJYJOhbo6c7xQCFke2xEZ8ZqpCsBtk5ZbzNUOAiM_ctUFKZ0N8y_QU2lsycz4RLFkdxQVVHcSEx7CBi5BW2olnhgdzSHA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Perform something before and after a complete test", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Makes sense, although I make it a goal to refactor in the direction of not needing tearDown() at all, let alone having it possibly fail. ... Create a", 
+    "msgId": 11113, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 41575 invoked from network); 4 Jun 2004 04:28:50 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m23.grp.scd.yahoo.com with QMQP; 4 Jun 2004 04:28:50 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta6.grp.scd.yahoo.com with SMTP; 4 Jun 2004 04:28:50 -0000\r\nReceived: from [172.20.100.200] ([24.153.141.202])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040604042536.BLLT63200.fep02-mail.bloor.is.net.cable.rogers.com@[172.20.100.200]&gt;\n          for &lt;junit@yahoogroups.com&gt;; Fri, 4 Jun 2004 00:25:36 -0400\r\nMessage-ID: &lt;40BFFA31.504@...&gt;\r\nDate: Fri, 04 Jun 2004 00:27:29 -0400\r\nUser-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;c9nmaf+10rh9@...&gt;\r\nIn-Reply-To: &lt;c9nmaf+10rh9@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.153.141.202] using ID &lt;jbrains@...&gt; at Fri, 4 Jun 2004 00:25:35 -0400\r\nX-eGroups-Remote-IP: 66.185.86.72\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Perform something before and after a complete test\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nhaefeleuser wrote:\n\n&gt;  &gt; Look for junit.extensions.TestSetup. I think it&#39;s your solution.\n&gt;  &gt;\n&gt;  &gt; One thing: I have never needed to override runBare(). Can you\n&gt;  &gt; explain\n&gt;  &gt; why you need to do it?\n&gt;  &gt;\n&gt;  &gt; Thanks.\n&gt;  &gt; --\n&gt;  &gt; J. B. Rainsberger,\n&gt;  &gt; Diaspar Software Services\n&gt;  &gt; http://www.diasparsoftware.com :: +1 416 791-8603\n&gt;  &gt; Let&#39;s write software that people understand\n&gt; \n&gt; I override runBare() because if a test fails and if an exception\n&gt; occurs in the tearDown() method, then the test failure meassage is\n&gt; swallowed by JUnit and the exception message is shown of the tearDown\n&gt; () method instead. So I override runBare(). Now the JUnit result\n&gt; shows the test failure message. The exception in tearDown() is\n&gt; printed to the console. That was a question I asked half a year ago\n&gt; here and someone told me to override runBare() for this requirement.\n\nMakes sense, although I make it a goal to refactor in the direction of \nnot needing tearDown() at all, let alone having it possibly fail.\n\n&gt; But back to my original question and to your answer. I didn&#39;t test\n&gt; your solution yet, but it seems to work from the first sight.\n&gt; \n&gt; I think this is what you mean:\n&gt; \n&gt; public static void main(String[] args) {\n&gt;   TestSuite testSuite = new TestSuite();\n&gt;   testSuite.add(new MyTest(&quot;someTest&quot;));\n&gt;   // MyTestSetup subclasses TestSetup\n&gt;   TestDecorator testSetup = new MyTestSetup(testSuite);\n&gt;   junit.textui.TestRunner.run(testSetup);\n&gt; }\n&gt; \n&gt; But we run our JUnit tests in Eclipse. Eclipse has an own nice\n&gt; graphical JUnit view (written by Erich Gamma) to display the\n&gt; results. Now the problem with your solution seems to be this: How\n&gt; can I teach Eclipse to run the TestDecorator?\n\nCreate a custom suite() method with the code above, but returning testSetup.\n\nclass MyTest {\n     public static Test suite() {\n         // your code here\n     }\n}\n\n&gt; It would be no problem if I would start a main method. But that\n&gt; doesn&#39;t work for the Eclipse JUnit view, or am I wrong? Is there\n&gt; a way to use your solution for the Eclipse JUnit view?\n\nI think so.\n\n&gt; Thanks in advance!\n\nDon&#39;t thank me until it works. :)\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11100, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11112, 
+    "contentTrasformed": false, 
+    "postDate": "1086323249", 
+    "canDelete": false, 
+    "nextInTopic": 11119, 
+    "prevInTopic": 11107, 
+    "headers": {
+        "inReplyToHeader": "PGM5bm1hZisxMHJoOUBlR3JvdXBzLmNvbT4=", 
+        "messageIdInHeader": "PDQwQkZGQTMxLjUwNEByb2dlcnMuY29tPg==", 
+        "referencesHeader": "PGM5bm1hZisxMHJoOUBlR3JvdXBzLmNvbT4="
+    }
+}

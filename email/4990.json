@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4991, 
+    "senderId": "__k2bIOKWVKLSIYMg3QAe2qmocDbhU4Y8A1w-qn-STq-AIlQEvrBbjmjKBmTte-A8G8shsxawjr1Nn9sgO-s9kqDCXWIOTj6OMZVV5XLPnI", 
+    "systemMessage": false, 
+    "subject": "Question on Junit Source code", 
+    "from": "&quot;Chesterxgchen&quot; &lt;chesterxgchen@...&gt;", 
+    "authorName": "Chesterxgchen", 
+    "msgSnippet": "Hi, I am trying to understand the design patterns used in the JUnit code. I noticed following piece of codes, which I am not quite sure why it is written in", 
+    "msgId": 4990, 
+    "profile": "Chesterxgchen", 
+    "topicId": 4990, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 64831815, 
+    "messageBody": "<div id=\"ygrps-yiv-105616692\">Hi, <br/>\n  I am trying to understand the design patterns used in the JUnit <br/>\ncode. I noticed following piece of codes, which I am not quite sure <br/>\nwhy it is written in such way. I hope some one can help me to explain <br/>\nit. <br/>\n<br/>\n  So the TestRunner.java Run() ... cals TestSuite.java &#39;s Run() which <br/>\nin turns calls TestResult&#39;s method. <br/>\n<br/>\n<br/>\n   Notice that Run() does not directly call<br/>\n    test.RunBare() but instead, using anynomous class<br/>\nand defined a protect() method in the class. And using  runProtected<br/>\n() method to invoked this method .<br/>\n<br/>\n\t\tProtectable p= new Protectable() {<br/>\n\t\t\tpublic void protect() throws Throwable {<br/>\n\t\t\t\ttest.runBare();<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n\t\trunProtected(test, p);<br/>\n<br/>\n  My question is why this written in such way ? Why not call <br/>\ntest.RunBare() directly ? <br/>\n<br/>\n  This does not same to have the reason to use Adaptor pattern <br/>\nexplained in the CookBook ? <br/>\n<br/>\n  <br/>\n  Can some show me some insight on this ? Thank you.<br/>\n<br/>\nChester<br/>\n<br/>\n<br/>\nin TestResult.java<br/>\n<br/>\n<br/>\n\t/**<br/>\n\t * Runs a TestCase.<br/>\n\t */<br/>\n\tprotected void run(final TestCase test) {<br/>\n\t\tstartTest(test);<br/>\n\t\tProtectable p= new Protectable() {<br/>\n\t\t\tpublic void protect() throws Throwable {<br/>\n\t\t\t\ttest.runBare();<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n\t\trunProtected(test, p);<br/>\n<br/>\n\t\tendTest(test);<br/>\n\t}<br/>\n\t/**<br/>\n\t * Runs a TestCase.<br/>\n\t */<br/>\n\tpublic void runProtected(final Test test, Protectable p) {<br/>\n\t\ttry {<br/>\n\t\t\tp.protect();<br/>\n\t\t} <br/>\n\t\tcatch (AssertionFailedError e) {<br/>\n\t\t\taddFailure(test, e);<br/>\n\t\t}<br/>\n\t\tcatch (ThreadDeath e) { // don&#39;t catch ThreadDeath by <br/>\naccident<br/>\n\t\t\tthrow e;<br/>\n\t\t}<br/>\n\t\tcatch (Throwable e) {<br/>\n\t\t\taddError(test, e);<br/>\n\t\t}<br/>\n\t}</div>", 
+    "prevInTime": 4989, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1021851036", 
+    "canDelete": false, 
+    "nextInTopic": 5008, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFjOWNpdCtzODZ0QGVHcm91cHMuY29tPg=="
+    }
+}

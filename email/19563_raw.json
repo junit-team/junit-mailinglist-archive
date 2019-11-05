@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 19564, 
+    "senderId": "o0TxGz7Zbt6_8nhxU_-gAuNgJxaI_8hEFu6uPLzoGhRsGzFOUOotV76IGlRddUtOfTnuRhoxoLI1EU96bnJeZEqhtx2gWnexbNvFJ-WYd3c", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: JUnit4 and eclipse", 
+    "from": "&quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt;", 
+    "authorName": "Lasse Koskela", 
+    "msgSnippet": "Ofer, ... You need to decide whether you re going to use JUnit 3.x or JUnit 4.x API. If you re running on Java 5, I heartily recommend JUnit 4. Otherwise, your", 
+    "msgId": 19563, 
+    "rawEmail": "Return-Path: &lt;lasse.koskela@...&gt;\r\nX-Sender: lasse.koskela@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 94403 invoked from network); 17 Jul 2007 12:22:28 -0000\r\nReceived: from unknown (66.218.66.70)\n  by m53.grp.scd.yahoo.com with QMQP; 17 Jul 2007 12:22:28 -0000\r\nReceived: from unknown (HELO wr-out-0506.google.com) (64.233.184.232)\n  by mta12.grp.scd.yahoo.com with SMTP; 17 Jul 2007 12:22:28 -0000\r\nReceived: by wr-out-0506.google.com with SMTP id i30so779632wra\n        for &lt;junit@yahoogroups.com&gt;; Tue, 17 Jul 2007 05:22:27 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;\n        b=MLgH+7Bx0utIWz0xqlRezexWvcHb27kIHTMMALXvuqe8lCKCZknFvwM4PvzY6gfT/kWFvp+T9qD0sHvMa8/sUHbvVFu1HjVPyaVgWVlXyyVXsCs338b8cAM1/XNc/9yn0fGCaJCL9nUh8320hGCLG2Me5teUiJQ7L3EG/x/6EBY=\r\nReceived: by 10.78.134.12 with SMTP id h12mr95720hud.1184674946980;\n        Tue, 17 Jul 2007 05:22:26 -0700 (PDT)\r\nReceived: by 10.78.90.12 with HTTP; Tue, 17 Jul 2007 05:22:26 -0700 (PDT)\r\nMessage-ID: &lt;3975e2d10707170522p1cff0f9bh45c200468309fa44@...&gt;\r\nDate: Tue, 17 Jul 2007 15:22:26 +0300\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;f7i6oe+kgf6@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;23fce8e60707170321h65b5d4afue2dc8a2f45ca8dfb@...&gt;\n\t &lt;f7i6oe+kgf6@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Lasse Koskela&quot; &lt;lasse.koskela@...&gt;\r\nSubject: Re: [junit] Re: JUnit4 and eclipse\r\nX-Yahoo-Group-Post: member; u=190530936; y=LQl1VUyfECDlLEfgbYC7wiZ9nqutwTwVkfP89Efvsvpq7quXlbEV\r\nX-Yahoo-Profile: lassekoskela\r\n\r\nOfer,\n\nOn 7/17/07, oferstu &lt;oferstu@...&gt; wrote:\n&gt;  import junit.framework.TestCase;\n&gt;  import junit.textui.TestRunner;\n&gt;  import org.junit.Test;\n\nYou need to decide whether you&#39;re going to use JUnit 3.x or JUnit 4.x\nAPI. If you&#39;re running on Java 5, I heartily recommend JUnit 4.\nOtherwise, your only option is JUnit 3.x.\n\n\nOn 7/17/07, oferstu &lt;oferstu@...&gt; wrote:\n&gt;  public class MultiAttacherTest extends TestCase {\n&gt;\n&gt;  \t@Test public final void strongComponenetWalk() {\n&gt;  \t\tassertNull (null);\n&gt;  \t}\n&gt;  \tpublic static void main(String[] args) {\n&gt;  \t\tTestRunner.run (MultiAttacherTest.class);\n&gt;  \t}\n&gt;  }\n&gt;\n&gt;  I get this run time error:\n&gt;  .F\n&gt;  Time: 0\n&gt;  There was 1 failure:\n&gt;  1) warning(junit.framework.TestSuite$1)\n&gt;  junit.framework.AssertionFailedError: No tests found in\n&gt;  graph.MultiAttacherTest\n&gt;  \tat graph.MultiAttacherTest.main(MultiAttacherTest.java:51)\n&gt;\n&gt;  FAILURES!!!\n&gt;  Tests run: 1,  Failures: 1,  Errors: 0\n&gt;\n&gt;  If I add test in front of the method name, then it works. But this\n&gt;  is the syntax of JUnit3, isnt it? It should have worked with the\n&gt;  code above?\n&gt;  Also, if I have a method with @Before annotation, then it won&#39;t run\n&gt;  when I run the test.\n\nThe behavior you&#39;re seeing is because you&#39;re running the test with a\nJUnit 3.8 test runner. Try converting your test to follow the JUnit 4\nAPI by getting rid of the &quot;junit.framework&quot; imports:\n\nimport static org.junit.Assert.assertNull;\nimport org.junit.Test;\n\npublic class MultiAttacherTest {\n    @Test\n    public final void strongComponentWalk() {\n        assertNull(null);\n    }\n}\n\n\nRegards,\n  Lasse\n\n-- \nLasse Koskela\n* Author of &quot;Test Driven&quot; (Manning Publications, 2007) *\n* Reaktor Innovations * http://www.ri.fi/en *\n\n", 
+    "profile": "lassekoskela", 
+    "topicId": 19557, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190530936, 
+    "prevInTime": 19562, 
+    "contentTrasformed": false, 
+    "postDate": "1184674946", 
+    "canDelete": false, 
+    "nextInTopic": 19580, 
+    "prevInTopic": 19562, 
+    "headers": {
+        "inReplyToHeader": "PGY3aTZvZStrZ2Y2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDM5NzVlMmQxMDcwNzE3MDUyMnAxY2ZmMGY5Ymg0NWMyMDA0NjgzMDlmYTQ0QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIzZmNlOGU2MDcwNzE3MDMyMWg2NWI1ZDRhZnVlMmRjOGEyZjQ1Y2E4ZGZiQG1haWwuZ21haWwuY29tPgkgPGY3aTZvZStrZ2Y2QGVHcm91cHMuY29tPg=="
+    }
+}

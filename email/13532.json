@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 13533, 
+    "senderId": "jObjZ6b0Y8k5iF9KQ2I_f7KOWJUsQTSi2T7r_liOEHAa5_AY_XoJBk7H4Zn-SOd14GXJUcH7NKLxh8QTRfzsKY3WxCdjvyfYoQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: DbUnit & ORM", 
+    "from": "&quot;Cedric Beust&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cedric Beust", 
+    "msgSnippet": "Hi John, ... Funny you should say that, because that s exactly how TestNG supports dependent tests. You can specify that a group B of test methods depends on", 
+    "msgId": 13532, 
+    "profile": "cbeust", 
+    "topicId": 13451, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-127839667\">Hi John,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of John Smith<br/>\n<br/>\n&gt; Cedric, I didn&#39;t examine TestNG yet. So you maybe have <br/>\n&gt; implemented my suggestion already. I want to suggest to <br/>\n&gt; support ignoring tests. Like: 1 test failed, 10 tests <br/>\n&gt; skipped, 2 tests ignored. Sometimes you want a test to set to <br/>\n&gt; ignore because all tests need to pass.<br/>\n&gt; You can comment it, but then you might forget about it. So I <br/>\n&gt; think a test framework should provide support for ignoring tests.<br/>\n<br/>\n </span></blockquote>Funny you should say that, because that&#39;s exactly how TestNG supports<br/>\ndependent tests.<br/>\n<br/>\nYou can specify that a group B of test methods &quot;depends on&quot; a group A of<br/>\ntest methods.  In this case, TestNG guarantees that<br/>\n<br/>\n- All methods in group A will be run before any method in group B is<br/>\ninvoked.<br/>\n- All methods in group A will have succeeded.  If at least one of them<br/>\nfailed, then all test methods in group B will be marked as &quot;SKIPPED&quot; (not<br/>\nrun), which makes it much easier for you to figure out which test exactly<br/>\nbroke the chain (&quot;cascade effect&quot;).<br/>\n<br/>\nHere is an excerpt of my slides on this subject:<br/>\n<br/>\n===<br/>\nDependent Methods<br/>\n<br/>\nCertain test methods depend on the successful prior run of other test<br/>\nmethods.<br/>\nExample: testing a web server:<br/>\nOne test method that launches the server (launch())<br/>\nOne test method that pings the server (ping())<br/>\nTwenty methods that test various functionalities of the server (test1() <br/>\ntest20())<br/>\n<br/>\nProblem:  server is launched but ping() fails<br/>\nScenario tricky to achieve with JUnit<br/>\nResult: 1 PASSED and 21 FAILURES<br/>\n<br/>\n===<br/>\nWith TestNG<br/>\n<br/>\n@Test(groups = launch)<br/>\npublic void launchServer() {}<br/>\n<br/>\n@Test(groups = init, <br/>\n      dependsOnGroups = { launch })<br/>\npublic void ping() { }<br/>\n<br/>\n@Test(dependsOnGroups = { init })<br/>\npublic void test1() {  }<br/>\n<br/>\nOutcome:  1 SUCCESS, 1 FAIL, 20 SKIPS<br/>\n===<br/>\n<br/>\nHope it clarifies things.<br/>\n<br/>\n-- <br/>\nCédric<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://beust.com/weblog\">http://beust.com/weblog</a></div>", 
+    "prevInTime": 13531, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1116249857", 
+    "canDelete": false, 
+    "nextInTopic": 13533, 
+    "prevInTopic": 13530, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTE2MDY1NjM1LjQwNDM4LnFtYWlsQHdlYjYwMDE5Lm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDIwMDUwNTE2MTMyNC5qNEdET0ZQWjAyMjk4MUAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20781, 
+    "senderId": "4lsK3aaYMgNctSvqdS8lxqCQz-Hgro_7rqCMZ6zL48cgkNRC8C7OiIDGNEv0AXky-SJvMJqkIsC8BZcWgiM-W0oSdWa8c6nC", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing on AWT thread", 
+    "from": "&quot;Nat Pryce&quot; &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "... Note, however, that in many cases merely using invokeAndWait is not enough because calling a Swing component can add other events to the queue.  So,", 
+    "msgId": 20780, 
+    "profile": "nat_pryce", 
+    "topicId": 20775, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "messageBody": "<div id=\"ygrps-yiv-262294552\">2008/8/8 Alex Ruiz &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:alruiz15@...\">alruiz15@...</a>&gt;:<br/>\n<blockquote><span title=\"ireply\"> &gt; ...note that GuiTask<br/>\n&gt; uses invokeAndWait instead of invokeLater. IMHO, most<br/>\n&gt; of the time in your test you need to wait for an<br/>\n&gt; action to be executed in the EDT before you can<br/>\n&gt; continue the execution of your test.<br/>\n<br/>\n </span></blockquote>Note, however, that in many cases merely using invokeAndWait is not<br/>\nenough because calling a Swing component can add other events to the<br/>\nqueue.  So, although invokeAndWait will block until the initial method<br/>\ncall is complete, the other events will not have been processed by the<br/>\ntime invokeAndWait returns, and the entire behaviour being tested will<br/>\nnot yet have been completed.  This can make the test go out of synch<br/>\nwith the Swing code: the test will fail may fail intermittently or<br/>\nsucceed when it should fail.<br/>\n<br/>\nTo unit test an object that calls invokeLater, I&#39;ve found it easiest<br/>\nto separate the threading concerns from the logic I want to test.<br/>\nI&#39;ve implemented a java.util.Executor that delegates to the Swing<br/>\ninvokeLater method. I then pass that Executor it to any object that<br/>\nneeds to call invokeLater and removed all direct calls to invokeLater.<br/>\n I can then easily unit test the behaviour of those objects with a<br/>\nmock Executor or with a deterministic executor that captures tasks and<br/>\nruns them on the test thread.<br/>\n<br/>\nJMock  2.5.0 provides a DeterministicExecutor in the<br/>\norg.jmock.lib.concurrent package.<br/>\n<br/>\nA more detailed description of this technique is at<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jmock.org/threads.html\">http://www.jmock.org/threads.html</a><br/>\n<br/>\n--Nat</div>", 
+    "prevInTime": 20779, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1218187732", 
+    "canDelete": false, 
+    "nextInTopic": 20782, 
+    "prevInTopic": 20778, 
+    "headers": {
+        "inReplyToHeader": "PDcxNzE1My4xMzEyNy5xbUB3ZWI4MjkwNy5tYWlsLm11ZC55YWhvby5jb20+", 
+        "messageIdInHeader": "PDE3ZmE1M2QwODA4MDgwMjI4bzU2MDRkODM4bjJjYjk1MTlmYjg1ZTYwNmVAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDE4ODc2ODQ4LnBvc3RAdGFsay5uYWJibGUuY29tPgkgPDcxNzE1My4xMzEyNy5xbUB3ZWI4MjkwNy5tYWlsLm11ZC55YWhvby5jb20+"
+    }
+}

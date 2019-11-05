@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 14695, 
+    "senderId": "n5yhF-Dm--Eyfu59stpGTmet5P8zB_T2cZAznpJSDU_2yIU0XhUG38xz3Cr2iEKKpeiq6LMeJyRnWcpmgtReppjPMeFWr53SJGcgg6X3lCiL", 
+    "systemMessage": true, 
+    "subject": "Better design solution", 
+    "from": "&quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@...&gt;", 
+    "authorName": "Iliya Agoshkov", 
+    "msgSnippet": "Hello, Here is some short description of a task being solved: I need to analyze the HTML document and extract some links to external resources (such as ", 
+    "msgId": 14694, 
+    "rawEmail": "Return-Path: &lt;Iliya.Agoshkov@...&gt;\r\nReceived: (qmail 9108 invoked from network); 6 Sep 2005 15:37:14 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m31.grp.scd.yahoo.com with QMQP; 6 Sep 2005 15:37:14 -0000\r\nReceived: from unknown (HELO n14a.bulk.scd.yahoo.com) (66.94.237.28)\n  by mta4.grp.scd.yahoo.com with SMTP; 6 Sep 2005 15:37:14 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.66.58] by n14.bulk.scd.yahoo.com with NNFMP; 06 Sep 2005 15:35:31 -0000\r\nReceived: from [66.218.66.76] by mailer7.bulk.scd.yahoo.com with NNFMP; 06 Sep 2005 15:35:31 -0000\r\nX-Sender: Iliya.Agoshkov@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 38127 invoked from network); 6 Sep 2005 10:56:33 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m28.grp.scd.yahoo.com with QMQP; 6 Sep 2005 10:56:33 -0000\r\nReceived: from unknown (HELO newton.hq.actis.ru) (212.248.55.201)\n  by mta5.grp.scd.yahoo.com with SMTP; 6 Sep 2005 10:56:32 -0000\r\nContent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nX-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0\r\nDate: Tue, 6 Sep 2005 14:55:46 +0400\r\nMessage-ID: &lt;9BEAA1B86783344BA6CF9B95F5B620923C1892@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: Better design solution\r\nthread-index: AcWy0TH7tjm+o+USRAWuHvnlPwQ0OQAAEFPg\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nX-eGroups-Msg-Info: 2:4:8:0\r\nFrom: &quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@...&gt;\r\nSubject: Better design solution\r\nX-Yahoo-Group-Post: member; u=234978661; y=xuu8bXC1K2W_3zSIQGCDqQ5kl7VaMwC-h2cgrcu4aNtvVyTk_Q\r\nX-Yahoo-Profile: agoshkoviv\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 06 Sep 2005 15:35:30 -0000\r\n\r\nHello,\nHere is some short description of a task being solved:\nI need to analyze the HTML document and extract some links to external\nresources (such as &lt;A href=&quot;www.yahoo.com&quot;&gt;link&lt;/A&gt; and &lt;IMG\nSRC=&quot;asdasd.gif&quot;/&gt; and etc),\nI have to differentiate links by a target location, so it can be link to\nexternal resources (&lt;A href=&quot;ww.yahoo.com&quot;/&gt; and to internal resources\n(&lt;A href=&quot;/admin/userslist.do&quot;/&gt;),\nand differentiate by the link type, it can be: AnchorLink (&lt;A/&gt; - tag),\nImageLink (&lt;IMG/&gt; tag), mailto (&lt;A\nhref=&quot;mailto:refactoring@...&quot;/&gt;) and may some others in\nfuture.\n \nso I produced following classes hierarchy:\n \npublic class LinksExtractor\n{\n    public LinksExtractor( String document, String[] aliases ); //\n&quot;aliases&quot; is the array of Strings representing site aliases, needed to\ndetermine whether the link is internal or external (i.e. { www.site.com\n&lt;http://www.site.com&gt; , www.mysite.com &lt;http://www.mysite.com&gt; ,\nwww.hissite.com &lt;http://www.hissite.com&gt;  }, so all links to this sites\nare considered internal links)\n    public Collection extractLinks(); // returns Collection of Link\nsubclasses corresponding to links found in document.\n}\n \npublic class Link\n{\n    public String getUrl();\n    public String getObject(); // for internal links return, for\nexample, some object from application class hierarchy (for\nInternalImageLink returns for example some\ncom.company.businessobjects.MediaObject instance)\n    public static Object getLinkedObject( org.w3c.Element node ); //\nreturns instance of concrete Link subclass (see below)\n}\n \npublic class InternalImageLink extends Link  // represents &lt;IMG\nSRC=&quot;http://www.site.com/img/b.gif&quot;/&gt; for example\n{\n}\n \npublic class ExternalImageLink extends Link // represents &lt;IMG\nSRC=&quot;http://www.anysite.com/img/b.gif&quot;/&gt; for example\n{\n}\n \npublic class MailToLink extends Link // represent &lt;A\nhref=&quot;mailto:refactoring@yahoogroups.com&quot;/&gt;\n{\n}\n \npublic class InternalAnchorLink extends Link // represent &lt;A\nhref=&quot;www.site.com/about&quot;/&gt;\n{\n}\n \netc... (some other Link subclasses).\n \nIn present solution linksExtractor.extractLinks() parses HTML document\nto DOM, than iterates each node and substitutes it to\nLink.getLinkedObject( node ), which returns instance of a class\ncorresponding to link, found in Node, or null, if current Node is not a\nlink.\n \nI&#39;d like to improve this design solution, for it could support not only\nHTML as a document, but plaintext also, and may be in future some other\ntypes.\nand also it should be easy to add new Link subclasses (for example\nCSSLink) with minimal changes needed.\n \nAny help would be very appreciated.\n \nIlya.\n\n\n[Non-text portions of this message have been removed]\n\n\n\n\n", 
+    "profile": "agoshkoviv", 
+    "topicId": 14694, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 234978661, 
+    "prevInTime": 14693, 
+    "contentTrasformed": false, 
+    "postDate": "1126004146", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDlCRUFBMUI4Njc4MzM0NEJBNkNGOUI5NUY1QjYyMDkyM0MxODkyQG5ld3Rvbi5ocS5hY3Rpcy5ydT4="
+    }
+}

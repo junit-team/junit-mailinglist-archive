@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 23001, 
+    "senderId": "LlH5gFuOpr8Wusr8xCSlHO7P6FXhMY_5MR2THRepaw_2KAguV09KWI5L3RlDadHb_wtyT-fnfhXLdbZlySP-jiNL", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Wrong number of arguments", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "David, There s so much I d love to change about the current parameterized runner.  The way it s designed, a @Parameters method returns a Collection ,", 
+    "msgId": 23000, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 58569 invoked from network); 8 Oct 2010 16:39:38 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m7.grp.sp2.yahoo.com with QMQP; 8 Oct 2010 16:39:38 -0000\r\nX-Received: from unknown (HELO mail-gw0-f54.google.com) (74.125.83.54)\n  by mta3.grp.sp2.yahoo.com with SMTP; 8 Oct 2010 16:39:38 -0000\r\nX-Received: by gwb15 with SMTP id 15so659201gwb.41\n        for &lt;junit@yahoogroups.com&gt;; Fri, 08 Oct 2010 09:39:37 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.90.117.2 with SMTP id p2mr1799019agc.184.1286555977754; Fri,\n 08 Oct 2010 09:39:37 -0700 (PDT)\r\nX-Received: by 10.90.130.13 with HTTP; Fri, 8 Oct 2010 09:39:37 -0700 (PDT)\r\nIn-Reply-To: &lt;i8ndiu+p1ig@...&gt;\r\nReferences: &lt;i8ndiu+p1ig@...&gt;\r\nDate: Fri, 8 Oct 2010 12:39:37 -0400\r\nX-Google-Sender-Auth: 8qkh5zamUDTRBEn7i2dg9qSk0wo\r\nMessage-ID: &lt;AANLkTinDosF5JZsVyCHgz_AOc4pw4yq20t3qrt_sip8S@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Wrong number of arguments\r\nX-Yahoo-Group-Post: member; u=341876227; y=e0WQd1R5UZz1vWCsR37EVatjg6Wi9g8_U_hBfSQByVg\r\nX-Yahoo-Profile: dsaff\r\n\r\nDavid,\n\nThere&#39;s so much I&#39;d love to change about the current parameterized\n=\r\nrunner.  The way it&#39;s designed, a @Parameters method returns a\nCollection&lt;O=\r\nbject[]&gt;, but the individual elements of the Object array\nare unpacked to f=\r\nill the parameters of the constructor.  So, there&#39;s\ntwo ways to fix what&#39;s =\r\ngoing on:\n\n1) If the number of elements read on each line of your testFile =\r\nis\ngoing to be constant, you could explicitly name them in the\nconstructor:=\r\n\n\npublic LicenseScrubberTest(String field1, String field2, String field3) {=\r\n...}\n\n2) If it isn&#39;t, then you&#39;ll need to wrap the array in an array:\n\ntest=\r\ns.add(new Object[] { line.split(&quot;::&quot;) });\n\nIn either case, you deserved a b=\r\netter error message.  Can you log a\nbug for that?\n\n   David Saff\n\nOn Fri, O=\r\nct 8, 2010 at 11:32 AM, beauchesne.david\n&lt;beauchesne.david@...&gt; wrote:=\r\n\n&gt; Hi. My test parameterized class keeps throwing up this exception, and I =\r\ncan&#39;t figure out how to fix it. Could someone point out where my problem li=\r\nes?\n&gt;\n&gt; java.lang.IllegalAgumentException: wrong number of arguments\n&gt; at j=\r\nava.lang.reflect.Constructor.newInstance(Unknown Source)\n&gt;\n&gt; Here&#39;s the par=\r\nameter method:\n&gt;\n&gt; @Parameters\n&gt; =A0 =A0public static Collection&lt;Object[]&gt; =\r\nlicenseBaselines() {\n&gt; =A0 =A0 =A0 =A0ArrayList&lt;Object[]&gt; tests =3D new Arr=\r\nayList&lt;Object[]&gt;();\n&gt; =A0 =A0 =A0 =A0try {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0Buffere=\r\ndReader in =3D new BufferedReader(new FileReader(testFile));\n&gt; =A0 =A0 =A0 =\r\n=A0 =A0 =A0String line;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0while((line =3D in.readLin=\r\ne()) !=3D null)\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0tests.add(line.split(&quot;::&quot;)=\r\n);\n&gt; =A0 =A0 =A0 =A0 =A0 =A0in.close();\n&gt; =A0 =A0 =A0 =A0} catch(Exception =\r\ne) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0System.out.println(&quot;Exception: &quot; + e.toString=\r\n());\n&gt; =A0 =A0 =A0 =A0}\n&gt; =A0 =A0 =A0 =A0return tests;\n&gt; }\n&gt;\n&gt; My construct=\r\nor:\n&gt;\n&gt; public LicenseScrubberTest(Object[] stuff) {...}\n&gt;\n&gt;\n&gt;\n&gt; ----------=\r\n--------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22999, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22999, 
+    "contentTrasformed": false, 
+    "postDate": "1286555977", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22999, 
+    "headers": {
+        "inReplyToHeader": "PGk4bmRpdStwMWlnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGluRG9zRjVKWnNWeUNIZ3pfQU9jNHB3NHlxMjB0M3FydF9zaXA4U0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGk4bmRpdStwMWlnQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 3408, 
+    "senderId": "VJQV-8ogEbuXtYBKsOA3qpCSkLSJHp0D42olrQl24V8J3ETqroDaGfIGStzMqwgv0SV0NllTsS2r1yAW4QAFTPpMAgb-PQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit Tests and Business Rules", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... Another approach might be to define a common Rule interface, and then compose Rules into a RuleSet: public interface Rule { public boolean fire(); } public", 
+    "msgId": 3407, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 2 Dec 2001 20:06:28 -0000\r\nReceived: (qmail 65642 invoked from network); 2 Dec 2001 20:06:28 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m4.grp.snv.yahoo.com with QMQP; 2 Dec 2001 20:06:28 -0000\r\nReceived: from unknown (HELO wren.mail.pas.earthlink.net) (207.217.121.64)\n  by mta1.grp.snv.yahoo.com with SMTP; 2 Dec 2001 20:06:28 -0000\r\nReceived: from clarkware.com (user-33qtpid.dialup.mindspring.com [199.174.230.77])\n\tby wren.mail.pas.earthlink.net (8.9.3/8.9.3) with ESMTP id MAA19025\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 2 Dec 2001 12:06:27 -0800 (PST)\r\nMessage-ID: &lt;3C0A8977.B8DB4039@...&gt;\r\nDate: Sun, 02 Dec 2001 13:05:11 -0700\r\nOrganization: Clarkware Consulting, Inc.\r\nX-Mailer: Mozilla 4.77 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] JUnit Tests and Business Rules\r\nReferences: &lt;6720000.1007321888@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nX-Yahoo-Profile: clarkware\r\n\r\nMark Derricutt wrote:\n\n&gt;\n&gt; Are there any existing patterns/frameworks for implementing rule based\n&gt; logic cleanly?\n&gt;\n\nAnother approach might be to define a common Rule interface, and then compose\nRules into a RuleSet:\n\n    public interface Rule {\n        public boolean fire();\n    }\n\n    public class RuleSet implements Rule {\n\n        public void addRule(Rule rule) {\n            _rules.add(rule);\n        }\n\n        public boolean fire() {\n\n            Iterator rules = _rules.iterator();\n            while (rules.hasNext()) {\n                Rule rule = (Rule)rules.next();\n                boolean pass = rule.fire();\n                if  (!pass) {\n                    return false;\n                }\n            }\n            return true;\n        }\n\nConcrete Rule instances can be constructed with the data necessary to fire\nthe rule as prescribed by their fire() method.  The RuleSet is assembled with\na collection of Rule instances, with which a single call to fire() will\neffectively accomplish the &#39;if&#39; logic.  Combining AND and OR operators takes\na bit more work.\n\nThis is probably more than is necessary for checking whether a field is\neditable or not, but it does address the &#39;if&#39; statement for generic\nrule-based systems.  The simplest approach is to simply refactor each test\ninto its own method, as you&#39;ve already pointed out.\n\nHope this helps.\n\nMike\n\n--\nMike Clark\nClarkware Consulting, Inc.\nhttp://www.clarkware.com\n720.851.2014\n\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 3406, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3406, 
+    "contentTrasformed": false, 
+    "postDate": "1007323511", 
+    "canDelete": false, 
+    "nextInTopic": 3408, 
+    "prevInTopic": 3406, 
+    "headers": {
+        "messageIdInHeader": "PDNDMEE4OTc3LkI4REI0MDM5QGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PDY3MjAwMDAuMTAwNzMyMTg4OEBzcGF3bi5zZTdlbi5vcmc+"
+    }
+}

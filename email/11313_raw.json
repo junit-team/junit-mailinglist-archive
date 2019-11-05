@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 11314, 
+    "senderId": "iJZSca266j_5hwyGbPQuMAyKOtwT4doHuCmQF7OPIq92kwf36rNoNKtVnKCp4wmA3uVuCZ-vCn48inz6y1vX56YaAo0q0bZ2aEkefLBVCWMRTfID9A", 
+    "systemMessage": false, 
+    "subject": "Creating own subclass of TestCase as base for tests", 
+    "from": "Martijn Dashorst &lt;yahoogroups@...&gt;", 
+    "authorName": "Martijn Dashorst", 
+    "msgSnippet": "Hi, I m a maintainer of jWebUnit and we ve got a problem with resource deallocation when many tests are run (1000+). This is due to the HTTP driver (WebTester)", 
+    "msgId": 11313, 
+    "rawEmail": "Return-Path: &lt;martijn@...&gt;\r\nReceived: (qmail 7617 invoked from network); 29 Jun 2004 23:56:43 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m16.grp.scd.yahoo.com with QMQP; 29 Jun 2004 23:56:43 -0000\r\nReceived: from unknown (HELO n22.grp.scd.yahoo.com) (66.218.66.78)\n  by mta6.grp.scd.yahoo.com with SMTP; 29 Jun 2004 23:56:43 -0000\r\nX-eGroups-Return: martijn@...\r\nReceived: from [66.218.67.181] by n22.grp.scd.yahoo.com with NNFMP; 29 Jun 2004 23:56:43 -0000\r\nX-Sender: martijn@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 10712 invoked from network); 29 Jun 2004 20:46:02 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m17.grp.scd.yahoo.com with QMQP; 29 Jun 2004 20:46:02 -0000\r\nReceived: from unknown (HELO pluto.isd-holland.nl) (62.221.254.24)\n  by mta6.grp.scd.yahoo.com with SMTP; 29 Jun 2004 20:46:02 -0000\r\nReceived: from [10.0.0.5] (62-221-202-202.dsl.uwadslprovider.nl [62.221.202.202])\n\tby pluto.isd-holland.nl (Postfix) with ESMTP id 656192F0157\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 29 Jun 2004 22:46:01 +0200 (CEST)\r\nMessage-ID: &lt;40E1D509.2060204@...&gt;\r\nDate: Tue, 29 Jun 2004 22:46:01 +0200\r\nUser-Agent: Mozilla Thunderbird 0.7 (X11/20040615)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 62.221.254.24\r\nX-eGroups-From: Martijn Dashorst &lt;martijn@...&gt;\r\nFrom: Martijn Dashorst &lt;yahoogroups@...&gt;\r\nSubject: Creating own subclass of TestCase as base for tests\r\nX-Yahoo-Group-Post: member; u=130778978\r\nX-Yahoo-Profile: martijn_dashorst\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 29 Jun 2004 23:56:43 -0000\r\nX-eGroups-Remote-IP: 66.218.66.78\r\n\r\nHi,\n\nI&#39;m a maintainer of jWebUnit and we&#39;ve got a problem with resource \ndeallocation when many tests are run (1000+). This is due to the HTTP \ndriver (WebTester) which is allocated in the constructor (bad policy, I \nknow) and which is only freed when the TestCase is cleaned up by the GC.\n\nNow my question is: how do I allocate/deallocate the HTTP driver without \nneeding my clients&#39; subclasses to call super.setUp() and \nsuper.tearDown() in their implementations of setUp()/tearDown().\n\nI was thinking of overriding runBare() in which I allocate the driver \nbefore calling super.runBare(), and in a finally block, I dereference \nthe driver:\n\n  public void runBare() throws Throwable {\n      try {\n          tester = new WebTester();\n          super.runBare();\n      } finally {\n          tester = null;\n      }\n  }\n\nThis allows subclasses of WebTestCase to override setUp() and tearDown() \nwithout requiring them to call super.setUp()/tearDown().\n\nThis is rather risky, for I have no guarantee that runBare() is called \nin each environment (ant, Eclipse, IntelliJ, etc).\n\nCreating my own WebTestCase extends Assert implements Test would require \nme to implement a lot of code, not just delegation, or am I missing \nsomething?\n\nI hope you could shed some light on this.\n\nMartijn Dashorst\n\n\n", 
+    "profile": "martijn_dashorst", 
+    "topicId": 11313, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 130778978, 
+    "prevInTime": 11312, 
+    "contentTrasformed": false, 
+    "postDate": "1088541961", 
+    "canDelete": false, 
+    "nextInTopic": 11314, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQwRTFENTA5LjIwNjAyMDRAZGFzaG9yc3QuZGRzLm5sPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 10820, 
+    "senderId": "wu8Z7NhQNuMa7twl-EcxJd9-mxOv6tq-Op67OzRz3e3hRZFIr05ho5ezkSaed3NwDKEJ6FSnCUFXtkW2kbW_vhz7W6eYASLEI_sqekxrkg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Pls Help : automating ok click of Joptionpane", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Here is my general approach to this problem. You want to /simulate/ (the key word) pressing OK on a dialog. In your test, you want to invoke a method like", 
+    "msgId": 10819, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 70150 invoked from network); 9 Apr 2004 16:51:22 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m24.grp.scd.yahoo.com with QMQP; 9 Apr 2004 16:51:22 -0000\r\nReceived: from unknown (HELO web02-imail.rogers.com) (66.185.86.76)\n  by mta4.grp.scd.yahoo.com with SMTP; 9 Apr 2004 16:51:22 -0000\r\nReceived: from rogers.com ([24.156.43.226]) by web02-imail.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040409163425.QOMX40503.web02-imail.rogers.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Fri, 9 Apr 2004 12:34:25 -0400\r\nMessage-ID: &lt;4076D036.6070708@...&gt;\r\nDate: Fri, 09 Apr 2004 12:32:54 -0400\r\nUser-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;c4u26o+brcf@...&gt;\r\nIn-Reply-To: &lt;c4u26o+brcf@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at web02-imail.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Fri, 9 Apr 2004 12:34:25 -0400\r\nX-eGroups-Remote-IP: 66.185.86.76\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Pls Help : automating ok click of Joptionpane\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nJagdish Rao wrote:\n&gt; hello all\n&gt; \n&gt; hi i&#39;m jagdish n i&#39;m new to java development so dont get annoyed\n&gt; if i&#39;m asking something  silly\n&gt; \n&gt; The Prob : I have a swing based GUI called LoginView which is a\n&gt; typical login screen.i have written test cases to test the variuos\n&gt; conditions\n&gt; such as blank username and password or incorrect password.\n&gt; \n&gt; for this in my loginview class i am using the Joptionpane to display\n&gt; the\n&gt; alerts to user such as please enter data or incorrect password.\n&gt; \n&gt; now here when i run my test case the execution stops for the user to\n&gt; respond to Joptionpane.this is the problem\n&gt; \n&gt; i want to pass ok click to the test case(Incorrect password)  so that\n&gt; testing wont require user intervention.\n&gt; \n&gt; please guide me if it is possible as i know it is a modal window\n&gt; or there r any other better way to achieve this\n&gt; \n&gt; something in the test case not in the GUI class which will do the\n&gt; needful\n\nHere is my general approach to this problem. You want to /simulate/ (the \nkey word) pressing OK on a dialog. In your test, you want to invoke a \nmethod like this:\n\n     ...\n     optionPane.ok();\n     ...\n\nTo do this, you need an /interface/ that exposes this method.\n\ninterface OptionPane {\n     void ok();\n}\n\nTo use this, you need a /wrapper/ for JOptionPane that implements \nOptionPane.\n\nclass MyOptionPane implements OptionPane {\n     private JOptionPane jOptionPane;\n\n     public MyOptionPane() {\n         // initialize jOptionPane...\n     }\n\n     public void show() {\n         jOptionPane.go();\n     }\n\n     public void ok() {\n         jOptionPane.click(OK):    // Whatever the actual Swing code is\n     }\n}\n\nNow you need to be able inject an implementation of OptionPane into \nwhichever class was using JOptionPane directly...\n\nclass MyTask {\n     public MyTask(OptionPane optionPane) {\n         this.optionPane = optionPane;\n         ...\n     }\n     ...\n}\n\nNow you can pass MyTask a real MyOptionPane in production, but use a \nfake OptionPane in your tests that doesn&#39;t actually require the user to \npress a key.\n\nI hope this helps.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 10807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 10818, 
+    "contentTrasformed": false, 
+    "postDate": "1081528374", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10807, 
+    "headers": {
+        "inReplyToHeader": "PGM0dTI2byticmNmQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwNzZEMDM2LjYwNzA3MDhAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGM0dTI2byticmNmQGVHcm91cHMuY29tPg=="
+    }
+}

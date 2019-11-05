@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 52, 
+    "nextInTime": 13804, 
+    "senderId": "rGfBUv6l6nHFHHsNGcqwq4A5yMhF5nRzDn_ZrFA2cNCV_Qvj4JcE1vDbG-owSxxX7eoJV6TkXLImYuNqeyUqfh3TBtu_Onjjow", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Don&#39;t show exception messages to users (was assertTrue(true))", 
+    "from": "Robert Watkins &lt;yahoo@...&gt;", 
+    "authorName": "Robert Watkins", 
+    "msgSnippet": "... You re _still_ thinking like a programmer... :) Do this instead: if(! ssn.matches(SOCIAL_SECURITY_MASK) ){ throw new InvalidDataException(MESSAGE, ssn); } ", 
+    "msgId": 13803, 
+    "rawEmail": "Return-Path: &lt;robertdw@...&gt;\r\nX-Sender: robertdw@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 94527 invoked from network); 2 Jun 2005 20:01:36 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m24.grp.scd.yahoo.com with QMQP; 2 Jun 2005 20:01:36 -0000\r\nReceived: from unknown (HELO ash25e.internode.on.net) (203.16.214.182)\n  by mta4.grp.scd.yahoo.com with SMTP; 2 Jun 2005 20:01:35 -0000\r\nReceived: from [192.168.0.3] (ppp105-212.lns1.bne1.internode.on.net [59.167.105.212])\n\tby ash25e.internode.on.net (8.12.9/8.12.6) with ESMTP id j52K0CfI026128\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 3 Jun 2005 05:30:18 +0930 (CST)\n\t(envelope-from robertdw@...)\r\nMessage-ID: &lt;429F654C.3040401@...&gt;\r\nDate: Fri, 03 Jun 2005 06:00:12 +1000\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;200506010052.j510qKZv018733@...&gt; &lt;429D7C31.1070900@...&gt; &lt;429DE33F.1070107@...&gt; &lt;429E4360.6090605@...&gt; &lt;429E58AC.6080909@...&gt; &lt;429EDC40.6080801@...&gt; &lt;429F3744.2020904@...&gt;\r\nIn-Reply-To: &lt;429F3744.2020904@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nX-eGroups-From: Robert Watkins &lt;robertdw@...&gt;\r\nFrom: Robert Watkins &lt;yahoo@...&gt;\r\nSubject: Re: [junit] Don&#39;t show exception messages to users (was assertTrue(true))\r\nX-Yahoo-Group-Post: member; u=189784721; y=GZqJmw4bOJS6xUSsaWw0Q3CxC8HtJ084KJmgEJnPr5Woon8EPw\r\nX-Yahoo-Profile: robertdw26\r\n\r\nKevin Lawrence wrote:\n&gt; Elliotte Harold wrote:\n&gt; \n&gt;&gt;Kevin Lawrence wrote:\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;&gt;&quot;Social security number should match the pattern 999-99-9999. AB-1234-XY \n&gt;&gt;&gt;is not a valid social security number.&quot;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;You&#39;re still thinking like a programmer. \n&gt; \n&gt; \n&gt; Actually I was thinking like someone writing a quick example on a \n&gt; mailing list.\n&gt; \n&gt; try this one instead :\n&gt; \n&gt; \n&gt; if(! ssn.matches(SOCIAL_SECURITY_MASK) ){\n&gt;    throw new InvalidDataException(Messages.format(MESSAGE, ssn));\n&gt; }\n\nYou&#39;re _still_ thinking like a programmer... :)\n\nDo this instead:\n\nif(! ssn.matches(SOCIAL_SECURITY_MASK) ){\n     throw new InvalidDataException(MESSAGE, ssn);\n}\n\nand:\npublic InvalidDataException extends Exception {\n     public InvalidDataException(String messageKey, Object ... params) {\n       super(Messages.format(messageKey, params);\n     }\n}\n\nThe point is that if you pass in the pre-constructed message to the \nException, you&#39;re losing information. So don&#39;t.\n\nThis way, if you want a hard-coded message in the exception (the easy \ncase), it&#39;s the exception&#39;s responsibility to do that. _But_ if you want to \ndo something else, then you can, without changing the thrower of the Exception.\n\n &gt; The exception type communicates to the programmer. Any caller can handle\n &gt; the exception if it makes sense to do so.\n\nYes, but by only providing the string, you&#39;ve limited their ability to do \nso. Consider this:\n\nString[] ssnStrings = ...;\nList&lt;SocialSecurityNumber&gt; ssns = new ArrayList&lt;SocialSecurityNumber&gt;();\nfor (String ssn : ssnStrings ) {\n   ssns.add(new SocialSecurityNumber(ssn);\n}\n\nIf you only provide the message, the caller needs to remember which one \nthey were working on, and provide a user-friendly error message. If you \nprovide the actual data, then the caller has a lot more options.\n\nThe key points are these:\n1) It&#39;s the responsibility of the class that throws the exception to \nprovide error information.\n2) It&#39;s the responsibility of the exception to hold that error information.\n3) It&#39;s the responsibility of either the exception OR another error \nhandling object to turn the exception into an error message, using the \nsupplied information.\n\nAnd if Oracle had paid attention to these, I wouldn&#39;t be getting sick of \nseeing &quot;table or view not found&quot; messages...\n\nRobert.\n\n-- \n                &quot;Software is too expensive to build cheaply&quot;\nRobert Watkins         http://twasink.net/          robertdw@...\n\n", 
+    "profile": "robertdw26", 
+    "topicId": 13707, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "prevInTime": 13802, 
+    "contentTrasformed": false, 
+    "postDate": "1117742412", 
+    "canDelete": false, 
+    "nextInTopic": 13804, 
+    "prevInTopic": 13798, 
+    "headers": {
+        "inReplyToHeader": "PDQyOUYzNzQ0LjIwMjA5MDRAZGlhbW9uZC1za3kuY29tPg==", 
+        "messageIdInHeader": "PDQyOUY2NTRDLjMwNDA0MDFAdHdhc2luay5uZXQ+", 
+        "referencesHeader": "PDIwMDUwNjAxMDA1Mi5qNTEwcUtadjAxODczM0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4gPDQyOUQ3QzMxLjEwNzA5MDBAbWV0YWxhYi51bmMuZWR1PiA8NDI5REUzM0YuMTA3MDEwN0BkaWFtb25kLXNreS5jb20+IDw0MjlFNDM2MC42MDkwNjA1QG1ldGFsYWIudW5jLmVkdT4gPDQyOUU1OEFDLjYwODA5MDlAZGlhbW9uZC1za3kuY29tPiA8NDI5RURDNDAuNjA4MDgwMUBtZXRhbGFiLnVuYy5lZHU+IDw0MjlGMzc0NC4yMDIwOTA0QGRpYW1vbmQtc2t5LmNvbT4="
+    }
+}

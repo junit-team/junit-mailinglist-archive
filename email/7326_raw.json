@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 7327, 
+    "senderId": "UCKRFOBFApHDQjHsDQfdzwCAAdZssVu52TRPCRkPuJB13RvLa5vwSfLZ9Rin42IKTXuaZP8GtvJ3xdcuwI4SafixKkuyOPqn7TDXXsFBmio", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] ThreadLocal", 
+    "from": "&quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "On Mon, 24 Mar 2003 08:09:56 -0500, David Corbin  said:  ... Yes, the ones I mentioned on my previous response.  Factories for ", 
+    "msgId": 7326, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 24 Mar 2003 20:19:09 -0000\r\nReceived: (qmail 11154 invoked from network); 24 Mar 2003 20:19:08 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m12.grp.scd.yahoo.com with QMQP; 24 Mar 2003 20:19:08 -0000\r\nReceived: from unknown (HELO www.fastmail.fm) (66.111.4.2)\n  by mta2.grp.scd.yahoo.com with SMTP; 24 Mar 2003 20:19:08 -0000\r\nReceived: from www.fastmail.fm (localhost [127.0.0.1])\n\tby localhost.localdomain (Postfix) with ESMTP id E15B42D69D\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 24 Mar 2003 15:19:05 -0500 (EST)\r\nReceived: from 127.0.0.1 ([127.0.0.1] helo=www.fastmail.fm) by messagingengine.com\n  with SMTP; Mon, 24 Mar 2003 15:19:05 -0500\r\nReceived: by www.fastmail.fm (Postfix, from userid 99)\n\tid D66BF1432C; Mon, 24 Mar 2003 15:19:05 -0500 (EST)\r\nContent-Disposition: inline\r\nContent-Transfer-Encoding: 7bit\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nMIME-Version: 1.0\r\nX-Mailer: MIME::Lite 1.2  (F2.71; T1.001; A1.51; B2.12; Q2.03)\r\nTo: &quot;JUnit Yahoo Group&quot; &lt;junit@yahoogroups.com&gt;\r\nDate: Mon, 24 Mar 2003 16:19:05 -0400\r\nX-Epoch: 1048537145\r\nX-Sasl-enc: izvx7SJ7zvHLTeSigIkseQ\r\nSubject: Re: [junit] ThreadLocal\r\nReferences: &lt;3E7E09B2.8010505@...&gt; &lt;20030324031214.95DEB1B6E6@...&gt; &lt;3E7F03A4.30401@...&gt;\r\nIn-Reply-To: &lt;3E7F03A4.30401@...&gt;\r\nMessage-Id: &lt;20030324201905.D66BF1432C@...&gt;\r\nFrom: &quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;\r\nX-Yahoo-Group-Post: member; u=109352929\r\nX-Yahoo-Profile: jacaetev\r\n\r\nOn Mon, 24 Mar 2003 08:09:56 -0500, &quot;David Corbin&quot;\n&lt;dcorbin@...&gt; said:\n&lt;snip&gt;\n&gt;    Well,  as  near  as I can tell there are 4 choices on how something is\n&gt;    made\n&gt;    available:\n&gt;    1) at construction\n&gt;    2) as an argument\n&gt;    3) as a global/singleton\n&gt;    4) as ThreadLocal (similar to #3, but more flexible, certainly in the\n&gt;    web environment)\n&gt;    #2 is what I&#39;ve been doing, and has created the smell\n&gt;    #1  generally  doesn&#39;t  work  well, because the &quot;something&quot; may not be\n&gt;    very\n&gt;    tightly bound to the object being constucted.\n&gt;    That leaves #3 and #4.  I have a long-standing global-phobia.  Perhaps\n&gt;    it&#39;s  too  strong. #4 of course, isn&#39;t that differrent from #3 ( think\n&gt;    of\n&gt;    them as semi-global).\n&gt;    Have a missed a choice?\n\nYes, the ones I mentioned on my previous response.  Factories for\ninstance.  If there is behavior that you need in the class you are\ntesting and it makes sense to break it out into its own class (as you\nhave done) write a Factory that will give you back an instance of the\nneeded class to be able to work with.  The Factory could be globally\naccessible, if that makes sense or pass it in at creation time.  Often\ntimes factories can give you access to several behaviors simultaneously,\nso if you need to pass in the Factory at instance creation time, you need\nonly pass one or two.  If they are globally accessible however (either to\nthe system as a whole, or to a package, etc.), you obviously don&#39;t need\nto pass them in.  I find that the factories I write are often static such\nthat I don&#39;t need an instance of one to get an instance of the object I\nam after.\n\nLet&#39;s say I have a DBQuery that obviously needs a DatabaseConnection to\ndo much of its work.  The query doesn&#39;t need the connection for its full\nlife-span, only for the short period of time in which to run against the\nDB, perhaps the rest of the time is doing maintenance work or creating\nRecord objects to represent a row in the DB, etc.  So, I make a Factory\n(in this case probably a pool) available from which the query can grab a\nconnection when it needs it and then give it back.  The connection too\nhas things that it may need only for a short period of time and can give\nthem up -- i.e. a Prepared or CallableStatement.  It can get the\nstatement from a factory it has access to and then give it back when it&#39;s\ndone.\n\nSorry for such a long response.  I guess I am not one for terseness.\n\n=jason\n[:question | ^One]\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 7316, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 7325, 
+    "contentTrasformed": false, 
+    "postDate": "1048537145", 
+    "canDelete": false, 
+    "nextInTopic": 7327, 
+    "prevInTopic": 7320, 
+    "headers": {
+        "inReplyToHeader": "PDNFN0YwM0E0LjMwNDAxQG1hY2h0dXJ0bGUuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwMzI0MjAxOTA1LkQ2NkJGMTQzMkNAd3d3LmZhc3RtYWlsLmZtPg==", 
+        "referencesHeader": "PDNFN0UwOUIyLjgwMTA1MDVAbWFjaHR1cnRsZS5jb20+IDwyMDAzMDMyNDAzMTIxNC45NURFQjFCNkU2QHd3dy5mYXN0bWFpbC5mbT4gPDNFN0YwM0E0LjMwNDAxQG1hY2h0dXJ0bGUuY29tPg=="
+    }
+}

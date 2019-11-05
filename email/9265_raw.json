@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 9266, 
+    "senderId": "mYqu736-JwwPlgixGYm6CbQ1hQf2ChyUlyQNyV-GCzxO0N1iKsi-EGLFP_aRRIIPjE9fBdjnTxkijGoRk5KWvV0tybWVHjSmRnKcIDM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Class that calls on database helper class. How to\twrite test case?", 
+    "from": "Brian Button &lt;bbutton01@...&gt;", 
+    "authorName": "Brian Button", 
+    "msgSnippet": "... Hi, Veny, I know you ve already had an answer, but I ve got a couple of other options that I ve used in the past that might be useful as well. ... ", 
+    "msgId": 9265, 
+    "rawEmail": "Return-Path: &lt;bbutton@...&gt;\r\nX-Sender: bbutton@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 55868 invoked from network); 2 Sep 2003 17:56:20 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m20.grp.scd.yahoo.com with QMQP; 2 Sep 2003 17:56:20 -0000\r\nReceived: from unknown (HELO brian-desktop) (24.107.37.95)\n  by mta5.grp.scd.yahoo.com with SMTP; 2 Sep 2003 17:56:20 -0000\r\nReceived: from bbutton by brian-desktop with local (Exim 4.22)\n\tid 19uFO4-0000y0-Vz\n\tfor junit@yahoogroups.com; Tue, 02 Sep 2003 12:56:16 -0500\r\nSubject: Re: [junit] Class that calls on database helper class. How to\n\twrite test case?\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20030830014309.24168.qmail@...&gt;\r\nReferences: &lt;20030830014309.24168.qmail@...&gt;\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: 7bit\r\nMessage-Id: &lt;1062525376.856.9.camel@brian-desktop&gt;\r\nMime-Version: 1.0\r\nX-Mailer: Ximian Evolution 1.4.4 \r\nDate: Tue, 02 Sep 2003 12:56:16 -0500\r\nSender: Brian Button &lt;bbutton@...&gt;\r\nX-eGroups-From: Brian Button &lt;bbutton@...&gt;\r\nFrom: Brian Button &lt;bbutton01@...&gt;\r\nX-Yahoo-Group-Post: member; u=30216623\r\nX-Yahoo-Profile: bbutton\r\n\r\nOn Fri, 2003-08-29 at 20:43, Veny handoko wrote:\n&gt; Hi all,\n\nHi, Veny,\n\nI know you&#39;ve already had an answer, but I&#39;ve got a couple of other\noptions that I&#39;ve used in the past that might be useful as well.\n\n&gt;  \n&gt; I am new to Junit and i am trying to write test case on class that involve database.\n\nBasically, you&#39;re problem comes down to the design smell of directly\ninstantiating another object inside your code. The act of instantiating\nan object and the act of using are two different concerns, so they may\nwant to live in two different functions -- there are exceptions to this,\nso consider it a guideline more than a rule. Actually, I usually start\nby creating an object inline, then refactor to something better if I\nneed it. And in this case, you need it :)\n\nSo, first of all, refactor the creation into a factory method in your\nclass:\n \n&gt; public class BusinessObject{\n&gt;     public boolean methodCall(int key){\n&gt;         DatabaseHelper dbHelper = createDatabaseHelper();\n&gt;         Vector v = dbHelper.getList();\n&gt;         if(v.size() == 0){\n&gt;             return false;\n&gt;         }else{\n&gt;             return true;\n&gt;         } \n&gt;     }\n\n\tprotected DatabaseHelper createDatabaseHelper() {\n\t\treturn DatabaseHelper();\n\t}\n&gt; }\n\nNow in your test code, you can inherit from BusinessObject, and\nsubstitute your own factory method in your derived class to create and\nreturn whatever mock DatabaseHelper you want. This is probably the least\nintrusive way to solve this problem.\n\nAnother solution is to put the onus of creating the appropriate kind of\nDatabaseHelper onto the creator of the BusinessObject. They can create\neither the real one (DatabaseHelper) or a mock one, and pass it into the\nconstructor of BusinessObject. This requires that the client knows a\nlittle more about what they want to do, and it requires a change to the\nsignature of this object.\n\nThe final solution, as proposed by another poster, is to use a factory\nobject whose job it is to create an instance of DatabaseHelper. You\nwould still have to pass in an instance of this factory to the\nBusinessObject class, so it could call it instead of directly creating\nthe object in the createDatabaseHelper() method:\n\n\tprotected DatabaseHelper createDatabaseHelper() {\n\t\treturn factory.createDatabaseHelper();\n\t}\n\nGiven all the options, I&#39;d choose the first one most of the time, only\nusing one of the other two if I needed something more flexible than\noption 1.\n\nHTH,\nbab\n\n-- \nBrian Button\t\t\tbbutton@...\nPrincipal Consultant\t\thttp://www.agilesolutionsgroup.com\nAgile Solutions Group\t\t636.399.3146\nSt. Louis, MO\n\nExtreme Programming in St. Louis-http://www.groups.yahoo.com/group/xpstl\n\n", 
+    "profile": "bbutton", 
+    "topicId": 9245, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30216623, 
+    "prevInTime": 9264, 
+    "contentTrasformed": false, 
+    "postDate": "1062525376", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 9247, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwODMwMDE0MzA5LjI0MTY4LnFtYWlsQHdlYjEzODAzLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDEwNjI1MjUzNzYuODU2LjkuY2FtZWxAYnJpYW4tZGVza3RvcD4=", 
+        "referencesHeader": "PDIwMDMwODMwMDE0MzA5LjI0MTY4LnFtYWlsQHdlYjEzODAzLm1haWwueWFob28uY29tPg=="
+    }
+}

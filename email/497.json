@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 498, 
+    "senderId": "F-csih0-UDtSapQWtUhudhwdjyosRlIRFPCRMHo4L-om1HHcp0BYRjjaBlh6AtuZo5loEmzc-flMzOXflQ", 
+    "systemMessage": false, 
+    "subject": "Test selection (Are TestSuites Useless?)", 
+    "from": "kconnor@...", 
+    "authorName": "kconnor@interwoven.com", 
+    "msgSnippet": "Hi All, Based on the Are TestSuites Useless thread here, Kevin Bourrillion s javadoc solution (JUnit Dynamic Suite Builder) and TCLTest functionality, I", 
+    "msgId": 497, 
+    "topicId": 497, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-87005903\">Hi All,<br/>\nBased on the &quot;Are TestSuites Useless&quot; thread here, Kevin Bourrillion&#39;s <br/>\njavadoc solution (JUnit Dynamic Suite Builder) and TCLTest <br/>\nfunctionality, I explored adding selective testcase execution through <br/>\nfiltering on properties rather than using TestSuites for this.  <br/>\nI&#39;d like to have it be part of the general release or find out if <br/>\nthere is other work along the same lines.<br/>\n<br/>\nThe basic idea is you invoke junit with a property string (for example <br/>\n-Dfilter=inProgress) and your test class and it would run all the <br/>\ntests that pass the filter.  Properties are associated with tests <br/>\nusing the same &quot;pluggable&quot; pattern currently used to create TestCases. <br/>\n That is, the run method is found dynamically based on the name of the <br/>\nTestCase and so are the properties meant to be used as a filter.  <br/>\nProperties can be associated with all the tests in the TestCase and/or <br/>\nthe individual test methods.  These are combined and then checked <br/>\nagainst the filter.  <br/>\n<br/>\nProperties are optional and thus backward compatible with existing <br/>\nTestCases. Not including a filter string on the cmd line defaults to <br/>\nrunning all the tests.<br/>\n<br/>\nFiltering in this manner works well with the TestSetup decorator.  <br/>\nRemaking suites (running tests using tests.elementAt()), are apt to <br/>\nbreak TestSetup usage. Also, this filtering mechanism could be <br/>\nextended to work with picking from a gui list.<br/>\n<br/>\nSee below for an example TestCase and a sample textui run.  Currently, <br/>\nskips are reported with failures and errors but this could be <br/>\nsuppressed.  <br/>\n<br/>\nI realize adding &quot;skip&quot; to &quot;error&quot; and &quot;failure&quot; complicates an <br/>\notherwise squeaky clean report.  It can be suppressed when there are <br/>\nnone I suppose.<br/>\n<br/>\nComments appreciated.<br/>\n<br/>\nKevin Connor Interwoven<br/>\n<br/>\nExample Test Case: public class IWTest extends FilteredTestCase { <br/>\npublic final static String fTestCaseFlags = &quot;regression, productA&quot;;<br/>\n    public IWTest(String name)<br/>\n    { super(name,fTestCaseFlags); }<br/>\n\tpublic final static String testOneFlags = &quot;slow&quot;; public void <br/>\ntestOne()<br/>\n    { assert(false); }<br/>\n\tpublic final static String testTwoFlags = &quot;knownBug, <br/>\n-productA&quot;; public void testTwo()<br/>\n    { assert(true); }<br/>\n\tpublic final static String testThreeFlags = &quot;inProgress&quot;; <br/>\npublic void testThree()<br/>\n    { assert(true); }<br/>\n    public void testPlatform()<br/>\n    { String curPlatform = System.getProperty(&quot;os.name&quot;);<br/>\n        System.out.println(curPlatform + &quot;&#92;n&quot;);<br/>\n        if (curPlatform.toLowerCase().startsWith(&quot;windows&quot;))<br/>\n        { skip(&quot;This doesn&#92;&#39;t work on windows.&quot;); } }<br/>\n}<br/>\n<br/>\nExample Run:<br/>\njava -Dfilter=productA IWTest ..S..S<br/>\nTime: 0.35<br/>\nFAILURES!!! Test Results: Run: 4 Failures: 1 Errors: 0 Skips: 2 There <br/>\nwere 1 failure: 1) testOne(IWTest) <br/>\n&quot;junit.framework.AssertionFailedError&quot; There were 2 skips: 1) <br/>\ntestTwoFlags(IWTest) &quot;Test marked no [productA]&quot; 2) <br/>\ntestPlatform(IWTest) &quot;This doesn&#39;t work on windows.&quot;</div>", 
+    "prevInTime": 496, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "982716117", 
+    "canDelete": false, 
+    "nextInTopic": 502, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDk2djJzbCszbmI4QGVHcm91cHMuY29tPg=="
+    }
+}

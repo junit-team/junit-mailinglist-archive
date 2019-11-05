@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 19729, 
+    "senderId": "h7hrSytmBaoydkvZDRjqx8_SHWuoSlLiOMTWyRxELwso8AQvyZwhlQOHyXXMVWNt3Zm4bsf-nz8gVJs-AGhLRtP9oAtKk8STeFGg4Qr5i_Ax", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Testing several classes with the same test case", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I want to be clear: you mean to say that you pass a TestCase instance to suite.addTest(), then JUnit created a /different/ instance of the TestCase class", 
+    "msgId": 19728, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 73653 invoked from network); 9 Aug 2007 07:59:59 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m55.grp.scd.yahoo.com with QMQP; 9 Aug 2007 07:59:59 -0000\r\nReceived: from unknown (HELO chilco.textdrive.com) (207.7.108.242)\n  by mta7.grp.scd.yahoo.com with SMTP; 9 Aug 2007 07:59:58 -0000\r\nReceived: from [172.17.188.221] (unknown [208.255.117.67])\n\tby chilco.textdrive.com (Postfix) with ESMTP id 8F511DCED8\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  9 Aug 2007 07:59:33 +0000 (UTC)\r\nMessage-ID: &lt;46BAC964.4090407@...&gt;\r\nDate: Thu, 09 Aug 2007 03:59:32 -0400\r\nUser-Agent: Thunderbird 1.5.0.12 (Macintosh/20070509)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;f9cfok+e9cn@...&gt;\r\nIn-Reply-To: &lt;f9cfok+e9cn@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\nSubject: Re: [junit] Re: Testing several classes with the same test case\r\nX-Yahoo-Group-Post: member; u=282027414; y=DHqBapIwl7fcDRCmNDNjAllq0Wdc4WqmGwK10seWW2eDVTs\r\nX-Yahoo-Profile: nails762\r\n\r\ndmugtasimov wrote:\n&gt; \n&gt; \n&gt; --- In junit@yahoogroups.com &lt;mailto:junit%40yahoogroups.com&gt;, &quot;J. B. \n&gt; Rainsberger&quot; &lt;jbrains762@...&gt;\n&gt; wrote:\n&gt;  &gt;\n&gt;  &gt; C?dric Beust ? wrote:\n&gt;  &gt; &gt;\n&gt;  &gt; &gt;\n&gt;  &gt; &gt; On 8/7/07, J. B. Rainsberger &lt;jbrains762@...\n&gt;  &gt; &gt; &lt;mailto:jbrains762%40gmail.com&gt;&gt; wrote:\n&gt;  &gt; &gt;\n&gt;  &gt; &gt; &gt; &gt; this is what I am trying to avoid. I want to have a single\n&gt; TestCase\n&gt;  &gt; &gt; &gt; &gt; that is parameterized to run on any given Algorithm\n&gt; subclass. In your\n&gt;  &gt; &gt; &gt; &gt; example I should create a new TestCase for each Algorighm\n&gt; subclass.\n&gt;  &gt; &gt; &gt; &gt;\n&gt;  &gt; &gt; &gt; &gt; In practice I have 10 test cases and 10 &quot;Algorithms&quot;. The\n&gt; problem is\n&gt;  &gt; &gt; &gt; &gt; that I don&#39;t want to write and support 100 test classes, bu\n&gt; only 10.\n&gt;  &gt; &gt; &gt;\n&gt;  &gt; &gt; &gt; You could try writing a custom suite() method that looks like\n&gt; this:\n&gt;  &gt; &gt; &gt;\n&gt;  &gt; &gt; &gt; public static Test suite() {\n&gt;  &gt; &gt; &gt; TestSuite suite = new TestSuite(&quot;Algorithm tests&quot;);\n&gt;  &gt; &gt; &gt; suite.add(new AlgorithmTest(new Algorithm1()));\n&gt;  &gt; &gt; &gt; ...\n&gt;  &gt; &gt; &gt; suite.add(new AlgorithmTest(new Algorithm99())));\n&gt;  &gt; &gt;\n&gt;  &gt; &gt; This still requires the creation of 100 classes instead of 10,\n&gt; right?\n&gt;  &gt;\n&gt;  &gt; Production classes, not test case classes. There is one test case\n&gt; class.\n&gt;  &gt; --\n&gt;  &gt; J. B. (Joe) Rainsberger :: http://www.jbrains.ca &lt;http://www.jbrains.ca&gt;\n&gt;  &gt; Your guide to software craftsmanship\n&gt;  &gt; JUnit Recipes: Practical Methods for Programmer Testing\n&gt;  &gt; 2005 Gordon Pask Award for contribution Agile Software Practice\n&gt;  &gt;\n&gt; \n&gt; No, it does not require. I tried to do that, but found that JUnit\n&gt; does not use TestCase instance passed to suite.add() method. It just\n&gt; direves class name from the instance and them creates a new one to\n&gt; run test. I might be wrong, but I spent pretty much time and finally\n&gt; came up with the conslusion above.\n\nI want to be clear: you mean to say that you pass a TestCase instance to \nsuite.addTest(), then JUnit created a /different/ instance of the \nTestCase class when it ran the tests? That absolutely should not happen. \nIf it did, the Parameterized Test Case pattern wouldn&#39;t work at all.\n\nAt this point, I&#39;d need to see real code to be able to diagnose the problem.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.ca\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 19708, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "prevInTime": 19727, 
+    "contentTrasformed": false, 
+    "postDate": "1186646372", 
+    "canDelete": false, 
+    "nextInTopic": 19729, 
+    "prevInTopic": 19723, 
+    "headers": {
+        "inReplyToHeader": "PGY5Y2ZvaytlOWNuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ2QkFDOTY0LjQwOTA0MDdAZ21haWwuY29tPg==", 
+        "referencesHeader": "PGY5Y2ZvaytlOWNuQGVHcm91cHMuY29tPg=="
+    }
+}

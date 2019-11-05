@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 12357, 
+    "senderId": "-_Y_h4XEc7G8ziZ2eZjYRoO38qNJadjAC4wvxXkDKJ-Ivwk5FY5ncTGV6QYDaD4nvv-gyVSHGxuld8ZSl7HIaE593xEmHtCg6xYmS0IOcSTkxZ3rr_kIdKQp7D0", 
+    "systemMessage": true, 
+    "subject": "Executing methods of test reflectively?", 
+    "from": "&quot;supreme_java_guru_1&quot; &lt;supreme_java_guru_1@...&gt;", 
+    "authorName": "supreme_java_guru_1", 
+    "msgSnippet": "Hi all, I am working on a GUI test harness that will run GUI tests, unit tests and http tests. Long story short, the GUI harness helps in building test suites.", 
+    "msgId": 12356, 
+    "rawEmail": "Return-Path: &lt;supreme_java_guru_1@...&gt;\r\nReceived: (qmail 39004 invoked from network); 20 Nov 2004 02:47:11 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m21.grp.scd.yahoo.com with QMQP; 20 Nov 2004 02:47:11 -0000\r\nReceived: from unknown (HELO n22a.bulk.scd.yahoo.com) (66.94.237.51)\n  by mta1.grp.scd.yahoo.com with SMTP; 20 Nov 2004 02:47:10 -0000\r\nReceived: from [66.218.69.4] by n22.bulk.scd.yahoo.com with NNFMP; 20 Nov 2004 02:45:55 -0000\r\nReceived: from [66.218.67.153] by mailer4.bulk.scd.yahoo.com with NNFMP; 20 Nov 2004 02:45:55 -0000\r\nX-Sender: supreme_java_guru_1@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 32627 invoked from network); 20 Nov 2004 01:09:36 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m1.grp.scd.yahoo.com with QMQP; 20 Nov 2004 01:09:36 -0000\r\nReceived: from unknown (HELO n3a.bulk.scd.yahoo.com) (66.94.237.37)\n  by mta3.grp.scd.yahoo.com with SMTP; 20 Nov 2004 01:09:36 -0000\r\nReceived: from [66.218.66.59] by n3.bulk.scd.yahoo.com with NNFMP; 20 Nov 2004 01:09:13 -0000\r\nReceived: from [66.218.67.137] by mailer8.bulk.scd.yahoo.com with NNFMP; 20 Nov 2004 01:09:13 -0000\r\nDate: Sat, 20 Nov 2004 01:09:12 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cnm5fo+oi90@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2826\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Remote-IP: 66.94.237.37\r\nFrom: &quot;supreme_java_guru_1&quot; &lt;supreme_java_guru_1@...&gt;\r\nSubject: Executing methods of test reflectively?\r\nX-Yahoo-Group-Post: member; u=68436909\r\nX-Yahoo-Profile: supreme_java_guru_1\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 20 Nov 2004 02:45:55 -0000\r\nX-eGroups-Remote-IP: 66.94.237.51\r\n\r\n\n\nHi all,\n\nI am working on a GUI test harness that will run GUI tests, unit tests\nand http tests. Long story short, the GUI harness helps in building\ntest suites. Part of this harness is allowing the user to add new\ntestcases in a graphical tree, define the class name, and the methods\nof the class. All of this is embeddable within existing applications,\nsuch as a Swing GUI app to allow a developer to quickly assemble and\nexecute individual tests without having to drop to the command line.\nAll of this works presently. My one BIG problem is trying to get the\ntest results from the test cases that are ran, so that I can embed\nsomething similar to the &lt;junitreport&gt; task that ant has. After a\nsingle test, or a group of tests run, I want my harness to show the\noutput.\n\nMy initial thought was that I did not have to execute a junit TestCase\nthrough the junit run(TestResult) method. Basically, I was hoping I\ncould somehow get the assertXxx() output directly. As it stands right\nnow, I use my own custom classloader because the harness allows the\nuser to specify a location for the source files (which my harness will\nauto-generate and maintain), the compiled files, and any 3rd party\nlibraries the test classes use. I read with interest how junit has its\nown custom classloader to reload tests. My harness does the same\nthing, only that I do NOT want ANY of the testcase classes or 3rd\nparty libraries to be on the application classpath. Because of this,\nunless I modify/update junit&#39;s classloader, I need to use my own\ncustom classloader. So, all of this works great. I just need a way to\nget the output of the testcase runs, and hopefully apply the same html\nformatter that the &lt;junitreport&gt; task applies so that I can see the\nsame type of html pages that it produces.\n\nI would appreciate anyone&#39;s thoughts or suggestions on how to make\nthis work. Worse case, I am forced to &quot;wrap&quot; my test cases into a\nJunit testcase/testsuite and execute the run(TestResult) call somehow.\nThe problem with this is, my harness allows the user to add methods to\na testcase graphically, so I have the name of the method to call using\nreflection, but I see no way to directly use the JUnit testcase and\nsupply the method name to execute. Actually, I take that back, you CAN\ncall a Test() implementation with the String name of the method. The\nproblem I have is that I can NOT hard-code the TestCase implementation\nclass. That TOO is reflective.. right now I dynamically load it using\nClass.forName(). So, is there a way, if I can not get the TestResult\nwithout running it through the junit system, to add to a TestSuite a\ndynamically created class WITH the method name to execute?\n\nThanks.. sorry for the long post. Up against a wall on this one. I&#39;ll\nkeep plugging away, but if anyone has ideas, I would be much obliged\nto get some help!\n\n\n\n\n\n\n\n\n\n", 
+    "profile": "supreme_java_guru_1", 
+    "topicId": 12356, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 68436909, 
+    "prevInTime": 12355, 
+    "contentTrasformed": false, 
+    "postDate": "1100912952", 
+    "canDelete": false, 
+    "nextInTopic": 12358, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGNubTVmbytvaTkwQGVHcm91cHMuY29tPg=="
+    }
+}

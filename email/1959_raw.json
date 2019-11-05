@@ -1,0 +1,28 @@
+{
+    "topicId": 1924, 
+    "postDate": "995325098", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "rainsber@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "R6b75vNf5ahHTo8jacHmCYqtoZiiU39FJcprmqlONvhDviR6fHSK5Aq_PYLfk6Ax7r0Qyi22FPGcsg", 
+    "nextInTime": 1960, 
+    "userId": 0, 
+    "prevInTime": 1958, 
+    "prevInTopic": 1958, 
+    "headers": {
+        "messageIdInHeader": "PE9GODY5NjhDMjYuQzcxQTNGQTktT044NTI1NkE4Qi4wMDdGMjYzRUB0b3JvbGFiLmlibS5jb20+"
+    }, 
+    "authorName": "rainsber@ca.ibm.com", 
+    "numMessagesInTopic": 18, 
+    "msgSnippet": "The other possibility is to throw home-brew defects with properties that indicate the information you desire. For example, I pass many of my home-brew defects", 
+    "contentTrasformed": false, 
+    "msgId": 1959, 
+    "nextInTopic": 2181, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;rainsber@...&gt;\r\nX-Sender: rainsber@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 16 Jul 2001 23:11:45 -0000\r\nReceived: (qmail 57756 invoked from network); 16 Jul 2001 23:11:45 -0000\r\nReceived: from unknown (10.1.10.26) by l7.egroups.com with QMQP; 16 Jul 2001 23:11:45 -0000\r\nReceived: from unknown (HELO e31.bld.us.ibm.com) (32.97.110.129) by mta1 with SMTP; 16 Jul 2001 23:11:44 -0000\r\nReceived: from westrelay02.boulder.ibm.com (westrelay02.boulder.ibm.com [9.99.140.23]) by e31.bld.us.ibm.com (8.9.3/8.9.3) with ESMTP id TAA20444 for &lt;junit@yahoogroups.com&gt;; Mon, 16 Jul 2001 19:03:43 -0400\r\nReceived: from d25ml02.torolab.ibm.com (d25ml02.torolab.ibm.com [9.26.6.103]) by westrelay02.boulder.ibm.com (8.11.1m3/NCO v4.97) with ESMTP id f6GNBhx26762 for &lt;junit@yahoogroups.com&gt;; Mon, 16 Jul 2001 17:11:43 -0600\r\nImportance: Normal\r\nSubject: RE: [junit] How do I implement a test case for a thrown exception ?\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Lotus Notes Release 5.0.3 (Intl) 21 March 2000\r\nMessage-ID: &lt;OF86968C26.C71A3FA9-ON85256A8B.007F263E@...&gt;\r\nDate: Mon, 16 Jul 2001 19:11:38 -0400\r\nX-MIMETrack: Serialize by Router on D25ML02/25/M/IBM(Release 5.0.5 |September 22, 2000) at 07/16/2001 07:11:42 PM\r\nMIME-Version: 1.0\r\nContent-type: text/plain; charset=us-ascii\r\nFrom: rainsber@...\r\n\r\nThe other possibility is to throw home-brew defects with properties that\nindicate the information you desire. For example, I pass many of my\nhome-brew defects the name of the class and method from which they were\nthrown.\n\nAlso, consider this test...\n\npublic void testServerNotFound() {\n    // Set up a server named &quot;Hello&quot;.\n    try {\n        doSomethingWithServer(&quot;Goodbye&quot;);\n        fail(&quot;How did you do anything with a nonexistent server?&quot;);\n    }\n    catch (ServerNotFoundException success) {\n        assertEquals(&quot;Hello&quot;, success.getServerName());\n    }\n}\n\nThis test is quite reliable: not only did I not find the server, but I know\nwhich server I didn&#39;t find. I don&#39;t care who threw the exception from\nwhere, just as long as the exception communicates specifically what went\nwrong.\n\nThanks.\n\nJ. B. Rainsberger  &lt;rainsber@...&gt;\nCommerce Suite Accelerator: Rule Services, IBM Toronto Lab\n8200 Warden Av, Office A3-735 [A3/FNB/8200/MKM]\nMarkham ON   L6G 1C7\n905 413-2501 (969-2501)\n\n\nRobert Watkins &lt;robertw@...&gt; on 07/16/2001 19:07:04\n\nPlease respond to junit@yahoogroups.com\n\nTo:   &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\ncc:\nSubject:  RE: [junit] How do I implement a test case for a thrown exception\n      ?\n\n\n\nMike Duffy wrote:\n&gt; I agree with the point that listing all the possible exceptions\n&gt; greatly increases code maintenance.  The goal was to know what\n&gt; exception was thrown if the specific exception being tested is not\n&gt; thrown (without having to go to a stack trace).  This goal can be\n&gt; accomplished by catching Exception with a fail in the catch block and\n&gt; including the name of the exception in the fail message.\n\nMike,\n\nI agree with what you are trying to do, but I disagree violently to how you\nare trying to accomplish it.\n\nThe problem with your pattern is that, while you know the name of the\nexception, you&#39;ve lost all other information. You have no way of knowing\nfrom the output which line in the test caused the exception or which line\nin\nthe code actually threw the exception. In order to find out this\ninformation, you either have to use a debugger or modify the test. 9 times\nout of 10, the stack trace is more useful than the mere knowledge of what\nexception was actually thrown (which you don&#39;t lose anyway...\n\nAll this information is available in the framework already. All you need to\ndo is modify the TestRunner, or use a different one. For example, if you\nrun\nyour unit tests from an Ant script, you will find that the TestRunner\nprovided by Ant provides the class name, the message, and the stack trace.\n\nRobert.\n\n--\n     &quot;Duct tape is like the Force: it has a light side, a dark side,\n                   and it holds the universe together&quot;\n  Robert Watkins     robertdw@...     robertw@...\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n\n\n\n\n", 
+    "subject": "RE: [junit] How do I implement a test case for a thrown exception ?"
+}

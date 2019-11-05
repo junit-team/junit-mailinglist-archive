@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 6682, 
+    "senderId": "ckqQx_RXcJm7jzTIwO8Cvdf8891wLLADLenNk1WivglXZhV0lhdrTTOq56Yxi8rKMjUFTjLhoQxcpk_xYKPv0CeX_bOVnC3P9_veyla_7mTFDpy-aCPgmSw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] tearDown() even if setUp() throws unexpected exception?", 
+    "from": "&quot;Shellman, Joel&quot; &lt;joel.shellman@...&gt;", 
+    "authorName": "Shellman, Joel", 
+    "msgSnippet": "Some ideas (though they may not apply to a more complex case): 1) Swap the order of calls in the setUp: protected void setUp() throws Exception { this.aFoo =", 
+    "msgId": 6681, 
+    "profile": "joelshellman", 
+    "topicId": 6677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 135169457, 
+    "messageBody": "<div id=\"ygrps-yiv-896683843\">Some ideas (though they may not apply to a more complex case):<br/>\n<br/>\n1) Swap the order of calls in the setUp:<br/>\n<br/>\n   protected void setUp() throws Exception {<br/>\n     this.aFoo = new Foo( 23 );  // could throw an exception<br/>\n     this.dbConnection = getConnection();  // from somewhere<br/>\n   }<br/>\n<br/>\nIf new Foo throws an exception, the connection hasn&#39;t been created yet.<br/>\n<br/>\n2) Throwing an exception from a constructor may be considered a BadThing and so you might want to refactor your code accordingly.<br/>\n<br/>\n3) Get and close a connection in each test*() method.<br/>\n<br/>\n4) This is ugly, but you could do something like:<br/>\n<br/>\nsetUp() {<br/>\n\ttry {<br/>\n\t\tthis.aFoo = new Foo( 23 );  // could throw an exception<br/>\n\t\tthis.dbConnection = getConnection();  // from somewhere<br/>\n\t} catch (Exception e) {<br/>\n\t\ttearDown();<br/>\n\t\tthrow e;<br/>\n\t}<br/>\n}<br/>\n<br/>\nAnd you can put a conditional around the tearDown if you only want to run it in certain cases.<br/>\n<br/>\nBest wishes,<br/>\n<br/>\nJoel Shellman<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; import java.sql.*;<br/>\n&gt; import junit.framework.*;<br/>\n&gt; <br/>\n&gt; public class FooTest extends TestCase {<br/>\n&gt;   private Connection dbConnection;<br/>\n&gt;   private Foo aFoo;<br/>\n&gt; <br/>\n&gt;   protected void setUp() throws Exception {<br/>\n&gt;     this.dbConnection = getConnection();  // from somewhere<br/>\n&gt;     this.aFoo = new Foo( 23 );  // could throw an exception<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   protected void tearDown() throws Exception {<br/>\n&gt;     try {<br/>\n&gt;       dbConnection.close();<br/>\n&gt;     }<br/>\n&gt;     finally {<br/>\n&gt;       super.tearDown();<br/>\n&gt;     }<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   // test methods here...<br/>\n&gt; }<br/>\n&gt; ---<br/>\n&gt; <br/>\n&gt; if Foo&#39;s ctor starts throwing exceptions, all of a sudden the test <br/>\n&gt; class is leaking connections, since tearDown() is not called if setUp<br/>\n&gt; () throws an unexpected exception. </span></blockquote></div>", 
+    "prevInTime": 6680, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1043175186", 
+    "canDelete": false, 
+    "nextInTopic": 6686, 
+    "prevInTopic": 6678, 
+    "headers": {
+        "messageIdInHeader": "PEVYLTIwMDMwMTIxLTEyNTYwNS0wMDAyQGV4Y2hhbmdlLmZpc2Vydi1taXNzaXZlMS5maXNlcnYubmV0Pg=="
+    }
+}

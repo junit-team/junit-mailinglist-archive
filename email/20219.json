@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20220, 
+    "senderId": "tSHPOhdWlTrcgql4sTVtxn1gCsSJDhbJXjUN-80etAuY5XzFz1CsLunTV591DV58hqPKuHa8VdIekdmizm30xS4ua4UXAS7HZ5c", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] testing abstract methods", 
+    "from": "&quot;Joel Neely&quot; &lt;joel.neely@...&gt;", 
+    "authorName": "Joel Neely", 
+    "msgSnippet": "Chandima, Because abstract classes cannot be instantiated, you must use a subclass. If you want to ensure that you are not testing code influenced by any ", 
+    "msgId": 20219, 
+    "profile": "joelneely", 
+    "topicId": 20209, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 236637683, 
+    "messageBody": "<div id=\"ygrps-yiv-1899395414\">Chandima,<br/>\n<br/>\nBecause abstract classes cannot be instantiated, you must use a subclass.<br/>\n<br/>\nIf you want to ensure that you are not testing code influenced by any<br/>\nspecific subclass implementation, then you could implement a<br/>\nspecial-purpose subclass (for test-only use) and write your tests<br/>\nagainst that subclass. The test-only subclass would need to implement<br/>\nall abstract methods declared in your abstract class, but you could<br/>\nignore them for testing purposes (unless the abstract methods were<br/>\ninvoked by non-abstract methods on the abstract base class). Your<br/>\ntests would exercise the exposed methods from the abstract superclass.<br/>\n<br/>\nFor illustration, let&#39;s assume that you have something like the<br/>\nfollowing (grossly oversimplified, of course ;-) :<br/>\n<br/>\npublic abstract class A {<br/>\n\tprivate int p;<br/>\n\tprivate int q;<br/>\n\tprotected A(int p, int q) {<br/>\n\t\tthis.p = p;<br/>\n\t\tthis.q = q;<br/>\n\t}<br/>\n\tpublic int getP() {<br/>\n\t\treturn p;<br/>\n\t}<br/>\n\tpublic int getQ() {<br/>\n\t\treturn q;<br/>\n\t}<br/>\n\tpublic int sum() {<br/>\n\t\treturn p + q;<br/>\n\t}<br/>\n\tpublic int foo() {<br/>\n\t\treturn product() - sum();<br/>\n\t}<br/>\n\tpublic abstract int product();<br/>\n}<br/>\n<br/>\nYou could then write a test case something like the following:<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\npublic class ATest extends TestCase {<br/>\n\tprivate static final int P = 2;<br/>\n\tprivate static final int Q = 3;<br/>\n\tprivate static final int SUM = 5;<br/>\n\tprivate static final int PRODUCT = 100;<br/>\n\tprivate static final int FOO = 95;<br/>\n\tprivate static class MockA extends A {<br/>\n\t\tpublic MockA(int p, int q) {<br/>\n\t\t\tsuper(p, q);<br/>\n\t\t}<br/>\n\t\t@Override<br/>\n\t\tpublic int product() {<br/>\n\t\t\treturn PRODUCT;<br/>\n\t\t}<br/>\n\t}<br/>\n\tprivate A aMock;<br/>\n\tprotected void setUp() throws Exception {<br/>\n\t\tsuper.setUp();<br/>\n\t\taMock = new MockA(P, Q);<br/>\n\t}<br/>\n\tprotected void tearDown() throws Exception {<br/>\n\t\taMock = null;<br/>\n\t\tsuper.tearDown();<br/>\n\t}<br/>\n\tpublic void testSum() {<br/>\n\t\tassertEquals(SUM, aMock.sum());<br/>\n\t}<br/>\n\tpublic void testFoo() {<br/>\n\t\tassertEquals(FOO, aMock.foo());<br/>\n\t}<br/>\n\tpublic void testProduct() {<br/>\n\t\tassertEquals(PRODUCT, aMock.product());<br/>\n\t}<br/>\n}<br/>\n<br/>\nThe testProduct() method is superfluous, but I left it in as a<br/>\nreminder that A#product must be implemented (because it is used by<br/>\nA#foo). Note that the value returned by MockA#product is completely<br/>\narbitrary, but the value returned by MockA#foo must be correctly<br/>\ncomputed relative to that arbitrary mock result. This allows you to<br/>\ntest A#foo without constructing a realistic implementation of<br/>\nA#product, and without depending on any particular actual subclass<br/>\nimplementation of that method.<br/>\n<br/>\nHope this helps!<br/>\n<br/>\n-jn-<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Jan 4, 2008 7:25 AM, Chandima R &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:choi_chandima@...\">choi_chandima@...</a>&gt; wrote:<br/>\n&gt;  I&#39;m trying to test non abstract methods in an abstract class which has been<br/>\n&gt; inherited by child classes.but i need not to test abstract parent class via<br/>\n&gt; creating child class instances. Is there any way to achieve this using<br/>\n&gt; junit. please instruct me.<br/>\n&gt;<br/>\n<br/>\n-- <br/>\nProgramming is the art of writing essays in crystal clear prose and<br/>\nmaking them execute. - Per Brinch Hansen </span></blockquote></div>", 
+    "prevInTime": 20218, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1199711004", 
+    "canDelete": false, 
+    "nextInTopic": 20223, 
+    "prevInTopic": 20217, 
+    "headers": {
+        "inReplyToHeader": "PDk1MzcyMi42MzQ4Mi5xbUB3ZWI1MjMwOS5tYWlsLnJlMi55YWhvby5jb20+", 
+        "messageIdInHeader": "PDVlMGI5NjhhMDgwMTA3MDUwM3M2NmRkMmNlMHJlYzlmOTkxYjUzMDBjNGEyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDk1MzcyMi42MzQ4Mi5xbUB3ZWI1MjMwOS5tYWlsLnJlMi55YWhvby5jb20+"
+    }
+}

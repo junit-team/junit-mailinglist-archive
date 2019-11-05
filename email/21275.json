@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 21276, 
+    "senderId": "LK2xP1N3lv1_ZCAFRYjka7HbzrszWtBUmt8fGqTznMs_gQczdh-UXMQ4kkCPAO1t93FI2JUnICo9HZXnPpDNdWNaKpDSa4Cj", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] JUnit-JPA (Hibernate) - Spring - Struts2 testing howto", 
+    "from": "&quot;Marko Majkic&quot; &lt;majkic@...&gt;", 
+    "authorName": "Marko Majkic", 
+    "msgSnippet": "Thanks for the reference. I did something that works, but it works only when I do mvn test . I cannot run test alone. I use AbstractJpaTests and those two", 
+    "msgId": 21275, 
+    "profile": "majkic@ymail.com", 
+    "topicId": 21269, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 369724152, 
+    "messageBody": "<div id=\"ygrps-yiv-1942461373\">Thanks for the reference. I did something that works, but it works<br/>\nonly when I do &quot;mvn test&quot;. I cannot run test alone.<br/>\n<br/>\nI use AbstractJpaTests and those two &quot;preparing&quot; methods:<br/>\n<br/>\n========<br/>\npackage net.beotel.service;<br/>\n<br/>\nimport java.util.List;<br/>\n<br/>\nimport javax.persistence.EntityManager;<br/>\nimport javax.persistence.EntityManagerFactory;<br/>\nimport javax.persistence.Persistence;<br/>\n<br/>\nimport net.beotel.model.Bank;<br/>\n<br/>\nimport org.springframework.test.jpa.AbstractJpaTests;<br/>\nimport org.springframework.transaction.annotation.Transactional;<br/>\n<br/>\npublic class BankServiceTest extends AbstractJpaTests {<br/>\n<br/>\n\tprivate BankServiceImpl bankService = new BankServiceImpl() ;<br/>\n\t<br/>\n\tprivate static EntityManagerFactory emf;<br/>\n\tprivate static EntityManager em;<br/>\n\t<br/>\n\tpublic void onSetUp(){<br/>\n\t\temf = Persistence.createEntityManagerFactory(&quot;testing1&quot;);<br/>\n\t\tem = emf.createEntityManager();<br/>\n\t\tem.getTransaction().begin();<br/>\n\t\tbankService.setEntityManager(em);<br/>\n\t}<br/>\n\t<br/>\n\tpublic void onTearDown(){<br/>\n\t\tem.getTransaction().commit();<br/>\n\t}<br/>\n\t<br/>\n\tpublic BankService getBankService() {<br/>\n\t\treturn bankService;<br/>\n\t}<br/>\n<br/>\n\tpublic BankServiceTest() {<br/>\n\t\tsuper();<br/>\n\t}<br/>\n\tprotected String[] getConfigLocations() {<br/>\n\t\treturn new String[] {<br/>\n\t\t\t\t&quot;classpath:applicationContext-test.xml&quot;,<br/>\n\t\t\t};\t\t<br/>\n\t}<br/>\n\t<br/>\n\t@Transactional<br/>\n\tpublic void testAll() throws Exception {<br/>\n\t\tList&lt;Bank&gt; banks = bankService.findAll();<br/>\n\t    int initialCount = banks.size();<br/>\n\t\tBank bank= new Bank();<br/>\n\t    bank.setName(&quot;OTP&quot;);<br/>\n\t    bankService.save(bank);<br/>\n\t    assertNotNull(bank.getId());<br/>\n\t<br/>\n\t}<br/>\n}<br/>\n<br/>\n========<br/>\n<br/>\nIs there any way to run this test alone? Do I have to include<br/>\n&quot;applicationContext-test.xml&quot; (from the src/test/resources) explicitly<br/>\nin the code? I don&#39;t have to do this with my application (include<br/>\napplicationContext.xml from the web.xml). Do I have to include<br/>\nexplcitly persistence-unit?<br/>\n<br/>\nAt last, is there any working example (simple) testing some service<br/>\n(dao) using JPA? Thanks.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, Jan 7, 2009 at 8:58 PM, Cenk Çivici &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cenk.civici@...\">cenk.civici@...</a>&gt; wrote:<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; Have you looked at Spring integration testing support?<br/>\n&gt;<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://static.springframework.org/spring/docs/2.5.x/reference/testing.html#testcontext-framework\">http://static.springframework.org/spring/docs/2.5.x/reference/testing.html#testcontext-framework</a><br/>\n&gt;<br/>\n&gt; Spring TestContext lets you load an app context, configure<br/>\n&gt; transactions per fixture/method etc.<br/>\n&gt;<br/>\n&gt; Cheers<br/>\n&gt; Cenk Çivici<br/>\n&gt;<br/>\n&gt; On Wed, Jan 7, 2009 at 1:39 AM, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:majkic@...\">majkic@...</a> &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:majkic@...\">majkic@...</a>&gt; wrote:<br/>\n&gt;&gt; Hi guys,<br/>\n&gt;&gt; I&#39;m new in the group and I couldn&#39;t find anything on testing<br/>\n&gt;&gt; combination in the title.<br/>\n&gt;&gt;<br/>\n&gt;&gt; I have applicationContext.xml where EntityManagerFactory is<br/>\n&gt;&gt; configured. Model classes are mapped using Annotations. My service<br/>\n&gt;&gt; classes (DAO - for example BankImpl) implements interfaces (for<br/>\n&gt;&gt; example Bank). Methods from these implementation are called in Struts2<br/>\n&gt;&gt; action classes (injected).<br/>\n&gt;&gt;<br/>\n&gt;&gt; How can I configure my tests to be runnable as single tests and as<br/>\n&gt;&gt; Maven2 tests? Is there any simple example - tutorial? Should I have<br/>\n&gt;&gt; separate applicationContext-test.xml?<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21274, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1231436293", 
+    "canDelete": false, 
+    "nextInTopic": 21276, 
+    "prevInTopic": 21272, 
+    "headers": {
+        "inReplyToHeader": "PDEzY2NkYjVmMDkwMTA3MTE1OG8xZTQzNTdkZnAzZTZhZjllMTIzYTg0YmU1QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGMzNWM5MGUwMDkwMTA4MDkzOHI1NWNiZTY1Ymw5M2FlOTEzNTU2Yjc1OWY4QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGdrMHE0MCtpaGxxQGVHcm91cHMuY29tPgkgPDEzY2NkYjVmMDkwMTA3MTE1OG8xZTQzNTdkZnAzZTZhZjllMTIzYTg0YmU1QG1haWwuZ21haWwuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 14009, 
+    "senderId": "JGQmTl2rLMVmiy3CaA3JVVA3BQpmctLaA8HqUxHBl9jSCviMGoUHrhnYNucJ3l-qckxxsUIcDaULHPDo5y1qeLgn6cTC-R2L0Yr_wdiBfbiE1OuD6uk", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Problems with one time setup and teardown", 
+    "from": "rakesh mailgroups &lt;rakesh.mailgroups@...&gt;", 
+    "authorName": "rakesh mailgroups", 
+    "msgSnippet": "Hi, I found the problem. I used the Eclipse wizard to generate a class that runs all tests. In this class it usually calls each testcase like this: ", 
+    "msgId": 14008, 
+    "profile": "patelr08", 
+    "topicId": 13994, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 217486622, 
+    "messageBody": "<div id=\"ygrps-yiv-257758750\">Hi,<br/>\n<br/>\nI found the problem. I used the Eclipse wizard to generate a class<br/>\nthat runs all tests. In this class it usually calls each testcase like<br/>\nthis:<br/>\n<br/>\nsuite.addTestSuite(TestPasswordUtils.class);<br/>\n<br/>\nHowever, when you add the one-time setup and teardown code it needs to<br/>\nbe called like this:<br/>\n<br/>\nsuite.addTest(TestIFSTSecurityService.suite());<br/>\n<br/>\nThanks<br/>\n<br/>\nRakesh<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 6/21/05, patelr08 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rakesh.mailgroups@...\">rakesh.mailgroups@...</a>&gt; wrote:<br/>\n&gt;  Hi,<br/>\n&gt;  <br/>\n&gt;  I&#39;m trying to use the one time setup functionality of junit to set up<br/>\n&gt;  a db connection for subsequent tests but finding that the code is<br/>\n&gt;  never called.<br/>\n&gt;  <br/>\n&gt;  Here&#39;s my testcase:<br/>\n&gt;  <br/>\n&gt;  public class TestSecurityService extends TestCase {<br/>\n&gt;      private static OracleDataSource ds;<br/>\n&gt;      private SecurityService ss;<br/>\n&gt;  <br/>\n&gt;      protected void setUp() throws Exception {<br/>\n&gt;          if (ds == null) {<br/>\n&gt;              ds = new OracleDataSource();<br/>\n&gt;              ds.setDriverType(&quot;thin&quot;);<br/>\n&gt;              ds.setServerName(&quot;177.12.56.110&quot;);<br/>\n&gt;              ds.setNetworkProtocol(&quot;tcp&quot;);<br/>\n&gt;              ds.setDatabaseName(&quot;orcl&quot;);<br/>\n&gt;              ds.setPortNumber(1521);<br/>\n&gt;          }<br/>\n&gt;  <br/>\n&gt;          ss = new SecurityService(ds);<br/>\n&gt;      }<br/>\n&gt;  <br/>\n&gt;      public void testLoginSuccess() throws LoginException {<br/>\n&gt;          Subject subject = ss.login(&quot;scott&quot;.toCharArray(),<br/>\n&gt;                  &quot;Passw0rd&quot;.toCharArray());<br/>\n&gt;          assertNotNull(&quot;Successful login&quot;, subject);<br/>\n&gt;      }<br/>\n&gt;  <br/>\n&gt;      public void testLoginFailure() {<br/>\n&gt;          Subject subject;<br/>\n&gt;  <br/>\n&gt;          try {<br/>\n&gt;              subject = ss.login(&quot;nobody&quot;.toCharArray(),<br/>\n&gt;  &quot;nothing&quot;.toCharArray());<br/>\n&gt;              fail(&quot;Expected LoginException because invalid<br/>\n&gt;  username/password&quot;);<br/>\n&gt;          } catch (LoginException e) {<br/>\n&gt;              // ignore because test passed<br/>\n&gt;          }<br/>\n&gt;      }<br/>\n&gt;  <br/>\n&gt;      public void testChangePassword() throws LoginException {<br/>\n&gt;          Subject subject = ss.changePassword(&quot;scott&quot;.toCharArray(),<br/>\n&gt;                  &quot;Passw0rd&quot;.toCharArray(), &quot;NewPassw0rd&quot;.toCharArray());<br/>\n&gt;          assertNotNull(subject);<br/>\n&gt;      }<br/>\n&gt;  <br/>\n&gt;      public static void oneTimeSetup() {<br/>\n&gt;          System.out.println(&quot;oneTimeSetUp&quot;);<br/>\n&gt;      }<br/>\n&gt;  <br/>\n&gt;      public static void oneTimeTearDown() {<br/>\n&gt;          System.out.println(&quot;oneTimeTearDown&quot;);<br/>\n&gt;      }<br/>\n&gt;  <br/>\n&gt;      public static Test suite() {<br/>\n&gt;          TestSetup setup = new TestSetup(new<br/>\n&gt;  TestSuite(TestIFSTSecurityService.class)) {<br/>\n&gt;              protected void setUp() throws Exception {<br/>\n&gt;                  oneTimeSetup();<br/>\n&gt;              }<br/>\n&gt;  <br/>\n&gt;              protected void tearDown() throws Exception {<br/>\n&gt;                  oneTimeTearDown();<br/>\n&gt;              }<br/>\n&gt;          };<br/>\n&gt;          return setup;<br/>\n&gt;      }<br/>\n&gt;  }<br/>\n&gt;  <br/>\n&gt;  Any ideas what I&#39;m doing wrong?<br/>\n&gt;  <br/>\n&gt;  Thanks<br/>\n&gt;  <br/>\n&gt;  Rakesh<br/>\n&gt;  <br/>\n&gt;  <br/>\n&gt;  <br/>\n&gt;  <br/>\n&gt;  <br/>\n&gt;  ________________________________<br/>\n&gt;  Yahoo! Groups Links<br/>\n&gt;  <br/>\n&gt;  <br/>\n&gt; To visit your group on the web, go to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/junit/\">http://groups.yahoo.com/group/junit/</a><br/>\n&gt;   <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;   <br/>\n&gt; Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service. </span></blockquote></div>", 
+    "prevInTime": 14007, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1119430663", 
+    "canDelete": false, 
+    "nextInTopic": 14016, 
+    "prevInTopic": 13994, 
+    "headers": {
+        "inReplyToHeader": "PGQ5OG5qMCtzMXBhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDk2YjRlOGMwNTA2MjIwMTU3NDI4NDc1MDJAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGQ5OG5qMCtzMXBhQGVHcm91cHMuY29tPg=="
+    }
+}

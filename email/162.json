@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 163, 
+    "senderId": "JOJz2pMXGw81I-1MfZnlYCRKiB3F-9L4JmUBqzbcHisCjjKU_H5RgR385c50h2s_6FCYp0mgADMofM45", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] newbie question: how to avoid rerunning fixture code on every test", 
+    "from": "jphedley@netscape.net", 
+    "authorName": "jphedley@netscape.net", 
+    "msgSnippet": "Err.....  I just spent some time responding to this but my message got lost since my mail session expired, POS. This is definitely a source of confusion that", 
+    "msgId": 162, 
+    "topicId": 161, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1549957503\">Err.....  I just spent some time responding to this but my message got lost <br/>\nsince my mail session expired, POS.<br/>\n<br/>\nThis is definitely a source of confusion that surprises many; even some who <br/>\nhave worked some time with JUnit.<br/>\n<br/>\nEach test in your suite(e.g., test_underScore1) corresponds to a new instance <br/>\nof child of TestCase (e.g., SomeNameTest).  Examine how a TestSuite is <br/>\nconstructed:<br/>\n1)statically<br/>\npublic static Test suite(){<br/>\n    TestSuite suite = new TestSuite();<br/>\n    suite.addTest(new SomeNameTest(&quot;test_underScore1&quot;));<br/>\n    suite.addTest(new SomeNameTest(&quot;test_underScore2&quot;));<br/>\n    return suite;<br/>\n} <br/>\n2)dynamically<br/>\npublic static Test suite(){<br/>\n    TestSuite suite = new TestSuite(SomeNameTest.class);<br/>\n}<br/>\nEach test case you add corresponds to a new object.  There interference <br/>\ncannot take place between test cases.  This also can be illustrated from a <br/>\nthe output of a class I route to demonstrate this,<br/>\n<br/>\nbash-2.02$ java junit.textui.TestRunner SomeNameTest<br/>\nTest constructor called1<br/>\nTest constructor called2<br/>\nTest constructor called3<br/>\n.setUp called<br/>\ntest_underScore1<br/>\n1 Instance of class SomeNameTest<br/>\ntearDown called<br/>\n.setUp called<br/>\ntest_underScore2<br/>\n2 Instance of class SomeNameTest<br/>\ntearDown called<br/>\n.setUp called<br/>\ntest_underScore3<br/>\n3 Instance of class SomeNameTest<br/>\ntearDown called<br/>\n<br/>\nTime: 0<br/>\n<br/>\nOK (3 tests)<br/>\n<br/>\nSo if each test case is it&#39;s own class, why not rely on the constructor and <br/>\nfinalize method.  Nothing can guarantee when the finalize gets called by the <br/>\nGarbage collector but tearDown is guaranteed to get called freeing resources <br/>\nfor that test.  For whatever reason (any takers?) the constructor get for all <br/>\ntests gets called prior to an tests being running so setUp forces resources <br/>\nto be allocated at the time they are needed.  <br/>\n<br/>\nI have included my test code which I used to illustrate my points.<br/>\n<br/>\nMy first response was a bit more elegant but now it&#39;s in the bit bucket.<br/>\n<br/>\ncheers,<br/>\nJ.P.<br/>\n<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a> wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; I am pretty new to both junit and java programming.  I read most of the <br/>\n </span></blockquote>JUnit<br/>\n<blockquote><span title=\"ireply\"> &gt; doc on the junit home page.   After reading the Cook&#39;s tour paper, it seems <br/>\n </span></blockquote>that<br/>\n<blockquote><span title=\"ireply\"> &gt; the design intent is to have the setup and teardown code allocate and <br/>\n </span></blockquote>release<br/>\n<blockquote><span title=\"ireply\"> &gt; all the test fixture objects for every seperate test, to avoid tests <br/>\n </span></blockquote>interfering<br/>\n<blockquote><span title=\"ireply\"> &gt; with eachother.<br/>\n&gt; <br/>\n&gt; What if the setup logic involves connecting to databases and running queries<br/>\n&gt; that tends to be a bit slow for doing on every single test?  Is an <br/>\n </span></blockquote>explanation<br/>\n<blockquote><span title=\"ireply\"> &gt; available anywhere on the web telling how to get tests to run faster by<br/>\n&gt; executing slow initialization code only once before all the tests?<br/>\n&gt; <br/>\n&gt; thanks<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n </span></blockquote>__________________________________________________________________<br/>\nGet your own FREE, personal Netscape Webmail account today at <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://webmail.netscape.com/\">http://webmail.netscape.com/</a></div>", 
+    "prevInTime": 161, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "977527893", 
+    "canDelete": false, 
+    "nextInTopic": 166, 
+    "prevInTopic": 161, 
+    "headers": {
+        "messageIdInHeader": "PDE3MTFGQzg2LjU4NEVDNjJGLjAwOUYzQTgxQG5ldHNjYXBlLm5ldD4=", 
+        "referencesHeader": "PDg1MjU2OUJELjAwNzE1QTA1LjAwQHVoY25oMDAyLnVoYy5jb20+"
+    }
+}

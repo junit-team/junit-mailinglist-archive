@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 6955, 
+    "senderId": "_eXz8R_rTimasXJfm8s9EUO7xogmcz_j0lKcWdm2NIEoK-GYprM16PEvRsyObqN3Qvlbqk6jaZ5QBQU8Le1cGlEiA1Bm62Y", 
+    "systemMessage": false, 
+    "subject": "Custom Test Suite...", 
+    "from": "Mark Derricutt &lt;mark@...&gt;", 
+    "authorName": "Mark Derricutt", 
+    "msgSnippet": "Hiya, having just started a new job, as way of getting my head around some of the code, I was asked to write some unit tests, and after writing a heap of them,", 
+    "msgId": 6954, 
+    "rawEmail": "Return-Path: &lt;mark@...&gt;\r\nX-Sender: mark@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 14 Feb 2003 01:21:47 -0000\r\nReceived: (qmail 2167 invoked from network); 14 Feb 2003 01:21:47 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m8.grp.scd.yahoo.com with QMQP; 14 Feb 2003 01:21:47 -0000\r\nReceived: from unknown (HELO eagle.dmz.jungledrum.co.nz) (210.54.149.34)\n  by mta1.grp.scd.yahoo.com with SMTP; 14 Feb 2003 01:21:46 -0000\r\nReceived: from localhost (localhost.localdomain [127.0.0.1])\n\tby eagle.dmz.jungledrum.co.nz (Postfix) with ESMTP id 57D5712810\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 14 Feb 2003 14:21:50 +1300 (NZDT)\r\nReceived: from [192.168.1.161] (unknown [192.168.1.161])\n\tby eagle.dmz.jungledrum.co.nz (Postfix) with ESMTP id 87E9671FF\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 14 Feb 2003 14:21:46 +1300 (NZDT)\r\nDate: Fri, 14 Feb 2003 14:22:29 +1300\r\nTo: junit@yahoogroups.com\r\nSubject: Custom Test Suite...\r\nMessage-ID: &lt;30050000.1045185749@...&gt;\r\nX-Mailer: Mulberry/3.0.1 (Linux/x86)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nX-Virus-Scanned: by AMaViS perl-11\r\nFrom: Mark Derricutt &lt;mark@...&gt;\r\nX-Yahoo-Group-Post: member; u=53945542\r\nX-Yahoo-Profile: talios2k\r\n\r\nHiya, having just started a new job, as way of getting my head around some \nof the code, I was asked to write some unit tests, and after writing a heap \nof them, I noticed that the test itself was always the same, which just \ndifferent settings.\n\nI was also told that they&#39;d like our testing guy to be able to make up new \ntests on the fly, so I wrote a new test which loaded an XML file, which \ntook care of defining what I wanted to test for, and get back.  The test \ncode looks like this:\n\n   public void testUnmarshelledMessage()  {\n\n        try {\n            File path = new File(&quot;/home/mark/testmessages&quot;);\n            File[] files = path.listFiles();\n\n            for (int i = 0; i &lt; files.length; i++) {\n                File file = files[i];\n                if ( file.getName().startsWith(&quot;test&quot;) && \nfile.getName().endsWith(&quot;xml&quot;)) {\n                    Reader reader = new FileReader( file.getAbsoluteFile() \n);\n                    TestMessage testMessage = (TestMessage) readObject( \nreader );\n                    MessageStatus result = sender.send( \ntestMessage.getMessage() );\n                    assertEquals( file.getName() + &quot;(&quot; + \ntestMessage.getName() + &quot;)&quot;,\n                        testMessage.getResult(), result.getStatusCode() );\n                }\n            }\n        } catch ( Exception e ) {\n            fail( e.getMessage() );\n        }\n\n    }\n\nSo the test finds all files starting with test and ending with xml in the \nspecified directory, calls readObject() to unmarshall the XML file into my \nTestMessage object, and does the test, and checks the result.  This is all \nworking nicely, untill I wrote a test that failed.\n\nBecause this test is just that, one test, once it failed, none of the other \nXML files got processed.  So I&#39;ve been trying to think of a way around it, \na way to run my test method against each XML file as its own test.\n\nI had thought of writing a custom TestSuite which took the path, found the \nfiles, and added a custom TestCase with the filename ( instead of method \nname ), and moving the actual test code above into the custom TestCase, \nhowever I&#39;m not quite sure the best way to implement this.\n\nAny ideas?\n\nMark\n\n\n", 
+    "profile": "talios2k", 
+    "topicId": 6954, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 53945542, 
+    "prevInTime": 6953, 
+    "contentTrasformed": false, 
+    "postDate": "1045185749", 
+    "canDelete": false, 
+    "nextInTopic": 6957, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDMwMDUwMDAwLjEwNDUxODU3NDlAY2VsbGR3ZWxsZXIuaW50cmEuanVuZ2xlZHJ1bS5jby5uej4="
+    }
+}

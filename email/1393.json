@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 1394, 
+    "senderId": "yh3J6KZC8sPv_NaS1oTE3V1Ot1ezwBCFTQRmVCpINwpMghhtJ5Tu4ewqTzDHkSWy9IXtgpVP_PnwRNORYq1p2mlEL2OPTfB_Xch1o8j7rw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Functional Testing with JUnit", 
+    "from": "Matt Caswell &lt;m.caswell@...&gt;", 
+    "authorName": "Matt Caswell", 
+    "msgSnippet": "I have never written Functional tests using JUnit. I have however written JUnit tests that drive a Swing GUI. In fact I have written a number of classes to", 
+    "msgId": 1393, 
+    "topicId": 1390, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-420293320\">I have never written &quot;Functional tests&quot; using JUnit. I have however written<br/>\nJUnit tests that drive a Swing GUI. In fact I have written a number of<br/>\nclasses to assist me in doing this.<br/>\n<br/>\nThere are three problems I discovered attempting to test a Swing GUI:<br/>\n<br/>\n1) Getting hold of a handle onto the components that your code has displayed<br/>\nto the user<br/>\n2) Interacting with the components once you have a handle<br/>\n3) Inspecting the results of your interactions without breaking the<br/>\nsingle-threaded nature of Swing/AWT<br/>\n<br/>\nTaking these individually:<br/>\n<br/>\n1) I started off by solving this using reflection, i.e. the class I was<br/>\ntesting would hold a reference to a Frame (for example). Typically this<br/>\nwould be held as a private instance variable. I would then use reflection to<br/>\nget hold of that reference. Unfortunately this approach fell down where I<br/>\nhad for various reasons not stored a handle to my component. For example<br/>\nwhen showing a dialog box. This sort of thing is typically transient, and<br/>\nyou don&#39;t always need to hold a permanent reference to it.<br/>\n<br/>\nThe solution I came up with was to effectively write a &quot;global listener&quot;. To<br/>\nlisten out for &quot;window open&quot; events. When a window open event occurred I<br/>\nwould record the handle for the window that was opened. This was implemented<br/>\nusing a custom EventQueue.<br/>\n<br/>\nOnce you have a handle on the window you can then &quot;search&quot; it for any<br/>\nsub-components that you want. I wrote some helper code that would enable me<br/>\nto perform searches like &quot;given this window, find me the button with the<br/>\ntext &quot;OK&quot; on it&quot;.<br/>\n<br/>\n<br/>\n2) Once you have a handle you then want to do stuff with it. E.g., click the<br/>\n&quot;OK&quot; button. Type in some text in a text box. etc. This is relatively easily<br/>\nimplemented by submitting dummy events to that handle. E.g. to click a<br/>\nbutton, send an event to enter that component, send an event to signal mouse<br/>\ndown, send an event to signal mouse up, send an event to leave the<br/>\ncomponent. The AWT/Swing event handling does the rest to raise higher level<br/>\nevents (e.g. action events) etc<br/>\n<br/>\n3) The single threaded nature of AWT/Swing, means that once a window is<br/>\nshown to the user it is effectively &quot;owned&quot; by the AWTThread. Your test<br/>\ncases must execute within this thread - otherwise (as I discovered!) you get<br/>\nspurious exceptions thrown. In addition you want to do write test sequences<br/>\nlike &quot;click this button, wait until the dialog shows, click this other<br/>\nbutton, wait for the dialog to disappear, fill in some text, wait<br/>\nagain...etc&quot;. In other words your test needs to be executing within the AWT<br/>\nThread, but it needs to hand back control every now and then for it to<br/>\nhandle the events that you have been raising.<br/>\n<br/>\nI implemented this by extending TestCase - I called it JFCTestCase. This<br/>\nhandles all the threading issues, and provides a helper method to<br/>\ntemporarily suspend the test, and allow the AWT Thread to continue with<br/>\nother stuff.<br/>\n<br/>\nIt has been my intention to send this code to the group once I had tidied<br/>\nthings up a bit. If anyone once to see an &quot;advance&quot; copy I can supply one<br/>\n(not currently on a machine where I can get to it though)<br/>\n<br/>\n<br/>\nHope that is of some interest<br/>\n<br/>\nMatt<br/>\n<br/>\n<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:ghouston@...\">ghouston@...</a><br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSent: 04/06/01 15:43<br/>\nSubject: [junit] Functional Testing with JUnit<br/>\n<br/>\n<br/>\nHas anyone tried to drive Functional Tests with JUnit?  How did you <br/>\naccomplish it?  In particular, how could you drive a Swing GUI?<br/>\n<br/>\nBy &quot;Functional Tests&quot;, I mean tests that check the entire application <br/>\nas a black-box (or very near to black-box testing).  It would launch <br/>\nthe appliction, drive the GUI, and interpret the output of the system.<br/>\n<br/>\nMy team has been very sucessful with Unit Testing, and we want to <br/>\nadvance to running Functional Tests.<br/>\n<br/>\n- Greg<br/>\n<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n <br/>\n<br/>\nYour use of Yahoo! Groups is subject to<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 1392, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "991667869", 
+    "canDelete": false, 
+    "nextInTopic": 1394, 
+    "prevInTopic": 1392, 
+    "headers": {
+        "messageIdInHeader": "PDI5Qzg0Q0YyNUQwM0Q1MTE5RkNGMDA5MDI3QjY3QjVBNzQwNzdGQEVYQ0hBTkdFMT4="
+    }
+}

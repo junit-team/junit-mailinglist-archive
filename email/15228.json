@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 15229, 
+    "senderId": "zeC6PznqKVf2RmTWxoBFHGRR0lyMqROqbkpsnvFInsZVlXtBIKrt-OPmH69UcqsWFnOVijFKyasYhOEugByw_3n0PjqIsgCeTm4e92pvHw", 
+    "systemMessage": false, 
+    "subject": "build.xml test target", 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "authorName": "Elliotte Harold", 
+    "msgSnippet": "Could we please have a separate test target in the build.xml file so that ant test works as one would expect? Something like this should do the trick: ", 
+    "msgId": 15228, 
+    "topicId": 15228, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 12653864, 
+    "messageBody": "<div id=\"ygrps-yiv-262655118\">Could we please have a separate test target in the build.xml file so <br/>\nthat &quot;ant test&quot; works as one would expect? Something like this should do <br/>\nthe trick:<br/>\n<br/>\n\t&lt;target name=&quot;test&quot; depends=&quot;build&quot;&gt;<br/>\n\t\t&lt;java classname=&quot;org.junit.runner.JUnitCore&quot; fork=&quot;yes&quot;&gt;<br/>\n\t\t    &lt;!--There must be a more intelligent way to do this--&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.AnnotationTest&quot;/&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.AssertionTest&quot;/&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.CommandLineTest&quot;/&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.ForwardCompatibilityTest&quot;/&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.OldTests&quot;/&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.PreJUnit4TestCaseRunnerTest&quot;/&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.TestMethodTest&quot;/&gt;<br/>\n\t\t\t&lt;arg value=&quot;org.junit.tests.TextListenerTest&quot;/&gt;<br/>\n\t\t\t&lt;classpath&gt;<br/>\n\t\t\t\t&lt;pathelement location=&quot;${dist}&quot; /&gt;<br/>\n\t\t\t\t&lt;pathelement location=&quot;${dist}/junit.jar&quot; /&gt;<br/>\n\t\t\t&lt;/classpath&gt;<br/>\n\t\t&lt;/java&gt;<br/>\n<br/>\n\t&lt;/target&gt;<br/>\n<br/>\nThen the dist target could depend on the test rather than the build:<br/>\n<br/>\n\t&lt;target name=&quot;dist&quot; depends=&quot;test&quot;&gt;<br/>\n\t\t&lt;delete dir=&quot;${dist}&quot; /&gt;<br/>\n\t\t&lt;mkdir dir=&quot;${dist}&quot; /&gt;<br/>\n\t\t&lt;jar<br/>\n\t\t\tjarfile=&quot;${dist}/src.jar&quot;<br/>\n\t\t\tbasedir=&quot;.&quot;<br/>\n\t\t\texcludes=&quot;**/*.jar, junit/tests/**, junit/samples/**, **/*.class, <br/>\ndoc/**, README.html, .classpath, .project, cpl-v10.html&quot;<br/>\n\t\t/&gt;<br/>\n\t\t&lt;jar<br/>\n\t\t\tjarfile=&quot;${dist}/junit.jar&quot;<br/>\n\t\t\tbasedir=&quot;.&quot;<br/>\n\t\t\texcludes=&quot;**/*.jar, junit/tests/**, junit/samples/**, **/*.java, <br/>\ndoc/**, README.html,  build.xml, jar-manifest.txt, .classpath, .project, <br/>\ncpl-v10.html&quot;<br/>\n\t\t/&gt;<br/>\n\t\t&lt;copy todir=&quot;${dist}/junit/samples&quot;&gt;<br/>\n\t\t\t&lt;fileset dir=&quot;junit/samples&quot; /&gt;<br/>\n\t\t&lt;/copy&gt;<br/>\n\t\t&lt;copy todir=&quot;${dist}/junit/tests&quot;&gt;<br/>\n\t\t\t&lt;fileset dir=&quot;junit/tests&quot; /&gt;<br/>\n\t\t&lt;/copy&gt;<br/>\n<br/>\n\t\t&lt;mkdir dir=&quot;${dist}/javadoc&quot; /&gt;<br/>\n\t\t&lt;javadoc<br/>\n\t\t\tsourcepath=&quot;.&quot;<br/>\n\t\t\tpackagenames=&quot;org.junit, org.junit.runner&quot;<br/>\n\t\t\tdestdir=&quot;${dist}/javadoc&quot;<br/>\n\t\t\tauthor=&quot;false&quot;<br/>\n\t\t\tversion=&quot;false&quot;<br/>\n\t\t\tuse=&quot;false&quot;<br/>\n\t\t\twindowtitle=&quot;JUnit API&quot;<br/>\n\t\t\tstylesheetfile=&quot;stylesheet.css&quot;<br/>\n\t\t/&gt;<br/>\n\t\t&lt;copy todir=&quot;${dist}/doc&quot;&gt;<br/>\n\t\t\t&lt;fileset dir=&quot;doc&quot;/&gt;<br/>\n\t\t&lt;/copy&gt;\t\t<br/>\n\t\t&lt;copy file=&quot;README.html&quot; tofile=&quot;${dist}/README.html&quot; /&gt;<br/>\n\t\t&lt;copy file=&quot;cpl-v10.html&quot; tofile=&quot;${dist}/cpl-v10.html&quot; /&gt;<br/>\n\t\t<br/>\n\t&lt;/target&gt;<br/>\n<br/>\nThanks.<br/>\n<br/>\n<br/>\n-- <br/>\n﻿Elliotte Rusty Harold  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:elharo@...\">elharo@...</a><br/>\nXML in a Nutshell 3rd Edition Just Published!<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.cafeconleche.org/books/xian3/\">http://www.cafeconleche.org/books/xian3/</a><br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim\">http://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim</a></div>", 
+    "prevInTime": 15227, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1129819716", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQzNTdBRTQ0LjgwNTA0MDlAbWV0YWxhYi51bmMuZWR1Pg=="
+    }
+}

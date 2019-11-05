@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19483, 
+    "senderId": "rsqEToLhjLvCBts22UEYn82-dXDGWLOLhFE1UhtonzarVSyx7I18RJ8DM79ulC5UQwz53LzSzoiK3vDuVf4iZxFblDs08pobGbyxArJ2fUKllfs", 
+    "systemMessage": false, 
+    "subject": "Re: The problem when I use MockStrutsTestCase.", 
+    "from": "=?iso-8859-1?B?zfXB6Luq?= &lt;hut@...&gt;", 
+    "authorName": "ÍõÁè»ª", 
+    "msgSnippet": "...  ...  ... Our base struts action do the protection for transaction. ... // clean current transaction flag. ", 
+    "msgId": 19482, 
+    "profile": "wanglinghua2008", 
+    "topicId": 19478, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 300426891, 
+    "messageBody": "<div id=\"ygrps-yiv-1643240909\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, ÍõÁè»ª &lt;hut@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Hi, All,<br/>\n&gt;<br/>\n&gt; Prediction: Struts, Ibatis.<br/>\n&gt;<br/>\n&gt; The structure of table siteconfig:<br/>\n&gt;<br/>\n&gt; Column: SiteID, ItemName,ItemValue,LastModifiedTime.<br/>\n&gt;<br/>\n&gt; The item named item1&#39; s value is 1 by default in database.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To avoid to update database directly, we are manage to implement all<br/>\n&gt; changes/configuration in a transaction.<br/>\n&gt; If we try to configure a specific condition for our test case, we just<br/>\n&gt; do.<br/>\n&gt;<br/>\n&gt;             a. Start a transation.<br/>\n&gt;<br/>\n&gt;             b. Execute some sqls.<br/>\n&gt;<br/>\n&gt;             c. Rollback the transation.<br/>\n&gt;<br/>\n&gt; Then we can meet our requests without any actual changes of database.<br/>\n&gt;<br/>\n&gt; But I met a problem during using MockStrutsTestCase!<br/>\n&gt;<br/>\n&gt; My test class extends MockStrutsTestCase,  what I have done is :<br/>\n&gt;<br/>\n&gt;<br/>\n </span></blockquote>------------------------------------------------------------------------&#92;<br/>\n&#92;<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n </span></blockquote>------------------------------------------------------------------------&#92;<br/>\n&#92;<br/>\n<blockquote><span title=\"ireply\"> &gt; -------------------<br/>\n&gt;         ...<br/>\n&gt;         private SiteConfig siteConfig;<br/>\n&gt;          private SiteConfigDao siteConfigDao = ...<br/>\n&gt;<br/>\n&gt;         public void setUp() throws Exception {<br/>\n&gt;                      super.setUp();<br/>\n&gt;                      wbxDaoManager.startTransaction();<br/>\n&gt;                     long siteid = this.getUTConfig().getSiteId();<br/>\n&gt;<br/>\n&gt;                      // Get site configuration for a specified site<br/>\n&gt;                      siteConfig =<br/>\n&gt; BizFactory.getSiteMgr().getSiteConfig(siteid);<br/>\n&gt;         }<br/>\n&gt;<br/>\n&gt;         /**<br/>\n&gt;       * @throws Exception Exception<br/>\n&gt;       */<br/>\n&gt;         public void mytest() throws Exception {<br/>\n&gt;                      // Execute a sql to update item named item1. =<br/>\n&gt; &quot;update siteconfig set itemvalue=&#39;1&#39; where siteid=** and<br/>\n&gt; itemvalue=&#39;item1&#39; &quot;<br/>\n&gt;                 // Change the itemvalue named item1 to 0.<br/>\n&gt;<br/>\n&gt; siteConfigDao.setConfigItem(this.getUTConfig().getSiteId(),<br/>\n&gt; &quot;item1&quot;,&quot;0&quot;);<br/>\n&gt;<br/>\n&gt;                      setRequestPathInfo(&quot;/queue&quot;);<br/>\n&gt;                  actionPerform();<br/>\n&gt;                      verifyForward(&quot;notsupportitem1&quot;);<br/>\n&gt;         }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;         /**<br/>\n&gt;       *@throws Exception Exception<br/>\n&gt;       */<br/>\n&gt;      public void tearDown() throws Exception {<br/>\n&gt;          super.tearDown();<br/>\n&gt;<br/>\n&gt;          // RollBack Transaction<br/>\n&gt;          wbxDaoManager.rollbackTransaction();<br/>\n&gt;<br/>\n&gt;          // Release Transaction.<br/>\n&gt;          wbxDaoManager.releaseTransaction();<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt; actionPerform() method will guide to struts action that &#39;/queue&#39; path<br/>\n&gt; point to, but in this action,<br/>\n&gt;<br/>\n&gt; When I try to get siteconfig object as :<br/>\n&gt;<br/>\n&gt; SiteConfig siteConfig = BizFactory.getSiteMgr().getSiteConfig(siteid);<br/>\n&gt; siteConfig.getItem1(); // MainTain the unchange value : 1.<br/>\n&gt;<br/>\n&gt; It seems that my started transaction have lost, any idea?<br/>\n&gt;<br/>\n&gt; Thanks for your patient.<br/>\n&gt;<br/>\n&gt; Regards & Thanks,<br/>\n&gt;<br/>\n&gt; -Hut<br/>\n<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>:) I found the root cause!<br/>\n<br/>\nOur base struts action do the protection for transaction.<br/>\n<br/>\n--------------------------------------------<br/>\n// clean current transaction flag.<br/>\nBizFactory.cleanDaoManagerTransactionFlag(siteID);<br/>\n<br/>\nif (siteID == 0) {<br/>\nlogger.logError(&quot;the SiteID is 0 , It&#39;s abnormal&quot;<br/>\n+ this.getClass().getName());<br/>\nlogger.logError(&quot;the SiteID is 0 , It&#39;s abnormal&quot;<br/>\n+ this.getClass());<br/>\n}<br/>\n<br/>\nactionForward = process(mapping, form, request,<br/>\nresponse);<br/>\n...<br/>\n-------------------------------------------<br/>\n<br/>\nWhat should I do is<br/>\ncomment :BizFactory.cleanDaoManagerTransactionFlag(siteID);<br/>\n<br/>\nThanks&Regards,<br/>\n<br/>\n-Hut</div>", 
+    "prevInTime": 19481, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1182323905", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19478, 
+    "headers": {
+        "inReplyToHeader": "PGY1ODVlcyttcjlsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGY1YWtjMStuMG1sQGVHcm91cHMuY29tPg=="
+    }
+}

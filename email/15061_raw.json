@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 47, 
+    "nextInTime": 15062, 
+    "senderId": "eW-l0ZjTOus_A_2C7AsRWzCPAWEI2NaeGmf65kNF2eVgkyZVhnOtDF8aQgLat9kjeewNanLgDvFY0zzvM1cOYhwJJKo", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Proposed parameterized test syntax for JUnit 4", 
+    "from": "Eugene Kuleshov &lt;eu@...&gt;", 
+    "authorName": "Eugene Kuleshov", 
+    "msgSnippet": "David, Kent, I agree that one-class-instance-per-test is a good enforcement (as long as it does not cause performance issues). Usually it is also practical to", 
+    "msgId": 15061, 
+    "rawEmail": "Return-Path: &lt;eu@...&gt;\r\nX-Sender: eu@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 17444 invoked from network); 5 Oct 2005 14:30:30 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m31.grp.scd.yahoo.com with QMQP; 5 Oct 2005 14:30:30 -0000\r\nReceived: from unknown (HELO god.md.pp.ru) (64.56.237.27)\n  by mta5.grp.scd.yahoo.com with SMTP; 5 Oct 2005 14:30:29 -0000\r\nReceived: from [192.168.168.10] (helo=[177.129.248.119])\n\tby god.md.pp.ru with esmtpsa (SSLv3:AES256-SHA:256)\n\t (Exim 4.50 #1)\n\tid 1ENAEl-0006rQ-Id\n\tfor junit@yahoogroups.com; Wed, 05 Oct 2005 10:27:16 -0400\r\nMessage-ID: &lt;4343E2C2.50705@...&gt;\r\nDate: Wed, 05 Oct 2005 10:27:14 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;b86b6a9c0510040839sb2b422ekb06ee1b82675d1da@...&gt;\t &lt;E1EMv8p-000875-Oq@...&gt; &lt;b86b6a9c0510041937o2ac23fc4m9cbfcc4d9775c14e@...&gt; &lt;4343DD48.5070409@...&gt;\r\nIn-Reply-To: &lt;4343DD48.5070409@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-Spam-Score: -5.9 (-----)\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Eugene Kuleshov &lt;eu@...&gt;\r\nSubject: Re: [junit] Proposed parameterized test syntax for JUnit 4\r\nX-Yahoo-Group-Post: member; u=150395705; y=CNm3LiG8ja14uz83lXGQMW2W6S4Yi04vYhn7b6vxzL-tzKpM\r\nX-Yahoo-Profile: ekuleshov\r\n\r\nDavid, Kent,\n\n  I agree that one-class-instance-per-test is a good enforcement (as \nlong as it does not cause performance issues). Usually it is also \npractical to have single test class per class under test, it is just \neasier to see what tests you have.\n\n  Imagine that there is AThing class with N methods.\n  Test class AThingTest would have K test methods that can be groupped \nby use cases for AThing class implementing scenarious for each possible \nexecution flow (e.g. if all AThing methods are atomic and stateless you \nwould have at least N test methods).\n  Note that different use cases may have different input and \ninitialization data for AThing class under test. E.g. methods X and Y of \nAThing class have different parameters and as a result methods testX and \ntestY will require different parameters.\n  In current implementation of @Parameters in JUnit4 the above scenario \nwill require to implement two separate test classes and in my opinion it \nis a huge an annoying limitation because user will have to find and run \nall test classes that are testing AThing on AThing change.\n\n  Thanks\n\n  Eugene\n\n\nDavid Saff wrote:\n\n&gt;Cedric,\n&gt;\n&gt;I think there&#39;s a lot of room for different ways of organizing tests. \n&gt;For me, it&#39;s good for JUnit 4 to keep the one-class-instance-per-test \n&gt;philosophy of JUnits 1 through 3. I find that if my code depends on too \n&gt;much global state, or too many collaborators, I begin to feel it, \n&gt;because it gets harder to test in JUnit. I find that if I ignore this \n&gt;pain in the tests, eventually it becomes a pain in the code, so I like \n&gt;JUnit&#39;s early warning.\n&gt;\n&gt;With that in mind, I find that having the parameters on the constructor \n&gt;reminds me of what&#39;s really going on.\n&gt;\n&gt;David Saff\n&gt;\n&gt;Cédric Beust ♔ wrote:\n&gt;\n&gt;  \n&gt;\n&gt;&gt;Hi Kent,\n&gt;&gt;\n&gt;&gt;On 10/4/05, Kent Beck &lt;kentb@...&gt; wrote:\n&gt;&gt;    \n&gt;&gt;\n&gt;&gt;&gt;Cedric,\n&gt;&gt;&gt;\n&gt;&gt;&gt;If I need different sets of parameters for different tests, I put the\n&gt;&gt;&gt;tests\n&gt;&gt;&gt;in different classes. This way, tests don&#39;t see parameters they don&#39;t\n&gt;&gt;&gt;need.\n&gt;&gt;&gt;The same goes for fields set in a set-up method. Only tests that need\n&gt;&gt;&gt;exactly the same setup go in the same class.\n&gt;&gt;&gt;      \n&gt;&gt;&gt;\n&gt;&gt;Well, that&#39;s certainly the way it works in JUnit3, but I thought the whole\n&gt;&gt;point behind the parameterized proposal was to allow tests to receive\n&gt;&gt;parameters?\n&gt;&gt;\n&gt;&gt;A lot of TestNG users like this feature, so that instead of passing, say,\n&gt;&gt;the path of an XML file in the constructor and then referencing it in your\n&gt;&gt;test method:\n&gt;&gt;\n&gt;&gt;public VerifyXmlTest(String xmlPath) {\n&gt;&gt;this.xmlPath = xmlPath;\n&gt;&gt;}\n&gt;&gt;\n&gt;&gt;public void testXml() {\n&gt;&gt;// use this.xmlPath\n&gt;&gt;}\n&gt;&gt;\n&gt;&gt;You pass it directly to the test method:\n&gt;&gt;\n&gt;&gt;public void testXml(String xmlPath) {\n&gt;&gt;}\n&gt;&gt;\n&gt;&gt;Cleaner, and it also features better isolation since you are not exposing\n&gt;&gt;this parameter to test methods that don&#39;t need it.\n&gt;&gt;\n&gt;&gt;--\n&gt;&gt;Cédric\n&gt;&gt;\n\n", 
+    "profile": "ekuleshov", 
+    "topicId": 14820, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150395705, 
+    "prevInTime": 15060, 
+    "contentTrasformed": false, 
+    "postDate": "1128522434", 
+    "canDelete": false, 
+    "nextInTopic": 15063, 
+    "prevInTopic": 15060, 
+    "headers": {
+        "inReplyToHeader": "PDQzNDNERDQ4LjUwNzA0MDlAbWl0LmVkdT4=", 
+        "messageIdInHeader": "PDQzNDNFMkMyLjUwNzA1QG1kLnBwLnJ1Pg==", 
+        "referencesHeader": "PGI4NmI2YTljMDUxMDA0MDgzOXNiMmI0MjJla2IwNmVlMWI4MjY3NWQxZGFAbWFpbC5nb29nbGUuY29tPgkgPEUxRU12OHAtMDAwODc1LU9xQHNtdHBhdXRoMDgubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4gPGI4NmI2YTljMDUxMDA0MTkzN28yYWMyM2ZjNG05Y2JmY2M0ZDk3NzVjMTRlQG1haWwuZ29vZ2xlLmNvbT4gPDQzNDNERDQ4LjUwNzA0MDlAbWl0LmVkdT4="
+    }
+}

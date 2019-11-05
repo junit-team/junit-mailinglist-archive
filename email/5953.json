@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 5954, 
+    "senderId": "rtLEn_8Q2Aww9WjWey_8ffSICdiP17RxuhOc29q_or1mTvo0VrqJeTOCq8O9lDivSQsOxXZQRxhY0wBlpEmOgMZ98DyU5tktxbQLLZ1uhQyF0_vF", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unrelated effects - newbie ignorance", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "So said  cdtmp  on  2002-10-06 ... complex. First, let me answer the direct question. As a first suggestion, if you re interested in verifying the sequence of", 
+    "msgId": 5953, 
+    "profile": "nails762", 
+    "topicId": 5949, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-125561802\">So said  cdtmp  on  2002-10-06 <br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;I&#39;d appreciate some pointers (even pointers to the manual since I<br/>\n&gt;can&#39;t find this in there).  <br/>\n&gt;<br/>\n&gt;I have an situation where the effect of a method is to send (or not to<br/>\n&gt;send) a message through either a serial port, socket or similar.<br/>\n&gt;<br/>\n&gt;The behavior is controlled by a (number of) well defined state<br/>\n&gt;diagrams. Summarizing a huge specification, messages are sent through<br/>\n&gt;the ports based on transitions and the exisiting state of hierachical<br/>\n&gt;state diagrams.  The situation seems ideal for unit testing since the<br/>\n&gt;whole environment is complex and unit testing would ensure that the<br/>\n&gt;messages sent, based on the state transitions are correct after<br/>\n&gt;modifications and we could automatically test a huge number of cases.<br/>\n&gt; It&#39;s not actually _what_ is sent, since that can be tested, but it&#39;s<br/>\n&gt;that the correct sequence of messages was requested to be sent (based,<br/>\n&gt;in this case, on string identifiers).<br/>\n&gt;<br/>\n&gt;My problem is that the state of the object after the call is the same<br/>\n&gt;as before the call, or at least the sending of the message is not, and<br/>\n&gt;cannot easily be indicated in the state of the object without changing<br/>\n&gt;the runtime behavior of the object.<br/>\n&gt;<br/>\n&gt;I hope all this makes sense.  I&#39;d appreciate any suggestions.  My only<br/>\n&gt;thought for checking this is something like a log file, or Log4J<br/>\n&gt;logger.  After the test I could check the logger and make sure that it<br/>\n&gt;contains _exactly_ what I would expect - but this seems somewhat<br/>\n </span></blockquote>complex.<br/>\n<br/>\nFirst, let me answer the direct question. As a first suggestion, if<br/>\nyou&#39;re interested in verifying the sequence of events, then you<br/>\nprobably need a way to log the events. I suggest logging them in memory<br/>\nby using an event/listener design. In the simplest case, use a<br/>\ncollecting parameter in the constructor of the object you want to<br/>\nobserve, then have that object signal events to the collector as things<br/>\nhappen. At the end of the test, verify that the collector has collected<br/>\nthe expected events in the expected order. If you prefer not to change<br/>\nthe object under test, then you can certainly create a decorator of the<br/>\nobject under test and separate the event-firing into that decorator.<br/>\n(You may want to do that anyway.)<br/>\n<br/>\nTo test:<br/>\n<br/>\nclass MessageSender {<br/>\n    sendMessage(message) { ... }<br/>\n    ...<br/>\n}<br/>\n<br/>\nYou write:<br/>\n<br/>\nclass MessageSpy extends MessageSender {<br/>\n    Collection messages;<br/>\n<br/>\n    sendMessage(message) {<br/>\n        messages.add(message);<br/>\n        super.sendMessage(message);<br/>\n    }<br/>\n}<br/>\n<br/>\nNow you can create a MessageSpy in your tests and test that the<br/>\nmessages are sent as expected.<br/>\n<br/>\nNow the next part of the message: if you&#39;re testing that a sequence of<br/>\nmessages is correct, that points to testing something bigger than you&#39;d<br/>\nlike to test. Although sometimes you do actually want to test that a<br/>\nsequence of messages is correct, often what you really want to test is<br/>\nthat in situation X under conditions Y, when Z happens, the object<br/>\nsends message M. It is usually better to test based on observable<br/>\nbehavior than to test based on knowledge of the order in which code<br/>\nexecutes. The latter is less resistant to change.<br/>\n<br/>\nJust food for thought; not a critique of what you&#39;re doing. :)<br/>\n<br/>\nTake care,<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603<br/>\nAll correspondence (c) 2002 Diaspar Software Services.<br/>\nIf you want to use it, just ask; don&#39;t steal.</div>", 
+    "prevInTime": 5952, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1034009298", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 5952, 
+    "headers": {
+        "inReplyToHeader": "PGFubzFvNitlbmRxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDIxMDA3MTI0ODE4MDExNS4wMDUxOEUwN0BzbXRwPg==", 
+        "referencesHeader": "PGFubzFvNitlbmRxQGVHcm91cHMuY29tPg=="
+    }
+}

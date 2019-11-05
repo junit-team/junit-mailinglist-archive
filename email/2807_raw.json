@@ -1,0 +1,29 @@
+{
+    "topicId": 2801, 
+    "postDate": "1002050890", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Berin Loritsch &lt;bloritsch@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "CU9oGhiUoUa1th296umGo7jVmOHSRThGg9V4on2sYekwoVA2dWaR-_b2ZjJacosaFXm1JcetvXNTwLF_IeYtjIGIqs88ER2YW_OCIQ", 
+    "nextInTime": 2808, 
+    "userId": 0, 
+    "prevInTime": 2806, 
+    "prevInTopic": 2806, 
+    "headers": {
+        "messageIdInHeader": "PDNCQkExNTRBLjZFREE4QUZFQGFwYWNoZS5vcmc+", 
+        "referencesHeader": "PFBpbmUuTE5YLjQuMzAuMDExMDAyMTQ1MjQyMC44NzQ3LTEwMDAwMEBicmFpbi5xbHVlLWxhbj4="
+    }, 
+    "authorName": "Berin Loritsch", 
+    "numMessagesInTopic": 12, 
+    "msgSnippet": "... The thing to reiterate is that we are testing Components that live in a specific environment, and we must make sure they play nice in that environment. ", 
+    "contentTrasformed": false, 
+    "msgId": 2807, 
+    "nextInTopic": 2808, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;bloritsch@...&gt;\r\nX-Sender: bloritsch@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_4_1); 2 Oct 2001 19:27:37 -0000\r\nReceived: (qmail 20108 invoked from network); 2 Oct 2001 19:27:36 -0000\r\nReceived: from unknown (10.1.10.142)\n  by l9.egroups.com with QMQP; 2 Oct 2001 19:27:36 -0000\r\nReceived: from unknown (HELO scodev.infoplanning.com) (209.8.58.131)\n  by mta3 with SMTP; 2 Oct 2001 19:27:35 -0000\r\nReceived: from apache.org ([192.168.0.189]) by scodev.infoplanning.com (8.8.5/SCO5) with ESMTP id PAA08002 for &lt;junit@yahoogroups.com&gt;; Tue, 2 Oct 2001 15:21:08 -0400 (EDT)\r\nMessage-ID: &lt;3BBA154A.6EDA8AFE@...&gt;\r\nDate: Tue, 02 Oct 2001 15:28:10 -0400\r\nX-Mailer: Mozilla 4.75 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Tangled design (Re: Test framework improvement)\r\nReferences: &lt;Pine.LNX.4.30.0110021452420.8747-100000@...-lan&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Berin Loritsch &lt;bloritsch@...&gt;\r\n\r\nEric Vought wrote:\n&gt; \n&gt; I&#39;m not sure what Kent had in mind, but:\n&gt; \n&gt; In the first set of situations you mention (Logger hierarchies, config\n&gt; files, etc), these can often be dealt with by stubbing out these\n&gt; components.\n&gt; \n&gt; For example, although an application may use a complex logging\n&gt; hierarchy which routes different classes of messages to different files or\n&gt; hosts, the testcases are handed a Logger with a single listener which\n&gt; sends output to a single local file which is appropriately labelled and\n&gt; filed. Having this setup run for each test method does not slow my\n&gt; testcases down appreciably. It doesn&#39;t matter to the testcases where the\n&gt; Logger actually sends its output to- just that there is something there to\n&gt; accept events. I have a LoggerTestCase which performs this setup for me\n&gt; and I just don&#39;t worry about it.\n&gt; \n&gt; The issue is similar with config files. Most testcases don&#39;t care where\n&gt; the configuration data comes from. I just create a Map as a fixture which\n&gt; contains exactly what is needed for particular testcases. My code doesn&#39;t\n&gt; care what mechanism was used to populate the Map or what 10 gazillion\n&gt; other values might be available. The actual process of interpreting the\n&gt; config files or database or whatever is in a separate package and\n&gt; independently tested.\n&gt; \n&gt; I think the design issue is making your classes much less dependent on the\n&gt; global state. Singletons are just one aspect of that. If these components\n&gt; are hidden behind nice interfaces, then you have a lot of freedom to\n&gt; decide just how much initialization is needed and can dumnmy out a lot of\n&gt; extra complexity.\n\nThe thing to reiterate is that we are testing Components that live in a\nspecific environment, and we must make sure they play nice in that environment.\nThis makes sure that changes to the environment don&#39;t break the Components,\nand vice versa.  You can&#39;t test that with dummy stuff.\n\nNot all our testcases use this heavy process--Only the testcases that test\nComponents.  We have a lot of helper classes that we test individually--without\nthe extra bulk.\n\nSometime during the test cycle we need to perform the environment tests, so\nI would rather do it with JUnit than with a production system ;).\n\n&gt; RMI *is* an issue and is one of the places I have had significant problems\n&gt; with per-testcase fixtures. This and other testing issues led to me\n&gt; dramatically reducing my use of RMI.\n\nI don&#39;t typically use RMI in most cases, however we do have a component that\nexposes an RMI interface, so we need to test it.\n\n", 
+    "subject": "Re: [junit] Tangled design (Re: Test framework improvement)"
+}

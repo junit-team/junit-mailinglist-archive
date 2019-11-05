@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 15557, 
+    "senderId": "OOVbEkGETHUPrXBs28tKAK7teG83KWX9XEPVVeLkYBzQU4kA0Rvj2HyCdDdOv2I2BXkNZysToHPyhvLX2H65gra8PTE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] displaying multiple errors from the same condition", 
+    "from": "Eugene Kuleshov &lt;eu@...&gt;", 
+    "authorName": "Eugene Kuleshov", 
+    "msgSnippet": "David, It is much better to generate suite and let the runner to iterate trough tests and mark failed urls. See somehow shortened version of the test case", 
+    "msgId": 15556, 
+    "rawEmail": "Return-Path: &lt;eu@...&gt;\r\nX-Sender: eu@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 85872 invoked from network); 29 Nov 2005 17:01:03 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m35.grp.scd.yahoo.com with QMQP; 29 Nov 2005 17:01:03 -0000\r\nReceived: from unknown (HELO god.md.pp.ru) (64.56.237.27)\n  by mta5.grp.scd.yahoo.com with SMTP; 29 Nov 2005 17:01:03 -0000\r\nReceived: from [192.168.168.10] (helo=[177.129.248.119])\n\tby god.md.pp.ru with esmtpsa (TLSv1:AES256-SHA:256)\n\t (Exim 4.54 #1)\n\tid 1Eh8qh-0005xN-1X\n\tfor junit@yahoogroups.com; Tue, 29 Nov 2005 12:01:00 -0500\r\nMessage-ID: &lt;438C8949.1020807@...&gt;\r\nDate: Tue, 29 Nov 2005 12:00:57 -0500\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;0E0E9AEC62D1FC408B5024BCFDA886EA2FC994@...&gt;\r\nIn-Reply-To: &lt;0E0E9AEC62D1FC408B5024BCFDA886EA2FC994@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Spam-Score: -4.3 (----)\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Eugene Kuleshov &lt;eu@...&gt;\r\nSubject: Re: [junit] displaying multiple errors from the same condition\r\nX-Yahoo-Group-Post: member; u=150395705; y=CezRlIKz-Fb2eTdnhb_KmnXpd9WnV7lfSr7U54b6iSebbYTG\r\nX-Yahoo-Profile: ekuleshov\r\n\r\nDavid,\n\n  It is much better to generate suite and let the runner to iterate \ntrough tests and mark failed urls. See somehow shortened version of the \ntest case below (shortened, because usually people using FailedTestCase \ninstead of mergig its code into the test class).\n  Note getName() methods below.\n  Also note that testInvalidUrl() will always fail pointing to the line \nwith &quot;new URL(url)&quot;.\n\npublic class SampleTest extends TestCase {\n    private static String[] URLS = {...};\n   \n    private String url;\n    private URL u;\n    private Exception ex;\n\n    public SampleTest(String url) throws MalformedURLException {\n        super(&quot;testUrl&quot;);\n        this.url = url;\n        this.u = new URL(url);\n    }\n\n    public SampleTest( String url, Exception ex) {\n        super(&quot;testInvalidUrl&quot;);\n        this.ex = ex;\n        this.url = url;\n    }\n   \n    public String getName() {\n        return super.getName()+&quot; &quot;+url;\n    }\n\n    public void testUrl() {\n        // test\n    }\n   \n    public void testInvalidUrl() throws Exception {\n        throw ex;\n    }\n   \n    public static Test suite() {\n        TestSuite suite = new TestSuite();\n        for( int i = 0; i &lt; URLS.length; i++) {\n            try {\n                suite.addTest(new SampleTest(URLS[i]));\n            } catch(MalformedURLException ex) {\n                suite.addTest(new SampleTest(URLS[i], ex));\n            }\n        }\n        return suite;\n    }\n   \n}\n\n\n\n\n\n  regards,\n  Eugene\n\n\nDavid Jackman wrote:\n\n&gt;In this case, I would have my test ping each URL, then in case of\n&gt;failure add the URL to a list of failed URLs (no assertions here).  At\n&gt;the end of the loop, assert that the list of failed URLs is empty and\n&gt;have the failure message include the list of URLs.\n&gt;\n&gt;________________________________\n&gt;\n&gt;From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\n&gt;kmjosey\n&gt;Sent: Monday, November 28, 2005 11:39 AM\n&gt;To: junit@yahoogroups.com\n&gt;Subject: [junit] displaying multiple errors from the same condition\n&gt;\n&gt;\n&gt;\n&gt;I have a test that pings a URL to see if a webservice is available.\n&gt;\n&gt;I do not want the test to have be aware of the specific URLs being\n&gt;tested. I go to the database where the URLs are stored and then open a\n&gt;URL connection and ping the service. \n&gt;\n&gt;I iterate through the URLs, and collect the results. I want to be able\n&gt;to display a message for all the URLs that fail. But I cannot see how\n&gt;to do that.\n&gt;\n&gt;This test only does on thing, so I don&#39;t think this is a case where I\n&gt;need to break up the test. Also I don&#39;t want to have to be aware of\n&gt;what URLs fail before hand by checking specific URLs with assertEquals.\n&gt;\n&gt;Is there a way I can display multiple errors or failures, in Junit?\n&gt;I have read the FAQ about the logic for not being able to display\n&gt;multiple results, but I don&#39;t feel like the argument is applicable here.\n&gt;\n&gt;If there is a previous response, please fowared the message id, when\n&gt;searched I kept getting &#39;search timed out, only partial results&#39;.\n&gt;\n&gt;Thanks, Karen\n&gt;  \n&gt;\n\n\n", 
+    "profile": "ekuleshov", 
+    "topicId": 15542, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150395705, 
+    "prevInTime": 15555, 
+    "contentTrasformed": false, 
+    "postDate": "1133283657", 
+    "canDelete": false, 
+    "nextInTopic": 15562, 
+    "prevInTopic": 15555, 
+    "headers": {
+        "inReplyToHeader": "PDBFMEU5QUVDNjJEMUZDNDA4QjUwMjRCQ0ZEQTg4NkVBMkZDOTk0QHNsY2VzMDEuYWQuZmFzdC5ubz4=", 
+        "messageIdInHeader": "PDQzOEM4OTQ5LjEwMjA4MDdAbWQucHAucnU+", 
+        "referencesHeader": "PDBFMEU5QUVDNjJEMUZDNDA4QjUwMjRCQ0ZEQTg4NkVBMkZDOTk0QHNsY2VzMDEuYWQuZmFzdC5ubz4="
+    }
+}

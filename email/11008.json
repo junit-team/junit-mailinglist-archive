@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11009, 
+    "senderId": "Rukbsjm7iZ1_rOx_v5QneSCXsG49THDx3A_Y8BSVSGuRSsTQZQoWHE89Z8j8sBbbaW16ZLQR68QVlqRG0iNxHEUEvXFsKgQvcPz0QKz7tNA", 
+    "systemMessage": false, 
+    "subject": "Re: Overriding AssertEquals", 
+    "from": "&quot;ericnickell2000&quot; &lt;nickell@...&gt;", 
+    "authorName": "ericnickell2000", 
+    "msgSnippet": "... Lavangu, You may have long ago, stopped reading this thread, but just in case... So, no, you can t override AssertEquals . What you can do is: ", 
+    "msgId": 11008, 
+    "profile": "ericnickell2000", 
+    "topicId": 10968, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 153975919, 
+    "messageBody": "<div id=\"ygrps-yiv-212941606\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;lavangu&quot; &lt;lavangu@y...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Is there any way i can override AssertEquals?<br/>\n&gt; My intention is to compare 2 Arraylists for similarity of its <br/>\n&gt; contents.<br/>\n<br/>\n </span></blockquote>Lavangu,<br/>\n<br/>\nYou may have long ago, stopped reading this thread, but just in case...<br/>\n<br/>\nSo, &quot;no, you can&#39;t override AssertEquals&quot;. What you can do is:<br/>\n  assertTrue(isSimilar(a, b));<br/>\nfor two ArrayLists a and b. Write your own isSimilar, depending on<br/>\nwhether you mean:<br/>\n  /1/ a and b have the same number of elements, and are element by<br/>\nelement equal.<br/>\n  /2/ a and b have the same elements, and the same number of each<br/>\nelement, but they might be out of order<br/>\n  /3/ a and b are composed of the same constituent elements, but they<br/>\nmight be out of order, and we&#39;re not concerned with duplications.<br/>\n<br/>\nEric<br/>\n<br/>\n<br/>\n<br/>\n<br/>\npublic void testAssumption2() {<br/>\n\tArrayList x = new ArrayList(Arrays.asList(new String[] {&quot;a&quot;, &quot;b&quot;, &quot;a&quot;}));<br/>\n\tArrayList x2 = new ArrayList(Arrays.asList(new String[] {&quot;a&quot;, &quot;b&quot;,<br/>\n&quot;a&quot;}));<br/>\n\tArrayList y = new ArrayList(Arrays.asList(new String[] {&quot;a&quot;, &quot;a&quot;, &quot;b&quot;}));<br/>\n\tArrayList z = new ArrayList(Arrays.asList(new String[] {&quot;b&quot;, &quot;a&quot;, &quot;b&quot;}));<br/>\n\t<br/>\n\tassertEquals(true, isSimilar1(x, x2));<br/>\n\tassertEquals(false, isSimilar1(x, y));<br/>\n\tassertEquals(false, isSimilar1(x, z));<br/>\n\t<br/>\n\tassertEquals(true, isSimilar2(x, x2));<br/>\n\tassertEquals(true, isSimilar2(x, y));<br/>\n\tassertEquals(false, isSimilar2(x, z));<br/>\n\t<br/>\n\tassertEquals(true, isSimilar3(x, x2));<br/>\n\tassertEquals(true, isSimilar3(x, y));<br/>\n\tassertEquals(true, isSimilar3(x, z));<br/>\n}<br/>\n<br/>\nprivate boolean isSimilar1(ArrayList a, ArrayList b) {<br/>\n\treturn a.equals(b);<br/>\n}<br/>\n<br/>\nprivate boolean isSimilar2(ArrayList a, ArrayList b) {<br/>\n\tArrayList tmp = new ArrayList(a);<br/>\n\tfor (int i=0; i&lt;b.size(); ++i) {<br/>\n\t\tif (!tmp.remove(b.get(i))) {<br/>\n\t\t\treturn false;<br/>\n\t\t}<br/>\n\t}<br/>\n\treturn tmp.isEmpty();<br/>\n}<br/>\n<br/>\nprivate boolean isSimilar3(ArrayList a, ArrayList b) {<br/>\n\treturn new HashSet(a).equals(new HashSet(b));<br/>\n}</div>", 
+    "prevInTime": 11007, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1084386836", 
+    "canDelete": false, 
+    "nextInTopic": 11012, 
+    "prevInTopic": 11005, 
+    "headers": {
+        "inReplyToHeader": "PGM3ZmYzaSs5dHFjQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGM3dHFtaytlMG85QGVHcm91cHMuY29tPg=="
+    }
+}

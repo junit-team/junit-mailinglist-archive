@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 4973, 
+    "senderId": "nZb4qOjx6gaHiY9BHl4yYtsyEo_YewDxdYXatj5mTKw0Rb48ivQ2iAzhuGohrYyAyhiGeKtbu50bwJucEsqg0Z6a8DFD2nNSsK4LUPuvD0PFTcCK", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] (unknown)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... to Test ... OK. So you want the same tests for each implementation, but you want to write them once. You want the Abstract Test Case pattern. Start", 
+    "msgId": 4972, 
+    "profile": "nails762", 
+    "topicId": 4970, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-67146117\"><blockquote><span title=\"ireply\">&gt; &gt; &gt; Hi everybody,<br/>\n&gt; &gt; &gt; I&#39;ve written a TestCase for one class.<br/>\n&gt; &gt; &gt; Is there a way to test another class with this test?<br/>\n&gt; &gt; &gt; The problem is: it is impossible to pass second one as parameter <br/>\n </span></blockquote>to &quot;Test<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt; &gt; suite()&quot; method (as it is static and passing will give one result:<br/>\n&gt; &gt; &gt; last class will be tested twice). Changing test is not really good<br/>\n&gt; &gt; &gt; (as there will be some more classes that I would like to test with<br/>\n&gt; &gt; &gt; TestCase).<br/>\n&gt; &gt;<br/>\n&gt; &gt; I assume you want to run many tests at one time. The normal way is to<br/>\n&gt; &gt; create a class that collects the TestCase  classes together:<br/>\n&gt; [...]<br/>\n&gt; <br/>\n&gt; No. There idea is:<br/>\n&gt; public interface IF{<br/>\n&gt;   public static Object calculate(String str,int i);<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public class A implements IF{<br/>\n&gt;   //implementation<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public class B implements IF{<br/>\n&gt;   //implementation<br/>\n&gt; }<br/>\n&gt; //Strategy pattern is used<br/>\n&gt; <br/>\n&gt; I know that result will be the same running class A and B. I&#39;ve made <br/>\n&gt; test for class A, eg TestA, now I want to test B with this test. The <br/>\n&gt; problem is: to pass class B to that test and test A and B at one time.<br/>\n<br/>\n </span></blockquote>OK. So you want the same tests for each implementation, but you want to write <br/>\nthem once. You want the &quot;Abstract Test Case&quot; pattern. Start here:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://c2.com/cgi/wiki?AbstractTestCases\">http://c2.com/cgi/wiki?AbstractTestCases</a><br/>\n<br/>\nThe basic pattern is this: <br/>\n<br/>\nabstract class IFTest extends TestCase {<br/>\n    test1() {<br/>\n        IF theIf = createIF();<br/>\n        // Call methods<br/>\n        // Make assertions<br/>\n    }<br/>\n    ...<br/>\n    abstract IF createIF();<br/>\n}<br/>\n<br/>\nclass ATest extends IFTest {<br/>\n    IF createIF() {<br/>\n         return new A();<br/>\n    }<br/>\n}<br/>\n<br/>\nclass BTest extends IFTest {<br/>\n    IF createIF() {<br/>\n         return new B();<br/>\n    }<br/>\n}<br/>\n<br/>\nNow run tests ATest and BTest in your test suite. Each inherits its test <br/>\nmethods from IFTest, so they run the same tests. ATest tests with A objects <br/>\nand BTest tests with B objects. Do *not* add IFTest to your test suite.<br/>\n<br/>\n--<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 4971, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1021379620", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4970, 
+    "headers": {
+        "inReplyToHeader": "PEUxNzdhRHUtMDAwQkcwLTAwQGYxMy5tYWlsLnJ1Pg==", 
+        "messageIdInHeader": "PDIwMDIwNTE0MDYzMzQwLk02NDM5OUBkaWFzcGFyc29mdHdhcmUuY29tPg==", 
+        "referencesHeader": "PEUxNzdhRHUtMDAwQkcwLTAwQGYxMy5tYWlsLnJ1Pg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 20689, 
+    "senderId": "FyvO5oRMe-jChYl5UnX7En9sOdcipkobUD5DbYqpWLFjk7xAK1wtnPHq3q9Yg0t7Aml8Q1xmqF4UQaQBLswhOSyL2vI", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Sorter in JUnit 4.5", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Robin, As you ve noted from the bug entry, this is fixed in CVS, and there ll be a new beta out this week. David", 
+    "msgId": 20688, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 29492 invoked from network); 15 Jul 2008 16:40:01 -0000\r\nX-Received: from unknown (66.218.67.95)\n  by m42.grp.scd.yahoo.com with QMQP; 15 Jul 2008 16:40:01 -0000\r\nX-Received: from unknown (HELO qw-out-1920.google.com) (74.125.92.144)\n  by mta16.grp.scd.yahoo.com with SMTP; 15 Jul 2008 16:40:01 -0000\r\nX-Received: by qw-out-1920.google.com with SMTP id 9so174979qwj.50\n        for &lt;junit@yahoogroups.com&gt;; Tue, 15 Jul 2008 09:40:01 -0700 (PDT)\r\nX-Received: by 10.151.13.7 with SMTP id q7mr590417ybi.2.1216140000939;\n        Tue, 15 Jul 2008 09:40:00 -0700 (PDT)\r\nX-Received: by 10.150.138.6 with HTTP; Tue, 15 Jul 2008 09:40:00 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90807150940s168aa9c8r6ce35c305ddeb850@...&gt;\r\nDate: Tue, 15 Jul 2008 12:40:00 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;01a701c8e2bd$f9bdf010$4000a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;g4f7ph+jdpg@...&gt;\n\t &lt;01a701c8e2bd$f9bdf010$4000a8c0@kentspavilion&gt;\r\nX-Google-Sender-Auth: f68dc22fe1f3960d\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;david@...&gt;\r\nSubject: Re: [junit] Sorter in JUnit 4.5\r\nX-Yahoo-Group-Post: member; u=341876227; y=M2vS_47vmLucigo6wrUrkqlFSWjE1B1zqo876iTgevY\r\nX-Yahoo-Profile: dsaff\r\n\r\nRobin,\n\nAs you&#39;ve noted from the bug entry, this is fixed in CVS, and there&#39;ll\nbe a new beta out this week.\n\n   David\n\nOn Thu, Jul 10, 2008 at 2:51 PM, Kent Beck &lt;kentb@...&gt; wrote:\n&gt; Robin,\n&gt;\n&gt; We were able to reproduce the defect your found with a simple test. Indeed,\n&gt; filters and sorters don&#39;t work correctly in all cases in 4.5 compared to\n&gt; 4.4. We will fix this defect before releasing. Thank you for the clear\n&gt; example--that made diagnosis much easier even though fixing it is turning\n&gt; out to be difficult.\n&gt;\n&gt; Regards,\n&gt;\n&gt; Kent Beck\n&gt; Three Rivers Institute\n&gt;\n&gt; _____\n&gt;\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\n&gt; robinjay33\n&gt; Sent: Tuesday, July 01, 2008 11:39 PM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] Sorter in JUnit 4.5\n&gt;\n&gt; Hi!\n&gt;\n&gt; I have implemented a very straight-forward sorter that runs fine in\n&gt; JUnit up to version 4.4 but not in 4.5 beta. Here is the sorter:\n&gt;\n&gt; public class InternalTestClassArraySorter extends Sorter {\n&gt; public InternalTestClassArraySorter(Comparator&lt;Description&gt; comparator) {\n&gt; super(comparator);\n&gt; }\n&gt;\n&gt; @Override\n&gt; public int compare(Description o1, Description o2) {\n&gt; System.out.println(&quot;Comparing&quot; + o1 + &quot; and &quot; + o2);\n&gt; return super.compare(o1, o2);\n&gt; }\n&gt;\n&gt; public void apply(Object runner) {\n&gt; super.apply((Runner)runner);\n&gt; }\n&gt;\n&gt; public static class MethodNameComparator implements\n&gt; Comparator&lt;Description&gt; {\n&gt; public int compare(Description o1, Description o2) {\n&gt; return o1.getDisplayName().compareTo(o2.getDisplayName());\n&gt; }\n&gt; }\n&gt; }\n&gt;\n&gt; And here is the according runner:\n&gt;\n&gt; public class SortedSkipRunner extends Parameterized {\n&gt; private static final Configuration config;\n&gt; private final PropertyMethodSkipFilter filter;\n&gt; private final Sorter sorter;\n&gt;\n&gt; static {\n&gt; config = new Configuration();\n&gt; }\n&gt;\n&gt; public SortedSkipRunner(Class&lt;?&gt; klass) throws Throwable {\n&gt; super(klass);\n&gt;\n&gt; filter = new PropertyMethodSkipFilter();\n&gt; filter.setConfig(config);\n&gt; this.filter(filter);\n&gt;\n&gt; sorter = new InternalTestClassArraySorter(new\n&gt; InternalTestClassArraySorter.MethodNameComparator());\n&gt; this.sort(sorter);\n&gt; }\n&gt;\n&gt; public static Configuration getConfig() {\n&gt; return config;\n&gt; }\n&gt; }\n&gt;\n&gt; Basically it should sort the test-methods by the name of the test\n&gt; method. I do apply it via the sort-method in my Runner. But somehow\n&gt; the sorter is ignored by my test-execution. Any guess what is going\n&gt; wrong here?\n&gt;\n&gt; Thanks & Best Regards,\n&gt; Robin\n&gt;\n&gt; [Non-text portions of this message have been removed]\n&gt;\n&gt; \n\n", 
+    "profile": "dsaff", 
+    "topicId": 20652, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 20687, 
+    "contentTrasformed": false, 
+    "postDate": "1216140000", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20678, 
+    "headers": {
+        "inReplyToHeader": "PDAxYTcwMWM4ZTJiZCRmOWJkZjAxMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgwNzE1MDk0MHMxNjhhYTljOHI2Y2UzNWMzMDVkZGViODUwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGc0ZjdwaCtqZHBnQGVHcm91cHMuY29tPgkgPDAxYTcwMWM4ZTJiZCRmOWJkZjAxMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg=="
+    }
+}

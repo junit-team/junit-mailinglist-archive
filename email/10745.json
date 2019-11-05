@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 10746, 
+    "senderId": "M55g4-n6woSEco2S3l1db_cJVGBFu-EAZJxkiKTMPH-1Y_FpPSRrcOQbkDrH7Q3cA4wTpN4TMJUYdOg-fY71nQ", 
+    "systemMessage": false, 
+    "subject": "Where am I going wrong?", 
+    "from": "&quot;mcgqa&quot; &lt;mcgqa@...&gt;", 
+    "authorName": "mcgqa", 
+    "msgSnippet": "Hi, I have 2 objectives for my testcase below 1) to test the registration process 2) to test the duplicated user when I run the test, I am getting either a", 
+    "msgId": 10745, 
+    "profile": "mcgqa", 
+    "topicId": 10745, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 181644127, 
+    "messageBody": "<div id=\"ygrps-yiv-269956816\">Hi,<br/>\n<br/>\nI have 2 objectives for my testcase below<br/>\n1) to test the registration process<br/>\n2) to test the duplicated user<br/>\n<br/>\nwhen I run the test, I am getting either a null value for loginid or <br/>\na totally new in value for dupLoginId and my assertion is failing <br/>\nwhen the method testRegisterDuplicatedUser() is executed. Can <br/>\nsomebody tell me why?<br/>\n<br/>\nThis is my first post to this forum. Is this the right forum to ask <br/>\nsuch questions? <br/>\n<br/>\nThanks in advance.<br/>\nSrikanth<br/>\n<br/>\n*** various required imports ***<br/>\npublic class MHHERegistrarTest extends TestCase {<br/>\n<br/>\n    private MHHERegistrar mhheUsrReg;<br/>\n\tprivate UserAccount userAccount;<br/>\n\tString newLoginId = &quot;sri&quot;+(int)(Math.random()*10101)<br/>\n+&quot;@...&quot;;<br/>\n\tString \tdupLoginId = &quot;&quot;;<br/>\n<br/>\n    /**<br/>\n     * Constructs a MHHEUserRegistrarTest with the specified name.<br/>\n     *<br/>\n     * @param name Test case name.<br/>\n     */<br/>\n    public MHHERegistrarTest(String name) {<br/>\n        super(name);<br/>\n    }<br/>\n<br/>\n    /**<br/>\n     * Sets up the test fixture.<br/>\n     *<br/>\n     * Called before every test case method.<br/>\n     */<br/>\n    protected void setUp() {<br/>\n<br/>\n        mhheUsrReg = new MHHERegistrar();<br/>\n\tuserAccount = new UserAccount();<br/>\n<br/>\n    }<br/>\n<br/>\n    /**<br/>\n     * Tears down the test fixture.<br/>\n     *<br/>\n     * Called after every test case method.<br/>\n     */<br/>\n    protected void tearDown() {<br/>\n        mhheUsrReg = null;<br/>\n\tuserAccount = null;<br/>\n<br/>\n    }<br/>\n<br/>\n    /**<br/>\n     * Test to see whether the randomly created user_id is <br/>\nregistered only if the id is new.<br/>\n     */<br/>\n    public void testRegisterUser() {<br/>\n               dupLoginId = newLoginId;<br/>\n\t\tuserAccount.setLoginId(newLoginId);<br/>\n<br/>\n\t\t<br/>\n\t\ttry {<br/>\n\t\t\tassertEquals(false, <br/>\nUMSIntegrator.checkUserInUmsbyLoginId(newLoginId));<br/>\n\t\t\tassertEquals(false, <br/>\nERightsIntegrator.userExistsInErights(newLoginId));<br/>\n\t\t}<br/>\n\t\tcatch (UMSException ue) {<br/>\n\t\t\tue.printStackTrace();<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tmhheUsrReg.registerUser(userAccount);<br/>\n\t\ttry {<br/>\n\t\t\tassertEquals<br/>\n(true,UMSIntegrator.checkUserInUmsbyLoginId(newLoginId));<br/>\n\t\t\tassertEquals<br/>\n(true,ERightsIntegrator.userExistsInErights(newLoginId));\t<br/>\n\t\t}<br/>\n\t\tcatch (UMSException e) {<br/>\n\t\t\te.printStackTrace();<br/>\n\t\t}<br/>\n\t\t\t<br/>\n    }<br/>\n<br/>\n    /**<br/>\n     * Tests whether exceptions are raised if a previously <br/>\nregistered user attempts to register again.<br/>\n     */<br/>\n    public void testRegisterDuplicatedUser() {<br/>\n    \tSystem.out.println(&quot;dupLoginId---&gt; &quot; + dupLoginId);<br/>\n\t\tuserAccount.setLoginId(dupLoginId);<br/>\n\t\t<br/>\n\t\tSystem.out.println(&quot;This is the user_id from <br/>\nuseraccount---&gt; &quot;+userAccount.getLoginId());<br/>\n\t\tSystem.out.println(&quot;This is the user_id---<br/>\n<blockquote><span title=\"ireply\"> &gt; &quot;+dupLoginId);<br/>\n\t\t<br/>\n </span></blockquote>\t\ttry {<br/>\n\t\t\tSystem.out.println(&quot;This is user_id from  <br/>\nUMSInteg  ---&gt; &quot;+UMSIntegrator.checkUserInUmsbyLoginId(dupLoginId));<br/>\n\t\t\tSystem.out.println(&quot;This is user_id from <br/>\nErightsInteg ---&gt; &quot;+ERightsIntegrator.userExistsInErights<br/>\n(dupLoginId));<br/>\n\t\t\tassertEquals(true, <br/>\nUMSIntegrator.checkUserInUmsbyLoginId(dupLoginId));<br/>\n\t\t\tassertEquals(true, <br/>\nERightsIntegrator.userExistsInErights(dupLoginId));<br/>\n\t\t\t//fail(&quot;tail hasn&#39;t caused an exception when <br/>\nit should&quot;);\t<br/>\n\t\t}<br/>\n\t\tcatch (UMSException de) {<br/>\n\t\t\tde.printStackTrace();<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\ttry<br/>\n\t\t{<br/>\n\t\t\tmhheUsrReg.registerUser(userAccount);<br/>\n\t\t\t//fail(&quot;tail hasn&#39;t caused an exception when <br/>\nit should&quot;);<br/>\n\t\t}<br/>\n\t\tcatch (Exception e)<br/>\n\t\t{<br/>\n\t\t}<br/>\n<br/>\n<br/>\n<br/>\n    }<br/>\n<br/>\n<br/>\n    public static Test suite() {<br/>\n        TestSuite suite = new TestSuite(MHHERegistrarTest.class);<br/>\n        return suite;<br/>\n    }<br/>\n<br/>\n<br/>\n    public static void main(String args[]) {<br/>\n        junit.textui.TestRunner.run(suite());<br/>\n    }<br/>\n}</div>", 
+    "prevInTime": 10744, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1080925155", 
+    "canDelete": false, 
+    "nextInTopic": 10747, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGM0azY1MytwcHNvQGVHcm91cHMuY29tPg=="
+    }
+}

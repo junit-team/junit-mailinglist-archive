@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 23887, 
+    "senderId": "6_KgCv3KO90j_URWGqVkzul0LTfubmAlZQ-5kqaWGt-Pj-u6BP__D0IkRkXTMY2Jxm2yg0a9f8j7HNUP72oL9p4kzA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterization - of file names from directory; 1 parameter/test", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "So the problem here is that you re creating a (1xN) array, but JUnit wants an (Nx1) array.  You re creating here the equivalent of List({ file1, file2, file3", 
+    "msgId": 23886, 
+    "profile": "saffatgoogle", 
+    "topicId": 23885, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 525765722, 
+    "messageBody": "<div id=\"ygrps-yiv-521063390\">So the problem here is that you&#39;re creating a (1xN) array, but JUnit wants<br/>\nan (Nx1) array.  You&#39;re creating here the equivalent of<br/>\n<br/>\nList({ file1, file2, file3 })<br/>\n<br/>\nbut what you want is<br/>\n<br/>\nList({ file1 }, { file 2 }, { file3 })<br/>\n<br/>\nSo you&#39;ll have to loop through the result of list[], and put each element<br/>\ninto its own one-element array.  Good luck,<br/>\n<br/>\n   David Saff<br/>\n<br/>\nOn Fri, May 11, 2012 at 1:01 PM, bhavanisridharan &lt;<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bhavanisridharan@...\">bhavanisridharan@...</a>&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; **<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; @RunWith(Parameterized.class)<br/>\n&gt; public class myTestClass {<br/>\n&gt;<br/>\n&gt; ...<br/>\n&gt; ...<br/>\n&gt;<br/>\n&gt; private static String homeFolder=new<br/>\n&gt; String(&quot;Y:&#92;&#92;Development&#92;&#92;Testing&#92;&#92;myTest&#92;&#92;Testfiles&quot;);<br/>\n&gt; private String filename;<br/>\n&gt;<br/>\n&gt; public myTestClass(String filename) {<br/>\n&gt; this.filename=filename;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Parameters<br/>\n&gt; public static Collection&lt;Object[]&gt; generateData() {<br/>\n&gt; return Arrays.asList(new Object[][]{ new File(homeFolder).list()});<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; The requirements is to feed the constructor with filenames from homeFolder<br/>\n&gt; so each test runs with a different input.<br/>\n&gt;<br/>\n&gt; The array of parameters, in my case, will consist of only one string, i.e.<br/>\n&gt; the filename. I get a &quot;wrong number of arguments error&quot;:<br/>\n&gt; java.lang.IllegalArgumentException: wrong number of arguments<br/>\n&gt; at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)<br/>\n&gt; at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)<br/>\n&gt; at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown<br/>\n&gt; Source)<br/>\n&gt; at java.lang.reflect.Constructor.newInstance(Unknown Source)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.junit.runners.Parameterized$TestClassRunnerForParameters.createTest(Parameterized.java:86)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.junit.runners.BlockJUnit4ClassRunner$1.runReflectiveCall(BlockJUnit4ClassRunner.java:236)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.junit.runners.BlockJUnit4ClassRunner.methodBlock(BlockJUnit4ClassRunner.java:233)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)<br/>\n&gt; at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)<br/>\n&gt; at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)<br/>\n&gt; at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)<br/>\n&gt; at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)<br/>\n&gt; at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)<br/>\n&gt; at org.junit.runners.ParentRunner.run(ParentRunner.java:300)<br/>\n&gt; at org.junit.runners.Suite.runChild(Suite.java:128)<br/>\n&gt; at org.junit.runners.Suite.runChild(Suite.java:24)<br/>\n&gt; at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)<br/>\n&gt; at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)<br/>\n&gt; at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)<br/>\n&gt; at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)<br/>\n&gt; at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)<br/>\n&gt; at org.junit.runners.ParentRunner.run(ParentRunner.java:300)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)<br/>\n&gt; at<br/>\n&gt;<br/>\n&gt; org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)<br/>\n&gt;<br/>\n&gt; What am I doing wrong?<br/>\n&gt; BSri<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 23885, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1336758944", 
+    "canDelete": false, 
+    "nextInTopic": 23887, 
+    "prevInTopic": 23885, 
+    "headers": {
+        "inReplyToHeader": "PGpvamdsNStzdWNqQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBTHJ3LVB3bitqTGdyX1A2c2hOUko4S0J6NDI1YXdjVE0xRkMyclRDcTZUaVBNUzk9UUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGpvamdsNStzdWNqQGVHcm91cHMuY29tPg=="
+    }
+}

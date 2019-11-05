@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 7398, 
+    "senderId": "s8wKuBRppMQnntecwSbfL9b2qL4ppT5_B4mbrWNlrTnL6d2dERAVxvrMrldVo7-XQxmVy-FJ-jx33Tl-ZWQ3gfkYUbTwzgXCucpHHORy", 
+    "systemMessage": false, 
+    "subject": "Non-optimal ordering of parameters", 
+    "from": "Eric Armstrong &lt;eric.armstrong@...&gt;", 
+    "authorName": "Eric Armstrong", 
+    "msgSnippet": "Nit Patrol: The ordering of parameters in the JUnit APIs is non-optimal in a couple of respects. First: * The message string is first in the sequence, instead", 
+    "msgId": 7397, 
+    "profile": "ericsilverlight", 
+    "topicId": 7397, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78994084, 
+    "messageBody": "<div id=\"ygrps-yiv-458377739\">Nit Patrol:<br/>\nThe ordering of parameters in the JUnit APIs is non-optimal<br/>\nin a couple of respects.<br/>\n<br/>\nFirst:<br/>\n  * The message string is first in the sequence, instead of<br/>\n    last. It&#39;s a huge things, but it makes it a bit harder to<br/>\n    see the orthogonality in the APIs. This ordering would<br/>\n    make the orthogonality more apparent:<br/>\n        assertTrue(boolean)<br/>\n        assertTrue(boolean, String)<br/>\n<br/>\n    Instead, JUnit chose<br/>\n        assertTrue(boolean)<br/>\n        assertTrue(String, boolean)<br/>\n<br/>\n    which is somewhat less apparent to casual observation. (I<br/>\n    believe it is for that reason that adding optional parameters<br/>\n    last is the normative standard.)<br/>\n<br/>\n    More importantly, with a long string message, the assert is<br/>\n    more difficult to read. Instead of this:<br/>\n        assertEquals(var1, var2,<br/>\n                     &quot;some very long message down here&quot;);<br/>\n<br/>\n    You have<br/>\n        assertEquals(&quot;some very long message up here&quot;,<br/>\n                      var1, var2);<br/>\n<br/>\nSecond:<br/>\n  * Putting the expected results before the observed results in<br/>\n    the parameter list is slightly non-optimal.<br/>\n<br/>\n    I confess this only became apparent to me moments ago. But<br/>\n    it now seems ideal to put the observed results variable ahead<br/>\n    of the expected results in the parameter list.<br/>\n<br/>\n    The reason for that is the ability to keep entries both<br/>\n    adjacent and in order.<br/>\n<br/>\n    For example, when examining this pseudo code:<br/>\n        String expectedResults=&quot;...&quot;;<br/>\n        [long sequence of code]<br/>\n            ----top of screen---<br/>\n        [more code]<br/>\n        String observedResults = [results calculated above]<br/>\n        assertEquals(msg, expectedResults, observedResults);<br/>\n<br/>\n     The expectedResults setting is now far away from the observed<br/>\n     results. So down at the bottom of a lengthy code sequence, it<br/>\n     may no longer be obvious what it was we expected.<br/>\n<br/>\n     On the other hand, if we code this way:<br/>\n        [long sequence of code]<br/>\n            ----top of screen---<br/>\n        [more code]<br/>\n        String expectedResults=&quot;...&quot;;<br/>\n        String observedResults = [results calculated above]<br/>\n        assertEquals(msg, expectedResults, observedResults);<br/>\n<br/>\n      Now the expectedResults are where we can see them, but they<br/>\n      interrupt the flow of code that produces the actual results.<br/>\n<br/>\n      The only remaining choice is this:<br/>\n        [long sequence of code]<br/>\n            ----top of screen---<br/>\n        [more code]<br/>\n        String observedResults = [results calculated above]<br/>\n        String expectedResults=&quot;...&quot;;<br/>\n        assertEquals(msg, expectedResults, observedResults);<br/>\n<br/>\n      But now the ordering is reversed from the parameter sequence.<br/>\n      (A small thing, certainly, but every bit of regularity is of<br/>\n       help to the beleagured brain...)<br/>\n<br/>\n      Were the parameter ordering reversed, the code flows to<br/>\n      its normal conclusion, readability is maintained, and the<br/>\n      ordering of items is preserved, as well.<br/>\n        [long sequence of code]<br/>\n            ----top of screen---<br/>\n        [more code]<br/>\n        String observedResults = [results calculated above]<br/>\n        String expectedResults=&quot;...&quot;;<br/>\n        assertEquals(msg, observedResults, expectedResults);</div>", 
+    "prevInTime": 7396, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049253767", 
+    "canDelete": false, 
+    "nextInTopic": 7399, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNFOEE1Nzg3LjQwNTA5MDZAc3VuLmNvbT4="
+    }
+}

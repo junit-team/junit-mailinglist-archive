@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 7242, 
+    "senderId": "r2v4wvTCJpTFjbW4sYu3tw_cchirm1ouu4HnekfN7mrW53KSlkLiIntqcUHRpOVsrx91AAqnXDpMXE6ht1ETSwSz", 
+    "systemMessage": false, 
+    "subject": "UnsatisfiedLinkError: Native Library  already loaded in another classloader", 
+    "from": "&quot;t7p76n&quot; &lt;t7p76n@...&gt;", 
+    "authorName": "t7p76n", 
+    "msgSnippet": "I created two small initial tests in a suite. Each test utilizes a singleton called DBManager. Each test causes an object to acquire a DB connection from", 
+    "msgId": 7241, 
+    "rawEmail": "Return-Path: &lt;t7p76n@...&gt;\r\nReceived: (qmail 26981 invoked by uid 7800); 18 Mar 2003 02:48:34 -0000\r\nX-Sender: t7p76n@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_1); 17 Mar 2003 23:55:07 -0000\r\nReceived: (qmail 67555 invoked from network); 17 Mar 2003 23:55:07 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m7.grp.scd.yahoo.com with QMQP; 17 Mar 2003 23:55:07 -0000\r\nReceived: from unknown (HELO n27.grp.scd.yahoo.com) (66.218.66.83)\n  by mta1.grp.scd.yahoo.com with SMTP; 17 Mar 2003 23:55:06 -0000\r\nReceived: from [66.218.67.146] by n27.grp.scd.yahoo.com with NNFMP; 17 Mar 2003 23:55:06 -0000\r\nDate: Mon, 17 Mar 2003 23:55:06 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: UnsatisfiedLinkError: Native Library &lt;DLL&gt; already loaded in another classloader\r\nMessage-ID: &lt;b55n8q+gq03@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3345\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;t7p76n&quot; &lt;t7p76n@...&gt;\r\nX-Yahoo-Group-Post: member; u=141492997\r\nX-Yahoo-Profile: t7p76n\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 18 Mar 2003 02:48:34 -0000\r\n\r\nI created two small initial tests in a suite. Each test utilizes a \nsingleton called DBManager. Each test causes an object to acquire a \nDB connection from DBManager. The test that I configure to run first \n(through a class name change) will work correctly. The second test \ncauses this error:\n\nUnsatisfiedLinkError: Native Library C:&#92;oracle&#92;ora90&#92;BIN&#92;ocijdbc9.dll \nalready loaded in another classloader\n\nEach test causes a method to invoke connect() from my DBManager:\n\n    public static boolean connect(String jdbc_driver, String \nconnection_str,\n                                  String user, String password) \nthrows Exception {\n        if (db_conn == null) {\n            Class.forName( jdbc_driver );\n            logger.info(&quot;Loaded JDBC Driver: &quot; + jdbc_driver);\n            \n            // Acquire DB connection\n            try {\n                db_conn = DriverManager.getConnection(connection_str, \nuser, password);\n            } catch (Exception e) {\n                logger.severe(&quot;Exception while acquiring a DB \nconnection: &quot; + e);\n            }\n        }\n        if ( db_conn != null ) {\n            return true;\n        } else {\n            return false;\n        }\n    }\n\nFrom the log messages, I see that the second test has a new instance \nof the DBManager singleton. The db_conn is null. The getConnection() \nis invoked again. But, the JUnit environment still has the Oracle \nlibrary. And, it causes a major exception:\n\n    [junit] Testcase: testConvertDateStr\n(com.verancecorp.EventConverter.Converter.ConvertDateTest): Caused an \nERROR\n    [junit] Native Library C:&#92;oracle&#92;ora90&#92;BIN&#92;ocijdbc9.dll already \nloaded in another classloader\n    [junit] java.lang.UnsatisfiedLinkError: Native Library \nC:&#92;oracle&#92;ora90&#92;BIN&#92;ocijdbc9.dll already loaded in another classloader\n    [junit]     at java.lang.ClassLoader.loadLibrary0\n(ClassLoader.java:1444)\n    [junit]     at java.lang.ClassLoader.loadLibrary\n(ClassLoader.java:1404)\n    [junit]     at java.lang.Runtime.loadLibrary0(Runtime.java:772)\n    [junit]     at java.lang.System.loadLibrary(System.java:832)\n    [junit]     at oracle.jdbc.oci8.OCIDBAccess.logon\n(OCIDBAccess.java:294)\n    [junit]     at oracle.jdbc.driver.OracleConnection.&lt;init&gt;\n(OracleConnection.java:307)\n    [junit]     at \noracle.jdbc.driver.OracleDriver.getConnectionInstance\n(OracleDriver.java:442)\n    [junit]     at oracle.jdbc.driver.OracleDriver.connect\n(OracleDriver.java:321)\n    [junit]     at java.sql.DriverManager.getConnection\n(DriverManager.java:512)\n    [junit]     at java.sql.DriverManager.getConnection\n(DriverManager.java:171)\n    [junit]     at \ncom.verancecorp.EventConverter.Scheduler.DBConnectionBean.connect\n(DBConnectionBean.java:82)\n    [junit]     at \ncom.verancecorp.EventConverter.Scheduler.Connector.establishConnection\n(Connector.java:137)\n    [junit]     at \ncom.verancecorp.EventConverter.Scheduler.Connector.startConnect\n(Connector.java:94)\n    [junit]     at \ncom.verancecorp.EventConverter.Converter.ConvertDateTest.setUp\n(ConvertDateTest.java:29)\n\nI have read about the JUnit custom class loader. I have added this \nline into both\njunit&#92;runner&#92;excluded.properies in the &quot;&lt;junit&gt; &lt;classpath&gt;&quot; and \ndirectly into an updated junit.jar in &lt;ANT&gt;&#92;lib&#92;. to no effect:\n\nexcluded.9=oracle.*\n\nAny suggestions or small examples for dealing with this DB/JUnit \nissue?\n\nThanks\n-Tim\n\n\n\n\n", 
+    "profile": "t7p76n", 
+    "topicId": 7241, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 141492997, 
+    "prevInTime": 7240, 
+    "contentTrasformed": false, 
+    "postDate": "1047945306", 
+    "canDelete": false, 
+    "nextInTopic": 7242, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGI1NW44cStncTAzQGVHcm91cHMuY29tPg=="
+    }
+}

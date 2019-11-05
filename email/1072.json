@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 1073, 
+    "senderId": "6h1LeGOgoVSzBaQjEvjqE4-7b2dv_dp-vy9uQa13G-b5NlG9wmQjjTobHbd0cEg-ZYb5RGwMMiSInE2wf8zVzOQ3d-uL3ThcbA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit and Log4j (Use AspectJ)", 
+    "from": "David Li &lt;david@...&gt;", 
+    "authorName": "David Li", 
+    "msgSnippet": "Hi Matt, I just about to posting something related to this subject. We use both Log4J and JUnit intensively in our codes. Before, we used a modified TestRunner", 
+    "msgId": 1072, 
+    "topicId": 1072, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1653665624\">Hi Matt,<br/>\n<br/>\n  I just about to posting something related to this subject. We use both<br/>\nLog4J and JUnit intensively in our codes. Before, we used a modified<br/>\nTestRunner that initialize Log4J properly and log the result to Log4J.<br/>\nThis modification is not very clean and causes headache in tracking new<br/>\nLog4J version.<br/>\n<br/>\n  We start using AspectJ (www.aspectj.org). It&#39;s a Aspect Oriented<br/>\nProgramming in Java to deal with point cut concern. For detail, please<br/>\nread the aspectj page. With AspectJ, we are able to integrate Log4J with<br/>\nJUnit with a simple Aspect as the following:<br/>\n<br/>\n---<br/>\npackage junit.aspect;<br/>\n<br/>\naspect Log4JRunner {<br/>\n<br/>\n    /* catch the main method of three TestRunner */<br/>\n    pointcut runnerMain():<br/>\n        executions(public static void<br/>\njunit.awtui.TestRunner.main(String[])) ||<br/>\n        executions(public static void<br/>\njunit.textui.TestRunner.main(String[])) ||<br/>\n        executions(public static void<br/>\njunit.swingui.TestRunner.main(String[]));<br/>\n<br/>\n    /* initialize the log4j before executing any codes in main method */<br/>\n    before(): runnerMain() {<br/>\n        org.apache.log4j.BasicConfigurator.configure();<br/>\n       <br/>\norg.apache.log4j.Category.getRoot().setPriority(org.apache.log4j.Priority.DEBUG);<br/>\n    }<br/>\n}<br/>\n---<br/>\n<br/>\nWith that simple aspect, we now have all three TestRunner from JUnit<br/>\nproperly initialize Log4J! <br/>\n<br/>\nTo archive your goal on logging test result to Log4J, you can just write<br/>\nasepct to trap startTest, addError and addFailure in the test runner and<br/>\nlog the event to Log4J. <br/>\n<br/>\nDavid Li<br/>\nDigitalSesame<br/>\n<br/>\nMatthew Bertrand wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; Hi everyone,<br/>\n&gt; <br/>\n&gt; I&#39;m having trouble figuring out how to use Junit in conjunction with Log4j<br/>\n&gt; for logging test results.  Does anyone have experience with this, or with<br/>\n&gt; redirecting Junit output in general?<br/>\n&gt; <br/>\n&gt; Any help appreciated,<br/>\n&gt; <br/>\n&gt; Matt<br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> </span></blockquote></div>", 
+    "prevInTime": 1071, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "988657356", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNBRURCNkNDLjY5MkQ0RjcwQGRpZ2l0YWxzZXNhbWUuY29tPg==", 
+        "referencesHeader": "PERBNTc0RkY4RjREOEQ0MTFCMjE0MDAwOEM3ODY5NkE5MzVFOTMxQGV4Y2hhbmdlLnNjYz4="
+    }
+}

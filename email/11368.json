@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 24, 
+    "nextInTime": 11369, 
+    "senderId": "CA1hOOogU1B8SBM889pN2jjMsGH68H9FqUrmr03xZwGK0s6Y4oX5F6c6nnHhOTryerigS4G3XcJLB_io9El8F-HnacJB_1irw4-a", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit not matching to my needs - execute order shows design flaw ?", 
+    "from": "Curt Sampson &lt;yahoo_sucks@...&gt;", 
+    "authorName": "Curt Sampson", 
+    "msgSnippet": "... I ve been thinking for a while that this is a serious problem in JUnit (and most unit testing frameworks), because it s been such an annoyance for so many", 
+    "msgId": 11368, 
+    "profile": "cjstokyo", 
+    "topicId": 11360, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 110189933, 
+    "messageBody": "<div id=\"ygrps-yiv-1802255008\">On Tue, 6 Jul 2004, hedgi wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;   Now I there is the problem. I want to run &quot;testCommon&quot; first<br/>\n&gt;   which is in the &quot;BasicGetListTest&quot; but when I subclass it with<br/>\n&gt;   &quot;GlucoseGetListTest&quot; it is always executed last. I read some of<br/>\n&gt;   the postings in this newsgroup, but it seems that such kind of<br/>\n&gt;   requirement point a desing flaw and I should somehow rearrange my<br/>\n&gt;   Unit Test Structure to made the tests indepentdant. I&#39;m stuck with<br/>\n&gt;   it.<br/>\n<br/>\n </span></blockquote>I&#39;ve been thinking for a while that this is a serious problem in JUnit<br/>\n(and most unit testing frameworks), because it&#39;s been such an annoyance<br/>\nfor so many people. Let&#39;s face it; a lot of groups of tests do have<br/>\nknown dependencies between tests such that if test A fails, we know that<br/>\nthe output of tests B, C and D are uninteresting. Yet we end up running<br/>\nB, C and D anyway, and then searching through all the error output for<br/>\nthe failure that we know is the &quot;real&quot; one, ignoring all the others as<br/>\nspurious.<br/>\n<br/>\nI would really like a way to be able to express this dependency<br/>\ninformation to the test framework, so that I can get back the<br/>\ninteresting results with fewer uninteresting results. Can anybody<br/>\nthink of a good way to do this?<br/>\n<br/>\nPerhaps a method that returns an ordered list of sets of test names<br/>\nwould do the trick. The sets would be executed in order, with any<br/>\ntest cases not mentioned in any of the sets added to a last, implicit<br/>\nset, and should a test case fail in any set, the later sets would not<br/>\nbe executed at all, just noted as &quot;not executed due to dependency<br/>\nfailures.&quot; Perhaps:<br/>\n<br/>\n    class BaseTestCase {<br/>\n\tpublic String[][] dependencies() {<br/>\n\t    return [];<br/>\n\t}<br/>\n    }<br/>\n<br/>\n    class MyTest extends BaseTestCase {<br/>\n\tpublic String[] dependencies() {<br/>\n\t    return [<br/>\n\t\t[ &quot;testEverythingDependsOnMe&quot; ],<br/>\n\t\t[ &quot;testOne&quot;, &quot;testTwo&quot;, &quot;testThree&quot; ],<br/>\n\t\t[ &quot;testFour&quot; ]<br/>\n\t    ];<br/>\n\t}<br/>\n\t...<br/>\n    }<br/>\n<br/>\nThus, if testTwo breaks; testOne and testThree would still be run, but<br/>\ntestFour would not, since the developer has indicated that he&#39;s not<br/>\ninterested in the result in that case.<br/>\n<br/>\ncjs<br/>\n-- <br/>\nCurt Sampson  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cjs@...\">cjs@...</a>&gt;   +81 90 7737 2974   <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.NetBSD.org\">http://www.NetBSD.org</a><br/>\n    Don&#39;t you know, in this new Dark Age, we&#39;re all light.  --XTC</div>", 
+    "prevInTime": 11367, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1089240564", 
+    "canDelete": false, 
+    "nextInTopic": 11370, 
+    "prevInTopic": 11365, 
+    "headers": {
+        "inReplyToHeader": "PGNjZG1uais2a2dnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNTguMDQwNzA4MDczNzQyMC41MThAYW5nZWxpYy12dGZ3LmN2cG4uY3luaWMubmV0Pg==", 
+        "referencesHeader": "PGNjZG1uais2a2dnQGVHcm91cHMuY29tPg=="
+    }
+}

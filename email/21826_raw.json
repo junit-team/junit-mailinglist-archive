@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 21827, 
+    "senderId": "jqTuBsVYi1O9FkJ_gSDkJuQ7zO5KczeTF8Lbr3F4tP7cOQkovq1g53p3xeBNryD-5yJhUn0Og37gq1OuuVhD-wq6", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Can I capture Stdandard Output of a test", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Please excuse late-Friday flippancy in advance. 1) See if you can change the parser to take (at least optionally) an OutputStream parameter to write output to,", 
+    "msgId": 21826, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 79011 invoked from network); 18 Jul 2009 23:45:10 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m7.grp.re1.yahoo.com with QMQP; 18 Jul 2009 23:45:10 -0000\r\nX-Received: from unknown (HELO mail-ew0-f226.google.com) (209.85.219.226)\n  by mta3.grp.re1.yahoo.com with SMTP; 18 Jul 2009 23:45:10 -0000\r\nX-Received: by ewy26 with SMTP id 26so1606507ewy.37\n        for &lt;junit@yahoogroups.com&gt;; Sat, 18 Jul 2009 16:44:09 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.211.179.6 with SMTP id g6mr3252477ebp.65.1247960649589; Sat, \n\t18 Jul 2009 16:44:09 -0700 (PDT)\r\nIn-Reply-To: &lt;h3qisd+r2vn@...&gt;\r\nReferences: &lt;h3qisd+r2vn@...&gt;\r\nDate: Sat, 18 Jul 2009 19:44:09 -0400\r\nX-Google-Sender-Auth: 961e7b92009538c3\r\nMessage-ID: &lt;4f7da6b90907181644u628d0f7cq48bc5ab539dd66d2@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Can I capture Stdandard Output of a test\r\nX-Yahoo-Group-Post: member; u=341876227; y=dB4h3GlTobs5OZUveezNEVAff8EbsYoW5L1EjIq2i4w\r\nX-Yahoo-Profile: dsaff\r\n\r\nPlease excuse late-Friday flippancy in advance.\n\n1) See if you can change t=\r\nhe parser to take (at least optionally) an\nOutputStream parameter to write =\r\noutput to, rather than going straight\nto System.out.  This will make testin=\r\ng easier now, and extending\neasier in the future, when you use the parser d=\r\nirectly from a GUI or\nweb app.\n\n2) If you said no in under 15 seconds, try =\r\none more time to see if you\ncan change the parser.\n\n3) OK, if you really ca=\r\nn&#39;t change the parser, can you use JUnit 4.7?\nYou could create a CapturedOu=\r\ntput rule like this:\n\npublic class CapturedOutput extends ExternalResource =\r\n{\n   private ByteArrayOutputStream out =3D new ByteArrayOutputStream();\n   =\r\nprivate ByteArrayOutputStream err =3D new ByteArrayOutputStream();\n\n   priv=\r\nate OutputStream originalOut;\n   private OutputStream originalErr;\n\n   publ=\r\nic String getOut() { return out.asString(); // API questionable? }\n   publi=\r\nc String getErr() { return err.asString(); // API questionable? }\n\n   publi=\r\nc void setUp() {\n     originalOut =3D System.out;\n     System.out =3D this.=\r\nout;\n     originalErr =3D System.err;\n     System.err =3D this.err;\n   }\n\n =\r\n  public void tearDown() {\n     System.out =3D originalOut;\n     System.err=\r\n =3D originalErr;\n   }\n}\n\nAnd use it like this:\n\npublic class AssertOnStdou=\r\nt {\n   @Rule CapturedOutput output =3D new CapturedOutput();\n\n   @Test publ=\r\nic void massiveComputationGreetsTheWorld() {\n      new Supercomputer().mass=\r\niveComputation();\n      assertThat(output.getOut(), containsString(&quot;Hello, =\r\nworld!&quot;));\n   }\n}\n\nWould that do it?\n\n   David Saff\n\nOn Fri, Jul 17, 2009 a=\r\nt 3:19 PM, cant_jim&lt;jimcant@...&gt; wrote:\n&gt; How can I capture the standar=\r\nd output of test? =A0I need to check that the messages from the class I&#39;m t=\r\nesting are correct. =A0For example if my class class calls a parser that pr=\r\nint &quot;invalid input at line xx&quot; when it fails, I want to be able go catch th=\r\nat output and compare it to the expected value. =A0If it could be directed =\r\nto a file on a per-test basis, I could do a diff to check it.\n&gt;\n&gt; Any sugge=\r\nstions would be appreciated.\n&gt;\n&gt; Thanks,\n&gt;\n&gt; Jim Cant\n&gt;\n&gt;\n&gt;\n&gt; -------------=\r\n-----------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21819, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21825, 
+    "contentTrasformed": false, 
+    "postDate": "1247960649", 
+    "canDelete": false, 
+    "nextInTopic": 21827, 
+    "prevInTopic": 21825, 
+    "headers": {
+        "inReplyToHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNzE4MTY0NHU2MjhkMGY3Y3E0OGJjNWFiNTM5ZGQ2NmQyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGgzcWlzZCtyMnZuQGVHcm91cHMuY29tPg=="
+    }
+}

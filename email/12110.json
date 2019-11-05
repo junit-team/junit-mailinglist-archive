@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12111, 
+    "senderId": "-NeBOyLdt8pu4CktQm9Lrxur5hIMaQGgBbMfI4sKHuEeCij9pgwEIJKKhU4E86x6IUdJTqTHz4eykUS4R3VgM9Re7KpJ4uSXBUKDw-0ZhQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Best Strategy for testing DAOs - dependency issues", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Don t worry about this. As long as you test some methods on their own, feel free to use those (tested) methods to test others, especially if it s costly to", 
+    "msgId": 12110, 
+    "profile": "nails762", 
+    "topicId": 12106, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-892509345\">MKlaene wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m having some concerns as I write some tests for my DAOs.  My<br/>\n&gt; concern is that I can&#39;t figure out a good way to write these tests<br/>\n&gt; without relying on other DAO methods.<br/>\n<br/>\n </span></blockquote>Don&#39;t worry about this. As long as you test some methods on their own, <br/>\nfeel free to use those (tested) methods to test others, especially if <br/>\nit&#39;s costly to avoid doing it.<br/>\n<br/>\nThink of testing List.add() and List.contains(). You can&#39;t invoke <br/>\ncontains() without having invoked add(), but that doesn&#39;t make it &quot;bad <br/>\nform&quot; to use add() to test contains(); or even to use contains() to test <br/>\nadd()!<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;ve looked at DBUnit.  The problem here is that I still have to<br/>\n&gt; populate my bean from the database - then I&#39;m back to calling a DAO<br/>\n&gt; method like getEmployeeById in every method - an undesirable<br/>\n&gt; dependency.  Another option I guess would be to have some DAO<br/>\n&gt; methods used only for testing but this seems overkill.  I&#39;d rather<br/>\n&gt; use the database during testing too, not mock objects.<br/>\n<br/>\n </span></blockquote>Another option is to test using the back door: to test createEmployee(), <br/>\nuse raw JDBC and a SELECT statement to ensure that the record is <br/>\nactually there.<br/>\n<br/>\nThat said, why would you rather use the database? Are you concerned that <br/>\nyour JDBC driver doesn&#39;t work?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; So, I guess my questions are:<br/>\n&gt; <br/>\n&gt; 1.)Is there a good way to test DAOs in isolation, without relying on<br/>\n&gt; other DAO methods?<br/>\n<br/>\n </span></blockquote>Yes: use the back door (raw JDBC) to make assertions about database <br/>\nstate at the end of the test.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 2.)Does it really matter that much anyway if I use other DAO<br/>\n&gt; methods?  I mean, the goal is for ALL tests to pass anyway.  It can<br/>\n&gt; be confusing if your testDeleteEmployee method fails due to a<br/>\n&gt; failure in createEmployee which you have to call first, but I guess<br/>\n&gt; it wouldn&#39;t take long to figure out what really happened.<br/>\n<br/>\n </span></blockquote>You could try this and observe the problems. I don&#39;t think there are <br/>\nmany when the problem is small, but over time, testing your DAO against <br/>\na real database becomes increasingly risky. Chapter 10 of _JUnit <br/>\nRecipes_ describes this in detail.<br/>\n<br/>\nTake care.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nPredictable, repeatable, quality delivery</div>", 
+    "prevInTime": 12109, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1097180016", 
+    "canDelete": false, 
+    "nextInTopic": 12112, 
+    "prevInTopic": 12106, 
+    "headers": {
+        "inReplyToHeader": "PGNrMzg5cStoZ3E0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxNjVBMzcwLjgwNzA4MDFAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNrMzg5cStoZ3E0QGVHcm91cHMuY29tPg=="
+    }
+}

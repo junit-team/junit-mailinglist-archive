@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 18205, 
+    "senderId": "9okJb5UCv78HZS5FrKCD8WyPh9Whxj65ZhjSKg-9cliIMYB4LaCW4Y0me5ijh1cYCBou897IeIUqvwAeNMEOXSegVP5x0_64Tas4KpfBzGxOLgZmLA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Behavior of optional string messages for assert methods?", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "I agree that it looks idiotic, but the behavior that the OP is seeing is exactly how JUnit 3.8.1 has always worked /for assertions of primitives/. Look at the", 
+    "msgId": 18204, 
+    "profile": "tibbettj_at_verdi_sra_com", 
+    "topicId": 18190, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "messageBody": "<div id=\"ygrps-yiv-287329606\">I agree that it looks idiotic, but the behavior that the OP is seeing is <br/>\nexactly how JUnit 3.8.1 has always worked /for assertions of <br/>\nprimitives/. Look at the source of the junit.framework.Assert class. All <br/>\nof the assert*()s that compare primitives ultimately call fail(), with a <br/>\nnull message argument if no message was used as the first argument to <br/>\nassert*(). This is the &#39;null&#39; that you see in the test result printout. <br/>\nIs this horrible user feedback? Yes. Note that the assertions for <br/>\nStrings and Objects, instead of calling fail(), throw a <br/>\nComparisonFailure object. This is an extension of AssertionFailedError <br/>\nthat crafts an exception message string that&#39;s a bit more user-friendly <br/>\n(i.e. the infamous &quot;expected &lt;....&gt; but was &lt;...&gt;&quot; message).<br/>\n<br/>\nIIRC, the junit-addons package <br/>\n(<a rel=\"nofollow\" target=\"_blank\" href=\"http://sourceforge.net/projects/junit-addons)\">http://sourceforge.net/projects/junit-addons)</a> has an alternative Assert <br/>\nclass that prints out much nicer exception messages.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; I&#39;ve never heard of such behaviour. What version of JUnit are you using?<br/>\n&gt; --<br/>\n&gt; Stephen Smith, MEng (Wales).<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.stephen-smith.co.uk/\">http://www.stephen-smith.co.uk/</a> &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.stephen-smith.co.uk/\">http://www.stephen-smith.co.uk/</a>&gt;<br/>\n&gt; <br/>\n&gt; yogamatt1970 wrote:<br/>\n&gt;  &gt; If I leave it like this:<br/>\n&gt;  &gt; assertTrue(spannedString.indexOf(sample)&gt; -1);<br/>\n&gt;  &gt; I see the null message when the assertion fails but if I change it to<br/>\n&gt;  &gt; this:<br/>\n&gt;  &gt; assertTrue(&quot;hello&quot;,spannedString.indexOf(sample)&gt; -1);<br/>\n&gt;  &gt; I see the message hello get printed to stout.<br/>\n&gt;  &gt; This seems to happen with most (if not all) of the Junit assert<br/>\n&gt;  &gt; methods for me.<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> &lt;mailto:junit%40yahoogroups.com&gt;, <br/>\n&gt; didoss@... wrote:<br/>\n&gt;  &gt;&gt; What, exactly, does your assert look like your test?<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt; It sounds like you have used the signature that expects a string and<br/>\n&gt;  &gt; the assertion argument(s), instead of using the one with just the<br/>\n&gt;  &gt; assertion argument(s),...though I&#39;ve never tried it, to see if I get<br/>\n&gt;  &gt; the results you are seeing, and I&#39;ve never seen the results you are<br/>\n&gt;  &gt; seeing to know of another reason why you would get it.<br/>\n&gt;  &gt;&gt; Please paste your assertion, so that we can help you further.<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt; thanks,<br/>\n&gt;  &gt;&gt; Dianne<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt; -------------- Original message --------------<br/>\n&gt;  &gt;&gt; From: &quot;yogamatt1970&quot; &lt;yogamatt1970@...&gt;<br/>\n&gt;  &gt;&gt; OK, apologies in advance if this has been asked before - I searched<br/>\n&gt;  &gt;&gt; around the forum here and could not find an answer to my question:<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt; I&#39;ve noticed that if I don&#39;t supply the optional string argument to<br/>\n&gt;  &gt;&gt; many (perhaps all) of Junit&#39;s assert methods, I get an error message<br/>\n&gt;  &gt;&gt; that looks like this:<br/>\n&gt;  &gt;&gt; [junit] null<br/>\n&gt;  &gt;&gt; [junit] junit.framework.AssertionFailedError<br/>\n&gt;  &gt;&gt;<br/>\n&gt;  &gt;&gt; I find this to be confusing. However, if I include the optional<br/>\n&gt;  &gt;&gt; string argument, then that message is displayed in the output.<br/>\n&gt;  &gt;&gt; I have a very high opinion of the Junit framework and find it hard to<br/>\n&gt;  &gt;&gt; believe that the null message is standard behavior. It feels so<br/>\n&gt;  &gt;&gt; clunky, almost as if Junit does not check to see if the optional<br/>\n&gt;  &gt;&gt; argument was passed or not. My guess is that there&#39;s a property<br/>\n&gt;  &gt;&gt; somewhere which allows me disable the null error but I can&#39;t find it.<br/>\n&gt;  &gt;&gt; My other option is to just add a string argument to all of the<br/>\n&gt;  &gt;&gt; asserts in all of my unit tests (at this point, not that many although<br/>\n&gt;  &gt;&gt; it would still be a pain and would probably take me at least a few<br/>\n&gt;  &gt; hours).<br/>\n&gt;  &gt;&gt; Any and all help is appreciated. </span></blockquote></div>", 
+    "prevInTime": 18203, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1161713026", 
+    "canDelete": false, 
+    "nextInTopic": 18208, 
+    "prevInTopic": 18201, 
+    "headers": {
+        "inReplyToHeader": "PDQ1M0QzRTcyLjEwNzAwMDJAc3RlcGhlbi1zbWl0aC5jby51az4=", 
+        "messageIdInHeader": "PDQ1M0U1NTgyLjQwNTAwMDJAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "referencesHeader": "PGVoaXVxNitsczUwQGVHcm91cHMuY29tPiA8NDUzRDNFNzIuMTA3MDAwMkBzdGVwaGVuLXNtaXRoLmNvLnVrPg=="
+    }
+}

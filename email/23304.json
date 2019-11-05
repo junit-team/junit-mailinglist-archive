@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 23305, 
+    "senderId": "QkBjdH-wYOBw8-QI8QaKWh-G8vLGbjVb-W_AixIaB8pUZsY4soj3S8Bp8Xb-QkjXmveeJULX9z4zOXpFDF9dftyz", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing a helper class with a factory method", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Doug, I ve found that discussions about what constitutes a unit test vs a developer test can often be improved by focusing on the goals. If your current", 
+    "msgId": 23304, 
+    "profile": "dsaff", 
+    "topicId": 23294, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1386838300\">Doug,<br/>\n<br/>\nI&#39;ve found that discussions about what constitutes a &quot;unit test&quot; vs a<br/>\n&quot;developer test&quot; can often be improved by focusing on the goals.<br/>\n<br/>\nIf your current implementation is sufficient to catch the bugs you<br/>\ncare about, and it runs fast enough in the situations you wish it did,<br/>\nthen you&#39;re good to go.  There&#39;s several situations in which you might<br/>\nwant to consider redesigning to provide more isolation and<br/>\nflexibility:<br/>\n<br/>\n1) You want to hypothetically test situations which are difficult to<br/>\nsimulate with a real database (for example, what if the initial<br/>\nconnection works, but subsequent calls to the database time out?)<br/>\n2) Connections to the database are slow enough that your personal<br/>\ndevelopment rhythm stalls.<br/>\n3) The test database you want to use is not reliable enough, or is not<br/>\navailable everywhere you wish you could run the tests.<br/>\n<br/>\nIn those cases, you might consider using a test double for the<br/>\ndatabase, to isolate the behavior of SQLHelper from the behavior,<br/>\nperformance, and availability of the underlying database.<br/>\n<br/>\nDoes that help?<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thu, Feb 24, 2011 at 11:13 AM, douggiefox &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:paul@...\">paul@...</a>&gt; wrote:<br/>\n&gt; Hi<br/>\n&gt;<br/>\n&gt; I&#39;m refactoring and I&#39;ve created a helper class that I&#39;m trying to test.<br/>\n&gt;<br/>\n&gt; The code I end up with is this:<br/>\n&gt;<br/>\n&gt; public class SQLHelper {<br/>\n&gt;<br/>\n&gt;  def connection<br/>\n&gt;  String url = &quot;urltodata&quot;<br/>\n&gt;  String username = &quot;&quot;<br/>\n&gt;  String password = &quot;&quot;<br/>\n&gt;  String driver = &quot;com.driver&quot;<br/>\n&gt;<br/>\n&gt;  def ApproachSQLHelper() {<br/>\n&gt;<br/>\n&gt;    this.connection = groovy.sql.Sql.newInstance(this.url, this.username, this.password, this.driver)<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; and my test looks a little like this:<br/>\n&gt;<br/>\n&gt; class SQLHelperTests extends GrailsUnitTestCase {<br/>\n&gt;<br/>\n&gt;    def helper<br/>\n&gt;<br/>\n&gt;    protected void setUp() {<br/>\n&gt;        super.setUp()<br/>\n&gt;        helper = new SQLHelper()<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    protected void tearDown() {<br/>\n&gt;        super.tearDown()<br/>\n&gt;        helper = null<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    void testOpenConnection() {<br/>\n&gt;      assert helper.connection instanceof groovy.sql.Sql<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; It all works and passes but my question is this.  The helper class uses &quot;newInstance&quot; which unless given a correct url and a valid driver will throw an exception.  So in providing this information it&#39;s making me think this is more an integration test rather than a unit test.  Am I off course here?<br/>\n&gt;<br/>\n&gt; Best DF<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23303, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1299085124", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 23294, 
+    "headers": {
+        "inReplyToHeader": "PGlrNjA0Mis3bmQ0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGk9ZXJpWnMxOXBRckI9V2pEb09lU2Z2QUM3Sjk0N2Itc3F3RTZObUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGlrNjA0Mis3bmQ0QGVHcm91cHMuY29tPg=="
+    }
+}

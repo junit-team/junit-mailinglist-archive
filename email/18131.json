@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18132, 
+    "senderId": "4KkaUacAJwF-X5gp73iG2GzWLZukSSiNyTv01Sevivozrg5G-KdCrbWw05oFpHAQkLlR8bYG4Wt1Y4zF1SP4LbmmwQ7PoLZb0zxv413YQw", 
+    "systemMessage": true, 
+    "subject": "Testing Static block, members, class with JUnit", 
+    "from": "&quot;mcdonald6692&quot; &lt;bill.mcdonald@...&gt;", 
+    "authorName": "mcdonald6692", 
+    "msgSnippet": "I don t have a lot of experience with JUnit, so please keep this in mind when you respond. BACKGROUND: I have a class under test that uses a static block to", 
+    "msgId": 18131, 
+    "profile": "mcdonald6692", 
+    "topicId": 18131, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 285803759, 
+    "messageBody": "<div id=\"ygrps-yiv-28839672\">I don&#39;t have a lot of experience with JUnit, so please keep this in <br/>\nmind when you respond.<br/>\n<br/>\nBACKGROUND:<br/>\n<br/>\nI have a class under test that uses a static block to initialize a <br/>\nstatic member.  It serves as a lookup table.<br/>\n<br/>\npublic class StateAbbrev {<br/>\n  // static list of all the abbreviations.<br/>\n  private static List accronyms = new ArrayList();  <br/>\n<br/>\n  private String text = &quot;&quot;;<br/>\n<br/>\n/*<br/>\n * HERE&#39;S MY STATIC BLOCK...<br/>\n */<br/>\n  static {<br/>\n    DataSource ds = DataSource.getInstance();<br/>\n    List strings = ds.getAccronyms();<br/>\n    for (Iterator i = strings.iterator(); i.hasNext(); )<br/>\n      accronyms.add(new StateAbbrev((String)i.next()) );<br/>\n  }<br/>\n<br/>\n  public static StateAbbrev lookup(String letters)<br/>\n  {<br/>\n    for (Iterator i = accronyms.iterator(); i.hasNext(); )<br/>\n    {<br/>\n      StateAbbrev abbrev (StateAbbrev) i.next();<br/>\n      String accronym = abbrev.getText();<br/>\n      if (accronym.equals(letters))<br/>\n        return abbrev;<br/>\n    }<br/>\n    return null;<br/>\n  }<br/>\n<br/>\n  public String getText()<br/>\n  {<br/>\n    return this.text;<br/>\n  }<br/>\n}<br/>\n<br/>\npublic class TestStateAbbrev extends TestClass<br/>\n{<br/>\n<br/>\n  public void setUp() throws Exception<br/>\n  {<br/>\n    // Initialize DataSource to connect to database.<br/>\n    ctx.bind(&quot;datasourcepath&quot;, ds);<br/>\n  }<br/>\n<br/>\n  //<br/>\n  // TESTS...<br/>\n  //<br/>\n<br/>\n  public testLookupAZ()<br/>\n  {<br/>\n    assertNotNull(StateAbbrev.lookup(&quot;AZ&quot;));<br/>\n  }<br/>\n<br/>\n  public testLookupXX()<br/>\n  {<br/>\n    assertNull(StateAbbrev.lookup(&quot;XX&quot;));<br/>\n  }<br/>\n<br/>\n  public testLookupFail()<br/>\n  {<br/>\n    // break ds connection to make it fail. <br/>\n    ctx.unbind(&quot;datasourcepath&quot;);<br/>\n<br/>\n    assertNotNull(StateAbbrev.lookup(&quot;AZ));<br/>\n<br/>\n    // reset ds so that other tests work correctly.<br/>\n    ctx.bind(&quot;datasourcepath&quot;, ds);<br/>\n  }<br/>\n}<br/>\n<br/>\nQUESTION:<br/>\n<br/>\nThe problem is that if the testLookupFail() method is the first one <br/>\nto load class StateAbbrev, then StateAbbrev.accronyms.size() will <br/>\nequal 0.  When the other tests are run, they will not work since <br/>\nStateAbbrev.accronyms is static and is already loaded and initialized <br/>\nto an empty list.  This brings up the general question, &quot;How do you <br/>\ntest static blocks, classes and data-members?&quot; (I know the example is <br/>\nrather simplistic, but hopefully it doesn&#39;t distract from my <br/>\nquestion).<br/>\n<br/>\nCan I unload the class so that its loaded again and the static block <br/>\ninitializes the member correctly?  I didn&#39;t want to have to move the <br/>\ntestLookupFail() test outside of TestStateAbbrev either.</div>", 
+    "prevInTime": 18130, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1160678180", 
+    "canDelete": false, 
+    "nextInTopic": 18132, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 3197, 
+    "senderId": "04k6U8d39ExVoi1jGXCwFxiF5BwLxaTh78XF3xd1dVE0X2hRZeeLxbzIUoU9QZygJHRqPXVkPdA", 
+    "systemMessage": false, 
+    "subject": "Re: Setup", 
+    "from": "pholser@...", 
+    "authorName": "pholser@yahoo.com", 
+    "msgSnippet": "... enough ... find ... if i m not mistaken, you should never depend on test methods in a class being executed in any particular order.  so you could never ", 
+    "msgId": 3196, 
+    "rawEmail": "Return-Path: &lt;pholser@...&gt;\r\nX-Sender: pholser@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 7 Nov 2001 13:13:02 -0000\r\nReceived: (qmail 69097 invoked from network); 7 Nov 2001 13:13:01 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m6.grp.snv.yahoo.com with QMQP; 7 Nov 2001 13:13:01 -0000\r\nReceived: from unknown (HELO n23.groups.yahoo.com) (216.115.96.73)\n  by mta1.grp.snv.yahoo.com with SMTP; 7 Nov 2001 13:13:01 -0000\r\nX-eGroups-Return: pholser@...\r\nReceived: from [10.1.2.52] by n23.groups.yahoo.com with NNFMP; 07 Nov 2001 13:13:00 -0000\r\nDate: Wed, 07 Nov 2001 13:12:56 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Setup\r\nMessage-ID: &lt;9sbc0o+v0qk@...&gt;\r\nIn-Reply-To: &lt;001301c16779$786eb6f0$102a623e@Nusco&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1891\r\nX-Mailer: eGroups Message Poster\r\nFrom: pholser@...\r\nX-Yahoo-Profile: pholser\r\n\r\n--- In junit@y..., &quot;Paolo Perrotta&quot; &lt;pperrotta@i...&gt; wrote:\n&gt; &gt; setUp and tear down are used for each testcase, but it would be \nenough\n&gt; &gt; to run them once. There is an example in the FAQ but I couldn&#39;t \nfind\n&gt; &gt; out, how to get it running.\n&gt; \n&gt; The rationale of the system is that each test must be independent\n&gt; of others.  That&#39;s why setUp() and tearDown() are called for each\n&gt; single test case. Why do you want to setUp and tearDown your text\n&gt; fixture only once?\n&gt; \n&gt; Anyway, if you really want to do this you can do either of these\n&gt; two ugly things:\n&gt; \n&gt; - Write your own testSetUp() method as the first test method in the\n&gt; class and testTearDown() as the last test method in the class.\n&gt; Pretty ugly, but it should work. I didn&#39;t try it myself, so I&#39;m not\n&gt; 100% sure it will.\n\nif i&#39;m not mistaken, you should never depend on test methods in a\nclass being executed in any particular order.  so you could never\nguarantee that a testSetUp() method would be called first, nor a\ntestTearDown() method called last (short of altering the framework).\n\ntry writing a subclass of TestSetup, whose setUp() and tearDown()\nperform setup/teardown of test fixture once for the Test object the\nTestSetup decorates.  e.g.:\n\npublic class DatabaseSetup extends TestSetup\n{\n  public DatabaseSetup(Test test)\n  {\n    super(test);\n  }\n\n  protected void setUp() throws Exception\n  {\n    // create tables, add rows, etc.\n  }\n\n  protected void tearDown() throws Exception\n  {\n    // drop tables\n  }\n}\n\nthen use your TestSetup in a test class&#39;s suite() method:\n\npublic class MyTest extends TestCase\n{\n  public static Test suite()\n  {\n    return new DatabaseSetup(new TestSuite(MyTest.class));\n  }\n}\n\nor, if it&#39;s test fixture like objects that your test class need to\naccess directly, make them attributes of the test class, and\ninitialize them in the test class&#39;s constructor rather than in\nsetUp().\n\n--p\n\n\n", 
+    "profile": "pholser", 
+    "topicId": 3180, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3195, 
+    "contentTrasformed": false, 
+    "postDate": "1005138776", 
+    "canDelete": false, 
+    "nextInTopic": 3206, 
+    "prevInTopic": 3195, 
+    "headers": {
+        "inReplyToHeader": "PDAwMTMwMWMxNjc3OSQ3ODZlYjZmMCQxMDJhNjIzZUBOdXNjbz4=", 
+        "messageIdInHeader": "PDlzYmMwbyt2MHFrQGVHcm91cHMuY29tPg=="
+    }
+}

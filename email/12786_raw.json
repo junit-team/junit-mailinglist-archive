@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 12787, 
+    "senderId": "XryPwItDojwm_613rLTVIv1g7S7uWHwaoRW5d1SF4q-bqVR4AvM7EaiH1grKsOfaYJkBETHwLvD3zM-r1cqWoMmSJLIEZW2BYVG58A", 
+    "systemMessage": true, 
+    "subject": "Interceptor usage in MockEJB", 
+    "from": "&quot;Ian Priest&quot; &lt;ian_priest@...&gt;", 
+    "authorName": "Ian Priest", 
+    "msgSnippet": "", 
+    "msgId": 12786, 
+    "rawEmail": "Return-Path: &lt;ian_priest@...&gt;\r\nReceived: (qmail 66603 invoked from network); 2 Feb 2005 16:57:01 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m22.grp.scd.yahoo.com with QMQP; 2 Feb 2005 16:57:01 -0000\r\nReceived: from unknown (HELO n7a.bulk.scd.yahoo.com) (66.94.237.41)\n  by mta3.grp.scd.yahoo.com with SMTP; 2 Feb 2005 16:57:01 -0000\r\nReceived: from [66.218.66.59] by n7.bulk.scd.yahoo.com with NNFMP; 02 Feb 2005 16:56:49 -0000\r\nReceived: from [66.218.66.78] by mailer8.bulk.scd.yahoo.com with NNFMP; 02 Feb 2005 16:56:49 -0000\r\nX-Sender: ian_priest@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 5706 invoked from network); 1 Feb 2005 17:19:06 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m8.grp.scd.yahoo.com with QMQP; 1 Feb 2005 17:19:06 -0000\r\nReceived: from unknown (HELO hotmail.com) (64.4.56.33)\n  by mta5.grp.scd.yahoo.com with SMTP; 1 Feb 2005 17:19:06 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Tue, 1 Feb 2005 09:19:02 -0800\r\nMessage-ID: &lt;BAY101-F23EFC0A8AFC244DA4B8DAFFF7D0@...&gt;\r\nReceived: from 194.75.128.2 by by101fd.bay101.hotmail.msn.com with HTTP;\n\tTue, 01 Feb 2005 17:18:55 GMT\r\nX-Originating-Email: [ian_priest@...]\r\nX-Sender: ian_priest@...\r\nTo: junit@yahoogroups.com\r\nBcc: \r\nDate: Tue, 01 Feb 2005 17:18:55 +0000\r\nMime-Version: 1.0\r\nContent-Type: text/plain; format=flowed\r\nX-OriginalArrivalTime: 01 Feb 2005 17:19:02.0342 (UTC) FILETIME=[1FDF3660:01C50882]\r\nX-eGroups-Remote-IP: 64.4.56.33\r\nFrom: &quot;Ian Priest&quot; &lt;ian_priest@...&gt;\r\nSubject: Interceptor usage in MockEJB\r\nX-Yahoo-Group-Post: member; u=213216731\r\nX-Yahoo-Profile: ianpriest2000\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 02 Feb 2005 16:56:45 -0000\r\nX-eGroups-Remote-IP: 66.94.237.41\r\n\r\n\n&gt;Hi,\n&gt;\n&gt;I&#39;m trying to use an interceptor in MockEJB, but it doesn&#39;t seem to be \n&gt;intercepting.\n&gt;\n&gt;I have a bean class that has method...\n&gt;\n&gt;\tpublic String echoStringUpper(String input)\n&gt;\t{\n&gt;\t\tSimpleHelper helper = new SimpleHelper();\n&gt;\t\tString upper = helper.toUpper(input);\n&gt;\t\treturn upper;\n&gt;\t}\n&gt;\n&gt;and in SimpleHelper the toUpper method is...\n&gt;\n&gt;\tpublic String toUpper(String in) {\n&gt;\t\treturn in.toUpperCase();\n&gt;\t}\n&gt;\n&gt;I have set up a unit test with an interceptor as follows. (The setup method \n&gt;publishes the bean to mock jndi in the usual manner).\n&gt;\n&gt;\tpublic void testEchoStringUpper() throws Exception {\n&gt;\n&gt;\t\tAspectSystem aspectSystem = AspectSystemFactory.getAspectSystem();\n&gt;\n&gt;\t\tClassPointcut simpleHelperPointcut = new ClassPointcut(\n&gt;\t\t\t\tSimpleHelper.class,\n&gt;\t\t\t\tfalse);\n&gt;\n&gt;\t\tInvocationRecorder recorder = new InvocationRecorder();\n&gt;\t\taspectSystem.add(simpleHelperPointcut, recorder);\n&gt;\n&gt;\t\tObject homeObj = context.lookup(SimpleHome.JNDI_NAME);\n&gt;\t\tSimpleHome home = (SimpleHome) PortableRemoteObject.narrow(\n&gt;\t\t\t\thomeObj,\n&gt;\t\t\t\tSimpleHome.class\n&gt;\t\t);\n&gt;\t\tSimple bean = home.create();\n&gt;\n&gt;\t\tString retval = bean.echoStringUpper(&quot;Hello World&quot;);\n&gt;\n&gt;\t\tList methods = recorder.getMethodInvocationList();\n&gt;\t\tSystem.out.println(&quot;contexts...&quot;);\n&gt;\t\tfor (Iterator iter = methods.iterator(); iter.hasNext();)\n&gt;\t\t{\n&gt;\t\t\tInvocationContext element = (InvocationContext) iter.next();\n&gt;\t\t\tSystem.out.println(element);\n&gt;\t\t}\n\n&gt;\t\tInvocationContext toUpperInvocationCxt = recorder.findByTargetMethod(\n&gt;\t\t\t\t&quot;toUpper&quot;\n&gt;\t\t);\n&gt;\t\tassertNotNull(&quot;toUpper wasn&#39;t invoked&quot;, toUpperInvocationCxt);\n&gt;\n&gt;\t\tString input = (String) (toUpperInvocationCxt.getParamVals()[0]);\n&gt;\t\tassertEquals(&quot;Wrong value passed to toUpper()&quot;, &quot;Hello World&quot;, input);\n&gt;\n&gt;\t\tassertEquals(&quot;Returned string was incorrect&quot;, &quot;Hello World&quot;, retval);\n&gt;\n&gt;\t}\n&gt;\n&gt;The println bit shows that the recorder doesn&#39;t record any invocations, and \n&gt;the findByTargetMethod always returns null.\n&gt;\n&gt;I&#39;ve tried various combinations of ClassPointcut, ClassPatternPointcut and \n&gt;MethodPatternPointcut, but nothing seems to pick up the call to \n&gt;SimpleHelper.toUpper().\n&gt;\n&gt;Can anyone help, or explain why it can&#39;t be done?\n&gt;\n&gt;Cheers,\n&gt;Ian.\n\n\n\n\n\n\n", 
+    "profile": "ianpriest2000", 
+    "topicId": 12786, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 213216731, 
+    "prevInTime": 12785, 
+    "contentTrasformed": false, 
+    "postDate": "1107278335", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEJBWTEwMS1GMjNFRkMwQThBRkMyNDREQTRCOERBRkZGN0QwQHBoeC5nYmw+"
+    }
+}

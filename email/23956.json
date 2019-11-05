@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 20, 
+    "nextInTime": 23957, 
+    "senderId": "o-iOp_9mxYvmbo9x9MfkZh2_dPneHyRBOq7UDTBeBgOL1gI6HDz4jMCDPuehCwu-JO7tCPsFKUqQVjEnybyatSTP8C1VRo3QDXrYi-hm", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Feedback Required | Extending Junit to perform Data Driven Testing", 
+    "from": "Esko Luontola &lt;esko.luontola@...&gt;", 
+    "authorName": "Esko Luontola", 
+    "msgSnippet": "... Instead of expanding JUnit beyond what fits its design (i.e. tests are expressed as methods in a single nesting level), it s possible to use another", 
+    "msgId": 23956, 
+    "profile": "egeluontola", 
+    "topicId": 23950, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 395435659, 
+    "messageBody": "<div id=\"ygrps-yiv-535886026\">Anuj wrote on 28.8.2012 11:53:<br/>\n<blockquote><span title=\"ireply\"> &gt; 3)I somehow get the feeling(and it could be simply me and if that is the<br/>\n&gt; case, please ignore me) that the aspect of performing Data Driven<br/>\n&gt; Testing should be given more time, and proper thought should be put in<br/>\n&gt; around its design and the way it will be made available to the end<br/>\n&gt; users. I feel we should not rush into developing a feature focusing a<br/>\n&gt; single use case/requirement, rather we should try to first gather and<br/>\n&gt; understand all the aspects of Data Driven Testing and then develop that<br/>\n&gt; requirement as a whole rather than in pieces.<br/>\n<br/>\n </span></blockquote>Instead of expanding JUnit beyond what fits its design (i.e. tests are <br/>\nexpressed as methods in a single nesting level), it&#39;s possible to use <br/>\nanother testing framework which is more expressive and can express such <br/>\ntests out-of-the-box.<br/>\n<br/>\nHere is an example of how it can be done in Specsy (<a rel=\"nofollow\" target=\"_blank\" href=\"http://specsy.org/)\">http://specsy.org/)</a> <br/>\nthanks to Specsy&#39;s closure-based approach and unlimited nesting of <br/>\ntests. For now it&#39;s in Scala, but Specsy 2 will have also Java and <br/>\nGroovy frontends (and the backend will be rewritten in Java to avoid a <br/>\ndependency to the massive Scala library).<br/>\n<br/>\nimport org.junit.runner.RunWith<br/>\nimport org.specsy.scala._<br/>\nimport org.hamcrest.MatcherAssert.assertThat<br/>\nimport org.hamcrest.Matchers._<br/>\n<br/>\n@RunWith(classOf[Specsy])<br/>\nclass MultipleParameterizedSpec extends Spec {<br/>\n   shareSideEffects() // performance optimization; all state in these <br/>\ntests is immutable<br/>\n<br/>\n   &quot;adding ints&quot; &gt;&gt; {<br/>\n     val parameters = List(<br/>\n       (5, 2, 3),<br/>\n       (11, 5, 6))<br/>\n<br/>\n     for ((sum, a, b) &lt;- parameters) {<br/>\n       a + &quot; + &quot; + b &gt;&gt; {<br/>\n         assertThat(a + b, is(sum))<br/>\n       }<br/>\n     }<br/>\n   }<br/>\n<br/>\n   &quot;adding strings&quot; &gt;&gt; {<br/>\n     val parameters = List(<br/>\n       (&quot;foobar&quot;, &quot;foo&quot;, &quot;bar&quot;),<br/>\n       (&quot;barfoo&quot;, &quot;bar&quot;, &quot;foo&quot;))<br/>\n<br/>\n     for ((sum, a, b) &lt;- parameters) {<br/>\n       a + &quot; + &quot; + b &gt;&gt; {<br/>\n<br/>\n         &quot;normal concatenation&quot; &gt;&gt; {<br/>\n           assertThat(a + b, is(sum))<br/>\n         }<br/>\n         &quot;appending StringBuilder&quot; &gt;&gt; {<br/>\n           val sb = new StringBuilder<br/>\n           sb.append(a)<br/>\n           sb.append(b)<br/>\n           assertThat(sb.toString(), is(sum))<br/>\n         }<br/>\n       }<br/>\n     }<br/>\n   }<br/>\n}<br/>\n<br/>\nWhen that is executed, the names of the tests will be in a tree like this:<br/>\n<br/>\nMultipleParameterizedSpec<br/>\n- adding ints<br/>\n   - 2 + 3<br/>\n   - 5 + 6<br/>\n- adding strings<br/>\n   - foo + bar<br/>\n     - using concatenation<br/>\n     - using StringBuilder<br/>\n   - bar + foo<br/>\n     - using concatenation<br/>\n     - using StringBuilder<br/>\n<br/>\n(Though at least in IDEA 11, using the current JUnit runner, the tree <br/>\nvisualization is a bit buggy. That will be fixed when I finish <br/>\nimplementing the Jumi test runner (<a rel=\"nofollow\" target=\"_blank\" href=\"http://jumi.fi/)\">http://jumi.fi/)</a> which among other <br/>\nthings supports nested tests natively.)<br/>\n<br/>\n-- <br/>\nEsko Luontola<br/>\nwww.orfjackal.net</div>", 
+    "prevInTime": 23955, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1346162564", 
+    "canDelete": false, 
+    "nextInTopic": 23957, 
+    "prevInTopic": 23955, 
+    "headers": {
+        "inReplyToHeader": "PGsxaTB1cCtnMGRwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDUwM0NDRjg0LjMwMjA2MDlAZ21haWwuY29tPg==", 
+        "referencesHeader": "PGsxaTB1cCtnMGRwQGVHcm91cHMuY29tPg=="
+    }
+}

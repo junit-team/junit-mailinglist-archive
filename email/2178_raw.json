@@ -1,0 +1,29 @@
+{
+    "topicId": 2153, 
+    "postDate": "996485515", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Neil Swingler &lt;nswingler@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "zEv2q9vQuJeJ2z0sYoxJ5TSrWbZBmGLN79TSFx44f2CwqNl_FAGpX582_LtegDOsZ7Qk01Hi9ri64UmaVUDCygjCz3KV4PSkpDoNbg", 
+    "nextInTime": 2179, 
+    "userId": 0, 
+    "prevInTime": 2177, 
+    "prevInTopic": 2168, 
+    "headers": {
+        "inReplyToHeader": "PEY2WHU5OHNNRDl4VDNsRW1GV3EwMDAwYzk2MEBob3RtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PEZQRU5JRktQTkRQR0xOTlBMUExFR0VQSUNPQUEubmVpbC5zd2luZ2xlckBpbmdlbnRhLmNvbT4="
+    }, 
+    "authorName": "Neil Swingler", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "I always compare arrays like this: assertEquals( Arrays.asList(array1), Arrays.asList(array2) ); Not very helpful diagnostics if the array length is long but", 
+    "contentTrasformed": false, 
+    "msgId": 2178, 
+    "nextInTopic": 2179, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;neil.swingler@...&gt;\r\nX-Sender: neil.swingler@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 30 Jul 2001 09:28:40 -0000\r\nReceived: (qmail 39722 invoked from network); 30 Jul 2001 09:28:40 -0000\r\nReceived: from unknown (10.1.10.26) by l7.egroups.com with QMQP; 30 Jul 2001 09:28:40 -0000\r\nReceived: from unknown (HELO pat.bath.ac.uk) (138.38.32.2) by mta1 with SMTP; 30 Jul 2001 09:28:40 -0000\r\nReceived: from ss1.bath.ac.uk ([138.38.32.41] helo=bath.ac.uk ident=mmdf) by pat.bath.ac.uk with smtp (Exim 3.12 #1) id 15R9Lq-0003M1-00 for junit@yahoogroups.com; Mon, 30 Jul 2001 10:28:38 +0100\r\nReceived: from fwbath1.bids.ac.uk by ss1.bath.ac.uk id aa06011; 30 Jul 101 10:28 BST\r\nTo: junit@yahoogroups.com\r\nMMDF-Warning:  Parse error in original version of preceding line at ss1.bath.ac.uk\r\nSubject: RE: [junit] assertEquals(array1, array2)\r\nDate: Mon, 30 Jul 2001 10:31:55 +0100\r\nMessage-ID: &lt;FPENIFKPNDPGLNNPLPLEGEPICOAA.neil.swingler@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)\r\nImportance: Normal\r\nIn-Reply-To: &lt;F6Xu98sMD9xT3lEmFWq0000c960@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700\r\nX-eGroups-From: Neil Swingler &lt;neil.swingler@...&gt;\r\nFrom: Neil Swingler &lt;nswingler@...&gt;\r\n\r\nI always compare arrays like this:\n\nassertEquals( Arrays.asList(array1), Arrays.asList(array2) );\n\nNot very helpful diagnostics if the array length is long but it is simple.\n\n--\nNeil Swingler\n\n&gt; -----Original Message-----\n&gt; From: J. B. Rainsberger [mailto:jbrains762@...]\n&gt; Sent: 27 July 2001 17:47\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] assertEquals(array1, array2)\n&gt;\n&gt;\n&gt; &gt;In this example you may want to write a custom assert().  You don&#39;t\n&gt; &gt;give the types of the arrays nor their expected lengths (do they hold\n&gt; &gt;a few simple elements, dozens of complicated ones, millions, ...).\n&gt; &gt;Perhaps you&#39;d be better off constructing a vector of differences and\n&gt; &gt;asserting the vector as empty.  Adding the differences to a string\n&gt; &gt;and asserting it as equal to &quot;&quot;.  Or counting the differences and\n&gt; &gt;assertEquals(0, count).\n&gt;\n&gt; Wow! This is an awesome idea. Let&#39;s see if we can take this\n&gt; further. Here is\n&gt; code off the top of my head.\n&gt;\n&gt; public class ArrayDifference {\n&gt;     public Object expected;\n&gt;     public Object actual;\n&gt;     public ArrayDifference(Object anExpected, Object anActual) {\n&gt;         expected = anExpected;\n&gt;         actual = anActual;\n&gt;     }\n&gt;     public String toString() {\n&gt;         return (&quot;Expected &lt;&quot; + expected + &quot;&gt; but got &lt;&quot; + actual + &quot;&gt;&quot;;\n&gt;     }\n&gt; }\n&gt;\n&gt; public void assertEqualArrays(Object[] expected, Object[] actual) {\n&gt;     assertNotNull(&quot;expected is null&quot;, expected);\n&gt;     assertNotNull(&quot;actual is null&quot;, actual);\n&gt;     assertEquals(expected.length, actual.length);\n&gt;     final List differences = new ArrayList();\n&gt;     for (int i = 0; i &lt; expected.length; i++) {\n&gt;         if (expected[i] == null\n&gt;             || !(expected[i].equals(actual[i]))) {\n&gt;             differences.add(new ArrayDifference(expected[i], actual[i]));\n&gt;         }\n&gt;     }\n&gt;     assertEquals(new ArrayList(), differences);\n&gt; }\n&gt;\n&gt; This builds up a list of differences. The list knows how to\n&gt; present itself\n&gt; as a string (List does that). Each difference presents itself as a string\n&gt; (ArrayDifference does that). If you need prettier output, create a class\n&gt; that wraps a List of ArrayDifferences and makes the output prettier.\n&gt;\n&gt; I like the sound of this technique. I think I&#39;ll put this up as a best\n&gt; practice until someone else tells me something wrong with it.\n&gt;\n&gt; JBR.\n&gt;\n&gt;\n&gt; _________________________________________________________________\n&gt; Get your FREE download of MSN Explorer at http://explorer.msn.com/intl.asp\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "subject": "RE: [junit] assertEquals(array1, array2)"
+}

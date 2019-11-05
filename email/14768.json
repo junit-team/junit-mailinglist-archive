@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14769, 
+    "senderId": "LYUXvMUqHVNYxNCsXzpeUROGT_kzSbbZbGv2XpI7xoAb4Fs8TH9lmnhCNo2RlIYKO2LwKarek9iKmPQl7J_5nsoja2QRSw0PF33XlK3--x9c2KG0aaEeie6TjuzeMMiILlVASSg", 
+    "systemMessage": false, 
+    "subject": "RE: How to test a JCA coonector?", 
+    "from": "=?us-ascii?Q?Harald_M._Muller?= &lt;harald.m.mueller@...&gt;", 
+    "authorName": "Harald M. Muller", 
+    "msgSnippet": "... My gut feeling is that you need to connect to the real EIS (my analogy: Testing a JDBC driver for database XY will not be possible without an XY database", 
+    "msgId": 14768, 
+    "profile": "harald_m_mueller", 
+    "topicId": 14764, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 74507428, 
+    "messageBody": "<div id=\"ygrps-yiv-694441799\"><blockquote><span title=\"ireply\">&gt;    From: &quot;Patrick&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:despeedo@...\">despeedo@...</a>&gt;<br/>\n&gt; Subject: How to test a JCA coonector?<br/>\n&gt; <br/>\n&gt; hi folks,<br/>\n&gt; <br/>\n&gt; I have some serious doubts about how to test a JCA connector. The<br/>\n&gt; company I work for has developed this connector to an EIS written in<br/>\n&gt; C/C++. This JCA connector uses the Command design pattern in order to<br/>\n&gt; get/send and validate information on the EIS. <br/>\n&gt; <br/>\n&gt; Now they have added two new commands to this connector and I&#39;m<br/>\n&gt; supposed to test them. As it&#39;s legacy code, there are no junit tests<br/>\n&gt; and I will be the first one to write them but only for those new<br/>\n&gt; commands. My idea is to test the JCA connector out of the container<br/>\n&gt; and have a mock EIS since testing inside the container and connecting<br/>\n&gt; to the real EIS seems really painfull to me. :)  <br/>\n&gt;<br/>\n<br/>\n </span></blockquote>My gut feeling is that you need to connect to the real EIS (my analogy:<br/>\nTesting a JDBC driver for database XY will not be possible without an XY<br/>\ndatabase server up and running: Even if we agree that such a design of<br/>\nmocking the intended recipient might be nice, I have not seen driver<br/>\nwriters do that ...).<br/>\n<br/>\nAre you sure that connecting to the EIS is painful? Did you check this<br/>\nfor a day or two? After all, your company makes a living selling this<br/>\nbeast, so you should have enough people around you you can set up one<br/>\n&quot;in a sec&quot;. Or maybe you have one such EIS running all the time<br/>\nsomewhere for testing purposes (24x7), and you can hookup to that EIS<br/>\nanytime. In case you want to test *all* of your connector (including the<br/>\nintegration to the (a) infrastructure services of container - including<br/>\ntransaction handling, especially the 2PC case!! -, (b) network<br/>\nstacks/protocols, (c) operating system), you have no other choice, of<br/>\ncourse. Whether this is still a &quot;unit test&quot; has to be defined by you.<br/>\n<br/>\nThe second possibility is that you mock on the transport layer: The JCA<br/>\nconnector either uses TCP/IP or some other network to connect to the EIS<br/>\n- maybe you can write a small server (on another port) which accepts the<br/>\nsame low-level commands. This will, however and IMHO, become horrible<br/>\nsoon unless you have people and software around knowing this low level.<br/>\nThe same is probably true if JNI is used ...<br/>\n<br/>\nThe third possibility is to provide a clear interface inside the<br/>\nconnector so that the parts to be &quot;unit-tested&quot; are above that<br/>\nseparation. This might require a refactoring or redesign of the JCA<br/>\nconnector, but maybe not: The people who write the connector may already<br/>\nhave had the same problem and might have introduced a suitable<br/>\nabstraction for (at least parts of) a mock EIS.<br/>\n<br/>\nAnd sorry if I just uttered trivialities ... but that&#39;s all I could<br/>\nextract from your posting ...<br/>\n<br/>\nRegards<br/>\nHarald</div>", 
+    "prevInTime": 14767, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1126380461", 
+    "canDelete": false, 
+    "nextInTopic": 14782, 
+    "prevInTopic": 14764, 
+    "headers": {
+        "inReplyToHeader": "PDExMjYzNTMwNTkuOTE4LjMyNjczLm0xOUB5YWhvb2dyb3Vwcy5jb20+", 
+        "messageIdInHeader": "PDAwMGUwMWM1YjYzZCRiNjFjNWVhMCQ1ZDAwYThjMEBIQVJSWT4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 17331, 
+    "senderId": "3I4FEjeSkQ1iVoCYejr_goHDE-i8udTnL12BZSOHiBe4PsqiSCGZW_9fJy_VrTO2TA4Jc8WcnIRHXVaTfhEvSvpSKy34bb2fQRAkQNAyiPQ9eaT3", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing Contexts", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Hi, From what I understand you are on the right track when you ask should i inject the contexts from outside . I would look for an abstraction here. To me it", 
+    "msgId": 17330, 
+    "rawEmail": "Return-Path: &lt;joakim.ohlrogge@...&gt;\r\nX-Sender: joakim.ohlrogge@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 38098 invoked from network); 7 Aug 2006 12:08:09 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m40.grp.scd.yahoo.com with QMQP; 7 Aug 2006 12:08:09 -0000\r\nReceived: from unknown (HELO ug-out-1314.google.com) (66.249.92.174)\n  by mta1.grp.scd.yahoo.com with SMTP; 7 Aug 2006 12:08:09 -0000\r\nReceived: by ug-out-1314.google.com with SMTP id a2so27982ugf\n        for &lt;junit@yahoogroups.com&gt;; Mon, 07 Aug 2006 04:55:57 -0700 (PDT)\r\nReceived: by 10.78.147.3 with SMTP id u3mr2346944hud;\n        Mon, 07 Aug 2006 04:45:55 -0700 (PDT)\r\nReceived: by 10.78.167.3 with HTTP; Mon, 7 Aug 2006 04:45:55 -0700 (PDT)\r\nMessage-ID: &lt;b9ee5e410608070445t1792604fhb0a76e10a2f95f4b@...&gt;\r\nDate: Mon, 7 Aug 2006 13:45:55 +0200\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;eb0c37+hqbu@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;eb0c37+hqbu@...&gt;\r\nX-Google-Sender-Auth: 90ff410ee525076d\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nX-eGroups-From: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nFrom: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nReply-To: joakim.ohlrogge@...\r\nSubject: Re: [junit] Unit testing Contexts\r\nX-Yahoo-Group-Post: member; u=261856052; y=afJUg-xKAYtXsqVdxescHBqhWOodfVmEDg1cpH-pjPVs01aw\r\nX-Yahoo-Profile: j0hlrogge\r\n\r\nHi,\n\nFrom what I understand you are on the right track when you ask &quot;should\ni inject the contexts from outside&quot;. I would look for an abstraction\nhere. To me it seems that you want to send a mail with a generated\nmessage and for that you use velocity to produce the text and java\nmessaging to send the message.\n\n\nSo, Maybe the fact that velocity is procucing the message is not that\nimportant? Perhaps you can create an interface called something like\n&quot;MessageProducer&quot; to get the message. I am assuming here that you can\nget the requestmap from somewhere. You could also pass it, or\nsomething derived from it to createMessage.\n\npublic interface MessageProducer {\n    String createMessage();\n}\n\nand then you wan&#39;t to send it somewhere:\n\npublic interface MessageSender {\n    void sendMessage( String message, ...);\n\n}\n\n\nThey could be uses something like this. Of course you could improve on\nthat design.\nThe point I am trying to make is that it can be a good design\ninvestment to make abstractions around your contexts. Then you only\nhave to test them once (in tyour concrete implementations) and then\nyou can inject your abstractions and mock them in other places in your\ncode:\n\npublic void sendMessage() {\n   // could be velocity, webmacro or something else\n   String message = messageProducer.createMessage();\n\n   // could be java-messaging or whatever\n   messageSender.sendMessage(message);\n }\n\n", 
+    "profile": "j0hlrogge", 
+    "topicId": 17327, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "prevInTime": 17329, 
+    "contentTrasformed": false, 
+    "postDate": "1154951155", 
+    "canDelete": false, 
+    "nextInTopic": 17337, 
+    "prevInTopic": 17327, 
+    "headers": {
+        "inReplyToHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwODA3MDQ0NXQxNzkyNjA0ZmhiMGE3NmUxMGEyZjk1ZjRiQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg=="
+    }
+}

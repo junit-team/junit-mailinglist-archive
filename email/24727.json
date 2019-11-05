@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 24728, 
+    "senderId": "c2iTybRpJwrudtWS0GRmFuk4RsNpcRaC7Wmv6vKhfnQ4nRV8S047cMnfHV4YgKuLguiYp6UI_0M3l-w", 
+    "systemMessage": true, 
+    "subject": "Passing/failing a percentage of iterations?", 
+    "from": "&lt;org.junit@...&gt;", 
+    "authorName": "", 
+    "msgSnippet": "Hello. I am the author of the jtensors package: http://io7m.github.io/jtensors/ It s a computer-graphics focused vector/matrix algebra package. It has a very", 
+    "msgId": 24727, 
+    "topicId": 24727, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 533533827, 
+    "messageBody": "<div id=\"ygrps-yiv-1810241724\">Hello.<br/>\n<br/>\n<br/>\nI am the author of the jtensors package:<br/>\n<br/>\n<br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"http://io7m.github.io/jtensors/\">http://io7m.github.io/jtensors/</a><br/>\n<br/>\n<br/>\nIt&#39;s a computer-graphics focused vector/matrix algebra package. It has<br/>\na very large test suite that tries to prove properties of the functions<br/>\nby hammering them with thousands of random values. For example, it<br/>\ngenerates a thousand random vectors, normalizes those vectors, and then<br/>\nchecks that the magnitude of all of those vectors equals 1.0. A single<br/>\ntest may look like:<br/>\n<br/>\n<br/>\n  @Test public final void testMagnitudeNormal()<br/>\n  {<br/>\n    for (int index = 0; index &lt; TestUtilities.TEST_RANDOM_ITERATIONS;<br/>\n  ++index) {<br/>\n      final double x = this.randomLargePositive();<br/>\n      final double y = this.randomLargePositive();<br/>\n      final double z = this.randomLargePositive();<br/>\n      final double w = this.randomLargePositive();<br/>\n      final T v = this.newVectorM4D(x, y, z, w);<br/>\n<br/>\n<br/>\n      final T vr = this.newVectorM4D();<br/>\n      VectorM4D.normalize(v, vr);<br/>\n      Assert.assertNotSame(v, vr);<br/>\n<br/>\n<br/>\n      final double m = VectorM4D.magnitude(vr);<br/>\n      System.out.printf(&quot;%s → %s → %f&#92;n&quot;, v, vr, m);<br/>\n      Assert.assertEquals(1.0, m, this.delta());<br/>\n    }<br/>\n  }<br/>\n<br/>\n<br/>\nThe problem: Because the most of the package deals with floating point<br/>\nvalues (and randomly generated at that), maybe one value in every ten<br/>\nthousand iterations will cause a test failure, and will fail the build<br/>\nas a result.<br/>\n<br/>\n<br/>\nI&#39;ve recently added support for IEEE754 binary16 vectors, which behave<br/>\nas though they were vectors with double-precision elements but which<br/>\nuse 16-bit floating point values internally. Because they act as<br/>\ndouble-precision vectors, I pass them through the test suite for double<br/>\nprecision vectors. Naturally, due to their very low numeric precision,<br/>\nthe number of precision issues that have tripped test failures is<br/>\nunacceptable. The floating point delta value is configurable, as shown<br/>\nabove, and this does eliminate a lot of failure cases, but I feel like<br/>\nI&#39;m going about this the wrong way.<br/>\n<br/>\n<br/>\nI feel like it would be better in this case if I could have<br/>\nAssert.assertEquals() simply count the number of successes and<br/>\nfailures, and then pass or fail a test as a whole if the number of<br/>\nfailures is above a configurable threshold. I have a fairly good idea<br/>\nhow I would implement this using a @Rule, but it would (apparently)<br/>\nmean replacing thousands and thousands of calls to Assert.assertEquals<br/>\nover the entire test suite. The current test suite is over 100k lines,<br/>\nso I&#39;m hesitant to make intrusive changes unless I know they&#39;ll work.<br/>\n<br/>\n<br/>\nDoes anyone have a good/better solution to this problem before I take<br/>\nthe plunge?<br/>\n<br/>\n<br/>\nM</div>", 
+    "prevInTime": 24725, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1447882487", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMTUxMTE4MjEzNTAzLjMxMkFCMTAwNEU5QHJlbGF5Lm1haWxjaGFubmVscy5uZXQ+"
+    }
+}

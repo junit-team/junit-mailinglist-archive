@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 3426, 
+    "senderId": "AEtp4EgFXx7WKiXhGQ92Gv_xKMGKYk3P3rtg454J0dgC56GZ4QPKxNwNNa-HO821J8lDVIkyRX9V", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does the tear down of fixtures get fired if my test spawns a thread?", 
+    "from": "&lt;evought@...&gt;", 
+    "authorName": "evought@qlue.com", 
+    "msgSnippet": "I would imagine you have a race condition. teardown() is running because your testcase has finished (even though your thread is still running.). What is probly", 
+    "msgId": 3425, 
+    "rawEmail": "Return-Path: &lt;evought@...&gt;\r\nX-Sender: evought@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 3 Dec 2001 18:42:21 -0000\r\nReceived: (qmail 39939 invoked from network); 3 Dec 2001 18:42:20 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m3.grp.snv.yahoo.com with QMQP; 3 Dec 2001 18:42:20 -0000\r\nReceived: from unknown (HELO ral.qlue.com) (65.201.137.7)\n  by mta2.grp.snv.yahoo.com with SMTP; 3 Dec 2001 18:42:20 -0000\r\nReceived: from brain.qlue-lan (brain.qlue-lan [192.168.1.55])\n\tby ral.qlue.com (Postfix) with ESMTP id 0CFCF1C629\n\tfor &lt;junit@yahoogroups.com&gt;; Mon,  3 Dec 2001 13:42:19 -0500 (EST)\r\nDate: Mon, 3 Dec 2001 13:42:18 -0500 (EST)\r\nX-Sender:  &lt;adfh@...-lan&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: Re: [junit] Does the tear down of fixtures get fired if my test\n spawns a thread?\r\nIn-Reply-To: &lt;9ugc2h+h32v@...&gt;\r\nMessage-ID: &lt;Pine.LNX.4.30.0112031337500.11816-100000@...-lan&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: &lt;evought@...&gt;\r\nX-Yahoo-Profile: eric_vought\r\n\r\n\nI would imagine you have a race condition. teardown() is running because\nyour testcase has finished (even though your thread is still running.).\nWhat is probly happening is that the call to dl.lock() in your test method\nhappens before the call in your subthread. This, of course, succeeds\nimmediately and returns. When/if your thread gets to the dl.lock() call,\nit blocks because the lock is already held. Your testcase method returns\nand teardown is run().\n\nLook in the archives for earlier posts by me regarding testing threaded\ncode for some ways you can protect yourself from this kind of thing. You\nhave to be very certain that everything is going to run in the right\nsequence.\n\nOn Mon, 3 Dec 2001 ks558@... wrote:\n\n&gt; I have a test fixture that appears to be calling the tear down method\n&gt; as soon as my test method creates and spawns a thread.  This causes\n&gt; my test to fail.  Is this the desired effects of the test fixtures\n&gt; setup and tear down?  I thought setup was called before the method\n&gt; and tear down was called upon finishing the method?\n&gt;\n&gt; Here is what I do:\n&gt; package suncertify.test;\n&gt;\n&gt; /**\n&gt;  * TestDatabase\n&gt;  */\n&gt; import junit.framework.*;\n&gt; import suncertify.db.*;\n&gt; import java.util.*;\n&gt;\n&gt; public class TestDatabase extends TestCase\n&gt; {\n&gt;   public static Data d1 = null;\n&gt;   private static boolean isClient1Finished = false;\n&gt;   protected void setUp(){\n&gt;     isClient1Finished = false;\n&gt;     try {\n&gt;       System.err.println(&quot;Initialized dbase&quot;);\n&gt;       d1 =  new Data(&quot;./build/db.db&quot;);\n&gt;     } catch (Exception exc){\n&gt;       exc.printStackTrace();\n&gt;     }\n&gt;   }\n&gt;   protected void tearDown(){\n&gt;     d1 = null;\n&gt;     System.err.println(&quot;undid dbase...&quot;);\n&gt;   }\n&gt;\n&gt;   public void testConcurrentUsers(){\n&gt;     try {\n&gt;       isClient1Finished = false;\n&gt;      if(d1==null) TestCase.fail(&quot;Database is null in the beginning,\n&gt; but don&#39;t know why&quot;);\n&gt;\n&gt;       // client2 gets lock.\n&gt;       new Thread(new Runnable(){\n&gt;         public void run(){\n&gt;           try {\n&gt;             System.err.println(&quot;In second client...&quot;);\n&gt;             if(d1==null) TestCase.fail(&quot;Database is null, but don&#39;t\n&gt; know why&quot;);\n&gt;             d1.lock(1);\n&gt;             Thread.sleep(1000);\n&gt;             d1.unlock(1);\n&gt;             isClient1Finished = true;\n&gt;           } catch (Exception exc){\n&gt;             exc.printStackTrace();\n&gt;             TestCase.fail(&quot;Second Client failed due to unexpected\n&gt; exception.&quot;);\n&gt;           }\n&gt;         }\n&gt;       }).start();\n&gt;       // client1 gets lock\n&gt;       d1.lock(1);\n&gt;       TestCase.assertTrue(isClient1Finished);\n&gt;     } catch (Exception e){\n&gt;       e.printStackTrace();\n&gt;       TestCase.fail(&quot;Test Concurrent Users failed for unknown\n&gt; reason.&quot;);\n&gt;     }\n&gt;   }\n&gt; }\n&gt;\n&gt; I get the following output:\n&gt; Initialized dbase\n&gt; undid dbase...\n&gt; In second client...\n&gt; junit.framework.AssertionFailedError: Database is null, but don&#39;t\n&gt; know why\n&gt;     at junit.framework.Assert.fail(Assert.java:51)\n&gt;     at suncertify.test.TestDatabase$1.run(TestDatabase.java:82)\n&gt;     at java.lang.Thread.run(Thread.java:484)\n&gt;\n&gt; Any help would be appreciated...\n&gt;\n&gt; -brent fisher\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n&gt;\n\n-- \nEric Vought\nChief Technical Officer - QLUE Consulting, Inc.\n\nevought@... toll-free: 888-771-3538  RTP area: 919-816-9901\n\n\n", 
+    "profile": "eric_vought", 
+    "topicId": 3423, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3424, 
+    "contentTrasformed": false, 
+    "postDate": "1007404938", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 3423, 
+    "headers": {
+        "inReplyToHeader": "PDl1Z2MyaCtoMzJ2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMzAuMDExMjAzMTMzNzUwMC4xMTgxNi0xMDAwMDBAYnJhaW4ucWx1ZS1sYW4+"
+    }
+}

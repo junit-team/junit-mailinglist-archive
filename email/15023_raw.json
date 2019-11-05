@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 15024, 
+    "senderId": "vJalSVpWc5ne7e3wzJ9NH_TBekXO4j_j9eFSCVAMjf4Lr1B8WlNQV7hQQYVfkezhz4gHAAPrdgFLX8iYIWnA5sbW3uDjvYX7OFjc", 
+    "systemMessage": true, 
+    "subject": "Re: Redirect requested but followRedirects is disabled", 
+    "from": "Marc Guillemot &lt;mguillemot@...&gt;", 
+    "authorName": "Marc Guillemot", 
+    "msgSnippet": "As said by David Saff, the best place for questions concerning htmlunit is really the htmlunit-user mailing list. In htmlunit (except perhaps if you use a very", 
+    "msgId": 15023, 
+    "rawEmail": "Return-Path: &lt;mguillemot@...&gt;\r\nReceived: (qmail 64706 invoked from network); 30 Sep 2005 04:17:33 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m27.grp.scd.yahoo.com with QMQP; 30 Sep 2005 04:17:33 -0000\r\nReceived: from unknown (HELO n11a.bulk.scd.yahoo.com) (66.94.237.16)\n  by mta2.grp.scd.yahoo.com with SMTP; 30 Sep 2005 04:17:33 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.5] by n11.bulk.scd.yahoo.com with NNFMP; 30 Sep 2005 04:17:29 -0000\r\nReceived: from [66.218.66.78] by mailer5.bulk.scd.yahoo.com with NNFMP; 30 Sep 2005 04:17:29 -0000\r\nX-Sender: mguillemot@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 53283 invoked from network); 29 Sep 2005 08:26:19 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m35.grp.scd.yahoo.com with QMQP; 29 Sep 2005 08:26:19 -0000\r\nReceived: from unknown (HELO ciao.gmane.org) (80.91.229.2)\n  by mta6.grp.scd.yahoo.com with SMTP; 29 Sep 2005 08:26:19 -0000\r\nReceived: from list by ciao.gmane.org with local (Exim 4.43)\n\tid 1EKtfE-0001TD-F5\n\tfor junit@yahoogroups.com; Thu, 29 Sep 2005 10:21:12 +0200\r\nReceived: from xdsl-87-78-20-5.netcologne.de ([87.78.20.5])\n        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))\n        id 1AlnuQ-0007hv-00\n        for &lt;junit@yahoogroups.com&gt;; Thu, 29 Sep 2005 10:21:12 +0200\r\nReceived: from mguillemot by xdsl-87-78-20-5.netcologne.de with local (Gmexim 0.1 (Debian))\n        id 1AlnuQ-0007hv-00\n        for &lt;junit@yahoogroups.com&gt;; Thu, 29 Sep 2005 10:21:12 +0200\r\nX-Injected-Via-Gmane: http://gmane.org/\r\nTo: junit@yahoogroups.com\r\nDate:  Thu, 29 Sep 2005 10:23:53 +0200\r\nLines: 96\r\nMessage-ID: &lt;dhg81q$f92$1@...&gt;\r\nReferences:  &lt;43381794.3050802@...&gt; &lt;20050928181058.96531.qmail@...&gt;\r\nMime-Version:  1.0\r\nContent-Type:  text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding:  7bit\r\nX-Complaints-To: usenet@...\r\nX-Gmane-NNTP-Posting-Host: xdsl-87-78-20-5.netcologne.de\r\nUser-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913\r\nX-Accept-Language: en-us, fr-fr, de-de, en\r\nIn-Reply-To: &lt;20050928181058.96531.qmail@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Marc Guillemot &lt;mguillemot@...&gt;\r\nSubject: Re: Redirect requested but followRedirects is disabled\r\nX-Yahoo-Group-Post: member; u=29099502; y=SIpLXedMhtSf2rVWWqJ9cnK5ZQzVNH24hfMzFme2MEqTIWGr2A\r\nX-Yahoo-Profile: mguillemot\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 30 Sep 2005 04:17:29 -0000\r\n\r\nAs said by David Saff, the best place for questions concerning htmlunit is really the htmlunit-user mailing list.\n\nIn htmlunit (except perhaps if you use a very old release), you don&#39;t need to use WebClient.setRedirectEnabled(true) as \nit is the default value. Messages like:\n\n     INFO: Redirect requested but followRedirects is disabled\n\ncome from commons-httpclient (used by htmlunit) and are normal and without signification because htmlunit handle itself \nthe redirections.\n\nYou get an exception because your server has sent a 501 error code and your WebClient is configured to throw in such a \ncase. If you set WebClient.setThrowExceptionOnFailingStatusCode(false), htmlunit should not throw anymore and would \nfollow the provided redirection.\n\nMarc.\n\nsaldin samuel wrote:\n&gt; Hi,\n&gt; \n&gt; Thanks for the reply. I have tried with\n&gt; WebClient.setRedirectEnabled() but I am still getting\n&gt; the same error.\n&gt; \n&gt; Thanks and Regards,\n&gt; Saldin\n&gt; \n&gt; --- &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt; wrote:\n&gt; \n&gt; \n&gt;&gt;saldin samuel wrote:\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;&gt;I am getting the following error on using\n&gt;&gt;\n&gt;&gt;HtmlUnit. I\n&gt;&gt;\n&gt;&gt;&gt;tried searching for a solution but I couldnt. It\n&gt;&gt;\n&gt;&gt;would\n&gt;&gt;\n&gt;&gt;&gt;be great if you could provide me an &quot;how-to&quot; to\n&gt;&gt;\n&gt;&gt;solve\n&gt;&gt;\n&gt;&gt;&gt;this issue.\n&gt;&gt;\n&gt;&gt;I&#39;m shocked that you couldn&#39;t find an answer on the\n&gt;&gt;web.\n&gt;&gt;\n&gt;&gt;WebClient.setRedirectEnabled() is the method you\n&gt;&gt;want--or at least it&#39;s \n&gt;&gt;very close to the method you want.\n&gt;&gt;\n&gt;&gt;Good luck.\n&gt;&gt;-- \n&gt;&gt;J. B. (Joe) Rainsberger\n&gt;&gt;Diaspar Software Services\n&gt;&gt;http://www.diasparsoftware.com\n&gt;&gt;2005 Gordon Pask Award Winner for contribution to\n&gt;&gt;Agile practice\n&gt;&gt;Author, JUnit Recipes: Practical Methods for\n&gt;&gt;Programmer Testing\n&gt;&gt;\n&gt;&gt;\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \t\t\n&gt; __________________________________ \n&gt; Yahoo! Mail - PC Magazine Editors&#39; Choice 2005 \n&gt; http://mail.yahoo.com\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n\n\n\n\n", 
+    "profile": "mguillemot", 
+    "topicId": 14939, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 29099502, 
+    "prevInTime": 15022, 
+    "contentTrasformed": false, 
+    "postDate": "1127982233", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15008, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwOTI4MTgxMDU4Ljk2NTMxLnFtYWlsQHdlYjMzMDExLm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PGRoZzgxcSRmOTIkMUBzZWEuZ21hbmUub3JnPg==", 
+        "referencesHeader": "IDw0MzM4MTc5NC4zMDUwODAyQHJvZ2Vycy5jb20+IDwyMDA1MDkyODE4MTA1OC45NjUzMS5xbWFpbEB3ZWIzMzAxMS5tYWlsLm11ZC55YWhvby5jb20+"
+    }
+}

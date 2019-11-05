@@ -1,0 +1,29 @@
+{
+    "topicId": 2478, 
+    "postDate": "998657706", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "dfw1@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "gLizOwN92AXaI6PKOxdPCWv2BukDvUDDg-Qb-CGQEey2C7-lPupB-QZZEm06ovzxVw2fudWZaA", 
+    "nextInTime": 2489, 
+    "userId": 0, 
+    "prevInTime": 2487, 
+    "prevInTopic": 2478, 
+    "headers": {
+        "inReplyToHeader": "PDAwMGQwMWMxMmJmMSRmODBjOGY5MCQ2MTA2MDIwYUBaRVJPPg==", 
+        "messageIdInHeader": "PDltNWlyYStpNXA1QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "dfw1@cornell.edu", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "Ellen, Pete, The patch I sent in, https://sourceforge.net/tracker/?func=detail&aid=436182&group_id=15278&atid=315278 , contains a unit test to demonstrate the", 
+    "contentTrasformed": false, 
+    "msgId": 2488, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;dfw1@...&gt;\r\nX-Sender: dfw1@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_2); 24 Aug 2001 12:55:07 -0000\r\nReceived: (qmail 21048 invoked from network); 24 Aug 2001 12:55:07 -0000\r\nReceived: from unknown (10.1.10.26)\n  by l9.egroups.com with QMQP; 24 Aug 2001 12:55:07 -0000\r\nReceived: from unknown (HELO n6.groups.yahoo.com) (10.1.10.45)\n  by mta1 with SMTP; 24 Aug 2001 12:55:07 -0000\r\nX-eGroups-Return: dfw1@...\r\nReceived: from [10.1.4.82] by hm.egroups.com with NNFMP; 24 Aug 2001 12:55:06 -0000\r\nDate: Fri, 24 Aug 2001 12:55:06 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: tearDown still get called even one of my test throws exception .\r\nMessage-ID: &lt;9m5ira+i5p5@...&gt;\r\nIn-Reply-To: &lt;000d01c12bf1$f80c8f90$6106020a@ZERO&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3068\r\nX-Mailer: eGroups Message Poster\r\nFrom: dfw1@...\r\n\r\nEllen, Pete,\n\nThe patch I sent in,\nhttps://sourceforge.net/tracker/?func=detail&aid=436182&group_id=15278&atid=315278\n, contains a unit test to demonstrate the problem.\n\nTo see it, change the line in CleaningTestSetupTest.java from \n\n    static class SomeCleaningTestSetup extends CleaningTestSetup {\n\nto\n\n    static class SomeCleaningTestSetup extends TestSetup {\n\n, which will run the same test with a TestSetup implementation. The\ntest will fail for test cases when the setUp method throws an\nexception because setUp, the tests, and tearDown are called inside the\nsame Protectable bubble.\n\nDave\n\n\n--- In junit@y..., &quot;Peter McEvoy&quot; &lt;pmcevoy@i...&gt; wrote:\n&gt; Shen\n&gt; \n&gt; Yes, I did a test similar to yours and saw that tearDown was getting\ncalled when I threw an\n&gt; exception.  However I have observed some situations where tearDown\nis not called when one of my\n&gt; tests barfs - I haven&#39;t had a chance to spend time trying to\nreplicate this problem or to come up\n&gt; with a simple test case - I&#39;ll see what I can do once the pressure\nis off me next week...\n&gt; \n&gt; Pete\n&gt;   -----Original Message-----\n&gt;   From: shen lichen [mailto:schenchen@h...]\n&gt;   Sent: 23 August 2001 17:34\n&gt;   To: pmcevoy@i...\n&gt;   Subject: tearDown still get called even one of my test throws\nexception .\n&gt; \n&gt; \n&gt;   hi,Peter:\n&gt; \n&gt;   I notice that tearDown still get called even one of my test throws\nexception .\n&gt; \n&gt;   here is my sample test code:\n&gt; \n&gt;   public class TestOne extends TestCase\n&gt;   {\n&gt;       Bean bean = null;\n&gt; \n&gt;       public TestOne(String name)\n&gt;       {\n&gt;           super(name);\n&gt;       }\n&gt; \n&gt;       public static void oneTimeSetUp()\n&gt;       {\n&gt;           System.out.println(&quot;test set up &quot;);\n&gt;       }\n&gt;        public static void oneTimeTearDown()\n&gt;       {\n&gt;           System.out.println(&quot;test tear down &quot;);\n&gt;       }\n&gt;       public void tearDown()\n&gt;       {\n&gt;        System.out.println(&quot;every time tear down &quot;);\n&gt;       }\n&gt; \n&gt; \n&gt;       public void test1()\n&gt;       {\n&gt;           System.out.println(&quot;test1&quot;);\n&gt;       }\n&gt; \n&gt;       public void test2()\n&gt;       {\n&gt;           System.out.println(&quot;test2&quot;);\n&gt;       }\n&gt; \n&gt;       public void test3()\n&gt;       {\n&gt;        System.out.println(&quot;test3&quot;);\n&gt;        int[] a = {1,2};\n&gt;        System.out.println(a[3]);\n&gt;       }\n&gt; \n&gt;       public static Test suite()\n&gt;       {\n&gt;           TestSuite suite= new TestSuite(TestOne.class);\n&gt; \n&gt;           TestSetup wrapper= new TestSetup(suite)\n&gt;           {\n&gt;               public void setUp()\n&gt;               {\n&gt;                   oneTimeSetUp();\n&gt;               }\n&gt;               public void tearDown()\n&gt;               {\n&gt;                   oneTimeTearDown();\n&gt;               }\n&gt;           };\n&gt;           return wrapper;\n&gt; \n&gt;        }\n&gt;         public static void main( String[] args )\n&gt;       {\n&gt;           junit.textui.TestRunner.run( suite() );\n&gt;       }\n&gt;   }\n&gt; \n&gt;   Do I talk about the same thing you point?\n&gt; \n&gt;   Thanks\n&gt; \n&gt;   Ellen\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt;\n------------------------------------------------------------------------------\n&gt;   Get your FREE download of MSN Explorer at http://explorer.msn.com\n\n\n", 
+    "subject": "Re: tearDown still get called even one of my test throws exception ."
+}

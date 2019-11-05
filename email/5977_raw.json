@@ -1,0 +1,29 @@
+{
+    "topicId": 5958, 
+    "postDate": "1034283676", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Celis &lt;shane@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "3JH2VMqFhMkm0dn-WzoLZobuTjlK_Bl6tXUXWzF0MYaJL_-t1csRA9QVcirrRM1SqVaLKZ8wy9_1jre2kjV_Mo29LwOZZS6I83I", 
+    "nextInTime": 5978, 
+    "userId": 76541257, 
+    "prevInTime": 5976, 
+    "prevInTopic": 5967, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMDA4MTY0NDEzLkExODc0QHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "messageIdInHeader": "PDZBRkYwNEUxLURDOTMtMTFENi1BMDIyLTAwMzA2NUY5QTgwRUB0ZXJyYXNwcmluZy5jb20+"
+    }, 
+    "authorName": "Shane Celis", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "Why not just roll them into one suite? package com.terraspring.hh.util; import junit.framework.*; public class AllTests { public static Test suite() { ", 
+    "contentTrasformed": false, 
+    "msgId": 5977, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;Shane@...&gt;\r\nX-Sender: Shane@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_0); 10 Oct 2002 22:14:47 -0000\r\nReceived: (qmail 27734 invoked from network); 10 Oct 2002 21:01:16 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m4.grp.scd.yahoo.com with QMQP; 10 Oct 2002 21:01:16 -0000\r\nReceived: from unknown (HELO MAIL.fremont.corp.terraspring.com) (64.124.70.190)\n  by mta2.grp.scd.yahoo.com with SMTP; 10 Oct 2002 21:01:16 -0000\r\nReceived: from terraspring.com ([10.0.0.122]) by MAIL.fremont.corp.terraspring.com with Microsoft SMTPSVC(5.0.2195.2966);\n\t Thu, 10 Oct 2002 14:01:18 -0700\r\nDate: Thu, 10 Oct 2002 14:01:16 -0700\r\nSubject: Re: [junit] fork=&quot;no&quot; unexpected behavior\r\nContent-Type: text/plain; delsp=yes; charset=US-ASCII; format=flowed\r\nMime-Version: 1.0 (Apple Message framework v546)\r\nTo: junit@yahoogroups.com\r\nContent-Transfer-Encoding: 7bit\r\nIn-Reply-To: &lt;20021008164413.A1874@...&gt;\r\nMessage-Id: &lt;6AFF04E1-DC93-11D6-A022-003065F9A80E@...&gt;\r\nX-Mailer: Apple Mail (2.546)\r\nReturn-Path: shane@...\r\nX-OriginalArrivalTime: 10 Oct 2002 21:01:18.0185 (UTC) FILETIME=[2D989D90:01C270A0]\r\nFrom: Shane Celis &lt;shane@...&gt;\r\nX-Yahoo-Group-Post: member; u=76541257\r\n\r\nWhy not just roll them into one suite?\n\npackage com.terraspring.hh.util;\n\nimport junit.framework.*;\n\npublic class AllTests {\n\n     public static Test suite() {\n         TestSuite suite = new TestSuite();\n         suite.addTestSuite(SupplierTest.class);\n         suite.addTestSuite(ConsumerTest.class);\n         return suite;\n     }\n}\n\nOn Tuesday, October 8, 2002, at 03:44 PM, Steven Taschuk wrote:\n\n&gt; Quoth ktbarrett:\n&gt;&gt; I am trying to run more than one JUnit test from Ant which shares\n&gt;&gt; some static data through the VM. The following is an excerpt from my\n&gt;&gt; Ant script.\n&gt;   [...]\n&gt;&gt; The problem is, the VM seems to fork whether I tell it too or not. My\n&gt;&gt; first test (SupplierTest) is creating some static objects, and my\n&gt;&gt; second test (ConsumerTest) is trying to use those objects. The\n&gt;&gt; problem is that either Ant is creating a new VM or a new ClassLoader\n&gt;&gt; so my data is not available.\n&gt;&gt;\n&gt;&gt; Any ideas?\n&gt;\n&gt; First, have you tried the following?\n&gt; \t&lt;target name=&quot;test&quot;&gt;\n&gt; \t\t&lt;junit fork=&quot;no&quot;&gt;\n&gt; \t\t\t&lt;test name=&quot;SupplierTest&quot;/&gt;\n&gt; \t\t\t&lt;test name=&quot;ConsumerTest&quot;/&gt;\n&gt; \t\t&lt;/junit&gt;\n&gt; \t&lt;/target&gt;\n&gt;\n&gt; Second, a quick glance through the Ant 1.4.1 source makes me think\n&gt; Ant doesn&#39;t make a new VM if you say fork=&#39;no&#39;, but it does make\n&gt; its own ClassLoader regardless.  (Note that the &lt;junit&gt; task\n&gt; supports a nested &lt;classpath&gt; element, so I imagine this is\n&gt; necessary.)  I encourage you to study the source for more\n&gt; information, or to inquire on the Ant mailing list (which I assume\n&gt; to exist).  And you could always write your own Ant task if the\n&gt; out-of-the-box behaviour is not what you want.\n&gt;\n&gt; Third, is it possible your objects are being garbage-collected\n&gt; between the tests?\n&gt;\n&gt; Finally, it is usually considered desirable that tests not\n&gt; interact with one another.  It might be best to either (a) unify\n&gt; the two tests to use the same test fixture, or (b) to make the\n&gt; latter test do its own set up so it doesn&#39;t depend on the former\n&gt; being run.  What&#39;s the motivation for the inter-test dependency?\n&gt;\n&gt;\n&gt; ------------------------ Yahoo! Groups Sponsor  \n&gt; ---------------------~--&gt;\n&gt; Get 128 Bit SSL Encryption!\n&gt; http://us.click.yahoo.com/JjlUgA/vN2EAA/H2RGAA/5cFolB/TM\n&gt; --------------------------------------------------------------------- \n&gt; ~-&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to  \n&gt; http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "subject": "Re: [junit] fork=&quot;no&quot; unexpected behavior"
+}

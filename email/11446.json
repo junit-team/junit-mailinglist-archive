@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 11447, 
+    "senderId": "r6fQDQgIHy3KlF0tZ1M_ZLf8iHKAS6CnHRBv5-BQEpzwrCn89XDWUAep2D_y6dUvBz8-DfDQpq4NjFUgK3nGtKKuG2fe3T8dt_6HVqkoskFKtw-Sp3Y_0NA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] PrivateAccessor - Failed static method invocation?", 
+    "from": "Mark Van Peteghem &lt;Mark.Van.Peteghem@...&gt;", 
+    "authorName": "Mark Van Peteghem", 
+    "msgSnippet": "... The method you want to test is not static. There are two overloads for the function invoke in the class PrivateAccessor, one for static methods, one for", 
+    "msgId": 11446, 
+    "profile": "mvp_be", 
+    "topicId": 11435, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 184823457, 
+    "messageBody": "<div id=\"ygrps-yiv-182807865\">leephilipreilly wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; [snip]<br/>\n&gt; I have the following method:<br/>\n&gt;<br/>\n&gt; private void doSomething(Long someValue, String anotherValue) throws<br/>\n&gt; SomeException<br/>\n&gt; {<br/>\n&gt;    ...<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; I&#39;m my test, I do something like:<br/>\n&gt;<br/>\n&gt; try {<br/>\n&gt;   PrivateAccessor.invoke(<br/>\n&gt;      MyClass.class,<br/>\n&gt;      &quot;doSomething&quot;, <br/>\n&gt;      new Class[] {Long.class,String.class },<br/>\n&gt;      new Object[] {someValue, anotherValue});<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; catch (Throwable t) {<br/>\n&gt;   System.out.println(t.getMessage());<br/>\n&gt; }         <br/>\n<br/>\n </span></blockquote>The method you want to test is not static. There are two overloads for <br/>\nthe function invoke in the class PrivateAccessor, one for static <br/>\nmethods, one for non-static methods. You seem to use the one for static <br/>\nmethods, since the first argument is a Class object, not an object of <br/>\nyour class.<br/>\n<br/>\nWhat you should do instead is:<br/>\n<br/>\nMyClass myObj = new MyClass;<br/>\ntry {<br/>\n  PrivateAccessor.invoke(<br/>\n     myObj,<br/>\n     &quot;doSomething&quot;, <br/>\n     new Class[] {Long.class,String.class },<br/>\n     new Object[] {someValue, anotherValue});<br/>\n}<br/>\n<br/>\ncatch (Throwable t) {<br/>\n  System.out.println(t.getMessage());<br/>\n}         <br/>\n<br/>\n-- <br/>\n  Mark Van Peteghem<br/>\n  <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.q-mentum.com\">http://www.q-mentum.com</a></div>", 
+    "prevInTime": 11445, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1089704755", 
+    "canDelete": false, 
+    "nextInTopic": 11794, 
+    "prevInTopic": 11435, 
+    "headers": {
+        "inReplyToHeader": "PGNjdjVpdCtpZ3RhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwRjM5MzMzLjgwMzAyMDdAcS1tZW50dW0uY29tPg==", 
+        "referencesHeader": "PGNjdjVpdCtpZ3RhQGVHcm91cHMuY29tPg=="
+    }
+}

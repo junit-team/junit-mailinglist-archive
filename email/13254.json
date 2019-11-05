@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13255, 
+    "senderId": "GNdh5HgtCaWri84Y-5vQbms4KXJrIEo8GorKi1yB1Xh6g8AZU69DCyOhqqJGPsdBQvdXb130K61G_4mIJab915eGP1VkqwM-Ih5AEttFgQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How does Unit test in a heirarchy works...", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... If you only want to share common setup (common objects), then put that behavior in the setUp() method of an abstract TestCase class, then have all related", 
+    "msgId": 13254, 
+    "profile": "nails762", 
+    "topicId": 13233, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-598914456\">Arun J wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Thanks folks for your inputs.  Lots of discomfort using jUnit, is it<br/>\n&gt; only me..:-(<br/>\n&gt; <br/>\n&gt; Though this is not my usecase. Do not get carried away by this<br/>\n&gt; example..I am trying to sample a similar one..<br/>\n&gt; Assume the following heirarchy structure..<br/>\n&gt; BizDoc = Performs versions/history relation functions.<br/>\n&gt; OrderDoc -&gt; BizDoc = Performs Order related functions.<br/>\n&gt; RequestDoc -&gt; BizDoc = Performs Request related functions.<br/>\n&gt; PurchaseOrder -&gt;OrderDoc = Performs PO specific functions.<br/>\n&gt; Invoice -&gt; OrderDoc = Performs Invoice specific functions.<br/>\n&gt; Shipment -&gt; Orderdoc = Performs Shipment specific functions.<br/>\n&gt; Auction -&gt; RequestDoc = Performs auctions specific functions.<br/>\n&gt; PurchaseRequest -&gt; RequestDoc = Performs PR specific functions.<br/>\n&gt; <br/>\n&gt; I would prefer to organize my tests with a similar hierarchy structure<br/>\n&gt; to test the functions at the respective level.  Also I would like to<br/>\n&gt; initialise the objects needed in the appropriate level for the childs<br/>\n&gt; to make use of them without doing them again.<br/>\n<br/>\n </span></blockquote>If you only want to share common setup (common objects), then put that <br/>\nbehavior in the setUp() method of an abstract TestCase class, then have <br/>\nall related test case classes extend that.<br/>\n<br/>\nTo speak in terms of your example, don&#39;t have OrderDoc extend BizDoc. <br/>\nInstead, have each extend BizOrderRequestDocTestTemplate, which is <br/>\nabstract and has no test cases.<br/>\n<br/>\nI think your discomfort comes from using inheritance in a way JUnit did <br/>\nnot intend.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Currently when PurchaseRequestUt and AuctionUt tests are run, it<br/>\n&gt; executes RequestDocUt tests as well BizDocUt tests twice which is<br/>\n&gt; unnecessary.<br/>\n<br/>\n </span></blockquote>... so don&#39;t extend a class containing tests!<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I see two options .<br/>\n&gt; 1. Have a single parent without testXXX methods do the on demand<br/>\n&gt; initialisation at the top level and all Uts inherit from this single<br/>\n&gt; parent. And have Uts in a single level. In the above case BizDocUt &<br/>\n&gt; PurchaseRequestUt will be in the same level.  BizDocUt initialises<br/>\n&gt; some objects in the helpers and make available for all Uts.  Or if<br/>\n&gt; PurchaseRequestUt is run first it initialises first all Bizdoc objects<br/>\n&gt; so that BizdocUt can run w/o initializing them again.<br/>\n<br/>\n </span></blockquote>Yes! You&#39;d be working the way JUnit is designed.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Guys - don&#39;t you feel this is a very common need for any OO<br/>\n&gt; application.<br/>\n<br/>\n </span></blockquote>Absolutely not. In fact, wanting to use the same setup for so many <br/>\ndifferent tests is a design smell. Well-designed OO code doesn&#39;t need this.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I am surprised JUnit doesn&#39;t provided this flexibility<br/>\n&gt; directly.  I have posted my requirement for Logical flow of tests<br/>\n&gt; which is also good to have.<br/>\n<br/>\n </span></blockquote>It&#39;s good to have when you choose to test an application end to end, <br/>\nrather than testing objects individually. JUnit was designed to help <br/>\ntesting objects, not end-to-end application request/response cycles.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; JUnit has these missing.  I can<br/>\n&gt; hack(override) into jUnit to support these but I do not want to<br/>\n&gt; maintain this for every release.<br/>\n<br/>\n </span></blockquote>I strongly recommend tools like Fit or TestNG for end-to-end testing, <br/>\nand use JUnit when you want to test individual objects.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; JUnit folks..are you hearing...?<br/>\n<br/>\n </span></blockquote>Yes. Now it&#39;s time for you to hear: stop using inheritance this way. <br/>\nIt&#39;s obviously not helping you, so do something else. Perhaps what a <br/>\nnumber of us have recommended already. (At least three times, if I count <br/>\ncorrectly.)<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 13253, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1113071411", 
+    "canDelete": false, 
+    "nextInTopic": 13255, 
+    "prevInTopic": 13251, 
+    "headers": {
+        "inReplyToHeader": "PGU3MTczMzBlMDUwNDA3MjI0MzNlZDAyZGRkQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQyNTgxRjMzLjMwMTA4MDZAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGU3MTczMzBlMDUwNDA2MDUzMzYyYjYwNzZAbWFpbC5nbWFpbC5jb20+CSA8NDI1NThCMkIuNzAxMDMwMEByb2dlcnMuY29tPiA8ZTcxNzMzMGUwNTA0MDcyMjQzM2VkMDJkZGRAbWFpbC5nbWFpbC5jb20+"
+    }
+}

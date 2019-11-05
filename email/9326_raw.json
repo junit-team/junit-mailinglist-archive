@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 9327, 
+    "senderId": "UaXJrI6LDepgUmFFZB8ZiqOTi-5P_QGFTWOG90rEXX6fUwsjYNz0M-SFNzcsJFNad5sn9mZdIHz0BpShJW7gIVwZIu-RgecxDQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] a question about abstract/parameterised tests", 
+    "from": "Chris Dollin &lt;chris.dollin@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... I didn t see this fly by, so [now the Release Pressure has dropped on our system] I m having a go myself. It s not very general, but here s what I ve ", 
+    "msgId": 9326, 
+    "rawEmail": "Return-Path: &lt;kers@...&gt;\r\nReceived: (qmail 91853 invoked from network); 12 Sep 2003 16:27:39 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m18.grp.scd.yahoo.com with QMQP; 12 Sep 2003 16:27:39 -0000\r\nReceived: from unknown (HELO n22.grp.scd.yahoo.com) (66.218.66.78)\n  by mta3.grp.scd.yahoo.com with SMTP; 12 Sep 2003 16:27:39 -0000\r\nX-eGroups-Return: kers@...\r\nReceived: from [66.218.67.249] by n22.grp.scd.yahoo.com with NNFMP; 12 Sep 2003 16:26:19 -0000\r\nX-Sender: kers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 96326 invoked from network); 12 Sep 2003 14:42:37 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m20.grp.scd.yahoo.com with QMQP; 12 Sep 2003 14:42:37 -0000\r\nReceived: from unknown (HELO hplb.hpl.hp.com) (192.6.10.2)\n  by mta5.grp.scd.yahoo.com with SMTP; 12 Sep 2003 14:42:37 -0000\r\nReceived: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [15.144.90.22])\n\tby hplb.hpl.hp.com (8.12.9/8.12.1/HP Labs Bristol relay) with ESMTP id h8CEdxjx010746\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 12 Sep 2003 15:39:59 +0100 (BST)\r\nReceived: from cdollin.hpl.hp.com (localhost.localdomain [127.0.0.1])\n\tby cdollin.hpl.hp.com (8.12.8/8.12.8) with ESMTP id h8CEcsX3022926\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 12 Sep 2003 15:38:54 +0100\r\nReceived: from localhost (localhost [[UNIX: localhost]])\n\tby cdollin.hpl.hp.com (8.12.8/8.12.8/Submit) id h8CEcshl022924\n\tfor junit@yahoogroups.com; Fri, 12 Sep 2003 15:38:54 +0100\r\nOrganization: HPLB\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] a question about abstract/parameterised tests\r\nDate: Fri, 12 Sep 2003 15:38:53 +0100\r\nUser-Agent: KMail/1.5\r\nReferences: &lt;200308041444.12423.chris.dollin@...&gt; &lt;200308071546.53623.chris.dollin@...&gt; &lt;200308071325480170.02B60330@...&gt;\r\nIn-Reply-To: &lt;200308071325480170.02B60330@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200309121538.53451.chris.dollin@...&gt;\r\nX-HPL-BR-MailScanner: Found to be clean\r\nX-HPL-BR-MailScanner-SpamCheck: not spam (whitelisted),\n\tSpamAssassin (score=-6.7, required 5, BAYES_01 -5.40,\n\tEMAIL_ATTRIBUTION -0.50, IN_REP_TO -0.37, QUOTED_EMAIL_TEXT -0.38,\n\tREFERENCES 0.00, REPLY_WITH_QUOTES 0.00, USER_AGENT 0.00)\r\nFrom: Chris Dollin &lt;chris.dollin@...&gt;\r\nX-Yahoo-Group-Post: member; u=155741085\r\nX-Yahoo-Profile: anover_alias\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 12 Sep 2003 16:26:19 -0000\r\n\r\nOn Thursday 07 August 2003 18:25, J. B. Rainsberger wrote:\n\n&gt; I have just built ParameterizedTestSuite, which allows you to automatically\n&gt; build a suite of tests (from test* methods), but pass parameters to the\n&gt; underlying test fixture.\n\nI didn&#39;t see this fly by, so [now the Release Pressure has dropped on our\nsystem] I&#39;m having a go myself. It&#39;s not very general, but here&#39;s what I&#39;ve\ngot/done, and a Question:\n\n* AbstractTestGraph is the class [subclass, eventually, of TestCase] of\n  tests for Graph; subclasses must define getGraph() to return the Graph\n  to be tested.\n\n* There are three styles of Graph, so each new implementation of Graph at\n  the moment has to generate three new subclasses of AbstractTestGraph,\n  one for each style of Graph for getGraph, and suite them up together.\n  Ikky.\n\n* So experimentally I have MetaTestGraph which subclasses AbstractTestGraph,\n  with a constructor which takes a [Graph] Class and a Style as well as a\n  string, passes the String up to the superclass as usual, and remembers\n  the other two arguments in instance variables.\n\n* MetaTestGraph&#39;s getGraph uses reflection to invoke the remembered Class&#39;s\n  constructor which takes a Style argument.\n\n* MetaTestGraph has a suite(Class,Style) method which gets the test methods\n  out of AbstractTestGraph and adds them to its TestSuite result. When\n  it adds them, of course it can supply the two additional parameters.\n\n* Now other Graph implementations can have suite()s which include \n  MetaTestGraph.suite(MyMarvelousNewGraph.class, someStyle)\n\nI am about to try this out for real ... I can post the code if necessary,\nwe&#39;re an open-source project. If anyone has any simplifications, warnings,\nwhatever, let me know.\n\nAnd the Question is, why are TestSuite::isPublicTestMethod and\nTestSuite::isTestMethod *private*? Because even if I wrote a subclass\nof TestSuite, rather than using methods in MetaTestGraph, I wouldn&#39;t\nbe able to re-use them ...\n\n-- \nChris &quot;electric hedgehog&quot; Dollin\nC FAQs at: http://www.faqs.org/faqs/by-newsgroup/comp/comp.lang.c.html\nC welcome: http://www.angelfire.com/ms3/bchambless0/welcome_to_clc.html\n\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 9015, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 155741085, 
+    "prevInTime": 9325, 
+    "contentTrasformed": false, 
+    "postDate": "1063377533", 
+    "canDelete": false, 
+    "nextInTopic": 9348, 
+    "prevInTopic": 9056, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwODA3MTMyNTQ4MDE3MC4wMkI2MDMzMEBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwOTEyMTUzOC41MzQ1MS5jaHJpcy5kb2xsaW5AaHAuY29tPg==", 
+        "referencesHeader": "PDIwMDMwODA0MTQ0NC4xMjQyMy5jaHJpcy5kb2xsaW5AaHAuY29tPiA8MjAwMzA4MDcxNTQ2LjUzNjIzLmNocmlzLmRvbGxpbkBocC5jb20+IDwyMDAzMDgwNzEzMjU0ODAxNzAuMDJCNjAzMzBAc3NtdHAuYmxvb3IuaXMubmV0LmNhYmxlLnJvZ2Vycy5jb20+"
+    }
+}

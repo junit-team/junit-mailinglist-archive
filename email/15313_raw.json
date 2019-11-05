@@ -1,0 +1,30 @@
+{
+    "topicId": 15264, 
+    "postDate": "1130807461", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "ltj9IZfu99RZ2ErdbqesLAxOWTGCLKwQQ_Sb0CuVCMbcCZoVDhym7Yhur7va_xP-5HCGfFqt0dWDdQ1xkrEzD5I8741Pex31SjdaH7cP3w", 
+    "nextInTime": 15314, 
+    "userId": 12653864, 
+    "prevInTime": 15312, 
+    "prevInTopic": 15312, 
+    "headers": {
+        "inReplyToHeader": "PDQzNjY4QzJCLjYwOTA1MDlAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzNjZDMEE1LjYwNjA5MDVAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "referencesHeader": "PGRqdDlwMytyNzNpQGVHcm91cHMuY29tPiA8NDM2NUJENUQuNjA5MDQwN0BtZXRhbGFiLnVuYy5lZHU+IDw0MzY2NUZERi43MDUwOTAzQHJvZ2Vycy5jb20+IDw0MzY2NzUwNy42MDYwNDAwQG1ldGFsYWIudW5jLmVkdT4gPDQzNjY4QzJCLjYwOTA1MDlAcm9nZXJzLmNvbT4="
+    }, 
+    "authorName": "Elliotte Harold", 
+    "numMessagesInTopic": 20, 
+    "msgSnippet": "... If I have a failing test that fails because an exception is thrown out of a private method, I debug it. First off I eyeball the code both in the private", 
+    "contentTrasformed": false, 
+    "msgId": 15313, 
+    "nextInTopic": 15315, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;elharo@...&gt;\r\nX-Sender: elharo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 70034 invoked from network); 1 Nov 2005 01:10:59 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m26.grp.scd.yahoo.com with QMQP; 1 Nov 2005 01:10:59 -0000\r\nReceived: from unknown (HELO mail22.sea5.speakeasy.net) (69.17.117.24)\n  by mta3.grp.scd.yahoo.com with SMTP; 1 Nov 2005 01:10:59 -0000\r\nReceived: (qmail 19655 invoked from network); 1 Nov 2005 01:10:59 -0000\r\nReceived: from dsl254-067-087.nyc1.dsl.speakeasy.net (HELO [192.168.254.100]) (elharo@[216.254.67.87])\n          (envelope-sender &lt;elharo@...&gt;)\n          by mail22.sea5.speakeasy.net (qmail-ldap-1.03) with AES256-SHA encrypted SMTP\n          for &lt;junit@yahoogroups.com&gt;; 1 Nov 2005 01:10:58 -0000\r\nMessage-ID: &lt;4366C0A5.6060905@...&gt;\r\nDate: Mon, 31 Oct 2005 20:11:01 -0500\r\nUser-Agent: Thunderbird 1.4 (Macintosh/20050908)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;djt9p3+r73i@...&gt; &lt;4365BD5D.6090407@...&gt; &lt;43665FDF.7050903@...&gt; &lt;43667507.6060400@...&gt; &lt;43668C2B.6090509@...&gt;\r\nIn-Reply-To: &lt;43668C2B.6090509@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Elliotte Harold &lt;elharo@...&gt;\r\nSubject: Re: [junit] Private method throws an exception\r\nX-Yahoo-Group-Post: member; u=12653864; y=YAz0jA4Q2ij7Zp7UJFmsQXi4XFXHANcNvWUhhhDDSisbLLml\r\n\r\nJ. B. Rainsberger wrote:\n\n&gt; If you have a failing test, but you aren&#39;t sure why it fails, and you \n&gt; suspect the problem is in a private method, what do you generally do?\n\nIf I have a failing test that fails because an exception is thrown out \nof a private method, I debug it. First off I eyeball the code both in \nthe private method and the public method being tested. Most of the time \nthe reason for the failure is obvious. If it&#39;s not, I&#39;ll generally set a \nbreakpoint or two and step through the code in the debugger and watch \nwhat actually happens. This is a lot more productive than guessing at \nwhat the problem might be. If I could guess right, then I wouldn&#39;t need \nto step through it.\n\nIt used to be common in quality code to do a code review by stepping \nthrough the entire program in a debugger. This tended to reveal a lot of \nsurprises about how the code was really working. This technique has \nfallen out of favor as applications grew larger. It&#39;s really impractical \ntoday. However, when something is going wrong in a known piece of code \nnothing beats single stepping through it in a debugger. This almost \nalways points me to the exact statement where what I think the code is \ndoing diverges from what the code is actually doing.\n\nThis requires that the bug is consistently reproducible and I have a \ntest that reproduces it. However, once I&#39;ve got that I&#39;m good to go. \nWriting hypothetical tests for what I think the bug might be only works \nif the bug is so obvious that I can eyeball it in the first place. The \ntricky bugs are the ones where everything looks like it should work and \nI can&#39;t see why it doesn&#39;t. That&#39;s when I need to isolate the problem \nmore closely than a test method can. I need to find out which statement \nis failing, not which method is failing. I already know the answer to \nthe latter question.\n\nIf the bug proves to be deep inside another piece of code, then I might \nlater add a second test that aims more closely at the bug. However, \nthat&#39;s only done after I&#39;ve identified the bug, and often I don&#39;t even \nbother to do that. After all, there&#39;s already at least one test for the \nissue.\n\n-- \n﻿Elliotte Rusty Harold  elharo@...\nXML in a Nutshell 3rd Edition Just Published!\nhttp://www.cafeconleche.org/books/xian3/\nhttp://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim\n\n", 
+    "subject": "Re: [junit] Private method throws an exception"
+}

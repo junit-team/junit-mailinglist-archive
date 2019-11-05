@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 9127, 
+    "senderId": "R-bs30u-6yQYgwgSuqMlpOSHWIQNPK0u5NzTeWyvYxKcIzFqA8MgjkV7w7LGwpzIwiggmvc07t2-74ZLts4YFjJhXQlu0JZMIJB6ddgX", 
+    "systemMessage": false, 
+    "subject": "Object containment test dependency", 
+    "from": "Jonathan Oddy &lt;j.oddy@...&gt;", 
+    "authorName": "Jonathan Oddy", 
+    "msgSnippet": "Dear all, I have a test case dependency that I don t much like and can t think of a solution to. Briefly the problem is two very simple Java bean classes (A", 
+    "msgId": 9126, 
+    "rawEmail": "Return-Path: &lt;J.Oddy@...&gt;\r\nReceived: (qmail 74926 invoked by uid 7800); 20 Aug 2003 11:47:35 -0000\r\nX-Sender: J.Oddy@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 65239 invoked from network); 20 Aug 2003 11:32:47 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m11.grp.scd.yahoo.com with QMQP; 20 Aug 2003 11:32:47 -0000\r\nReceived: from unknown (HELO mailgate.servicepower.com) (195.8.178.34)\n  by mta1.grp.scd.yahoo.com with SMTP; 20 Aug 2003 11:32:47 -0000\r\nReceived: from ravel.sbs (ravel.sbs [172.16.2.13])\n\tby mailgate.servicepower.com (8.12.9/8.12.8) with ESMTP id h7KBS2fb021009\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 20 Aug 2003 12:28:02 +0100\r\nReceived: from nt-stoc-0.sbs (nt-stoc-0 [172.16.2.11])\n\tby ravel.sbs (8.11.6/8.11.6) with ESMTP id h7KBS2612472\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 20 Aug 2003 12:28:02 +0100\r\nReceived: by nt-stoc-0.sbs with Internet Mail Service (5.5.2653.19)\n\tid &lt;HF22HS60&gt;; Wed, 20 Aug 2003 12:28:02 +0100\r\nMessage-ID: &lt;E5C79049D461D311B83100062950B54A0127C1DB@...&gt;\r\nTo: junit@yahoogroups.com\r\nSubject: Object containment test dependency\r\nDate: Wed, 20 Aug 2003 12:27:58 +0100\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nFrom: Jonathan Oddy &lt;j.oddy@...&gt;\r\nX-Yahoo-Group-Post: member; u=124029770\r\nX-Yahoo-Profile: jonathanoddy\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 20 Aug 2003 11:47:35 -0000\r\n\r\nDear all,\n\nI have a test case dependency that I don&#39;t much like and can&#39;t think of a\nsolution to.  \n\nBriefly the problem is two &quot;very simple&quot; Java bean classes (A and B).  Class\nA is really simple: a constructor with a number of arguments and a host of\naccessor methods for retrieving this (member) data.  Most of this class\nwould be deemed &quot;too simple to test&quot;, with the main test methods performing\na number of equality/hashCode tests, angain not complex but as there are a\nnumber of fields to check I thought it was worth implementing.  The other\nclass (B) is also a simple bean with a number of data members and simple\naccessors.  However its initialisation mechanism is via an implementation of\nthe Externalizable interface and it&#39;s this that I want to test.  I&#39;ve\nwritten a number of tests checking my serialisation process, but here comes\nthe dependency.  Class B contains a number of (two) class A instances.  The\nraw data is read within readExternal and then used to construct the\ninstances of A.  Class B provides a couple of accessors to retrieve those A\ninstances.\n\nWithin my unit test for B&#39;s Externalizable implementation is to check that\nwhat I pass in on the InputStream results in the B instance I expect.  But B\ncontains two As so I appear to have two points of failure:  A.equals might\nfail which would result in the tests for both A and B failing.  So to\nalleviate this issue I&#39;ve constructed a custom test suite within which A is\nunit tested first, before B so at least if A fails I know I don&#39;t need to\n&quot;waste&quot; effort looking at why B failed (until I have at least fixed A).\n\nSo my question - is this a common problem people have?  And if so how do\nthey handle it?  Or do you just live with a small bit of slightly smelly\ntest code?\n\nBy way of visualisation here&#39;s the code (give or take a bit!):\n\npublic class A\n{\n  A(int first, int second, ...)  { ... }\n  public int getFirst() { ... }\n  public int getSecond() { ... }\n  ...\n  public boolean equals(Object o) { /* main method to test */ }\n}\n\npublic class B implements Externalizable\n{\n  private A firstA;\n  private A secondA;\n  ...\n  public void readExternal(ObjectInput is)\n  {\n    // read stream \n    firstA = new A(...);\n    second A = new A(...);\n    ...\n  }\n  public A getFirstA() { return firstA; }\n  public A getSecondA() { return secondA; }\n  ...\n}\n\npublic class BTest extends TestCase\n{\n  public void testSerialisation()\n  {\n    MockObjectInputStream is = new MockObjectInputStream();\n    B b = new B();\n    b.readExternal(is);\n    // here&#39;s my problem dependency...\n    assertEquals(is.getExpectedFirstA(), b.getFirstA());\n    assertEquals(is.getExpectedSecondA(), b.getSecondA());\n  }\n}\n\n\n\nJonathan\n\n--\nJonathan Oddy\nSERVICEPower Business Solutions Ltd\nPetersgate House - St Petersgate - Stockport - SK1 1HE - ENGLAND\nTel: +44 (0)161 476 2277\nEmail: j.oddy@... &lt;mailto:j.oddy@...&gt;\n\n\n", 
+    "profile": "jonathanoddy", 
+    "topicId": 9126, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 124029770, 
+    "prevInTime": 9125, 
+    "contentTrasformed": false, 
+    "postDate": "1061378878", 
+    "canDelete": false, 
+    "nextInTopic": 9128, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEU1Qzc5MDQ5RDQ2MUQzMTFCODMxMDAwNjI5NTBCNTRBMDEyN0MxREJAbnQtc3RvYy0wLnNicz4="
+    }
+}

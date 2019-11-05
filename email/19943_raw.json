@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19944, 
+    "senderId": "Xb_Vp5NUXEdGVNkq_cVMMlVaz1qzMjt-z16OiNPnw7REmlJDkWqxdkriGaF8xyaNmnFjg9XWGYJWrzFHrCi68LyVmIPIFUHtSWQsU8_KbJX-", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] pattern for testing code in a JAR that I don&#39;t have until after the test starts", 
+    "from": "&quot;Bradley, Todd&quot; &lt;todd.bradley@...&gt;", 
+    "authorName": "Bradley, Todd", 
+    "msgSnippet": "Yeah, I don t really want to get into classloader shenanigans too much, personally, if it means the low level Java interface.  But has anyone (like the Apache", 
+    "msgId": 19943, 
+    "rawEmail": "Return-Path: &lt;todd.bradley@...&gt;\r\nX-Sender: todd.bradley@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 23598 invoked from network); 1 Oct 2007 16:49:28 -0000\r\nReceived: from unknown (69.147.108.201)\n  by m42.grp.scd.yahoo.com with QMQP; 1 Oct 2007 16:49:28 -0000\r\nReceived: from unknown (HELO WSTEXCH00.westminster.polycom.com) (198.76.24.140)\n  by mta2.grp.re1.yahoo.com with SMTP; 1 Oct 2007 16:49:27 -0000\r\nX-MimeOLE: Produced By Microsoft Exchange V6.5\r\nContent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nDate: Mon, 1 Oct 2007 10:50:56 -0600\r\nMessage-ID: &lt;AABEB232F95338499DF8F513EE2B2C78B397D9@...&gt;\r\nIn-Reply-To: &lt;23fce8e60709301400m3f953065l124b31657e6bcc02@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] pattern for testing code in a JAR that I don&#39;t have until after the test starts\r\nThread-Index: AcgDpUoClxDTNqlsTmGAILHnTypqEAApPKig\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Bradley, Todd&quot; &lt;todd.bradley@...&gt;\r\nSubject: RE: [junit] pattern for testing code in a JAR that I don&#39;t have until after the test starts\r\nX-Yahoo-Group-Post: member; u=184154431; y=nta6vBpE_1CwqFvxIQPJEUFtJK9a7CBWGiJtlNUMj9QJNA\r\nX-Yahoo-Profile: todd404\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nYeah, I don&#39;t really want to get into classloader shenanigans too much,\npersonally, if it means the low level Java interface.  But has anyone\n(like the Apache Jakarta projects, for instance) put out any tools to\nmake the shenanigans easier to cope with for a casual user?\n \nThe only thing stopping me from fetching the JAR file from the ant\nscript that kicks the tests off is that all the logic for finding the\nremote system and copying files from it already exists in Java code\nthat&#39;s part of my test framework.  So I&#39;d rather do all this from inside\nmy test case&#39;s superclass, if possible, so I don&#39;t have to duplicate\ncode.\n \nAlso, Hai, your suggestion of using JUnit4&#39;s RunWith is an interesting\none.  I haven&#39;t use these capabilities, so I&#39;ll read up on it.\n \nThanks to both of you.  Any other suggestions?\n \n \nTodd.\n \n\n\n\n________________________________\n\n\tFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On\nBehalf Of James Abley\n\tSent: Sunday, September 30, 2007 3:01 PM\n\tTo: junit@yahoogroups.com\n\tSubject: Re: [junit] pattern for testing code in a JAR that I\ndon&#39;t have until after the test starts\n\t\n\t\n\n\tOn 28/09/2007, Bradley, Todd &lt;todd.bradley@...\n&lt;mailto:todd.bradley%40polycom.com&gt; &gt; wrote:\n\t&gt;\n\t&gt;\n\t&gt;\n\t&gt;\n\t&gt;\n\t&gt;\n\t&gt; Hi, we use JUnit to do some system testing (in addition to\nunit\n\t&gt; testing). And even though I&#39;ve used JUnit every work day for\nthe past 3\n\t&gt; years, I have a new problem I&#39;m not sure how to approach.\n\t&gt;\n\t&gt; I need to write some tests of a Java API that we&#39;re going to\ndeliver to\n\t&gt; our customer. And so my basic plan is to write some JUnit test\ncases\n\t&gt; that will interact with our product through this Java API,\njust as a\n\t&gt; customer would. But I don&#39;t want to have any of our product\nsource code\n\t&gt; checked out to do this. Instead, I want my JUnit test case&#39;s\nsetUp() to\n\t&gt; find the appropriate JAR file on a remote system, fetch it\nlocally, and\n\t&gt; then start running tests against it. That way, whenever the\nJAR file on\n\t&gt; the remote system (our system-under-test) changes, I know I&#39;ll\nbe\n\t&gt; testing the latest API code.\n\t&gt;\n\t&gt; I&#39;ve got all the tools at hand to find and fetch the JAR file,\nbut I&#39;m\n\t&gt; not sure what my approach should be to load the JAR at runtime\nAFTER my\n\t&gt; test (and thus the JVM it&#39;s running in) has already started.\nAny advice\n\t&gt; for me?\n\t\n\tTo do that implies some sort of classloader shenanigans, which\nisn&#39;t pretty.\n\t\n\tWhat is stopping you from getting the latest version of the JAR\nas\n\tpart of the ANT script / automated build process that runs the\ntests,\n\tbefore the tests start running?\n\t\n\tCheers,\n\t\n\tJames\n\t\n\t&gt;\n\t&gt; Todd.\n\t&gt; ----\n\t&gt; Todd Bradley - Polycom, Inc.\n\t&gt; ReadiVideo QA Lead\n\t&gt; \n\t\n\n\t \n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "todd404", 
+    "topicId": 19932, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 184154431, 
+    "prevInTime": 19942, 
+    "contentTrasformed": false, 
+    "postDate": "1191257456", 
+    "canDelete": false, 
+    "nextInTopic": 19948, 
+    "prevInTopic": 19937, 
+    "headers": {
+        "inReplyToHeader": "PDIzZmNlOGU2MDcwOTMwMTQwMG0zZjk1MzA2NWwxMjRiMzE2NTdlNmJjYzAyQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PEFBQkVCMjMyRjk1MzM4NDk5REY4RjUxM0VFMkIyQzc4QjM5N0Q5QFdTVEVYQ0gwMC53ZXN0bWluc3Rlci5wb2x5Y29tLmNvbT4="
+    }
+}

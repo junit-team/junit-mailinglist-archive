@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 5643, 
+    "senderId": "VrYieVCsAyGys7TDucPSp7I8UA9CbuF23mOX9ox4ToHCcwZBhOh2-KcypwX13pnDb4-XsiXqT2IhCtmxtpeKtIMmguJ-LtbgP_okZH669SfDVdU", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Standalone or &quot;requires environment&quot; information", 
+    "from": "&quot;Vladimir Bossicard&quot; &lt;vbossica@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "... -- Vladimir Bossicard www.bossicard.com", 
+    "msgId": 5642, 
+    "profile": "vbossica", 
+    "topicId": 5636, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "messageBody": "<div id=\"ygrps-yiv-797306531\"><blockquote><span title=\"ireply\">&gt; I had similar thoughts to David. My motivation was working from home <br/>\n&gt; when I didn&#39;t have access to the database but would still like to <br/>\n&gt; execute as many tests as possible.<br/>\n<br/>\n </span></blockquote>I don&#39;t know if this already exists but it could be interesting to develop a<br/>\nrecorder/player wrapper mock object.  You can set up the mock object to save<br/>\ninto a file the response it receives via the wrapped object.  You can then<br/>\nreset the mock object to replay (without the wrapped object) from a file.  If<br/>\nthis is done automatically, it can really be very handy to test databases.<br/>\n<br/>\nI don&#39;t know if this is obvious but there&#39;s a simple way to share a connection<br/>\nbetween multiple tests (if you don&#39;t have static variables) to speed up your<br/>\ntests:<br/>\n<br/>\npublic void MyTestCase {<br/>\n<br/>\n   public static Test suite() {<br/>\n      return new TestSetup( new TestSuite(MyTestCase.class) {<br/>\n         private Connection conn;<br/>\n         setUp() {<br/>\n            conn = new Connection(...);<br/>\n            for ( int i = 0; i &lt; suite.countTestCases(); i++ ) {<br/>\n               MyTestCase test = ( MyTestCase ) suite.testAt( i );<br/>\n               test.setConnection(conn);<br/>\n            }<br/>\n         }<br/>\n         tearDown() {<br/>\n            conn.close();<br/>\n         }<br/>\n      };<br/>\n   }<br/>\n<br/>\n   Connection connection;<br/>\n<br/>\n   public void setConnection(Connectio connection) {<br/>\n      this.connection = connection;<br/>\n   }<br/>\n<br/>\n}<br/>\n<br/>\nSo you don&#39;t have to open/close a connection before/after each test.<br/>\n<br/>\nhth<br/>\n<br/>\n-Vladimir<br/>\n\r<br/>\n--<br/>\nVladimir Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 5641, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1030056815", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 5640, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDIwODIyMTU1MzM2LjIzNTU1LmgwMDYuYzAwMy53bUBtYWlsLnRlbG9jaXR5LmNvbS5jcml0aWNhbHBhdGgubmV0Pg=="
+    }
+}

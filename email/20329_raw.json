@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 20330, 
+    "senderId": "EDd5MmsGN7ZyW1Agkg4Uanv2TngJM0JO381KcKVsfRNI4bunxU5Yqdz5rPqiap4RfttzZRbmpwbEY9ea6P3nckpXaAiY7Swk97tyXKNl4iHy", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Scope of the unit test case", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... The two are similar enough to call them the same for now. I have found through years of practice that end-to-end tests are ineffective at finding", 
+    "msgId": 20329, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 48418 invoked from network); 22 Feb 2008 13:04:12 -0000\r\nX-Received: from unknown (66.218.67.95)\n  by m44.grp.scd.yahoo.com with QMQP; 22 Feb 2008 13:04:12 -0000\r\nX-Received: from unknown (HELO ug-out-1314.google.com) (66.249.92.171)\n  by mta16.grp.scd.yahoo.com with SMTP; 22 Feb 2008 13:04:12 -0000\r\nX-Received: by ug-out-1314.google.com with SMTP id k3so1302595ugf.5\n        for &lt;junit@yahoogroups.com&gt;; Fri, 22 Feb 2008 05:04:11 -0800 (PST)\r\nX-Received: by 10.142.44.11 with SMTP id r11mr5416217wfr.13.1203685450313;\n        Fri, 22 Feb 2008 05:04:10 -0800 (PST)\r\nReturn-Path: &lt;jbrains762@...&gt;\r\nX-Received: from ?10.71.0.122? ( [74.9.114.196])\n        by mx.google.com with ESMTPS id h9sm2309317wxd.35.2008.02.22.05.04.07\n        (version=TLSv1/SSLv3 cipher=OTHER);\n        Fri, 22 Feb 2008 05:04:08 -0800 (PST)\r\nMessage-Id: &lt;1C49BE91-9E3E-437D-AC2D-3413011316D9@...&gt;\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;fpi6le+7doq@...&gt;\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes\r\nContent-Transfer-Encoding: 7bit\r\nMime-Version: 1.0 (Apple Message framework v915)\r\nDate: Thu, 21 Feb 2008 10:08:53 -0500\r\nReferences: &lt;fpi6le+7doq@...&gt;\r\nX-Mailer: Apple Mail (2.915)\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\nSubject: Re: [junit] Re: Scope of the unit test case\r\nX-Yahoo-Group-Post: member; u=282027414; y=ViUdGz1KiPU3izdUAFXf8N4coFkq0Ogb7O19NjNXKEjVGZc\r\nX-Yahoo-Profile: nails762\r\n\r\n\nOn Feb 20, 2008, at 16:38 , edu_kumar wrote:\n\n&gt; Hey Nat,\n&gt;\n&gt; Thanks for your clarifications, but I have couple of questions  \n&gt; though..\n&gt;\n&gt; 1) The end-to-end testing sounds more like functional testing to me ,\n&gt; am I correct ?\n&gt;\nThe two are similar enough to call them the same for now. I have found  \nthrough years of practice that end-to-end tests are ineffective at  \nfinding integration defects caused by incorrect understanding of the  \ncontract between pairs of objects. I use a design technique based on  \ncollaboration tests and contract tests that drive out integration  \ndefects without integration tests, but it took me a few years of TDD  \npractice before I felt comfortable with the technique. It&#39;s not for  \nbeginners.\n&gt; 2) I was thinking TDD is only used to develop functionality by writing\n&gt; unit tests first and then the code, can it be more generic to apply\n&gt; for functional testing ?\n&gt;\nI tried doing TDD starting with end-to-end tests, and I found that it  \nencouraged me to try to write exhaustive end-to-end tests, and that&#39;s  \nwhere the big problem lies. In order to test a system exhaustively  \nwith end-to-end tests, you typically need a huge number of tests.  \nThousands to millions. I can get the same confidence from hundreds to  \nthousands of object tests. As a result, I use end-to-end tests as a  \nway to protect against obvious, wide-spread problems, rather than as a  \nway to check a system carefully for defects. I certainly don&#39;t use  \nthem as a starting point for TDD.\n&gt; 3) I need to understand more on this &#39;end-to-end&#39; testing, are there\n&gt; any tools available ? or I should rely on the build process for\n&gt; executing all the test cases for me?\n&gt;\nAn end-to-end test is simply a test that runs the entire system from  \nend to end. There&#39;s no need for specific tools, although there is  \ngenerally a wider selection of appropriate tools for end-to-end  \ntesting compared to more focused object testing.\n\nAs for the build executing all the tests, I prefer it, but once again,  \nif we have too many end-to-end tests, then we become tempted to have  \ntwo different builds: a continuous build that doesn&#39;t run the end-to- \nend tests (because they&#39;re too slow) and a nightly build that does run  \nthem (because it takes hours to run them). This slows down feedback  \nwhile giving us the illusion of continuous feedback, and I find it too  \neasy to make serious mistakes that way. This is another reason I  \nlooked for ways to avoid integration defects without end-to-end tests.\n&gt; Actually, I&#39;ve been started using unit-testing tools like Junit\n&gt; recently for the newly added API in our product but rest of the code\n&gt; is pretty much legacy in nature. So, i was wondering are there any\n&gt; tools for doing this end-to-end testing ? just like Junit ?\n&gt;\nIf you have a Java interface for your application, you can use Java- \nbased tools like JUnit. For web applications, you could use HtmlUnit  \nor HttpUnit among others. I&#39;m no longer an expert on available tools,  \nso I&#39;ll let others answer this question better than I could.\n\nTake care.\n----\nJ. B. (Joe) Rainsberger :: http://www.jbrains.ca\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contributions to Agile Software Practice\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 20323, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "prevInTime": 20328, 
+    "contentTrasformed": false, 
+    "postDate": "1203606533", 
+    "canDelete": false, 
+    "nextInTopic": 20330, 
+    "prevInTopic": 20326, 
+    "headers": {
+        "inReplyToHeader": "PGZwaTZsZSs3ZG9xQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDFDNDlCRTkxLTlFM0UtNDM3RC1BQzJELTM0MTMwMTEzMTZEOUBnbWFpbC5jb20+", 
+        "referencesHeader": "PGZwaTZsZSs3ZG9xQGVHcm91cHMuY29tPg=="
+    }
+}

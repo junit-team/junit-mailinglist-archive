@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 12788, 
+    "senderId": "KqWIQxjboXAuM7XDi7qaRRm8Ck8hBY83pYXLxM8k6JOLK3oElIg7cSUXixBX3OtYKiKINavnGhc5YGwwJCVXTsI8LfKQs0Z9nW3ExpvJ", 
+    "systemMessage": true, 
+    "subject": "Running MultiThreading testcase in JUnit.  Urgent!!", 
+    "from": "Asutosh Panda &lt;asutosh_study@...&gt;", 
+    "authorName": "Asutosh Panda", 
+    "msgSnippet": "Hi All, I m new to JUnit. I m facing an issue while handling multi threading testing in JUnit. I m  creating two threads to opening two same browser  in local", 
+    "msgId": 12787, 
+    "rawEmail": "Return-Path: &lt;asutosh_study@...&gt;\r\nReceived: (qmail 32838 invoked from network); 2 Feb 2005 16:57:31 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m25.grp.scd.yahoo.com with QMQP; 2 Feb 2005 16:57:31 -0000\r\nReceived: from unknown (HELO n6a.bulk.scd.yahoo.com) (66.94.237.40)\n  by mta1.grp.scd.yahoo.com with SMTP; 2 Feb 2005 16:57:31 -0000\r\nReceived: from [66.218.69.5] by n6.bulk.scd.yahoo.com with NNFMP; 02 Feb 2005 16:57:17 -0000\r\nReceived: from [66.218.66.73] by mailer5.bulk.scd.yahoo.com with NNFMP; 02 Feb 2005 16:57:16 -0000\r\nX-Sender: asutosh_study@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 52039 invoked from network); 2 Feb 2005 10:18:54 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m16.grp.scd.yahoo.com with QMQP; 2 Feb 2005 10:18:54 -0000\r\nReceived: from unknown (HELO web30803.mail.mud.yahoo.com) (68.142.200.146)\n  by mta4.grp.scd.yahoo.com with SMTP; 2 Feb 2005 10:18:52 -0000\r\nReceived: (qmail 66493 invoked by uid 60001); 2 Feb 2005 10:18:45 -0000\r\nMessage-ID: &lt;20050202101845.66491.qmail@...&gt;\r\nReceived: from [203.193.138.226] by web30803.mail.mud.yahoo.com via HTTP; Wed, 02 Feb 2005 02:18:44 PST\r\nDate: Wed, 2 Feb 2005 02:18:44 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nX-eGroups-Remote-IP: 68.142.200.146\r\nFrom: Asutosh Panda &lt;asutosh_study@...&gt;\r\nSubject: Running MultiThreading testcase in JUnit.  Urgent!!\r\nX-Yahoo-Group-Post: member; u=206221089\r\nX-Yahoo-Profile: asutosh_study\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 02 Feb 2005 16:57:12 -0000\r\nX-eGroups-Remote-IP: 66.94.237.40\r\n\r\n\nHi All,\n I m new to JUnit.\n I&#39;m facing an issue while handling multi threading testing in JUnit.\nI&#39;m  creating two threads to opening two same browser  in local m/c. many times\nmy code running properly ,the big but is that some  times it throws\nunexpected  exception.How to have better control over threads?\nSuggestions or pointers are welcome.\n \nPlease throw some light on this...\n \nHere is the code  that is in the  runTest().....\n \npublic void runTest() throws Throwable {\n                getTestContext().setBaseUrl(Display.getValue(&quot;BaseUrl&quot;)); \n                           \n                if(Thread.currentThread().getName().equals(&quot;Thread-0&quot;))\n                  Thread.currentThread().setPriority(10); \n                 else\n                 Thread.currentThread().setPriority(1);\n                 \n             beginAt(&quot;/controller/pages/login.jsp&quot;);\n             assertTitleEquals(&quot;Determina SecureCore Management Console&quot;);\n             assertFormPresent(&quot;LoginForm&quot;);\n             setFormElementWithLabel (&quot;User Name&quot;,Display.getValue(&quot;UserName_admin&quot;));\n             setFormElementWithLabel (&quot;Password&quot;,Display.getValue(&quot;Password_admin&quot;));\n             submit();\n             gotoFrame(&quot;main&quot;);\n             assertTextPresent(&quot;Welcome admin&quot;);\n             HttpUnitOptions.setExceptionsThrownOnScriptError (false);           \n              beginAt(&quot;/controller/sysconfig.do&quot;);\n              \n          if(Thread.currentThread().getName().equals(&quot;Thread-0&quot;)){\n            System.out.println(&quot;The Thread is &quot;+Thread.activeCount());\n                    assertFormPresent(&quot;sysConfigForm&quot;);\n           setWorkingForm(&quot;sysConfigForm&quot;);\n           assertTextPresent(&quot;System Detail&quot;);\n           setFormElement(&quot;sys.userSessionTimeout&quot;,&quot;1150&quot;);\n           submit(&quot;sysconfigUpdate&quot;);\n           HttpUnitOptions.setExceptionsThrownOnScriptError (false);\n           }               \n                \n           if(Thread.currentThread().getName().equals(&quot;Thread-1&quot;)){\n                 assertFormPresent(&quot;sysConfigForm&quot;);\n           setWorkingForm(&quot;sysConfigForm&quot;);\n           assertTextPresent(&quot;System Detail&quot;);\n           submit(&quot;sysconfigUpdate&quot;);\n           HttpUnitOptions.setExceptionsThrownOnScriptError (false);\n           assertTextPresent(&quot;This data has been edited by someone else. If you want to override, just resubmit your changes&quot;);\n           System.out.println(&quot;WOW!Its Working&quot;);\n          } \n           \n       }\n \n \n\n\n Thanks and Regards,\n   Asutosh  Panda\n\n\n\t\t\n---------------------------------\nDo you Yahoo!?\n Yahoo! Search presents - Jib Jab&#39;s &#39;Second Term&#39;\n\n[Non-text portions of this message have been removed]\n\n\n\n\n\n", 
+    "profile": "asutosh_study", 
+    "topicId": 12787, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 206221089, 
+    "prevInTime": 12786, 
+    "contentTrasformed": false, 
+    "postDate": "1107339524", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDUwMjAyMTAxODQ1LjY2NDkxLnFtYWlsQHdlYjMwODAzLm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

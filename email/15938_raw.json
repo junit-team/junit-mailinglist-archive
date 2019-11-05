@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 74, 
+    "nextInTime": 15939, 
+    "senderId": "fMW_gppWydH_kcECpKzUu5VPf0xE4GwGfr73IIGPiC-krI1v21yCKdeh_NcLnWMnpIk9IKrHie0SoXgyLwEaxbsa_ZaPl5_9Y8ti-oGCKA", 
+    "systemMessage": false, 
+    "subject": "Re: Pluggable Selector considered harmful? (Re: [junit] Re: Observations from a production use of JUnit4)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Really? How does Adapter do this? Specifically, I was working in an area where there were a number of rule methods, like boolean isReadyToStart(); boolean", 
+    "msgId": 15938, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 46484 invoked from network); 3 Feb 2006 02:20:34 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m24.grp.scd.yahoo.com with QMQP; 3 Feb 2006 02:20:34 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta3.grp.scd.yahoo.com with SMTP; 3 Feb 2006 02:20:34 -0000\r\nReceived: (qmail 76330 invoked from network); 3 Feb 2006 02:20:30 -0000\r\nReceived: from unknown (HELO ?172.17.198.244?) (srainsberger5790@...@208.255.117.67 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 3 Feb 2006 02:20:29 -0000\r\nMessage-ID: &lt;43E2BDED.8040907@...&gt;\r\nDate: Thu, 02 Feb 2006 21:20:29 -0500\r\nUser-Agent: Thunderbird 1.5 (Macintosh/20051201)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;drqt92+5qln@...&gt; &lt;43E18D6F.6050302@...&gt; &lt;43E20959.7030605@...&gt;\r\nIn-Reply-To: &lt;43E20959.7030605@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: Pluggable Selector considered harmful? (Re: [junit] Re: Observations\n from a production use of JUnit4)\r\nX-Yahoo-Group-Post: member; u=127224993; y=BOEnLnnC9YnLk9JNSV9YPwgIIPtF14dm6aVU55CuhbkY-Ok\r\nX-Yahoo-Profile: nails762\r\n\r\nJason Rogers wrote:\n\n&gt; I have often found that there are other ways around using reflection in\n&gt; Java.  The Adaptor pattern for instance is a simple way of implementing\n&gt; the Pluggable Selector.  It will respond to refactorings, it doesn&#39;t add\n&gt; much complexity, and it&#39;s efficient.\n\nReally? How does Adapter do this? Specifically, I was working in an area \nwhere there were a number of rule methods, like\n\n     boolean isReadyToStart();\n     boolean isX();\n     boolean isY();\n\nand there was one big method that essentially did this:\n\n     if (isReadyToStart() && isX() && isY() && ... ) {\n         doTheCoolThing();\n     }\n\nNow there /is/ an obvious refactoring here, to use &quot;inject&quot; which might \nnow be part of Commons Collections, but which I ended up implementing \nsome time ago.\n\n     create a Predicate for each rule and add it to a rules Set\n\n     Inject inject = new Inject(false) {\n         public boolean result;\n\n         public Inject(boolean startValue) {\n             this.result = startValue;\n         }\n\n         public void process(Object input) {\n             Predicate each = (Predicate) input;\n             result = result && each.evaluate();\n         }\n     }\n\n\n     CollectionUtils.forEachDo(rules, inject);\n\n     if (inject.result) {\n         doTheCoolThing();\n     }\n\nThis is better: to add a new rule requires only adding a Predicate to \nthe rules Set, but that probably means adding the boolean method, then \nwrapping it in a Predicate, or worse, littering the codebase with a \nbunch of top-level Predicate implementations that I can&#39;t read together \nat a glance. (They&#39;re often one-line methods, anyway!) I prefer to \ndiscover all the rules and use them. For this, I do what JUnit does: use \na naming convention and collect all the rules into a ruleset and run \nthem with the Inject closure. When I showed some well-known and \nwell-meaning agilistas this, they uniformly thought I was nuts. Since \nthey all use xUnit, I find that surprising.\n\nGranted, in JDK 5.0 I would use annotations instead of reflection, but I \ndon&#39;t plan to work much in JDK 5.0. If I wanted to write C++, I&#39;d write C++.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.info\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 15891, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 15937, 
+    "contentTrasformed": false, 
+    "postDate": "1138933229", 
+    "canDelete": false, 
+    "nextInTopic": 15939, 
+    "prevInTopic": 15937, 
+    "headers": {
+        "inReplyToHeader": "PDQzRTIwOTU5LjcwMzA2MDVAZmFzdC1tYWlsLm9yZz4=", 
+        "messageIdInHeader": "PDQzRTJCREVELjgwNDA5MDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGRycXQ5Mis1cWxuQGVHcm91cHMuY29tPiA8NDNFMThENkYuNjA1MDMwMkByb2dlcnMuY29tPiA8NDNFMjA5NTkuNzAzMDYwNUBmYXN0LW1haWwub3JnPg=="
+    }
+}

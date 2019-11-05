@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 18532, 
+    "senderId": "8kaadG2HT2geHaiBvNwzK6DFsBKx17_h_Nb8FfUSTMR3SgTGgKUn1fjZiHLouffXHjQkLamrVPASSXYEzLQHvmQQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Converting custom TestCase to JUnit 4.0", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "R, I m glad you asked.  There s support for this built right in to JUnit 4.  I d code it as below.  Good luck, David Saff package scratch; import static", 
+    "msgId": 18531, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 33224 invoked from network); 12 Dec 2006 14:47:04 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m34.grp.scd.yahoo.com with QMQP; 12 Dec 2006 14:47:04 -0000\r\nReceived: from unknown (HELO nf-out-0910.google.com) (64.233.182.189)\n  by mta1.grp.scd.yahoo.com with SMTP; 12 Dec 2006 14:47:03 -0000\r\nReceived: by nf-out-0910.google.com with SMTP id n29so239080nfc\n        for &lt;junit@yahoogroups.com&gt;; Tue, 12 Dec 2006 06:42:58 -0800 (PST)\r\nReceived: by 10.49.92.18 with SMTP id u18mr1434558nfl.1165934577179;\n        Tue, 12 Dec 2006 06:42:57 -0800 (PST)\r\nReceived: by 10.49.43.11 with HTTP; Tue, 12 Dec 2006 06:42:57 -0800 (PST)\r\nMessage-ID: &lt;4f7da6b90612120642w3e510396v39fd73d7286e34@...&gt;\r\nDate: Tue, 12 Dec 2006 09:42:57 -0500\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;elk63a+om1n@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;elk63a+om1n@...&gt;\r\nX-Google-Sender-Auth: 80a0ededbae76e5a\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Converting custom TestCase to JUnit 4.0\r\nX-Yahoo-Group-Post: member; u=139771899; y=FBPGaZ_mxsqwt1Lt5CxhlinUetPsg816RG77CJMIEt8\r\nX-Yahoo-Profile: dsaff\r\n\r\nR,\n\nI&#39;m glad you asked.  There&#39;s support for this built right in to JUnit\n4.  I&#39;d code it as below.  Good luck,\n\n   David Saff\n\npackage scratch;\n\nimport static org.junit.Assert.*;\n\nimport java.util.ArrayList;\nimport java.util.Collection;\nimport java.util.List;\n\nimport org.junit.Test;\nimport org.junit.runner.RunWith;\nimport org.junit.runners.Parameterized;\nimport org.junit.runners.Parameterized.Parameters;\n\n@RunWith(Parameterized.class)\npublic class AccuracyTest {\n\tprivate final double result, expected;\n\n\tpublic AccuracyTest(double result, double expected) {\n\t\tthis.result = result;\n\t\tthis.expected = expected;\n\t}\n\n\t@Parameters\n\tpublic static Collection&lt;Object[]&gt; parameters() {\n\t\tDatabase db = getDb(); // impl. omitted\n\t\tfinal double[] results = codeToBeTested(db); // impl. omitted\n\t\tfinal double[] expected = getResults(db); // impl. omitted\n\t\tList&lt;Object[]&gt; params = new ArrayList&lt;Object[]&gt;();\n\t\tfor (int i = 0; i &lt; expected.length; i++) {\n\t\t\tparams.add(new Object[] { results[i], expected[i] });\n\t\t}\n\t\treturn params;\n\t}\n\n\t@Test\n\tpublic void equalEnough() {\n\t\tassertEquals(result, expected, 0.01);\n\t}\n\t\n\tpublic static class Database {\n\n\t}\n\n\tprivate static Database getDb() {\n\t\treturn null;\n\t}\n\n\tprivate static double[] getResults(Database db) {\n\t\treturn new double[] { 1.0, 2.0, 3.0 };\n\t}\n\n\tprivate static double[] codeToBeTested(Database db) {\n\t\treturn new double[] { 1.0, 2.0, 3.2 };\n\t}\n}\n\n\nOn 12/11/06, robbiexgibson &lt;robbiexgibson@...&gt; wrote:\n&gt; Hi,\n&gt;\n&gt; I have a functional test which looks roughly like this:\n&gt;\n&gt; public class FunctionalTest extends TestCase {\n&gt;     public static Test suite () throws Exception {\n&gt;         Database db = getDb(); // impl. omitted\n&gt;         TestSuite suite = new TestSuite ();\n&gt;         final double[] results = codeToBeTested(db); // impl. omitted\n&gt;         final double[] expected = getResults(db); // impl. omitted\n&gt;         for (int i = 0; i&lt;results.length; i++) {\n&gt;             suite.addTest(new AccuracyTest(results[i], expected[i]));\n&gt;         }\n&gt;         return suite;\n&gt;     }\n&gt; }\n&gt;\n&gt; class AccuracyTest extends TestCase {\n&gt;     private final double result, expected;\n&gt;     public AccuracyTest(double result, double expected) {\n&gt;         this.result = result;\n&gt;         this.expected = expected;\n&gt;     }\n&gt;\n&gt;     @Override\n&gt;     protected void runTest() {\n&gt;         assertEquals(result, expected, 0.01);\n&gt;     }\n&gt; }\n&gt;\n&gt; I understand that I can do my database setup in a method tagged\n&gt; @BeforeClass. But what about the rest? I don&#39;t understand how I&#39;m\n&gt; supposed to create tests about which I don&#39;t know everything at\n&gt; compile time (principally, I don&#39;t know the length of the results\n&gt; arrays). Am I supposed to create a custom Runner? Custom Description?\n&gt; Note that I want to have one test per element of the array, not to\n&gt; fail on the first mismatch between &quot;result&quot; and &quot;expected&quot;.\n&gt;\n&gt; Hope you can help!\n&gt; R\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 18526, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 18530, 
+    "contentTrasformed": false, 
+    "postDate": "1165934577", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18526, 
+    "headers": {
+        "inReplyToHeader": "PGVsazYzYStvbTFuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDYxMjEyMDY0MnczZTUxMDM5NnYzOWZkNzNkNzI4NmUzNEBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGVsazYzYStvbTFuQGVHcm91cHMuY29tPg=="
+    }
+}

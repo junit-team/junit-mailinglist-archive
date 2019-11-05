@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4219, 
+    "senderId": "MzFx8nkvEHcikfhsHL5Ff6yXJZvNmZoDd26KZwaX0lJRcUV9fdJeL4PEegqYJ20x7VkeQn4X10NwkKGbhbT4YA-ZAaDh_A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] non-assertable test: output to console?", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... Design the Logger to be composed of an output stream of some sort, then define a mock output stream that captures the output.  You can then assert that the", 
+    "msgId": 4218, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 27 Feb 2002 18:13:14 -0000\r\nReceived: (qmail 2046 invoked from network); 27 Feb 2002 18:13:14 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m3.grp.snv.yahoo.com with QMQP; 27 Feb 2002 18:13:14 -0000\r\nReceived: from unknown (HELO dodo.mail.pas.earthlink.net) (207.217.120.99)\n  by mta1.grp.snv.yahoo.com with SMTP; 27 Feb 2002 18:13:14 -0000\r\nReceived: from clarkware.com (user-33qtop8.dialup.mindspring.com [199.174.227.40])\n\tby dodo.mail.pas.earthlink.net (8.9.3/8.9.3) with ESMTP id KAA29172\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 27 Feb 2002 10:13:11 -0800 (PST)\r\nMessage-ID: &lt;3C7D2139.219C95ED@...&gt;\r\nDate: Wed, 27 Feb 2002 11:11:05 -0700\r\nOrganization: Clarkware Consulting, Inc.\r\nX-Mailer: Mozilla 4.77 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] non-assertable test: output to console?\r\nReferences: &lt;a5j73i+5afr@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nX-Yahoo-Group-Post: member; u=33026788\r\nX-Yahoo-Profile: clarkware\r\n\r\nepahelper wrote:\n\n&gt; hello,\n&gt;\n&gt; just wondering if there&#39;s a way to use junit to test whether a Logger\n&gt; is spitting out the expected output to console.\n&gt;\n\nDesign the Logger to be composed of an output stream of some sort, then\ndefine a mock output stream that captures the output.  You can then assert\nthat the mock output stream captured the expected output.\n\n    public MockWriter implements Writer {\n        private String _output;\n\n        public void write(String s) {\n            _output = s;\n        }\n\n        public String getWhatWasWritten() {\n            return _output;\n        }\n\n        ...\n    }\n\n    public class Logger {\n\n        private Writer _writer;\n\n        public Logger(Writer writer) {\n            _writer = writer;\n        }\n\n        public void log(String message) {\n            _writer.write(message);\n    }\n\n    public void testWriter() {\n\n        MockWriter writer = new MockWriter();\n        Logger logger = new Logger(writer);\n\n        logger.log(&quot;test&quot;);\n\n        assertEquals(&quot;test&quot;, writer.getWhatWasWritten());\n    }\n\nMike\n\n--\nMike Clark\nClarkware Consulting, Inc.\nhttp://www.clarkware.com\n720.851.2014\n\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 4217, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "prevInTime": 4217, 
+    "contentTrasformed": false, 
+    "postDate": "1014833465", 
+    "canDelete": false, 
+    "nextInTopic": 4219, 
+    "prevInTopic": 4217, 
+    "headers": {
+        "messageIdInHeader": "PDNDN0QyMTM5LjIxOUM5NUVEQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PGE1ajczaSs1YWZyQGVHcm91cHMuY29tPg=="
+    }
+}

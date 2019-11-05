@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21671, 
+    "senderId": "D7u4JF9JB9PK4xb9aV37sRMl0AQ9H1aWMLiTG6pj-owxUwSIQC2AYj8kwDIQfMAHt8PSeQoJetrlv74OPoohS7Y_", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Change generic signature of assert that", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Among other things, it allows ... What if that were changed to public static  org.hamcrest.Matcher hasEntry(K key, V value) ", 
+    "msgId": 21670, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 52597 invoked from network); 22 May 2009 18:48:23 -0000\r\nX-Received: from unknown (69.147.108.201)\n  by m7.grp.re1.yahoo.com with QMQP; 22 May 2009 18:48:23 -0000\r\nX-Received: from unknown (HELO mail-bw0-f171.google.com) (209.85.218.171)\n  by mta2.grp.re1.yahoo.com with SMTP; 22 May 2009 18:48:23 -0000\r\nX-Received: by bwz19 with SMTP id 19so1842970bwz.12\n        for &lt;junit@yahoogroups.com&gt;; Fri, 22 May 2009 11:47:10 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.239.150.9 with SMTP id l9mr297302hbb.147.1243018030387; Fri, \n\t22 May 2009 11:47:10 -0700 (PDT)\r\nIn-Reply-To: &lt;gv6qqb+t0kp@...&gt;\r\nReferences: &lt;4f7da6b90905221102u7d072ea2yd0db0b043f26411b@...&gt;\n\t &lt;gv6qqb+t0kp@...&gt;\r\nDate: Fri, 22 May 2009 14:47:10 -0400\r\nX-Google-Sender-Auth: 3ed8d47ab035f878\r\nMessage-ID: &lt;4f7da6b90905221147r2c2a9f63ra134533e888c963c@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Re: Change generic signature of assert that\r\nX-Yahoo-Group-Post: member; u=341876227; y=Eg8BRpIQT_rBWa-DB_2ig_Nw7gDHHn204mhMyw_Aop0\r\nX-Yahoo-Profile: dsaff\r\n\r\nAmong other things, it allows\n\n\n\nOn Fri, May 22, 2009 at 2:27 PM, yme098765=\r\n4321 &lt;yme0987654321@...&gt; wrote:\n&gt; hasEntry is part of the Hamcrest li=\r\nbrary. Here is the signature:\n&gt;\n&gt; public static &lt;K, V&gt; org.hamcrest.Matcher=\r\n&lt;java.util.Map&lt;K, V&gt;&gt; hasEntry(K key, V value)\n\nWhat if that were changed t=\r\no\n\npublic static &lt;K, V&gt; org.hamcrest.Matcher&lt;? super java.util.Map&lt;K, V&gt;&gt;\nh=\r\nasEntry(K key, V value)\n\n&gt; I&#39;m curious if you know of a reason that\n&gt;\n&gt; pub=\r\nlic static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; matcher)\n&gt;\n&gt; =\r\nis wrong. Does it break something that you know of?\n\nAmong other things, it=\r\n allows\n\nassertThat(new Object(), containsString(&quot;a&quot;));\n\nAny proposal to ch=\r\nange assertThat will probably have to identify which\nof the issues identifi=\r\ned in\nhttp://groups.google.com/group/hamcrest-dev/browse_thread/thread/a98f=\r\nb6b5c22386cf/d073d6ba826787c8?lnk=3Dgst&q=3Dstatus#d073d6ba826787c8\nit solv=\r\nes/breaks.  Sorry.\n\n   David Saff\n\n&gt;\n&gt;\n&gt; --- In junit@yahoogroups.com, Davi=\r\nd Saff &lt;david@...&gt; wrote:\n&gt;&gt;\n&gt;&gt; On Fri, May 22, 2009 at 1:18 PM, yme0987654=\r\n321 &lt;yme0987654321@...&gt; wrote:\n&gt;&gt; &gt; Consider the following case:\n&gt;&gt; &gt;\n&gt;&gt; &gt; =\r\nMap&lt;String, Class&lt;? extends Serializable&gt;&gt; result =3D null;\n&gt;&gt; &gt;\n&gt;&gt; &gt; asser=\r\ntThat(result, hasEntry(&quot;Key&quot;, java.util.Date.class));\n&gt;&gt; &gt;\n&gt;&gt; &gt; This will n=\r\not compile, but if the method signature of assertThat was changed to:\n&gt;&gt; &gt;\n=\r\n&gt;&gt; &gt; public static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; match=\r\ner)\n&gt;&gt; &gt;\n&gt;&gt; &gt; It would compile.\n&gt;&gt; &gt;\n&gt;&gt; &gt; I would seem that it would be an =\r\nappropriate change for such cases (unless there is something I don&#39;t unders=\r\ntand about the deep implications of Generics).\n&gt;&gt;\n&gt;&gt; Sigh.\n&gt;&gt;\n&gt;&gt; Unfortunat=\r\nely, it was all too easy for the hamcrest team, a couple\n&gt;&gt; months ago, to =\r\ncome up with a list of 6 or 7 assertThat statements\n&gt;&gt; that all looked like=\r\n they should obviously compile or not compile, but\n&gt;&gt; no Java typing that w=\r\nould make them all work. =A0It does get deep, and\n&gt;&gt; in some cases, compile=\r\nr-dependent, if I remember correctly.\n&gt;&gt;\n&gt;&gt; However, we did find that in so=\r\nme cases, the signature of the\n&gt;&gt; _Matcher_ could be improved. =A0What&#39;s th=\r\ne signature of hasEntry?\n&gt;&gt;\n&gt;&gt; This is also pushing me to keep on my &quot;Dotme=\r\nsh&quot; project, which would allow this:\n&gt;&gt;\n&gt;&gt; assertThat(result.entrySet()).co=\r\nntains(entry(&quot;Key&quot;, Date.class));\n&gt;&gt;\n&gt;&gt; [if the &quot;entry&quot; factory convenience=\r\n method were written]\n&gt;&gt;\n&gt;&gt; Thanks,\n&gt;&gt;\n&gt;&gt; =A0 =A0David Saff\n&gt;&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; --=\r\n----------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21666, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21669, 
+    "contentTrasformed": false, 
+    "postDate": "1243018030", 
+    "canDelete": false, 
+    "nextInTopic": 21672, 
+    "prevInTopic": 21669, 
+    "headers": {
+        "inReplyToHeader": "PGd2NnFxYit0MGtwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNTIyMTE0N3IyYzJhOWY2M3JhMTM0NTMzZTg4OGM5NjNjQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDRmN2RhNmI5MDkwNTIyMTEwMnU3ZDA3MmVhMnlkMGRiMGIwNDNmMjY0MTFiQG1haWwuZ21haWwuY29tPgkgPGd2NnFxYit0MGtwQGVHcm91cHMuY29tPg=="
+    }
+}

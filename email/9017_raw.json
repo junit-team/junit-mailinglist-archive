@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 9018, 
+    "senderId": "2nzoQ0qh2UQXChZL2HlBWmXOHULpiYOJPL6UXhu-BRl1_0lp1eEW95stX565BRLn1Q3m5157TpSvb1bd9SPuYQ4WhqBD_cflV72ysg_qPw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] a question about abstract/parameterised tests", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I didn t understand this question. True or false: you want to create a test suite consisting of tests for all the implementations of an interface. (Please", 
+    "msgId": 9017, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 99407 invoked from network); 4 Aug 2003 16:46:07 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m6.grp.scd.yahoo.com with QMQP; 4 Aug 2003 16:46:07 -0000\r\nReceived: from unknown (HELO fep03-mail.bloor.is.net.cable.rogers.com) (66.185.86.73)\n  by mta2.grp.scd.yahoo.com with SMTP; 4 Aug 2003 16:46:07 -0000\r\nReceived: from barney ([24.156.43.226])\n          by fep03-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030804164606.LVQA468637.fep03-mail.bloor.is.net.cable.rogers.com@barney&gt;\n          for &lt;junit@yahoogroups.com&gt;; Mon, 4 Aug 2003 12:46:06 -0400\r\nMessage-ID: &lt;200308041245580228.002D166A@...&gt;\r\nIn-Reply-To: &lt;200308041444.12423.chris.dollin@...&gt;\r\nReferences: &lt;200308041444.12423.chris.dollin@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Mon, 04 Aug 2003 12:45:58 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] a question about abstract/parameterised tests\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep03-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Mon, 4 Aug 2003 12:46:06 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt;So said Chris Dollin on 2003-08-04 --------------------\n&gt;We have an interf=\r\nace (Graph) with multiple implementations (A and B). [Some\n&gt;names have been=\r\n changed to avoid complications.] I have a test case\n&gt;AbstractTestGraph wit=\r\nh an abstract method Graph getGraph(), where the\n&gt;tests test the Graph(s) t=\r\nhat getGraph() returns, and TestA/TestB define\n&gt;getGraph() to return instan=\r\nces of A/B as appropriate. So far, so good, and\n&gt;just as suggested in one o=\r\nf the Junit documents. The code for each test\n&gt;case is nice and short.\n&gt;\n&gt;W=\r\nell ... I lied about A and B; it&#39;s more like A, B, C, and X. And likely to\n=\r\n&gt;be more, since Y and Z exist but may not be properly included in the\n&gt;test=\r\n suite at the moment.\n&gt;\n&gt;(1) How can I write a test generator which takes A=\r\n.class, X.class etc as\n&gt;arguments and constructs the necessary suite? \n\nI d=\r\nidn&#39;t understand this question.\n\nTrue or false: you want to create a test s=\r\nuite consisting of tests for all the implementations of an interface. (Plea=\r\nse answer.)\n\nThe obvious-to-me code\n&gt;\n&gt;    public static TestCase makeMyTes=\r\nt( final Class someGraph )\n&gt;        {\n&gt;        class TestSomeGraph extends =\r\nAbstractTestGraph\n&gt;            {\n&gt;            public TestSomeGraph( String =\r\nname ) { super( name ); }\n&gt;            public static TestSuite suite() { re=\r\nturn new TestSuite( \n&gt;TestSomeGraph ); }\n&gt;            public Graph getGraph=\r\n() \n&gt;                 { return someGraph.getConstructor( new Class[] {} \n&gt;)=\r\n.newInstance( new Object [] {} ); }\n&gt;            }\n&gt;        }\n\nThis appears=\r\n to try to build concrete test cases (http://c2.com/cgi/wiki?AbstractTestCa=\r\nses) on the fly given an abstract test case. I have never thought of doing =\r\nthis before, but it makes sense.\n\nAssuming that this is what you&#39;re trying =\r\nto do, then I assume you have:\n\n   * An abstract test case GraphTest\n   * A=\r\nn interface Graph\n   * Implementations of Graph\n\nYou would like to generate=\r\n a test suite consisting of XTestCase for each implementation XGraph of Gra=\r\nph where XTestCase creates an instance of XGraph to test.\n\nThis is a neat q=\r\nuestion. Let me think about this.\n\n&gt;So ... am I dead-ended in the wrong all=\r\ney? Missing something obvious?\n&gt;Missing something subtle? Any advice would =\r\nbe welcome. If I have to\n&gt;hack junit source code I will, but I feel that su=\r\nrely I don&#39;t need to ...\n\nI don&#39;t think you are. Dynamic invocation handler=\r\ns might be the order of the day, or something... This seems to be easy to d=\r\no in a dynamic language like Smalltalk. :)\n\nTake care.\n\n\nJ. B. Rainsberger,=\r\n\nPresident, Diaspar Software Services\nLet&#39;s write software that people unde=\r\nrstand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 9015, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 9016, 
+    "contentTrasformed": false, 
+    "postDate": "1060015558", 
+    "canDelete": false, 
+    "nextInTopic": 9025, 
+    "prevInTopic": 9015, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwODA0MTQ0NC4xMjQyMy5jaHJpcy5kb2xsaW5AaHAuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwODA0MTI0NTU4MDIyOC4wMDJEMTY2QUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDMwODA0MTQ0NC4xMjQyMy5jaHJpcy5kb2xsaW5AaHAuY29tPg=="
+    }
+}

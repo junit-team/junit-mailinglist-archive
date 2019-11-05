@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 26, 
+    "nextInTime": 11494, 
+    "senderId": "XIuhHeEGQ72-S2bNwWHceUdanoqZJ_YNUnSWeyRH0QUgLHrojk4y4orhumm2bWGsQzLbhlVKX6ch-s0cWSDW5ez0HhjvKYRCHg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Documenting test cases", 
+    "from": "David Plass &lt;dplass@...&gt;", 
+    "authorName": "David Plass", 
+    "msgSnippet": "JB, Disclaimer: I m not really as stubborn as I ve been sounding today.  I actually agree with using throws Exception .  Recently I was burned on a ", 
+    "msgId": 11493, 
+    "rawEmail": "Return-Path: &lt;DPlass@...&gt;\r\nX-Sender: DPlass@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 13169 invoked from network); 15 Jul 2004 20:35:18 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m21.grp.scd.yahoo.com with QMQP; 15 Jul 2004 20:35:18 -0000\r\nReceived: from unknown (HELO exchange.tcicredit.com) (65.170.14.178)\n  by mta6.grp.scd.yahoo.com with SMTP; 15 Jul 2004 20:35:17 -0000\r\nReceived: by EXCHANGE with Internet Mail Service (5.5.2650.21)\n\tid &lt;3ZNNZ6V8&gt;; Thu, 15 Jul 2004 16:35:22 -0400\r\nMessage-ID: &lt;B6444D0E406AD511ADFB00D0B7893A6901B5E7A6@EXCHANGE&gt;\r\nTo: junit@yahoogroups.com\r\nDate: Thu, 15 Jul 2004 16:35:14 -0400\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2650.21)\r\nX-eGroups-Remote-IP: 65.170.14.178\r\nFrom: David Plass &lt;dplass@...&gt;\r\nSubject: RE: [junit] Documenting test cases\r\nX-Yahoo-Group-Post: member; u=179102530\r\nX-Yahoo-Profile: dplass\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nJB,\nDisclaimer: I&#39;m not really as stubborn as I&#39;ve been sounding today.  I\nactually agree with using &#39;throws Exception&#39; .  Recently I was burned on a\ncheckstyle &quot;code review&quot; of my testing package that tagged me on *every*\ninstance of &#39;throws Exception&#39; (too general) *and* tagged me that I didn&#39;t\ndocument them (no @throws).  I *knew* I was using the commonly-accepted\nidiom, but my confidence was shot down.   I guess I wanted to hear what\npeople thought about it, and explore the alternatives, and to reassure\nmyself that I was really doing the right thing all along by just throwing\nException (and not necessarily documenting it.)\n \nThanks & apologies if anyone felt I was stringing the group along.\n--DP\n\n-----Original Message-----\nFrom: J. B. Rainsberger [mailto:jbrains@...] \nSent: Thursday, July 15, 2004 4:10 PM\nTo: junit@yahoogroups.com\nSubject: Re: [junit] Documenting test cases\n\n\nDavid Plass wrote:\n\n&gt; Well, that wouldn&#39;t compile then.\n&gt; \n&gt; In my example, I wanted to test the behavior that method.throwsNPE only\n&gt; throws NPE under certain circumstances (e.g., null argument.)\n&gt; In other words, I wanted to test the throwsNPE&#39;s &quot;contract&quot; (flames to\n&gt; /dev/null)  that it throws NPE when it says it will.\n&gt; \n&gt; If method.throwsNPE could also throw IOException, but my test case wanted\nto\n&gt; verify that it should NOT throw IOException in this circumstance, then I&#39;d\n&gt; change the test method to the following:\n&gt; \n&gt;      public void testExceptions() {    // note no throws\n&gt;          try {\n&gt;              method.throwsNPE();\n&gt;              fail(&quot;Should have thrown NPE&quot;);\n&gt;          } catch (NullPointerException expected) {\n&gt;              assertTrue(&quot;Should catch NPE&quot;, true);\n&gt;          } catch (IOException notExpected) {\n&gt;              fail(&quot;Unexpected IOException&quot;);\n&gt;          }\n&gt;      }\n&gt; \n&gt; Then your next question might be, &quot;what if it can throw a third\nexception&quot;?\n&gt; After a while (maybe after just one more exception) I&#39;d probably just cave\n&gt; and write &quot;throws Exception&quot;.\n\nRight.\n\nThe community has had long, long discussions about this \nexception-testing pattern, and the consensus seems to be this: catching \nan unexpected exception and failing buys no value over letting JUnit \ncatch the exception; therefore, simply throw those exceptions up to \nJUnit. The corollary seems to be, just have every test throw Exception.\n\nOf course, if you find value in the above, then I&#39;m not going to tell \nyou to stop. I&#39;m just pointing out what we&#39;ve been saying for a few \nyears in case that information should be useful.\n\nThanks.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com &lt;http://www.diasparsoftware.com&gt;  :: +1 416\n791-8603\nLet&#39;s write software that people understand\n\n\nYahoo! Groups Sponsor\t\n\nADVERTISEMENT\n \n&lt;http://us.ard.yahoo.com/SIG=129p4e1jf/M=295196.4901138.6071305.3001176/D=gr\noups/S=1705006905:HM/EXP=1090008652/A=2128215/R=0/SIG=10se96mf6/*http://comp\nanion.yahoo.com&gt; click here\t\n \n&lt;http://us.adserver.yahoo.com/l?M=295196.4901138.6071305.3001176/D=groups/S=\n:HM/A=2128215/rand=573610771&gt; \t\n\n\n  _____  \n\nYahoo! Groups Links\n\n\n*\tTo visit your group on the web, go to:\nhttp://groups.yahoo.com/group/junit/ &lt;http://groups.yahoo.com/group/junit/&gt; \n  \n\n*\tTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n&lt;mailto:junit-unsubscribe@yahoogroups.com?subject=Unsubscribe&gt; \n  \n\n*\tYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service\n&lt;http://docs.yahoo.com/info/terms/&gt; . \n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "dplass", 
+    "topicId": 11457, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 179102530, 
+    "prevInTime": 11492, 
+    "contentTrasformed": false, 
+    "postDate": "1089923714", 
+    "canDelete": false, 
+    "nextInTopic": 11494, 
+    "prevInTopic": 11492, 
+    "headers": {
+        "messageIdInHeader": "PEI2NDQ0RDBFNDA2QUQ1MTFBREZCMDBEMEI3ODkzQTY5MDFCNUU3QTZARVhDSEFOR0U+"
+    }
+}

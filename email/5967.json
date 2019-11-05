@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 5968, 
+    "senderId": "-vQhxYWzBFVnJ4GdOvRqpkXlpfvONPRdKWEHK5KfwhDfbrs8lZ4MVLmLUZ66csa4rtLbF2tGeG5M54BLssCRos-9o8mZZATp-djJyQ4HQc8", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] fork=&quot;no&quot; unexpected behavior", 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "authorName": "Steven Taschuk", 
+    "msgSnippet": "... [...] ... First, have you tried the following?      ", 
+    "msgId": 5967, 
+    "topicId": 5958, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 114327599, 
+    "messageBody": "<div id=\"ygrps-yiv-747100053\">Quoth ktbarrett:<br/>\n<blockquote><span title=\"ireply\"> &gt; I am trying to run more than one JUnit test from Ant which shares <br/>\n&gt; some static data through the VM. The following is an excerpt from my <br/>\n&gt; Ant script.<br/>\n </span></blockquote>  [...]<br/>\n<blockquote><span title=\"ireply\"> &gt; The problem is, the VM seems to fork whether I tell it too or not. My <br/>\n&gt; first test (SupplierTest) is creating some static objects, and my <br/>\n&gt; second test (ConsumerTest) is trying to use those objects. The <br/>\n&gt; problem is that either Ant is creating a new VM or a new ClassLoader <br/>\n&gt; so my data is not available.<br/>\n&gt; <br/>\n&gt; Any ideas?<br/>\n<br/>\n </span></blockquote>First, have you tried the following?<br/>\n\t&lt;target name=&quot;test&quot;&gt;<br/>\n\t\t&lt;junit fork=&quot;no&quot;&gt;<br/>\n\t\t\t&lt;test name=&quot;SupplierTest&quot;/&gt;<br/>\n\t\t\t&lt;test name=&quot;ConsumerTest&quot;/&gt;<br/>\n\t\t&lt;/junit&gt;<br/>\n\t&lt;/target&gt;<br/>\n<br/>\nSecond, a quick glance through the Ant 1.4.1 source makes me think<br/>\nAnt doesn&#39;t make a new VM if you say fork=&#39;no&#39;, but it does make<br/>\nits own ClassLoader regardless.  (Note that the &lt;junit&gt; task<br/>\nsupports a nested &lt;classpath&gt; element, so I imagine this is<br/>\nnecessary.)  I encourage you to study the source for more<br/>\ninformation, or to inquire on the Ant mailing list (which I assume<br/>\nto exist).  And you could always write your own Ant task if the<br/>\nout-of-the-box behaviour is not what you want.<br/>\n<br/>\nThird, is it possible your objects are being garbage-collected<br/>\nbetween the tests?<br/>\n<br/>\nFinally, it is usually considered desirable that tests not<br/>\ninteract with one another.  It might be best to either (a) unify<br/>\nthe two tests to use the same test fixture, or (b) to make the<br/>\nlatter test do its own set up so it doesn&#39;t depend on the former<br/>\nbeing run.  What&#39;s the motivation for the inter-test dependency?</div>", 
+    "prevInTime": 5966, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1034117053", 
+    "canDelete": false, 
+    "nextInTopic": 5977, 
+    "prevInTopic": 5964, 
+    "headers": {
+        "inReplyToHeader": "PGFuc2RlaytwdTJvQGVHcm91cHMuY29tPjsgZnJvbSBrdGJhcnJldHRAeWFob28uY29tIG9uIE1vbiwgT2N0IDA3LCAyMDAyIGF0IDA0OjQwOjUyUE0gLTAwMDA=", 
+        "messageIdInHeader": "PDIwMDIxMDA4MTY0NDEzLkExODc0QHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "referencesHeader": "PGFuc2RlaytwdTJvQGVHcm91cHMuY29tPg=="
+    }
+}

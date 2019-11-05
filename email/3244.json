@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 3245, 
+    "senderId": "s-mCqURRBJ02nZwmdfzF98USge5gJO_SaRRY-ZdrgyaF5zl5s5u0dvbjCH0uU_Z3Q5st6zw", 
+    "systemMessage": false, 
+    "subject": "Re: Shared data between test methods in a testcase", 
+    "from": "csmall@...", 
+    "authorName": "csmall@isd.net", 
+    "msgSnippet": "This code below makes sense, but doesn t it require that all of the methods called in the oneTimeSetUp() and oneTimeTearDown() methods are all static?  I have", 
+    "msgId": 3244, 
+    "profile": "jacksonalex", 
+    "topicId": 2374, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1769935852\">This code below makes sense, but doesn&#39;t it require that all of the <br/>\nmethods called in the oneTimeSetUp() and oneTimeTearDown() methods <br/>\nare all static?  I have many methods that I need to call in <br/>\noneTimeSetUp() and oneTimeTearDown() that are not static.  Any <br/>\nsuggestions?<br/>\n<br/>\nthanks,<br/>\nchad.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;&gt;&gt;&gt;<br/>\n </span></blockquote>there is one way to do a one time setup and tearDown in a test <br/>\nclass,here is how:<br/>\n<br/>\npublic class TestOne extends TestCase<br/>\n<br/>\n{<br/>\n<br/>\n public static void oneTimeSetUp()<br/>\n    {<br/>\n        System.out.println(&quot;test set up &quot;);<br/>\n    }<br/>\n<br/>\npublic static void oneTimeTearDown()<br/>\n    {<br/>\n        System.out.println(&quot;test tear down &quot;);<br/>\n    }<br/>\n<br/>\n    public void test1()<br/>\n    {<br/>\n        System.out.println(&quot;test1&quot;);<br/>\n    }<br/>\n<br/>\n    public void test2()<br/>\n    {<br/>\n        System.out.println(&quot;test2&quot;);<br/>\n    }<br/>\n    public static Test suite()<br/>\n    {<br/>\n        TestSuite suite= new TestSuite(TestOne.class);<br/>\n<br/>\n        TestSetup wrapper= new TestSetup(suite)<br/>\n        {<br/>\n            public void setUp()<br/>\n            {<br/>\n                oneTimeSetUp();<br/>\n            }<br/>\n            public void tearDown()<br/>\n            {<br/>\n                oneTimeTearDown()<br/>\n<br/>\n            }<br/>\n        };<br/>\n        return wrapper;<br/>\n<br/>\n     }<br/>\n<br/>\nrun this class you can see setup is done in the first order,and <br/>\nteardown is the last one.<br/>\n<br/>\nand if you specify the order to exe the test case,you can share data <br/>\nas you want.<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;<br/>\n<br/>\n </span></blockquote>Ellen</div>", 
+    "prevInTime": 3243, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1005609537", 
+    "canDelete": false, 
+    "nextInTopic": 3245, 
+    "prevInTopic": 2389, 
+    "headers": {
+        "inReplyToHeader": "PEYxMTF1VDFGTTFKT015UWxtTEYwMDAwNzZiNkBob3RtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PDlzcG5vMStjajBmQGVHcm91cHMuY29tPg=="
+    }
+}

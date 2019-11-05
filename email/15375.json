@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 15376, 
+    "senderId": "IsOP3W7r41uB4xTM9eJiQars6SuzKdOEGuFO3Kpy-l-pgvLUfYZhebVAsXtiyg_gJ0QC93K4Bj3_C9SKflvHZF_QwpKT9266Kmn6Cg", 
+    "systemMessage": true, 
+    "subject": "repeat test permutations for variants of the test object", 
+    "from": "&quot;shmuelakahn&quot; &lt;Shmuel@...&gt;", 
+    "authorName": "shmuelakahn", 
+    "msgSnippet": "I hope this question doesn t sound too confused, I m pretty new to Java and Junit... I have a single Engine class, that wraps a [JavaSpaces] Storage container", 
+    "msgId": 15375, 
+    "profile": "shmuelakahn", 
+    "topicId": 15375, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 67264027, 
+    "messageBody": "<div id=\"ygrps-yiv-1286131956\">I hope this question doesn&#39;t sound too confused, I&#39;m pretty new to<br/>\nJava and Junit...<br/>\n<br/>\nI have a single Engine class, that wraps a [JavaSpaces] Storage<br/>\ncontainer for objects, with a standard API of read, write, delete,<br/>\netc. This Engine comes in four different forms (as set by two<br/>\nconstructor boolean parameters), that modify its&#39; low-level behavior.<br/>\nThis Engine references two Adapter classes. These Adapters modify the<br/>\nbehavior of the Engine, but aren&#39;t directly related to it&#39;s main<br/>\nfunction, so aren&#39;t part of it&#39;s API. The first Adapter is a Lock<br/>\nobject with lock, unlock and isLocked methods, when the Engine is<br/>\nlocked is prevents write and delete operations. The other Adapter is a<br/>\ngeneric Control object for other operations. The Adapter objects have<br/>\nno meaning without reference to an Engine object.<br/>\n<br/>\n** It is these Adapter classes that I want to test. **<br/>\n<br/>\nEach Adapter Class has its&#39; own AdapterTest TestCase class set of<br/>\ntests. The thing is, that I want to perform each set of test four<br/>\ntimes, using an Adapter &quot;hitched&quot; to each of the different Engine<br/>\nconfigurations. Initially I thought to extend the two basic<br/>\nAdapterTest classes, leaving the derived classes to create the Engine<br/>\ninstance to run the tests with, and then run those extended classes,<br/>\nbut that gives me [at least] ten classes with much duplicate code and<br/>\nseems rather clunky. Is there any way to refactor the Engine creation<br/>\nor whatever, in order to achieve a more elegant solution, or a perhaps<br/>\ncompletely different solution to this repeat-test issue?<br/>\n<br/>\nThe following is a much simplified code listing. The problem is, that<br/>\nthis code, only tests one of the four variations on the Engine object,<br/>\nwhile I need to test all four. In order for the tests to be<br/>\nautomatically runnable, I can&#39;t pass in any parameters to the test<br/>\nclasses. So I&#39;m looking for another way to do this, other than having<br/>\nto create four derived classes for each Adapter TestCase, with a<br/>\ndifferent implementation of setup().<br/>\n<br/>\nAnd ideas or pointers, folks?<br/>\n<br/>\nclass EngineLock {<br/>\n    protected Engine m_engine;<br/>\n<br/>\n    public EngineLock      (Engine engine) {...}<br/>\n    public boolean lock    () {...}<br/>\n    public boolean unlock  () {...}<br/>\n    public boolean isLocked() {...}<br/>\n}<br/>\n<br/>\nclass EngineControl {<br/>\n    protected Engine m_engine;<br/>\n<br/>\n    public EngineControl       (Engine engine) {...}<br/>\n    public boolean doSomething () {...}<br/>\n    public boolean doOtherThing() {...}<br/>\n}<br/>\n<br/>\nclass Engine {<br/>\n    protected final boolean m_persistent;<br/>\n    protected final boolean m_redundant;<br/>\n    protected EngineLock    m_lock;<br/>\n    protected EngineControl m_controller;<br/>\n<br/>\n    public Engine (boolean persistent, boolean redundant) {<br/>\n        m_lock       = new EngineLock (this);<br/>\n        m_controller = new EngineControl (this);<br/>\n        //...<br/>\n    }<br/>\n    public boolean read   (Object template) {...}<br/>\n    public boolean write  (Object template) {...}<br/>\n    public boolean delete (Object template) {...}<br/>\n<br/>\n    EngineLock     getLock    () { return m_lock; }<br/>\n    EngineControl  getControl () { return mcontroller; }<br/>\n}<br/>\n<br/>\nAnd then we have the TestCase classes, which both create Engine<br/>\ninstances as part of their setup, and then use the Adapter of that<br/>\nengine in the tests.<br/>\n<br/>\nclass TestEngineLock extends TestCase {<br/>\n    protected Engine     m_engine;<br/>\n    protected EngineLock m_lock;<br/>\n<br/>\n    protected void setUp() {<br/>\n        m_engine = new Engine (true, true); // &lt;&lt;== engine for test.<br/>\n        m_lock   = m_engine.getLock();      // &lt;&lt;== test object.<br/>\n    }<br/>\n<br/>\n    public void testEngineLock() {...}<br/>\n    public void testLock      () {...}<br/>\n    public void testUnlock    () {...}<br/>\n    public void testIsLocked  () {...}<br/>\n}<br/>\n<br/>\nclass TestEngineControl extends TestCase {<br/>\n    protected Engine        m_engine;<br/>\n    protected EngineControl m_controller;<br/>\n<br/>\n    protected void setUp() {<br/>\n        m_engine = new Engine (true, true); // &lt;&lt;== engine for test.<br/>\n        m_controller = m_engine.getControl(); // &lt;&lt;== test object.<br/>\n    }<br/>\n<br/>\n    public void testEngineControl() {...}<br/>\n    public void testDoSomething  () {...}<br/>\n    public void testDoOtherThing () {...}<br/>\n}</div>", 
+    "prevInTime": 15374, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1131445759", 
+    "canDelete": false, 
+    "nextInTopic": 15388, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGRrcHVtMCtiaG0zQGVHcm91cHMuY29tPg=="
+    }
+}

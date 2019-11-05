@@ -1,0 +1,28 @@
+{
+    "topicId": 1833, 
+    "postDate": "994772849", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Menarek John-NJM010 &lt;John_Menarek-NJM010@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "lwZlY-5mmghUdEEfM83FyPpn1aXPGLKyqE5DzZctqcAvjf0z-AkMiiqFnJFj0fZqPGTwH9CBdBfeR9mks3X7BGxRaV2JcdAZHuzagfsVqUSDRxuAEttOhSbqh4Hyzg", 
+    "nextInTime": 1839, 
+    "userId": 0, 
+    "prevInTime": 1837, 
+    "prevInTopic": 1837, 
+    "headers": {
+        "messageIdInHeader": "PDAxMUI0NzI1REZCNEQzMTE4QkQzMDA1MDhCNkYwQjlEMDI5ODlDQTZAaWw5OWV4bTAyLmljc2QubW90LmNvbT4="
+    }, 
+    "authorName": "Menarek John-NJM010", 
+    "numMessagesInTopic": 5, 
+    "msgSnippet": "Iam going to start from scratch and follow your steps. I ll let you know what happens Thanks ... From: Jason Rogers [mailto:jason.rogers@tumbleweed.com] Sent:", 
+    "contentTrasformed": false, 
+    "msgId": 1838, 
+    "nextInTopic": 1889, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;John_Menarek-NJM010@...&gt;\r\nX-Sender: John_Menarek-NJM010@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 10 Jul 2001 13:47:48 -0000\r\nReceived: (qmail 11538 invoked from network); 10 Jul 2001 13:47:41 -0000\r\nReceived: from unknown (10.1.10.142) by m8.onelist.org with QMQP; 10 Jul 2001 13:47:41 -0000\r\nReceived: from unknown (HELO motgate.mot.com) (129.188.136.100) by mta3 with SMTP; 10 Jul 2001 13:47:40 -0000\r\nReceived: [from pobox4.mot.com (pobox4.mot.com [10.64.251.243]) by motgate.mot.com (motgate 2.1) with ESMTP id GAA21488 for &lt;junit@yahoogroups.com&gt;; Tue, 10 Jul 2001 06:47:40 -0700 (MST)]\r\nReceived: [from m-il06-r5.mot.com (m-il06-r5.mot.com [129.188.137.197]) by pobox4.mot.com (MOT-pobox4 2.0) with ESMTP id GAA26533 for &lt;junit@yahoogroups.com&gt;; Tue, 10 Jul 2001 06:47:39 -0700 (MST)]\r\nReceived: from il99exm02.icsd.mot.com by m-il06-r5.mot.com with ESMTP for junit@yahoogroups.com; Tue, 10 Jul 2001 08:47:39 -0500\r\nReceived: by il99exm02.icsd.mot.com with Internet Mail Service (5.5.2653.19) id &lt;MBDFXLC4&gt;; Tue, 10 Jul 2001 08:47:38 -0500\r\nMessage-Id: &lt;011B4725DFB4D3118BD300508B6F0B9D02989CA6@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Integrating JUNIT with Visual Age\r\nDate: Tue, 10 Jul 2001 08:47:29 -0500\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain\r\nFrom: Menarek John-NJM010 &lt;John_Menarek-NJM010@...&gt;\r\n\r\n\nIam going to start from scratch and follow your steps.\n\nI&#39;ll let you know what happens\n\nThanks\n\n-----Original Message-----\nFrom: Jason Rogers [mailto:jason.rogers@...]\nSent: Tuesday, July 10, 2001 7:55 AM\nTo: &#39;junit@yahoogroups.com&#39;\nSubject: RE: [junit] Integrating JUNIT with Visual Age\n\n\n\n    &gt; Hi my name is John\n    &gt; \n    &gt; I could use a couple of tips for integrating Junit into \n    &gt; Visual Age for java\n    &gt; \n    &gt; I followed the steps outlined in the website.\n    &gt; \n    &gt; Created a new project for one of my working tests\n    &gt; \n    &gt; Put it in the project path for junit.textui.TestRunner\n    &gt; \n    &gt; But when I run the test it fails telling me &quot;Could not \n    &gt; invoke the suite() method&quot;\n    &gt; \n    &gt; It can not find the static suite test method.\n\nJohn... the way the documentation says to integrate JUnit is a little\nclunky, although it follows the IBM standard.  The easiest way I have found\nto integrate any tool is to follow these steps:\n\n1. fully import the source/binaries\n2. create the tool directory and the default.ini for your tool\n3. import the Tools API into your workspace\n4. place any resource files you need into the tool directory (i.e. the gifs\nfor the awtui or swingui)\n5. include the project that has your tool in the workspace classpath\n(actually, its associated &#39;project_resources&#39; folder)\n6. include the Tools API project in your workspace classpath\n7. compute the classpath for the class that launches your tool\n\nThis allows you to not have to export class files to that tool directory\nevery time you make a change to the tool.\n\nAbout not finding the suite() method... that is a different story.  Some\nthings to look at:\n1. is your suite method public?\n2. does your suite method have no argument?\n3. if #1 and #2 hold true, get the source into VAJ and include a\nprintStackTrace() in the catch block that prints out &quot;Could not invoke the\nsuite() method&quot; and see what&#39;s going on.\n\n    &gt; Another problem I am having is that in spite of the fact \n    &gt; that I imported the source jar, when I double click\n    &gt; on a class VA tells me that it has been imported from a \n    &gt; class file. Also as a result I can not single step through\n    &gt; the code.\n\nThis is boggling.  Is it possible that you had a previous version of JUnit\nin the workspace that was class files?  This can cause a collision in VAJ,\neven though it isn&#39;t supposed to.  Are you sure you chose src.jar to import\nfrom?  If these things are not the case, then I would blow away the project\n(purge the packages from the RepositoryExplorer) and try again.\n\n-Jason\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "RE: [junit] Integrating JUNIT with Visual Age"
+}

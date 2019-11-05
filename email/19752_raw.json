@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19753, 
+    "senderId": "3JgaafGcH_rEoYFiFFjzsjyTGK5baVyT0SpYo687SB5rz-wqfpb-hxRhvh83ee0IGFN7vLKELUWo52PGyhCZfVaA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit4 new features ?", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Roger, Good questions. 1) I would be interested in seeing the patch.  It strikes me as something that could be done with a custom runner, without patching ", 
+    "msgId": 19752, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 33435 invoked from network); 17 Aug 2007 14:10:53 -0000\r\nReceived: from unknown (66.218.67.36)\n  by m43.grp.scd.yahoo.com with QMQP; 17 Aug 2007 14:10:53 -0000\r\nReceived: from unknown (HELO el-out-1112.google.com) (209.85.162.176)\n  by mta10.grp.scd.yahoo.com with SMTP; 17 Aug 2007 14:10:53 -0000\r\nReceived: by el-out-1112.google.com with SMTP id j27so74682elf\n        for &lt;junit@yahoogroups.com&gt;; Fri, 17 Aug 2007 07:04:18 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;\n        b=ou+b/r5q3rMdCfDFkMw8RYMVpXBWnQPaZOga1NCSf3U2i4N68nRq2j2SJ0a0vpbutCiQ2w7bo44Nmwj/Mmez8Zu36/8cnjHdMG9QlpoZYHXYXDtKEecOVMkrLwpu6BdlRuarNozErpMG8wv4LbLFzo4E9BsxhmSwUt94NyrV/Nw=\r\nReceived: by 10.90.27.13 with SMTP id a13mr4464627aga.1187358857696;\n        Fri, 17 Aug 2007 06:54:17 -0700 (PDT)\r\nReceived: by 10.90.93.19 with HTTP; Fri, 17 Aug 2007 06:54:17 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90708170654r19dfb569ycbfb19c5884ef83d@...&gt;\r\nDate: Fri, 17 Aug 2007 09:54:17 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;fa23v7+ff02@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;fa23v7+ff02@...&gt;\r\nX-Google-Sender-Auth: 13ee8d4c64d19f8b\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Junit4 new features ?\r\nX-Yahoo-Group-Post: member; u=139771899; y=Yu1tzmvXreA4_YzHVdAJL3QhhckFpCaPSCuigSbrI_o\r\nX-Yahoo-Profile: dsaff\r\n\r\nRoger,\n\nGood questions.\n\n1) I would be interested in seeing the patch.  It strikes me as\nsomething that could be done with a custom runner, without patching\nJUnit: have you found that to be true?\n\n2) I&#39;ve heard of wanting to only instantiate a test class once (you\ncan do that in JUnit, see\nhttp://tech.groups.yahoo.com/group/junit/message/19159).  Is that what\nyou&#39;re looking for, or is there another advantage in having non-static\n@BeforeClass, etc?\n\n3) As I understand it, dependsOnMethods allows one test method to be\nskipped if another one fails.  I had a version of this in my own JUnit\nsandbox for a while, and found it not as useful as I&#39;d liked.  If used\nto truly say &quot;this test, valid on its own, will fail if this other\ntest, valid on its own, fails&quot;, I found that the dependencies became\nstale, and tests ended up skipped that I wanted to run.  However,\nthere were two situations in which it was useful:\n\na) In some other cases, I found I was using the method dependency as a\nway of specifying preconditions for a test case.  This meant that I\nneeded a test that stated, for example, whether the test database was\nup, or whether I was connected to the Internet, or whether I felt like\nclicking on some buttons to help test the UI.  In JUnit 4.4, these\nkinds of dependencies are now marked by assumptions:\n\n@Test public void parseGoogleCorrectly() {\n   assumeTrue(internetConnected());\n  //...\n}\n\nI might decide that if the internet is not connected, my tests should\nfail, in which case I can test the condition directly:\n\n@Test public void internetShouldBeConnected() {\n  assertTrue(internetConnected());\n}\n\nb) Dependencies between tests can be useful in initial TDD\ndevelopment: I write a test A, and find out that I&#39;ve bitten off more\nthan I can chew.  I write a test B for a smaller chunk of\nfunctionality, and make A dependent on B, so that I can ignore A until\nB passes.  However, I found that these dependencies cluttered the\ncode, and weren&#39;t much help once initial development was done.  I\nactually made the dependency method deprecated, so that I remembered\nto remove the dependencies once everything was working.\n\nMy guess is that using assumptions will handle most reasons that\npeople use dependsOnMethod.  If you do find the temporary dependency\nscaffolding from 3b interesting, let&#39;s talk more about it.\n\nThanks,\n\n   David Saff\n\nOn 8/16/07, Roger Chen @ RevZoom &lt;coderobochen@...&gt; wrote:\n&gt; Hi -\n&gt;\n&gt; Is there any plan in the near future to support some TestNG features like:\n&gt;\n&gt; 1) Ability to re-run only the failed tests by storing the list of\n&gt; failed tests persistently in an XML file etc. I have thought through a\n&gt; patch to Junit to address this. Would there be any interest in using\n&gt; this patch?\n&gt;\n&gt; 2) Allow non-static Before|After Class methods?\n&gt;\n&gt; 3) Support dependsOnMethods annotation like TestNG ?\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19748, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19751, 
+    "contentTrasformed": false, 
+    "postDate": "1187358857", 
+    "canDelete": false, 
+    "nextInTopic": 19753, 
+    "prevInTopic": 19748, 
+    "headers": {
+        "inReplyToHeader": "PGZhMjN2NytmZjAyQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwODE3MDY1NHIxOWRmYjU2OXljYmZiMTljNTg4NGVmODNkQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZhMjN2NytmZjAyQGVHcm91cHMuY29tPg=="
+    }
+}

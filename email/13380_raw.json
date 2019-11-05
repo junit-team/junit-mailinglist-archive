@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 13381, 
+    "senderId": "Y4rx8wiT5tfBEFg-fRmDaejgCfPK8PTk1YDAAxp8IXjlFKd107MPg3tMbllpJvEtLzGpodeM7CdrEcvWXUH4R1LhP1oYNL1QWQ", 
+    "systemMessage": false, 
+    "subject": "One time setup revisited", 
+    "from": "Adam Wildavsky &lt;adam@...&gt;", 
+    "authorName": "Adam Wildavsky", 
+    "msgSnippet": "I ve read the FAQ and searched the archives looking for info on running setup and teardown code before and after a test run. Per the FAQ I can use TestSetup to", 
+    "msgId": 13380, 
+    "rawEmail": "Return-Path: &lt;adam@...&gt;\r\nX-Sender: adam@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 18797 invoked from network); 1 May 2005 20:24:28 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m22.grp.scd.yahoo.com with QMQP; 1 May 2005 20:24:28 -0000\r\nReceived: from unknown (HELO srv01.jc-hosting.net) (66.98.242.63)\n  by mta1.grp.scd.yahoo.com with SMTP; 1 May 2005 20:24:28 -0000\r\nX-ClientAddr: 24.239.177.86\r\nReceived: from [192.168.0.222] (user-0cevcam.cable.mindspring.com [24.239.177.86])\n\t(authenticated bits=0)\n\tby srv01.jc-hosting.net (8.12.10/8.12.11) with ESMTP id j41KQbn6014356\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 1 May 2005 15:26:38 -0500\r\nMime-Version: 1.0\r\nMessage-Id: &lt;p0621021ebe9ae7927436@[192.168.0.222]&gt;\r\nDate: Sun, 1 May 2005 16:24:15 -0400\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot; ; format=&quot;flowed&quot;\r\nX-TotalWeb-INC-MailScanner-Information: Please contact TotalWeb-INC for more information\r\nX-TotalWeb-INC-MailScanner: Found to be clean\r\nX-TotalWeb-INC-MailScanner-SpamCheck: not spam, SpamAssassin (score=-0.198,\n\trequired 5, AWL 0.33, BAYES_00 -2.60, RCVD_IN_NJABL_DUL 0.09,\n\tRCVD_IN_SORBS_DUL 1.99)\r\nX-MailScanner-From: adam@...\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Adam Wildavsky &lt;adam@...&gt;\r\nSubject: One time setup revisited\r\nX-Yahoo-Group-Post: member; u=10310563\r\nX-Yahoo-Profile: tameware\r\n\r\nI&#39;ve read the FAQ and searched the archives looking for info on \nrunning setup and teardown code before and after a test run. Per the \nFAQ I can use TestSetup to run code before and after a suite with no \ntrouble. But if the test run consists of a single test method I also \nwant my functions to run before and after that method, for instance \nif the test is invoked from IDEA.\n\nI&#39;ve solved the problem for now by using TestSetup, overriding \nrunTest, and adding a reference counting scheme. This works well \nenough, but I wonder if it&#39;s overkill. Is there a simpler scheme that \nwill get the job done?\n\npublic class myTest extends TestCase {\n   private static int setupCount = 0;\n\n   public static class OneTimeTestSetup extends TestSetup {\n     public OneTimeTestSetup(TestSuite ts) {\n       super(ts);\n     }\n\n     public void setUp() throws Exception {\n       oneTimeSetup();\n     }\n\n     public void tearDown() throws Exception {\n       oneTimeTeardown();\n     }\n   }\n\n   protected void runTest() throws Throwable {\n     oneTimeSetup();\n     super.runTest();\n     oneTimeTeardown();\n   }\n\n   private static final void oneTimeSetup() throws Exception {\n     if (setupCount == 0) {\n       doOneTimeSetup();\n     }\n\n     setupCount++;\n   }\n\n   private static final void oneTimeTeardown() throws Exception {\n     setupCount--;\n\n     if (setupCount == 0) {\n       doOneTimeTeardown();\n     }\n   }\n\n   public static Test suite() {\n     return new OneTimeTestSetup(new TestSuite(OrderBrokerTest.class));\n   }\n\n   // doOneTimeSetup(), doOneTimeTeardown(), and the tests follow...\n}\n\n-- \nAdam Wildavsky  adam@...  http://www.tameware.com\n\n", 
+    "profile": "tameware", 
+    "topicId": 13380, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 10310563, 
+    "prevInTime": 13379, 
+    "contentTrasformed": false, 
+    "postDate": "1114979055", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PHAwNjIxMDIxZWJlOWFlNzkyNzQzNkBbMTkyLjE2OC4wLjIyMl0+"
+    }
+}

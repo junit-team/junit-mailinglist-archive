@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 19110, 
+    "senderId": "8SeuzfiJYRyDLyWgc8E6qIKBCb5YxyWdc-lMJdJfLJjyv0_jdC71mJG0vcxZ0MBpX9sZqYgrbesYyEX14Zcx9UT3GBFa13t0a1dGIw", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to check the value of one variable in one method in a class in  ajunit testcase..(variable is not returned)..", 
+    "from": "Raymond Barlow &lt;rbarlow@...&gt;", 
+    "authorName": "Raymond Barlow", 
+    "msgSnippet": "Hi Archana, What you need to do is to break the dependency that you have in this code. Instead of getting the connection directly in the code here, either call", 
+    "msgId": 19109, 
+    "profile": "raymanoz", 
+    "topicId": 19102, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 128656650, 
+    "messageBody": "<div id=\"ygrps-yiv-2132840353\">Hi Archana,<br/>\n<br/>\nWhat you need to do is to break the dependency that you have in this <br/>\ncode. Instead of getting the connection directly in the code here, <br/>\neither call another method to return the connection, or pass it into the <br/>\nclass on construction. The easiest is to call another method. Something <br/>\nlike:<br/>\n<br/>\npublic class MyClass {<br/>\n<br/>\n  public ResultSet recentSubmission() throws SQLException {<br/>\n     Connection con = null;<br/>\n     ResultSet rs=null;<br/>\n     try{<br/>\n       Class.forName(&quot;sun.jdbc.odbc.JdbcOdbcDriver&quot;);<br/>\n       con=getConnection()<br/>\n       PreparedStatement ps= con.prepareStatement(<br/>\n         &quot;SELECT SUBMISSSION_GUID FROM SUBMISSION WHERE SUBMISSSION_GUID <br/>\n= 143&quot;);<br/>\n       rs=ps.executeQuery();<br/>\n       return rs;<br/>\n     } catch(Exception e) {<br/>\n       e.printStackTrace();<br/>\n     }<br/>\n     //con.close();<br/>\n     return rs;    <br/>\n  }<br/>\n<br/>\n  protected Connection getConnection() {<br/>\n    return DriverManager.getConnection(&quot;jdbc:odbc:acme&quot;,&quot;RIUser&quot;,&quot;Demo&quot;);<br/>\n  }<br/>\n}<br/>\n<br/>\nThis small refactoring allows us to now create a TestableMyClass where <br/>\nwe can override the getConnection and return a MockConnection. This not <br/>\nonly lets you test the class in isolation, but also allows you to test <br/>\nthis class without having to connect to a real database (big advantage). <br/>\nExample:<br/>\n<br/>\npublic class TestableMyClass extends MyClass {<br/>\n<br/>\n  @Override<br/>\n  protected Connection getConnection() {<br/>\n    return new MockConnection();<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\nOf course you will have to provide an implementation of the <br/>\nMockConnection to return the expected values for your test. This might <br/>\nbe the prepareStatement returning a MockPreparedStatement and your <br/>\nMockPreparedStatement then returning a MockResultSet. This will allow <br/>\nyou to inject the values for SUBMISSSION_GUID in the resultset.<br/>\n<br/>\nBut of course, if you ACTUALLY wanted to hit the database, and test your <br/>\nSQL, I would not use junit. I would instead use FitNesse (or <br/>\nsimilar)-but that is my preference. What is it that you are actually <br/>\nwanting to test?  Your class or the functionality of your database and <br/>\njdbc library?<br/>\n<br/>\nRegards,<br/>\nRaymond Barlow<br/>\n<br/>\n<br/>\nArchana Subramanian wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; Suppose this is the class to be tested .. <br/>\n&gt;<br/>\n&gt; public ResultSet recentSubmission() throws SQLException {      Connection con = null;   ResultSet rs=null;   try{    Class.forName(&quot;sun.jdbc.odbc.JdbcOdbcDriver&quot;);       con=DriverManager.getConnection(&quot;jdbc:odbc:acme&quot;,&quot;RIUser&quot;,&quot;Demo&quot;);      PreparedStatement ps= con.prepareStatement(&quot;SELECT SUBMISSSION_GUID FROM SUBMISSION WHERE SUBMISSSION_GUID = 143&quot;);        rs=ps.executeQuery();       return rs;     }    catch(Exception e)            {           e.printStackTrace();            }    //con.close();    return rs;     }    <br/>\n&gt;   How to test the connection(con) and preparedStatement(ps)values in the junit Testcase?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;  Send instant messages to your online friends <a rel=\"nofollow\" target=\"_blank\" href=\"http://uk.messenger.yahoo.com\">http://uk.messenger.yahoo.com</a> <br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19108, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1173902597", 
+    "canDelete": false, 
+    "nextInTopic": 19110, 
+    "prevInTopic": 19105, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDcwMzE0MTEzMDI5LjM2NTIzLnFtYWlsQHdlYjM1NTA5Lm1haWwubXVkLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDQ1Rjg1NTA1LjQwOTA4QHJheW1hbm96LmNvbT4=", 
+        "referencesHeader": "PDIwMDcwMzE0MTEzMDI5LjM2NTIzLnFtYWlsQHdlYjM1NTA5Lm1haWwubXVkLnlhaG9vLmNvbT4="
+    }
+}

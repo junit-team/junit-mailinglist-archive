@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 21083, 
+    "senderId": "IKxKwVEW0BE9Zl_4OwCALyoCsvPgrfFBCZDjR6Xp5FA_JTzUrSHEnEoo-lfXxIhl06GmE0dcLjjhu5Z7cZIKkV4M4ZQYE4KmYd_QFg", 
+    "systemMessage": false, 
+    "subject": "FYI - random (JVM-related?) test error", 
+    "from": "&quot;James Abley&quot; &lt;james.abley@...&gt;", 
+    "authorName": "James Abley", 
+    "msgSnippet": "Hi all, Our continuous integration environment picked up a strange thing which I m sharing in case anyone else has similar cause to scratch their head. ... ", 
+    "msgId": 21082, 
+    "rawEmail": "Return-Path: &lt;james.abley@...&gt;\r\nX-Sender: james.abley@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 74655 invoked from network); 10 Nov 2008 15:00:24 -0000\r\nX-Received: from unknown (66.218.67.97)\n  by m42.grp.scd.yahoo.com with QMQP; 10 Nov 2008 15:00:24 -0000\r\nX-Received: from unknown (HELO yw-out-1718.google.com) (74.125.46.154)\n  by mta18.grp.scd.yahoo.com with SMTP; 10 Nov 2008 15:00:24 -0000\r\nX-Received: by yw-out-1718.google.com with SMTP id 6so1809681ywa.88\n        for &lt;junit@yahoogroups.com&gt;; Mon, 10 Nov 2008 07:00:24 -0800 (PST)\r\nX-Received: by 10.142.142.14 with SMTP id p14mr2443411wfd.248.1226329223765;\n        Mon, 10 Nov 2008 07:00:23 -0800 (PST)\r\nX-Received: by 10.142.127.7 with HTTP; Mon, 10 Nov 2008 07:00:23 -0800 (PST)\r\nMessage-ID: &lt;23fce8e60811100700k24562f6bge3bd08d600f77cdf@...&gt;\r\nDate: Mon, 10 Nov 2008 15:00:23 +0000\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;James Abley&quot; &lt;james.abley@...&gt;\r\nSubject: FYI - random (JVM-related?) test error\r\nX-Yahoo-Group-Post: member; u=212683928; y=TkFF6c5rVixO5GCSRpE3sA4Kju4uFnPBkgFqMe_ujxEAb8TG\r\nX-Yahoo-Profile: taboozizi\r\n\r\nHi all,\n\nOur continuous integration environment picked up a strange thing which\nI&#39;m sharing in case anyone else has similar cause to scratch their\nhead.\n\n\n-------------------------------------------------------------------------------\nTest set: com.example.expression.evaluator.TestFormatDateTime\n-------------------------------------------------------------------------------\nTests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.007\nsec &lt;&lt;&lt; FAILURE!\ninitializationError0(com.example.expression.evaluator.TestFormatDateTime)\n Time elapsed: 0.003 sec  &lt;&lt;&lt; ERROR!\njava.lang.NoSuchFieldError: NULL\n        at org.junit.runners.ParentRunner.&lt;init&gt;(ParentRunner.java:47)\n        at org.junit.runners.BlockJUnit4ClassRunner.&lt;init&gt;(BlockJUnit4ClassRunner.java:56)\n        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)\n        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)\n        at java.lang.reflect.Constructor.newInstance(Constructor.java:494)\n        at org.junit.internal.requests.ClassRequest.buildRunner(ClassRequest.java:33)\n        at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:28)\n        at org.apache.maven.surefire.junit4.JUnit4TestSet.&lt;init&gt;(JUnit4TestSet.java:45)\n        at org.apache.maven.surefire.junit4.JUnit4DirectoryTestSuite.createTestSet(JUnit4DirectoryTestSuite.java:56)\n        at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.locateTestSets(AbstractDirectoryTestSuite.java:96)\n        at org.apache.maven.surefire.Surefire.createSuiteFromDefinition(Surefire.java:209)\n        at org.apache.maven.surefire.Surefire.run(Surefire.java:156)\n        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)\n        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)\n        at java.lang.reflect.Method.invoke(Method.java:585)\n        at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:338)\n        at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:997)\n\nIt looks to be JVM related. For whatever reason, that test class had\nan explicit @RunWith(BlockJUnit4ClassRunner.class)\n\nThe developer machines (mix of 32 and 64 bit Windows Vista and Ubuntu,\nall running Java 6) were fine.\n\n$ java -version\njava version &quot;1.6.0_07&quot;\nJava(TM) SE Runtime Environment (build 1.6.0_07-b06)\nJava HotSpot(TM) Server VM (build 10.0-b23, mixed mode)\n\n\n$ java -version\njava version &quot;1.6.0_0&quot;\nOpenJDK  Runtime Environment (build 1.6.0_0-b11)\nOpenJDK Server VM (build 1.6.0_0-b11, mixed mode)\n\n\nThe continuous integration (Fedora Core 8 64bit, running Java 5, was\nnot so happy and consistently had the above problem.\n\n$ java -version\njava version &quot;1.5.0_14&quot;\nJava(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_14-b03)\nJava HotSpot(TM) 64-Bit Server VM (build 1.5.0_14-b03, mixed mode)\n\n\nRemoving the @RunWith annotation fixed it in the CI environment.\n\nCheers,\n\nJames\n\n", 
+    "profile": "taboozizi", 
+    "topicId": 21082, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 212683928, 
+    "prevInTime": 21081, 
+    "contentTrasformed": false, 
+    "postDate": "1226329223", 
+    "canDelete": false, 
+    "nextInTopic": 21104, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIzZmNlOGU2MDgxMTEwMDcwMGsyNDU2MmY2YmdlM2JkMDhkNjAwZjc3Y2RmQG1haWwuZ21haWwuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 12996, 
+    "senderId": "S2A9cBDB_xBWloGC8orS01vFyY8mV0szvAnSgDKjcx33AoXqNRHXm5iB8xFVMwMnxjURZvD6-nep7udL1_tnOXCvMFM_", 
+    "systemMessage": true, 
+    "subject": "Re: how to test protected methods.", 
+    "from": "&quot;Sumukh&quot; &lt;sumukh82g@...&gt;", 
+    "authorName": "Sumukh", 
+    "msgSnippet": "It looks like this class MyClass has two tasks. It performs some operation on a list which is to be tested and I assume MyClass has other responsibilities", 
+    "msgId": 12995, 
+    "profile": "sumukh82g", 
+    "topicId": 12969, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 136091123, 
+    "messageBody": "<div id=\"ygrps-yiv-165946451\">It looks like this class &quot;MyClass&quot; has two tasks. It performs some<br/>\noperation on a list which is to be tested and I assume &quot;MyClass&quot; has<br/>\nother responsibilities too. This is what I would do in this situation:<br/>\n* Create a wrapper class around the list which performs all the<br/>\noperations on the list(as the list has some logic based on which<br/>\ncertain operations are performed on it, and you want to test that logic). <br/>\n* Make this wrapper class package protected as this is going to be<br/>\nused only in your &quot;MyClass&quot;. <br/>\n* Write a test for your wrapper class and place your test class in the<br/>\nsame package. All operations(methods) in there wrapper class will be<br/>\npublic or package protected and there are no issues with preotected<br/>\nmethods.<br/>\n<br/>\nSumukh<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; Maybe I misread Ty, but it sounds like he was implying that it was<br/>\n&gt; necessary to decide why you even needed a protected class - not that<br/>\n&gt; it should not be tested. Just that it should probably not be<br/>\n&gt; protected.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Chip<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; On Mon, 28 Feb 2005 22:08:43 -0000, Matthew Metlis<br/>\n&gt; &lt;matthew.metlis@j...&gt; wrote:<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; I have to disagree.  In the ideal world, we should test everything<br/>\n&gt; &gt; that is testable.  Why would you *not* want to test a protected class?<br/>\n&gt; &gt; <br/>\n&gt; &gt; Matt Metlis<br/>\n&gt; &gt; <br/>\n&gt; &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Ty Paywa &lt;tyronepaywa@y...&gt; wrote:<br/>\n&gt; &gt; &gt; If a protected class needs to be tested then maybe it<br/>\n&gt; &gt; &gt; shouldn&#39;t be a protected class.  Ask yourself why you<br/>\n&gt; &gt; &gt; need to test a protected class.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Ty<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; --- Chris Dollin &lt;kers@h...&gt; wrote:<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; On Monday 28 February 2005 13:29, senthilnathan<br/>\n&gt; &gt; &gt; &gt; chinnasamy wrote:<br/>\n&gt; &gt; &gt; &gt; &gt; hi members,<br/>\n&gt; &gt; &gt; &gt; &gt; someone give me idea about how to test the<br/>\n&gt; &gt; &gt; &gt; protected methods<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; (a) make them public.<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; (b) hide the class behind an interface which doesn&#39;t<br/>\n&gt; &gt; &gt; &gt; include the<br/>\n&gt; &gt; &gt; &gt;     protected methods. Make the protected methods<br/>\n&gt; &gt; &gt; &gt; public.<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; (c) ensure the methods are package-visible (isn&#39;t<br/>\n&gt; &gt; &gt; &gt; that anyways<br/>\n&gt; &gt; &gt; &gt;     the case for protected?). Put the test class in<br/>\n&gt; &gt; &gt; &gt; the same<br/>\n&gt; &gt; &gt; &gt;     package.<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; (d) (c), but keep the test classes elsewhere in the<br/>\n&gt; &gt; &gt; &gt; filesystem<br/>\n&gt; &gt; &gt; &gt;     tree.<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; (e) (c) or (d), except it&#39;s not the test classes<br/>\n&gt; &gt; &gt; &gt; that share the<br/>\n&gt; &gt; &gt; &gt;     package, but a relay class.<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; (f) Have the test classes define and use a subclass<br/>\n&gt; &gt; &gt; &gt; of the<br/>\n&gt; &gt; &gt; &gt;     class with protected methods. In that test<br/>\n&gt; &gt; &gt; &gt; class, add<br/>\n&gt; &gt; &gt; &gt;     public method(s) that delegate to the protected<br/>\n&gt; &gt; &gt; &gt; method(s).<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; (g) Use reflection: look into a mirror and say &quot;you<br/>\n&gt; &gt; &gt; &gt; don&#39;t need<br/>\n&gt; &gt; &gt; &gt;     to use reflection. That would be a mistake.&quot;<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; --<br/>\n&gt; &gt; &gt; &gt; Chris &quot;electric hedgehog&quot; Dollin<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; __________________________________<br/>\n&gt; &gt; &gt; Do you Yahoo!?<br/>\n&gt; &gt; &gt; Yahoo! Mail - You care about security. So do we.<br/>\n&gt; &gt; &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://promotions.yahoo.com/new_mail\">http://promotions.yahoo.com/new_mail</a><br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt; &quot;The reason the mainstream is considered a stream is because it&#39;s so<br/>\n&gt; shallow&quot; --George Carlin </span></blockquote></div>", 
+    "prevInTime": 12994, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1109731376", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12987, 
+    "headers": {
+        "inReplyToHeader": "PDc4ZTNmN2MwMDUwMzAxMTIwNjQ2NzUwNzc1QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGQwMzk3Zytmb2w2QGVHcm91cHMuY29tPg=="
+    }
+}

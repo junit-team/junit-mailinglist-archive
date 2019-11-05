@@ -1,0 +1,91 @@
+package com.das.dbunit;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import org.dbunit.Assertion;
+import org.dbunit.DatabaseTestCase;
+import org.dbunit.database.*;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+
+public class SampleTest extends DatabaseTestCase {
+    public SampleTest(String name) {
+        super(name);
+    }
+
+    protected IDatabaseConnection getConnection() throws Exception {
+        Class driverClass = Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection = DriverManager.getConnection(
+                "jdbc:hsqldb:C:\\DAS\\HBM\\HibPg\\src\\db",
+                "sa", "");
+        return new DatabaseConnection(jdbcConnection);
+    }
+
+    protected IDataSet getDataSet() throws Exception {
+        return new FlatXmlDataSet(new FileInputStream("initial.xml"));
+    }
+
+    protected DatabaseOperation getSetUpOperation() throws Exception {
+        return DatabaseOperation.REFRESH;
+    }
+
+    protected DatabaseOperation getTearDownOperation() throws Exception {
+        return DatabaseOperation.DELETE;
+    }
+    /**
+     * @@org.jboss.aspects.tx.Tx (org.jboss.aspects.tx.TxType.REQUIRED)
+     */
+    public void testMe() throws Exception {
+        // Execute the tested code that modify the database here
+
+            SessionFactory factory = new Configuration().configure().buildSessionFactory();
+            Session hsess = factory.openSession();
+        Query q = hsess.createQuery("delete from AuthUser where userSeq  like '%999956789' ");
+        int updateCount = q.executeUpdate();
+        hsess.flush();
+        System.out.println(" The Count is "+ updateCount);
+        assertEquals(updateCount,5);
+        // Fetch database data after executing your code
+        QueryDataSet partialDataSet = new QueryDataSet(getConnection());
+        partialDataSet.addTable("Auth_User","Select * from Auth_User where  user_Seq  like '%56789'");
+
+        ITable actualTable =  partialDataSet.getTable("Auth_User");
+        // Load expected data from an XML dataset
+        IDataSet expectedDataSet = new FlatXmlDataSet(new File(
+                "partialafter.xml"));
+        ITable expectedTable = expectedDataSet.getTable("Auth_User");
+
+        // Assert actual database table match expected table
+        Assertion.assertEquals(expectedTable, actualTable);
+    }
+    
+}
+
+
+
+-----------------------  initial.xml ---------------------
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <AUTH_USER USER_SEQ="123456789" USER_ID="validuser@testco" PASSWORD="8fc67a2687ffc837" COMPANY_SEQ="123456789" INVALID_PSWD_ATTEMPTS="0"/>
+  <AUTH_USER USER_SEQ="223456789" USER_ID="validSIuser@testco" PASSWORD="bc52a070c1b23783" COMPANY_SEQ="123456789" INVALID_PSWD_ATTEMPTS="0"/>
+  <AUTH_USER USER_SEQ="323456789" USER_ID="user@test3p" PASSWORD="d7cca196269ea5d3" COMPANY_SEQ="223456789" INVALID_PSWD_ATTEMPTS="0"/>
+  <AUTH_USER USER_SEQ="423456789" USER_ID="user@testn3p" PASSWORD="5ab01cbfdbc0c195" COMPANY_SEQ="323456789" INVALID_PSWD_ATTEMPTS="0"/>
+  <AUTH_USER USER_SEQ="999956789" USER_ID="newuser@testco" PASSWORD="7b6cc3922639bea9" COMPANY_SEQ="123456789" INVALID_PSWD_ATTEMPTS="0"/>
+</dataset>
+
+----------------------------  partialafter.xml ----------------------------------
+
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <AUTH_USER USER_SEQ="999956789" USER_ID="newuser@testco" PASSWORD="7b6cc3922639bea9" COMPANY_SEQ="123456789" INVALID_PSWD_ATTEMPTS="0"/>
+</dataset>  
+
+
+----------------------------------------------------------------------------------------------------------------

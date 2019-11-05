@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 22429, 
+    "senderId": "B9EbVxCp9081nDBcFB_chrBJlfqgj9AV4YIy1wMPo8t5JCRTbiTidWX0TLPwj9zy-7203Wi_bGkOew1cabgC2QavcJRHNZ8EXX0HsZcEQVurBQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: SureFire Plugin: &quot;parallel&quot; attribute", 
+    "from": "Kristian Rosenvold &lt;kristian@...&gt;", 
+    "authorName": "Kristian Rosenvold", 
+    "msgSnippet": "... http://github.com/KentBeck/junit/issues#issue/18 ... Something is serializing your traffic. We do this on /windows/ rc s with firefox. I do it every day", 
+    "msgId": 22428, 
+    "rawEmail": "Return-Path: &lt;kristian@...&gt;\r\nX-Sender: kristian@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 88298 invoked from network); 15 Feb 2010 21:07:08 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 15 Feb 2010 21:07:08 -0000\r\nX-Received: from unknown (HELO server135.penguinhost.net) (69.65.9.110)\n  by mta2.grp.sp2.yahoo.com with SMTP; 15 Feb 2010 21:07:07 -0000\r\nX-Received: from [127.0.0.1] (helo=server139.advancednetworkhosting.com)\n\tby server135.penguinhost.net with esmtpa (Exim 4.69)\n\t(envelope-from &lt;kristian@...&gt;)\n\tid 1Nh89k-00017S-JB\n\tfor junit@yahoogroups.com; Mon, 15 Feb 2010 15:07:01 -0600\r\nX-Received: from [192.168.1.2] ([81.191.25.199] helo=[192.168.1.2]) with\n\tIPv4:25 by server139.advancednetworkhosting.com; 15 Feb 2010\n\t15:06:36 -0600\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;72FBE9427D7AE840A04CE33DAD21FDC2047A20A4FF@...&gt;\r\nReferences: &lt;5FBB334C-0B13-43C2-A918-72D325F95D20@...&gt;\n\t ,&lt;hlb07q+glps@...&gt;\n\t &lt;72FBE9427D7AE840A04CE33DAD21FDC2047A20A4FF@...&gt;\r\nContent-Type: text/plain; charset=&quot;UTF-8&quot;\r\nDate: Mon, 15 Feb 2010 21:39:14 +0100\r\nMessage-ID: &lt;1266266354.1550.324.camel@office&gt;\r\nMime-Version: 1.0\r\nX-Mailer: Evolution 2.28.1 \r\nContent-Transfer-Encoding: 7bit\r\nX-Assp-Whitelisted: Yes\r\nX-Assp-Envelope-From: kristian@...\r\nX-Assp-Intended-For: junit@yahoogroups.com\r\nX-AntiAbuse: This header was added to track abuse, please include it with any abuse report\r\nX-AntiAbuse: Primary Hostname - server135.penguinhost.net\r\nX-AntiAbuse: Original Domain - yahoogroups.com\r\nX-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]\r\nX-AntiAbuse: Sender Address Domain - rosenvold.com\r\nX-Source: \r\nX-Source-Args: \r\nX-Source-Dir: \r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Kristian Rosenvold &lt;kristian@...&gt;\r\nSubject: RE: [junit] Re: SureFire Plugin: &quot;parallel&quot; attribute\r\nX-Yahoo-Group-Post: member; u=403861045; y=cp4AX6RknTN4pggGQpKX3N3pDLKdzu1N4xEKGkvKRBny8Nkxxg\r\nX-Yahoo-Profile: krosenvold\r\n\r\nOn Mon, 2010-02-15 at 12:01 -0800, Douglas Ferguson wrote:\n\n&gt; [DF] Where do I vote?\nhttp://github.com/KentBeck/junit/issues#issue/18\n\n&gt;   \n&gt; From our experiments. If you fire up 4 threads against a single\n&gt; instance of RC it queues up all the requests and only runs them 1 at\n&gt; time.\n\nSomething is serializing your traffic. We do this on /windows/ rc&#39;s with\nfirefox. I do it every day using just maven + rc + firefox on my local\nmachine. Browser windows are exploding all over the place.\n\nI am almost certain your problem lies within your junit+selenium\nfixture. Please make sure that you need to have one instance of the\nSelenium object PER THREAD within the junit fixtures, and you must do\nthread-based browser instance management within your code. \n\n\nWhile not exactly rocket science, it&#39;s not the kind of code you\nwrite without any well-defined use-case. Since you only managed\nto get running with threads or so yesterday I wouldn&#39;t be expecting\nthis code to be ready today ;) \n\n\n&gt; [DF] From the looks of it, you aren&#39;t running these in parallel? You\n&gt; are kicking off separate runs for different browsers? Our goal is to\n&gt; have all the tests get kicked off in the &quot;integration-test&quot; maven\n&gt; phase.\n\nYou *could* make multiple bindings of the surefire mojo in maven and\nfork multiple executions, still using the same scheme.\n\nOur &quot;critical&quot; chain is about 10 minutes long and involves unit tests,\nconcurrent integration tests and concurrent selenium tests on firefox.\n\nThe thing is that we have a quite long build chain, with a short\ncritical chain. Getting Selenium tests to run 24/7 stable on 3 browser\nfamilies is pretty darn close to an art form.  \n\nSo if you mash 30-40 minutes &quot;linear time&quot; testing with 3-4 browsers\ninto one huge build, you&#39;ll simply never get a green build. IE is mostly\ngoing to be linear time anyway.\n\nBut I would advise you to keep your ambitions low regarding\nrunning everything as one big pile. If you decompose into per-browser\nmodules, you can just let your CI server build these in parallel\ninstead. And all the browser that support it run multi-threaded within \nthe builds.\n\nIf you use maven profiles you can suppress most non-selenium related \nstuff in the builds running selenium tests.\n\nKristian\n\n\n\n\n\n\n\n\n\n\n", 
+    "profile": "krosenvold", 
+    "topicId": 22403, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 403861045, 
+    "prevInTime": 22427, 
+    "contentTrasformed": false, 
+    "postDate": "1266266354", 
+    "canDelete": false, 
+    "nextInTopic": 22429, 
+    "prevInTopic": 22427, 
+    "headers": {
+        "inReplyToHeader": "PDcyRkJFOTQyN0Q3QUU4NDBBMDRDRTMzREFEMjFGREMyMDQ3QTIwQTRGRkBFWE1CWDAxLmFwcHM0cmVudC5uZXQ+", 
+        "messageIdInHeader": "PDEyNjYyNjYzNTQuMTU1MC4zMjQuY2FtZWxAb2ZmaWNlPg==", 
+        "referencesHeader": "PDVGQkIzMzRDLTBCMTMtNDNDMi1BOTE4LTcyRDMyNUY5NUQyMEBkb3VnbGFzZmVyZ3Vzb24udXM+CSAsPGhsYjA3cStnbHBzQGVHcm91cHMuY29tPgkgPDcyRkJFOTQyN0Q3QUU4NDBBMDRDRTMzREFEMjFGREMyMDQ3QTIwQTRGRkBFWE1CWDAxLmFwcHM0cmVudC5uZXQ+"
+    }
+}

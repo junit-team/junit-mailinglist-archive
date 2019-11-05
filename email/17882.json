@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 17883, 
+    "senderId": "TLC27GKmgxigAA8JrQJzu7WWH_Va74MyB8Wy8-lKDB-7-297RUCbq12PWjmYqoBdxXrJAoDOQu8s0zp4y_IbSNZX4UoFUiowA1RM0sXgKuf0Dw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: JUnit Testing Code That Has System.exit(n);", 
+    "from": "Michael Feathers &lt;mfeathers@...&gt;", 
+    "authorName": "Michael Feathers", 
+    "msgSnippet": "I was thinking about this last night and I realized that you can mock System by creating your own: package ownsys; class FakeExit extends RuntimeException { ", 
+    "msgId": 17882, 
+    "profile": "mfeathers256", 
+    "topicId": 17851, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78021826, 
+    "messageBody": "<div id=\"ygrps-yiv-1913113363\">I was thinking about this last night and I realized that you can mock <br/>\nSystem by creating your own:<br/>\n<br/>\npackage ownsys;<br/>\n<br/>\nclass FakeExit extends RuntimeException {<br/>\n        public FakeExit(int status) {<br/>\n            super(status+ &quot;&quot;);<br/>\n        }<br/>\n}<br/>\n<br/>\npublic class System {<br/>\n    public static boolean testing = false;   <br/>\n<br/>\n    public static void exit(int status) {<br/>\n        if (testing)<br/>\n            throw new FakeExit(status);<br/>\n        java.lang.System.exit(status);<br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\nYou have to import the class explicitly, however:<br/>\n<br/>\nimport ownsys.System;<br/>\n<br/>\npublic class Section {<br/>\n<br/>\n    private int startingIndex;<br/>\n    private int endingIndex;<br/>\n    private int [] values;<br/>\n<br/>\n    public Section(int [] values, int startingIndex) {<br/>\n        this.startingIndex = startingIndex;<br/>\n        this.endingIndex = startingIndex;<br/>\n        this.values = values;<br/>\n        ...<br/>\n        System.exit(0);<br/>\n    }<br/>\n}<br/>\n<br/>\nUnfortunately, it&#39;s not a transparent replacement unless all of the code <br/>\nusing System is in the default namespace.  If it is, you don&#39;t need the <br/>\nimport.<br/>\n<br/>\nNot quite as easy as Ruby where you can open the Object class and <br/>\nrewrite the exit method, but interesting nonetheless.<br/>\n<br/>\nOn balance, I&#39;d still get rid of the exit calls in the OP&#39;s example and <br/>\nreplace them with exceptions to get the code under test.  Then I&#39;d <br/>\nrefactor toward something more sensible.<br/>\n<br/>\nMichael Feathers<br/>\nwww.objectmentor.com</div>", 
+    "prevInTime": 17881, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1157897833", 
+    "canDelete": false, 
+    "nextInTopic": 17883, 
+    "prevInTopic": 17877, 
+    "headers": {
+        "inReplyToHeader": "PGVkczhyMis3a3Z1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ1MDQxRTY5LjYwODA3MDVAbWluZHNwcmluZy5jb20+", 
+        "referencesHeader": "PGVkczhyMis3a3Z1QGVHcm91cHMuY29tPg=="
+    }
+}

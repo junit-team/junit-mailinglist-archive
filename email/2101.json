@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 2102, 
+    "senderId": "_LU9bZuzEtWSPRGZhDaOWYOst7OuPex-Ea-8zNPr6ErsVPrko0L_LFieakxgpqpLo5m24bVSAw", 
+    "systemMessage": false, 
+    "subject": "Re: Errors and Exceptions", 
+    "from": "dfw1@...", 
+    "authorName": "dfw1@cornell.edu", 
+    "msgSnippet": "... Hi Mike, My team at a previous job tried just adding throws Exception to all our test method footprints. The problem we hit was that other developers", 
+    "msgId": 2101, 
+    "topicId": 2070, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1400763733\">--- In junit@y..., Mike Duffy &lt;mduffy_lists@y...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I have only been using JUnit for a few months and I am focusing on<br/>\n&gt; creating &quot;best practices&quot; templates for our development team.<br/>\n&gt; <br/>\n&gt; I would greatly appreciate the insight of more experienced users on<br/>\n&gt; the following issue.<br/>\n&gt; <br/>\n&gt; Because an exception caught by the JUnit framework is an error, when<br/>\n&gt; testing a method that throws exceptions, it is best to include those<br/>\n&gt; exceptions in the throws clause of the test method (or even add a<br/>\n&gt; &quot;throws Exception&quot; to most test methods).  <br/>\n<br/>\n </span></blockquote>Hi Mike,<br/>\n<br/>\nMy team at a previous job tried just adding &quot;throws Exception&quot; to all<br/>\nour test method footprints. The problem we hit was that other<br/>\ndevelopers down the line would use our test code as example code when<br/>\nthey reused the code we were testing. (Unit test code makes poor<br/>\nexample code in so many ways, but was consistenty what the developers<br/>\ndown line tried to use. That continued even when we provided example<br/>\ncode.)<br/>\n<br/>\nI found it much better to list out all the exceptions that a test<br/>\ncould possibly throw in the throws clause. It adds a tiny amount of<br/>\noverhead to writing the test code, but adds greatly to the awareness<br/>\nof just what can go wrong. Otherwise, people who use your code down<br/>\nline are likely to include &quot;throws Exception&quot; (or worse,<br/>\ncatch(Exception ex)) in everything that uses your code. Also, it will<br/>\ntip you off to changes in the throws clauses in your code at compile<br/>\ntime.<br/>\n<br/>\nSince then, I&#39;ve added a patch to junit that adds a fail(Exception)<br/>\nmethod to Assert. See<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://sourceforge.net/tracker/index.php?func=detail&aid=435699&group_id=15278&atid=315278\">http://sourceforge.net/tracker/index.php?func=detail&aid=435699&group_id=15278&atid=315278</a><br/>\n(I feel like I&#39;m plugging a book in a talk show interview. :) )<br/>\n<br/>\nI personally prefer having try-catch-finally blocks in my tests, and<br/>\nthis patch lets me do it. That reserves junit errors for<br/>\nRuntimeExceptions and Errors, and still gives me a full stack trace. <br/>\n<br/>\nNot everyone will want to run a patched junit 3.7, so listing out each<br/>\nexception seems a reasonable technique.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; public void testMethod() throws Exception {<br/>\n&gt; <br/>\n&gt;     returnValue = methodCall(args);<br/>\n&gt; <br/>\n&gt;     assertTrue(some condition);<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; The following template would be less correct:<br/>\n&gt; <br/>\n&gt; public void testMethod() {<br/>\n&gt; <br/>\n&gt;     try {<br/>\n&gt;         returnValue = methodCall(args);<br/>\n&gt; <br/>\n&gt;     } catch (Exception e){<br/>\n&gt; <br/>\n&gt;         fail(&quot;Exception should not be thrown: &quot; + e);<br/>\n&gt;     }<br/>\n&gt;      <br/>\n&gt;     assertTrue(some condition);<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>Don&#39;t forget that your assertTrue(some condition); can also throw<br/>\nexceptions, so these two blocks are not interchangable.<br/>\n<br/>\nI prefer<br/>\n<br/>\npublic void testMethod() throws SomeExceptionThatMethodCallThrows<br/>\n{<br/>\n\ttry<br/>\n\t{<br/>\n\t\treturnValue = methodCall(args);<br/>\n\t\tassertTrue(some condition);<br/>\n\t}<br/>\n\tfinally<br/>\n\t{<br/>\n\t\t//any code to clean up the mess<br/>\n\t}<br/>\n}<br/>\n<br/>\nor (even better)<br/>\n<br/>\npublic void testMethod()<br/>\n{<br/>\n\ttry<br/>\n\t{<br/>\n\t\treturnValue = methodCall(args);<br/>\n\t\tassertTrue(some condition);<br/>\n\t}<br/>\n\tcatch(SomeExceptionThatMethodCallThrows setmct)<br/>\n\t{<br/>\n\t\tfail(setmct);<br/>\n\t}<br/>\n\tfinally<br/>\n\t{<br/>\n\t\t//any code to clean up the mess<br/>\n\t}<br/>\n}<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; In general, test methods should be very lean and focus specifically<br/>\n&gt; on the condition being tested; let the framework handle the rest.<br/>\n<br/>\n </span></blockquote>so long as the code is easy to read, and encourages good practices<br/>\ndown the line. I discourage &quot;throws Exception&quot;s anywhere I see them.<br/>\n<br/>\nAnyway, that&#39;s how I do it. Others take different approaches, and have<br/>\nreasons for it.<br/>\n<br/>\nDave</div>", 
+    "prevInTime": 2100, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "996070282", 
+    "canDelete": false, 
+    "nextInTopic": 2104, 
+    "prevInTopic": 2075, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDEwNzI0MTU1MTM3LjcxMzk2LnFtYWlsQHdlYjE0OTExLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDlqbWsyYStxbzF2QGVHcm91cHMuY29tPg=="
+    }
+}

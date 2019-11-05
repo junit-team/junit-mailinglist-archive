@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 15377, 
+    "senderId": "CD2rlV1jJozPIefPIMjxMUMffVRGb2NwhuBlq1qrCXUe4aNSqzq5BBDcrNuOQHSXJGe7rralqHedpkfgMzhbXqPsRZfPXbS9PQ", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Running Only Testable classes with Ant/JUnit task", 
+    "from": "Ryan Ransford &lt;rdransfo@...&gt;", 
+    "authorName": "Ryan Ransford", 
+    "msgSnippet": "Perhaps something like:      ", 
+    "msgId": 15376, 
+    "rawEmail": "Return-Path: &lt;rdransfo@...&gt;\r\nReceived: (qmail 4653 invoked from network); 8 Nov 2005 23:49:02 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m22.grp.scd.yahoo.com with QMQP; 8 Nov 2005 23:49:02 -0000\r\nReceived: from unknown (HELO n8a.bulk.scd.yahoo.com) (66.94.237.42)\n  by mta2.grp.scd.yahoo.com with SMTP; 8 Nov 2005 23:49:02 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.2] by n8.bulk.scd.yahoo.com with NNFMP; 08 Nov 2005 23:48:29 -0000\r\nReceived: from [66.218.66.82] by mailer2.bulk.scd.yahoo.com with NNFMP; 08 Nov 2005 23:48:29 -0000\r\nX-Sender: rdransfo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 75492 invoked from network); 8 Nov 2005 03:15:23 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m15.grp.scd.yahoo.com with QMQP; 8 Nov 2005 03:15:23 -0000\r\nReceived: from unknown (HELO xproxy.gmail.com) (66.249.82.202)\n  by mta3.grp.scd.yahoo.com with SMTP; 8 Nov 2005 03:15:23 -0000\r\nReceived: by xproxy.gmail.com with SMTP id i32so125290wxd\n        for &lt;junit@yahoogroups.com&gt;; Mon, 07 Nov 2005 19:15:23 -0800 (PST)\r\nReceived: by 10.11.117.36 with SMTP id p36mr55162cwc;\n        Mon, 07 Nov 2005 19:15:23 -0800 (PST)\r\nReceived: by 10.11.119.17 with HTTP; Mon, 7 Nov 2005 19:15:23 -0800 (PST)\r\nMessage-ID: &lt;15ba1be00511071915g894768tb6b5f739f7dd1037@...&gt;\r\nDate: Mon, 7 Nov 2005 21:15:23 -0600\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;dkobtj+7acg@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;dkobtj+7acg@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Ryan Ransford &lt;rdransfo@...&gt;\r\nSubject: Re: [junit] Running Only Testable classes with Ant/JUnit task\r\nX-Yahoo-Group-Post: member; u=221371657; y=VTV8U67SnALN6zBQF3zC5gVRUPdkWQl5wMyY3zSuKQd7IZ4\r\nX-Yahoo-Profile: rdransfo\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 08 Nov 2005 23:48:26 -0000\r\n\r\nPerhaps something like:\n\n&lt;junit&gt;\n&lt;batchtest&gt;\n&lt;fileset dir=&quot;${src.tests}&quot;&gt;\n&lt;include name=&quot;**/*Test*.java&quot;/&gt;\n&lt;not&gt;\n&lt;contains text=&quot;abstract class&quot; casesensitive=&quot;yes&quot;/&gt;\n&lt;/not&gt;\n&lt;/fileset&gt;\n&lt;/batchtest&gt;\n&lt;/junit&gt;\n\nwould do the trick. This is my first stab at this and I have not run it...\nOn 11/7/05, cliftonccraig &lt;cliftonccraig@...&gt; wrote:\n\n&gt; Hello,\n&gt;\n&gt; This may sound like more of a novice question but I need to know what\n&gt; the best practice is for running all of my tests and ONLY my testable\n&gt; classes with the Ant Junit task. What I mean is this. I tried using\n&gt; the batchtest task which is severely limited. It only does a directory\n&gt; scan over my test source to pick up the test classes. The problem is\n&gt; sometimes I may include abstract classes under that umbrella for\n&gt; conveniece methods and they get picked up too. Also there is no\n&gt; garauntee that the source and class files will be one for one. (Eg.\n&gt; nested classes would go unnoticed as well as source files that\n&gt; don&#39;t/can&#39;t compile to a equivalent named class.) I would feel alot\n&gt; better if I could filter the .class files instead of the source and\n&gt; pull out only the classes that are TESTABLE. That is, classes that\n&gt; begin or end with &quot;Test&quot; and have at least one public no-arg method\n&gt; beginning with &quot;test&quot;.\n&gt;\n&gt; So I plugged in DirectorySuiteBuilder from the junit addons project\n&gt; and added some custom code to accomplish this. My custom code, a class\n&gt; named DirectoryScannerSuiteBuilder, is included below. The problem\n&gt; with that approach, while it is a lot more accurate, is that the\n&gt; junitreport task now lumps all tests under my custom\n&gt; DirectoryScannerSuiteBuilder class name without separating out the\n&gt; detail. So my question is what would the best approach be? Should I\n&gt; stop being anal and just go with the batchtest approach and stop\n&gt; including abstracts under the test source directory? (Incedentally\n&gt; that&#39;s what I&#39;m resoting to now.) Or is there a more elaborate\n&gt; solution sort of like a best of breed between the two approaches I&#39;ve\n&gt; tried so far?\n\n &lt;CLIP&gt;a bunch of code&lt;/CLIP&gt;\n\n ------------------------------\n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n\n\n", 
+    "profile": "rdransfo", 
+    "topicId": 15366, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 221371657, 
+    "prevInTime": 15375, 
+    "contentTrasformed": false, 
+    "postDate": "1131419723", 
+    "canDelete": false, 
+    "nextInTopic": 15380, 
+    "prevInTopic": 15374, 
+    "headers": {
+        "inReplyToHeader": "PGRrb2J0ais3YWNnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDE1YmExYmUwMDUxMTA3MTkxNWc4OTQ3Njh0YjZiNWY3MzlmN2RkMTAzN0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGRrb2J0ais3YWNnQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 4908, 
+    "senderId": "5_HiTSEbNmt-srX1dcSt7YZmMrENoIP_RrHKaAJdfJ2IovGuWqqbr3K8J-i0dB44aq1kxYDHm86qP3fWdCQ", 
+    "systemMessage": false, 
+    "subject": "Re: JUnit--Tomcat--JDBC DataSource--JNDI", 
+    "from": "&quot;bofar&quot; &lt;sid@...&gt;", 
+    "authorName": "bofar", 
+    "msgSnippet": "... over ... lookup ... connection ... a ... Hi Weimar, I started looking at this problem myself today. Are you are picking up your datasource from", 
+    "msgId": 4907, 
+    "profile": "bofar", 
+    "topicId": 4655, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112444660, 
+    "messageBody": "<div id=\"ygrps-yiv-197896419\">--- In junit@y..., &quot;weimar_wann&quot; &lt;weimar_wann@y...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m not quite sure how to pose my question...gotten in a little <br/>\n </span></blockquote>over <br/>\n<blockquote><span title=\"ireply\"> &gt; my head here. Basically, I am writing unit tests for an application <br/>\n&gt; that is running on Tomcat 4.xx. Database connectivity is achieved <br/>\n&gt; through the use of a DataSource (configured in Tomcat&#39;s server.xml, <br/>\n&gt; web.xml). The actual Java classes that I am testing do a JNDI <br/>\n </span></blockquote>lookup <br/>\n<blockquote><span title=\"ireply\"> &gt; on the DataSource to get a connection to the database. The <br/>\n </span></blockquote>connection <br/>\n<blockquote><span title=\"ireply\"> &gt; pooling works just fine while running in the Servlet Container, but <br/>\n&gt; my problem is testing through JUnit...does anyone know how to test <br/>\n </span></blockquote>a <br/>\n<blockquote><span title=\"ireply\"> &gt; connection that needs to be run through Tomcat?<br/>\n<br/>\n </span></blockquote>Hi Weimar,<br/>\n<br/>\nI started looking at this problem myself today. Are you are picking <br/>\nup your datasource from &quot;javax.naming.InitialContext ()&quot; ?<br/>\n<br/>\nIf so, the solution is to have different initialization sources<br/>\nfor InitialContext, depending on whether the code is running in<br/>\nthe Tomcat container, or in a Junit test.<br/>\n<br/>\nFirst you need a global flag to indicate whether testing is occuring <br/>\nor not. Let&#39;s put it in a class called Testing:<br/>\n<br/>\npublic class Testing {<br/>\n<br/>\n  private static boolean testing = false;<br/>\n<br/>\n  public synchronized static void testingOn () {<br/>\n     testing = true;<br/>\n  }<br/>\n<br/>\n  public static boolean isTestingOn () {<br/>\n     return testing;<br/>\n  }<br/>\n}<br/>\n<br/>\nNext, in the testcase that needs the database connectivity, set <br/>\ntesting on in the setup method,<br/>\n<br/>\n  protected void setup () {<br/>\n     Testing.testingOn ();<br/>\n  }<br/>\n<br/>\nNow in the code that creates InitialContext(), add the following <br/>\nlines,<br/>\n<br/>\n   InitialContext ctx = new InitialContext ();<br/>\n   if (isTestingOn) {<br/>\n      DataSource ds = new TestingDataSource ();<br/>\n      // Note that dsName should be local dnName used by<br/>\n      // this program.<br/>\n      ctx.addToEnvironment (&quot;java:comp/env/jdbc/dsName&quot;, ds);<br/>\n    }<br/>\n    <br/>\nThe last thing to do is write the TestingDataSource class that <br/>\nimplements the DataSource interface. I&#39;m planning to look at that <br/>\nthis afternoon, if you are interested in a copy, let me know.<br/>\n<br/>\nSid Stuart</div>", 
+    "prevInTime": 4906, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1020867325", 
+    "canDelete": false, 
+    "nextInTopic": 4919, 
+    "prevInTopic": 4662, 
+    "headers": {
+        "inReplyToHeader": "PGE5NHQ4bytmOGo3QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGFiYmJ0dCtoZzJoQGVHcm91cHMuY29tPg=="
+    }
+}

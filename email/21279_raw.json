@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 21280, 
+    "senderId": "TsnQubVe5kS3TswAxbEqaSeQBTMr8n9J7XDDq522c7k72Oc-AZafq_n7OZJMUxbvzWKpZseWT3JxawVaLyd_zcPz7Uz6E0w2OGBti3oFnw", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Wrapping external tests within JUnit 4", 
+    "from": "&quot;Arnaud Bailly&quot; &lt;arnaud.oqube@...&gt;", 
+    "authorName": "Arnaud Bailly", 
+    "msgSnippet": "Hello, Following this list s advices, I have rewritten my forme JUnit3 tests using JUnit 4. What I did was creating a subclass of Paramaterized with a special", 
+    "msgId": 21279, 
+    "rawEmail": "Return-Path: &lt;arnaud.oqube@...&gt;\r\nReceived: (qmail 54573 invoked from network); 12 Jan 2009 23:17:39 -0000\r\nReceived: from unknown (66.218.67.97)\n  by m54.grp.scd.yahoo.com with QMQP; 12 Jan 2009 23:17:39 -0000\r\nReceived: from unknown (HELO n53a.bullet.mail.sp1.yahoo.com) (66.163.168.147)\n  by mta18.grp.scd.yahoo.com with SMTP; 12 Jan 2009 23:17:39 -0000\r\nReceived: from [69.147.65.149] by n53.bullet.mail.sp1.yahoo.com with NNFMP; 12 Jan 2009 23:17:39 -0000\r\nReceived: from [66.218.67.231] by t9.bullet.mail.sp1.yahoo.com with NNFMP; 12 Jan 2009 23:17:39 -0000\r\nX-Sender: arnaud.oqube@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 45724 invoked from network); 12 Jan 2009 13:18:03 -0000\r\nX-Received: from unknown (66.218.67.94)\n  by m43.grp.scd.yahoo.com with QMQP; 12 Jan 2009 13:18:03 -0000\r\nX-Received: from unknown (HELO mail-bw0-f16.google.com) (209.85.218.16)\n  by mta15.grp.scd.yahoo.com with SMTP; 12 Jan 2009 13:18:02 -0000\r\nX-Received: by bwz9 with SMTP id 9so5878046bwz.2\n        for &lt;junit@yahoogroups.com&gt;; Mon, 12 Jan 2009 05:18:01 -0800 (PST)\r\nX-Received: by 10.223.116.10 with SMTP id k10mr415187faq.101.1231766280204;\n        Mon, 12 Jan 2009 05:18:00 -0800 (PST)\r\nX-Received: by 10.223.108.83 with HTTP; Mon, 12 Jan 2009 05:17:59 -0800 (PST)\r\nMessage-ID: &lt;ff7cac0c0901120517t2b5dbd77t266a41498ff281b@...&gt;\r\nDate: Mon, 12 Jan 2009 14:17:59 +0100\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;ff7cac0c0812171126v362a9549oef27ca4eb05593ee@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;gi61el+b0er@...&gt;\n\t &lt;4f7da6b90812151834o5cd17b53p1e53dd1d92a29e76@...&gt;\n\t &lt;ff7cac0c0812160808o5bd65883n550999945cc8660e@...&gt;\n\t &lt;4f7da6b90812170956h357a5280gf5d98c1220e82d8f@...&gt;\n\t &lt;ff7cac0c0812171126v362a9549oef27ca4eb05593ee@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Arnaud Bailly&quot; &lt;arnaud.oqube@...&gt;\r\nSubject: Re: [junit] Wrapping external tests within JUnit 4\r\nX-Yahoo-Group-Post: member; u=371972262; y=FenVcJqFMVJnfBkKMHrfwDC_QMm00j5PGB7v1tvJO2a6oKdwl7IRwTo\r\nX-Yahoo-Profile: arnaud.baillly\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 12 Jan 2009 23:17:37 -0000\r\n\r\nHello,\nFollowing this list&#39;s advices, I have rewritten my forme JUnit3 tests\nusing JUnit 4. What I did was creating a subclass of Paramaterized\nwith a special annotation and a method load() that actually runs the\nHtmlUnit tests, constructs the results and returns a collection of\nJQTest that can later be used as parameters with Parameterized\nannotaion.\n\nThe abridged runner code is:\n\npublic class JQUnitRunner extends Parameterized {\n\n  private static String testPagePath;\n\n  @Retention(RetentionPolicy.RUNTIME)\n  public static @interface Page {\n\n    String value();\n\n  }\n\n  public JQUnitRunner(Class&lt;?&gt; clazz) throws Exception {\n    super(clazz);\n  }\n\n  public static class JQTest { ... }\n\n  private static HtmlUnitDriver driver;\n  private static final String basedir = System.getProperty(&quot;basedir&quot;, &quot;.&quot;);\n\n  public static List&lt;JQTest[]&gt; load(Class&lt;?&gt; clazz) { ... }\n\n}\n\nIt is used by test class instances using the following idiom:\n\n@RunWith(JQUnitRunner.class)\n@...(&quot;test-etatflash&quot;)\npublic class EtatFlashTest {\n\n  private JQTest jqTest;\n\n  @Parameters\n  public static Collection&lt;JQTest[]&gt; jqtests() {\n    return JQUnitRunner.load(EtatFlashTest.class);\n  }\n\n  public EtatFlashTest(JQTest test) {\n    this.jqTest = test;\n  }\n\n  @Test\n  public void test() {\n    jqTest.assertPass();\n  }\n}\n\nI am not entirely satisfied with this, as there is still boilerplate\ncode in the test classes. I would have liked to override the following\nmethod from Parameterized but it is private:\n\n\tprivate List&lt;Object[]&gt; getParametersList(TestClass klass)\n\nOverriding would have allowed to remove entirely the jqtests method\nfrom test classes.\n\nregards\n\nArnaud Bailly\n\n", 
+    "profile": "arnaud.baillly", 
+    "topicId": 21199, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 371972262, 
+    "prevInTime": 21278, 
+    "contentTrasformed": false, 
+    "postDate": "1231766279", 
+    "canDelete": false, 
+    "nextInTopic": 21280, 
+    "prevInTopic": 21216, 
+    "headers": {
+        "inReplyToHeader": "PGZmN2NhYzBjMDgxMjE3MTEyNnYzNjJhOTU0OW9lZjI3Y2E0ZWIwNTU5M2VlQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGZmN2NhYzBjMDkwMTEyMDUxN3QyYjVkYmQ3N3QyNjZhNDE0OThmZjI4MWJAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGdpNjFlbCtiMGVyQGVHcm91cHMuY29tPgkgPDRmN2RhNmI5MDgxMjE1MTgzNG81Y2QxN2I1M3AxZTUzZGQxZDkyYTI5ZTc2QG1haWwuZ21haWwuY29tPgkgPGZmN2NhYzBjMDgxMjE2MDgwOG81YmQ2NTg4M241NTA5OTk5NDVjYzg2NjBlQG1haWwuZ21haWwuY29tPgkgPDRmN2RhNmI5MDgxMjE3MDk1NmgzNTdhNTI4MGdmNWQ5OGMxMjIwZTgyZDhmQG1haWwuZ21haWwuY29tPgkgPGZmN2NhYzBjMDgxMjE3MTEyNnYzNjJhOTU0OW9lZjI3Y2E0ZWIwNTU5M2VlQG1haWwuZ21haWwuY29tPg=="
+    }
+}

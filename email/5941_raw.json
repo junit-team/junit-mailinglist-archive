@@ -1,0 +1,29 @@
+{
+    "topicId": 2153, 
+    "postDate": "1033713702", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Alagusundaram Paulraj &lt;apaulra@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "93gl0Te2d8Be_21c6XA0ObEA5HEZwDnIT4dyqu5rXOb707rlRMqjVVXF8VmK0py5VhtgvFrmsoYdXTGNIMN58w3WsmcAvS5VKLkiO55spJk", 
+    "nextInTime": 5942, 
+    "userId": 80162584, 
+    "prevInTime": 5940, 
+    "prevInTopic": 5940, 
+    "headers": {
+        "messageIdInHeader": "PDNEOUQzODI2LjQ0MkIwNUNAcXdlc3QuY29tPg==", 
+        "referencesHeader": "PDIwMDIxMDAzMDQ1MzAzLjIzNzgxLnFtYWlsQHdlYjk2MDQubWFpbC55YWhvby5jb20+IDwyMDAyMTAwMzIxMzgxNi5BNjA4M0B0aWJpYS5hbW90bHBhYS5ib2d1cz4="
+    }, 
+    "authorName": "Alagusundaram Paulraj", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "", 
+    "contentTrasformed": false, 
+    "msgId": 5941, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;apaulra@...&gt;\r\nX-Sender: apaulra@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_0); 4 Oct 2002 06:40:58 -0000\r\nReceived: (qmail 2354 invoked from network); 4 Oct 2002 06:40:58 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m8.grp.scd.yahoo.com with QMQP; 4 Oct 2002 06:40:58 -0000\r\nReceived: from unknown (HELO uswgne22.uswest.com) (204.26.87.76)\n  by mta2.grp.scd.yahoo.com with SMTP; 4 Oct 2002 06:40:57 -0000\r\nReceived: from egate-co2.uswc.uswest.com (egate-co2.uswc.uswest.com [151.119.214.10])\n\tby uswgne22.uswest.com (8.10.0/8.10.0) with ESMTP id g946euH14800\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 4 Oct 2002 01:40:56 -0500 (CDT)\r\nReceived: from qwest.com (localhost [127.0.0.1])\n\tby egate-co2.uswc.uswest.com (8.10.0/8.10.0) with ESMTP id g946etp10138\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 4 Oct 2002 00:40:55 -0600 (MDT)\r\nMessage-ID: &lt;3D9D3826.442B05C@...&gt;\r\nDate: Fri, 04 Oct 2002 00:41:42 -0600\r\nX-Mailer: Mozilla 4.51 [en] (WinNT; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: unsubscribe\r\nReferences: &lt;20021003045303.23781.qmail@...&gt; &lt;20021003213816.A6083@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Alagusundaram Paulraj &lt;apaulra@...&gt;\r\nX-Yahoo-Group-Post: member; u=80162584\r\n\r\n\n\nSteven Taschuk wrote:\n\n&gt; Quoth Anantha Lakshmi:\n&gt; &gt; [...] I&#39;ve created a TestSuite, which contains\n&gt; &gt; sequence of Tests. I want to find out the &quot;Time Taken\n&gt; &gt; for each Test case in a Test suite&quot; while running the\n&gt; &gt; Test Suite. [...]\n&gt;\n&gt; Ant&#39;s &lt;junit&gt; task does this, with &lt;formatter type=&#39;plain&#39;/&gt;.\n&gt;\n&gt; If you don&#39;t want to use Ant, it seems to me you can write the\n&gt; functionality yourself with not so much work.  Something like this:\n&gt;\n&gt;   1. If you&#39;re writing your own implementations of Test\n&gt;      (instead of, say, using TestCases), then make sure\n&gt;      they call TestResult.startTest() and .endTest()\n&gt;      in their run() methods.\n&gt;\n&gt;   2. Subclass java.textui.TestRunner, overriding the\n&gt;      protected method createTestResult(); something like\n&gt;\n&gt;            protected TestResult createTestResult() {\n&gt;                    TestResult result = super.createTestResult();\n&gt;                    result.addTestListener( new TimingTestListener() );\n&gt;                    return result;\n&gt;            }\n&gt;\n&gt;   3. Write the TimingTestListener; a trivial version:\n&gt;\n&gt;            public class TimingTestListener implements TestListener {\n&gt;                    private long start;\n&gt;                    public void startTest( Test test ) {\n&gt;                            start = new Date().getTime();\n&gt;                    }\n&gt;                    public void endTest( Test test ) {\n&gt;                            System.out.println( test.toString() + &quot;: &quot;\n&gt;                                    + (new Date().getTime() - start)\n&gt;                                    + &quot;ms&quot; );\n&gt;                    }\n&gt;                    // ... the rest of the TestListener interface ...\n&gt;            }\n&gt;\n&gt; And that would be it.  I haven&#39;t tested this, it&#39;s just off the\n&gt; top of my head, and I don&#39;t actually know what I&#39;m talking about,\n&gt; so I invite comments and corrections.\n&gt;\n&gt; (One obvious point: what TimingTestListener should actually do is\n&gt; accumulate the results and provide methods for retrieving the\n&gt; information later.  Also you might want to think about the\n&gt; possibility that your tests might someday be run concurrently in\n&gt; multiple threads, with one TestResult -- and hence one\n&gt; TimingTestListener -- shared among all those threads.  The\n&gt; implementation suggested above would fail miserably in such a\n&gt; scenario.)\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n\n", 
+    "subject": "unsubscribe"
+}

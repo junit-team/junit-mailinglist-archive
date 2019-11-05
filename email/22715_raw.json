@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 22716, 
+    "senderId": "3Ca9fcPUxDd4R57PwMzw6Z4_5n2CZmBwoLmdXEte3LA3PLWOqH9WAksK3XyaPAIojvOguqRafm7V0bZy-3_fjqNg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Why my own TestListener implementation doesn&#39;t work?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Tao, createResult() is somewhat confusing--it has nothing to do with the normal flow of JUnit execution.  To do what you re doing, many people will override", 
+    "msgId": 22715, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 75591 invoked from network); 24 May 2010 15:53:56 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 24 May 2010 15:53:56 -0000\r\nX-Received: from unknown (HELO mail-pv0-f174.google.com) (74.125.83.174)\n  by mta2.grp.sp2.yahoo.com with SMTP; 24 May 2010 15:53:55 -0000\r\nX-Received: by pvg3 with SMTP id 3so162429pvg.5\n        for &lt;junit@yahoogroups.com&gt;; Mon, 24 May 2010 08:53:55 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.140.57.5 with SMTP id f5mr4208653rva.173.1274716432892; Mon, \n\t24 May 2010 08:53:52 -0700 (PDT)\r\nX-Received: by 10.140.139.5 with HTTP; Mon, 24 May 2010 08:53:52 -0700 (PDT)\r\nIn-Reply-To: &lt;htd246+mc7l@...&gt;\r\nReferences: &lt;htd246+mc7l@...&gt;\r\nDate: Mon, 24 May 2010 11:53:52 -0400\r\nX-Google-Sender-Auth: YVd8s0QfoaeiOyvKW8ruPwA-x1I\r\nMessage-ID: &lt;AANLkTikkVjQ6THk6Ehicmw8NmvlqNs75zNhVJTM7Ijjo@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Why my own TestListener implementation doesn&#39;t work?\r\nX-Yahoo-Group-Post: member; u=341876227; y=_kGmX_viav_vfHwLIGbKpI3ebpMXEGnXA_xydxldtKU\r\nX-Yahoo-Profile: dsaff\r\n\r\nTao,\n\ncreateResult() is somewhat confusing--it has nothing to do with the\nn=\r\normal flow of JUnit execution.  To do what you&#39;re doing, many people\nwill o=\r\nverride runTest().\n\n   David Saff\n\nOn Mon, May 24, 2010 at 1:16 AM, zx20028=\r\n7853714\n&lt;zx200287853714@...&gt; wrote:\n&gt; Hi, experts\n&gt;\n&gt; Since our pr=\r\noject wants to save the failed environment for a failed test case, I tried =\r\nto implement my own TestListener which did the work in TestListener.addFail=\r\nure and TestListener.addError. But it doesn&#39;t work, could you please figure=\r\n out the errors in my program, thanks.\n&gt;\n&gt; import junit.framework.Assertion=\r\nFailedError;\n&gt; import junit.framework.Test;\n&gt; import junit.framework.TestCa=\r\nse;\n&gt; import junit.framework.TestResult;\n&gt; import junit.framework.TestSuite=\r\n;\n&gt; import junit.framework.TestListener;\n&gt;\n&gt; public class NewTest extends T=\r\nestCase {\n&gt; =A0 =A0class MyListener implements TestListener {\n&gt; =A0 =A0 =A0=\r\n =A0private TestCase test;\n&gt;\n&gt; =A0 =A0 =A0 =A0public MyListener(TestCase te=\r\nst) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0this.test =3D test;\n&gt; =A0 =A0 =A0 =A0}\n&gt;\n&gt; =\r\n=A0 =A0 =A0 =A0public void addError(Test test, Throwable t) {\n&gt; =A0 =A0 =A0=\r\n =A0 =A0 =A0System.out.println(&quot;Detecing an error.&quot;);\n&gt; =A0 =A0 =A0 =A0}\n&gt;\n=\r\n&gt; =A0 =A0 =A0 =A0public void addFailure(Test test, AssertionFailedError t) =\r\n{\n&gt; =A0 =A0 =A0 =A0 =A0 =A0System.out.println(&quot;Detecing a failure.&quot;);\n&gt; =A0=\r\n =A0 =A0 =A0}\n&gt;\n&gt; =A0 =A0 =A0 =A0public void endTest(Test test) {\n&gt; =A0 =A0=\r\n =A0 =A0 =A0 =A0System.out.println(&quot;End a test.&quot;);\n&gt; =A0 =A0 =A0 =A0}\n&gt;\n&gt; =\r\n=A0 =A0 =A0 =A0public void startTest(Test test) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0=\r\nSystem.out.println(&quot;Start a test.&quot;);\n&gt; =A0 =A0 =A0 =A0}\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =\r\n=A0public void setUp() {\n&gt; =A0 =A0 =A0 =A0System.out.println(&quot;Doing setup.&quot;=\r\n);\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0public void tearDown() {\n&gt; =A0 =A0 =A0 =A0System.o=\r\nut.println(&quot;Doing tearDown.&quot;);\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0@Override\n&gt; =A0 =A0pro=\r\ntected TestResult createResult() {\n&gt; =A0 =A0 =A0 =A0System.out.println(&quot;Inv=\r\noked.&quot;);\n&gt; =A0 =A0 =A0 =A0TestResult result =3D new TestResult();\n&gt; =A0 =A0=\r\n =A0 =A0result.addListener(new MyListener(this));\n&gt;\n&gt; =A0 =A0 =A0 =A0return=\r\n result;\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0public void testA() {\n&gt; =A0 =A0 =A0 =A0Syste=\r\nm.out.println(&quot;Doing testA.&quot;);\n&gt; =A0 =A0 =A0 =A0fail(&quot;Expected failure.&quot;);\n=\r\n&gt; =A0 =A0}\n&gt;\n&gt; =A0 =A0public void testB() {\n&gt; =A0 =A0 =A0 =A0System.out.pri=\r\nntln(&quot;Doing testB.&quot;);\n&gt; =A0 =A0}\n&gt; }\n&gt;\n&gt; I think if I implement my own Test=\r\nListener and register it with a TestResult in createResult method, that Tes=\r\ntResult should replace the default one, but it doesn&#39;t work.\n&gt;\n&gt; Thanks for=\r\n any help!\n&gt;\n&gt; Regards!\n&gt; Tao\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n=\r\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22712, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22714, 
+    "contentTrasformed": false, 
+    "postDate": "1274716432", 
+    "canDelete": false, 
+    "nextInTopic": 22718, 
+    "prevInTopic": 22712, 
+    "headers": {
+        "inReplyToHeader": "PGh0ZDI0NittYzdsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGlra1ZqUTZUSGs2RWhpY213OE5tdmxxTnM3NXpOaFZKVE03SWpqb0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGh0ZDI0NittYzdsQGVHcm91cHMuY29tPg=="
+    }
+}

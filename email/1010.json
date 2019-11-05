@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 1011, 
+    "senderId": "Js77AgsyMayWJr-GXVFni640KSDU3G2ShlAeRTK_G8MMfnfYSKPGbCMC-dq7-euFjUHgKcjWMnwwkYAAP42ND93-0OKQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] assert() in callbacks", 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "authorName": "Robert Sartin", 
+    "msgSnippet": "/* ... [assert() in callbacks] Works fine if the callback runs in the same thread as the TestCase. If the callback may/will run in a different thread, you may", 
+    "msgId": 1010, 
+    "topicId": 1008, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-699351534\">/*<br/>\n--- Ruth Adrineda &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:radrineda@...\">radrineda@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; has anybody used<br/>\n&gt; <br/>\n </span></blockquote>[assert() in callbacks]<br/>\n<br/>\nWorks fine if the callback runs in the same thread as the TestCase.<br/>\n<br/>\nIf the callback may/will run in a different thread, you may want<br/>\nsomething like:<br/>\n*/<br/>\n<br/>\n// Warning: I have not tested this, it is from memory<br/>\n// I don&#39;t have a Java environment handy right now and<br/>\n// apologize in advance for any errors that may have<br/>\n// slipped into my memory. Notably, I&#39;m not certain<br/>\n// at this instant that the write to failureMessage<br/>\n// is guaranteed to be visible in the test thread....<br/>\npublic class FooTest extends TestCase {<br/>\n  Object callbackSync = new Object;<br/>\n  String failureMessage = null;<br/>\n<br/>\n  public void callback() {<br/>\n    // Do callback stuff<br/>\n    if ( /* got a failure */ ) {<br/>\n      failureMessage = &quot;Some informative failure message&quot;;<br/>\n    }<br/>\n    synchronized(callbackSync) {<br/>\n      callbackSync.notify();<br/>\n    }<br/>\n  }<br/>\n<br/>\n  public void testSomethingWithCallback() {<br/>\n    // Do test stuff that should cause callback to execute<br/>\n    synchronized(callbackSync) {<br/>\n      try {<br/>\n        callbackSync.wait(SOME_REASONABLE_TIMEOUT);<br/>\n        if (failureMessage != null) {<br/>\n          fail(failureMessage);<br/>\n        }<br/>\n      } catch (InterruptedException e) {<br/>\n        fail(&quot;Callback was not called within timeout&quot;);<br/>\n      }<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\n/*<br/>\nRegards,<br/>\n<br/>\nRob<br/>\n*/<br/>\n<br/>\n<br/>\n__________________________________________________<br/>\nDo You Yahoo!?<br/>\nYahoo! Auctions - buy the things you want at great prices<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://auctions.yahoo.com/\">http://auctions.yahoo.com/</a></div>", 
+    "prevInTime": 1009, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987829215", 
+    "canDelete": false, 
+    "nextInTopic": 1014, 
+    "prevInTopic": 1008, 
+    "headers": {
+        "inReplyToHeader": "PDU4OUQyQzQ3NTBCRUE2NENBMzJCN0ZFMUFGMUVGRTk0MTdDNzYyQGxhc3Nlbi5wcmlzYS5jb20+", 
+        "messageIdInHeader": "PDIwMDEwNDIxMDUwMDE1Ljg3NDQ1LnFtYWlsQHdlYjExNjA4Lm1haWwueWFob28uY29tPg=="
+    }
+}

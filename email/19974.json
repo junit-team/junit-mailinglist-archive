@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 19975, 
+    "senderId": "lMhZcrHRYMJpCYpYUC1h0QYWWh1VgFPNaZvhenzIdaXugkNVKoloA85m5GTo38ENFBaERYXOgM_iqBeF_pu63aPOcxu4sOGC", 
+    "systemMessage": false, 
+    "subject": "[junit] Why does BaseTestRunner require TestCase class rather than the Test interface?", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Dear Bruno, Thank you for the defect report. I wasn t able to reproduce exactly the same behavior you describe, but JUnit 3 tests don t work exactly the same", 
+    "msgId": 19974, 
+    "profile": "kentlbeck", 
+    "topicId": 19971, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-245902168\">Dear Bruno,<br/>\n <br/>\nThank you for the defect report. I wasn&#39;t able to reproduce exactly the same<br/>\nbehavior you describe, but JUnit 3 tests don&#39;t work exactly the same as they<br/>\ndid before. For example:<br/>\n <br/>\npublic class CastToTestTest {<br/>\n    public static class Example implements junit.framework.Test {<br/>\n        public int countTestCases() {<br/>\n            return 0;<br/>\n        }<br/>\n        public void run(TestResult result) {<br/>\n            // do nothing<br/>\n        }<br/>\n        public static junit.framework.Test suite() {<br/>\n            TestSuite result= new TestSuite();<br/>\n            result.addTest(new Example());<br/>\n            return result;<br/>\n        }<br/>\n    }<br/>\n    @Test public void runTestWhichIsNotATestCase() {<br/>\n        // Doesn&#39;t compile: TestRunner.run(Example.class);<br/>\n        TestResult result= TestRunner.run(Example.suite());<br/>\n        assertTrue(result.wasSuccessful());<br/>\n    }<br/>\n}<br/>\n<br/>\nThe first line of the test doesn&#39;t compile, which seems like an error to me,<br/>\nbut the test itself passes without a class cast exception. Did I<br/>\nmisunderstand your report?<br/>\n<br/>\nRegards,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n<br/>\n________________________________<br/>\n<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\nBruno Felaco<br/>\nSent: Wednesday, October 10, 2007 6:59 AM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] Why does BaseTestRunner require TestCase class rather than<br/>\nthe Test interface?<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nHi,<br/>\n<br/>\nWe&#39;re having trouble with JUnit 4 which appears to be due to a small change<br/>\nthat was made in to BaseTestRunner. The problem is a ClassCastException in<br/>\nBaseTestRunner when loading our suite class. In JUnit 3, it didn&#39;t matter<br/>\nwhat type of class was loaded as long as it had a static suite() method with<br/>\nno arguments. But now in JUnit 4, the class must extend TestCase. I don&#39;t<br/>\nunderstand why this is necessary - the getTest() method returns the Test<br/>\ninterface and internally it still uses reflection to get the static suite()<br/>\nmethod.<br/>\nSo why does the code cast the Class to a TestCase? It seems like this is a<br/>\ncase of overzealous use of the new parameterized types in Java 5 and a<br/>\nregression from JUnit 3.<br/>\n<br/>\nAlso, in JUnit 3 the method loadSuiteClass() called getLoader() to get the<br/>\nClassLoader to use, which opened the door for extensibility. This is gone<br/>\nnow, why?<br/>\n<br/>\nThanks in advance...</div>", 
+    "prevInTime": 19973, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1192071426", 
+    "canDelete": false, 
+    "nextInTopic": 19975, 
+    "prevInTopic": 19973, 
+    "headers": {
+        "messageIdInHeader": "PDAxMjkwMWM4MGJiMiQ2OTBlMmNjMCQ2ODAxYThjMEBrZW50c3BhdmlsaW9uPg=="
+    }
+}

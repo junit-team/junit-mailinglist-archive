@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 22597, 
+    "senderId": "j4d_mQzpPnQuB0bYa-YiPoDbk_4FMdBYatOj7RqAqIWhBQ7InDt6lJzYvKuN6Ztz0AMuCpZhlwcYxezHUnJOePM3KCWIb1W6HatHiokMvP3KF4t0HQ0WXVo8D8_Ns14", 
+    "systemMessage": false, 
+    "subject": "Need to fetch the result data after each test run to update into resultDB (SQL)", 
+    "from": "&quot;gajendranchandrappa&quot; &lt;gajendran.chandrappa@...&gt;", 
+    "authorName": "gajendranchandrappa", 
+    "msgSnippet": "Hi, Can somebody help me, how to get the result as values like PASS, FAIL or ERROR if fail/error the call stack for each testcase. I need to get all the above", 
+    "msgId": 22596, 
+    "rawEmail": "Return-Path: &lt;gajendran.chandrappa@...&gt;\r\nReceived: (qmail 73590 invoked by uid 7800); 29 Mar 2010 13:07:49 -0000\r\nX-Sender: gajendran.chandrappa@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 26289 invoked from network); 29 Mar 2010 09:17:40 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m2.grp.sp2.yahoo.com with QMQP; 29 Mar 2010 09:17:40 -0000\r\nX-Received: from unknown (HELO n42b.bullet.mail.sp1.yahoo.com) (66.163.168.156)\n  by mta1.grp.sp2.yahoo.com with SMTP; 29 Mar 2010 09:17:40 -0000\r\nX-Received: from [69.147.65.148] by n42.bullet.mail.sp1.yahoo.com with NNFMP; 29 Mar 2010 09:17:31 -0000\r\nX-Received: from [98.137.34.73] by t11.bullet.mail.sp1.yahoo.com with NNFMP; 29 Mar 2010 09:17:31 -0000\r\nDate: Mon, 29 Mar 2010 09:17:31 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;hopr7b+dgkh@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;gajendranchandrappa&quot; &lt;gajendran.chandrappa@...&gt;\r\nSubject: Need to fetch the result data after each test run to update into resultDB (SQL)\r\nX-Yahoo-Group-Post: member; u=429893865; y=HRO8322jnhZwdWSFYed_cRFeRWlZ4dwTV-i3A6Kteem_SvpwWVT1erctfv995A\r\nX-Yahoo-Profile: gajendranchandrappa\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 29 Mar 2010 13:07:49 -0000\r\n\r\nHi,\n\nCan somebody help me, how to get the result as values like PASS, FAIL =\r\nor ERROR if fail/error the call stack for each testcase.\n\nI need to get all=\r\n the above mentioned values thru any of the &quot;junit.framework..*&quot; methods an=\r\nd inside the tearDown() method after each individual testcase run.\n\n\nKind r=\r\negards,\nGajendran\n\neg:\nclass TestCaseBase extends TestCase {\n\t\n\tprivate boo=\r\nlean pass;\n\tprivate boolean fail;\n\tprivate boolean error;\n\tprivate boolean =\r\nknownDefect;\n\tprivate String testCaseName; \n\tprivate Enumeration&lt;TestFailur=\r\ne&gt; description;\t\t\n\tprivate TestResult result =3D new TestResult();\n\t\t\n\t\n\t\n\t=\r\npublic TestCaseBase(String name) {\n\t\tsuper(name);\t\n\t\t\n\t}\n\t\n\tpublic void set=\r\nUp() {\t\t\n\t\tSystem.out.println(&quot;&#92;nENTERING into TestCase [&quot; + this.getName()=\r\n +&quot;]&quot;);\t\n\t\t//Do somthing\n\t\t\n\t\t\t\t\n\t}\n\t\n\t\n\t\t\t\t\t\n\tpublic void tearDown() {\t\t\t\n=\r\n\t\t\n\t\tSystem.out.println(&quot;&#92;nEXITING TestCase [&quot; + this.getName() +&quot;]&quot;);\t\t\n\t\t=\r\n\n\t\t\t\t\n\t\t\tif (result.errors() !=3D null) {\n\t\t\t\terror =3D true;\n\t\t\t\tthis.desc=\r\nription =3D result.errors();\t\t\t\t\n\t\t\t}\t\t\t\n\t\t\tif (result.failures() !=3D null=\r\n) {\n\t\t\t\terror =3D true;\n\t\t\t\tthis.description =3D result.errors();\t\t\t\t\n\t\t\t}\t=\r\n\t\t\t\t\n\t\t\tif (result.wasSuccessful()) {\n\t\t\t\tpass =3D true;\t\t\t\t\n\t\t\t} else {\n\t\t=\r\n\t\tfail =3D true;\t\t\t\t\n\t\t\t}\t\n\t\t\t\t\n\t\t\t// post result to DB after each test run=\r\n\t\n\t\t}\t\t\t\n\t}\n\n\n// TestCase class\nclass MyTestBase extends TestCaseBase {\n\n  =\r\n      public void testStartLogon() {\n\t\t// Test1\n\t}\n\t\n\tpublic void test2() {=\r\n\n\t\t//Test 2\t\n\t}\n\t\n\tpublic void test3() {\n             //Test 3\n\t\t\n\t}\n\n}\n\nIs=\r\n there a way to get the TestResult for each testcase in the tearDown()\n\nPle=\r\nase help me in this. I&#39;m not aware which methods/classes to acheive this.Bu=\r\nt i know when the &quot;The JUnit Runner UI&quot; can get the result after each testc=\r\nase run, we should be able to fetch from some way.\n\n\nThanks,\nGAjendran Chan=\r\ndrappa\n\n\n\n\n\n", 
+    "profile": "gajendranchandrappa", 
+    "topicId": 22596, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 429893865, 
+    "prevInTime": 22595, 
+    "contentTrasformed": false, 
+    "postDate": "1269854251", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGhvcHI3YitkZ2toQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 4815, 
+    "senderId": "JWrn_BJzULddfOCIGkAQ0EO-2u5Z8262gOox9XuGU0LsjsGmB6FBX0A_eQcOdorhyenp8cXAuz6bSwJvqk_PCDjJmKyfMkuDdkb2ReKiXNHi", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing getXXX( ) and setXXX( ) methods by creating protected variables", 
+    "from": "&quot;Andrew Forward&quot; &lt;milkforlife@...&gt;", 
+    "authorName": "Andrew Forward", 
+    "msgSnippet": "If I were to test get / set methods, I would 1. make the state variable protected (as oppose to private) 2. have my test classes in the same package", 
+    "msgId": 4814, 
+    "rawEmail": "Return-Path: &lt;milkforlife@...&gt;\r\nX-Sender: milkforlife@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_1); 2 May 2002 11:49:21 -0000\r\nReceived: (qmail 22256 invoked from network); 2 May 2002 11:49:21 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m3.grp.scd.yahoo.com with QMQP; 2 May 2002 11:49:21 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.148.152)\n  by mta1.grp.scd.yahoo.com with SMTP; 2 May 2002 11:49:21 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Thu, 2 May 2002 04:49:21 -0700\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;aapc1u+iqcc@...&gt;\r\nSubject: Re: [junit] Testing getXXX( ) and setXXX( ) methods by creating protected variables\r\nDate: Thu, 2 May 2002 07:47:57 -0400\r\nMIME-Version: 1.0\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 6.00.2600.0000\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nMessage-ID: &lt;OE56AuFaZz8rqsmuoGX000025ce@...&gt;\r\nX-OriginalArrivalTime: 02 May 2002 11:49:21.0320 (UTC) FILETIME=[65E64A80:01C1F1CF]\r\nFrom: &quot;Andrew Forward&quot; &lt;milkforlife@...&gt;\r\nX-Yahoo-Group-Post: member; u=87266687\r\nX-Yahoo-Profile: andrewforward1978\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\nIf I were to test get / set methods, I would \n\n 1. make the state variable &quot;protected&quot; (as oppose to private)\n 2. have my test classes in the same package structure (to allows access)\n 3. set the variables directly in  a test and assert the get / set methods\n\n1. Why protected?\n\nThere is a trade off between exposing your class and letting others have limited access.\n\n2.  Why same package structure?\n\nTo take advantage of the protected nature of the variable.  A test class can now directly manipulate a variable to assert the proper workings of the set / get classes.\n\n3.  Why set directly?\n\nSet the variable directly, then assert against the get and / or set methods.\n\n\nI provided a brief example at the end of this email. \n\nAs a quick preference  I rarely just create &quot;get&quot; and &quot;set&quot; methods because I have a particular state variable.  I feel that it done primarily because everyone seems to do it as oppose to doing it for functional reasons.  \n\nIf anything, I will only allow for get methods to avoid corrupting my object.  In general, I prefer to wait until there is a functional need to have get and set methods, otherwise I keep the variable &quot;private&quot; and completely hidden for others not use, or see.\n\nandrew f\n\n````````````````````````````\n\nA brief example of how I test get / set methods.\n\n+ /src/main\n     org.blah.util.MyClass.java\n\n       protected int i_;\n       public int getI() { ... }\n       public void setI(int i) { ...  }\n\n+ /src/testsuite\n     org.blah.util.MyClassTest.java\n\n       MyClass myc;\n\n       public void setUp() {\n         myc = new MyClass();\n       }     \n\n       public void test_setA() {\n         int expected = 1;\n         myc.i_ = expected;\n         int actual = myc.getI();\n         assertEquals(expected,actual);\n       }\n\n\n\nstate variables protected\n\n\nAs a quick aside, I usually do not create get / set methods \n\nIf I\n\n\n  ----- Original Message ----- \n  From: raju99 \n  To: junit@yahoogroups.com \n  Sent: Wednesday, May 01, 2002 2:27 PM\n  Subject: [junit] Testing getXXX( ) and setXXX( ) methods\n\n\n  Hi,\n\n  I am trying to answer the following question for myself -\n  &quot;What is the best approach for testing get/set methods ?&quot;\n\n  I have my approach outlined below and would welcome comments.\n\n  Take the example :\n\n  public class Car {\n      private String _color;\n\n      public String getColor() {\n          return _color\n      }\n\n      public void setColor(String color$) {\n          _color = color$;\n      }\n\n  }\n\n  To me, the &#39;best&#39; approach seems to be the following :\n\n  1. Create an inner class CarTest that will test this class.\n\n  2. in the setUp() method, create a new Car obect and set the\n  internal field to the &quot;test&quot; value. i.e. set the field values \n  directly.\n\n  3. Testing the get method\n\n  Call the get method and make sure the &#39;test&#39; value is correctly\n  returned by the get method.\n\n  4. Testing the set method\n\n  Call the set method with a new value.\n  Check the internal field and verify that the value is the\n  one specified via set().\n\n  I&#39;m interested in opinions/suggestions.\n\n  Thanks,\n\n  Raju\n\n\n\n        Yahoo! Groups Sponsor \n              ADVERTISEMENT\n             \n       \n       \n\n  To unsubscribe from this group, send an email to:\n  junit-unsubscribe@yahoogroups.com\n\n\n  Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service. \n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "andrewforward1978", 
+    "topicId": 4814, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 87266687, 
+    "prevInTime": 4813, 
+    "contentTrasformed": false, 
+    "postDate": "1020340077", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PE9FNTZBdUZhWno4cnFzbXVvR1gwMDAwMjVjZUBob3RtYWlsLmNvbT4=", 
+        "referencesHeader": "PGFhcGMxdStpcWNjQGVHcm91cHMuY29tPg=="
+    }
+}

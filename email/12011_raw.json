@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 12012, 
+    "senderId": "2H6nG6GrTMjNNuIT4JxR5Rr-xDZBJC2CZGfHYuew6nMn5YtwA8j_sdxJlKQgfrZx1FbwymNylDmLjT8AILfaOK60y9l2sLPxDHw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing classloader isolation?", 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "authorName": "Timothy Wall", 
+    "msgSnippet": "Having both sets of classes in the primordial class loader *and* trying to have them loaded dynamically by a custom class loader is cruisin for trouble. ", 
+    "msgId": 12011, 
+    "rawEmail": "Return-Path: &lt;twall@...&gt;\r\nX-Sender: twall@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 98589 invoked from network); 21 Sep 2004 15:00:12 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m22.grp.scd.yahoo.com with QMQP; 21 Sep 2004 15:00:12 -0000\r\nReceived: from unknown (HELO mail00.oculustech.com) (64.221.47.99)\n  by mta5.grp.scd.yahoo.com with SMTP; 21 Sep 2004 15:00:11 -0000\r\nReceived: by mail00.oculustech.com (Postfix, from userid 1011)\n\tid 2EF05151E8; Tue, 21 Sep 2004 10:58:40 -0400 (EDT)\r\nReceived: from [172.16.1.45] (pool-68-160-189-28.bos.east.verizon.net [68.160.189.28])\n\tby mail00.oculustech.com (Postfix) with ESMTP id 6B55A151CD\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 21 Sep 2004 10:58:39 -0400 (EDT)\r\nMime-Version: 1.0 (Apple Message framework v619)\r\nIn-Reply-To: &lt;853ac4f4040921070040b73a56@...&gt;\r\nReferences: &lt;853ac4f4040921070040b73a56@...&gt;\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nMessage-Id: &lt;BDCFB684-0BDE-11D9-9BDE-003065BF83DA@...&gt;\r\nContent-Transfer-Encoding: 7bit\r\nDate: Tue, 21 Sep 2004 10:58:47 -0400\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Apple Mail (2.619)\r\nX-Spam-Level: \r\nX-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on \n\tmail00.int.oculustech.com\r\nX-Spam-Status: No, hits=-4.9 required=4.5 tests=BAYES_00 autolearn=ham \n\tversion=2.63\r\nX-eGroups-Remote-IP: 64.221.47.99\r\nFrom: Timothy Wall &lt;twall@...&gt;\r\nSubject: Re: [junit] Testing classloader isolation?\r\nX-Yahoo-Group-Post: member; u=106503903\r\nX-Yahoo-Profile: timothyrwall\r\n\r\nHaving both sets of classes in the primordial class loader *and* trying \nto have them loaded dynamically by a custom class loader is cruisin&#39; \nfor trouble.\n\nPresumably your custom class loaders do things the &quot;normal&quot; way, i.e. \ndefer to the parent/primordial class loader prior to loading a class.  \nIf the normal behavior of your app is that the primordial/parent class \nloader *doesn&#39;t* have access to both sets of classes, then your testing \nenvironment isn&#39;t representative of your runtime environment.\n\nYou should consider running those class loader tests that explicitly \ncheck class loading behavior separately from the bulk of the tests \nwhich are checking your classes, if you absolutely *must* have both \nsets of classes in the default class loader.  Alternatively, you could \nset the context class loader for *most* of your tests to include both \nclasses, while that of the class loading tests would omit them.  The \nkey is to avoid those classes *ever* being loaded by the primordial \nclass loader.\n\nYou can certainly write a class loader that *doesn&#39;t* delegate loading \nto the parent/primordial, but that path is fraught with exceptions and \nerrors (of the ClassCast and Linkage types) and painstaking to get \nexactly right.\n\n\nOn Sep 21, 2004, at 10:00 AM, Russell Gold wrote:\n\n&gt;\n&gt; Does anybody have a good way to test behavior that depends on code in\n&gt; different classloaders communicating? That is, we have a client that\n&gt; should only use the classes in one jar talking to a server that should\n&gt; only use the classes in another jar. It is trivial to test the\n&gt; communications if I smush the classpaths together, but I want a\n&gt; sensible way to restrict each of the parts to its own classloader,\n&gt; preferably without preventing the suite from having both sets of\n&gt; classes in its *default* classloader...\n&gt;\n&gt;\n\n\n", 
+    "profile": "timothyrwall", 
+    "topicId": 12010, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106503903, 
+    "prevInTime": 12010, 
+    "contentTrasformed": false, 
+    "postDate": "1095778727", 
+    "canDelete": false, 
+    "nextInTopic": 12012, 
+    "prevInTopic": 12010, 
+    "headers": {
+        "inReplyToHeader": "PDg1M2FjNGY0MDQwOTIxMDcwMDQwYjczYTU2QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PEJEQ0ZCNjg0LTBCREUtMTFEOS05QkRFLTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4=", 
+        "referencesHeader": "PDg1M2FjNGY0MDQwOTIxMDcwMDQwYjczYTU2QG1haWwuZ21haWwuY29tPg=="
+    }
+}

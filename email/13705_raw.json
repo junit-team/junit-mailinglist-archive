@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 13706, 
+    "senderId": "4O7bvCud-15UGF8qPLccg7tuk-uHBQmBsQGhjz2Q0ErJB5K7pGNx_w8hPGxhbd6O9-WUb7u5u8S4FI7JrqT3JhfPfpuPNPmsSQE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] RE: Isolation or Collaboration", 
+    "from": "Chris Dollin &lt;kers@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... Here s an example. C is a Calculator object. It s a very primitive calculator: it has load(N), add(), mul(), and answer() operations only, and N is", 
+    "msgId": 13705, 
+    "rawEmail": "Return-Path: &lt;kers@...&gt;\r\nX-Sender: kers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 48612 invoked from network); 31 May 2005 09:25:44 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m21.grp.scd.yahoo.com with QMQP; 31 May 2005 09:25:44 -0000\r\nReceived: from unknown (HELO tobor.hpl.hp.com) (192.6.10.60)\n  by mta6.grp.scd.yahoo.com with SMTP; 31 May 2005 09:25:43 -0000\r\nReceived: from localhost (localhost [127.0.0.1])\n\tby tobor.hpl.hp.com (Postfix) with ESMTP id 5F4A6370A4\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 31 May 2005 10:25:11 +0100 (BST)\r\nReceived: from tobor.hpl.hp.com ([127.0.0.1])\n by localhost (tobor.hpl.hp.com [127.0.0.1]) (amavisd-new, port 20024)\n with LMTP id 15265-02-10 for &lt;junit@yahoogroups.com&gt;;\n Tue, 31 May 2005 10:24:57 +0100 (BST)\r\nReceived: from timmay.hpl.hp.com (timmay-hb.hpl.hp.com [15.144.59.39])\n\tby tobor.hpl.hp.com (Postfix) with ESMTP id 3E46B37082\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 31 May 2005 10:24:56 +0100 (BST)\r\nReceived: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [15.144.90.22])\n\tby timmay.hpl.hp.com (8.13.2/8.13.2) with ESMTP id j4V9OnZ2023984\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 31 May 2005 10:24:49 +0100 (BST)\r\nOrganization: HPLB\r\nTo: junit@yahoogroups.com\r\nDate: Tue, 31 May 2005 10:24:48 +0100\r\nUser-Agent: KMail/1.5\r\nReferences: &lt;200505261459.j4QExqhf007147@...&gt; &lt;200505310924.23457.kers@...&gt;\r\nIn-Reply-To: &lt;200505310924.23457.kers@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200505311024.48789.kers@...&gt;\r\nX-HPLB-IMAP-MailScanner-Information: Please contact the Helpdesk for more information\r\nX-HPLB-IMAP-MailScanner: Found to be clean\r\nX-HPLB-IMAP-MailScanner-SpamCheck: not spam, SpamAssassin (score=0,\n\trequired 5)\r\nX-Virus-Scanned: by amavisd-new at hplb.hpl.hp.com\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Chris Dollin &lt;kers@...&gt;\r\nSubject: Re: [junit] RE: Isolation or Collaboration\r\nX-Yahoo-Group-Post: member; u=88056088; y=so5zHvr5tWMcHSyPTzCO3iC_zAm2dfKXZyZqe93yGmd3gqVW7yEJ\r\nX-Yahoo-Profile: anover_alias\r\n\r\nOn Tuesday 31 May 2005 09:24, Chris Dollin wrote:\n\n&gt; Doesn&#39;t follow. You are confusing the &quot;ordering doesn&#39;t matter&quot;\n&gt; property of various methods on an object - ie, that each ordering\n&gt; makes sense from that object&#39;s viewpoint, no order is more &quot;right&quot;\n&gt; than another - with the &quot;ordering matters&quot; viewpoint of the *user*\n&gt; of that object desiring a *specific effect*.\n\nHere&#39;s an example. C is a Calculator object. It&#39;s a very primitive\ncalculator: it has load(N), add(), mul(), and answer() operations \nonly, and N is integers mod whatever, so there&#39;s no pesky overflow \nexceptions to get in the way.\n\nCalculator { int A; int B;\n    void load(int N) { B = A; A = N; }\n    void add() { A = A + B; }\n    void mul() { A = A * B; }\n    int answer() { return A; } }\n\nNow, *any* sequence of method calls on C is well-defined, eg\n\n    Calculator C = new Calculator();\n    assertEquals( 0, C.answer() );\n    C.load(17); assertEquals( 17, C.answer() );\n    C.load(2); C.load(3); C.add(); assertEquals( 5, C.answer() );\n    C.load(2); C.load(3); C.mul(); assertEquals( 6, C.answer() );\n    C.load(2); C.load(3); C.add(); C.mul(); assertEquals( 10, C.answer() );\n\nEqually clearly, if you want to add 1, 2, and 3 together to get the\nusual answer, the sequence\n\n    load(1); load(2); load(3); add(); add();\n\nwhile *legal* and *meaningful* isn&#39;t *right*, but\n\n    load(1); load(2); add(); load(3); add();\n\nis. (The results of both are independant of previous Calculator\nstate.)\n    \n[Credit will be given to those who identify the source of the AB\n register structure.]\n\n-- \nChris &quot;electric hedgehog&quot; Dollin\n&quot;The compiler is free to insert padding because it makes the struct \nlook bigger and scares away predators.&quot; [Keith Thompson, comp.lang.c]\n\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 13451, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88056088, 
+    "prevInTime": 13704, 
+    "contentTrasformed": false, 
+    "postDate": "1117531488", 
+    "canDelete": false, 
+    "nextInTopic": 13706, 
+    "prevInTopic": 13704, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTMxMDkyNC4yMzQ1Ny5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDUwNTMxMTAyNC40ODc4OS5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "referencesHeader": "PDIwMDUwNTI2MTQ1OS5qNFFFeHFoZjAwNzE0N0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4gPDIwMDUwNTMxMDkyNC4yMzQ1Ny5rZXJzQGhwbGIuaHBsLmhwLmNvbT4="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 14885, 
+    "senderId": "-9TRve-FFD93cHr-CEt4-IN97Mj3oAlQf8aRchp-1H7uTrGAyFH-fPYDw2lT8F0iKb2wqZBJGHQPVvlywFeGQ1YcE1GvmPXlQU9Tejs", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] RE: [OT] NoClassdefFoundError", 
+    "from": "Kevin Lawrence &lt;kevin@...&gt;", 
+    "authorName": "Kevin Lawrence", 
+    "msgSnippet": "... I am sure there is a perfectly reasonable justification for why a ClassDefNotFoundError makes sense. But it is misleading. If a class is not found, the", 
+    "msgId": 14884, 
+    "profile": "kevinwilliamlawrence", 
+    "topicId": 14835, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 81949451, 
+    "messageBody": "<div id=\"ygrps-yiv-182744519\">Ilja Preuss wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I don&#39;t know how a JVM typically works inside, but I don&#39;t see how you can<br/>\n&gt; get to this conclusion from your example. I&#39;d rather conclude that the class<br/>\n&gt; file is not was is meant by &quot;class definition&quot; in this case. It&#39;s probably<br/>\n&gt; more like an internal representation of the class inside the JVM after the<br/>\n&gt; class file got loaded.<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>I am sure there is a perfectly reasonable &quot;justification&quot; for why a <br/>\nClassDefNotFoundError makes sense. But it is misleading.<br/>\n<br/>\n<br/>\nIf a class is not found, the class loader will throw a <br/>\nClassNotFoundException. If something goes wrong during static <br/>\ninitialization, the VM throws an ExceptionInInitializerException. <br/>\nSubsequent attempts to reference the class result in <br/>\nNoClassDefFoundError. For some reason, the Error rarely has an error <br/>\nmessage that makes any sense.<br/>\n<br/>\nWe see it all the time in code like this :<br/>\n<br/>\nstatic {<br/>\n   FileReader reader = new FileReader(&quot;my.properties&quot;);<br/>\n   ......<br/>\n}<br/>\n<br/>\n<br/>\nIt is very confusing to get a NoClassDefFoundError when the class is <br/>\ncleary right there. It is also insidious because tool vendors and <br/>\nframework providers have to load and run third party code (colloquially, <br/>\n/user code/) and have to bullet proof their own code a little more than <br/>\nusual. It&#39;s bad practice to catch Throwable, but if you don&#39;t it&#39;s <br/>\nlikely that Errors will leak out. We end up catching throwable and <br/>\nrethrowing certain Errors.<br/>\n<br/>\n<br/>\nI agree with you that Errors should represent unrecoverable system <br/>\nerrors. NoClassDefFoundError is not one of those. Neither is <br/>\nOutOfMemoryError nor StackOverflowError.<br/>\n<br/>\n<br/>\nIn the OP&#39;s case, I would wager that a class really was not found and <br/>\nthat the ClassNotFoundException caused a static initializer to fail <br/>\nwhich caused a ClassDefNotFoundError.<br/>\n<br/>\nKevin</div>", 
+    "prevInTime": 14883, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1127318431", 
+    "canDelete": false, 
+    "nextInTopic": 14908, 
+    "prevInTopic": 14882, 
+    "headers": {
+        "inReplyToHeader": "PDAwOGEwMWM1YmVjMSQwZDAzZGUxMCQ3MDY0YThjMEBkaXN5Lm5ldD4=", 
+        "messageIdInHeader": "PDQzMzE4MzlGLjUwNjAwMDRAZGlhbW9uZC1za3kuY29tPg==", 
+        "referencesHeader": "PDAwOGEwMWM1YmVjMSQwZDAzZGUxMCQ3MDY0YThjMEBkaXN5Lm5ldD4="
+    }
+}

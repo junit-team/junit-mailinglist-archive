@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 10540, 
+    "senderId": "87Ht0i7DGtO0vx2XLJTxlQMkgr8RGbmmA3yEuG_-2n4-TBlpMnBVfXAgxLB_cGMMJwoxyULuyAOfRxDoL74", 
+    "systemMessage": false, 
+    "subject": "Re: LogConfigurationException", 
+    "from": "&quot;bofar&quot; &lt;sid@...&gt;", 
+    "authorName": "bofar", 
+    "msgSnippet": "... It is not much help, but I am seeing the same problem and have written a short test program to illustrate it. The program works when called normally, but", 
+    "msgId": 10539, 
+    "rawEmail": "Return-Path: &lt;sid@...&gt;\r\nReceived: (qmail 47894 invoked from network); 27 Feb 2004 14:00:18 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m6.grp.scd.yahoo.com with QMQP; 27 Feb 2004 14:00:18 -0000\r\nReceived: from unknown (HELO n8.grp.scd.yahoo.com) (66.218.66.92)\n  by mta1.grp.scd.yahoo.com with SMTP; 27 Feb 2004 14:00:18 -0000\r\nX-eGroups-Return: sid@...\r\nReceived: from [66.218.67.250] by n8.grp.scd.yahoo.com with NNFMP; 27 Feb 2004 13:58:33 -0000\r\nX-Sender: sid@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 5533 invoked from network); 27 Feb 2004 12:10:47 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m10.grp.scd.yahoo.com with QMQP; 27 Feb 2004 12:10:47 -0000\r\nReceived: from unknown (HELO n33.grp.scd.yahoo.com) (66.218.66.101)\n  by mta5.grp.scd.yahoo.com with SMTP; 27 Feb 2004 12:10:47 -0000\r\nReceived: from [66.218.67.188] by n33.grp.scd.yahoo.com with NNFMP; 27 Feb 2004 12:10:47 -0000\r\nDate: Fri, 27 Feb 2004 12:10:45 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;c1nc45+ucfi@...&gt;\r\nIn-Reply-To: &lt;c0ii1r+k93l@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2995\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.101\r\nFrom: &quot;bofar&quot; &lt;sid@...&gt;\r\nSubject: Re: LogConfigurationException\r\nX-Yahoo-Group-Post: member; u=112444660\r\nX-Yahoo-Profile: bofar\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 27 Feb 2004 13:58:33 -0000\r\nX-eGroups-Remote-IP: 66.218.66.92\r\n\r\n--- In junit@yahoogroups.com, &quot;moe_morten&quot; &lt;mortenmoe@m...&gt; wrote:\n&gt; I have a problem using JUnit with apache axis. When I run my test I \n&gt; get an exception like this:\n&gt; \n&gt; java.lang.ExceptionInInitializerError: \n&gt; org.apache.commons.logging.LogConfigurationException: \n&gt; org.apache.commons.logg.....\n&gt; \n&gt; Anybody seen anything like this? \n&gt; \n&gt; I am using the latest version of JUnit(3.8.1) integrated into \n&gt; Intellij, with apache axis 1.1.\n&gt; \n&gt; Thanks for any help..\n\nIt is not much help, but I am seeing the same problem and have written\na short test program to illustrate it. The program works when called\nnormally, but fails when called as a JUnit test case. I will try to\nput together an Ant script to run the test outside of Idea today. Is\nthere someone in the Junit organization who will look at it? Here are\nthe details:\n\nIdea 3.0.1 build 688\nJava SDK 1.4.2_03\nJunit Release 3.8.1\nApache Jakarta Commons Collections 3.0\nApache Jakarta Commons Logging 1.0.3\n\nThe problem occurs when the class\norg.apache.commons.logging.impl.LogFactoryImpl throws an exception in\nthe getInstance method when the code excerpted below fails. Note that\nthe instance held by logClass is an instance of\norg.apache.commons.logging.impl.Jdk14Logger. This class does implement\nthe Log interface, so the test should not fail (and does not fail\noutside of JUnit). \n\nif (!Log.class.isAssignableFrom(logClass)) {\n        throw new LogConfigurationException\n            (&quot;Class &quot; + logClassName + &quot; does not implement Log&quot;);\n}\n\nThe isAssignableFrom method is a native method, so I could not trace\nthe execution any further. To be clear, the isAssignable method should\nreturn true here. It does return true when run outside of JUnit, it\ndoesn&#39;t when run inside of JUnit. This is a problem caused by JUnit.\n\nThe three classes in the test program are appended here.\n====\npackage com.tinyfrog.TestLogger;\n\nimport org.apache.commons.logging.Log;\nimport org.apache.commons.logging.LogFactory;\n\npublic class Startup {\n\n    public final static Log commonsLog = LogFactory.getLog(&quot;Silly&quot;);\n\n    public static void main (final String Args []) {\n        commonsLog.info (&quot;Started main&quot;);\n     }\n}\n\n====\npackage com.tinyfrog.TestLogger;\n\nimport org.apache.commons.logging.Log;\nimport org.apache.commons.logging.LogFactory;\n\npublic class SillyClass {\n    public void sillyMethod () {\n        Log log = LogFactory.getLog (this.getClass().getName());\n        log.info (&quot;Message from sillyMethod&quot;);\n    }\n}\n====\npackage com.tinyfrog.TestLogger;\n\nimport junit.framework.TestCase;\nimport org.apache.commons.logging.Log;\nimport org.apache.commons.logging.LogFactory;\n\npublic class SillyClassTest extends TestCase{\n\n    public SillyClassTest (final String name) {\n        super (name);\n    }\n\n    Log log = null;\n    \n    public void setUp () {\n       log = LogFactory.getLog (this.getClass().getName ());\n        log.info (&quot;Hi from setUp&quot;);\n    }\n\n    public void testSillyClass () {\n       log.info (&quot;Hi from testSillyClass&quot;);\n    }\n}\n\n\n\n", 
+    "profile": "bofar", 
+    "topicId": 10470, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112444660, 
+    "prevInTime": 10538, 
+    "contentTrasformed": false, 
+    "postDate": "1077883845", 
+    "canDelete": false, 
+    "nextInTopic": 10854, 
+    "prevInTopic": 10470, 
+    "headers": {
+        "inReplyToHeader": "PGMwaWkxcitrOTNsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGMxbmM0NSt1Y2ZpQGVHcm91cHMuY29tPg=="
+    }
+}

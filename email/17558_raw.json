@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 17559, 
+    "senderId": "PYqXQiZnwsmH3S1PKDfEEVeoL5QraHmr0nL7BLqY24KxUeWhr8ytQVcUg79hvZqZP-kqmcnqHfVdRqL12Q62V2vJfVEkyKbXyP0yihVXpA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Looking for example of necessary tearDown( )", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Run this code for a while and tell me what happens. public class MyTestCase extends TestCase { public static Test suite() { TestSuite suite = new", 
+    "msgId": 17558, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 76374 invoked from network); 22 Aug 2006 16:43:20 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m32.grp.scd.yahoo.com with QMQP; 22 Aug 2006 16:43:20 -0000\r\nReceived: from unknown (HELO chilco.textdrive.com) (207.7.108.242)\n  by mta4.grp.scd.yahoo.com with SMTP; 22 Aug 2006 16:43:20 -0000\r\nReceived: from [192.168.1.113] (unknown [70.24.207.92])\n\tby chilco.textdrive.com (Postfix) with ESMTP id F1DF0DBEAA\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 22 Aug 2006 16:43:19 +0000 (UTC)\r\nMessage-ID: &lt;44E7A865.4090307@...&gt;\r\nDate: Sat, 19 Aug 2006 20:10:13 -0400\r\nUser-Agent: Thunderbird 1.5.0.5 (Macintosh/20060719)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ec3vua+tl4u@...&gt;\r\nIn-Reply-To: &lt;ec3vua+tl4u@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 2:4:8:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Looking for example of necessary tearDown( )\r\nX-Yahoo-Group-Post: member; u=127224993; y=AT4uABTHxjx10hNXYaP9_3VZWxakDa7vBY3ZBjtM83iivkU\r\nX-Yahoo-Profile: nails762\r\n\r\nkultstatus77 wrote:\n\n&gt; I&#39;m quite familiar with the purpose of tearDown(), I just fail to see\n&gt; the necessity of it. According to M. Feathers&#39; &quot;Working effectively\n&gt; with legacy code&quot; unit tests don&#39;t access databases or communicate via\n&gt; a nreal network connection. I do know that his book&#39;s focus is not on\n&gt; JUnit, but I do think that he has a point there. So: without a\n&gt; database and a network connection, when it is really necessary to free\n&gt; up resources with tearDown()? Isn&#39;t garbage collecting enough?\n\nRun this code for a while and tell me what happens.\n\npublic class MyTestCase extends TestCase {\n     public static Test suite() {\n         TestSuite suite = new TestSuite();\n\n         for (int i = 0; i &lt; 1000; i++)\n             suite.add(new MyTestCase());\n         }\n\n         return suite;\n     }\n\n     public void testOops() {\n         Connection connection = DriverManager.getConnection(&quot;database&quot;, \n&quot;user&quot;, &quot;password&quot;);\n         fail(&quot;Oops&quot;);\n         connection.close();\n     }\n}\n\nNow I admit this example is stupid at first sight, but now imagine \nfail(&quot;Oops&quot;); is replaced by more realistic code that throws an \nexception. Eventually you will run out of connections.\n\nNow you could use finally {}, but imagine if you have three or four such \ntests, each duplicating the finally {} block. I find it reveals much \nmore intent to grab the connection in setUp() and close it (if needed) \nin tearDown(). At least tearDown() is guaranteed to execute whether the \ntest passes or fails.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.info\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 17522, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 17557, 
+    "contentTrasformed": false, 
+    "postDate": "1156032613", 
+    "canDelete": false, 
+    "nextInTopic": 17606, 
+    "prevInTopic": 17531, 
+    "headers": {
+        "inReplyToHeader": "PGVjM3Z1YSt0bDR1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ0RTdBODY1LjQwOTAzMDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGVjM3Z1YSt0bDR1QGVHcm91cHMuY29tPg=="
+    }
+}

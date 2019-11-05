@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 13030, 
+    "senderId": "FdkElU1Xf-v26bN2U8TRlGsOzkJ9sz-t7t7Qkw1vk65bnhip7idtReTCle0f9RRdbGcbA1kiTDZ4UMvnvQBmWO8uGR1qZjcWjtN1oEHU", 
+    "systemMessage": true, 
+    "subject": "JUnit, ANT, log4j, System.out issue", 
+    "from": "&quot;DiracBeltrami&quot; &lt;rdecampo@...&gt;", 
+    "authorName": "DiracBeltrami", 
+    "msgSnippet": "Hello, I am experiencing an issue with the combination of ANT, JUnit and log4j.  Here s the situation.  The ANT build file uses the  task.  Log4j is", 
+    "msgId": 13029, 
+    "rawEmail": "Return-Path: &lt;rdecampo@...&gt;\r\nReceived: (qmail 4434 invoked from network); 4 Mar 2005 20:16:57 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m13.grp.scd.yahoo.com with QMQP; 4 Mar 2005 20:16:57 -0000\r\nReceived: from unknown (HELO n2a.bulk.scd.yahoo.com) (66.94.237.36)\n  by mta2.grp.scd.yahoo.com with SMTP; 4 Mar 2005 20:16:56 -0000\r\nReceived: from [66.218.69.5] by n2.bulk.scd.yahoo.com with NNFMP; 04 Mar 2005 20:16:29 -0000\r\nReceived: from [66.218.66.86] by mailer5.bulk.scd.yahoo.com with NNFMP; 04 Mar 2005 20:16:29 -0000\r\nX-Sender: rdecampo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 74591 invoked from network); 3 Mar 2005 20:07:48 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m22.grp.scd.yahoo.com with QMQP; 3 Mar 2005 20:07:48 -0000\r\nReceived: from unknown (HELO n19a.bulk.scd.yahoo.com) (66.94.237.48)\n  by mta2.grp.scd.yahoo.com with SMTP; 3 Mar 2005 20:07:48 -0000\r\nDomainKey-Signature: \r\nReceived: from [66.218.69.3] by n19.bulk.scd.yahoo.com with NNFMP; 03 Mar 2005 20:05:50 -0000\r\nReceived: from [66.218.66.87] by mailer3.bulk.scd.yahoo.com with NNFMP; 03 Mar 2005 20:05:48 -0000\r\nDate: Thu, 03 Mar 2005 20:05:47 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;d07qmr+j345@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2144\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Remote-IP: 66.94.237.48\r\nFrom: &quot;DiracBeltrami&quot; &lt;rdecampo@...&gt;\r\nSubject: JUnit, ANT, log4j, System.out issue\r\nX-Yahoo-Group-Post: member; u=111551966\r\nX-Yahoo-Profile: DiracBeltrami\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 04 Mar 2005 20:16:05 -0000\r\nX-eGroups-Remote-IP: 66.94.237.36\r\n\r\n\n\nHello,\n\nI am experiencing an issue with the combination of ANT, JUnit and\nlog4j.  Here&#39;s the situation.  The ANT build file uses the &lt;junit&gt;\ntask.  Log4j is configured to print to the console.  There are also\ntimes when the unit tests use System.out directly.  The problem is\nthat the log4j statements are not captured by the &lt;junit&gt; as part of\nthe standard output.  The logging statements do appear on the console\nwhen I run the tests.  But since they are not captured by &lt;junit&gt;,\nthey do not appear in the XML files and are lost forever.\n\nI&#39;m going to attempt to post the relevant portions of the relevant\nfiles, but I&#39;ve never posted to Yahoo before and they are XML, so it\nmight not work...\n\nHere&#39;s the ANT target:\n\n    &lt;target name=&quot;run-test&quot; depends=&quot;init,test-setup&quot;&gt;\n        &lt;!-- execute the test --&gt;\n        &lt;junit fork=&quot;yes&quot;\n               dir=&quot;${basedir}&quot;\n               haltonfailure=&quot;${test.halt.on.failure}&quot;\n               printsummary=&quot;withOutAndErr&quot;&gt;\n            &lt;classpath refid=&quot;test.classpath&quot; /&gt;\n            &lt;formatter type=&quot;xml&quot; /&gt;\n            &lt;formatter type=&quot;plain&quot; usefile=&quot;false&quot;/&gt;\n            &lt;jvmarg line=&quot;${test.jvmargs}&quot; /&gt;\n            &lt;batchtest fork=&quot;yes&quot; todir=&quot;${test.report.xml.dir}&quot;&gt;    \n           \n                &lt;fileset dir=&quot;${test.src}&quot; &gt;                \n                    &lt;include name=&quot;${test.full.includes}&quot; /&gt;\n                    &lt;exclude name=&quot;${test.full.excludes}&quot; /&gt;\n                 &lt;/fileset&gt;    \n            &lt;/batchtest&gt;\n        &lt;/junit&gt;\n    &lt;/target&gt;\n\nHere&#39;s the log4j configuration:\n\n&lt;log4j:configuration debug=&quot;false&quot;&gt;\n&lt;!-- debug is for configuration file debugging --&gt;\n        &lt;appender name=&quot;SYS_OUT&quot; class=&quot;org.apache.log4j.ConsoleAppender&quot;&gt;\n            &lt;param name=&quot;Target&quot; value=&quot;System.out&quot;/&gt;\n            &lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;\n                &lt;param name=&quot;ConversionPattern&quot; value=&quot;%-5p %c{2} -%m%n&quot;/&gt;\n            &lt;/layout&gt;\n        &lt;/appender&gt;\n\n        &lt;root&gt;\n            &lt;level value=&quot;INFO&quot;/&gt;\n            &lt;appender-ref ref=&quot;SYS_OUT&quot;/&gt; \n        &lt;/root&gt;\n&lt;/log4j:configuration&gt;\n\nIf anybody could enlighten me on the subject, I&#39;d appreciate it.\n\nThanks,\nRay\n\n\n\n\n\n\n\n", 
+    "profile": "DiracBeltrami", 
+    "topicId": 13029, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 111551966, 
+    "prevInTime": 13028, 
+    "contentTrasformed": false, 
+    "postDate": "1109880347", 
+    "canDelete": false, 
+    "nextInTopic": 13041, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGQwN3FtcitqMzQ1QGVHcm91cHMuY29tPg=="
+    }
+}

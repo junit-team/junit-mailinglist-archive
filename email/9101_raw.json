@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 9102, 
+    "senderId": "TVwZ0EmgfLG6FcMYfMaAbEJThaZeWRQ76_WEHIvhOKNqlekYXyOG96d3TBXkOhLyYhYe-p5Xixt9faDol094uGaHrBjgqUs", 
+    "systemMessage": false, 
+    "subject": "Simple multithreaded test case", 
+    "from": "&quot;vocaro2000&quot; &lt;trevor@...&gt;", 
+    "authorName": "vocaro2000", 
+    "msgSnippet": "Hi everyone, This topic may have been discussed before, but I couldn t find it anywhere in the FAQ, the forums, or the docs. (The GroboUtils package is related", 
+    "msgId": 9101, 
+    "rawEmail": "Return-Path: &lt;trevor@...&gt;\r\nReceived: (qmail 36784 invoked from network); 14 Aug 2003 03:52:33 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m5.grp.scd.yahoo.com with QMQP; 14 Aug 2003 03:52:33 -0000\r\nReceived: from unknown (HELO n9.grp.scd.yahoo.com) (66.218.66.93)\n  by mta2.grp.scd.yahoo.com with SMTP; 14 Aug 2003 03:52:32 -0000\r\nX-eGroups-Return: trevor@...\r\nReceived: from [66.218.66.112] by n9.grp.scd.yahoo.com with NNFMP; 14 Aug 2003 03:52:32 -0000\r\nX-Sender: trevor@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 44614 invoked from network); 13 Aug 2003 16:56:45 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m20.grp.scd.yahoo.com with QMQP; 13 Aug 2003 16:56:45 -0000\r\nReceived: from unknown (HELO n13.grp.scd.yahoo.com) (66.218.66.68)\n  by mta2.grp.scd.yahoo.com with SMTP; 13 Aug 2003 16:56:44 -0000\r\nReceived: from [66.218.66.124] by n13.grp.scd.yahoo.com with NNFMP; 13 Aug 2003 16:56:44 -0000\r\nDate: Wed, 13 Aug 2003 16:56:43 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Simple multithreaded test case\r\nMessage-ID: &lt;bhdqkb+df2n@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1585\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;vocaro2000&quot; &lt;trevor@...&gt;\r\nX-Yahoo-Group-Post: member; u=95519404\r\nX-Yahoo-Profile: vocaro2000\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 14 Aug 2003 03:52:29 -0000\r\n\r\nHi everyone,\n\nThis topic may have been discussed before, but I couldn&#39;t find it\nanywhere in the FAQ, the forums, or the docs. (The GroboUtils package\nis related to this but doesn&#39;t seem to specifically address my\nquestion.) The issue is this code:\n\nimport junit.framework.*;\n\npublic class ThreadTest extends TestCase\n{\n   class Server extends Thread\n   {\n      public void run()\n      {\n         fail(&quot;The server failed its test case&quot;);\n\n         synchronized (this)\n         {\n            notifyAll();\n         }\n      }\n   }\n\n   Server server;\n\n   public ThreadTest(String name)\n   {\n      super(name);\n\n      server = new Server();\n   }\n\n   protected void setUp()\n   {\n      try\n      {\n         server.start();\n\n         synchronized (server)\n         {\n            server.wait();\n         }\n      }\n      catch (Exception e)\n      {\n         fail(e.toString());\n      }\n   }\n   \n   public void testSomething() {}\n}\n\nAnd here&#39;s an Ant file for your convenience:\n\n&lt;project name=&quot;Thread Test&quot; default=&quot;compile&quot;&gt;\n\n   &lt;target name=&quot;compile&quot;&gt;\n      &lt;javac srcdir=&quot;.&quot;/&gt;\n   &lt;/target&gt;\n\n   &lt;target name=&quot;runtest&quot;&gt;\n      &lt;junit printsummary=&quot;true&quot;&gt;\n         &lt;test name=&quot;ThreadTest&quot;/&gt;\n      &lt;/junit&gt;\n   &lt;/target&gt;\n\n&lt;/project&gt;\n\nWhen you look at the source code, it seems quite clear that the test\ncase should always fail. This is not what happens, however. Although\nJUnit prints the correct assertion failure to System.out, it doesn&#39;t\nreport any failures. It thinks that the test succeeded. Is this a bug\nin JUnit, or am I just not understanding how it works?\n\nThanks for any pointers,\n\nTrevor\n\n\n\n", 
+    "profile": "vocaro2000", 
+    "topicId": 9101, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 95519404, 
+    "prevInTime": 9100, 
+    "contentTrasformed": false, 
+    "postDate": "1060793803", 
+    "canDelete": false, 
+    "nextInTopic": 9102, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJoZHFrYitkZjJuQGVHcm91cHMuY29tPg=="
+    }
+}

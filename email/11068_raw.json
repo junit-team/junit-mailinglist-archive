@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 11069, 
+    "senderId": "_-J3sOP9bdU0gMYNtQd1nlPIK_lk4mLVUHHYi3gXiggyCwjc4eHKd4-e6psbryJ6-jkrNSyiuCcHEN8eRFpyAgvS5YKEMSzhe2N6f2qLzA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing dynamically generating filepath and filename", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... A few things: 1. Test generating the filename on its own, without creating any actual files on disk. 2. Separate the random number generator or clock from", 
+    "msgId": 11068, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 51075 invoked from network); 26 May 2004 04:26:01 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m21.grp.scd.yahoo.com with QMQP; 26 May 2004 04:26:01 -0000\r\nReceived: from unknown (HELO web02-imail.rogers.com) (66.185.86.76)\n  by mta1.grp.scd.yahoo.com with SMTP; 26 May 2004 04:26:01 -0000\r\nReceived: from [192.168.1.112] ([24.156.43.226])\n          by fep03-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20040525214114.HQHZ392202.fep03-mail.bloor.is.net.cable.rogers.com@[192.168.1.112]&gt;\n          for &lt;junit@yahoogroups.com&gt;; Tue, 25 May 2004 17:41:14 -0400\r\nMessage-ID: &lt;40B3BDC3.1010100@...&gt;\r\nDate: Tue, 25 May 2004 17:42:27 -0400\r\nUser-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20040525175247.48885.qmail@...&gt;\r\nIn-Reply-To: &lt;20040525175247.48885.qmail@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep03-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Tue, 25 May 2004 17:41:14 -0400\r\nX-eGroups-Remote-IP: 66.185.86.76\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Testing dynamically generating filepath and filename\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nbarath amarnath wrote:\n&gt; Hi All,\n&gt; Our system having module named Doc Management. In this\n&gt; module, the one class is generating filepath and\n&gt; filename as per STRING pattern\n&gt; (such as\n&gt; c:&#92;temp&#92;[date]&#92;[time]&#92;dynamicallygeneratedfilename\n&gt; c:&#92;temp&#92;[date][time]&#92;randomnumber&#92;dynamicallygeneratedfilename\n&gt; \n&gt; I am in the process of writing test cases for the\n&gt; above dynamically generated file path and name.\n&gt; \n&gt; If any of you give some tips or ideas how to test this\n&gt; functionality, it will be very useful to me.\n\nA few things:\n\n1. Test generating the filename on its own, without creating any actual \nfiles on disk.\n\n2. Separate the random number generator or clock from creating the \nfilename. The method that creates the filename should take a random \nnumber generator or clock as a parameter.\n\nThe reason for #1 is pretty obvious. The reason for #2 is to make it \npossible to test creating the filename without having to know what \nrandom number comes next.\n\nHere&#39;s the first test I&#39;d write, based on the system time:\n\ntestSystemTimeBasedFilename {\n     Clock fakeClock = new StoppedClock(2004, 5, 26, 17, 25, 0);\n\n     assertEquals(\n         new File(&quot;c:/temp/20040526/172500/myFileName&quot;).getAbsolutePath(),\n         new File(FileUtil.generateFileName(fakeClock)).getAbsolutePath());\n}\n\nwhere...\n\ninterface Clock {\n     long getTime();\n}\n\nand...\n\nclass StoppedClock implements Clock {\n     StoppedClock(int year, int month, ...) {}\n\n     long getTime() { return ...; }\n}\n\nand finally...\n\nclass SystemClock implements Clock {\n     long getTime() {\n         return System.currentTimeMillis();\n     }\n}\n\nso that in production....\n\nString timeBasedFileName = FileUtil.generateFileName(new SystemClock());\n\nNOTE: SystemClock could be a Singleton if you like.\n\nYou can do something similar with java.util.Random, wrapping it in some \nRandomNumberGenerator interface.\n\nThe idea is to easily replace unrepeatable behavior (system clock, \nrandom numbers) with repeatable behavior (fake versions of the clock or \na random number generator). Use the fake stuff to make testing easier, \nthen use the real stuff in production.\n\nEnjoy.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11061, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11067, 
+    "contentTrasformed": false, 
+    "postDate": "1085521347", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 11063, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwNTI1MTc1MjQ3LjQ4ODg1LnFtYWlsQHdlYjIxNTEwLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDQwQjNCREMzLjEwMTAxMDBAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDQwNTI1MTc1MjQ3LjQ4ODg1LnFtYWlsQHdlYjIxNTEwLm1haWwueWFob28uY29tPg=="
+    }
+}

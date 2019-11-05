@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14189, 
+    "senderId": "hyTh43CX6pwhT6J5UIbCxXWyrgwCRXB9dkT9MnxpZ-37mWcEwR18sXWsnSDQxVWWXUly7xQW9F1A1kXlX1HQENCWbNMKaewG24SY", 
+    "systemMessage": false, 
+    "subject": "Re: TDD Design advice on an HTTPClient-driven service", 
+    "from": "&quot;Daniel Wellman&quot; &lt;etl_dan@...&gt;", 
+    "authorName": "Daniel Wellman", 
+    "msgSnippet": "I m posting a follow-up discussing a solution I came up with to my question posted earlier, and have a follow up question on configuration testing, which I ll", 
+    "msgId": 14188, 
+    "profile": "etl_dan", 
+    "topicId": 14126, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 86431363, 
+    "messageBody": "<div id=\"ygrps-yiv-190547079\">I&#39;m posting a follow-up discussing a solution I came up with to my<br/>\nquestion posted earlier, and have a follow up question on<br/>\nconfiguration testing, which I&#39;ll put at the end:<br/>\n<br/>\nAfter playing around with some ideas, I finally settled on a design. <br/>\nI wanted to make this design easy to test, and test each component<br/>\nindependently.  What I ultimately realized was that:<br/>\n<br/>\n1. Each use case is composed of multiple HTTP requests<br/>\n2. Each request contains the same set of steps every time:<br/>\n a. Create the request parameters<br/>\n b. Execute the HTTP request (here I&#39;m using HTTPClient, but I put it<br/>\nbehind an interface so mocking was simpler)<br/>\n c. Parse the response code and message and process it<br/>\n<br/>\nI chose Jakarta Chain for building together a sequence of commands,<br/>\nwhere the commands represented each HTTP request.  Then I made the<br/>\nHTTP execution step pluggable with a strategy interface for creating<br/>\nthe request parameters and a strategy for handling the response.  Each<br/>\nuse case will be implemented by a chain of several instances of the<br/>\nHttp request command.  In this way, I can:<br/>\n<br/>\n- Test the Http command logic in one place<br/>\n- Test each Create Request Parameter and Process Response strategy in<br/>\nisolation (the tests and code end up being very simple!)<br/>\n- Test the code that actually executes the HttpClient objects in<br/>\nisolation (to confirm I properly use the API release the connection<br/>\nand avoid leaks)<br/>\n<br/>\nSo now I can set up each request involved in a given use case via<br/>\ndependency injection just like Spring offers.<br/>\n<br/>\n<br/>\nMy question: <br/>\nNow that I&#39;ve tested the individual strategies of each command, and<br/>\nthe Http send/receive command itself, the next place I could see<br/>\nproblems is if a given request command was incorrectly configured. <br/>\nWould you recommend I test the Spring XML config file for this if I&#39;m<br/>\nreally worried about it?  I know J.B. recommends this for testing<br/>\nStruts configuration in JUnit Recipes.<br/>\n<br/>\n<br/>\nThanks for the advice!<br/>\nDan<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;etl_dan&quot; &lt;etl_dan@y...&gt; wrote:<br/>\n&gt; Hi all,<br/>\n&gt; <br/>\n&gt; I&#39;m facing some design issues and I&#39;ve hit a mental roadblock that&#39;s<br/>\n&gt; left me dazed and pondering by the side of the road... (better crashed<br/>\n&gt; wondering how to TDD than how to solve a production bug, I suppose!) <br/>\n&gt; Any advice is appreciated!<br/>\n&gt; <br/>\n&gt; I&#39;m building a component which must support a few use cases where a<br/>\n&gt; series of HTTP POST messages must be sent, received, and processed to<br/>\n&gt; a server.  ...<br/>\n&gt; <br/>\n&gt; The problem I&#39;m facing is that I can&#39;t figure out at what level to<br/>\n&gt; start testing/designing. <br/>\n&gt; <br/>\n&gt; The top level seems easiest; one method might be something like:<br/>\n&gt; <br/>\n&gt;   String getWorkDataAsXml(...) throws RuntimeException;<br/>\n&gt; <br/>\n&gt; where the method ultimately makes four HTTP requests to a server,<br/>\n&gt; formats the response and returns, or throws an exception if the server<br/>\n&gt; is unavailable. </span></blockquote></div>", 
+    "prevInTime": 14187, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1121826152", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 14129, 
+    "headers": {
+        "inReplyToHeader": "PGRiNzd1dSs5Z240QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGRia2NoOCsyOHNyQGVHcm91cHMuY29tPg=="
+    }
+}

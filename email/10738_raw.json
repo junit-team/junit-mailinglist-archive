@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 19, 
+    "nextInTime": 10739, 
+    "senderId": "9YRYwfJcsV3ZF9hfTT2iD1nxX7SgdLgQtJ9hESUCq-fQerxJWGTLJFuuqVpe-oozUZf-2SDxOD4G2fXA_1pUzS3vH12G1w", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] assert failure without exiting test.", 
+    "from": "&quot;Ilja Preuss&quot; &lt;preuss@...&gt;", 
+    "authorName": "Ilja Preuss", 
+    "msgSnippet": "I don t understand why you had to do this. I didn t try it, but I think my solution already would print a readable error message for every failing test.", 
+    "msgId": 10738, 
+    "rawEmail": "Return-Path: &lt;preuss@...&gt;\r\nX-Sender: preuss@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 31633 invoked from network); 31 Mar 2004 11:25:19 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m20.grp.scd.yahoo.com with QMQP; 31 Mar 2004 11:25:19 -0000\r\nReceived: from unknown (HELO disy.net) (213.30.245.34)\n  by mta6.grp.scd.yahoo.com with SMTP; 31 Mar 2004 11:25:18 -0000\r\nReceived: from PARIS (paris.disy.net [192.168.100.112])\n\tby disy.net (8.9.3/8.9.3) with ESMTP id NAA26272\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 31 Mar 2004 13:24:44 +0200\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 31 Mar 2004 13:24:45 +0200\r\nMessage-ID: &lt;001e01c41712$c518bf00$7064a8c0@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.2616\r\nIn-Reply-To: &lt;002301c415a1$7cebc280$d478fea9@vincent&gt;\r\nImportance: Normal\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165\r\nX-eGroups-Remote-IP: 213.30.245.34\r\nFrom: &quot;Ilja Preuss&quot; &lt;preuss@...&gt;\r\nSubject: RE: [junit] assert failure without exiting test.\r\nX-Yahoo-Group-Post: member; u=96623270\r\nX-Yahoo-Profile: ipreussde\r\n\r\nI don&#39;t understand why you had to do this. I didn&#39;t try it, but I think\nmy solution already would print a readable error message for every\nfailing test.\n\nBryan LaPlante wrote:\n&gt; What I have had to do in this case is set up an ArrayList for\n&gt; tracking the failures and the last test to run checks the\n&gt; size of the ArrayList for any failures that were added and\n&gt; then populate a fail with a delimited string that makes a\n&gt; somewhat readable fail message.\n&gt; \n&gt; ArrayList failures = null;\n&gt; \n&gt; public void setUp throws Exception{\n&gt;     failures = new ArrayList();\n&gt; }\n&gt; \n&gt; public void testLast(){\n&gt;     if(failures.size() &gt; 0){\n&gt;         StringBuffer messageString = new StringBuffer();\n&gt;         for(int i=0; i &gt; failures.size(); i++){\n&gt;             messageString.append(&quot;[ &quot; + failures.get(i) + &quot; ] : &quot;)   \n&gt;         } fail(messageString.toString());\n&gt;     }\n&gt; }\n&gt; \n&gt; ----- Original Message -----\n&gt; From: &quot;Ilja Preuss&quot; &lt;preuss@...&gt;\n&gt; To: &lt;junit@yahoogroups.com&gt;\n&gt; Sent: Monday, March 29, 2004 8:26 AM\n&gt; Subject: RE: [junit] assert failure without exiting test.\n&gt; \n&gt; \n&gt;&gt; javayang@... wrote:\n&gt;&gt;&gt; Howdy folks,\n&gt;&gt;&gt; \n&gt;&gt;&gt; I have a test method that iteratres through a String array\n&gt;&gt;&gt; performing assert checks.  The problem I have is on the first\n&gt;&gt;&gt; failure, the tests discontinues and the rest of the array is not\n&gt;&gt;&gt; checked.  This makes sense because of the exception that is thrown\n&gt;&gt;&gt; and handled by JUNIT. Is there a away I can keep the loop running\n&gt;&gt;&gt; until it finishes all the strings.  I can catch the exception but\n&gt;&gt;&gt; how do I add it to the current aggregate test results that JUNIT is\n&gt;&gt;&gt; keeping track of.  Also, is this the best way or proper way to do\n&gt;&gt;&gt; this?  I don&#39;t think it makes very much sense to write a test method\n&gt;&gt;&gt; for each string in the arry, it wouldn&#39;t be very scalable or\n&gt;&gt;&gt; dynamic.  Thanks in advance for any help or advice.\n&gt;&gt; \n&gt;&gt; I think you could write a test *suite* for this. Perhaps something\n&gt;&gt; along the lines of \n&gt;&gt; \n&gt;&gt;  public class FooTest extends TestCase {\n&gt;&gt; \n&gt;&gt;    public FooTest(int testValue) {\n&gt;&gt;      this.testValue = testValue;\n&gt;&gt;    }\n&gt;&gt; \n&gt;&gt;    public void testBar() {\n&gt;&gt;      assertEquals(..., myFoo.bar(testValue));\n&gt;&gt;    }\n&gt;&gt; \n&gt;&gt;    public static Test suite() {\n&gt;&gt;      TestSuite suite = new TestSuite();\n&gt;&gt;      for ...\n&gt;&gt;        suite.addTest(new FooTest(i));\n&gt;&gt;      }\n&gt;&gt;      return suite;\n&gt;&gt;    }\n&gt;&gt;   }\n&gt;&gt; \n&gt;&gt; ???\n&gt;&gt; \n&gt;&gt; Take care, Ilja\n&gt;&gt; \n&gt;&gt; \n&gt;&gt; \n&gt;&gt; \n&gt;&gt; \n&gt;&gt; Yahoo! Groups Links\n&gt;&gt; \n&gt;&gt; \n&gt;&gt; \n&gt;&gt; \n&gt;&gt; \n&gt;&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n\n\n\n", 
+    "profile": "ipreussde", 
+    "topicId": 10706, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 96623270, 
+    "prevInTime": 10737, 
+    "contentTrasformed": false, 
+    "postDate": "1080732285", 
+    "canDelete": false, 
+    "nextInTopic": 10739, 
+    "prevInTopic": 10737, 
+    "headers": {
+        "inReplyToHeader": "PDAwMjMwMWM0MTVhMSQ3Y2ViYzI4MCRkNDc4ZmVhOUB2aW5jZW50Pg==", 
+        "messageIdInHeader": "PDAwMWUwMWM0MTcxMiRjNTE4YmYwMCQ3MDY0YThjMEBkaXN5Lm5ldD4="
+    }
+}

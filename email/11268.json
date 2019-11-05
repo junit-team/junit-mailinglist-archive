@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 11269, 
+    "senderId": "PQyepv4QqHR3mPQdMjCHRSDYrNpMJssYiQH5WLRAqla0g_95D6Orf-lCdM10t9Z_EcYw2oX6aPrhcGvNUcMsPlv4YPvdMZhYh46_iJWwKSo", 
+    "systemMessage": false, 
+    "subject": "Re: Problem with simple test case", 
+    "from": "&quot;bartvdcammen&quot; &lt;bart.vandercammen@...&gt;", 
+    "authorName": "bartvdcammen", 
+    "msgSnippet": "If you re going to test lots of servlets, consider writing fake HttpServletRequest and HttpServletResponse. The response could f.i. provide a fake Printwriter", 
+    "msgId": 11268, 
+    "profile": "bartvdcammen", 
+    "topicId": 11257, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 162084231, 
+    "messageBody": "<div id=\"ygrps-yiv-170250673\">If you&#39;re going to test lots of servlets, consider writing fake <br/>\nHttpServletRequest and HttpServletResponse. <br/>\nThe response could f.i. provide a fake Printwriter that records <br/>\nwhat&#39;s printed on him. <br/>\nTest the doGet() method as any other method. Make a new HelloWorld()<br/>\nand call its doGet() with your fake request and response. After <br/>\nexecution you can inspect the changes in request and response. In <br/>\nyour case : get the fake writer and check the printed lines.<br/>\nYour tests will run without the server running. You&#39;re only testing <br/>\nthe class and not f.i. the configuration of the server.<br/>\n<br/>\nThe fake requests and responses can be found on the internet, <br/>\ngoogle &quot;MockHttpServletRequest&quot;.<br/>\nI took the sourcecode from <a rel=\"nofollow\" target=\"_blank\" href=\"http://mockrunner.sourceforge.net/\">http://mockrunner.sourceforge.net/</a> and <br/>\nmodified(simplified) the code for my use.<br/>\n<br/>\nHope it helps,<br/>\n<br/>\nBart<br/>\n <br/>\n<blockquote><span title=\"qreply\"> &gt; public class HelloWorld extends HttpServlet {<br/>\n&gt;     public void doGet(HttpServletRequest request, <br/>\n&gt; HttpServletResponse response)<br/>\n&gt;     throws IOException, ServletException<br/>\n&gt;     {<br/>\n&gt;         response.setContentType(&quot;text/html&quot;);<br/>\n&gt;         PrintWriter out = response.getWriter();<br/>\n&gt;         out.println(&quot;&lt;html&gt;&quot;);<br/>\n&gt;         out.println(&quot;&lt;head&gt;&quot;);<br/>\n&gt;         //out.println(&quot;&lt;title&gt;Hello World!&lt;/title&gt;&quot;);<br/>\n&gt;         out.println(&quot;&lt;/head&gt;&quot;);<br/>\n&gt;         out.println(&quot;&lt;body&gt;&quot;);<br/>\n&gt;         out.println(&quot;&lt;h1&gt;Hello World!&lt;/h1&gt;&quot;);<br/>\n&gt;         out.println(&quot;&lt;/body&gt;&quot;);<br/>\n&gt;         out.println(&quot;&lt;/html&gt;&quot;);<br/>\n&gt;     }<br/>\n&gt;     public void doPost(HttpServletRequest request, <br/>\n&gt; HttpServletResponse response)<br/>\n&gt;     throws IOException, ServletException {<br/>\n&gt;         doGet(request, response);<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; *********************TEST CASE BEGIN*********************<br/>\n&gt; public class HelloWorldTest extends ServletTestCase{ <br/>\n&gt; <br/>\n&gt;     public void testDoGet() {<br/>\n&gt;        HelloWorld hw = new HelloWorld();<br/>\n&gt;        try {<br/>\n&gt;            hw.doGet(request,response); <br/>\n&gt;        }catch (Exception e) { }<br/>\n&gt;     }<br/>\n&gt;     <br/>\n&gt;     public void endDoGet(WebResponse theResponse) {<br/>\n&gt;         String expected = &quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello World!<br/>\n&gt; &lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;;<br/>\n&gt;         String actual = theResponse.getText();<br/>\n&gt;         <br/>\n&gt;         assertEquals(expected,actual);<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 11267, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1088058668", 
+    "canDelete": false, 
+    "nextInTopic": 11369, 
+    "prevInTopic": 11261, 
+    "headers": {
+        "inReplyToHeader": "PGNiOXYzMCtqamk5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGNiZHNmYys0ZDlyQGVHcm91cHMuY29tPg=="
+    }
+}

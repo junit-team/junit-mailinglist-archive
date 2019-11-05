@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11095, 
+    "senderId": "VXFzBlDKq56UXx-P2IBWxq3tuFMrtN8Byb35LJ6MMEJmdyZm0t5nOkzrFgdd5b0K7PDgnGOLO2UisN2JSpcZa5ulKFbEFw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit on large scale", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "Hi Kevin, ... Substantial amounts of MockObjects raises a red flag for me.  It means that there may be areas where an object needing to be mocked has taken too", 
+    "msgId": 11094, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 61140 invoked from network); 2 Jun 2004 15:32:10 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m25.grp.scd.yahoo.com with QMQP; 2 Jun 2004 15:32:10 -0000\r\nReceived: from unknown (HELO jhunter.xquery.com) (69.59.195.106)\n  by mta5.grp.scd.yahoo.com with SMTP; 2 Jun 2004 15:32:10 -0000\r\nReceived: from [192.168.1.100] (c-24-9-180-178.client.comcast.net [24.9.180.178])\n\t(authenticated bits=0)\n\tby jhunter.xquery.com (8.12.8/8.12.9) with ESMTP id i52FP6Nr025907\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 2 Jun 2004 08:25:06 -0700\r\nMime-Version: 1.0 (Apple Message framework v618)\r\nIn-Reply-To: &lt;NEBBIKBMILEEMNGFDNNIOEABCMAA.kosullivan@...&gt;\r\nReferences: &lt;NEBBIKBMILEEMNGFDNNIOEABCMAA.kosullivan@...&gt;\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nMessage-Id: &lt;5F36B748-B4A9-11D8-B42A-000A95A547BC@...&gt;\r\nContent-Transfer-Encoding: 7bit\r\nDate: Wed, 2 Jun 2004 09:27:34 -0600\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Apple Mail (2.618)\r\nX-eGroups-Remote-IP: 69.59.195.106\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nSubject: Re: [junit] junit on large scale\r\nX-Yahoo-Group-Post: member; u=33026788\r\nX-Yahoo-Profile: clarkware\r\n\r\nHi Kevin,\n\n&gt; One of the concerns that I (and\n&gt; developers) have is that we will end up with thousands of test cases, \n&gt; many\n&gt; of which will involve using substantial amounts of MockObjects to set \n&gt; up\n&gt; test cases and that all this will become too much of an overhead to \n&gt; manage &\n&gt; maintain.\n\nSubstantial amounts of MockObjects raises a red flag for me.  It means \nthat there may be areas where an object needing to be mocked has taken \ntoo much control in the system.  I can&#39;t speak to your system of \ncourse, but here&#39;s something I see regularly:\n\nSay we have a method that takes a BigObject and does something with a \nsubset of the data in that object:\n\n    public void doSomething(BigObject o) {\n       String s = o.getStringValue();\n       int i = o.getIntValue();\n       // do something with &#39;s&#39; and &#39;i&#39;\n    }\n\nThere are several other methods like doSomething() in the system, so \nthe initial reaction is to mock BigObject so that we can pass it into \ndoSomething() and the other methods.  BigObject has a lot of setup \ninvolved to put it into a test state, but with some effort we can \ncreate a MockBigObject.\n\nBut the doSomething() method is really trying to tell us that it \ndoesn&#39;t want a BigObject.  It just wants a String and an int:\n\n    public void doSomething(String s, int i) {\n       // do something with &#39;s&#39; and &#39;i&#39;\n    }\n\nOK, now we only have to initialize a String and an int to pass into \ndoSomething() during the test.  Can we do the same thing with other \nmethods that take a BigObject?  Or do those methods share the need for \na subset of data we can package in a SmallerObject?\n\nI realize this is a trivial example, but perhaps it helps illustrate \nhow low-cost decoupling can pay off.  I would suggest mocking as a last \nresort as often times it&#39;s a band-aid for what the system really wants. \n  I find that if I reach for mocking first, then I miss those design \nopportunities.\n\n&gt; Specifically,  that changing code in the future will involve\n&gt; analysis of not only the project code but also the junit test code - an\n&gt; overhead we don&#39;t have today of course.\n\nBut aren&#39;t you doing that analysis work already?  That is, every time \nyou change code you have to analyze how the change will affect the \nclients of that code.  Tests are just another client of the code that \npoke and prod it in specific ways.  As such, they detect unwanted \nchanges in the code they use.\n\nIn my experience the analysis work is less speculative and more \ndefinitive when I&#39;m working on code that&#39;s being used by unit tests.  \nThe tests simply give me more confidence to change the code:\n\n&quot;Let&#39;s see what happens when I try to simplify this chunk of code?&quot;\n\n(Refactor and rerun all the tests)\n\n&quot;Oops, when a client passes in those specific values, it breaks!&quot;\n\n&gt; Has anyone applied junit on a large scale such as this? I&#39;d love to \n&gt; hear\n&gt; comments about pros & cons and lessons learned etc.\n\nCoincidentally, I&#39;m working with a team that builds online travel \nbooking applications.  I&#39;ve helped other teams apply JUnit to large \nscale projects, as well.  Refactoring legacy code for testability isn&#39;t \nalways easy, and I wouldn&#39;t recommend you tackle it all at once.  But \nmy experience has been that if it&#39;s done pragmatically, then the \ninvestment pays for itself time and again.\n\nHope this helps.\n\nRegards,\n\nMike\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 11060, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "prevInTime": 11093, 
+    "contentTrasformed": false, 
+    "postDate": "1086190054", 
+    "canDelete": false, 
+    "nextInTopic": 11095, 
+    "prevInTopic": 11091, 
+    "headers": {
+        "inReplyToHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VBQkNNQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPg==", 
+        "messageIdInHeader": "PDVGMzZCNzQ4LUI0QTktMTFEOC1CNDJBLTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "referencesHeader": "PE5FQkJJS0JNSUxFRU1OR0ZETk5JT0VBQkNNQUEua29zdWxsaXZhbkBlbGFuZHRlY2guY29tPg=="
+    }
+}

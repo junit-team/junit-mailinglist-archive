@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 16202, 
+    "senderId": "UovIlwhME6RsQpqPADbTliK3Xmbbwlj-fH619N795lkcfTk0aSqf5sVk45LXGnxB_hTDBtg4utWZX0NtJehQu_TtPOUWHmUujZs", 
+    "systemMessage": false, 
+    "subject": "junit4.0 , JUnitX", 
+    "from": "Kamal Ahmed &lt;KAhmed@...&gt;", 
+    "authorName": "Kamal Ahmed", 
+    "msgSnippet": "Hi, Does Junit4.0 Support Proxy like JunitX Does? Here is the example from JUnitX, from their web site: 1.\tCreate a Production Source Class (which is the case", 
+    "msgId": 16201, 
+    "topicId": 16201, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 253370470, 
+    "messageBody": "<div id=\"ygrps-yiv-1387421936\">Hi,<br/>\n<br/>\nDoes Junit4.0 Support Proxy like JunitX Does?<br/>\n<br/>\nHere is the example from JUnitX, from their web site:<br/>\n<br/>\n <br/>\n<br/>\n1.\tCreate a Production Source Class (which is the case a lot of times,<br/>\nwhen Classes are written without implementing XP)<br/>\n<br/>\n <br/>\n<br/>\npackage junitx.demo;<br/>\n<br/>\nclass Inverter<br/>\n<br/>\n{<br/>\n<br/>\n  protected int _value = 0;<br/>\n<br/>\n <br/>\n<br/>\n  public void flip ()<br/>\n<br/>\n  {<br/>\n<br/>\n    _value = 1 - _value;<br/>\n<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\n <br/>\n<br/>\n2.\tCreate a Test Class<br/>\n<br/>\n <br/>\n<br/>\npackage junitx.demo;<br/>\n<br/>\nimport junit.framework.*;<br/>\n<br/>\nimport junitx.framework.*;<br/>\n<br/>\n <br/>\n<br/>\npublic class TestInverter extends PrivateTestCase<br/>\n<br/>\n{<br/>\n<br/>\n  public TestInverter (String aName)<br/>\n<br/>\n  {<br/>\n<br/>\n    super (aName);<br/>\n<br/>\n  }<br/>\n<br/>\n <br/>\n<br/>\n  public void testInverter () throws TestAccessException<br/>\n<br/>\n  {<br/>\n<br/>\n    Object inverter = newInstance   (&quot;junitx.demo.Inverter&quot;, NOARGS);<br/>\n<br/>\n    Object dummy    = invokeWithKey (inverter, &quot;flip&quot;, NOARGS);<br/>\n<br/>\n <br/>\n<br/>\n    assertEquals (getInt (inverter, &quot;_value&quot;), 1);<br/>\n<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\n <br/>\n<br/>\nNotice: <br/>\n<br/>\n*\tin this case the TestCase is not extended from &quot;TestCase&quot; as Junit<br/>\nwould have it.<br/>\n*\tgetInt Method is from JUnitX API<br/>\n*\tJUnitX allows to create instances of any class the VM can access<br/>\nusing the newInstance method. Furthermore you can invoke any method of that<br/>\nclass independently of its access modifiers using the invokeWithKey method.<br/>\n*\tnewInstance invokes a constructor of a tested class<br/>\n*\tinvokeWithKey invokes a method on a proxied class using a method<br/>\nkey.<br/>\n<br/>\n <br/>\n<br/>\n3.\tCreate a Test Proxy<br/>\n<br/>\npackage junitx.demo;<br/>\n<br/>\nimport java.lang.reflect.*;<br/>\n<br/>\n <br/>\n<br/>\nimport junit.framework.*;<br/>\n<br/>\nimport junitx.framework.*;<br/>\n<br/>\n <br/>\n<br/>\npublic class TestProxy extends junitx.framework.TestProxy<br/>\n<br/>\n{<br/>\n<br/>\n  public Object newInstance (Object[] anArgList)<br/>\n<br/>\n  throws TestAccessException<br/>\n<br/>\n  {<br/>\n<br/>\n    try<br/>\n<br/>\n    {<br/>\n<br/>\n      return getProxiedClass ().getConstructor (anArgList).newInstance<br/>\n(anArgList);<br/>\n<br/>\n    }<br/>\n<br/>\n    catch (Exception e)<br/>\n<br/>\n    {<br/>\n<br/>\n      throw new TestAccessException (&quot;could not instantiate &quot; +<br/>\ngetTestedClassName (), e);<br/>\n<br/>\n    }<br/>\n<br/>\n  }<br/>\n<br/>\n <br/>\n<br/>\n <br/>\n<br/>\n  public Object newInstanceWithKey (String aConstructorKey, Object[]<br/>\nanArgList)<br/>\n<br/>\n  throws TestAccessException<br/>\n<br/>\n  {<br/>\n<br/>\n    try<br/>\n<br/>\n    {<br/>\n<br/>\n      return getProxiedClass ().getConstructor (aConstructorKey).newInstance<br/>\n(anArgList);<br/>\n<br/>\n    }<br/>\n<br/>\n    catch (Exception e)<br/>\n<br/>\n    {<br/>\n<br/>\n      throw new TestAccessException (&quot;could not instantiate &quot; +<br/>\ngetTestedClassName (), e);<br/>\n<br/>\n    }<br/>\n<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\nNote: <br/>\n<br/>\n*\tTestProxy class allows JUnitX to locate test cases in different<br/>\npackages than the tested classes. The code of the proxy is always the same<br/>\n<br/>\n <br/>\n<br/>\n4.\tCreate a Test Package.<br/>\n<br/>\n <br/>\n<br/>\npackage junitx.demo;<br/>\n<br/>\n <br/>\n<br/>\nimport junit.framework.*;<br/>\n<br/>\nimport junitx.framework.*;<br/>\n<br/>\n <br/>\n<br/>\npublic class TestPackage implements junitx.framework.TestPackage<br/>\n<br/>\n{<br/>\n<br/>\n  static public Test suite ()<br/>\n<br/>\n  {<br/>\n<br/>\n    TestSuite suite = new TestSuite (&quot;Inverter tests&quot;);<br/>\n<br/>\n <br/>\n<br/>\n    suite.addTestSuite (junitx.demo.TestInverter.class);<br/>\n<br/>\n <br/>\n<br/>\n    return suite;<br/>\n<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\nSo this DOES take one extra Step, and as far as JUnitX claims, this Extra<br/>\nStep (STEP 3) needs to be done only once prepackage, and the code is always<br/>\nthe same (correct me if I am wrong)<br/>\n<br/>\nNow with this framework, we have the ability to test protected methods,<br/>\nother then that I don&#39;t see any real value (but I have no experience of<br/>\nJUnitX, so I am not in a position to say that).<br/>\n<br/>\nAnyone care to comment on this? In order to improve test cases.<br/>\n<br/>\nThanks,<br/>\n<br/>\n-Kamal. <br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 16200, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1140807486", 
+    "canDelete": false, 
+    "nextInTopic": 16231, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDVCMTBFNTBFMTRBNDU5NEVCMUI1NTY2QjY5QUQ5NDA3MEQwMTcxOURAbWFpbGVhc3Q+"
+    }
+}

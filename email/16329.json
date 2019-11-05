@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 16330, 
+    "senderId": "bV_d9FZQrfcZNfTKrS2A_6nUBtpPaTortByFNhFMaoLoFUF7ybg6ewf4rKfG-WiqpCno7ov4kgDmvgQqLQ1VXl31uTNLNZO7", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] @BeforeClass not working", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Bob, Thank you for the report. The problem is the same one experienced by the person trying to use Cactus with JUnit 4. If JUnit 4 sees a subclass of ", 
+    "msgId": 16329, 
+    "profile": "kentlbeck", 
+    "topicId": 16320, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-1620902988\">Bob,<br/>\n<br/>\nThank you for the report. The problem is the same one experienced by the<br/>\nperson trying to use Cactus with JUnit 4. If JUnit 4 sees a subclass of<br/>\njunit.framework.TestCase, it assumes the tests are in the old style. If you<br/>\nchange the name of your test methods (and setUp and tearDown), they will no<br/>\nlonger be run. The solution in your case is to remove &quot;extends TestCase&quot;.<br/>\nThen I see the behavior I would expect:<br/>\n<br/>\noneTimeSetUp<br/>\nsetUp<br/>\ntearDown<br/>\nsetUp<br/>\ntearDown<br/>\noneTimeTearDown<br/>\n<br/>\nSincerely yours,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of BobFedorchak<br/>\n&gt; Sent: Friday, March 10, 2006 7:59 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] @BeforeClass not working<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; While looking at JUnit I wrote a quick test that used the @BeforeClass<br/>\n&gt; annotation, yet the method never executed when the test was executed. <br/>\n&gt; Seeing as I am new to JUnit, I suspected it was my code, so <br/>\n&gt; to further test<br/>\n&gt; I cut/pasted the sample code from the JUnit FAQ and used that <br/>\n&gt; instead.  To<br/>\n&gt; my surprise, the methods marked with @BeforeClass and <br/>\n&gt; @AfterClass did not<br/>\n&gt; execute, yet the other test methods did.  Here is the code I used:<br/>\n&gt; <br/>\n&gt; import org.junit.*;<br/>\n&gt; import static org.junit.Assert.*;<br/>\n&gt; import java.util.*;<br/>\n&gt; import junit.framework.TestCase;<br/>\n&gt; import java.util.*;<br/>\n&gt; <br/>\n&gt; public class MyTest extends TestCase {<br/>\n&gt; <br/>\n&gt;   private Collection collection;<br/>\n&gt;   <br/>\n&gt;           @BeforeClass<br/>\n&gt;           public static void oneTimeSetUp() {<br/>\n&gt;               // one-time initialization code     <br/>\n&gt;               System.out.println(&quot;oneTimeSetUp&quot;);<br/>\n&gt;           }<br/>\n&gt;   <br/>\n&gt;           @AfterClass<br/>\n&gt;           public static void oneTimeTearDown() {<br/>\n&gt;               // one-time cleanup code<br/>\n&gt;               System.out.println(&quot;oneTimeTearDown&quot;);<br/>\n&gt;           }<br/>\n&gt;   <br/>\n&gt;           @Before<br/>\n&gt;           public void setUp() {<br/>\n&gt;               collection = new ArrayList();<br/>\n&gt;               System.out.println(&quot;setUp&quot;);<br/>\n&gt;           }<br/>\n&gt;   <br/>\n&gt;           @After<br/>\n&gt;           public void tearDown() {<br/>\n&gt;               collection.clear();<br/>\n&gt;               System.out.println(&quot;tearDown&quot;);<br/>\n&gt;           }<br/>\n&gt;   <br/>\n&gt;           @Test<br/>\n&gt;           public void testEmptyCollection() {<br/>\n&gt;               assertTrue(collection.isEmpty());<br/>\n&gt;           }<br/>\n&gt;   <br/>\n&gt;           @Test<br/>\n&gt;           public void testOneItemCollection() {<br/>\n&gt;               collection.add(&quot;itemA&quot;);<br/>\n&gt;               assertEquals(1, collection.size());<br/>\n&gt;         }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; The only change from the code in the FAQ is the addition of <br/>\n&gt; the System.out<br/>\n&gt; calls and the fact that MyTest extends TestCase.  As output <br/>\n&gt; from this I<br/>\n&gt; received:<br/>\n&gt; <br/>\n&gt; .setUp<br/>\n&gt; tearDown<br/>\n&gt; .setUp<br/>\n&gt; tearDown<br/>\n&gt; <br/>\n&gt; Time: 0<br/>\n&gt; <br/>\n&gt; OK (2 tests)<br/>\n&gt; <br/>\n&gt; Has anyone else had aproblem with @BeforeClass?  Any help you <br/>\n&gt; can provide<br/>\n&gt; would be greatly appreciated.<br/>\n&gt; <br/>\n&gt; Bob<br/>\n&gt; <br/>\n&gt; --<br/>\n&gt; View this message in context: <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/%40BeforeClass-not-working-t1259756.html\">http://www.nabble.com/%40BeforeClass-not-working-t1259756.html</a><br/>\n&gt; #a3341515<br/>\n&gt; Sent from the JUnit - User forum at Nabble.com.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 16328, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1142527279", 
+    "canDelete": false, 
+    "nextInTopic": 16340, 
+    "prevInTopic": 16320, 
+    "headers": {
+        "inReplyToHeader": "PDMzNDE1MTUucG9zdEB0YWxrLm5hYmJsZS5jb20+", 
+        "messageIdInHeader": "PEUxRkp2WE8tMDAwMVpZLVZTQGVsYXNtdHAta3VrdXIuYXRsLnNhLmVhcnRobGluay5uZXQ+"
+    }
+}

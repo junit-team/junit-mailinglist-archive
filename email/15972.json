@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 15973, 
+    "senderId": "KSUc4Xd7k-3U0Qfp_aSTGYxmsmIh1jzuANIaPF0fVARrBolkLWEQaIv8FC4OMRkRBv94nQjhMEJ9lY5zb_rKS8-t9Cdz", 
+    "systemMessage": true, 
+    "subject": "Re: junit 3.8 Test/TestResult interaction - reality check", 
+    "from": "Ian Darwin &lt;ian@...&gt;", 
+    "authorName": "Ian Darwin", 
+    "msgSnippet": "... Due to the overwhelming silence on this issue, I came up with a different way that seems to work. ... package regress; import", 
+    "msgId": 15972, 
+    "topicId": 15902, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 23529957, 
+    "messageBody": "<div id=\"ygrps-yiv-1831769162\">Ian Darwin wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m trying to write a test runner for a new &quot;subframework&quot; that will <br/>\n&gt; read an arbitrary<br/>\n&gt; number of tests from a &quot;little language&quot; scripting file, and I&#39;m <br/>\n&gt; trying to write this as a Test class<br/>\n&gt; (my framework will be released as open source when it is working).<br/>\n&gt;<br/>\n&gt; I started with the assumption that if the framework calls a Test&#39;s <br/>\n&gt; countTestCases<br/>\n&gt; it will next call its run() method once and let it run all the tests, <br/>\n&gt; and that it expects the<br/>\n&gt; test to call results.startTest(this) and endTest(this).  So this is a <br/>\n&gt; gloss of my test: is this<br/>\n&gt; at all the right approach?<br/>\n<br/>\n<br/>\n </span></blockquote>Due to the overwhelming silence on this issue, I came up with a <br/>\ndifferent way that seems to work.<br/>\n<br/>\n<br/>\n<br/>\n  ----------<br/>\n<br/>\npackage regress;<br/>\n<br/>\nimport junit.framework.AssertionFailedError;<br/>\nimport junit.framework.Test;<br/>\nimport junit.framework.TestResult;<br/>\nimport junit.framework.TestSuite;<br/>\n<br/>\n/** The suite() method way of running multiple tests within a single source file.<br/>\n * @author ian darwin<br/>\n */<br/>\npublic class MyTest2  {<br/>\n\tstatic int i = 0; <br/>\n\t<br/>\n\t/** This class is a short-term stand-in for my actual tests, which will have<br/>\n\t * been read from a file...<br/>\n\t * @author ian<br/>\n\t */<br/>\n\tstatic class MyUnitBaseTest implements Test {<br/>\n\t\tint counter;<br/>\n\t\tMyUnitBaseTest() {<br/>\n\t\t\tcounter = i++;<br/>\n\t\t}<br/>\n\t\tpublic int countTestCases() {<br/>\n\t\t\treturn 1;<br/>\n\t\t}<br/>\n<br/>\n\t\tpublic void run(TestResult result) {<br/>\n\t\t\tresult.startTest(this);<br/>\n\t\t\ttry {<br/>\n\t\t\t\tThread.sleep(250);<br/>\n\t\t\t} catch (InterruptedException e) {<br/>\n\t\t\t\t// canthappen<br/>\n\t\t\t}<br/>\n\t\t\t// Just throw some Failures and Errors in to see if the display works correctly.<br/>\n\t\t\tif (counter == 6) {<br/>\n\t\t\t\tresult.addFailure(this, new AssertionFailedError(&quot;boo hoo&quot;));<br/>\n\t\t\t} else if (counter == 8) {<br/>\n\t\t\t\tresult.addError(this, new RuntimeException(&quot;wah&quot;));<br/>\n\t\t\t}<br/>\n\t\t\tresult.endTest(this);<br/>\n\t\t}\t<br/>\n\t\tpublic String toString() {<br/>\n\t\t\treturn &quot;MyInnerTest: &quot; + counter;<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n\tpublic static Test suite() {<br/>\n\t\tTestSuite tests = new TestSuite(&quot;Test for my package&quot;);<br/>\n\t\t// This for loop will be replaced by code that reads the tests from the script file<br/>\n\t\t// and makes Test instances out of them. TestCase stores its results in a Vector,<br/>\n\t\t// whose elements() method returns an Enumeration that does run the tests in the correct order<br/>\n\t\t// (unlike when you use the JUnit &quot;find all test methods beginning with test&quot; approach,<br/>\n\t\t// in which case the order is undocumented, presumably based on Class.getMethods()).<br/>\n\t\tfor (int i = 0; i &lt; 10; i++)<br/>\n\t\t\ttests.addTest(new MyUnitBaseTest());<br/>\n\t\treturn tests;<br/>\n\t}<br/>\n}<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 15971, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1138756485", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15906, 
+    "headers": {
+        "inReplyToHeader": "PDQzREZBNjdGLjUwODA1MDhAZGFyd2luc3lzLmNvbT4=", 
+        "messageIdInHeader": "PDQzRTAwQjg1LjMwMDA3QGRhcndpbnN5cy5jb20+", 
+        "referencesHeader": "PDQzREZBNjdGLjUwODA1MDhAZGFyd2luc3lzLmNvbT4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 23257, 
+    "senderId": "1SlcLfhOHbsUTvbRYhhcxYBp-ubAKJEZym9JNcZTNq4w24EaHLClVMx0BlzuotpgnRNHyMun8merUieRar4cpsqB", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Need BeforeSuite and AfterSuite functionality", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... But that won t be the same instance on which the tests are invoked, so the method would make no sense without global side effects.  And if you re going to", 
+    "msgId": 23256, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 54798 invoked from network); 11 Feb 2011 19:01:17 -0000\r\nX-Received: from unknown (66.196.94.107)\n  by m15.grp.re1.yahoo.com with QMQP; 11 Feb 2011 19:01:17 -0000\r\nX-Received: from unknown (HELO mail-vx0-f174.google.com) (209.85.220.174)\n  by mta3.grp.re1.yahoo.com with SMTP; 11 Feb 2011 19:01:17 -0000\r\nX-Received: by vxb37 with SMTP id 37so1639307vxb.5\n        for &lt;junit@yahoogroups.com&gt;; Fri, 11 Feb 2011 11:01:17 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.220.195.138 with SMTP id ec10mr1077508vcb.40.1297450877106;\n Fri, 11 Feb 2011 11:01:17 -0800 (PST)\r\nX-Received: by 10.220.182.198 with HTTP; Fri, 11 Feb 2011 11:01:17 -0800 (PST)\r\nIn-Reply-To: &lt;AANLkTindEtCCN_AsjcULCDaermZ0bV8tg2T9iNkVkJUV@...&gt;\r\nReferences: &lt;AANLkTinQGu3-Hggv=sW3xZmwJXz67YoejLN=qPH+o_bm@...&gt;\n\t&lt;593928.34058.qm@...&gt;\n\t&lt;AANLkTi=RWkoHA_2XD2BrZ7u6fozSfstAE7yt2Xm0hwRh@...&gt;\n\t&lt;AANLkTindEtCCN_AsjcULCDaermZ0bV8tg2T9iNkVkJUV@...&gt;\r\nDate: Fri, 11 Feb 2011 14:01:17 -0500\r\nX-Google-Sender-Auth: YqUwNP_yOb8ZFDnmOsZLsaZSDV0\r\nMessage-ID: &lt;AANLkTinkVCYwne2pnv0xwdhdWbOMov42pqJc6DJoBVEm@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Need BeforeSuite and AfterSuite functionality\r\nX-Yahoo-Group-Post: member; u=341876227; y=ekYFSOzxqrk5sSkY-72nL_QCaRstd_vXin4qOEBHdEA\r\nX-Yahoo-Profile: dsaff\r\n\r\n2011/2/11 C=C3=A9dric Beust =E2=99=94 &lt;cedric@...&gt;:\n&gt; On Fri, Feb 11,=\r\n 2011 at 10:35 AM, David Saff &lt;david@...&gt; wrote:\n&gt;\n&gt;&gt; Dean,\n&gt;&gt;\n&gt;&gt; The =\r\nmethods are static because they are called before the first\n&gt;&gt; instance of =\r\nthe class is created, and after the last instance is\n&gt;&gt; released to garbage=\r\n collection.\n&gt;&gt;\n&gt;\n&gt; But that still doesn&#39;t explain why they have to be stat=\r\nic. If they were non\n&gt; static, you could just create an instance and invoke=\r\n these methods on that\n&gt; instance.\n\nBut that won&#39;t be the same instance on =\r\nwhich the tests are invoked, so\nthe method would make no sense without glob=\r\nal side effects.  And if\nyou&#39;re going to do global side effects, you might =\r\nas well make the\nmethod static.\n\n&gt; That&#39;s what TestNG does, by the way, alt=\r\nhough it makes more sense for TestNG\n&gt; since it&#39;s that same instance that w=\r\nill be used to invoke all the test\n&gt; methods afterwards, thereby allowing y=\r\nou to share fields between your\n&gt; @BeforeClass/@AfterClass and @Test method=\r\ns.\n\nYes, and also allowing users to never be sure that changes to instance\n=\r\nmethods in one method won&#39;t corrupt results in a different method.  If\na us=\r\ner that is not an author of either framework is truly fascinated\nabout the =\r\ndifferences in design philosophies between the two\nframeworks, my guess is =\r\nthat they will create a thread with an\nappropriate title, so that those peo=\r\nple just trying to get their work\ndone can mute it and move on.\n\n&gt; It might=\r\n not be as useful for JUnit, but encouraging people to use statics\n&gt; in the=\r\nir test classes is problematic, in my opinion.\n\nI don&#39;t encourage it.  JUni=\r\nt encourages people to think about ways to\npush their designs in tests in d=\r\nirections so that most of their tests\ndo not require setup that is so expen=\r\nsive they have to wring their\nhands about how often it runs.  When that fai=\r\nls, JUnit allows users to\neasily separate the static state, which they _wan=\r\nt_ to think about\nmaintaining between tests, from the instant state, which =\r\nthey are glad\nto let the framework set up and teardown for them.\n\n   David =\r\nSaff\n\n&gt;\n&gt; --\n&gt; C=C3=A9dric\n&gt;\n&gt;\n&gt; [Non-text portions of this message have be=\r\nen removed]\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups =\r\nLinks\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23231, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23255, 
+    "contentTrasformed": false, 
+    "postDate": "1297450877", 
+    "canDelete": false, 
+    "nextInTopic": 23257, 
+    "prevInTopic": 23255, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGluZEV0Q0NOX0FzamNVTENEYWVybVowYlY4dGcyVDlpTmtWa0pVVkBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PEFBTkxrVGlua1ZDWXduZTJwbnYweHdkaGRXYk9Nb3Y0MnBxSmM2REpvQlZFbUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PEFBTkxrVGluUUd1My1IZ2d2PXNXM3habXdKWHo2N1lvZWpMTj1xUEgrb19ibUBtYWlsLmdtYWlsLmNvbT4JPDU5MzkyOC4zNDA1OC5xbUB3ZWIzOTgwOC5tYWlsLm11ZC55YWhvby5jb20+CTxBQU5Ma1RpPVJXa29IQV8yWEQyQnJaN3U2Zm96U2ZzdEFFN3l0MlhtMGh3UmhAbWFpbC5nbWFpbC5jb20+CTxBQU5Ma1RpbmRFdENDTl9Bc2pjVUxDRGFlcm1aMGJWOHRnMlQ5aU5rVmtKVVZAbWFpbC5nbWFpbC5jb20+"
+    }
+}

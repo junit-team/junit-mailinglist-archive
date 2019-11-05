@@ -1,0 +1,29 @@
+{
+    "topicId": 2417, 
+    "postDate": "998482816", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Alain RAVET&quot; &lt;aravet@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "N349JSU7mrJDOuMptrQiNC9M1PbVnAs15Ebj4ZLGLuMPFUYug68g-Fge1RRNNwOBAnBq-1I2OncqmCUjKouJyk6egtz_5wMQwmhLshE", 
+    "nextInTime": 2440, 
+    "userId": 0, 
+    "prevInTime": 2438, 
+    "prevInTopic": 2427, 
+    "headers": {
+        "inReplyToHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2MkM2QGV4Y2g+", 
+        "messageIdInHeader": "PE5FQkJMUEpDT01IRUxLRkVGQURGR0VGQkRFQUEuYXJhdmV0QGNpcmIuaXJpc25ldC5iZT4="
+    }, 
+    "authorName": "Alain RAVET", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "... It all happens in line 53 ( see code of getTest() below) I have run it in debug mode, but afaik it looks fine. ... java.lang.NullPointerException ... ", 
+    "contentTrasformed": false, 
+    "msgId": 2439, 
+    "nextInTopic": 2440, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;aravet@...&gt;\r\nX-Sender: aravet@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_1); 22 Aug 2001 12:22:58 -0000\r\nReceived: (qmail 61966 invoked from network); 22 Aug 2001 12:18:20 -0000\r\nReceived: from unknown (10.1.10.26)\n  by l7.egroups.com with QMQP; 22 Aug 2001 12:18:20 -0000\r\nReceived: from unknown (HELO cerbere.irisnet.be) (195.244.170.2)\n  by mta1 with SMTP; 22 Aug 2001 12:18:20 -0000\r\nReceived: from [195.244.161.108] (helo=ARAVET)\n\tby cerbere.irisnet.be with smtp (Exim 3.12 #1 (Debian))\n\tid 15ZWxc-0004mz-00\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 22 Aug 2001 14:18:16 +0200\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] code works with textui, but not with swingui/awtui\r\nDate: Wed, 22 Aug 2001 14:20:16 +0200\r\nMessage-ID: &lt;NEBBLPJCOMHELKFEFADFGEFBDEAA.aravet@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\nIn-Reply-To: &lt;87EE6B21C624D511B72400104BCF1EB01F62C6@exch&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nImportance: Normal\r\nX-Scanner: exiscan *15ZWxc-0004mz-00*OpBPYWqXFcs* http://duncanthrax.net/exiscan/\r\nFrom: &quot;Alain RAVET&quot; &lt;aravet@...&gt;\r\n\r\n-----Message d&#39;origine-----\n&gt;&gt; Can you run under debug mode and find what exactly is throwing the null?\n\nIt all happens in line 53 ( see code of getTest() below)\nI have run it in debug mode, but afaik it looks fine.\n\n-------------------------------------------------------------\njava.lang.NullPointerException\n-------------------------------------------------------------\n   java.lang.NullPointerException\n\tat java.lang.reflect.Method.invoke(Native Method)\n\tat junit.runner.BaseTestRunner.getTest(BaseTestRunner.java:53)\n\tat junit.awtui.TestRunner.runSuite(TestRunner.java:393)\n\tat junit.awtui.TestRunner.start(TestRunner.java:474)\n\tat junit.awtui.TestRunner.main(TestRunner.java:315)\n\tat junit.awtui.TestRunner.run(TestRunner.java:320)\n\tat cirb_httpTest.tele.project.statmrbc.AllTests.main      \n\n------------------------------------------------------------\njunit.runner.BaseTestRunner.getTest()\n------------------------------------------------------------\n\n\tpublic Test getTest(String suiteClassName) {\n\t\tif (suiteClassName.length() &lt;= 0) {\n\t\t\tclearStatus();\n\t\t\treturn null;\n\t\t}\n\t\tClass testClass= null;\n\t\ttry {\n\t\t\ttestClass= loadSuiteClass(suiteClassName);\n\t\t} catch (ClassNotFoundException e) {\n\t\t\tString clazz= e.getMessage();\n\t\t\tif (clazz == null) \n\t\t\t\tclazz= suiteClassName;\n\t\t\trunFailed(&quot;Class not found &#92;&quot;&quot;+clazz+&quot;&#92;&quot;&quot;);\n\t\t\treturn null;\n\t\t} catch(Exception e) {\n\t\t\trunFailed(&quot;Error: &quot;+e.toString());\n\t\t\treturn null;\n\t\t}\n\t\tMethod suiteMethod= null;\n\t\ttry {\n\t\t\tsuiteMethod= testClass.getMethod(SUITE_METHODNAME, new Class[0]);\n\t \t} catch(Exception e) {\n\t \t\t// try to extract a test suite automatically\n\t\t\tclearStatus();\t\t\t\n\t\t\treturn new TestSuite(testClass);\n\t\t}\n\t\tTest test= null;\n\t\ttry {\n line 53 &gt;&gt;&gt;&gt;\t\ttest= (Test)suiteMethod.invoke(null, new Class[0]); // static method\n\t\t\tif (test == null)\n\t\t\t\treturn test;\n\t\t} \n\t\tcatch (InvocationTargetException e) {\n\t\t\trunFailed(&quot;Failed to invoke suite():&quot; + e.getTargetException().toString());\n\t\t\treturn null;\n\t\t}\n\t\tcatch (IllegalAccessException e) {\n\t\t\trunFailed(&quot;Failed to invoke suite():&quot; + e.toString());\n\t\t\treturn null;\n\t\t}\n\t\t\n\t\tclearStatus();\n\t\treturn test;\n\t}\n\nThis mail has been checked by exiscan.\nTo be safe, please scan the mail attachements with your local virus scanner !\n\n", 
+    "subject": "RE: [junit] code works with textui, but not with swingui/awtui"
+}

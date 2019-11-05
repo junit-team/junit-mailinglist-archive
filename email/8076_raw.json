@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8077, 
+    "senderId": "ZYmfm3WhOaXMBxnUHEyv8dt9yD1NfM1oPTh5MmAW7-4zNf1SUMst_0MPl7hX4io9Stp4guRtOxmHLNqGU57qwMkiOynLNw", 
+    "systemMessage": false, 
+    "subject": "Re: Splitting class from source", 
+    "from": "&quot;junitguy&quot; &lt;junitguy@...&gt;", 
+    "authorName": "junitguy", 
+    "msgSnippet": "Great to hear of success, particularly when it looks like you re employing a similar strategy to mine.  My plan today was to try monkeying with the CLASSPATH,", 
+    "msgId": 8076, 
+    "rawEmail": "Return-Path: &lt;junitguy@...&gt;\r\nReceived: (qmail 59098 invoked from network); 15 May 2003 20:15:56 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m1.grp.scd.yahoo.com with QMQP; 15 May 2003 20:15:56 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta2.grp.scd.yahoo.com with SMTP; 15 May 2003 20:15:54 -0000\r\nX-eGroups-Return: junitguy@...\r\nReceived: from [66.218.67.161] by n3.grp.scd.yahoo.com with NNFMP; 15 May 2003 20:15:23 -0000\r\nX-Sender: junitguy@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 15 May 2003 20:00:49 -0000\r\nReceived: (qmail 62276 invoked from network); 15 May 2003 17:46:34 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m11.grp.scd.yahoo.com with QMQP; 15 May 2003 17:46:34 -0000\r\nReceived: from unknown (HELO n10.grp.scd.yahoo.com) (66.218.66.65)\n  by mta1.grp.scd.yahoo.com with SMTP; 15 May 2003 17:46:33 -0000\r\nReceived: from [66.218.67.164] by n10.grp.scd.yahoo.com with NNFMP; 15 May 2003 17:45:10 -0000\r\nDate: Thu, 15 May 2003 17:45:08 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Splitting class from source\r\nMessage-ID: &lt;ba0jn4+npo6@...&gt;\r\nIn-Reply-To: &lt;b9vaa0+ftbj@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2340\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;junitguy&quot; &lt;junitguy@...&gt;\r\nX-Yahoo-Group-Post: member; u=145121676\r\nX-Yahoo-Profile: junitguy\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 15 May 2003 20:15:22 -0000\r\n\r\nGreat to hear of success, particularly when it looks like you&#39;re \nemploying a similar strategy to mine.  My plan today was to try \nmonkeying with the CLASSPATH, though yesterday I started to think \nthis would involve &quot;createClasspath&quot;, but it looks like \nsimply &quot;classpath&quot; will work.  This will be very helpful for my work \nwith Ant, after I establish a firm understanding of what&#39;s going on \nin JUnit.  Thanks!\n--- In junit@yahoogroups.com, &quot;Paul Zabelin&quot; &lt;pavel_zabelin@3...&gt; \nwrote:\n&gt; You can do separate compilation for test clases into separate \n&gt; directory, then use junit task with classpath pointing to both test \n&gt; classes and classes to be tested. It will still require to know the \n&gt; location of *.java files, but it can be separate folder. Here is an \n&gt; example from my build.xml, where java files are in java/test \ncompiled \n&gt; to ${test.home}/junit/classes folder.\n&gt; \n&gt;   &lt;target name=&quot;test&quot; depends=&quot;compile&quot;\n&gt;    description=&quot;Unit Test DAO (Database Access Objects) Java \nsources&quot;&gt;\n&gt; \n&gt;     &lt;mkdir    dir=&quot;${test.home}/junit/classes&quot;/&gt;\n&gt; \n&gt;     &lt;javac srcdir=&quot;java/test&quot;\n&gt;           destdir=&quot;${test.home}/junit/classes&quot;\n&gt;            debug=&quot;yes&quot;\n&gt;      deprecation=&quot;yes&quot;\n&gt;        classpath=&quot;${build.home}/WEB-INF/classes&quot;\n&gt;         excludes=&quot;**/CoverageTest.java&quot;&gt;\n&gt;     &lt;/javac&gt;\n&gt; \n&gt; \t&lt;junit printsummary=&quot;no&quot; \n&gt; haltonfailure=&quot;${test.haltonfailure}&quot;&gt;\n&gt; \t  &lt;classpath&gt;\n&gt; \t    &lt;pathelement location=&quot;${test.home}/junit/classes&quot;/&gt;\n&gt; \t    &lt;pathelement location=&quot;${build.home}/WEB-INF/classes&quot;/&gt;\n&gt;         &lt;pathelement \n&gt; location=&quot;${catalina.home}/common/lib/classes12.jar&quot;/&gt;\n&gt; \t  &lt;/classpath&gt;\n&gt; \n&gt; \t  &lt;formatter type=&quot;xml&quot;/&gt;\n&gt; \n&gt; \t  &lt;batchtest fork=&quot;no&quot; todir=&quot;${test.home}/junit&quot;&gt;\n&gt; \t    &lt;fileset dir=&quot;java/test&quot;&gt;\n&gt; \t      &lt;include name=&quot;**/*Test.java&quot;/&gt;\n&gt; \t      &lt;exclude name=&quot;**/CoverageTest.java&quot;/&gt;\n&gt; \t    &lt;/fileset&gt;\n&gt; \t  &lt;/batchtest&gt;\n&gt; \t&lt;/junit&gt;\n&gt; \n&gt;     &lt;junitreport todir=&quot;${test.home}/junit&quot;&gt;\n&gt;       &lt;fileset dir=&quot;${test.home}/junit&quot;&gt;\n&gt;         &lt;include name=&quot;TEST-*.xml&quot;/&gt;\n&gt;       &lt;/fileset&gt;\n&gt;       &lt;report format=&quot;frames&quot; todir=&quot;${test.home}/junit&quot;/&gt;\n&gt;     &lt;/junitreport&gt;\n&gt; \n&gt;     &lt;!-- Start web browser and open report for Windows 2000 \n&gt; covinience --&gt;\n&gt;     &lt;exec executable=&quot;cmd&quot; os=&quot;Windows 2000&quot;&gt;\n&gt;         &lt;arg value=&quot;/c&quot;/&gt;\n&gt;         &lt;arg file=&quot;${test.home}/junit/index.html&quot;/&gt;\n&gt;     &lt;/exec&gt;\n&gt;   &lt;/target&gt;\n\n\n\n", 
+    "profile": "junitguy", 
+    "topicId": 8053, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 145121676, 
+    "prevInTime": 8075, 
+    "contentTrasformed": false, 
+    "postDate": "1053020708", 
+    "canDelete": false, 
+    "nextInTopic": 8077, 
+    "prevInTopic": 8072, 
+    "headers": {
+        "inReplyToHeader": "PGI5dmFhMCtmdGJqQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGJhMGpuNCtucG82QGVHcm91cHMuY29tPg=="
+    }
+}

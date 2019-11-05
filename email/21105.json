@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21106, 
+    "senderId": "4rFID78glNFrz_wp9VXHH2dV3TZttlo7i0ccpWkVNwHnDhHlldMUzieh4y98yrxC56C_2Fxv5Eh2BwfM14jJxVJOLZc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Question about test suites", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Jeff, Got it.  So if @RunWith and @Suite.SuiteClasses were @Inherited, your problem would be solved? Sorry for the response lag, David Saff", 
+    "msgId": 21105, 
+    "profile": "dsaff", 
+    "topicId": 21073, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-632098937\">Jeff,<br/>\n<br/>\nGot it.  So if @RunWith and @... were @Inherited, your<br/>\nproblem would be solved?<br/>\n<br/>\nSorry for the response lag,<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Tue, Nov 4, 2008 at 1:20 PM, Jeff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jjg@...\">jjg@...</a>&gt; wrote:<br/>\n&gt; Hi David!<br/>\n&gt;<br/>\n&gt; Here. Let us say that I had test classes, Test0, Test1. Each of these<br/>\n&gt; requires a backend to be configured. I&#39;d like to do something like this:<br/>\n&gt;<br/>\n&gt; @RunWith(Suite.class)<br/>\n&gt; @...({Test0.class, Test1.class})<br/>\n&gt; public abstract class MySuite{<br/>\n&gt; abstract public void setBackend(Backend backend);<br/>\n&gt;<br/>\n&gt; @BeforeClass<br/>\n&gt; public static void doSetup() throws Exception{<br/>\n&gt; //... stuff to get this all pulled together and configure the tests<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Then all a tester needs to do is extend the class MySuite, implement the<br/>\n&gt; method and s/he gets to run their backend against my tests.<br/>\n&gt;<br/>\n&gt; Complicating factors are that java does not allow for annotations to be<br/>\n&gt; inherited unless the @interface is created with the @Inherited<br/>\n&gt; annotation, so attempts to do what is above kick back the message that<br/>\n&gt; there are no tests to run or some such. At least this is my<br/>\n&gt; understanding of java annotations...<br/>\n&gt;<br/>\n&gt; The real life example has not just a couple of test classes, but many<br/>\n&gt; more that very rigorously exercise the backend. The kludge is to have<br/>\n&gt; the abstract MySuite class and have the annotations cut and pasted every<br/>\n&gt; time. This is bad since it will make maintainability problematic (we<br/>\n&gt; have lots of different backend configurations people want to test<br/>\n&gt; against). What&#39;s more several people who want to use this really don&#39;t<br/>\n&gt; know that much about jUnit and we&#39;d really like it to be the case they<br/>\n&gt; can write a backend then get good feedback on robustness, failure modes,<br/>\n&gt; you name it.<br/>\n&gt;<br/>\n&gt; Is this clearer?<br/>\n&gt;<br/>\n&gt; Thanks in Advance!<br/>\n&gt;<br/>\n&gt; Jeff<br/>\n&gt;<br/>\n&gt; David Saff wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt; Jeff,<br/>\n&gt;&gt;<br/>\n&gt;&gt; Can you expand on what you mean by &quot;The problem is that making a suite<br/>\n&gt;&gt; using annotations does not really work so well. The annotations are<br/>\n&gt;&gt; not inherited.&quot;? Can you give an example of what you&#39;d like to do?<br/>\n&gt;&gt; Thanks,<br/>\n&gt;&gt;<br/>\n&gt;&gt; David Saff<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; On Mon, Nov 3, 2008 at 2:54 PM, Jeff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jjg@...\">jjg@...</a><br/>\n&gt;&gt; &lt;mailto:jjg%40jqhome.net&gt;&gt; wrote:<br/>\n&gt;&gt; &gt; Hi,<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; I am new to this group, so if there is a FAQ or thread that addresses<br/>\n&gt;&gt; &gt; this, please direct me appropriately.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; I wrote a comprehensive set of tests in jUnit that run under Maven. Now,<br/>\n&gt;&gt; &gt; these run against a single backend and now several developers in my<br/>\n&gt;&gt; &gt; group would like to use these tests against other backends to test them.<br/>\n&gt;&gt; &gt; The most natural way to do this is with the test suite mechanism in<br/>\n&gt;&gt; &gt; jUnit. That is to say, make up a suite that requires merely that the<br/>\n&gt;&gt; &gt; backend be set and test away. Or so I thought.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; The different backends are different projects in our group and live in<br/>\n&gt;&gt; &gt; different Maven modules.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; The problem is that making a suite using annotations does not really<br/>\n&gt;&gt; &gt; work so well. The annotations are not inherited. The other solution<br/>\n&gt;&gt; &gt; which is to have the developers make their own suites by annotations is<br/>\n&gt;&gt; &gt; also very clunky and will probably break at some point.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; So here is my question: Is there any way to make a test suite that is a<br/>\n&gt;&gt; &gt; harness and can be reused?<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; I assume that jUnit 3.8&#39;s method of explicitly creating a suite is going<br/>\n&gt;&gt; &gt; to get deprecated soon, right? So that would be a deadend. Also, are<br/>\n&gt;&gt; &gt; their plans to make annotations inheritable at some point in jUnit? We<br/>\n&gt;&gt; &gt; could maybe live with cutting and pasting for the short term if we knew<br/>\n&gt;&gt; &gt; that this issue would get resolved at some point.<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; Thanks!<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt; Jeff<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt; &gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21104, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1226949788", 
+    "canDelete": false, 
+    "nextInTopic": 21125, 
+    "prevInTopic": 21076, 
+    "headers": {
+        "inReplyToHeader": "PDQ5MTA5MjY4LjQwNTA2MDFAanFob21lLm5ldD4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgxMTE3MTEyM3cyYmFhZTBkeWY4MTZkZmY5MjdiMmY4YjVAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDQ5MEY1NkU3LjgwNDAzMDNAanFob21lLm5ldD4JIDw0ZjdkYTZiOTA4MTEwNDEwMDR2NjY5Zjc0ZDVsNWQzMWJlZjE3NzE0MDFjM0BtYWlsLmdtYWlsLmNvbT4JIDw0OTEwOTI2OC40MDUwNjAxQGpxaG9tZS5uZXQ+"
+    }
+}

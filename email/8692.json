@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 8693, 
+    "senderId": "0g1WmlnOIjQpb4b97wvZGUsNWVISDvECm6N6N6xam-D5HWTlPZWwA6EUWakvWEPrdACBgzD_I2-mBp2cXdsbGt8-KR9KoX6MGyZoRlSP", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit, Ant and databases", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... The answer can change depending on the needs of the specific test (actually the object under test). If you are testing business rules and don t want to", 
+    "msgId": 8692, 
+    "profile": "jacaetev", 
+    "topicId": 8689, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "messageBody": "<div id=\"ygrps-yiv-1578675745\">On Thu, 2003-07-17 at 12:47, Patel, Rakesh wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi,<br/>\n&gt; <br/>\n&gt; what is the best way to verify database updates in the db? I really do not<br/>\n&gt; want to write jdbc code in the the JUnit cases if i can avoid it.<br/>\n&gt; <br/>\n&gt; We got round the issue of running specific sql scripts in the<br/>\n&gt; setUp()/tearDown() methods by calling Ant programmatically with a buildfile<br/>\n&gt; containing the required code. Works really well and means we can use Ant<br/>\n&gt; functionality in our test cases.<br/>\n&gt; <br/>\n&gt; Thanks<br/>\n&gt; <br/>\n&gt; Rakesh<br/>\n<br/>\n </span></blockquote>The answer can change depending on the needs of the specific test<br/>\n(actually the object under test).<br/>\n<br/>\nIf you are testing business rules and don&#39;t want to burden your tests<br/>\ndown by writing to the database (who would want to) you can use mocks. <br/>\nWe have a factory for getting connections to the database.  These<br/>\nconnections are homebrews which hold on to JDBC connections.  For<br/>\ntesting we get a MockDatabaseConnection and assert for updates, inserts,<br/>\ndeletes, table creations, table drops, etc. on the mock connection.<br/>\n<br/>\nIf you are testing that your SQL statements work (reading from this<br/>\ntable, writing to that table, etc.) and that the underlying assumptions<br/>\nof the tables/views in question are valid, then you probably need real<br/>\naccess to the database.  We have these kinds of tests as well.  They<br/>\ntest our Query classes to make sure they can read the database --<br/>\nselects are correct, joins, unions, etc.  We have Record classes that<br/>\nknow how to write themselves to the database, so we have them write to a<br/>\ntest bed and assert on the shape of the data pre- and post- write.<br/>\n<br/>\nWe also have our own system for pooling and clearing connections.  So,<br/>\nto test these mechanisms we use mocks where possible and allow for real<br/>\ndatabase access to a test bed where mocks will not suffice.<br/>\n<br/>\nI hope that helps.<br/>\n<br/>\nJason</div>", 
+    "prevInTime": 8691, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1058479596", 
+    "canDelete": false, 
+    "nextInTopic": 8694, 
+    "prevInTopic": 8691, 
+    "headers": {
+        "inReplyToHeader": "PDRDQjAxQTAzNjA2Nzk1NEVCMjMwNThDMTQ5NDg4RUI0MDEzRTM1NkFAbXBudGhvMDY+", 
+        "messageIdInHeader": "PDEwNTg0Nzk1OTcuMjEyNi4yNy5jYW1lbEBSaGlubz4=", 
+        "referencesHeader": "PDRDQjAxQTAzNjA2Nzk1NEVCMjMwNThDMTQ5NDg4RUI0MDEzRTM1NkFAbXBudGhvMDY+"
+    }
+}

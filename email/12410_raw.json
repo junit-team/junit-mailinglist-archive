@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12411, 
+    "senderId": "LyeTX7kD-3ewqHpskVvUCjAFkCnGwRn3TFXWJZVkuk2mTTMzvnK9QqpoL4CwtyysTuKd2HEftoGRbyO5OtQh0fL0A_cj58-gthWyRtRDhw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Reusable TestSuite facilities.", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I would make it a public, class-level field of the one-time setup class. ... If the method is going to be class-level, then the field it writes to also has", 
+    "msgId": 12410, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 23296 invoked from network); 2 Dec 2004 01:29:18 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m13.grp.scd.yahoo.com with QMQP; 2 Dec 2004 01:29:18 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta5.grp.scd.yahoo.com with SMTP; 2 Dec 2004 01:29:18 -0000\r\nReceived: from unknown (HELO ?192.168.1.117?) (srainsberger5790@24.156.43.226 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 2 Dec 2004 01:29:17 -0000\r\nMessage-ID: &lt;41AE6FED.5030400@...&gt;\r\nDate: Wed, 01 Dec 2004 20:29:17 -0500\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;coj0np+oqag@...&gt;\r\nIn-Reply-To: &lt;coj0np+oqag@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.81\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Reusable TestSuite facilities.\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nmark_l_salter wrote:\n&gt; \n&gt; \n&gt; I am attempting to construct a test suite that has a common component\n&gt; referenced and used from within tests in the suite, which is set-up\n&gt; once.\n&gt; \n&gt; The &#39;common&#39; component is a network connection to a remote server\n&gt; (under test).  The important aspect (to me) for the majority of tests\n&gt; is not the connection, but getting a number of messages into and back\n&gt; from the remote system.  I am in the position of being able to predict\n&gt; what response the remote system should give for a particular request.\n&gt; I feel the connection establishment and management can (and should?)\n&gt; be tested separately.\n&gt; \n&gt; What I can&#39;t see is where to put the &#39;common&#39; object and how to\n&gt; reference it from a test level.  I feel like I am missing the obvious,\n&gt; and probably it&#39;s java rather than JUnit related!\n\nI would make it a public, class-level field of the one-time setup class.\n\n&gt; import junit.framework.*;\n&gt; import junit.extensions.TestSetup;\n&gt; \n&gt; public class AllTestsOneTimeSetup {\n&gt; \n&gt;     Connection c = null;\n&gt; \n&gt;     public static Test suite() {\n&gt; \n&gt;         TestSuite suite = new TestSuite();\n&gt; \n&gt;         suite.addTest(SomeTest.suite());\n&gt;         suite.addTest(AnotherTest.suite());\n&gt; \n&gt;         TestSetup wrapper = new TestSetup(suite) {\n&gt; \n&gt;             protected void setUp() {\n&gt;                 oneTimeSetUp();\n&gt;             }\n&gt; \n&gt;             protected void tearDown() {\n&gt;                 oneTimeTearDown();\n&gt;             }\n&gt;         };\n&gt; \n&gt;         return wrapper;\n&gt;     }\n&gt; \n&gt;     public static void oneTimeSetUp() {\n&gt;         // one-time initialization code\n&gt; \n&gt;         c = new Connection(&quot;remoteIP&quot;);\n\nIf the method is going to be class-level, then the field it writes to \nalso has to be class-level. That&#39;s fundamental Java, as you suspected.\n  :)\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 12404, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12409, 
+    "contentTrasformed": false, 
+    "postDate": "1101950957", 
+    "canDelete": false, 
+    "nextInTopic": 12417, 
+    "prevInTopic": 12404, 
+    "headers": {
+        "inReplyToHeader": "PGNvajBucCtvcWFnQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxQUU2RkVELjUwMzA0MDBAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNvajBucCtvcWFnQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13811, 
+    "senderId": "ip2cXffrNJbVlH3s8hUS1wvQrsWXEV-GXs5n0T3216ADWMw6fCTu5rOeb98BvpcdgV9_3KdxoWlvRYSp8I-NtelN6gZD8AYWliHDrQ8qAg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing multiple interfaces?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "...  ... If a class implements interfaces A, B and C, then I would tend to want Contract Tests for each interface. If we use TestCase subclassing to do", 
+    "msgId": 13810, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 3714 invoked from network); 2 Jun 2005 21:30:44 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m24.grp.scd.yahoo.com with QMQP; 2 Jun 2005 21:30:44 -0000\r\nReceived: from unknown (HELO smtp105.rog.mail.re2.yahoo.com) (206.190.36.83)\n  by mta2.grp.scd.yahoo.com with SMTP; 2 Jun 2005 21:30:44 -0000\r\nReceived: (qmail 80350 invoked from network); 2 Jun 2005 21:30:38 -0000\r\nReceived: from unknown (HELO ?192.168.1.112?) (srainsberger5790@69.197.252.38 with plain)\n  by smtp105.rog.mail.re2.yahoo.com with SMTP; 2 Jun 2005 21:30:38 -0000\r\nMessage-ID: &lt;429F7A96.80000@...&gt;\r\nDate: Thu, 02 Jun 2005 17:31:02 -0400\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;429F10DE.8060202@...&gt;\r\nIn-Reply-To: &lt;429F10DE.8060202@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Testing multiple interfaces?\r\nX-Yahoo-Group-Post: member; u=127224993; y=LVeHqIp78V0esm6mRgFSr9-mxA_eU3rtm0-Bd-x340dm6nM\r\nX-Yahoo-Profile: nails762\r\n\r\njason r tibbetts wrote:\n&gt; The pattern of writing an abstract TestCase to test an interface&#39;s\n&gt; methods and then subclassing it for each implementation of that\n&gt; interface is well-established\n&lt;snip /&gt;\n &gt; But what&#39;s a good way to handle this when the CUT\n&gt; implements multiple interfaces, each of which has an abstract base test?\n\nIf a class implements interfaces A, B and C, then I would tend to want \nContract Tests for each interface. If we use TestCase subclassing to do \nthat in JUnit, then that would mean three test case classes:\n\n1. TestXAsA extends ATests\n2. TestXAsB extends BTests\n3. TestXAsC extends CTests\n\nThis might bother some people, but it doesn&#39;t bother me: I don&#39;t need \none test case class per production code class.\n\n&gt; I want to write something like the following, but I&#39;m looking for better\n&gt; ideas:\n&gt; \n&gt; public class FooBar implements Foo, Bar { ... }\n&gt; \n&gt; public class BarTestBase extends TestCase {\n&gt;    protected Bar bar;\n&gt; \n&gt;    public void testSomeMethod() { ... }\n&gt; }\n&gt; \n&gt; // does NOT subclass FooTestBase or BarTestBase\n&gt; public class FooBarTest extends TestCase {\n&gt;    static class FooSubclassTest extends FooTestBase {\n&gt;      protected void setUp() { foo = new FooBar(); }\n&gt;    }\n&gt; \n&gt;    static class BarSubclassTest extends BarTestBase {\n&gt;      protected void setUp() { foo = new FooBar(); }\n&gt;    }\n&gt; \n&gt;    public static Test suite() {\n&gt;       TestSuite suite = new TestSuite(FooBarTest.class);\n&gt;       suite.addTest(new TestSuite(FooSubclassTest.class);  // ?\n&gt;       suite.addTest(new TestSuite(BarSubclassTest.class);  // ?\n&gt;       return suite;\n&gt;    }\n&gt; }\n\nYou&#39;ve done here what I would do, except you&#39;ve added a suite() method \nto collect all the &quot;FooBar&quot; tests together. Since I usually try to run \nall my tests all the time, I&#39;d get that free.\n\n&gt; Considerations:\n&gt; * This keeps all of the tests for the FooBar class in a single file.\n\nI don&#39;t find this important, but that&#39;s personal taste.\n\n&gt; * Because the static inner test classes&#39; names end with &#39;Test&#39;, they&#39;ll\n&gt; be picked up automatically by an Ant &lt;junit&gt; task that executes anything\n&gt; called &#39;*Test.class&#39;, right? If so, then adding them to the FooBarTest&#39;s\n&gt; suite is redundant.\n\nThat&#39;s handy.\n\n&gt; * If the inner classes&#39; names end in &#39;Test&#39;, they must be declared\n&gt; static in order to prevent a reflection exception when the JUnit test\n&gt; loader attempts to invoke them, since they&#39;d have to be instantiated\n&gt; within an instance of FooBarTest.\n\nThat makes sense.\n\nI think you&#39;re on the right track here. Let us know how it works for \nyou. This is one of those deeper examples that no-one has written about \nin detail yet. (Even _JUnit Recipes_ only mentions it in passing.) You \nshould write about your experiences with this pattern and share it with \nthe world. :)\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 13795, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 13809, 
+    "contentTrasformed": false, 
+    "postDate": "1117747862", 
+    "canDelete": false, 
+    "nextInTopic": 13811, 
+    "prevInTopic": 13795, 
+    "headers": {
+        "inReplyToHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDQyOUY3QTk2LjgwMDAwQHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

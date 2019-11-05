@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 22041, 
+    "senderId": "_xWFO3W-1PCYjXQuTuOGVC8Xij4d1RuumlKLMJTzlu969K0dtoY1zPOnF-XXkBED3KgOFOgeniZLyURe-xjNpv7I22U", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] maven2 with Junit 4 ignores @Test annotations", 
+    "from": "iGeek &lt;javageek@...&gt;", 
+    "authorName": "iGeek", 
+    "msgSnippet": "I am happy to inform that I was able to make the test classes work. It was really strange because the tests from other modules were running but these weren t", 
+    "msgId": 22040, 
+    "rawEmail": "Return-Path: &lt;javageek@...&gt;\r\nReceived: (qmail 12312 invoked from network); 30 Oct 2009 15:09:40 -0000\r\nReceived: from unknown (98.137.34.46)\n  by m4.grp.re1.yahoo.com with QMQP; 30 Oct 2009 15:09:40 -0000\r\nReceived: from unknown (HELO n41b.bullet.mail.sp1.yahoo.com) (66.163.168.155)\n  by mta3.grp.sp2.yahoo.com with SMTP; 30 Oct 2009 15:09:40 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1256915380; bh=HlsKMhkLd6+jptXday2ai8hvtKQLN499eKNZ/pRKnKs=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:Message-ID:Date:To:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:X-Nabble-From:References:X-Originating-IP:X-eGroups-Msg-Info:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:X-YGroups-SubInfo:Sender:X-Yahoo-Newman-Property:X-eGroups-Approved-By:X-eGroups-Auth; b=deVuz63Uj4lOiqU4XOG0yo8A1dTtZzlOUVeTVvDf6OVwLCJY+0yeRXZGudA1KbHgnWMZ0JF2mfTD8VFLuNuyd+OUtZeboJcQxcDL5f8WFOFCy7MAUtuxr9I6PVwaFwtN\r\nReceived: from [69.147.65.172] by n41.bullet.mail.sp1.yahoo.com with NNFMP; 30 Oct 2009 15:09:40 -0000\r\nReceived: from [98.137.34.73] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 30 Oct 2009 15:09:40 -0000\r\nX-Sender: javageek@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 15732 invoked from network); 30 Oct 2009 04:58:27 -0000\r\nX-Received: from unknown (66.196.94.105)\n  by m13.grp.re1.yahoo.com with QMQP; 30 Oct 2009 04:58:27 -0000\r\nX-Received: from unknown (HELO kuber.nabble.com) (216.139.236.158)\n  by mta1.grp.re1.yahoo.com with SMTP; 30 Oct 2009 04:58:27 -0000\r\nX-Received: from isper.nabble.com ([192.168.236.156])\n\tby kuber.nabble.com with esmtp (Exim 4.63)\n\t(envelope-from &lt;javageek@...&gt;)\n\tid 1N3jXi-00084A-84\n\tfor junit@yahoogroups.com; Thu, 29 Oct 2009 21:56:54 -0700\r\nMessage-ID: &lt;26125017.post@...&gt;\r\nDate: Thu, 29 Oct 2009 21:56:54 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;hcbk4p+8r8a@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nX-Nabble-From: javageek@...\r\nReferences: &lt;g1nbql+r8qs@...&gt; &lt;4f7da6b90811210638n3262201ejceef67d98a9d0817@...&gt; &lt;26102430.post@...&gt; &lt;hcbk4p+8r8a@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: iGeek &lt;javageek@...&gt;\r\nSubject: Re: [junit] maven2 with Junit 4 ignores @Test annotations\r\nX-Yahoo-Group-Post: member; u=418956624; y=y25hG4c8XQP-0fnXxTJrhHUG2HSsIn50Peg5QVHusOCDPQaCuYR7xgcr\r\nX-Yahoo-Profile: j4v4g33k\r\nX-YGroups-SubInfo: t=0;f=16;g=RGK5Oqoe3ylBkheN60qLLprmOYfjsIsmuco8p7USf47TDt6vyFgVDLqXkbVY-bQnFzE;\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via web; 30 Oct 2009 15:09:39 -0000\r\n\r\n\nI am happy to inform that I was able to make the test classes work. It was\nreally strange because the tests from other modules were running but these\nweren&#39;t (and they all shared the same dependencies).\n\nThe root of the problem was that the test classes were named something other\nthan the standard, so instead of having MyClassTest.java, they were named\nMyClassTester.java (I didn&#39;t create them). Once I changed them to the\nformer, they all ran like they were supposed to.\n\nHowever, I do think this might be a bug in the maven-surefire-plugin code.\nWhen using annotations, it shouldn&#39;t matter what the class is named,\nsurefire should be able to &quot;introspect&quot; all methods that are annotated with\n@Test.\n\nI guess I could also try to modify the pom to find &#39;**/*Tester.java&#39; classes\nfor testing, but I try to avoid explicitly setting things as much as I can.\n\nRegards,\n-- \nView this message in context: http://old.nabble.com/maven2-with-Junit-4-ignores-%40Test-annotations-tp17548499p26125017.html\nSent from the JUnit - User mailing list archive at Nabble.com.\n\n\n", 
+    "profile": "j4v4g33k", 
+    "topicId": 20502, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 418956624, 
+    "prevInTime": 22039, 
+    "contentTrasformed": false, 
+    "postDate": "1256878614", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22037, 
+    "headers": {
+        "inReplyToHeader": "PGhjYms0cCs4cjhhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDI2MTI1MDE3LnBvc3RAdGFsay5uYWJibGUuY29tPg==", 
+        "referencesHeader": "PGcxbmJxbCtyOHFzQGVHcm91cHMuY29tPiA8NGY3ZGE2YjkwODExMjEwNjM4bjMyNjIyMDFlamNlZWY2N2Q5OGE5ZDA4MTdAbWFpbC5nbWFpbC5jb20+IDwyNjEwMjQzMC5wb3N0QHRhbGsubmFiYmxlLmNvbT4gPGhjYms0cCs4cjhhQGVHcm91cHMuY29tPg=="
+    }
+}

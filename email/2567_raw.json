@@ -1,0 +1,29 @@
+{
+    "topicId": 2548, 
+    "postDate": "999688599", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;David Corbin&quot; &lt;dcorbin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "HPKthxqVIQJq7PHc6od2z5-IVrvQxWw4OPR2Czps5LREjjT2eoVixO3k1TXVtv8pwPCOmUwhFF3nuEaE_k0Gsx66JpUc0pkW9QqSrfVH", 
+    "nextInTime": 2568, 
+    "userId": 0, 
+    "prevInTime": 2566, 
+    "prevInTopic": 2559, 
+    "headers": {
+        "messageIdInHeader": "PDAwYzIwMWMxMzVmYyQzYmVjZjQyMCQyN2EzZTljN0BnYXRlcz4=", 
+        "referencesHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxMzA2OUExQENBU0UwNTI+"
+    }, 
+    "authorName": "David Corbin", 
+    "numMessagesInTopic": 5, 
+    "msgSnippet": "My mistake was putting the file in the classes subdir, instead of classes/junit/runner .  Your code made that clear. Thanks. ... From: Mark Meyers", 
+    "contentTrasformed": false, 
+    "msgId": 2567, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;dcorbin@...&gt;\r\nX-Sender: dcorbin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_2); 5 Sep 2001 11:14:57 -0000\r\nReceived: (qmail 63316 invoked from network); 5 Sep 2001 11:14:55 -0000\r\nReceived: from unknown (10.1.10.142)\n  by l10.egroups.com with QMQP; 5 Sep 2001 11:14:55 -0000\r\nReceived: from unknown (HELO machturtle.com) (63.88.80.59)\n  by mta3 with SMTP; 5 Sep 2001 11:12:52 -0000\r\nReceived: from host58.panacealabs.com (gates) [63.88.80.58] \n\tby machturtle.com with smtp (Exim 3.12 #1 (Debian))\n\tid 15eabd-0002oP-00; Wed, 05 Sep 2001 07:12:29 -0400\r\nMessage-ID: &lt;00c201c135fc$3becf420$27a3e9c7@gates&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;C450D96664CBD31182B600A0C97668B13069A1@CASE052&gt;\r\nSubject: Re: [junit] GUI Runner, Class Loader & excluded.properties\r\nDate: Wed, 5 Sep 2001 07:16:39 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.00.3018.1300\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.00.3018.1300\r\nX-via: mars.corsol.atlanta.ga.us\r\nX-eGroups-From: &quot;David Corbin&quot; &lt;dcorbin@...&gt;\r\nFrom: &quot;David Corbin&quot; &lt;dcorbin@...&gt;\r\n\r\nMy mistake was putting the file in the &quot;classes&quot; subdir, instead of\n&quot;classes/junit/runner&quot;.  Your code made that clear.\n\nThanks.\n\n----- Original Message -----\nFrom: &quot;Mark Meyers&quot; &lt;markm@...&gt;\nTo: &lt;junit@yahoogroups.com&gt;\nSent: Tuesday, September 04, 2001 3:48 AM\nSubject: RE: [junit] GUI Runner, Class Loader & excluded.properties\n\n\n&gt; The Exception you get is exactly what happens when you don&#39;t have excluded\n&gt; anything. So, what can go wrong:\n&gt; -properties file not first in search path\n&gt; -wrong properties file edited\n&gt; -with notepad: excluded.properties.txt saved\n&gt; -the syntax in the properties file is wrong (some keys contain spaces)\n&gt; -wrong path (/junit/runner/excluded.properties)\n&gt;\n&gt; If you have a batch file to start JUnit containing something like:\n&gt; c:&#92;jdk131&#92;bin&#92;java -cp c:&#92;work;xxx.jar;yyy.jar junit.swingui.TestRunner\n&gt;\n&gt; try to a simple class with main method to load and print the properties:\n&gt;\n&gt; ...\n&gt; public static void main (String args[]) {\n&gt;         Properties prop = new Properties();\n&gt;         InputStream\n&gt;\nis=ClassLoader.getSystemClassLoader().getResourceAsStream(&quot;junit/runner/excl\n&gt; uded.properties&quot;);\n&gt;         if(is!=null){\n&gt;             try{\n&gt;                 prop.load(is);\n&gt;             }catch(Exception e){\n&gt;\n&gt;             }\n&gt;         }\n&gt;         prop.list(System.out);\n&gt;     }\n&gt; -----Original Message-----\n&gt; From: Scott Stirling\n&gt;\n&gt;\n&gt; What works for me and most people is to exclude:\n&gt;\n&gt; org.xml.sax.*\n&gt; org.w3c.dom.*\n&gt;\n&gt; Not just org.*\n&gt;\n&gt; Scott Stirling\n&gt;\n&gt;\n&gt; -----Original Message-----\n&gt; From: David Corbin\n&gt; To: junit@yahoogroups.com\n&gt; Sent: 9/2/01 7:21 AM\n&gt; Subject: [junit] GUI Runner, Class Loader & excluded.properties\n&gt;\n&gt; I&#39;ve run into a problem referenced several time here on the mailing\n&gt; list,\n&gt; but the work around doesn&#39;t seem to do anything for me.\n&gt;\n&gt; I extracted excluded.properties.  Modified it to add &quot;excluded.6=org.*&quot;,\n&gt; and\n&gt; placed it my classes directory (which IS the first thing in my class\n&gt; path).\n&gt; But, when I run the gui runner, I still get:\n&gt;\n&gt; java.lang.LinkageError: Class org/xml/sax/HandlerBase violates loader\n&gt; constraints\n&gt;  at java.lang.ClassLoader.defineClass0(Native Method)\n&gt;  at java.lang.ClassLoader.defineClass(ClassLoader.java:486)\n&gt; , , ,\n&gt;\n&gt; Any ideas?  Would and include be simpler than an exclude for future\n&gt; versions?\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to\n&gt; http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n", 
+    "subject": "Re: [junit] GUI Runner, Class Loader & excluded.properties"
+}

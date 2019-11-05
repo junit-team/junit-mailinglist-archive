@@ -1,0 +1,28 @@
+{
+    "topicId": 2391, 
+    "postDate": "997975054", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "WE6mTuk1ggSuwr1lo69-FBTuPuNMERisuUlczWEj_lA8h5yyPF33HVw8X_GF5l6ny5nJmKM3Hoxp1J-1T1AtNYh94qjxbzF1gxyrPwCwh_cng-s", 
+    "nextInTime": 2397, 
+    "userId": 0, 
+    "prevInTime": 2395, 
+    "prevInTopic": 2395, 
+    "headers": {
+        "messageIdInHeader": "PEY2MmI5b3RYTGJ5Y2V6NlduYjUwMDAwZDI4NUBob3RtYWlsLmNvbT4="
+    }, 
+    "authorName": "J. B. Rainsberger", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "... Did you write these Exception subclasses yourself? If so, then likely you should have overloaded printStackTrace(PrintWriter) instead, in which case you", 
+    "contentTrasformed": false, 
+    "msgId": 2396, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_1); 16 Aug 2001 15:19:15 -0000\r\nReceived: (qmail 84438 invoked from network); 16 Aug 2001 15:17:35 -0000\r\nReceived: from unknown (10.1.10.27)\n  by l8.egroups.com with QMQP; 16 Aug 2001 15:17:35 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.149.62)\n  by mta2 with SMTP; 16 Aug 2001 15:17:35 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Thu, 16 Aug 2001 08:17:35 -0700\r\nReceived: from 199.246.40.54 by lw4fd.law4.hotmail.msn.com with HTTP;\tThu, 16 Aug 2001 15:17:34 GMT\r\nTo: junit@yahoogroups.com\r\nBcc: \r\nSubject: testing Exception subclasses\r\nDate: Thu, 16 Aug 2001 15:17:34 +0000\r\nMime-Version: 1.0\r\nContent-Type: text/plain; format=flowed\r\nMessage-ID: &lt;F62b9otXLbycez6Wnb50000d285@...&gt;\r\nX-OriginalArrivalTime: 16 Aug 2001 15:17:35.0143 (UTC) FILETIME=[93CF2370:01C12666]\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\n\r\n&gt;Please excuse my lack of Java knowledge.  Does anyone know how I can test\n&gt;overloaded printStackTrace() methods of an Exception subclass?\n\nDid you write these Exception subclasses yourself? If so, then likely you \nshould have overloaded printStackTrace(PrintWriter) instead, in which case \nyou should test *that* method and not printStackTrace(), which is easier. \n(printStackTrace() should really just call printStackTrace(System.out), \nanyhow.)\n\nThen it&#39;s really easy.\n\npublic void testStackTrace() throws Exception {\n    final String expectedStackTrace = &quot;Whatever you think it should be...&quot;;\n    StringWriter sw = new StringWriter();\n    PrintWriter pw = new PrintWriter(sw);\n    try {\n        doSomethingThatThrowsYourException();\n    }\n    catch (YourException letUsSee) {\n        letUsSee.printStackTrace(pw);\n        assertEquals(expectedStackTrace, sw.toString());\n    }\n}\n\nThat is an implementation pattern you can likely factor into a test method \nyou can use for any subclass of Exception.\n\nJBR.\n\n_________________________________________________________________\nGet your FREE download of MSN Explorer at http://explorer.msn.com/intl.asp\n\n\n", 
+    "subject": "testing Exception subclasses"
+}

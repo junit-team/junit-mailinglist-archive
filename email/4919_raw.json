@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 4920, 
+    "senderId": "c7ei1xRn-fDciWgHFFl6c8fllFOL0N6JZThZ-l33zvycsBznePc4h0sOjNgcXBtl5dJ0eiVmxbezDzF2ZrBkO4DUxICqmg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: JUnit--Tomcat--JDBC DataSource--JNDI", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... Or, if you really must test within the servlet container, try Cactus: http://jakarta.apache.org/cactus/index.html Mike -- Mike Clark Clarkware Consulting,", 
+    "msgId": 4919, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 8 May 2002 23:15:17 -0000\r\nReceived: (qmail 97875 invoked from network); 8 May 2002 23:15:16 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m11.grp.scd.yahoo.com with QMQP; 8 May 2002 23:15:16 -0000\r\nReceived: from unknown (HELO dodo.mail.pas.earthlink.net) (207.217.120.99)\n  by mta2.grp.scd.yahoo.com with SMTP; 8 May 2002 23:15:16 -0000\r\nReceived: from clarkware.com (user-33qtp7j.dialup.mindspring.com [199.174.228.243])\n\tby dodo.mail.pas.earthlink.net (8.9.3/8.9.3) with ESMTP id QAA11293\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 8 May 2002 16:15:15 -0700 (PDT)\r\nMessage-ID: &lt;3CD9B0E1.A7563360@...&gt;\r\nDate: Wed, 08 May 2002 17:12:33 -0600\r\nOrganization: Clarkware Consulting, Inc.\r\nX-Mailer: Mozilla 4.77 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: JUnit--Tomcat--JDBC DataSource--JNDI\r\nReferences: &lt;abbbtt+hg2h@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nX-Yahoo-Group-Post: member; u=33026788\r\nX-Yahoo-Profile: clarkware\r\n\r\nbofar wrote:\n\n&gt; --- In junit@y..., &quot;weimar_wann&quot; &lt;weimar_wann@y...&gt; wrote:\n&gt; &gt; I&#39;m not quite sure how to pose my question...gotten in a little\n&gt; over\n&gt; &gt; my head here. Basically, I am writing unit tests for an application\n&gt; &gt; that is running on Tomcat 4.xx. Database connectivity is achieved\n&gt; &gt; through the use of a DataSource (configured in Tomcat&#39;s server.xml,\n&gt; &gt; web.xml). The actual Java classes that I am testing do a JNDI\n&gt; lookup\n&gt; &gt; on the DataSource to get a connection to the database. The\n&gt; connection\n&gt; &gt; pooling works just fine while running in the Servlet Container, but\n&gt; &gt; my problem is testing through JUnit...does anyone know how to test\n&gt; a\n&gt; &gt; connection that needs to be run through Tomcat?\n&gt;\n&gt; Hi Weimar,\n&gt;\n&gt; I started looking at this problem myself today. Are you are picking\n&gt; up your datasource from &quot;javax.naming.InitialContext ()&quot; ?\n&gt;\n&gt; If so, the solution is to have different initialization sources\n&gt; for InitialContext, depending on whether the code is running in\n&gt; the Tomcat container, or in a Junit test.\n&gt;\n&gt; First you need a global flag to indicate whether testing is occuring\n&gt; or not. Let&#39;s put it in a class called Testing:\n&gt;\n&gt; public class Testing {\n&gt;\n&gt;   private static boolean testing = false;\n&gt;\n&gt;   public synchronized static void testingOn () {\n&gt;      testing = true;\n&gt;   }\n&gt;\n&gt;   public static boolean isTestingOn () {\n&gt;      return testing;\n&gt;   }\n&gt; }\n&gt;\n&gt; Next, in the testcase that needs the database connectivity, set\n&gt; testing on in the setup method,\n&gt;\n&gt;   protected void setup () {\n&gt;      Testing.testingOn ();\n&gt;   }\n&gt;\n&gt; Now in the code that creates InitialContext(), add the following\n&gt; lines,\n&gt;\n&gt;    InitialContext ctx = new InitialContext ();\n&gt;    if (isTestingOn) {\n&gt;       DataSource ds = new TestingDataSource ();\n&gt;       // Note that dsName should be local dnName used by\n&gt;       // this program.\n&gt;       ctx.addToEnvironment (&quot;java:comp/env/jdbc/dsName&quot;, ds);\n&gt;     }\n&gt;\n&gt; The last thing to do is write the TestingDataSource class that\n&gt; implements the DataSource interface. I&#39;m planning to look at that\n&gt; this afternoon, if you are interested in a copy, let me know.\n&gt;\n&gt; Sid Stuart\n&gt;\n&gt;\n\nOr, if you really must test within the servlet container, try Cactus:\n\n    http://jakarta.apache.org/cactus/index.html\n\nMike\n\n--\nMike Clark\nClarkware Consulting, Inc.\nhttp://www.clarkware.com\n720.851.2014\n\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 4655, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "prevInTime": 4918, 
+    "contentTrasformed": false, 
+    "postDate": "1020899553", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4907, 
+    "headers": {
+        "messageIdInHeader": "PDNDRDlCMEUxLkE3NTYzMzYwQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PGFiYmJ0dCtoZzJoQGVHcm91cHMuY29tPg=="
+    }
+}

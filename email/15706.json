@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 15707, 
+    "senderId": "1YpPWauHJKf6bXN-A47ap2fC5YmCfcKIfEsNbsSbTEwq3YalBIFbNoYoUi-qzX-_omd2EGt1SGS_m8JNstHE4flSO2YCa2Fygs5eCsQrTRxg6m_jDw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Class.getClassLoader().getResourceAsStream() fails in GUI test runners?", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "... I solved it myself. The problem was that an absolute resource path like: /users/me/some/properties/file/path.properties works fine when for the", 
+    "msgId": 15706, 
+    "profile": "tibbettj_at_verdi_sra_com", 
+    "topicId": 15698, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "messageBody": "<div id=\"ygrps-yiv-730283865\">jason r tibbetts wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m trying to test a class that loads a properties file in a special <br/>\n&gt; way. Because this class can be used in servlets (where <br/>\n&gt; this.getClass().getResourceAsStream() doesn&#39;t work, because of <br/>\n&gt; classloader issues) as well as in ordinary contexts, it takes a Class <br/>\n&gt; argument in its constructor. This Class&#39;s class loader is used to get <br/>\n&gt; the resource, as in<br/>\n&gt; <br/>\n&gt;    public Foo(Class cls, String propFilePath) {<br/>\n&gt;      ClassLoader loader = cls.getClassLoader();<br/>\n&gt;      InputStream in = loader.getResourceAsStream(propFilePath);<br/>\n&gt;    }<br/>\n&gt; <br/>\n&gt; It&#39;s usually sufficient for the caller to simply pass in <br/>\n&gt; this.getClass(). It&#39;s sufficient enough for the TestCase that tests it, <br/>\n&gt; anyway, /except/ when the test is run in the GUI TestRunner, or in code <br/>\n&gt; coverage tools like jcoverage and EMMA. In all three cases, the tests <br/>\n&gt; fail because the loader.getResourceAsStream() call returns null. The <br/>\n&gt; TestCase&#39;s setUp() constructs the Foo by passing in the TestCase&#39;s own <br/>\n&gt; class, as in:<br/>\n&gt; <br/>\n&gt;    foo = new Foo(this.getClass(), &quot;some/path&quot;);<br/>\n&gt; <br/>\n&gt; Other tests that load properties (in the usual way, via <br/>\n&gt; this.getClass.getResourceAsStream()) work just fine in all scenarios.<br/>\n&gt; <br/>\n&gt; I&#39;ve read the JUnit FAQ, mailing list archives, J.B.&#39;s book, the <br/>\n&gt; jcoverage and EMMA docs, etc., all to no avail. I know that the JUnit <br/>\n&gt; GUI test runners do use a custom classloader, but the custom <br/>\n&gt; functionality in that classloader don&#39;t appear to be relevant here. Nor <br/>\n&gt; do I want to add Foo&#39;s package to the excluded.properties, because <br/>\n&gt; that&#39;s a package that I&#39;m actively testing.<br/>\n<br/>\n </span></blockquote>I solved it myself. The problem was that an absolute resource path like:<br/>\n<br/>\n   /users/me/some/properties/file/path.properties<br/>\n<br/>\nworks fine when for the command-line tester, Ant &lt;test&gt;, and Maven test. <br/>\nBut the Swing TestRunner and code coverage tools don&#39;t resolve the <br/>\nleading &#39;/&#39; correctly, so they expect a path like:<br/>\n<br/>\n   users/me/some/properties/file/path.properties<br/>\n<br/>\nI don&#39;t know why, but I&#39;m particularly embarassed by this because it&#39;s <br/>\nnot a testing problem at all--I encountered it months ago when I first <br/>\nused this Foo class in a servlet. If I&#39;d just looked at my own old code, <br/>\nI&#39;d&#39;ve found the answer right away.<br/>\n<br/>\nBut I /still/ don&#39;t understand why I can&#39;t use the leading slash.</div>", 
+    "prevInTime": 15705, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1134749241", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15705, 
+    "headers": {
+        "inReplyToHeader": "PDQzQTE4NzZBLjEwNTA2MDNAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDQzQTJFNjM5LjMwNTA0MDdAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "referencesHeader": "PDQzQTE4NzZBLjEwNTA2MDNAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

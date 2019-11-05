@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 12982, 
+    "senderId": "UeDxT0-CdqebkA-5l3gipEqhsDl37cwUio-ZUQf7co1gnC2bDGn4AQc-GLUSRmEOQmku9g5r2CDat18qofhhiXUYw-9m3S3CaCYB2qvC", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Approach for testing privately contained list?", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... [snip] Giving us the code may have made it a bit easier to answer your question.  Nevertheless, here goes: My short answer is that I think you are going", 
+    "msgId": 12981, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 95392 invoked from network); 1 Mar 2005 15:35:50 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m24.grp.scd.yahoo.com with QMQP; 1 Mar 2005 15:35:50 -0000\r\nReceived: from unknown (HELO out1.smtp.messagingengine.com) (66.111.4.25)\n  by mta6.grp.scd.yahoo.com with SMTP; 1 Mar 2005 15:35:50 -0000\r\nReceived: from frontend2.messagingengine.com (frontend2.internal [10.202.2.151])\n\tby frontend1.messagingengine.com (Postfix) with ESMTP id 25511C5ABF4\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  1 Mar 2005 10:35:49 -0500 (EST)\r\nX-Sasl-enc: 48ZOSNufFzYK7umWuffFQg 1109691348\r\nReceived: from fast-mail.org (w018.z064003232.det-mi.dsl.cnc.net [64.3.232.18])\n\tby frontend2.messagingengine.com (Postfix) with ESMTP id 61E8957030B\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  1 Mar 2005 10:35:48 -0500 (EST)\r\nMessage-ID: &lt;42248BCC.2070900@...&gt;\r\nDate: Tue, 01 Mar 2005 10:35:40 -0500\r\nUser-Agent: Mozilla Thunderbird 0.5 (X11/20040208)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;d00qeu+ip9t@...&gt;\r\nIn-Reply-To: &lt;d00qeu+ip9t@...&gt;\r\nX-Enigmail-Version: 0.83.4.0\r\nX-Enigmail-Supports: pgp-inline, pgp-mime\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 66.111.4.25\r\nFrom: Jason Rogers &lt;jacaetevha@...&gt;\r\nSubject: Re: [junit] Approach for testing privately contained list?\r\nX-Yahoo-Group-Post: member; u=109352929\r\nX-Yahoo-Profile: jacaetev\r\n\r\nkk_oop wrote:\n\n&gt;\n&gt; Hi.\n&gt;\n&gt; In Java, we have a class MyClass that privately contains an ArrayList\n&gt; as an attribute called myList.  We were looking for a way to enable a\n&gt; JUnit test case class to call MyClass methods, then check the state of\n&gt; myList.\n&gt;\n&gt; Here&#39;s a what we are considering:\n\n[snip]\n\nGiving us the code may have made it a bit easier to answer your \nquestion.  Nevertheless, here goes:\n\nMy short answer is that I think you are going around your elbow to \nscratch your nose.  If I understand you correctly your original class \nlooks something like this:\n\npublic class MyClass {\n    private final Collection myList;\n    public MyClass() {\n       myList = new ArrayList();\n    }\n    public void doSomethingWithMyList() {\n       // ... code ...\n    }\n}\n\nAnd your test case class looks something like:\n\npublic class MyClassTest extends TestCase {\n    public void testDoSomethingWithMyList() {\n       //... test code ...\n       myClass.doSomethingWithMyList();\n    }\n}\n\nAfter you call doSomethingWithMyList() you want to get hold of myList in order to assert for the side effects.  Correct?\n\nI assume that you don&#39;t find any need for having an accessor on MyClass for myList, but I would ask why do you think it would be such a bad thing?  If you are concerned about some client of MyClass changing myList then you can make it read-only.  So your accessor would look like:\n\npublic Collection myList() {\n    return Collections.unmodifiableCollection(myList);\n}\n\nThen in your TestCase you can call the accessor to get a read-only version of myList and do your asserts that way.\n\nExample:\npublic class MyClass {\n\n    private final Collection myList;\n\n    public MyClass(Collection initialCollection) {\n        myList = new ArrayList(initialCollection);\n    }\n\n    public void duplicateEntries() {\n        myList.addAll(myList);\n    }\n\n    public Collection myList() {\n        return Collections.unmodifiableCollection(myList);\n    }\n}\n\npublic class MyClassTest extends TestCase {\n    public void testDoSomethingWithMyList() {\n        Collection initialCollection = Arrays.asList(new String[] {&quot;a&quot;, &quot;b&quot;}); \n        MyClass myClass = new MyClass(initialCollection);\n        assertEquals(initialCollection, myClass.myList());\n\n        myClass.duplicateEntries();\n        Collection expectedCollection = new ArrayList(initialCollection);\n        expectedCollection.addAll(initialCollection);\n        assertEquals(expectedCollection, myClass.myList());\n    }\n}\n\n-- \nJason Rogers\n\n&quot;I am crucified with Christ: nevertheless I live; yet not I,\nbut Christ liveth in me: and the life which I now live in \nthe flesh I live by the faith of the Son of God, who loved \nme, and gave himself for me.&quot;\n    Galatians 2:20\n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 12976, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 12980, 
+    "contentTrasformed": false, 
+    "postDate": "1109691340", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12980, 
+    "headers": {
+        "inReplyToHeader": "PGQwMHFldStpcDl0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyMjQ4QkNDLjIwNzA5MDBAZmFzdC1tYWlsLm9yZz4=", 
+        "referencesHeader": "PGQwMHFldStpcDl0QGVHcm91cHMuY29tPg=="
+    }
+}

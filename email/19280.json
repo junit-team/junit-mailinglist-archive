@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19281, 
+    "senderId": "mXdvrJBoH7CH5rhZh4uPBW2HpayHQBAImmD23JZEXxBhfQNouxsY3uQsOVsPaQpJxQJM9Jr-BjjVipU2baihjzs7", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit4, annotations and inheritance", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Nikunj, Thanks for reporting that.  What you re seeing is a result of how JUnit is written--once a method is marked @Test, no subclass may take that @Test ", 
+    "msgId": 19280, 
+    "profile": "dsaff", 
+    "topicId": 19262, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-883800911\">Nikunj,<br/>\n<br/>\nThanks for reporting that.  What you&#39;re seeing is a result of how JUnit is<br/>\nwritten--once a method is marked @Test, no subclass may take that @Test<br/>\nstatus away.  However, I can&#39;t claim that we ever explicitly considered this<br/>\ncase.<br/>\n<br/>\nJust to be sure I understand what you&#39;re trying to do--it looks like you&#39;d<br/>\nlike to create a subclass of BaseCalculatorTest, and ignore or &quot;de-testify&quot;<br/>\nthe addTest method in that subclass--I assume because that method defines a<br/>\ncontract that the subclass for some reason does not (yet) follow.  Is that<br/>\nright?<br/>\n<br/>\nI&#39;d probably achieve that by defining<br/>\n<br/>\nclass ScientificCalculator {<br/>\n<br/>\n@Test public void addTest(){<br/>\n  // nothing to see here--add is correct by inspection<br/>\n}<br/>\n}<br/>\n<br/>\nuntil such time as the appropriate definition of<br/>\nScientificCalculator.addTest becomes clear.<br/>\n<br/>\nTo the larger questions, I don&#39;t have a clear intuition.  JUnit community<br/>\nactivate!  What is your expected behavior of ScientificCalculator, as Nikunj<br/>\nhas written below?  Run as a Test, Run Ignored, don&#39;t run at all, or flag as<br/>\na configuration error?<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 4/7/07, Nikunj Manocha &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:manochanikunj@...\">manochanikunj@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt; Hi All,<br/>\n&gt;<br/>\n&gt; I am using JUnit 4. I noticed an intersting behavior:<br/>\n&gt;<br/>\n&gt; Have two classes:<br/>\n&gt;<br/>\n&gt; ========================<br/>\n&gt; public class BaseCalculatorTest {<br/>\n&gt;<br/>\n&gt; @Test<br/>\n&gt; public void addTest(){<br/>\n&gt; System.out.println(&quot;coming into BaseCalculatorTest class&quot;);<br/>\n&gt; BaseCalculator bc = new BaseCalculator();<br/>\n&gt; bc.add(1);<br/>\n&gt; Assert.assertEquals(bc.getResult(),1);<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Test<br/>\n&gt; public void addTest2(){<br/>\n&gt; System.out.println(&quot;coming into BaseCalculatorTest addTest2 class&quot;);<br/>\n&gt; BaseCalculator bc = new BaseCalculator();<br/>\n&gt; bc.add(1);<br/>\n&gt; Assert.assertEquals(bc.getResult(),1);<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt; ===============<br/>\n&gt;<br/>\n&gt; and<br/>\n&gt;<br/>\n&gt; ==================<br/>\n&gt; public class ScientificCalculator extends BaseCalculatorTest {<br/>\n&gt;<br/>\n&gt; @Ignore<br/>\n&gt; public void addTest(){<br/>\n&gt; System.out.println(&quot;coming into ScientificCalculator class&quot;);<br/>\n&gt; BaseCalculator bc = new BaseCalculator();<br/>\n&gt; bc.add(1);<br/>\n&gt; Assert.assertEquals(bc.getResult(),1);<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt; ============================<br/>\n&gt;<br/>\n&gt; The Output when run the JUnit tests:<br/>\n&gt;<br/>\n&gt; C:&#92;Documents and<br/>\n&gt; Settings&#92;nmanocha&#92;IdeaProjects&#92;JUnit4Test&#92;classes&#92;production&#92;src&gt;java<br/>\n&gt;<br/>\n&gt; -classpath ..&#92;..&#92;..&#92;src&#92;lib&#92;junit4.3&#92;j<br/>\n&gt; e com.oracle.nm.calculator.BaseCalculatorTest<br/>\n&gt; com.oracle.nm.calculator.ScientificCalculator<br/>\n&gt; JUnit version 4.3<br/>\n&gt; .coming into BaseCalculatorTest class<br/>\n&gt; .coming into BaseCalculatorTest addTest2 class<br/>\n&gt; .coming into ScientificCalculator class<br/>\n&gt; .coming into BaseCalculatorTest addTest2 class<br/>\n&gt;<br/>\n&gt; Time: 0.01<br/>\n&gt;<br/>\n&gt; OK (4 tests)<br/>\n&gt;<br/>\n&gt; ================================<br/>\n&gt;<br/>\n&gt; Interesting behavior is I was expecting not to be seeing &quot;coming<br/>\n&gt; into<br/>\n&gt; ScientificCalculator class&quot; line in the output for two reasons:<br/>\n&gt; 1. I haven&#39;t put the annotation @Test in front of the<br/>\n&gt; ScientificCalculator&#39;s<br/>\n&gt; addTest method. And annotation behavior is not inherited for method<br/>\n&gt; types.<br/>\n&gt; 2. I explicitly put the @Ignore annotation in front of the<br/>\n&gt; ScientificCalculator&#39;s addTest method. This annotation should have<br/>\n&gt; made<br/>\n&gt; JUnit runner ignore this method. Still the method is being called.<br/>\n&gt;<br/>\n&gt; Can someone explain why this is happening?<br/>\n&gt;<br/>\n&gt; Thanks.<br/>\n&gt;<br/>\n&gt; Regards,<br/>\n&gt; Nikunj<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 19279, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1176410585", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19262, 
+    "headers": {
+        "inReplyToHeader": "PGV2OWRqaCsxMGVhY0BlR3JvdXBzLmNvbT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwNDEyMTM0M3QzMmM3OGNlOW01NDliMDM3MjYzMjIyNzFjQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGV2OWRqaCsxMGVhY0BlR3JvdXBzLmNvbT4="
+    }
+}

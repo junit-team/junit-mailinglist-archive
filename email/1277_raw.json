@@ -1,0 +1,28 @@
+{
+    "topicId": 1267, 
+    "postDate": "990620444", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Matt Caswell &lt;m.caswell@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "NEf4eqRNszWC08RT97hxmsmjFzRB3qcemaopf8JwIPOAIAP90s8UBzhfMgW_R0aZb5heiY4XMgPUkAM2kJB89A0tznDHzIQqIQYHObSTyw", 
+    "nextInTime": 1278, 
+    "userId": 0, 
+    "prevInTime": 1276, 
+    "prevInTopic": 1276, 
+    "headers": {
+        "messageIdInHeader": "PDI5Qzg0Q0YyNUQwM0Q1MTE5RkNGMDA5MDI3QjY3QjVBNzQwNzNFQEVYQ0hBTkdFMT4="
+    }, 
+    "authorName": "Matt Caswell", 
+    "numMessagesInTopic": 26, 
+    "msgSnippet": "Q. What are we trying to do when we do unit testing? A. We are testing all of the interfaces exposed by a unit to external components to ensure that those", 
+    "contentTrasformed": false, 
+    "msgId": 1277, 
+    "nextInTopic": 1279, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;matt.caswell@...&gt;\r\nX-Sender: matt.caswell@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 23 May 2001 12:20:54 -0000\r\nReceived: (qmail 1822 invoked from network); 23 May 2001 12:20:53 -0000\r\nReceived: from unknown (10.1.10.142) by l8.egroups.com with QMQP; 23 May 2001 12:20:53 -0000\r\nReceived: from unknown (HELO relay1.hughesrae.co.uk) (212.126.105.136) by mta3 with SMTP; 23 May 2001 12:20:53 -0000\r\nReceived: from exchange1.hughesrae.co.uk (mail.hughesrae.co.uk [10.121.202.3]) by relay1.hughesrae.co.uk (8.11.2/8.11.2) with ESMTP id f4NCNTw17357 for &lt;junit@yahoogroups.com&gt;; Wed, 23 May 2001 13:23:29 +0100\r\nReceived: by EXCHANGE1 with Internet Mail Service (5.5.2653.19) id &lt;LBPBQNZA&gt;; Wed, 23 May 2001 13:20:51 +0100\r\nMessage-ID: &lt;29C84CF25D03D5119FCF009027B67B5A74073E@EXCHANGE1&gt;\r\nReply-To: junit@yahoogroups.com\r\nTo: &quot;&#39;junit@yahoogroups.com &#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] How to test protected and private methods/ fields?\r\nDate: Wed, 23 May 2001 13:20:44 +0100\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nList-Unsubscribe: &lt;mailto:junit-unsubscribe@yahoogroups.com&gt;\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nX-eGroups-From: Matt Caswell &lt;matt.caswell@...&gt;\r\nFrom: Matt Caswell &lt;m.caswell@...&gt;\r\n\r\nQ. What are we trying to do when we do &quot;unit&quot; testing?\nA. We are testing all of the interfaces exposed by a &quot;unit&quot; to external\ncomponents to ensure that those interfaces react as we would expect them to\nin all reasonable scenarios that we can think of.\n\nSo to answer the question about private/protected methods: Does a private\nmethod expose itself to external components? No - therefore we do not need\nto test them. Errors within private methods will become apparent from\ntesting the other interfaces.\n\nDo we need to test protected methods? Yes - protected methods are accessible\nexternal to the unit and therefore form part of that unit&#39;s interface. If\nyou are going to call protected methods there are four ways that you could\ndo it that I can think of:\na)Subclass the class you are testing\nb)Use reflection\nc)Don&#39;t use protected methods, always use public\nd)Place the test code in the same package\n\nOption &quot;a&quot; is a bit icky, and will only work in certain situations anyway\n(how do you test a &quot;final&quot; class? Java only has single inheritance so how do\nyou extend TestCase as well...etc). Option &quot;b&quot; will work but is also icky -\nand a sledgehammer to crack a nut. Option &quot;c&quot; will work but I would always\nbe loathe to do it. My instinct is always to place as much restriction as\npossible on a method (the more I expose the more I have to maintain and the\nhigher coupling I could potentially have). Option &quot;d&quot; will work and is the\nsimplest to do.\n\nI recommend option d. As has been previously suggested I always place my\ntest code in the same package but a separate directory to maintain\nseparation of the two things.\n\nMatt\n\n\n-----Original Message-----\nFrom: Jens Andersen\nTo: junit@yahoogroups.com\nSent: 23/05/01 09:44\nSubject: [junit] How to test protected and private methods/ fields?\n\nHi all,\n\nFirst of all I have to mention that I&#39;m pretty novice when it comes to\nuse\nJUnit for writing unittests. But I have a question which I hope some of\nyou\ncan help me with - it&#39;s regarding testing private/protected methods and\nhow\nto organize my test package.\n\nFirst the package. I have read to articles regarding test (&quot;Junit best\npractices&quot; from JavaWorld and &quot;Incremental development with Ant and\nJUnit&quot;\nfrom developerWorks). In the JBT article Andy Schneider advice you to\nkeep\ntests in the same location as the source code. And in the Incremental...\narticle Malcolm Davis advice you to make a separate package. Which\napproach\nis the best to use?\n\nI must admit that I like the idea of making a separate package but then\nagain - how do I then test private and protected methods? And if I keep\nthe\ntests in the same location as the source code - who do I then test\nprivate\nmethods?\n\nI would very much appreciate if some of you could give me a little\nexample\n\nKind regards,\n\nJ. Andersen\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "RE: [junit] How to test protected and private methods/ fields?"
+}

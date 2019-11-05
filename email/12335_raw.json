@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12336, 
+    "senderId": "Xt6iTqOhm4aLB_RkQAsISEw79QfAzUxsXgf-ZBVBkA-jit31eOz4Rc9Etfg_VPcvtYS4I3rANlha3jIAfrLzAXdBQTsqNbtbwH4", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] accessing System.out program output from a junit test", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "Why not this? private OutputStream systemOut; public void setUp() { systemOut = System.out; ByteArrayOutputStream out = new ByteArrayOutputStream(); ", 
+    "msgId": 12335, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 63958 invoked from network); 18 Nov 2004 17:27:42 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m25.grp.scd.yahoo.com with QMQP; 18 Nov 2004 17:27:42 -0000\r\nReceived: from unknown (HELO rproxy.gmail.com) (64.233.170.207)\n  by mta6.grp.scd.yahoo.com with SMTP; 18 Nov 2004 17:27:42 -0000\r\nReceived: by rproxy.gmail.com with SMTP id z35so1063787rne\n        for &lt;junit@yahoogroups.com&gt;; Thu, 18 Nov 2004 09:27:38 -0800 (PST)\r\nDomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;\n        s=beta; d=gmail.com;\n        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;\n        b=VKXYhVzn6dzPc0RPjdHu7lXDNUo4WN6CtZQP9iTKxdBNus4X8e7i4juJqNfHBno3HI4+tdhoPjvh0qYavOD7hKO/P6UP2wuzq2ARV58NDSs/pWCyeMJ9dMFr3kp8nSSngu+dO6jEhuTWadSC/XNl5+khBhX7V0iR0UgwDfrTXOk=\r\nReceived: by 10.38.104.60 with SMTP id b60mr255259rnc;\n        Thu, 18 Nov 2004 09:27:38 -0800 (PST)\r\nReceived: by 10.38.74.49 with HTTP; Thu, 18 Nov 2004 09:27:38 -0800 (PST)\r\nMessage-ID: &lt;4fff064f04111809274604c931@...&gt;\r\nDate: Thu, 18 Nov 2004 09:27:38 -0800\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;1100749777.2873.223.camel@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nReferences: &lt;cne3jk+9039@...&gt; &lt;419BBD28.9090908@...&gt;\n\t &lt;1100749777.2873.223.camel@...&gt;\r\nX-eGroups-Remote-IP: 64.233.170.207\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nReply-To: Kevin Klinemeier &lt;zipwow@...&gt;\r\nSubject: Re: [junit] accessing System.out program output from a junit test\r\nX-Yahoo-Group-Post: member; u=198331568\r\nX-Yahoo-Profile: zipwow\r\n\r\nWhy not this?\n\n\nprivate OutputStream systemOut;\n\npublic void setUp() {\n   systemOut = System.out;\n   ByteArrayOutputStream out = new ByteArrayOutputStream();\n   System.setOut(new PrintStream(out));\n}\n\npublic void tearDown() {\n   System.setOut(systemOut);\n}\n\n\n-Kevin\nOn Thu, 18 Nov 2004 14:49:37 +1100, Peter Haig &lt;peter@...&gt; wrote:\n&gt; \n&gt; \n&gt; That&#39;s very clever, but how do I set it back? i.e. If I have lots of\n&gt; testcases, they all run in the same VM, and once set it seems to be set\n&gt; for every subsequent testcase.\n&gt; \n&gt; Best Rgds, peter\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; On Thu, 2004-11-18 at 08:05, Kevin Lawrence wrote:\n&gt; &gt;      ByteArrayOutputStream out = new ByteArrayOutputStream();\n&gt; &gt;      System.setOut(new PrintStream(out));\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; gibbyjohn wrote:\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt; Is it possible to compare error messages that a program prints out\n&gt; &gt; to\n&gt; &gt; &gt; what I know the error message should be, for a given input, in a\n&gt; &gt; &gt; junit test?  That is, sort of intercept the output from\n&gt; &gt; &gt; System.out.println and look at it.\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt; Yahoo! Groups Links\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt; &gt;\n&gt; &gt;\n&gt; &gt;                         Yahoo! Groups Sponsor\n&gt; &gt;                                           ADVERTISEMENT\n&gt; &gt;                                              click here\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; ______________________________________________________________________\n&gt; &gt; Yahoo! Groups Links\n&gt; &gt;       * To visit your group on the web, go to:\n&gt; &gt;         http://groups.yahoo.com/group/junit/\n&gt; &gt;\n&gt; &gt;       * To unsubscribe from this group, send an email to:\n&gt; &gt;         junit-unsubscribe@yahoogroups.com\n&gt; &gt;           \n&gt; &gt;       * Your use of Yahoo! Groups is subject to the Yahoo! Terms of\n&gt; &gt;         Service.\n&gt; &gt;\n&gt; \n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt; \n&gt;\n\n", 
+    "profile": "zipwow", 
+    "topicId": 12326, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 198331568, 
+    "prevInTime": 12334, 
+    "contentTrasformed": false, 
+    "postDate": "1100798858", 
+    "canDelete": false, 
+    "nextInTopic": 12339, 
+    "prevInTopic": 12331, 
+    "headers": {
+        "inReplyToHeader": "PDExMDA3NDk3NzcuMjg3My4yMjMuY2FtZWxAbG9jYWxob3N0LmxvY2FsZG9tYWluPg==", 
+        "messageIdInHeader": "PDRmZmYwNjRmMDQxMTE4MDkyNzQ2MDRjOTMxQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGNuZTNqays5MDM5QGVHcm91cHMuY29tPiA8NDE5QkJEMjguOTA5MDkwOEBkaWFtb25kLXNreS5jb20+CSA8MTEwMDc0OTc3Ny4yODczLjIyMy5jYW1lbEBsb2NhbGhvc3QubG9jYWxkb21haW4+"
+    }
+}

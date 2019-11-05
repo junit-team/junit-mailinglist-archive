@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21675, 
+    "senderId": "ELUnuOqChCpfoMA4_kljvk47GzVPP3iMt5s6Grzimbu2sn0R5edaQu5U6bD-ldaWjNj8QessheBA5TReTkBhE4eQiabuIia385qIkObHBjc", 
+    "systemMessage": false, 
+    "subject": "Re: Change generic signature of assert that", 
+    "from": "&quot;yme0987654321&quot; &lt;yme0987654321@...&gt;", 
+    "authorName": "yme0987654321", 
+    "msgSnippet": "That fails to compile for simpler cases. Sigh. Seems like Generics are just not Generic enough.", 
+    "msgId": 21674, 
+    "profile": "yme0987654321", 
+    "topicId": 21666, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 386557907, 
+    "messageBody": "<div id=\"ygrps-yiv-235150161\">That fails to compile for simpler cases. Sigh. Seems like Generics are just not &quot;Generic&quot; enough.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Among other things, it allows<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; On Fri, May 22, 2009 at 2:27 PM, yme0987654321 &lt;yme0987654321@...&gt; wrote:<br/>\n&gt; &gt; hasEntry is part of the Hamcrest library. Here is the signature:<br/>\n&gt; &gt;<br/>\n&gt; &gt; public static &lt;K, V&gt; org.hamcrest.Matcher&lt;java.util.Map&lt;K, V&gt;&gt; hasEntry(K key, V value)<br/>\n&gt; <br/>\n&gt; What if that were changed to<br/>\n&gt; <br/>\n&gt; public static &lt;K, V&gt; org.hamcrest.Matcher&lt;? super java.util.Map&lt;K, V&gt;&gt;<br/>\n&gt; hasEntry(K key, V value)<br/>\n&gt; <br/>\n&gt; &gt; I&#39;m curious if you know of a reason that<br/>\n&gt; &gt;<br/>\n&gt; &gt; public static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; matcher)<br/>\n&gt; &gt;<br/>\n&gt; &gt; is wrong. Does it break something that you know of?<br/>\n&gt; <br/>\n&gt; Among other things, it allows<br/>\n&gt; <br/>\n&gt; assertThat(new Object(), containsString(&quot;a&quot;));<br/>\n&gt; <br/>\n&gt; Any proposal to change assertThat will probably have to identify which<br/>\n&gt; of the issues identified in<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.google.com/group/hamcrest-dev/browse_thread/thread/a98fb6b5c22386cf/d073d6ba826787c8?lnk=gst&q=status#d073d6ba826787c8\">http://groups.google.com/group/hamcrest-dev/browse_thread/thread/a98fb6b5c22386cf/d073d6ba826787c8?lnk=gst&q=status#d073d6ba826787c8</a><br/>\n&gt; it solves/breaks.  Sorry.<br/>\n&gt; <br/>\n&gt;    David Saff<br/>\n&gt; <br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@&gt; wrote:<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; On Fri, May 22, 2009 at 1:18 PM, yme0987654321 &lt;yme0987654321@&gt; wrote:<br/>\n&gt; &gt;&gt; &gt; Consider the following case:<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; Map&lt;String, Class&lt;? extends Serializable&gt;&gt; result = null;<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; assertThat(result, hasEntry(&quot;Key&quot;, java.util.Date.class));<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; This will not compile, but if the method signature of assertThat was changed to:<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; public static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; matcher)<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; It would compile.<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; I would seem that it would be an appropriate change for such cases (unless there is something I don&#39;t understand about the deep implications of Generics).<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; Sigh.<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; Unfortunately, it was all too easy for the hamcrest team, a couple<br/>\n&gt; &gt;&gt; months ago, to come up with a list of 6 or 7 assertThat statements<br/>\n&gt; &gt;&gt; that all looked like they should obviously compile or not compile, but<br/>\n&gt; &gt;&gt; no Java typing that would make them all work.  It does get deep, and<br/>\n&gt; &gt;&gt; in some cases, compiler-dependent, if I remember correctly.<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; However, we did find that in some cases, the signature of the<br/>\n&gt; &gt;&gt; _Matcher_ could be improved.  What&#39;s the signature of hasEntry?<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; This is also pushing me to keep on my &quot;Dotmesh&quot; project, which would allow this:<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; assertThat(result.entrySet()).contains(entry(&quot;Key&quot;, Date.class));<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; [if the &quot;entry&quot; factory convenience method were written]<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; Thanks,<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt;    David Saff<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; ------------------------------------<br/>\n&gt; &gt;<br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21673, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1243020539", 
+    "canDelete": false, 
+    "nextInTopic": 21675, 
+    "prevInTopic": 21673, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDkwNTIyMTE0N3IyYzJhOWY2M3JhMTM0NTMzZTg4OGM5NjNjQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGd2NnVkcis3YzN0QGVHcm91cHMuY29tPg=="
+    }
+}

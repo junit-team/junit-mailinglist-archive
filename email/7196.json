@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 7197, 
+    "senderId": "o9R2f60ud1Xn2BWyibiYYW2Q4Ta8Z3N-Xoka3Gwf0jCRqnMO4Cg2LQFxFai82fa8eLFjGHlWk9eW3sEQO3WdN6IVZiACwBoDNMOg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Failed to invoke suite():java.lang.StackOverflowError", 
+    "from": "Pradeep Bojan &lt;pbojan@...&gt;", 
+    "authorName": "Pradeep Bojan", 
+    "msgSnippet": "The test suite method must be replaced as follows: public static Test suite() { // TestSuite suite = new TestSuite(); TestSuite sui = new TestSuite();  // fun", 
+    "msgId": 7196, 
+    "profile": "pradeep_kots", 
+    "topicId": 7155, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 140706575, 
+    "messageBody": "<div id=\"ygrps-yiv-717232928\">The test suite method must be replaced as follows:<br/>\n<br/>\npublic static Test suite()<br/>\n{<br/>\n // TestSuite suite = new TestSuite();<br/>\n TestSuite sui = new TestSuite();  // fun name and variable must be<br/>\ndifferent ..<br/>\n //suite.addTest(OverviewTest.suite());<br/>\n sui.addTest(OverviewTest.suite());  // This suite method is different ..<br/>\n // return suite()   <br/>\n //      This recursively calls the suite method which causes stack overflow<br/>\nas there is no terminating condition.  <br/>\n return sui;   <br/>\n}<br/>\n<br/>\n<br/>\nprotected void teraDown(){<br/>\n            bean=null;<br/>\n<br/>\nThe methods in TestCase are:<br/>\n        SetUp()<br/>\n        Suite() and <br/>\n        tearDown()  and not teraDown() ....  <br/>\n <br/>\n <br/>\n<br/>\n[Pradeep Bojan] <br/>\n <br/>\n <br/>\n -----Original Message-----<br/>\nFrom: monikasha [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:monikasha@...\">monikasha@...</a>]<br/>\nSent: Monday, March 10, 2003 10:26 PM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] Failed to invoke suite():java.lang.StackOverflowError<br/>\n<br/>\n<br/>\nHi,<br/>\nI am trying to create a TestSuite() containing just one <br/>\nTest.PLease(see the code attached),But I am getting &quot;Failed to invoke <br/>\nsuite():java.lang.StackOverflowError&quot; every time i run it.The <br/>\ninteresting thing is that  the test runs fine when I run it from <br/>\nindividually.Please guide.<br/>\n<br/>\n<br/>\npackage com.bms.csd.tests.beans;<br/>\n<br/>\nimport junit.framework.*;<br/>\nimport com.bms.csd.beans.*;<br/>\nimport com.bms.csd.helpers.*;<br/>\nimport com.bms.csd.common.*;<br/>\n<br/>\npublic class BeanTests{<br/>\n<br/>\n      public static void main(String[] args){<br/>\n            junit.textui.TestRunner.run(suite());<br/>\n      }<br/>\n<br/>\n      public static Test suite(){<br/>\n            TestSuite suite=new TestSuite();<br/>\n            suite.addTest(OverviewTest.suite());<br/>\n            <br/>\n            return suite();<br/>\n      }<br/>\n<br/>\n}<br/>\n===========================<br/>\n<br/>\npackage com.bms.csd.tests.beans;<br/>\n<br/>\nimport junit.framework.*;<br/>\nimport com.bms.csd.helpers.*;<br/>\nimport com.bms.csd.common.*;<br/>\nimport com.bms.csd.beans.*;<br/>\nimport java.util.*;<br/>\n<br/>\npublic class OverviewTest extends TestCase {<br/>\n      protected OverviewHelper bean=null;<br/>\n<br/>\n      public OverviewTest (String name) {<br/>\n            super (name);<br/>\n      }<br/>\n<br/>\n      //public static void main (String [] args){<br/>\n      //      junit.textui.TestRunner.run (suite());<br/>\n      //}<br/>\n<br/>\n      public static Test suite () {<br/>\n            return new TestSuite (OverviewTest.class);<br/>\n      }<br/>\n<br/>\n      protected void setUp() {<br/>\n            bean=new OverviewHelper();<br/>\n      }<br/>\n<br/>\n      protected void teraDown(){<br/>\n            bean=null;<br/>\n      }<br/>\n<br/>\n      //  test for protocolNumber<br/>\n<br/>\n      public void testGetOverview(){      <br/>\n            try{<br/>\n                  StudyOverviewBean a = null;<br/>\n                  a=bean.getOverview(&quot;CV168-007 ST&quot;,&quot;C14-ADME&quot;);<br/>\n                  assertNotNull(a);<br/>\n            }catch(DataAccessException e){<br/>\n                  fail(&quot;exception&quot;+e);<br/>\n            }<br/>\n      }      <br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nYahoo! Groups Sponsor\t<br/>\n<br/>\nADVERTISEMENT<br/>\n <br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://rd.yahoo.com/M=246920.2960106.4328965.2848452/D=egroupweb/S=17050069\">http://rd.yahoo.com/M=246920.2960106.4328965.2848452/D=egroupweb/S=17050069</a><br/>\n05:HM/A=1481646/R=0/*<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.gotomypc.com/u/tr/yh/cpm/grp/300_flake/g22lp\">http://www.gotomypc.com/u/tr/yh/cpm/grp/300_flake/g22lp</a><br/>\n?Target=mm/g22lp.tmpl&gt; \t<br/>\n <br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://us.adserver.yahoo.com/l?M=246920.2960106.4328965.2848452/D=egroupmai\">http://us.adserver.yahoo.com/l?M=246920.2960106.4328965.2848452/D=egroupmai</a><br/>\nl/S=:HM/A=1481646/rand=470381548&gt; \t<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n<br/>\n<br/>\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a>&gt; . <br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 7195, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1047442794", 
+    "canDelete": false, 
+    "nextInTopic": 7197, 
+    "prevInTopic": 7193, 
+    "headers": {
+        "messageIdInHeader": "PEQyQjhGNDc5QzQyRDYwNERCMjYwRDIzNDIxQUFGNDZBQkQ3NDgyQGNoZW5uYWktbWFpbC5zZWxlY3RpY2EuY29tPg=="
+    }
+}

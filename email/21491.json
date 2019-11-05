@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 21492, 
+    "senderId": "VB8DZlUlh5_OiRcCqgVdxBrEwEeia-IWgdnhY5FXof0odrGftjiJOHlpM7kojS-gakkophgoo0LGGkds_pdGndZ3B7tmIQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Race condition with timeouts", 
+    "from": "Nat Pryce &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "A timeout of 10ms is very small, too close to the granularity of the OS clock for me to feel comfortable. How does the behaviour change as you change the", 
+    "msgId": 21491, 
+    "profile": "nat_pryce", 
+    "topicId": 21487, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "messageBody": "<div id=\"ygrps-yiv-1918733410\">A timeout of 10ms is very small, too close to the granularity of the<br/>\nOS clock for me to feel comfortable.<br/>\n<br/>\nHow does the behaviour change as you change the timeout durations?<br/>\n<br/>\n--Nat<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 09/04/2009, kentb &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:kentb@...\">kentb@...</a>&gt; wrote:<br/>\n&gt; All,<br/>\n&gt;<br/>\n&gt; This is a test of the &quot;with enough eyeballs, all bugs are shallow&quot;<br/>\n&gt; hypothesis.<br/>\n&gt;<br/>\n&gt; I am experiencing a race condition with timeouts. Say I have a test like<br/>\n&gt; this:<br/>\n&gt;<br/>\n&gt; \tpublic class WaitTooLong {<br/>\n&gt; \t\t@Test(timeout=10) public void ripVanWinkle() throws<br/>\n&gt; InterruptedException {<br/>\n&gt; \t\t\tThread.sleep(100);<br/>\n&gt; \t\t}<br/>\n&gt; \t}<br/>\n&gt;<br/>\n&gt; When I run this I get one of two errors, non-deterministically:<br/>\n&gt;<br/>\n&gt; java.lang.InterruptedException: sleep interrupted<br/>\n&gt; \tat java.lang.Thread.sleep(Native Method)<br/>\n&gt; \tat UnpredictableTest.takeTen(UnpredictableTest.java:5)<br/>\n&gt; \t...<br/>\n&gt;<br/>\n&gt; or<br/>\n&gt;<br/>\n&gt; java.lang.Exception: test timed out after 10 milliseconds<br/>\n&gt; \tat<br/>\n&gt; org.junit.internal.runners.statements.FailOnTimeout.evaluate(FailOnTimeout.j<br/>\n&gt; ava:48)<br/>\n&gt; \t...<br/>\n&gt;<br/>\n&gt; Here&#39;s the relevant code in JUnit (FailOnTimeout):<br/>\n&gt;<br/>\n&gt; \tpublic void evaluate() throws Throwable {<br/>\n&gt; \t\tExecutorService service=<br/>\n&gt; Executors.newSingleThreadExecutor();<br/>\n&gt; \t\tCallable&lt;Object&gt; callable= new Callable&lt;Object&gt;() {<br/>\n&gt; \t\t\tpublic Object call() throws Exception {<br/>\n&gt; \t\t\t\ttry {<br/>\n&gt; \t\t\t\t\tfNext.evaluate();<br/>\n&gt; \t\t\t\t} catch (Throwable e) {<br/>\n&gt; \t\t\t\t\tthrow new ExecutionException(e);<br/>\n&gt; \t\t\t\t}<br/>\n&gt; \t\t\t\treturn null;<br/>\n&gt; \t\t\t}<br/>\n&gt; \t\t};<br/>\n&gt; \t\tFuture&lt;Object&gt; result= service.submit(callable);<br/>\n&gt; \t\tservice.shutdown();<br/>\n&gt; \t\ttry {<br/>\n&gt; \t\t\tboolean terminated=<br/>\n&gt; service.awaitTermination(fTimeout, TimeUnit.MILLISECONDS);<br/>\n&gt; \t\t\tif (!terminated)<br/>\n&gt; \t\t\t\tservice.shutdownNow();<br/>\n&gt; \t\t\tresult.get(0, TimeUnit.MILLISECONDS); // throws the<br/>\n&gt; exception if one occurred during the invocation<br/>\n&gt; \t\t} catch (TimeoutException e) {<br/>\n&gt; \t\t\tthrow new Exception(String.format(&quot;test timed out<br/>\n&gt; after %d milliseconds&quot;, fTimeout));<br/>\n&gt; \t\t} catch (ExecutionException e) {<br/>\n&gt; \t\t\tthrow unwrap(e);<br/>\n&gt; \t\t}<br/>\n&gt; \t}<br/>\n&gt;<br/>\n&gt; It seems that sometimes the TimeoutException gets thrown and caught and the<br/>\n&gt; Exception thrown. Sometimes, though, the InterruptedException that is<br/>\n&gt; terminating the test-running thread gets thrown/caught first. I&#39;ve stared at<br/>\n&gt; this enough minutes to be ready for help.<br/>\n&gt;<br/>\n&gt; One strangeness is that if I run the test programmatically<br/>\n&gt; (&quot;JUnitCore.runClass(WaitTooLong.class)&quot;) the Exception is always thrown. If<br/>\n&gt; I run the test with the Eclipse JUnit runner or with JUnit Max, the results<br/>\n&gt; are non-deterministic.<br/>\n&gt;<br/>\n&gt; Any ideas for making this deterministic? I would prefer the second result<br/>\n&gt; above, if I can get it.<br/>\n&gt;<br/>\n&gt; Regards,<br/>\n&gt;<br/>\n&gt; Kent Beck<br/>\n&gt; Three Rivers Institute<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n<br/>\n-- <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.natpryce.com\">http://www.natpryce.com</a> </span></blockquote></div>", 
+    "prevInTime": 21490, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1239313340", 
+    "canDelete": false, 
+    "nextInTopic": 21492, 
+    "prevInTopic": 21490, 
+    "headers": {
+        "inReplyToHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PDE3ZmE1M2QwOTA0MDkxNDQybjVlNThjYTI0dDJlYmI4ZDkxYzU2MmExZUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENGQjU3RjExN0NFOTRCMDE5NkNEOEJGNjVCOEY3MERFQGtlbnRzcGF2aWxpb24+"
+    }
+}

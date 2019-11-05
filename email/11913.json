@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 11914, 
+    "senderId": "OuZK7EwllLkmYTVx2N8QM-WV5gabBajgWiF5ZgIVHSDDcdgfyO9RQcK3-4uerjKwP35G1RwirZ_KgSag5UH0u6EnA7rJrXlXg9I", 
+    "systemMessage": false, 
+    "subject": "garbage-collection of tests", 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "authorName": "Timothy Wall", 
+    "msgSnippet": "I recently encountered a problem when running a lot (~500) of UI tests which probably wouldn t show up for non-UI tests until you get in the 100K of tests. ", 
+    "msgId": 11913, 
+    "topicId": 11913, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106503903, 
+    "messageBody": "<div id=\"ygrps-yiv-662953205\">I recently encountered a problem when running a lot (~500) of UI tests <br/>\nwhich probably wouldn&#39;t show up for non-UI tests until you get in the <br/>\n100K of tests.<br/>\n<br/>\nAfter a TestCase instance is run, it is usually never garbage-collected <br/>\nor made available for GC until the runner itself is disposed on program <br/>\nexit (at least with the default runners, and probably with most custom <br/>\nrunners as well).  Not a big deal if you have just a few basic data <br/>\nfields or not too many tests, but if the runner has 1000s of tests and <br/>\nyou don&#39;t have enough resources for all tests to be resident at once, <br/>\nyou&#39;re in trouble.<br/>\n<br/>\nIn my case, each UI test usually included assignment of several member <br/>\nfields in its setUp method.   Unless these are explicitly nulled in the <br/>\ntearDown method, the references are kept around until the test runner <br/>\nterminates, since the TestCase instance itself is never GCd.  This <br/>\ncauses real problems when the fields are resource-intensive or the <br/>\nresources are limited (think Windows and UI resources).<br/>\n<br/>\nYes, it&#39;s possible to explicitly blank certain fields when necessary, <br/>\nbut that&#39;s only a hair removed from explicitly freeing memory, and a <br/>\npain when there are some 500-odd tests that would need to be changed <br/>\n(no refactoring tool for *that* yet, I&#39;m afraid).<br/>\n<br/>\nThere are several solutions:<br/>\n1) explicitly null fields in tearDown (this smells, because that&#39;s what <br/>\nGC is for)<br/>\n2) make a runner that doesn&#39;t keep references to test case instances <br/>\nafter they&#39;re run<br/>\n3) use reflection to auto-null all test case fields (hackishly neat, <br/>\nbut still smells)<br/>\n<br/>\nAny other ideas, suggestions?</div>", 
+    "prevInTime": 11912, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1094653354", 
+    "canDelete": false, 
+    "nextInTopic": 11921, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDg2RkU3RDVDLTAxQTItMTFEOS04NkY4LTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4="
+    }
+}

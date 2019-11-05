@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 5677, 
+    "senderId": "RgxsDTHliKCxU8R7xFZ9JYHEJX_JSHbH_qgV-SUwvBUSK7OaqUmn4S09Sy1FRwsujAj-YI9LyiYE9c6EDdg6UwcrxH2yfdPIM1DeTHw-", 
+    "systemMessage": false, 
+    "subject": "Re: Just replaced my 3.7 jar with 3.8", 
+    "from": "&quot;ericheikkila&quot; &lt;ericheikkila@...&gt;", 
+    "authorName": "ericheikkila", 
+    "msgSnippet": "Ok..after some more investigation, it looks like there is some problem with the class loader I m using, and whatever Websphere is doing to load classes.  This", 
+    "msgId": 5676, 
+    "rawEmail": "Return-Path: &lt;ericheikkila@...&gt;\r\nX-Sender: ericheikkila@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_0_1); 29 Aug 2002 14:54:27 -0000\r\nReceived: (qmail 50518 invoked from network); 29 Aug 2002 14:54:27 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m15.grp.scd.yahoo.com with QMQP; 29 Aug 2002 14:54:27 -0000\r\nReceived: from unknown (HELO n15.grp.scd.yahoo.com) (66.218.66.70)\n  by mta2.grp.scd.yahoo.com with SMTP; 29 Aug 2002 14:54:27 -0000\r\nReceived: from [66.218.67.142] by n15.grp.scd.yahoo.com with NNFMP; 29 Aug 2002 14:54:26 -0000\r\nDate: Thu, 29 Aug 2002 14:54:26 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Just replaced my 3.7 jar with 3.8\r\nMessage-ID: &lt;aklcj2+mg7t@...&gt;\r\nIn-Reply-To: &lt;3D6D162A.5020900@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2751\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;ericheikkila&quot; &lt;ericheikkila@...&gt;\r\nX-Yahoo-Group-Post: member; u=68550261\r\nX-Yahoo-Profile: ericheikkila\r\n\r\nOk..after some more investigation, it looks like there is some \nproblem with the class loader I&#39;m using, and whatever Websphere is \ndoing to load classes.  This was not an issue with 3.7.  Now, \nhowever, every time a test tries to get an initial context, it blows \nup (complaining about not being able to find the ORB class).\n\nArgh.\n\nHere&#39;s the code I&#39;m now using to load the tests...\n\n---------------------------------------------------------------\n\nTestSuite suite = new TestSuite();\n\nLoadingTestCollector loader = new LoadingTestCollector();\nEnumeration tests = loader.collectTests();\n\t\t\nTestCaseClassLoader classLoader = new TestCaseClassLoader();\nString className;\n\nProperties testProperties = new Properties();\n\ntry {\n\tFileInputStream file = new FileInputStream(new File\n(EXCLUDED_TESTS));\n\ttestProperties.load(file);\n} catch (Exception e) {\n}\n\t\t\nList excludedPackages = getExcludedPackages(testProperties);\n\t\nwhile (tests.hasMoreElements()) {\n\t\n\tclassName = (String)tests.nextElement();\n\n\tSystem.out.println(&quot;CLASSNAME = &quot; + className);\n\n\tif (isTestExcluded(className, testProperties, \nexcludedPackages)) {\n\t\tcontinue;\n\t}\n\t\t\t\n\tClass[] classArgs = new Class[] { String.class };\n\tObject[] constructorArgs = new Object[] { new String\n(className) };\n\t\t\t\n\tClass loadedClass = classLoader.loadClass(className, true);\n//\tjava.lang.reflect.Constructor theConstructor = \nloadedClass.getConstructor(classArgs);\n\n\tjava.lang.reflect.Constructor[] theConstructors = \nloadedClass.getConstructors();\n//\tObject theClass = theConstructor.newInstance(constructorArgs);\n\tObject theClass = null;\n\t\n\ttry {\n\t\ttheConstructors[0].newInstance(null);\n\t}\n\tcatch (IllegalArgumentException iae) {\n\t\tSystem.out.println(&quot;Trying string constructor&quot;);\n\t\ttheClass = theConstructors[0].newInstance\n(constructorArgs);\n\t}\n\t\t\n\ttry {\n\t\tMethod suiteMethod = loadedClass.getDeclaredMethod\n(&quot;suite&quot;, new Class[0]);\n\t\tsuite.addTest((Test)suiteMethod.invoke(theClass, new \nClass[0]));\n\t}\n\tcatch (NoSuchMethodException nsme) {\n\t\tSystem.out.println(&quot;Skipping class (&quot; + className \n+ &quot;) ... no suite method.&quot;);\n\t}\n}\n\n---------------------------------------------------------------\n\nSo did something change with the TestClassLoaders?\nOr is IBM just doing something silly again? ;)\n\nThanks,\n\n-Eric\n\n\n--- In junit@y..., Mike Clark &lt;mike@c...&gt; wrote:\n&gt; ericheikkila wrote:\n&gt; \n&gt; &gt;Hmmm....I didn&#39;t change any code, I just dropped the jar in place, \n&gt; &gt;then pointed the IDE at it.  None of the class path dependencies \n&gt; &gt;changed within the code either.  I swapped 3.7 back in, and it \nworks \n&gt; &gt;just fine.\n&gt; &gt;\n&gt; \n&gt; Is it possible your 3.7 version includes a custom \nexcluded.properties file?\n&gt; \n&gt; Mike\n&gt; \n&gt; -- \n&gt; Mike Clark\n&gt; Clarkware Consulting Inc.\n&gt; http://www.clarkware.com \n&gt; (720) 851-2014\n\n\n", 
+    "profile": "ericheikkila", 
+    "topicId": 5663, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 68550261, 
+    "prevInTime": 5675, 
+    "contentTrasformed": false, 
+    "postDate": "1030632866", 
+    "canDelete": false, 
+    "nextInTopic": 5677, 
+    "prevInTopic": 5668, 
+    "headers": {
+        "inReplyToHeader": "PDNENkQxNjJBLjUwMjA5MDBAY2xhcmt3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PGFrbGNqMittZzd0QGVHcm91cHMuY29tPg=="
+    }
+}

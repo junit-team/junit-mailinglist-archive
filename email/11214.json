@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 11215, 
+    "senderId": "MFcaYju4HciDKKTCQ8PxqFCYUuZJuYRqgtNhrfAQnaJk8xJRaHIISfZtvPRzyWZ0De3KbyB2bNmWyeHKDxQ6NcizZORnRYCpkw", 
+    "systemMessage": false, 
+    "subject": "JUnit tests and common resources", 
+    "from": "&quot;youlian&quot; &lt;julian@...&gt;", 
+    "authorName": "youlian", 
+    "msgSnippet": "Hi, I hope this has a simple answer... My issue is when I write test cases that exercise code that depends on a common resource. There is couple of things, but", 
+    "msgId": 11214, 
+    "profile": "youlian", 
+    "topicId": 11214, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 147836653, 
+    "messageBody": "<div id=\"ygrps-yiv-243619529\">Hi,<br/>\n<br/>\nI hope this has a simple answer...<br/>\n<br/>\nMy issue is when I write test cases that exercise code that depends <br/>\non a common resource. There is couple of things, but the simplest <br/>\ncase is a serial port.<br/>\n<br/>\nLets say that I have a class that implements a protocol with a <br/>\nhardware device over serial port connection. I would like to develop <br/>\na test to verify that the class implements the protocol correctly. <br/>\nThis means, that I will have to have the device connected and <br/>\noperational when running the test, and that is o.k.<br/>\n<br/>\nI could mock the serial connection - I understand this, but this is <br/>\nnot my intention. I see little value in this for many reasons. I <br/>\nwant to test the real thing.<br/>\n<br/>\nSo, I write a simple test suite and test case. The test case invokes <br/>\ndifferent methods - lets say total of three. To simplify, lets say, <br/>\nthat those methods each send different command to the device. In <br/>\norder to do that each test method will open the comm port, write a <br/>\nstring and close it.<br/>\n<br/>\nSounds simple enough. However, when using JUnit, all these tests <br/>\nexecute in parallel and since the resource is shared, all but one <br/>\nfail with SerialPortInUseException.<br/>\n<br/>\nI have read the JUnit Cookbook and undesrstand the reason - JUnit <br/>\nvia reflection generates dynamically child classes. For each test <br/>\nmethod setUp and tearDown is invoked. The log would look something <br/>\nlike this:<br/>\n<br/>\nsetUp()<br/>\nsetUp()<br/>\nsetUp()<br/>\n...<br/>\ntest1()<br/>\ntest2()<br/>\ntestx()<br/>\n...<br/>\ntearDown()<br/>\ntearDown()<br/>\ntearDown()<br/>\n<br/>\nIf I use setUp() or even testX() to open the connection, I always <br/>\nend up in conflict.<br/>\n<br/>\nThere are two possible workarounds that I can think of:<br/>\na/ To have only one testX method from which to call the other tests <br/>\nin sequence and in the order I want. That is ugly for many reasons, <br/>\nmost of which that I cannot execute individual tests, etc.<br/>\nb/ To use a custom TestSetup wrapper in the suite. The problem here <br/>\nis that now I have my fixture in the suite, not in the test case <br/>\nwhere it belongs. Also, it only partially solves the issue. I will <br/>\nresolve the issue with opening the port, however if any of my tests <br/>\ndepend on the state of the resource, then I am back to square one.<br/>\n<br/>\nMy questions are:<br/>\nIs there a way to explicitly control the order of execution of test <br/>\nmethods within a test case, so to control the access to commonly <br/>\nused resources and account for their state? (system ports, JDBC <br/>\nconnections, etc.)<br/>\n<br/>\nIs JUnit the tool for such a job?</div>", 
+    "prevInTime": 11213, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1087510363", 
+    "canDelete": false, 
+    "nextInTopic": 11216, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGNhdDUwciszc25yQGVHcm91cHMuY29tPg=="
+    }
+}

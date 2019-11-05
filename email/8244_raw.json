@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 8245, 
+    "senderId": "UHKP8N00HtfCOFU3yDG2ryah2L2nwkn223bUoejrD7Z9t21DCtZbWyEbZIXjKo6175dsWAfos-3BxujS6yBgbXxjOW6sCQiiLDPNrgeo", 
+    "systemMessage": false, 
+    "subject": "Dynamic names for tests revisited", 
+    "from": "Thomas Porter &lt;txporter@...&gt;", 
+    "authorName": "Thomas Porter", 
+    "msgSnippet": "Thanks to all for the quick responses.  here is what I have so far, but I am still getting errors when I try to run the tests. ... /** * Vol, a trivial volume", 
+    "msgId": 8244, 
+    "rawEmail": "Return-Path: &lt;txporter@...&gt;\r\nReceived: (qmail 82310 invoked from network); 2 Jun 2003 01:14:01 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m10.grp.scd.yahoo.com with QMQP; 2 Jun 2003 01:14:01 -0000\r\nReceived: from unknown (HELO n5.grp.scd.yahoo.com) (66.218.66.89)\n  by mta2.grp.scd.yahoo.com with SMTP; 2 Jun 2003 01:14:01 -0000\r\nX-eGroups-Return: txporter@...\r\nReceived: from [66.218.67.171] by n5.grp.scd.yahoo.com with NNFMP; 02 Jun 2003 01:14:01 -0000\r\nX-Sender: txporter@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 87918 invoked from network); 1 Jun 2003 23:49:57 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m14.grp.scd.yahoo.com with QMQP; 1 Jun 2003 23:49:57 -0000\r\nReceived: from unknown (HELO maynard.mail.mindspring.net) (207.69.200.243)\n  by mta2.grp.scd.yahoo.com with SMTP; 1 Jun 2003 23:49:57 -0000\r\nReceived: from user-0c8h9ap.cable.mindspring.com ([24.136.165.89] helo=vasili.rlf.org)\n\tby maynard.mail.mindspring.net with esmtp (Exim 3.33 #1)\n\tid 19McaK-0004jy-00\n\tfor junit@yahoogroups.com; Sun, 01 Jun 2003 19:49:56 -0400\r\nReceived: from mindspring.com ([192.168.1.60])\n\tby vasili.rlf.org (8.11.6/8.11.6) with ESMTP id h51Nntq01882\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 1 Jun 2003 19:49:56 -0400\r\nMessage-ID: &lt;3EDA911F.6000102@...&gt;\r\nDate: Sun, 01 Jun 2003 19:49:51 -0400\r\nUser-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2) Gecko/20021203\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Dynamic names for tests revisited\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Thomas Porter &lt;txporter@...&gt;\r\nX-Yahoo-Group-Post: member; u=23779935\r\nX-Yahoo-Profile: tjporterxx\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 02 Jun 2003 01:14:00 -0000\r\n\r\nThanks to all for the quick responses.  here is what I have so far, but \nI am still getting errors when I try to run the tests.\n\n\nThe class to be tested:\n---------------------------------------------------------\n/**\n  * Vol, a trivial volume object.\n  *\n  */\npublic class Vol {\n   private int hight;\n   private int width;\n   private int depth;\n   private int volume;\n\n   public Vol() {\n     volume = 0;\n   }\n\n   /**\n    * @param i\n    */\n   public void calcVolume(int h, int w, int d) {\n     volume = h * w * d;\n   }\n\n   /**\n    * Get the Volume value.\n    * @return the Volume value.\n    */\n   public int getVolume() {\n     return volume;\n   }\n\n}\n---------------------------------------------------------\n\nThe extended TestCase class: ParameterizedTestCase:\n----------------------------------------------------------\npublic class ParameterizedTestCase extends TestCase {\n\tstatic int p1;\n\tstatic int p2;\n\tstatic int p3;\n\tstatic int p4;\n\n\tParameterizedTestCase(int p1, int p2, int p3, int p4 ) {\n\t\tsuper(makeSuiteName(p1, p2, p3));\n\t\tParameterizedTestCase.p1 = p1;\n\t\tParameterizedTestCase.p2 = p2;\n\t\tParameterizedTestCase.p3 = p3;\n\t\tParameterizedTestCase.p4 = p4;\n\t}\n\tstatic String makeSuiteName(int p1, int p2, int p3) {\n\treturn &quot;ParameterizedTestCase&lt;&quot; + p1 + &quot;, &quot; + p2 + &quot;, &quot; + p3 + &quot;&gt;&quot;;\n\t}\n\n\tpublic void testV1() {\n\t\tVol v1 = new Vol();\n\t\tv1.calcVolume(p1, p2, p3);\n\t\tassertEquals(p4, v1.getVolume());\n\t}\n\n\n}\n----------------------------------------------------------\n\nAnd the test code, TestVol\n---------------------------------------------------------\nmport junit.framework.Test;\nimport junit.framework.TestCase;\nimport junit.framework.TestSuite;\nimport junit.textui.TestRunner;\n\npublic class TestVol extends TestCase {\n\tpublic static Test suite() {\n\tTestSuite suite = new TestSuite();\n\n\tsuite.addTest(new ParameterizedTestCase(0, 0, 0, 0));\n\treturn suite;\n\t}\n\n\n\tpublic static void main( String[] args ) {\n\t\tTestRunner.main( new String[] { &quot;TestVol&quot; } );\n\t}\n\n}\n---------------------------------------------------------\n\nAnd the error I get JUnit output captured from ant run:\n---------------------------------------------------------\nTestsuite: TestVol\nTests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.011 sec\n\nTestcase: ParameterizedTestCase&lt;0, 0, 0&gt; took 0.006 sec\n         FAILED\nMethod &quot;ParameterizedTestCase&lt;0, 0, 0&gt;&quot; not found\njunit.framework.AssertionFailedError: Method &quot;ParameterizedTestCase&lt;0, \n0, 0&gt;&quot; not found\n\nTestcase: ParameterizedTestCase&lt;0, 0, 0&gt;\n---------------------------------------------------------\n\nWhile I appear to have generated a name, which perhaps needs to change \nto a valid method name (no embedded spaces & &#39;&lt;&#39; characters), it does \nnot appear that the suite.addTest\n\n\n\n", 
+    "profile": "tjporterxx", 
+    "topicId": 8244, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 23779935, 
+    "prevInTime": 8243, 
+    "contentTrasformed": false, 
+    "postDate": "1054511391", 
+    "canDelete": false, 
+    "nextInTopic": 8246, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNFREE5MTFGLjYwMDAxMDJAbWluZHNwcmluZy5jb20+"
+    }
+}

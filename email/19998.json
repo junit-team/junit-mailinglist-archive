@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 19999, 
+    "senderId": "SsN3rNdCWtHB1jPeHIWQ2XNT2DkLCTUtncZHhjMYUqRyNQHPXIa5B8vaco31JbMWheixWH__YDKlgNTOCMX9sm6Pilzh", 
+    "systemMessage": false, 
+    "subject": "Re: MyClass.class.getResource() problem with JUnit (Eclipse plugin)", 
+    "from": "&quot;joelwint&quot; &lt;joelwint@...&gt;", 
+    "authorName": "joelwint", 
+    "msgSnippet": "Okay, At the end, i found out my mistake !! That was coming from the security manager (The exception was not given by the getResource call but i found it using", 
+    "msgId": 19998, 
+    "profile": "joelwint", 
+    "topicId": 19978, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 201130489, 
+    "messageBody": "<div id=\"ygrps-yiv-1456472614\">Okay,<br/>\n<br/>\nAt the end, i found out my mistake !! That was coming from the<br/>\nsecurity manager (The exception was not given by the getResource call<br/>\nbut i found it using an other way). It seems that Eclipse use a<br/>\nspecific way to launch JUnit Test (through its plugin and a socket<br/>\nconnection) and Eclipse Junit plugin codebase (defined into java<br/>\npolicy file) was not allowed to read my config file (retrieved by<br/>\ngetResource). So i added the following:<br/>\n<br/>\ngrant codeBase &quot;file:/usr/local/eclipse/plugins/-&quot; {<br/>\n     //For Junit<br/>\n     permission java.net.SocketPermission &quot;*:1024-&quot;,<br/>\n&quot;connect,accept,listen,resolve&quot;;<br/>\n    //for my config<br/>\n    permission java.io.FilePermission &quot;/path/to/my/config/-&quot;, &quot;read&quot;;<br/>\n};<br/>\n<br/>\nAnd now it works...<br/>\nHope it could help others too !<br/>\n<br/>\nJoël<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;joelwint&quot; &lt;joelwint@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Any other idea about getResource() call  which returns null (called by<br/>\n&gt; a package tested by Junit) ?<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;joelwint&quot; &lt;joelwint@&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hi,<br/>\n&gt; &gt; <br/>\n&gt; &gt; Many thanks for your answer.<br/>\n&gt; &gt; <br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Are you sure the file myConfig.conf is compile to classes or this<br/>\n&gt; &gt; &gt; file is at classpath?Maybe your path &#39;resources/myConfig.conf&#39; is<br/>\n&gt; &gt; &gt; incorrect?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; <br/>\n&gt; &gt; Yes, &quot;resources/myConfig.conf&quot; is also standing into my &quot;bin&quot;<br/>\ndirectory<br/>\n&gt; &gt; which contains all my .class files. My &quot;bin&quot; directory is also given<br/>\n&gt; &gt; into the classpath during Junit run.<br/>\n&gt; &gt; <br/>\n&gt; &gt; For info, here is how Eclipse launch my testing class (i removed<br/>\n&gt; &gt; classpath config for an easier reading):<br/>\n&gt; &gt; org.eclipse.jdt.internal.junit.runner.RemoteTestRunner -version 3<br/>\n-port<br/>\n&gt; &gt; 58588 -testLoaderClass<br/>\n&gt; &gt; org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader -classNames<br/>\n&gt; &gt; MyTest<br/>\n&gt; &gt; <br/>\n&gt; &gt; It&#39;s strange because when i launch my RMI server in a standalone way<br/>\n&gt; &gt; (without Junit) everything work as expected (it find resources)...<br/>\n&gt; &gt; <br/>\n&gt; &gt; Any other idea ?<br/>\n&gt; &gt; <br/>\n&gt; &gt; Thanks !<br/>\n&gt; &gt; <br/>\n&gt; &gt; Joël<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;hyysguyang&quot; &lt;hyysguyang@&gt; wrote:<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;joelwint&quot; joelwint@ wrote:<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; MyClass.class.class.getResource(&quot;resources/myConfig.conf&quot;);<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; It works well when I don&#39;t Run the RMI server through Junit but<br/>\n&gt; &gt; &gt; when I<br/>\n&gt; &gt; &gt; &gt; run it through Junit (I call the Constructor of the RMI server in<br/>\n&gt; &gt; &gt; my<br/>\n&gt; &gt; &gt; &gt; Junit @BeforeClass), getResource returns null. I tried different<br/>\n&gt; &gt; &gt; ways<br/>\n&gt; &gt; &gt; &gt; but all of them are returning null even if my sources and classes<br/>\n&gt; &gt; &gt; are<br/>\n&gt; &gt; &gt; &gt; in the classpath:<br/>\n&gt; &gt; &gt; &gt; -Thread.currentThread().getContextClassLoader().getResource<br/>\n&gt; &gt; &gt; (&quot;resources/myConfig.conf&quot;)<br/>\n&gt; &gt; &gt; &gt; -ClassLoader.getSystemClassLoader().getResource<br/>\n&gt; &gt; &gt; (&quot;resources/myConfig.conf&quot;)<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt; &gt; Once I read that when a ClassLoader was executing class done<br/>\non the<br/>\n&gt; &gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Are you sure the file myConfig.conf is compile to classes or this<br/>\n&gt; &gt; &gt; file is at classpath?Maybe your path &#39;resources/myConfig.conf&#39; is<br/>\n&gt; &gt; &gt; incorrect?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; :)<br/>\n&gt; &gt; &gt; Best regards.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 19997, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1192811292", 
+    "canDelete": false, 
+    "nextInTopic": 19999, 
+    "prevInTopic": 19996, 
+    "headers": {
+        "inReplyToHeader": "PGZmOG9wdSs1ZnBiQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGZmYWx1cyt1Njk5QGVHcm91cHMuY29tPg=="
+    }
+}

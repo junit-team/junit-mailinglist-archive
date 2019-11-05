@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 11814, 
+    "senderId": "GwLbtNIXaH4LJw_qHEw2NXcA9HGu-KGEv6Y3UJ8RJ1JyeJpDJmOr4b0Y2QHreMYEN_7paMlWHwfUnI-47owQashpGFB51kicXz_JXNV2Vg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TestCase inheritance...", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I m going to use shorter names to make it easier for myself. :) Bad news: As far as I can see so far, no matter how you do this, you will have some runtime", 
+    "msgId": 11813, 
+    "profile": "nails762", 
+    "topicId": 11811, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1544440479\">Thomas Robbs wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Greetings Gurus... :-)<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I have a problem trying to determine the &quot;best practice&quot; (ooo that dirty<br/>\n&gt; phrase) for this particular scenario.  Here is the sitatution:<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Interface A   &lt;------implements---- GenericClassA<br/>\n&gt; <br/>\n&gt;      ^                                               ^<br/>\n&gt; <br/>\n&gt;      |                                                |<br/>\n&gt; <br/>\n&gt; extends                                     extends<br/>\n&gt; <br/>\n&gt;      |                                               |<br/>\n&gt; <br/>\n&gt;      |                                               |<br/>\n&gt; <br/>\n&gt; Interface B   &lt;------implements---- GenericClassB<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Given the above, I want to create a new class that extends<br/>\n&gt; &quot;GenericClassB&quot;, let&#39;s call it &quot;Foo&quot;.   <br/>\n<br/>\n </span></blockquote>I&#39;m going to use shorter names to make it easier for myself. :)<br/>\n<br/>\nBad news: As far as I can see so far, no matter how you do this, you <br/>\nwill have some runtime duplication in the tests. I would /really/ have <br/>\nto think about how to fix this.<br/>\n<br/>\nFoo extends BImpl implements B<br/>\nBImpl extends AImpl implements A<br/>\n<br/>\nHere&#39;s where I put the various tests:<br/>\n<br/>\n1. Tests for the contract of A go into Abstract Test Case ATestCase.<br/>\n2. Tests for the non-A behavior in AImpl go into Concrete Test Case <br/>\nAImplTest extends ATestCase. This way, AImplTest includes tests both for <br/>\nAImpl itself and how well it satisfies the contract of A.<br/>\n<br/>\nSIMILARLY...<br/>\n<br/>\n3. Tests for the contract of B go into Abstract Test Case BTestCase, <br/>\nwhich extends ATestCase to include the contract tests for both A and B.<br/>\n4. Tests for the non-B behavior in BImpl go into Concrete Test Case <br/>\nBImplTest which extends BTestCase.<br/>\n<br/>\nFINALLY...<br/>\n<br/>\nTests for Foo-specific, non-B (and therefore non-A) behavior go into <br/>\nFooTest extends BImplTest. This way, FooTest inherits all the tests for <br/>\nthe A and B interfaces.<br/>\n<br/>\nNow, to your questions:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 1.      Do I need to set up FooTest to ensure that I haven&#39;t broken the<br/>\n&gt; contract outlined by InterfaceA or InterfaceB?<br/>\n<br/>\n </span></blockquote>I would.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 2.      What&#39;s the best approach for setting up the tests so that I can<br/>\n&gt; do this, while still maximizing the value in having FooTest inherit from<br/>\n&gt; GenericClassBTest?<br/>\n<br/>\n </span></blockquote>I think I outlined a good solution for this above.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 1.      It&#39;s difficult for me to wrap my head around how to connect the<br/>\n&gt; initialization of the Test Fixture in the setUp() of the inner class to<br/>\n&gt; a factory method which will return an instance of the class under test,<br/>\n&gt; say at FooTest.createGenericClassB() when that inner class is in the<br/>\n&gt; super class.  <br/>\n<br/>\n </span></blockquote>I can&#39;t wrap my head around that, because I can&#39;t understand it. You and <br/>\nI need to pair, dude.<br/>\n<br/>\n<blockquote><span title=\"ireply\">  &gt; Duplicating the inner class feels wrong and would be<br/>\n&gt; especially painful if the inheritance tree was long and it was up to the<br/>\n&gt; Programmer to research the inheritance and insure that they have inner<br/>\n&gt; class for all possible interfaces.<br/>\n<br/>\n </span></blockquote>Inner classes... ewwwww.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 11812, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1092961761", 
+    "canDelete": false, 
+    "nextInTopic": 11817, 
+    "prevInTopic": 11811, 
+    "headers": {
+        "inReplyToHeader": "PENDNzdCMzg1NzYzN0VFNENCNzZFQTg0MjdCMThGMEI1NDNBQjJDQG1haW4tc3J2LmNhc2Vyby5jb20+", 
+        "messageIdInHeader": "PDQxMjU0NUUxLjIwMzA3MDNAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PENDNzdCMzg1NzYzN0VFNENCNzZFQTg0MjdCMThGMEI1NDNBQjJDQG1haW4tc3J2LmNhc2Vyby5jb20+"
+    }
+}

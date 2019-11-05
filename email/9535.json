@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 40, 
+    "nextInTime": 9536, 
+    "senderId": "Bm1249A9guetk_ucxPYOO9sAgAviFgv5KZKaeot0HG_RvJAQ_JElzH6podsSO5INmHfR7VB13YPcofX8tJS2QQgHu3E-AUdPMcg9GdfE8Vc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Recursive TestRunner -- one implementation", 
+    "from": "&quot;Neil Swingler&quot; &lt;neil@...&gt;", 
+    "authorName": "Neil Swingler", 
+    "msgSnippet": "... From: Jeff Grigg  ... Jeff, did you see my submission in the files section, using javassist to insert imposter mock classes using", 
+    "msgId": 9535, 
+    "profile": "neil_swingler", 
+    "topicId": 9399, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 117993331, 
+    "messageBody": "<div id=\"ygrps-yiv-935935533\"><blockquote><span title=\"qreply\">----- Original Message ----- <br/>\nFrom: &quot;Jeff Grigg&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jeffgrigg@...\">jeffgrigg@...</a>&gt;<br/>\n&gt; I&#39;m using jAdvise/javassist to instrument classes at run time, a <br/>\n&gt; kind of Aspect-Oriented Programming (AOP).  I do this to implement <br/>\n&gt; Mock Objects for classes in an uncooperative third party library -- <br/>\n&gt; made by people who seem to believe that unsubclassable concrete <br/>\n&gt; classes are a good idea, and that interfaces are an unnecessary <br/>\n&gt; complexity.  Using AOP I can change some aspects of the <br/>\n&gt; implementation of the 3rd party library while running in the test <br/>\n&gt; environment.<br/>\n&gt; <br/>\n&gt; *BUT* for any of this to work, the classes under test must be loaded <br/>\n&gt; with a custom class loader.  This is the rub:  Standard JUnit test <br/>\n&gt; runners load the TestCase classes using the standard Java class <br/>\n&gt; loader.  So when I load the application classes using the <br/>\n&gt; jAdvise/javassist class loader, the tests can only communicate with <br/>\n&gt; the application objects using Reflection, because classes and <br/>\n&gt; interfaces are incompatible when loaded with different class <br/>\n&gt; loaders.  Writing all test logic using Reflection would be really <br/>\n&gt; unpleasant.  So I need to load the TestCase classes with the <br/>\n&gt; jAdvise/javassist class loader.<br/>\n&gt; <br/>\n&gt; Hmmm...<br/>\n&gt; <br/>\n&gt; Here&#39;s what I do:<br/>\n&gt; Each test method that needs to run under jAdvise/javassist checks to <br/>\n&gt; see if it was loaded by a JUnit runner or jAdvise.  If it was loaded <br/>\n&gt; by a JUnit runner, it calls a common method that fires up jAdvise, <br/>\n&gt; loads the class with the custom class loader, and then calls the <br/>\n&gt; same method in the loaded class.  (It also calls setUp & tearDown in <br/>\n&gt; the other class.)<br/>\n&gt; <br/>\n&gt; Here&#39;s what it looks like:<br/>\n&gt; | public class MyTestCase extends TestCase {<br/>\n&gt; |    final boolean runningInCustomClassLoader;<br/>\n&gt; |    public MyTestCase() { super(&quot;MyTestCase&quot;);<br/>\n&gt; |       this.runningInCustomClassLoader = true; }<br/>\n&gt; |    public MyTestCase(String name) { super(name);<br/>\n&gt; |       this.runningInCustomClassLoader = false; }<br/>\n&gt; |<br/>\n&gt; |    public void testMethod() {<br/>\n&gt; |       if (this.runningInCustomClassLoader) {<br/>\n&gt; |          // Do application testing here.<br/>\n&gt; |       } else { // called by JUnit<br/>\n&gt; |          callSelfInCustomClassLoader();<br/>\n&gt; | } } }<br/>\n&gt; <br/>\n&gt; Crazy, eh?  ;-&gt;<br/>\n&gt; <br/>\n&gt; (In Java 1.4 there&#39;s an easy way to get a useful stack trace -- <br/>\n&gt; so &#39;callSelfInCustomClassLoader&#39; can determine the caller&#39;s class <br/>\n&gt; and method name.)<br/>\n&gt; <br/>\nJeff,<br/>\n<br/>\ndid you see my submission in the files section, using javassist to insert<br/>\nimposter mock classes using a custom classloader. I also have a Test<br/>\nobject which delegates to a test created in a new classloader.<br/>\n<br/>\n- Neil </span></blockquote></div>", 
+    "prevInTime": 9534, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1064785764", 
+    "canDelete": false, 
+    "nextInTopic": 9545, 
+    "prevInTopic": 9533, 
+    "headers": {
+        "messageIdInHeader": "PDAwMmIwMWMzODYwYSQ2MjE1NjRiMCQ2NTAyYThjMEBub3RlYm9vaz4=", 
+        "referencesHeader": "PGJsNWNmaytwYzljQGVHcm91cHMuY29tPg=="
+    }
+}

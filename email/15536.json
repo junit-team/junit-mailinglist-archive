@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 15537, 
+    "senderId": "K4U7krTvLKjOm4BhCWDdHMBKhLc3ScU4Wq6aY8iQVwRibKt5hv3mblz89W9fktJVVFrKeGuGVy-2E1wV1e0-ao7ow2mVFP5Z5uAsm1U", 
+    "systemMessage": true, 
+    "subject": "Expected exception pitfall and pattern", 
+    "from": "&quot;Jon Skeet&quot; &lt;jon.skeet@...&gt;", 
+    "authorName": "Jon Skeet", 
+    "msgSnippet": "There is a problem with the @Test(expected=...) pattern which I m sure has been noted elsewhere. Namely, it covers up problems if the expected exception is", 
+    "msgId": 15536, 
+    "profile": "jskeetuk", 
+    "topicId": 15536, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 246518675, 
+    "messageBody": "<div id=\"ygrps-yiv-1147287827\">There is a problem with the @Test(expected=...) pattern which I&#39;m sure<br/>\nhas been noted elsewhere. Namely, it covers up problems if the expected<br/>\nexception is thrown at an unexpected point. The desired behaviour is<br/>\nreally a try/catch around one particular line of code. For instance:<br/>\n<br/>\n@Test(expected=IllegalArgumentException.class)<br/>\npublic void test()<br/>\n{<br/>\n    Account f = new Account(10);<br/>\n    f.withdrawCash(20);<br/>\n}<br/>\n<br/>\nis equivalent to:<br/>\n<br/>\ntry<br/>\n{<br/>\n    Account f = new Account(10);<br/>\n    f.withdrawCash(20);<br/>\n    fail(&quot;Expected exception&quot;);<br/>\n}<br/>\ncatch (IllegalArgumentException e)<br/>\n{<br/>\n}<br/>\n<br/>\ninstead of the desired:<br/>\n<br/>\nAccount f = new Account(10);<br/>\ntry<br/>\n{<br/>\n    f.withdrawCash(20);<br/>\n    fail(&quot;Expected exception&quot;);    <br/>\n}<br/>\ncatch (IllegalArgumentException e)<br/>\n{<br/>\n}<br/>\n<br/>\n<br/>\nNow, there is a way around this (other than writing the code<br/>\n&quot;long-hand&quot;) - by keeping a flag which is checked during tear-down, and<br/>\nonly set immediately before the last line of the code:<br/>\n<br/>\n@Test(expected=IllegalArgumentException.class)<br/>\npublic void test()<br/>\n{<br/>\n    exceptionFlag.clear();<br/>\n    Account f = new Account(10);<br/>\n    execeptionFlag.set();<br/>\n    f.withdrawCash(20);<br/>\n}<br/>\n<br/>\nIf this were only used when the test had an expected exception, it could<br/>\nbe cleared on set-up.<br/>\n<br/>\nI *suspect* there&#39;s no point in making this part of the framework<br/>\nitself, but I just wondered whether anyone else had been thinking about<br/>\nit. It&#39;s never *actually* bitten me (as far as I&#39;m aware) when using<br/>\nNUnit, but it&#39;s always been a slight source of concern.<br/>\n <br/>\nJon Skeet<br/>\nSenior Software Engineer<br/>\nCLEARSWIFT<br/>\nThe MIMEsweeper Company<br/>\n<br/>\nDDI:               +44 (0) 1189  038  109<br/>\nMobile:           +44 (0) 7970 158 865<br/>\nSwitchboard:   +44 (0) 1189  038  903 <br/>\nFax:               +44 (0) 1189  039  000      <br/>\nWeb: www.clearswift.com <br/>\n<br/>\nClearswift monitors, controls and protects all its messaging traffic in compliance with its corporate email policy using Clearswift products.<br/>\nFind out more about Clearswift, its solutions and services at <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clearswift.com\">http://www.clearswift.com</a><br/>\n<br/>\nThis communication is confidential and may contain privileged information intended solely for the named addressee(s). It may not be used or disclosed except for the purpose for which it has been sent. If you are not the intended recipient, you must not copy, distribute or take any action in reliance on it. Unless expressly stated, opinions in this message are those of the individual sender and not of Clearswift. If you have received this communication in error, please notify Clearswift by emailing <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:support@...\">support@...</a> quoting the sender and delete the message and any attached documents. Clearswift accepts no liability or responsibility for any onward transmission or use of emails and attachments having left the Clearswift domain.<br/>\n<br/>\nThis footnote confirms that this email message has been swept by MIMEsweeper for Content Security threats, including computer viruses.</div>", 
+    "prevInTime": 15535, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1133169129", 
+    "canDelete": false, 
+    "nextInTopic": 15540, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDZFQUE4QUQ4MkQ3RUJGNDc4Q0NFMjYyRkEzMkM2QzY0MDFCNTZBMUFAR0VNSU5JLkVVUk9QRS5DTEVBUlNXSUZULkNPTT4="
+    }
+}

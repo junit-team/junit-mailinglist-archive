@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18135, 
+    "senderId": "RUyEwM00cXmWAfkiHuDPovtbT4Uxpib-S5QQ0gKlHOk6Rt_4tzpbz8Vv4p_36pHImFAI_kWrHWOue90QLuDeY3jGOgVXC27DEXexIA", 
+    "systemMessage": false, 
+    "subject": "Re: Re: [junit] Testing Static block, members, class with JUnit", 
+    "from": "&quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "I don t think you need to test the static block directly -- it s only a by-product of the language.  The real test is in the lookup.  So, test that looking up", 
+    "msgId": 18134, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 29550 invoked from network); 13 Oct 2006 13:55:32 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m35.grp.scd.yahoo.com with QMQP; 13 Oct 2006 13:55:32 -0000\r\nReceived: from unknown (HELO ug-out-1314.google.com) (66.249.92.170)\n  by mta5.grp.scd.yahoo.com with SMTP; 13 Oct 2006 13:55:31 -0000\r\nReceived: by ug-out-1314.google.com with SMTP id b27so451785ugd\n        for &lt;junit@yahoogroups.com&gt;; Fri, 13 Oct 2006 06:55:29 -0700 (PDT)\r\nReceived: by 10.78.193.19 with SMTP id q19mr3722472huf;\n        Fri, 13 Oct 2006 06:45:27 -0700 (PDT)\r\nReceived: by 10.78.201.7 with HTTP; Fri, 13 Oct 2006 06:45:27 -0700 (PDT)\r\nMessage-ID: &lt;72412f1f0610130645r17057da6l5eadd185bbea1c3a@...&gt;\r\nDate: Fri, 13 Oct 2006 09:45:27 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;200610121836.16013.robert.wenner@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;egm1v4+oos7@...&gt; &lt;200610121836.16013.robert.wenner@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;\r\nSubject: Re: Re: [junit] Testing Static block, members, class with JUnit\r\nX-Yahoo-Group-Post: member; u=268623572; y=O5SlbPtS9cRTPE_ZHwkemDfdSs-L5nOHdReHjqQShlzFwWU\r\nX-Yahoo-Profile: jacaetev\r\n\r\nI don&#39;t think you need to test the static block directly -- it&#39;s only\na by-product of the language.  The real test is in the lookup.  So,\ntest that looking up abbreviations works properly and your are done.\nIf you are concerned about testing /where/ the data comes from\nintroduce a factory.  Test the real factory in isolation, then if\nnecessary provide a mock/fake factory for other testing purposes.\n\nJason\n\nOn 10/12/06, Robert Wenner &lt;robert.wenner@...&gt; wrote:\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; On Thursday 12 October 2006 13:36, mcdonald6692 wrote:\n&gt;  &gt; This brings up the general question, &quot;How do you\n&gt;  &gt; test static blocks, classes and data-members?&quot;\n&gt;\n&gt;  I would refactor the code to get rid of the static initializer for exactly\n&gt;  the problems you noticed.\n&gt;\n&gt;  You could use lazy initialization. Make the static block a method. In the\n&gt;  lookup method, check whether the static member is null. If it is, call\n&gt;  the former static block (now method) to initialize the static members.\n&gt;  Then proceed as usual.\n&gt;\n&gt;  &gt; public class StateAbbrev {\n&gt;  &gt; // static list of all the abbreviations.\n&gt;  &gt; private static List accronyms = new ArrayList();\n&gt;  &gt;\n&gt;  &gt; private String text = &quot;&quot;;\n&gt;  &gt;\n&gt;  &gt; static {\n&gt;  &gt; DataSource ds = DataSource.getInstance();\n&gt;  &gt; List strings = ds.getAccronyms();\n&gt;  &gt; for (Iterator i = strings.iterator(); i.hasNext(); )\n&gt;  &gt; accronyms.add(new StateAbbrev((String)i.next()) );\n&gt;  &gt; }\n&gt;  &gt;\n&gt;  &gt; public static StateAbbrev lookup(String letters)\n&gt;  &gt; {\n&gt;  &gt; for (Iterator i = accronyms.iterator(); i.hasNext(); )\n&gt;  &gt; {\n&gt;  &gt; StateAbbrev abbrev (StateAbbrev) i.next();\n&gt;  &gt; String accronym = abbrev.getText();\n&gt;  &gt; if (accronym.equals(letters))\n&gt;  &gt; return abbrev;\n&gt;  &gt; }\n&gt;  &gt; return null;\n&gt;  &gt; }\n&gt;\n&gt;  becomes\n&gt;\n&gt;  public class StateAbbrev {\n&gt;  // static list of all the abbreviations.\n&gt;  private static List accronyms = null;\n&gt;  private String text = &quot;&quot;;\n&gt;\n&gt;  private static void initialize() {\n&gt;  acronyms = new ArrayList();\n&gt;  DataSource ds = DataSource.getInstance();\n&gt;  List strings = ds.getAccronyms();\n&gt;  for (Iterator i = strings.iterator(); i.hasNext(); )\n&gt;  accronyms.add(new StateAbbrev((String)i.next()) );\n&gt;  }\n&gt;\n&gt;  public static StateAbbrev lookup(String letters)\n&gt;  {\n&gt;  if (acronyms == null)\n&gt;  {\n&gt;  initialize();\n&gt;  }\n&gt;  for (Iterator i = accronyms.iterator(); i.hasNext(); )\n&gt;  {\n&gt;  StateAbbrev abbrev (StateAbbrev) i.next();\n&gt;  String accronym = abbrev.getText();\n&gt;  if (accronym.equals(letters))\n&gt;  return abbrev;\n&gt;  }\n&gt;  return null;\n&gt;  }\n&gt;  }\n&gt;\n&gt;  If you like, you can also make acronyms more accessible than private (eg\n&gt;  protected and have the test in the same package) and then set the static\n&gt;  members to null if you need (eg in tearDown).\n&gt;\n&gt;  Robert\n&gt;  \n\n\n-- \nJason Rogers\n\n&quot;Where there is no vision, the people perish...&quot;\n    Proverbs 29:18\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 18131, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 268623572, 
+    "prevInTime": 18133, 
+    "contentTrasformed": false, 
+    "postDate": "1160747127", 
+    "canDelete": false, 
+    "nextInTopic": 18159, 
+    "prevInTopic": 18132, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDYxMDEyMTgzNi4xNjAxMy5yb2JlcnQud2VubmVyQGdteC5kZT4=", 
+        "messageIdInHeader": "PDcyNDEyZjFmMDYxMDEzMDY0NXIxNzA1N2RhNmw1ZWFkZDE4NWJiZWExYzNhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPiA8MjAwNjEwMTIxODM2LjE2MDEzLnJvYmVydC53ZW5uZXJAZ214LmRlPg=="
+    }
+}

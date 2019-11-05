@@ -1,0 +1,30 @@
+{
+    "topicId": 15588, 
+    "postDate": "1133325113", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Paul King &lt;paulk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "scK9s0IZkAP5EQegrSqXcR0_zcCP2wMC3uJYdvgVZJ2s1yKtj3SIbQL_niqrTwnyJZ4q3aU1FZuVfnIwqQZfIjF9wmqE", 
+    "nextInTime": 15591, 
+    "userId": 215576703, 
+    "prevInTime": 15589, 
+    "prevInTopic": 15589, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDUxMTI5MTk1NHQzNmEyMDU2M2tjMGQwYTcxODgzZGQ2MmU3QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQzOEQyQjM5LjQwMzAwMDlAYXNlcnQuY29tLmF1Pg==", 
+        "referencesHeader": "PGI4NmI2YTljMDUxMTI5MTk1NHQzNmEyMDU2M2tjMGQwYTcxODgzZGQ2MmU3QG1haWwuZ29vZ2xlLmNvbT4="
+    }, 
+    "authorName": "Paul King", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "I think being able to distinguish between fast and slow tests and different kinds of tests is very useful. I can keep fast feedback cycles while retaining high", 
+    "contentTrasformed": false, 
+    "msgId": 15590, 
+    "nextInTopic": 15611, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;paulk@...&gt;\r\nX-Sender: paulk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 58619 invoked from network); 30 Nov 2005 04:32:09 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m34.grp.scd.yahoo.com with QMQP; 30 Nov 2005 04:32:09 -0000\r\nReceived: from unknown (HELO mail9.tpgi.com.au) (203.12.160.104)\n  by mta4.grp.scd.yahoo.com with SMTP; 30 Nov 2005 04:32:09 -0000\r\nX-TPG-Antivirus: Passed\r\nReceived: from [192.168.0.13] (CPE-61-9-213-87.qld.bigpond.net.au [61.9.213.87])\n\t(authenticated bits=0)\n\tby mail9.tpgi.com.au (envelope-from paulk@...) (8.13.4/8.13.4) with ESMTP id jAU4VphI022246\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 30 Nov 2005 15:31:58 +1100\r\nMessage-ID: &lt;438D2B39.4030009@...&gt;\r\nDate: Wed, 30 Nov 2005 14:31:53 +1000\r\nUser-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;b86b6a9c0511291954t36a20563kc0d0a71883dd62e7@...&gt;\r\nIn-Reply-To: &lt;b86b6a9c0511291954t36a20563kc0d0a71883dd62e7@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Paul King &lt;paulk@...&gt;\r\nSubject: Re: [junit] Fast and slow tests\r\nX-Yahoo-Group-Post: member; u=215576703\r\n\r\n\nI think being able to distinguish between fast and slow tests and different\nkinds of tests is very useful. I can keep fast feedback cycles while\nretaining high confidence levels. I can run all the unit tests related\nto the area I am working on plus all the fast unit tests for the entire\ncodebase plus a subset of other kinds of tests that I deem useful (possibly\nall the fast integration tests related to the area I am working in).\nThe &quot;area I am working in&quot; might be a module or package or some other slice\nof the codebase - ideally it will be easy for me to select something close\nto the relevant tests easily - so aggregating tests over packages or modules\nmight still be a very useful thing.\n\nI do think distinguishing different kinds of tests is useful. There are\ntests which check the environment (perhaps I would call the tableShouldExist\nexample below an environment test). There are some which might test your\nwiring if you are using IOC (you do test drive that don&#39;t you?) and there\nare others which test your system&#39;s building blocks (sometimes these are\ncalled integration or system tests - and sometimes they overlap with\nacceptance tests). If you are practising Agile then your unit tests are\nyour code-level documentation and specification and your system tests\nare your architectural-level documentation and specification.\n\nPaul.\n\n\nCédric Beust ♔ wrote:\n&gt; Integration and unit tests are actually not mutually exclusive with fast and\n&gt; slow tests.  Here is an example:\n&gt; \n&gt; @Test(groups = {&quot;fast&quot;, &quot;unit&quot;})\n&gt; public void fullName() {\n&gt;   Person p = new Person();\n&gt;   p.setFirstName(&quot;Cedric&quot;);\n&gt;   p.setLastName(&quot;Beust&quot;);\n&gt;   assert &quot;Cedric Beust&quot;.equals(p.getFullName());\n&gt; }\n&gt; \n&gt; @Test(groups = {&quot;slow&quot;, &quot;unit&quot;}}\n&gt; public void verifyPi() {\n&gt;   Pi pi = new Pi();\n&gt;   assert pi.getDecimals(10000).equals(EXPECTED_DECIMALS);\n&gt; }\n&gt; \n&gt; @Test(groups = {&quot;fast&quot;, &quot;integration&quot;})\n&gt; public void tableShouldExist() {\n&gt;   // verify that a table exists\n&gt; }\n&gt; \n&gt; @Test(groups = {&quot;slow&quot;, &quot;integration&quot;})\n&gt; public void insertGraphOfObjects() {\n&gt;   // insert a lot of rows in the database\n&gt; }\n&gt; \n&gt; With this set up, I have all freedom to run &quot;integration&quot;, &quot;unit&quot;, &quot;fast&quot; or\n&gt; &quot;slow&quot; tests.\n&gt; \n&gt; This is why trying to represent test groups with packages and class names\n&gt; doesn&#39;t scale:  test methods cannot belong to more than one group with that\n&gt; approach.\n&gt; \n&gt; --\n&gt; Cédric\n&gt; \n&gt; \n&gt; [Non-text portions of this message have been removed]\n&gt; \n\n\n", 
+    "subject": "Re: [junit] Fast and slow tests"
+}

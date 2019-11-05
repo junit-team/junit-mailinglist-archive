@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 22752, 
+    "senderId": "bvoqmJkrvFm87mTc4dzKjjIH9zwA4W9RCTY_I9nhxOFaI2RrAhfn9H048IPqNBjjUVfimsFA113ttrfhqRC4C3LPpvYNYNgzq9PQV40", 
+    "systemMessage": false, 
+    "subject": "Re: Problem with Method which is expected to throw message", 
+    "from": "&quot;raja_s_patil&quot; &lt;kpr.rspatil@...&gt;", 
+    "authorName": "raja_s_patil", 
+    "msgSnippet": "Thanks to all who tried to help, The problem is solved. Actually test was running under junit3 runner due to this line ... MockObjectTestCase is extending", 
+    "msgId": 22751, 
+    "profile": "raja_s_patil", 
+    "topicId": 22738, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 248151783, 
+    "messageBody": "<div id=\"ygrps-yiv-1177362179\">Thanks to all who tried to help,<br/>\n<br/>\nThe problem is solved. Actually test was running under junit3 runner<br/>\ndue to this line<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; public class testBoolTypeHandler extends MockObjectTestCase {<br/>\n<br/>\n </span></blockquote>MockObjectTestCase is extending TestCase hence it was using jUnit3.<br/>\n<br/>\nI removed that clause and modified the whole class accordingly.<br/>\nThe test is running fine as expected going GREEN in spite of exception. <br/>\nThe working code is given below for somebody who may stumble like me.<br/>\n<br/>\nthanks and regards<br/>\n<br/>\nRaja.<br/>\n<br/>\n<br/>\npublic class testBoolTypeHandler {<br/>\n<br/>\n\tprivate Mockery\t\t\t\tcontext;<br/>\n\tprivate ResultGetter\t\tgetter;<br/>\n\tprivate ParameterSetter\t\tsetter;<br/>\n\tprivate boolTypeHandlerTF\tboolHandler;<br/>\n<br/>\n\t@Before<br/>\n\tpublic void setUp() throws Exception {<br/>\n<br/>\n\t\tcontext\t\t= new JUnit4Mockery();<br/>\n\t\tgetter\t\t= context.mock(ResultGetter.class);<br/>\n\t\tsetter\t\t= context.mock(ParameterSetter.class);<br/>\n\t\tboolHandler\t= new boolTypeHandlerTF();<br/>\n<br/>\n\t\tcontext.checking(new Expectations() {<br/>\n\t\t\t{<br/>\n\t\t\t\tatLeast(1).of(getter).getString();<br/>\n\t\t\t\twill(onConsecutiveCalls(returnValue(&quot;T&quot;), returnValue(&quot;F&quot;), returnValue(&quot; &quot;)\t// , returnValue(&#39;F&#39;)<br/>\n\t\t\t\t\t));<br/>\n\t\t\t\t}<br/>\n\t\t\t});<br/>\n\t\t}<br/>\n<br/>\n\t@After<br/>\n\tpublic void tearDown() throws Exception {}<br/>\n<br/>\n\t@Test(expected = java.sql.SQLException.class)<br/>\n\tpublic void testGetResult() throws SQLException {<br/>\n<br/>\n\t\tboolean\tresult;<br/>\n<br/>\n\t\tresult\t= ((Boolean) (boolHandler.getResult(getter))).booleanValue();<br/>\n\t\tassertEquals(&quot;getter.getString() == &#39;T&#39; &quot;, true, result);<br/>\n<br/>\n\t\tresult\t= (Boolean) (boolHandler.getResult(getter));<br/>\n\t\tassertEquals(&quot;getter.getString() == &#39;F&#39; &quot;, false, result);<br/>\n<br/>\n\t\t// getter.getString() == &#39; &#39; Throws Exception<br/>\n\t\tresult\t= (Boolean) (boolHandler.getResult(getter));<br/>\n<br/>\n\t\t}<br/>\n<br/>\n\t/**<br/>\n\t * @Test<br/>\n\t * public void testSetParameter() {<br/>\n\t *   fail(&quot;Not yet implemented&quot;);<br/>\n\t * }<br/>\n\t *<br/>\n\t * @Test<br/>\n\t * public void testValueOf() {<br/>\n\t *   fail(&quot;Not yet implemented&quot;);<br/>\n\t * }<br/>\n\t */<br/>\n\t}</div>", 
+    "prevInTime": 22750, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1276225922", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 22749, 
+    "headers": {
+        "inReplyToHeader": "PGh1bzM2ZyttdjU0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGh1czlpMytsNGNkQGVHcm91cHMuY29tPg=="
+    }
+}

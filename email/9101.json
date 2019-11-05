@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 9102, 
+    "senderId": "no8e2zhydyOgOk8PXsVZfEqmsRqbBno07XNfntJLyds4sm8nW6gXRuwImcniJ8t0wA35tw2BYaTjV7BmgSEQlmlbIvaF3TA", 
+    "systemMessage": false, 
+    "subject": "Simple multithreaded test case", 
+    "from": "&quot;vocaro2000&quot; &lt;trevor@...&gt;", 
+    "authorName": "vocaro2000", 
+    "msgSnippet": "Hi everyone, This topic may have been discussed before, but I couldn t find it anywhere in the FAQ, the forums, or the docs. (The GroboUtils package is related", 
+    "msgId": 9101, 
+    "profile": "vocaro2000", 
+    "topicId": 9101, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 95519404, 
+    "messageBody": "<div id=\"ygrps-yiv-273335652\">Hi everyone,<br/>\n<br/>\nThis topic may have been discussed before, but I couldn&#39;t find it<br/>\nanywhere in the FAQ, the forums, or the docs. (The GroboUtils package<br/>\nis related to this but doesn&#39;t seem to specifically address my<br/>\nquestion.) The issue is this code:<br/>\n<br/>\nimport junit.framework.*;<br/>\n<br/>\npublic class ThreadTest extends TestCase<br/>\n{<br/>\n   class Server extends Thread<br/>\n   {<br/>\n      public void run()<br/>\n      {<br/>\n         fail(&quot;The server failed its test case&quot;);<br/>\n<br/>\n         synchronized (this)<br/>\n         {<br/>\n            notifyAll();<br/>\n         }<br/>\n      }<br/>\n   }<br/>\n<br/>\n   Server server;<br/>\n<br/>\n   public ThreadTest(String name)<br/>\n   {<br/>\n      super(name);<br/>\n<br/>\n      server = new Server();<br/>\n   }<br/>\n<br/>\n   protected void setUp()<br/>\n   {<br/>\n      try<br/>\n      {<br/>\n         server.start();<br/>\n<br/>\n         synchronized (server)<br/>\n         {<br/>\n            server.wait();<br/>\n         }<br/>\n      }<br/>\n      catch (Exception e)<br/>\n      {<br/>\n         fail(e.toString());<br/>\n      }<br/>\n   }<br/>\n   <br/>\n   public void testSomething() {}<br/>\n}<br/>\n<br/>\nAnd here&#39;s an Ant file for your convenience:<br/>\n<br/>\n&lt;project name=&quot;Thread Test&quot; default=&quot;compile&quot;&gt;<br/>\n<br/>\n   &lt;target name=&quot;compile&quot;&gt;<br/>\n      &lt;javac srcdir=&quot;.&quot;/&gt;<br/>\n   &lt;/target&gt;<br/>\n<br/>\n   &lt;target name=&quot;runtest&quot;&gt;<br/>\n      &lt;junit printsummary=&quot;true&quot;&gt;<br/>\n         &lt;test name=&quot;ThreadTest&quot;/&gt;<br/>\n      &lt;/junit&gt;<br/>\n   &lt;/target&gt;<br/>\n<br/>\n&lt;/project&gt;<br/>\n<br/>\nWhen you look at the source code, it seems quite clear that the test<br/>\ncase should always fail. This is not what happens, however. Although<br/>\nJUnit prints the correct assertion failure to System.out, it doesn&#39;t<br/>\nreport any failures. It thinks that the test succeeded. Is this a bug<br/>\nin JUnit, or am I just not understanding how it works?<br/>\n<br/>\nThanks for any pointers,<br/>\n<br/>\nTrevor</div>", 
+    "prevInTime": 9100, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1060793803", 
+    "canDelete": false, 
+    "nextInTopic": 9102, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJoZHFrYitkZjJuQGVHcm91cHMuY29tPg=="
+    }
+}

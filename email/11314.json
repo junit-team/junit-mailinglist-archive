@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 11315, 
+    "senderId": "6xCbuQYAxOvFXChISvCnzT2Jdf_Y5oUrIJScQpGsgc85gKMld6NaxqHBN0PzF1XZ22AcqQDqnb67BrfEp4LNTIq-oorfJQCGY3Y", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Creating own subclass of TestCase as base for tests", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "This is just from the hip, but if you re intending to provide new functionality in a similar API, you might consider this: 1. Put your setUp and tearDown", 
+    "msgId": 11314, 
+    "profile": "zipwow", 
+    "topicId": 11313, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "messageBody": "<div id=\"ygrps-yiv-573248866\">This is just from the hip, but if you&#39;re intending to provide new<br/>\nfunctionality in a &quot;similar&quot; API, you might consider this:<br/>\n<br/>\n1. Put your setUp and tearDown code in the TestCase.setUp() and<br/>\ntearDown() as usual.<br/>\n<br/>\n2. Declare your setUp() and tearDown() as final.<br/>\n<br/>\n3. Expose a new overridable method for clients to use.<br/>\n<br/>\nIn general, that&#39;s the approach I use when I want to allow subclasses<br/>\nto add functionality, but fear that they&#39;ll &quot;forget&quot; to call super(..).<br/>\n<br/>\nThis, of course, breaks every test currently written for your<br/>\nframework, and changes your API slightly from the very familiar JUnit<br/>\nAPI.  As a rebuttal (although I have no opinion either way) it isn&#39;t as<br/>\nthough it&#39;s a difficult fix since your compiler will tell you<br/>\neverywhere to do it.  <br/>\n<br/>\nAlternatively, whatever functionality your test classes provide could<br/>\nsimply fail with a useful message if the super.setUp() isn&#39;t called. <br/>\nCatching and reliably reporting a forgotten tearDown() call is tricker,<br/>\nthough.<br/>\n<br/>\nHope this helps,<br/>\n<br/>\nKevin Klinemeier<br/>\n<br/>\n--- Martijn Dashorst &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:yahoogroups@...\">yahoogroups@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi,<br/>\n&gt; <br/>\n&gt; I&#39;m a maintainer of jWebUnit and we&#39;ve got a problem with resource <br/>\n&gt; deallocation when many tests are run (1000+). This is due to the HTTP<br/>\n&gt; <br/>\n&gt; driver (WebTester) which is allocated in the constructor (bad policy,<br/>\n&gt; I <br/>\n&gt; know) and which is only freed when the TestCase is cleaned up by the<br/>\n&gt; GC.<br/>\n&gt; <br/>\n&gt; Now my question is: how do I allocate/deallocate the HTTP driver<br/>\n&gt; without <br/>\n&gt; needing my clients&#39; subclasses to call super.setUp() and <br/>\n&gt; super.tearDown() in their implementations of setUp()/tearDown().<br/>\n&gt; <br/>\n&gt; I was thinking of overriding runBare() in which I allocate the driver<br/>\n&gt; <br/>\n&gt; before calling super.runBare(), and in a finally block, I dereference<br/>\n&gt; <br/>\n&gt; the driver:<br/>\n&gt; <br/>\n&gt;   public void runBare() throws Throwable {<br/>\n&gt;       try {<br/>\n&gt;           tester = new WebTester();<br/>\n&gt;           super.runBare();<br/>\n&gt;       } finally {<br/>\n&gt;           tester = null;<br/>\n&gt;       }<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt; This allows subclasses of WebTestCase to override setUp() and<br/>\n&gt; tearDown() <br/>\n&gt; without requiring them to call super.setUp()/tearDown().<br/>\n&gt; <br/>\n&gt; This is rather risky, for I have no guarantee that runBare() is<br/>\n&gt; called <br/>\n&gt; in each environment (ant, Eclipse, IntelliJ, etc).<br/>\n&gt; <br/>\n&gt; Creating my own WebTestCase extends Assert implements Test would<br/>\n&gt; require <br/>\n&gt; me to implement a lot of code, not just delegation, or am I missing <br/>\n&gt; something?<br/>\n&gt; <br/>\n&gt; I hope you could shed some light on this.<br/>\n&gt; <br/>\n&gt; Martijn Dashorst<br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n<br/>\n<br/>\n\t\t<br/>\n </span></blockquote>__________________________________<br/>\nDo you Yahoo!?<br/>\nYahoo! Mail - You care about security. So do we.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://promotions.yahoo.com/new_mail\">http://promotions.yahoo.com/new_mail</a></div>", 
+    "prevInTime": 11313, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1088554253", 
+    "canDelete": false, 
+    "nextInTopic": 11321, 
+    "prevInTopic": 11313, 
+    "headers": {
+        "inReplyToHeader": "PDQwRTFENTA5LjIwNjAyMDRAZGFzaG9yc3QuZGRzLm5sPg==", 
+        "messageIdInHeader": "PDIwMDQwNjMwMDAxMDUzLjQ2MDIucW1haWxAd2ViNjAzMTAubWFpbC55YWhvby5jb20+"
+    }
+}

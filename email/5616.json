@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 25, 
+    "nextInTime": 5617, 
+    "senderId": "KtSE5hp_ch6Ujp-BtBhNh-eft1sPA479B3eiqKrnxqJA_el3mJc6ThOu8AlOmgEycTH8x_aqAPncZkZplP0Y5Q7PvuUrow", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] A Growing Problem", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... How about chaining these two constructors such that you can test one and feel confident the other won t break? ... Only the date changes here. Is it", 
+    "msgId": 5616, 
+    "profile": "clarkware", 
+    "topicId": 5610, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "messageBody": "<div id=\"ygrps-yiv-408990409\">Parag Shetye wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;public void testCreateBatchLabelNoInnerClass() {<br/>\n&gt;<br/>\n&gt;   try {<br/>\n&gt;      BatchLabel aBatchLabel = new BatchLabel(<br/>\n&gt;         &quot;20010530&quot;,  &quot;A13&quot;,  &quot;1&quot; );<br/>\n&gt;      assert ( aBatchLabel.getBatchLabel().equals(<br/>\n&gt;         &quot;A13-1 EXP. 05/01&quot; ) ) ;<br/>\n&gt;   } catch (Exception e) {<br/>\n&gt;      assert ( &quot;Exception:&quot; + e, false );<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   try {<br/>\n&gt;      BatchLabel aBatchLabel = new BatchLabel(<br/>\n&gt;         &quot;20010530&quot;,  &quot;A13&quot;,  &quot;&quot; );<br/>\n&gt;      assert ( aBatchLabel.getBatchLabel().equals(<br/>\n&gt;         &quot;A13 EXP. 05/01&quot; ) ) ;<br/>\n&gt;   } catch (Exception e) {<br/>\n&gt;      assert ( &quot;Exception:&quot; + e, false );<br/>\n&gt;   }<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>How about chaining these two constructors such that you can test one and <br/>\nfeel confident the other won&#39;t break?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;   try {<br/>\n&gt;      BatchLabel aBatchLabel = new BatchLabel(<br/>\n&gt;         &quot;20011231&quot;,  &quot;A13&quot;,  &quot;1&quot; );<br/>\n&gt;      assert ( aBatchLabel.getBatchLabel().equals(<br/>\n&gt;         &quot;A13-1 EXP. 12/01&quot; ) ) ;<br/>\n&gt;   } catch (Exception e) {<br/>\n&gt;      assert ( &quot;Exception:&quot; + e, false );<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   try {<br/>\n&gt;      BatchLabel aBatchLabel = new BatchLabel(<br/>\n&gt;         &quot;20010101&quot;,  &quot;A13&quot;,  &quot;1&quot; );<br/>\n&gt;      assert ( aBatchLabel.getBatchLabel().equals(<br/>\n&gt;         &quot;A13-1 EXP. 01/01&quot; ) ) ;<br/>\n&gt;   } catch (Exception e) {<br/>\n&gt;      assert ( &quot;Exception:&quot; + e, false );<br/>\n&gt;   }<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>Only the date changes here. Is it reasonable to expect that if the first <br/>\ntest passes, the second will pass as well?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;   try {<br/>\n&gt;      BatchLabel aBatchLabel = new BatchLabel(<br/>\n&gt;         &quot;20010101&quot;,  &quot;A123&quot;, &quot;99&quot; );<br/>\n&gt;      assert ( aBatchLabel.getBatchLabel().equals(<br/>\n&gt;         &quot;A123-99 EXP. 01/01&quot; ) ) ;<br/>\n&gt;   } catch (Exception e) {<br/>\n&gt;      assert ( &quot;Exception:&quot; + e, false );<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   try {<br/>\n&gt;      BatchLabel aBatchLabel = new BatchLabel(<br/>\n&gt;         &quot;2001530&quot;,   &quot;A999&quot;, &quot;&quot; );<br/>\n&gt;   } catch (Exception e) {<br/>\n&gt;      assert( &quot;Wrong Exception thrown: &quot; + e,<br/>\n&gt;         e.getClass().equals(<br/>\n&gt;         BadDateException.class )) ;<br/>\n&gt;   }<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>How is the first test here different than the first pair of tests above? <br/>\nI&#39;ll buy the exceptional test.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;   try {<br/>\n&gt;      BatchLabel aBatchLabel = new BatchLabel(<br/>\n&gt;         &quot;20010530&quot;,   &quot;913&quot;, &quot;1&quot; );<br/>\n&gt;   } catch (Exception e) {<br/>\n&gt;      assert( &quot;Wrong Exception thrown: &quot; + e,<br/>\n&gt;         e.getClass().equals(<br/>\n&gt;         BadLotException.class )) ;<br/>\n&gt;   }<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>OK, I take it there are different exceptions for each slot of <br/>\nBatchLabel. I personally don&#39;t throw exceptions from constructors, but <br/>\nnevertheless it&#39;s good to test exceptional conditions. How do I know lot <br/>\n#913 is bad?<br/>\n<br/>\n<br/>\nThe other approach is to drive the tests with data since that&#39;s the only <br/>\nthing changing in the tests you&#39;ve supplied.<br/>\n<br/>\nWrite a single test method that reads each line of this file, asserting <br/>\nthe last column:<br/>\n<br/>\n20010530, A13, 1, A13-1 EXP. 05/01<br/>\n20010530, A13,  , A13 EXP. 05/01<br/>\n20011231, A13, 1, A13-1 EXP. 12/01<br/>\n20010101, A13, 1, A13-1 EXP. 01/01<br/>\n20010530, 913, 1, BadDateException<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;The second limitation is that JUnit will stop the testing after the<br/>\n&gt;first failure--the remaining test cases won&#39;t be executed.<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>I call that a feature for unit testing. If you want alternatives, check <br/>\nout the FAQ regarding multiple failures. I might be inclined to just log <br/>\nfailures when I&#39;m running acceptance tests, though I&#39;ve yet to encounter <br/>\na situation when failing immediately wasn&#39;t the desired effect.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt;What can be the solution on these two limitations?<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>The limits are your imagination.<br/>\n<br/>\nMike<br/>\n<br/>\n-- <br/>\nMike Clark<br/>\nClarkware Consulting Inc.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com\">http://www.clarkware.com</a> <br/>\n(720) 851-2014</div>", 
+    "prevInTime": 5615, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1029939104", 
+    "canDelete": false, 
+    "nextInTopic": 5617, 
+    "prevInTopic": 5615, 
+    "headers": {
+        "messageIdInHeader": "PDNENjM5RkEwLjYwNTA5MDVAY2xhcmt3YXJlLmNvbT4=", 
+        "referencesHeader": "PDNCODFFQkFGLjJDOUVFMzFEQHNhdnZpb24uY29tPg=="
+    }
+}

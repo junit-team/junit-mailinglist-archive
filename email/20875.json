@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20876, 
+    "senderId": "XL3r0PX08hl0TKTs5JdwPA9-XwlZFTCoDC4UcWEqdDZeilbMSJ-65XqpUjzXXZluXILUQrNgy0J8Ly-UgOHRdS1we-Y4zSrsdlGF", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Mock objects in JUnit 4.5 vs. 4.4", 
+    "from": "Steve Freeman &lt;smgfreeman@...&gt;", 
+    "authorName": "Steve Freeman", 
+    "msgSnippet": "I m struggling a bit with this example, especially given that everything is static. And it looks like the test is exercising the Mock, not the real thing. My", 
+    "msgId": 20875, 
+    "profile": "smg_freeman", 
+    "topicId": 20857, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 206880094, 
+    "messageBody": "<div id=\"ygrps-yiv-1977276106\">I&#39;m struggling a bit with this example, especially given that  <br/>\neverything is static. And it looks like the test is exercising the  <br/>\nMock, not the real thing. My only thought is that 4.5 might have  <br/>\nchanged the initialisation order. That&#39;s why junit is based on  <br/>\ninstances...<br/>\n<br/>\nS<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 11 Sep 2008, at 13:45, pmcevoy12 wrote:<br/>\n&gt; Steve,<br/>\n&gt;<br/>\n&gt; We are using both jmockit and easymock.<br/>\n&gt;<br/>\n&gt; I have not figured out what is going on with the tests using EasyMock.<br/>\n&gt; They have several &quot;unexpected invocation&quot; errors.  The tests work<br/>\n&gt; fine in 4.4 and have the errors with 4.5.  The developer that owns it<br/>\n&gt; is looking into it.<br/>\n&gt;<br/>\n&gt; The test class using jmockit was like the following code.  This is not<br/>\n&gt; the original code, but it has the important elements.<br/>\n&gt; Disclaimer - The code organization is a bit weird.  E.g. there is no<br/>\n&gt; reason for a mock class to also extend the same class.  This was<br/>\n&gt; written by someone else.  I&#39;ve since cleaned it up a bit.<br/>\n&gt;<br/>\n&gt; /** The class to be tested. */<br/>\n&gt; public class RealClass<br/>\n&gt; {<br/>\n&gt;   public List someMethod(Set input) {<br/>\n&gt;       // do something<br/>\n&gt;   }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; /** The test class. */<br/>\n&gt; public class SomeTest<br/>\n&gt; {<br/>\n&gt;    // for some reason they had both an instance of<br/>\n&gt;    // the mocked class and one of the real class<br/>\n&gt;    private static MockClass mockObj;<br/>\n&gt;    private static RealClass realObj;<br/>\n&gt;<br/>\n&gt;    // the data to be returned by the mocked method<br/>\n&gt;    private static List someData;<br/>\n&gt;<br/>\n&gt;    @BeforeClass<br/>\n&gt;    private static void classSetup() {<br/>\n&gt;        Mockit.setUpMocks(MockClass.class);<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    @AfterClass<br/>\n&gt;    public static void classTearDown() {<br/>\n&gt;        Mockit.restoreAllOriginalDefinitions();<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    public class MockClass extends RealClass<br/>\n&gt;    {<br/>\n&gt;        @Override<br/>\n&gt;        public List someMethod(Set input) {<br/>\n&gt;            return someData;<br/>\n&gt;        }<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    // here is the problem<br/>\n&gt;    // they use an instance of the real class and call someMethod<br/>\n&gt;    // the method is mocked and setup above<br/>\n&gt;    // in 4.4 it would call RealClass.someMethod()<br/>\n&gt;    // in 4.5 it would call MockClass.someMethod()<br/>\n&gt;    @Test<br/>\n&gt;    public void test1() {<br/>\n&gt;        Set input = ...;<br/>\n&gt;        List list = realClass.someMethod(input);<br/>\n&gt;        assertNotNull(list);<br/>\n&gt;        // and so on...<br/>\n&gt;    }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- Patrick<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Steve Freeman &lt;smgfreeman@...&gt; wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt; Which mock framework, if any, are you using? Can you post an example?<br/>\n&gt;&gt;<br/>\n&gt;&gt; S.<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; On 9 Sep 2008, at 13:00, pmcevoy12 wrote:<br/>\n&gt;&gt;&gt; Hi,<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Are there any changes between 4.4 and 4.5 in regards to Mock  <br/>\n&gt;&gt;&gt; objects?<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; I am updating at work and I am seeing some tests that use mock  <br/>\n&gt;&gt;&gt; objects<br/>\n&gt;&gt;&gt; pass in 4.4 and now fail in 4.5.  In one case I found that a class<br/>\n&gt;&gt;&gt; that had one method mocked was using the real method in 4.4 (which<br/>\n&gt;&gt;&gt; seems wrong) and was using the mocked method in 4.5 (which seems<br/>\n&gt;&gt;&gt; right).<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; That is, it seems as if a bug was fixed from 4.4 to 4.5.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; I fixed that one test of ours and now I am looking at a few others  <br/>\n&gt;&gt;&gt; for<br/>\n&gt;&gt;&gt; similar situations.  I am mostly just curious.  Thanks.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; --- Patrick<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; Steve Freeman<br/>\n&gt;&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.mockobjects.com\">http://www.mockobjects.com</a><br/>\n&gt;&gt;<br/>\n&gt;&gt; Winner of the Agile Alliance Gordon Pask award 2006<br/>\n&gt;&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\nSteve Freeman<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.mockobjects.com\">http://www.mockobjects.com</a><br/>\n<br/>\nWinner of the Agile Alliance Gordon Pask award 2006 </span></blockquote></div>", 
+    "prevInTime": 20874, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1221316129", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20868, 
+    "headers": {
+        "inReplyToHeader": "PGdhYjNzcis0a3RuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDgwOTEzMTQyOS5tOERFVDJVbDAxNTgwOUByczQ5Lmx1eHNjaS5jb20+", 
+        "referencesHeader": "PGdhYjNzcis0a3RuQGVHcm91cHMuY29tPg=="
+    }
+}

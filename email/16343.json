@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 16344, 
+    "senderId": "8Hmbtc9-9TXsGASyN8eBBarSBd_heO62W7g7oifVrsLG_4cHxe1Sx_VQV04KhKnsgYScwZDCOkt_gpN7622OvlnFZBNR6BPa", 
+    "systemMessage": true, 
+    "subject": "Re: Testing Abstract Classes", 
+    "from": "&quot;j0hlrogge&quot; &lt;j0hlrogge@...&gt;", 
+    "authorName": "j0hlrogge", 
+    "msgSnippet": "I discovered another way recently of testing abstract classes when developing some functionality in rMock http://rmock.sf.net. I generally agree with Davids(?)", 
+    "msgId": 16343, 
+    "profile": "j0hlrogge", 
+    "topicId": 16293, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 256158327, 
+    "messageBody": "<div id=\"ygrps-yiv-378237797\">I discovered another way recently of testing abstract classes when<br/>\ndeveloping some functionality in rMock <a rel=\"nofollow\" target=\"_blank\" href=\"http://rmock.sf.net\">http://rmock.sf.net</a><br/>\n<br/>\nI generally agree with Davids(?) approach, to separate abstract<br/>\nclasses into concrete and interafces and use interaction based<br/>\ntesting. Sometimes you are at the mercy of another framework and you<br/>\nmay still need to do it with the abstract base class aproach. For<br/>\nthose cases I found the following to be useful:<br/>\n<br/>\nrMock supports an intercept method that allows you selectively check<br/>\ninteractions on concrete classes. The reason we inmplemented it:<br/>\n<br/>\npublic void testCloesesStringReader() {<br/>\n   Reader reader = (Reader)intercept(StringReader.class, new   <br/>\nObject[]{&quot;string to be read&quot;}, &quot;reader&quot;);<br/>\n<br/>\n   reader.close(); // expect close to be called once<br/>\n   modify().forward(); // forward the call to the intercepted class<br/>\n<br/>\n   startVerification(); // change state to verify<br/>\n<br/>\n   readerUser.useReader(reader);<br/>\n}<br/>\n<br/>\nThe above test would fail if readerUser did not call close() on the<br/>\nreader, other than that the reader works as any StringReader.<br/>\n<br/>\nintercept actually subclasses the class it intercepts so it can be<br/>\nused as a replacement for an anonymous class (since it is subclassing<br/>\nthe abstract class the class can be instantiated by intercept). In<br/>\neach testMethod you then can modify the classes behaviour, something<br/>\nthat would require several different subclasses or logic in the<br/>\nsubclass to accomodate for all the tests you need to to.<br/>\n<br/>\nIn our case we wanted to create a subclass of TestCase that would be<br/>\nable to run a strategy in runBare. This testcase is for the JUnit 3.x<br/>\nplatform, below we test that it behaves as it should if the subclass<br/>\nreturns a valid strategy and that it gives a nice exception if the<br/>\nsubclass (incorectly) returns null as a strategy:<br/>\n<br/>\n<br/>\npublic class TestAbstractStrategyTestCase extends RMockTestCase {<br/>\n\tprivate AbstractStrategyTestCase abstractStrategyTestCase;<br/>\n<br/>\n\tprotected void setUp() throws Exception {<br/>\n\t\tsuper.setUp();<br/>\n//<br/>\n// Intercept subclasses the intercepted class, so abstract classes can<br/>\nbe tested using<br/>\n// intercept without subclassing them.<br/>\n//<br/>\n\t\tabstractStrategyTestCase = (AbstractStrategyTestCase)<br/>\nintercept(AbstractStrategyTestCase.class, new Object[]{&quot;test&quot;},<br/>\n&quot;abstractStrategyTestCase&quot;);<br/>\n\t\t<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testTestRunsStrategy() throws Throwable {<br/>\n\t        // since we passed &quot;test&quot; to the constructor we expect &quot;test&quot;<br/>\nto be passed to the createStrategyMethod<br/>\n   \t        TestStep strategy =<br/>\nabstractStrategyTestCase.createStrategy(&quot;test&quot;);<br/>\n                // a mock is automatically created for us and we<br/>\nexpect rMock to run it.<br/>\n\t\tstrategy.run();<br/>\n\t\t<br/>\n\t\tstartVerification(); // stop setting up, start verifying<br/>\n\t\t<br/>\n                // now run the test<br/>\n\t\tabstractStrategyTestCase.runBare();<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testTestNoStrategy() throws Throwable {<br/>\n\t\t<br/>\n                // using the same class as above but chaning its<br/>\nbehaviour without<br/>\n                // adding complex parameters that are used only for<br/>\ntesting.<br/>\n                // In this case we tell the implementStrategyMethod to<br/>\nreturn null.<br/>\n                abstractStrategyTestCase.createStrategy(&quot;test&quot;);<br/>\n\t\tmodify().returnValue(null);<br/>\n\t\t<br/>\n\t\tstartVerification();<br/>\n\t\t<br/>\n                // This is a quite new feature in rMock, here we<br/>\nexpect an exception to be thrown as a result of running some code<br/>\nafter this row.<br/>\n\t\texpectThatExceptionThrown(is.instanceOf(RMockInternalError.class));<br/>\n\t\tabstractStrategyTestCase.runBare();<br/>\n\t}<br/>\n}</div>", 
+    "prevInTime": 16342, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1142502234", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16327, 
+    "headers": {
+        "inReplyToHeader": "PDQ0MTIyNjM5LjMwODA0MDFAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGR2YmMwcSttOHVxQGVHcm91cHMuY29tPg=="
+    }
+}

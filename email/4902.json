@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 46, 
+    "nextInTime": 4903, 
+    "senderId": "dGr2qX5302QgUFjrOaSUWZzZtuhlBspwqU1cc1RU7wSmmNXoWrueUwg-Avvmdghj9eZrXiWQE5zsjFnD5JCJ5rXs4p0fgpNutEUxDmAzhfg3ud0c", 
+    "systemMessage": false, 
+    "subject": "Which tests to write?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "In the case of the sort method, let me say this: there are two possibilities: you wrote the sort methods or you didn t. Suppose you wrote the sort methods.", 
+    "msgId": 4902, 
+    "profile": "nails762", 
+    "topicId": 4836, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-1804779414\">In the case of the sort method, let me say this: there are two<br/>\npossibilities: you wrote the sort methods or you didn&#39;t.<br/>\n<br/>\nSuppose you wrote the sort methods. That means that they have tests,<br/>\nand damn good ones. As a result, a method like this can&#39;t break on its<br/>\nown:<br/>\n<br/>\nif myCollection.size &lt; 20<br/>\n    myCollection.sortWith(SortAlgorithms.bubbleSort)<br/>\nelse if myCollection.size &lt; 100<br/>\n    myCollection.sortWith(SortAlgorithms.quickSort)<br/>\nelse<br/>\n    myCollection.sortWith(SortAlgorithms.mergeSort)<br/>\nend<br/>\n<br/>\nThis method does nothing except double-dispatch on myCollection, where<br/>\nI assume the sortWith method is defined like this:<br/>\n<br/>\ndef Collection.sortWith(sortAlgorithm)<br/>\n    sortAlgorithm.sortInPlace(myCollection)<br/>\nend<br/>\n<br/>\nThis method is clearly too thin to break *on its own*. It can only<br/>\nbreak if one of the SortAlgorithms is broken. As a result, don&#39;t test<br/>\nthis method. If you need to, test Collection.size, but otherwise,<br/>\nthere&#39;s nothing to gain from testing this method in particular.<br/>\n99.9999% of the time, the SortAlgorithms will work and you can&#39;t gain<br/>\nany more confidence by testing such simple use of the SortAlgorithms.<br/>\n<br/>\nOf course, you may not have written the Sort Algorithms. In that case,<br/>\nyou have a choice: assume they work, or write what I&#39;d call<br/>\nIDontTrustYou tests. These are tests of a third-party API that you<br/>\ndon&#39;t trust to work. Write tests that use representative samples of<br/>\ninput you expect to sort. Now that you know they work (or that they<br/>\ndon&#39;t), there is still nothing more to gain by testing the method up<br/>\ntop in this message. It&#39;s too thin to really break.<br/>\n<br/>\nEither way, I&#39;m suggesting you test the code that does the *real* work<br/>\nand not one-liners that simply call other code. (Notice that the if<br/>\nconstruct is essentially a one-liner calling three other one-liners.)<br/>\nWhen in doubt, try to dig down to find the class that does the<br/>\ninteresting stuff, and test *that* class the way you&#39;d test the current<br/>\nclass.<br/>\n<br/>\nHere&#39;s the acid test: ask yourself, can this method break on its own?<br/>\nIn other words: is it possible that everything this method calls can<br/>\nwork, while this method fails? What would have to happen for this<br/>\nmethod to break? If the logic of the current method is so simple that<br/>\nit doesn&#39;t end up on your list of ways the method could break, then<br/>\ntest the stuff your method calls, instead. This strategy reduces test<br/>\ncoupling and makes your code more refactoring-friendly without reducing<br/>\n(by much) your confidence in it.<br/>\n<br/>\n*********** REPLY SEPARATOR  ***********<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 2002-05-06 at 10:36 Daniel Barclay wrote:<br/>\n<br/>\n&gt;&gt; From: Berin Loritsch [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bloritsch@...\">bloritsch@...</a>]<br/>\n&gt;&gt; ...<br/>\n&gt;&gt; * NEVER assume anything about the internals.  Any code that uses<br/>\n&gt;&gt;   assumptions _*will*_ break.<br/>\n&gt;<br/>\n&gt;Note that using knowledge of internals of the code does not<br/>\nnecessarily <br/>\n&gt;make any assumptions about the code or make the tests breakable by<br/>\n&gt;changing the implementation.<br/>\n&gt; <br/>\n&gt;Consider the recent example of the sort method that selects a<br/>\ndifferent <br/>\n&gt;algorithm depending on the size of the input.  <br/>\n&gt;<br/>\n&gt;A test that is written to exercise both branches is written with<br/>\nknowledge <br/>\n&gt;of the implementation.  However, it doesn&#39;t make any assumptions about<br/>\n&gt;the implementation that will break anything.  <br/>\n&gt;<br/>\n&gt;(True, it assumes that there is a breakpoint between 19 and 20 that is<br/>\n&gt;worth testing, and that assumption can be invalidated by a different<br/>\n&gt;implementation, but nothing breaks except maybe the efficiency of<br/>\ntesting.)<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Daniel<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603 </span></blockquote></div>", 
+    "prevInTime": 4901, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1020811589", 
+    "canDelete": false, 
+    "nextInTopic": 4904, 
+    "prevInTopic": 4901, 
+    "headers": {
+        "inReplyToHeader": "PEQ1Nzc2RDA5RDA4NEE3NDBCNUQ3RjI5MjY2ODBGQ0YzRkUwNDE2QG11czAwMW11bGxldC5tZXJjYXRvci5jb20+", 
+        "messageIdInHeader": "PDIwMDIwNTA3MTg0NjI5MDc4OS4wNkEyNkVBNUBzbXRwMS5zeW1wYXRpY28uY2E+", 
+        "referencesHeader": "PEQ1Nzc2RDA5RDA4NEE3NDBCNUQ3RjI5MjY2ODBGQ0YzRkUwNDE2QG11czAwMW11bGxldC5tZXJjYXRvci5jb20+"
+    }
+}

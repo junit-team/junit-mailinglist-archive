@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 19, 
+    "nextInTime": 47, 
+    "senderId": "vevIsKEqhPjAmQZbA2Nuod-4_UbMxPFS5nmk8kZohCrOk137obfzfJE_Jk8cHsoEWiTvVn8WQr64pZHx5o7feeB50j4eNVpbx1Du-7Y", 
+    "systemMessage": false, 
+    "subject": "[junit] Re: J2EEUnit", 
+    "from": "&quot;Vera Peeters&quot; &lt;vera.peeters@...&gt;", 
+    "authorName": "Vera Peeters", 
+    "msgSnippet": "... No code duplication. ... No client code changes. My clients don t even notice wether they re running with a local or a remote EJB. ... We use the following", 
+    "msgId": 46, 
+    "topicId": 1, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1999214946\"><blockquote><span title=\"ireply\">&gt; -----Original Message-----<br/>\n&gt; From: Jonathan Rasmusson [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jr@...\">jr@...</a>]<br/>\n&gt; Sent: zondag 19 november 2000 17:28<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a><br/>\n&gt; Subject: [junit] Re: J2EEUnit<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a>, &quot;Vera Peeters&quot; &lt;vera.peeters@t...&gt; wrote:<br/>\n<br/>\n&gt; &gt; 3. To be able to work quickly (hot deployment with underlying<br/>\n&gt; packages is<br/>\n&gt; &gt; not really possible) we use bipolar EJB creators iso the regular EJB<br/>\n&gt; Home<br/>\n&gt; &gt; for the session EJBs. That is a factory that returns the EJB in the<br/>\n&gt; normal<br/>\n&gt; &gt; way (created by the EJB Home) *or* as a simple local object,<br/>\n&gt; depending on a<br/>\n&gt; &gt; property that can be specified in a config file. While developing,<br/>\n&gt; we<br/>\n&gt; &gt; usually run the tests on the local session EJBs. Very nice for<br/>\n&gt; debugging<br/>\n&gt; &gt; too.<br/>\n&gt; &gt; &gt;<br/>\n&gt;<br/>\n&gt; I think this is a great idea.<br/>\n&gt;<br/>\n&gt; Does this mean you essentially duplicate you code?  Once for the<br/>\n&gt; EJBBean class and once for your simple local object?<br/>\n<br/>\n<br/>\n </span></blockquote>No code duplication.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; I did something like this in an effort to minimize client code<br/>\n&gt; changes in my application regardless of whether I was running within<br/>\n&gt; an EJB container or not.<br/>\n<br/>\n<br/>\n </span></blockquote>No client code changes.<br/>\nMy clients don&#39;t even notice wether they&#39;re running with a local or a remote<br/>\nEJB.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; You must then define a common interface between your EJB and the<br/>\n&gt; simple local object so the the client does not care whether it gets a<br/>\n&gt; Customer EJB Remote stub or a Customer simple local object.<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>We use the following mechanism:<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n\t\t\t\t\tclient--------------------&gt; theMyEJBCreator (singleton)<br/>\n\t\t\t\t\t/\t&#92;\t\t\t\t\t/<br/>\n\t\t\t\t     /\t &#92; uses\t\t\t     / holds<br/>\n\t\t\t\t    /\t\t  &#92;\t\t\t\t    /<br/>\n\t\t\t\t   /\t\t   &#92;\t\t\t         /<br/>\n\t\t\t\t  v\t\t    v\t\t\t        v<br/>\n\t\t\t\t\treturns<br/>\n\tMyEJBIF (interface) &lt;------------\tbipolarMyEJBCreator (interface)<br/>\n\t\t^\t\t\t\t\t\t\t^<br/>\n\t\t|\t\t\t\t\t\t\t|<br/>\n\t\t|\t\t\t\t\t\t\t|<br/>\n\t| ----------|\t\t\t\t\t|-----------|<br/>\n\t|\t\t|\t\t\t\t\t|\t\t|<br/>\nMyEJBImpl\tMyEJBRemote\t\t\tlocalMyEJBCreator\t\tremoteMyEJBCreator<br/>\n\t\t\t^<br/>\n\t\t\t|<br/>\n\t\t\t|<br/>\n\t\t\t|<br/>\n\t\tMyEJBStub (generated)<br/>\n<br/>\n<br/>\n<br/>\n(pfffff... I would say it&#39;s a little bit easier to draw it on a<br/>\nwhiteboard... )<br/>\n<br/>\nThe client asks theMyEJBCreator to deliver a bipolarMyEJBCreator.<br/>\nThe theMyEJBCreator looks in the configuration properties file to know<br/>\nwether he has to create a localMyEJBCreator or a remoteMyEJBCreator.<br/>\n<br/>\nClient asks this bipolarMyEJBCreator to deliver a MyEJBIF.<br/>\nIf the bipolarMyEJBCreator is a remoteMyEJBCreator, the returned object will<br/>\nbe a MyEJBStub.<br/>\nIf the bipolarMyEJBCreator is a localMyEJBCreator, the returned object will<br/>\nbe a MyEJBImpl.<br/>\n<br/>\nThis works very well for session ejbs. For entity ejbs, the container does a<br/>\nlot of work that I didn&#39;t want to duplicate, so I don&#39;t use this mechanism<br/>\nthere.<br/>\n<br/>\n<br/>\nIf we run the EJB locally, a MyEJBImpl is instantiated on the client side as<br/>\nif it was a simple object.<br/>\nIf we run the EJB remote, a MyEJBStub is instantiated and talks to the<br/>\nMyEJBImpl that lives in the container on the server side.<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Also where do you write tests that test your transaction processing.<br/>\n&gt; I find I like to write tests against the EJB container to ensure<br/>\n&gt; things that should get rolled back do.  I guess you can not write<br/>\n&gt; these against your simple local objects unless your are demarking the<br/>\n&gt; transactions yourself via BMP.<br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>To be honest, we don&#39;t test the transaction rollback in the Unit Tests.<br/>\nWe do test wether exceptions are thrown by the EJB in certain situations,<br/>\nwhich will normally imply that the transaction is rolled back.<br/>\nIf you would want to test wether the transaction is really rolled back, I<br/>\nguess you should define a separate Unit Test that should run only on the<br/>\nremote EJBs, and not on the local EJBs.</div>", 
+    "prevInTime": 45, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "974724006", 
+    "canDelete": false, 
+    "nextInTopic": 47, 
+    "prevInTopic": 44, 
+    "headers": {
+        "inReplyToHeader": "PDh2OHYyYSt0NTE3QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PE5EQkJJQU1BRE1ISU1PQUxMQ0hETUVBSUNIQUEudnBAdHJ5eC5jb20+"
+    }
+}

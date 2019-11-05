@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 17253, 
+    "senderId": "936t2oGFqmpqQEcMpicjjj5WMARWxhmx0NLA7GfJ9ndlk85dFu2lgfbigQ4u_1Y8PAgfrpsULjqyMtqYdiap_z5LS4RaPo-OKATiDeAqgaW_allQTKDHSmauraxkGGKVY8kLK0Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit Report for each Iteration", 
+    "from": "&quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "Hi Harshal, Here is how you could do this with TestNG and DataProviders: @DataProvider(name = xmlProvider ) public Object[][] createMergeCombinations() { ", 
+    "msgId": 17252, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 86676 invoked from network); 31 Jul 2006 14:22:16 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m36.grp.scd.yahoo.com with QMQP; 31 Jul 2006 14:22:16 -0000\r\nReceived: from unknown (HELO smtp-out.google.com) (216.239.45.12)\n  by mta1.grp.scd.yahoo.com with SMTP; 31 Jul 2006 14:22:16 -0000\r\nReceived: from zps37.corp.google.com (zps37.corp.google.com [172.25.146.37])\n\tby smtp-out.google.com with ESMTP id k6VEKevx024664\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 31 Jul 2006 07:20:40 -0700\r\nReceived: from smtp-out2.google.com (fpr16.prod.google.com [10.253.18.16])\n\tby zps37.corp.google.com with ESMTP id k6VEFYe9029569\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 31 Jul 2006 07:20:36 -0700\r\nReceived: by smtp-out2.google.com with SMTP id 16so91667fpr\n        for &lt;junit@yahoogroups.com&gt;; Mon, 31 Jul 2006 07:20:36 -0700 (PDT)\r\nReceived: by 10.253.29.11 with SMTP id c11mr354532fpc;\n        Mon, 31 Jul 2006 07:20:36 -0700 (PDT)\r\nReceived: by 10.253.29.15 with HTTP; Mon, 31 Jul 2006 07:20:36 -0700 (PDT)\r\nMessage-ID: &lt;b86b6a9c0607310720p7c234223u2f3eabe3460c6a22@...&gt;\r\nDate: Mon, 31 Jul 2006 07:20:36 -0700\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;9c22d04e0607310335u20c03663h72b329f89f95308b@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;9c22d04e0607310335u20c03663h72b329f89f95308b@...&gt;\r\nFrom: &quot;=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?=&quot; &lt;cbeust@...&gt;\r\nSubject: Re: [junit] JUnit Report for each Iteration\r\nX-Yahoo-Group-Post: member; u=199443513; y=Mdn8hhbFNkceP5akZdInmCRovTBydJvhI7YVZkHpNZEn\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nHi Harshal,\n\nHere is how you could do this with TestNG and DataProviders:\n\n=\r\n@DataProvider(name =3D &quot;xmlProvider&quot;)\npublic Object[][] createMergeCombinat=\r\nions() {\n  String f1 =3D &quot;xml1.xml&quot;;\n  String f2 =3D &quot;xml2.xml&quot;;\n  String f=\r\n3 =3D &quot;xml3.xml&quot;;\n\n  return new Object[] {\n    return new Object[] { f1, f1=\r\n},\n    return new Object[] { f1, f2},\n    return new Object[] { f1, f3},\n  =\r\n  return new Object[] { f2, f1},\n    return new Object[] { f2, f2},\n    ret=\r\nurn new Object[] { f2, f3},\n    return new Object[] { f3, f1},\n    return n=\r\new Object[] { f3, f2},\n    return new Object[] { f3, f3},\n  }\n\n  return res=\r\nult;\n}\n\nprivate XmlDocument merge(String f1, String f2) {\n  // merge files\n=\r\n}\n\n@Test(dataProvider =3D &quot;xmlProvider&quot;)\npublic void verifyMerge(String f1,=\r\n String f2) {\n  XmlDocument m =3D merge(f1, f2);\n  // verify the merged doc=\r\nument\n}\n\nNote that the @Test method receives two parameters, which are defi=\r\nned in the\ndataprovider.  The dataprovider will return all nine combination=\r\ns of files\nand TestNG will invoke your test method with each of them.  If o=\r\nne fails,\nthis particular combination will be marked as a failure and TestN=\r\nG will move\non to the next invocation.  Finally, the reports will tell you =\r\nwhich ones\nsucceeded and which ones failed, along with the parameters that =\r\nwere in use\nat that time...\n\nHope it helps.\n\n-- \nC=E9dric\nhttp://testng.org=\r\n\n\n\nOn 7/31/06, Harshal Shah &lt;shahharshal@...&gt; wrote:\n&gt;\n&gt; The question=\r\n is more of implementation details but I was interested to\n&gt; know\n&gt; if ther=\r\ne are API&#39;s or easy solution availables.\n&gt;\n&gt; Here&#39;s the problem:\n&gt;\n&gt; I have=\r\n 3 xml files (xml1,xml2,xml3). I am testing the merging of these xml\n&gt; file=\r\ns. The following could be possible\n&gt;\n&gt; xml1-xml1\n&gt; xml1-xml2\n&gt; xml1-xml3\n&gt; =\r\nxml3-xml1\n&gt; xml3-xml2\n&gt; xml3-xml3\n&gt;\n&gt; One method is to write testMethods fo=\r\nr all these combination.\n&gt; One more approach is just write two for loops wh=\r\nich will do this for\n&gt; me.Theproblem with this approach is the method is ju=\r\nst single. Due to\n&gt; this, what\n&gt; is happening is the JUnit report just show=\r\ns a single success or failure.\n&gt;\n&gt; I tried Anonymous Inner class approach b=\r\nut that did not work.\n&gt;\n&gt; Can somebody point me to some different approach =\r\nto just have all the\n&gt; results displayed using just a single mehtod or some=\r\n solution like this?\n&gt;\n&gt; -Thanks\n&gt;\n&gt; --\n&gt; http://shahharshal.blogspot.com/\n=\r\n&gt;\n&gt;\n&gt; [Non-text portions of this message have been removed]\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo=\r\n! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n[Non-text portions of this message have be=\r\nen removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 17249, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 17251, 
+    "contentTrasformed": false, 
+    "postDate": "1154355636", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 17250, 
+    "headers": {
+        "inReplyToHeader": "PDljMjJkMDRlMDYwNzMxMDMzNXUyMGMwMzY2M2g3MmIzMjlmODlmOTUzMDhiQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDYwNzMxMDcyMHA3YzIzNDIyM3UyZjNlYWJlMzQ2MGM2YTIyQG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PDljMjJkMDRlMDYwNzMxMDMzNXUyMGMwMzY2M2g3MmIzMjlmODlmOTUzMDhiQG1haWwuZ21haWwuY29tPg=="
+    }
+}

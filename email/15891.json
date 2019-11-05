@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 74, 
+    "nextInTime": 15892, 
+    "senderId": "B9K_-Y41BTL6rNb7t3tt4qyuf0vCN6QaTgXqOcPRoKOlBiC4oXWG2-nbhF1Fl-byVz53BfI3GjITOcYSGXHrNppHDNgmodcTlj8", 
+    "systemMessage": true, 
+    "subject": "Observations from a production use of JUnit4", 
+    "from": "Ben Maurer &lt;bmaurer@...&gt;", 
+    "authorName": "Ben Maurer", 
+    "msgSnippet": "Hey guys, For this semester, I ve been playing around with using JUnit4 as the automated test system for the 15-211 (Data Structures) class at CMU. We use an", 
+    "msgId": 15891, 
+    "profile": "benjamindavidmaurer", 
+    "topicId": 15891, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 256083789, 
+    "messageBody": "<div id=\"ygrps-yiv-1419480837\">Hey guys,<br/>\n<br/>\nFor this semester, I&#39;ve been playing around with using JUnit4 as the<br/>\nautomated test system for the 15-211 (Data Structures) class at CMU. We<br/>\nuse an automated submission system called FrontDesk to grade student<br/>\nprogramming work. The system runs a series of JUnit tests on the student<br/>\ncode. The submission system is web based, and a daemon polls the system<br/>\nfor test cases to execute. This daemon then launches Ant, which<br/>\nevaluates the test cases, and sends back xml results to the testing<br/>\nservice.<br/>\n<br/>\nThere were a few motivations for me to use JUnit4 over a production<br/>\nversion:<br/>\n<br/>\n      * Built in support for timeouts. This is probably the most<br/>\n        critical component. Because students will make draft submissions<br/>\n        to FrontDesk, we see all sorts of problems. If the testing<br/>\n        daemon gets stuck on a submission, this can cause massive<br/>\n        problems -- especially if it is 9pm on the day of the 11:59pm<br/>\n        deadline and 200 students are attempting to commit. Built in<br/>\n        timeout support helps avert disaster.<br/>\n      * Expected exceptions. This helps us make clean test cases.<br/>\n<br/>\nI thought I might list some observations, in the hope that these could<br/>\nbe fixed in the near future.<br/>\n<br/>\nAnt XML output<br/>\n--------------<br/>\n<br/>\nI&#39;d say the main hack involved in using junit4 is the Ant integration.<br/>\nBecause we need XML output, using the driver program (like the build.xml<br/>\nin junit4 does) wouldn&#39;t work. I guess I could write my own harness, but<br/>\nwhy should this be required? Having a full fledged ant task before the<br/>\nrelease date seems like a critical factor.<br/>\n<br/>\nRight now, I just use the junit3 compat layer to execute via Ant. This<br/>\nhas one problem: the test case names in XML get messed up. In rc1 (the<br/>\nversion I am using), it&#39;s ok. The xml file looks like:<br/>\n<br/>\n&lt;testcase classname=&quot;junit.framework.JUnit4TestCaseAdapter&quot; name=&quot;QueueTest(createQueueTest)&quot; time=&quot;0.033&quot;&gt;&lt;/testcase&gt;<br/>\n<br/>\nWhile not ideal, I&#39;m able to have my tool deal with this.<br/>\n<br/>\nHowever, in rc2, it looks like:<br/>\n<br/>\n&lt;testcase classname=&quot;junit.framework.JUnit4TestAdapterCache$2$1&quot; name=&quot;unknown&quot; time=&quot;0.018&quot;&gt;&lt;/testcase&gt;<br/>\n<br/>\nObviously, this is useless to me, and blocks me from updating.<br/>\n<br/>\nStack Trace Filtering<br/>\n---------------------<br/>\n<br/>\nThe stack trace from junit messages have always been filed with junit.*<br/>\ntraces. Ant filters these out. However, now there are org.junit things<br/>\nslipping through. Also, tests with a timeout, have many<br/>\njava.util.concurrent frames in them. Why leave this kind of filtering up<br/>\nto each tool? JUnit should filter out the frames it knows are from it.<br/>\nThis would make command line output look nicer. I think NUnit does this.<br/>\n<br/>\n@Test(expected=) traces<br/>\n-----------------------<br/>\n<br/>\nWhen you have an expected exception, and another one gets thrown, the<br/>\nerror trace doesn&#39;t contain the bad exception. You only get:<br/>\n<br/>\njava.lang.AssertionError: Unexpected exception, expected&lt;java.util.NoSuchElementException&gt; but was&lt;java.lang.NullPointerException&gt;<br/>\n<br/>\nHaving the trace of the bad exception would help TAs debug student code.<br/>\nAgain, I think NUnit will display these.<br/>\n<br/>\n-- Ben</div>", 
+    "prevInTime": 15890, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1138560450", 
+    "canDelete": false, 
+    "nextInTopic": 15895, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDExMzg1NjA0NTAuMjQ2MzcuNTEuY2FtZWxAb21lZ2EucmVzLmNtdS5lZHU+"
+    }
+}

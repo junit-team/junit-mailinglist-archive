@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 20253, 
+    "senderId": "IDW7LBI_5L4-mihkUXzu5TFBjLAvmuQAQYXjUqqvXTKOJIlkv-lFvqh3DqDr8qGUPANmxam3EzAEd4EW7qaG9mhAQFr3514ksmRHampFIpviBUBF", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit-Test stops without a message on RedHat", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "This is a stab in the dark but I experienced once that some tests that ran correctly on windows deadlocked on Solaris. The reason in that case was that the", 
+    "msgId": 20252, 
+    "rawEmail": "Return-Path: &lt;joakim.ohlrogge@...&gt;\r\nX-Sender: joakim.ohlrogge@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 24091 invoked from network); 19 Jan 2008 16:17:46 -0000\r\nX-Received: from unknown (66.218.67.97)\n  by m49.grp.scd.yahoo.com with QMQP; 19 Jan 2008 16:17:46 -0000\r\nX-Received: from unknown (HELO wa-out-1112.google.com) (209.85.146.176)\n  by mta18.grp.scd.yahoo.com with SMTP; 19 Jan 2008 16:17:46 -0000\r\nX-Received: by wa-out-1112.google.com with SMTP id m38so2622477waf.5\n        for &lt;junit@yahoogroups.com&gt;; Sat, 19 Jan 2008 08:17:46 -0800 (PST)\r\nX-Received: by 10.115.95.1 with SMTP id x1mr2030569wal.94.1200759465827;\n        Sat, 19 Jan 2008 08:17:45 -0800 (PST)\r\nX-Received: by 10.114.211.18 with HTTP; Sat, 19 Jan 2008 08:17:45 -0800 (PST)\r\nMessage-ID: &lt;b9ee5e410801190817l628ae413r9b6d9856e6fe4a3e@...&gt;\r\nDate: Sat, 19 Jan 2008 17:17:45 +0100\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;fmptb8+5vpd@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;fmptb8+5vpd@...&gt;\r\nX-Google-Sender-Auth: 17f7dbf081156e5a\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nX-eGroups-From: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nFrom: &quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;\r\nReply-To: joakim.ohlrogge@...\r\nSubject: Re: [junit] JUnit-Test stops without a message on RedHat\r\nX-Yahoo-Group-Post: member; u=261856052; y=yPnfnHebjkGOd1b8NvTCOYSYW3bPfgNTgNcWlIX70aX4hPSA\r\nX-Yahoo-Profile: j0hlrogge\r\n\r\nThis is a stab in the dark but I experienced once that some tests that\nran =\r\ncorrectly on windows deadlocked on Solaris. The reason in that\ncase was tha=\r\nt the threading models were different and those tests\ntested some threading=\r\n-stuff that was not correctly implemented and\nwhen run under solaris schedu=\r\nler it deadlocked.\n\nMy wife experienced that their system that was somewhat=\r\n threading\nintensive started behaving weirdly when they got new dual-core\nm=\r\nachines.\n\nThere used to be a setting on the linux JVM:s (way back) where yo=\r\nu\ncould set wether to use the operating systems threads or JVM-emulated\none=\r\ns. I could be wrong about the details and it may not be relevant\nanymore.\n\n=\r\nSince your tests just stop running without a message it could be a\nsimilar =\r\nissue you&#39;re experiencing here? I would look for\nthread-related issues.\n\n\nO=\r\nn Jan 18, 2008 11:00 AM, mcwizardxl &lt;hri@...&gt; wrote:\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; =\r\nSince our switch to JDK 1.6 we experience strange behaviour of JUnit\n&gt;  on =\r\nRedHat (But not on Solaris, Suse or any of the Windows machines).\n&gt;\n&gt;  The =\r\noutput looks as follows and should explain everything:\n&gt;\n&gt;  ----\n&gt;\n&gt;  Date:=\r\n Fri Jan 18 02:00:05 CET 2008\n&gt;  OS: Linux 2.6.18-8.el5 i386\n&gt;  JVM: Sun Mi=\r\ncrosystems Inc. Java HotSpot(TM) Client VM 10.0-b19\n&gt;  JUnit Version: 4.4\n&gt;=\r\n  Test cases:\n&gt;  de.insiders.cai.JobQueueTest.testGetPut() [665]\n&gt;  de.insi=\r\nders.cai.JobQueueTest.testPutGet() [666]\n&gt;  [... lots of testnames here ...=\r\n]\n&gt;  Executing 1254 test cases:\n&gt;  ........................................=\r\n.\n&gt;  [... last line repeated 28 times ...]\n&gt;  .............................=\r\n.........\n&gt;  Finished JUNIT Test on RedHat-Linux.\n&gt;  TEST FAILED\n&gt;\n&gt;  -----=\r\n\n&gt;\n&gt;  Notice that:\n&gt;  1) There is no F or E in the tests, but the test fail=\r\ned?\n&gt;  2) That there are LESS than 1254 dots (more like ~1230)\n&gt;\n&gt;  Can any=\r\nbody explain that behavior to me?\n&gt;  PS: The same tests under different mac=\r\nhines work, but the behavior\n&gt;  under Redhat is consistenly wrong (but: not=\r\n always after the same\n&gt;  amount of tests, sometimes it even works)\n&gt;\n&gt;  \n\n=\r\n\n\n-- \n-----------------------------------------------------\nJoakim Ohlrogge=\r\n\nAgical AB\nV=E4sterl=E5nggatan 79, 2 tr\n111 29 Stockholm, SWEDEN\n\nMobile: +=\r\n46-708-754004\nBlog: johlrogge.wordpress.com\nE-mail: joakim.ohlrogge@agical.=\r\nse\n\n", 
+    "profile": "j0hlrogge", 
+    "topicId": 20250, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "prevInTime": 20251, 
+    "contentTrasformed": false, 
+    "postDate": "1200759465", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20250, 
+    "headers": {
+        "inReplyToHeader": "PGZtcHRiOCs1dnBkQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDgwMTE5MDgxN2w2MjhhZTQxM3I5YjZkOTg1NmU2ZmU0YTNlQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZtcHRiOCs1dnBkQGVHcm91cHMuY29tPg=="
+    }
+}

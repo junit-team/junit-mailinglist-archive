@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 21465, 
+    "senderId": "jJ_Dqzh8_8IHEU4gwcXECddUJNfihu3k5N2A3oMDVAnR0GtX2ddCqMTN290SlilgKYbewhcYEVvRF51R04rhhOvq", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Hello, as advised on http://www.junit.org/forum/16, I&#39;m \tposting to this list th", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "J, If your test class extends TestCase, then the 3.8 rules are applied exactly.  There are still lots of tools that depend fairly strongly on that guarantee.", 
+    "msgId": 21464, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 64960 invoked from network); 31 Mar 2009 13:50:37 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m1.grp.re1.yahoo.com with QMQP; 31 Mar 2009 13:50:37 -0000\r\nX-Received: from unknown (HELO qw-out-1920.google.com) (74.125.92.149)\n  by mta3.grp.re1.yahoo.com with SMTP; 31 Mar 2009 13:50:36 -0000\r\nX-Received: by qw-out-1920.google.com with SMTP id 5so1722369qwc.60\n        for &lt;junit@yahoogroups.com&gt;; Tue, 31 Mar 2009 06:50:19 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.220.92.139 with SMTP id r11mr2109380vcm.15.1238507419586; Tue, \n\t31 Mar 2009 06:50:19 -0700 (PDT)\r\nIn-Reply-To: &lt;gqshdg+34b4@...&gt;\r\nReferences: &lt;gqshdg+34b4@...&gt;\r\nDate: Tue, 31 Mar 2009 09:50:19 -0400\r\nX-Google-Sender-Auth: cd21d77384b4c6d6\r\nMessage-ID: &lt;4f7da6b90903310650l1cb8380cr25f2c2997ee4f3ca@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Hello, as advised on http://www.junit.org/forum/16, I&#39;m \n\tposting to this list th\r\nX-Yahoo-Group-Post: member; u=341876227; y=gugcos7Hm7-gNunhskycfZkKjauT-Z9J3JertWTYqys\r\nX-Yahoo-Profile: dsaff\r\n\r\nJ,\n\nIf your test class extends TestCase, then the 3.8 rules are applied\nexa=\r\nctly.  There are still lots of tools that depend fairly strongly on\nthat gu=\r\narantee.  There&#39;s not a defined mixing of the JUnit 4.x and\nJUnit 3.x rules=\r\n--the simple things seem to work together, as you\ndemonstrate, but the more=\r\n advanced extension mechanisms would make\nexactly defining the mix very dif=\r\nficult.\n\nIf you want to enforce the JUnit 4 rules, even if the class extend=\r\ns\nTestCase, you can annotate your class with @RunWith(JUnit4.class)\n\n1) In =\r\nyour current case, it would require very little effort to\nannotate the rema=\r\nining desired methods with @Test.  Is there a real\nsituation in which it is=\r\n a significant amount of effort to update a\nclass all at once?\n\n2) Where di=\r\nd you look in the documentation?  Where would be a natural\nplace to see thi=\r\ns behavior described?\n\nThanks,\n\n   David Saff\n\nOn Tue, Mar 31, 2009 at 3:40=\r\n AM, jduprez4junit &lt;jethrie@...&gt; wrote:\n&gt; Hello,\n&gt;\n&gt; as advised on ht=\r\ntp://www.junit.org/forum/16, I&#39;m posting to this list\n&gt; the following probl=\r\nem - in summary, jUnit4 annotations are ignored by\n&gt; jUnit 4 runners when t=\r\nhe test class is explicitly extending TestCase.\n&gt;\n&gt; This case is not uncomm=\r\non: many users still have jUnit-3.8-style test\n&gt; suites and cases, which ru=\r\nn unchanged in jUnit4, but may want to enhance\n&gt; them gradually, by introdu=\r\ncing jUnit4 annotations.\n&gt;\n&gt; Here is the problem demonstrated as a test cla=\r\nss: =A0the comments mark the\n&gt; test methods which behave unexpectedly.\n&gt;\n&gt; =\r\npublic class TestJUnit4FeaturesBreakIfClassExtendsTestCase extends\n&gt; TestCa=\r\nse {\n&gt; =A0 @Test\n&gt; =A0 public void testMethodWithNameConventionAndTestAnnot=\r\nation() {\n&gt; =A0 =A0 // Is executed by jUnit 4, as expected\n&gt; =A0 }\n&gt;\n&gt; =A0 =\r\npublic void testMethodWithNameConventionAlone() {\n&gt; =A0 =A0 fail(&quot;Is execut=\r\ned by jUnit 4 whereas it should be ignored&quot;);\n&gt; =A0 }\n&gt;\n&gt; =A0 @Test\n&gt; =A0 p=\r\nublic void thisIsATestMethodWithTestAnnotationAlone() {\n&gt; =A0 =A0 // Is not=\r\n executed by jUnit 4 despite @Test\n&gt; =A0 }\n&gt;\n&gt; =A0 @Test\n&gt; =A0 @Ignore\n&gt; =\r\n=A0 public void testMethodWithNameConventionAndTestIgnoreAnnotation() {\n&gt; =\r\n=A0 =A0 fail(&quot;Is executed by jUnit 4 despite @Ignore&quot;);\n&gt; =A0 }\n&gt; }\n&gt;\n&gt; Doe=\r\ns jUnit intentionally run TestCases subclasses a la 3.8 - to ensure\n&gt; backw=\r\nards compatibility of legacy tests, unchanged?\n&gt; It would be a limitation, =\r\nand indeed makes code such as the extract\n&gt; above misleading (as the now fa=\r\nmiliar annotations do not work as\n&gt; expected).\n&gt; Besides, I haven&#39;t seen th=\r\nis documented in the docs, so I assume it&#39;s\n&gt; not intentional.\n&gt;\n&gt; Thanks i=\r\nn advance for following up.\n&gt;\n&gt; =A0 =A0 J.\n&gt;\n&gt;\n&gt;\n&gt; [Non-text portions of th=\r\nis message have been removed]\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n=\r\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21463, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21463, 
+    "contentTrasformed": false, 
+    "postDate": "1238507419", 
+    "canDelete": false, 
+    "nextInTopic": 21465, 
+    "prevInTopic": 21463, 
+    "headers": {
+        "inReplyToHeader": "PGdxc2hkZyszNGI0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwMzMxMDY1MGwxY2I4MzgwY3IyNWYyYzI5OTdlZTRmM2NhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGdxc2hkZyszNGI0QGVHcm91cHMuY29tPg=="
+    }
+}

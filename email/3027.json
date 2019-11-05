@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3028, 
+    "senderId": "Ul2kWjq91Gh6gU5WjoezSbLKHYiFQDFWFdNIDUMuTMyYW4LdHbZZv4dVLcolpscLJInt5vWRfoc1_n22A9cBxkqsO9XNs_O2Dy5lGE_30OxTr0Q", 
+    "systemMessage": false, 
+    "subject": "Problems with WL transactions and JUnit", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Sadly, at some point, you may need to write a test that requires committing a transaction to make sense, depending on the transaction isolation level you set", 
+    "msgId": 3027, 
+    "profile": "nails762", 
+    "topicId": 3014, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1298963069\">Sadly, at some point, you may need to write a test that requires committing<br/>\na transaction to make sense, depending on the transaction isolation level<br/>\nyou set on your EJBs. If you don&#39;t have access to &quot;dirty updates&quot; within a<br/>\ntransaction, then you have to commit one, start a new one, check your<br/>\nupdate, then undo it.<br/>\n<br/>\nI ran into the same problem, and since I wanted to test the EJBs, I just<br/>\ngave in to managing transactions within them. I couldn&#39;t find a better way<br/>\nquickly enough to do that. If anyone else has an idea, please give! :)<br/>\n<br/>\nJBR.<br/>\n<br/>\n----- Begin original message -----<br/>\nWe have subclassed TestCase into a TransactionTestCase for which the setUp()<br/>\ncreates a new javax.transaction.UserTransaction. When the test is finished,<br/>\nthe tearDown() rolls back the transaction. It works on almost all our test<br/>\ncases.<br/>\n<br/>\nOf the 200+ test cases we have, two of them have a weird behaviour. Our<br/>\nentity EJBs are all container-managed and pretty much all of them have<br/>\nfinder methods described in the descriptor. What we have found with the two<br/>\nill-behaved tests is that modifying some beans within the UnitTest does not<br/>\naffect the finder method. For example:<br/>\n<br/>\nFoo foo = home.create();<br/>\nfoo.setDefault(true);<br/>\nFoo foo2 = home.findDefault();<br/>\n// foo2 has the same data as foo<br/>\nfoo.setDefault(false);<br/>\n// The following should throw an exception but doesn&#39;t<br/>\nfoo2 = home.findDefault();<br/>\n<br/>\nNow, if print the content of foo2, I can see that the value of isDefault()<br/>\nis set to false. So the finder should never have found it, yet it does. We<br/>\nhave found that if we remove the transactional environment from our unit<br/>\ntest (i.e. extend TestCase instead of TransactionTestCase), then it works.<br/>\n<br/>\nWhy do we make our tests as transactions? To prevent pollution of the<br/>\ndatabase after failed tests or if developers forget to remove the data that<br/>\nthey added during the test.<br/>\n<br/>\nHas anyone else had experience in this reagard? Has anyone encountered this<br/>\ntype of behavior? How did you fix it?</div>", 
+    "prevInTime": 3026, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1003607472", 
+    "canDelete": false, 
+    "nextInTopic": 3028, 
+    "prevInTopic": 3021, 
+    "headers": {
+        "messageIdInHeader": "PE9FMjBoejJIRndERlV4ekNPTEYwMDAwMzI0NUBob3RtYWlsLmNvbT4=", 
+        "referencesHeader": "PDEwMDM1NzU2OTQuNTg4LjY2NDkzLm0xMkB5YWhvb2dyb3Vwcy5jb20+"
+    }
+}

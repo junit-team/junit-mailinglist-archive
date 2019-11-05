@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 3464, 
+    "senderId": "c8rGkMLECxX3vvsN50MytOl0ZZouNHvpNUWHULp_b6lKKOjLqcL5bkMlFhkboBoW3YqVWULEmQmrlA7YHoK54NbizburV4_v7k0f9Qgxk-Y", 
+    "systemMessage": false, 
+    "subject": "ANN: Ant task, JUnit and trace filtering", 
+    "from": "Scott Stirling &lt;sstirling@...&gt;", 
+    "authorName": "Scott Stirling", 
+    "msgSnippet": "I modified the Apache Jakarta Ant JUnit task to support the JUnit feature that filters stack frames in exception and error messages so that junit framework", 
+    "msgId": 3463, 
+    "rawEmail": "Return-Path: &lt;sstirling@...&gt;\r\nX-Sender: sstirling@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_1_2); 6 Dec 2001 06:30:21 -0000\r\nReceived: (qmail 78884 invoked from network); 6 Dec 2001 06:30:21 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m11.grp.snv.yahoo.com with QMQP; 6 Dec 2001 06:30:21 -0000\r\nReceived: from unknown (HELO S1001EXI01.allaire.com) (63.109.196.26)\n  by mta2.grp.snv.yahoo.com with SMTP; 6 Dec 2001 06:30:20 -0000\r\nReceived: by S1001EXI01.allaire.com with Internet Mail Service (5.5.2653.19)\n\tid &lt;XVMJJTZS&gt;; Thu, 6 Dec 2001 01:30:19 -0500\r\nMessage-ID: &lt;4F47DCFADC8DD5118D2B00508B952D960C3BF2@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: ANN: Ant task, JUnit and trace filtering\r\nDate: Thu, 6 Dec 2001 01:30:16 -0500 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain\r\nFrom: Scott Stirling &lt;sstirling@...&gt;\r\nX-Yahoo-Group-Post: member; u=65616759\r\nX-Yahoo-Profile: jrun5\r\n\r\nI modified the Apache Jakarta Ant JUnit task to support the JUnit feature\nthat filters stack frames in exception and error messages so that junit\nframework method frames don&#39;t clutter your exception traces.  Unless you are\ntesting JUnit itself, you really don&#39;t need to see any of those\njunit.framework.* stack frames in an exception trace.  The zip file\ncontaining this README, the source code, and a compiled version with the\nwhole Ant optional.jar is in ant15-junitTask-stackFilter.zip at\nhttp://groups.yahoo.com/group/junit/files/\n\nIt works with the PlainResultsFormatter and XMLResultsFormatter.  It works\nwith the JUnit task, whether you fork the JVM or not, and it also works with\nthe batchtest JUnit task, again, whether you fork or not.  Now we have nice,\nshort exception traces in our nice HTML reports produced with the Ant JUnit\nand JUnitReport tasks.\n\nThe built-in filter applies to the following call patterns:\n  &quot;junit.framework.TestCase&quot;,\n  &quot;junit.framework.TestResult&quot;,\n  &quot;junit.framework.TestSuite&quot;,\n  &quot;junit.framework.Assert.&quot;,\n  &quot;junit.swingui.TestRunner&quot;,\n  &quot;junit.awtui.TestRunner&quot;,\n  &quot;junit.textui.TestRunner&quot;,\n  &quot;java.lang.reflect.Method.invoke(&quot;,\n  &quot;org.apache.tools.ant.&quot;\n\nLike the filter in JUnit, it is not configurable, other than to turn it\noff/on.  It could be, but I think the intended purpose is pretty well\nachieved with that default set of patterns.\n\nTo use it in a build.xml, do nothing; the filtering is enabled by default.\nTo disable it, just add the attribute filtertrace=&quot;false&quot; to your junit task\nelement, e.g.:\n\n&lt;junit printsummary=&quot;yes&quot; filtertrace=&quot;true&quot; dir=&quot;${basedir}/lib&quot;\nhaltonerror=&quot;${qa.junit.haltonerror}&quot;\nhaltonfailure=&quot;${qa.junit.haltonfailure}&quot; fork=&quot;yes&quot;&gt;\n\nHere is an example of the before and after versions of a filtered\nAssertionFailedError run in Ant:\n\nOriginal, unfiltered output you get with Ant:\n\njunit.framework.AssertionFailedError\nat junit.framework.Assert.fail(Assert.java:51)\nat junit.framework.Assert.assertTrue(Assert.java:38)\nat junit.framework.Assert.assertNotNull(Assert.java:199)\nat junit.framework.Assert.assertNotNull(Assert.java:193)\nat test.jrunx.persistence.DatabaseTest.setUp(DatabaseTest.java:61)\nat junit.framework.TestCase.runBare(TestCase.java:138)\nat junit.framework.TestResult$1.protect(TestResult.java:106)\nat junit.framework.TestResult.runProtected(TestResult.java:124)\nat junit.framework.TestResult.run(TestResult.java:109)\nat junit.framework.TestCase.run(TestCase.java:131)\nat junit.framework.TestSuite.runTest(TestSuite.java:173)\nat junit.framework.TestSuite.run(TestSuite.java:168)\nat\norg.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRu\nnner.java:252)\nat\norg.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestR\nunner.java:433)\n\n\nWith filtertrace enabled:\n\njunit.framework.AssertionFailedError\nat test.jrunx.persistence.DatabaseTest.setUp(DatabaseTest.java:61)\n\n\nThe source code is modified from Ant 1.5 source from about two weeks ago, so\nit will probably only work with Ant 1.5, but I haven&#39;t even tried it with\n1.4.  You should be able to drop the optional.jar in the zip file into your\n$ANT_HOME/lib to try it out.  This optional.jar has &quot;the works&quot; -- pretty\nmuch all the optional tasks.\n\nThe other option is to compile the source files and then &quot;jar uvf\n$ANT_HOME/lib/optional.jar org/apache/tools/ant/taskdefs/optional/junit&quot; the\nclasses into your Ant optional.jar.\n\nScott Stirling\nsstirling@...\nJRun QA\nMacromedia\n\n", 
+    "profile": "jrun5", 
+    "topicId": 3463, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 65616759, 
+    "prevInTime": 3462, 
+    "contentTrasformed": false, 
+    "postDate": "1007620216", 
+    "canDelete": false, 
+    "nextInTopic": 3464, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRGNDdEQ0ZBREM4REQ1MTE4RDJCMDA1MDhCOTUyRDk2MEMzQkYyQHNhbHNhLmFsbGFpcmUuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 11814, 
+    "senderId": "zfGfkveHvWfndhVNdSSmOVYOacFnEC2YmNPuTYNDeThna5RysTBCf4tG-B_az_-FpIH63dbp-AOPxhoDxSlHDEiRgST2BB86QeywFv04zQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TestCase inheritance...", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I m going to use shorter names to make it easier for myself. :) Bad news: As far as I can see so far, no matter how you do this, you will have some runtime", 
+    "msgId": 11813, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 56102 invoked from network); 20 Aug 2004 00:31:01 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m20.grp.scd.yahoo.com with QMQP; 20 Aug 2004 00:31:01 -0000\r\nReceived: from unknown (HELO smtp104.rog.mail.re2.yahoo.com) (206.190.36.82)\n  by mta5.grp.scd.yahoo.com with SMTP; 20 Aug 2004 00:30:59 -0000\r\nReceived: from unknown (HELO ?192.168.1.112?) (jbrains@24.156.43.226 with plain)\n  by smtp104.rog.mail.re2.yahoo.com with SMTP; 20 Aug 2004 00:30:58 -0000\r\nMessage-ID: &lt;412545E1.2030703@...&gt;\r\nDate: Thu, 19 Aug 2004 20:29:21 -0400\r\nUser-Agent: Mozilla Thunderbird 0.7.2 (Windows/20040707)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;CC77B3857637EE4CB76EA8427B18F0B543AB2C@...&gt;\r\nIn-Reply-To: &lt;CC77B3857637EE4CB76EA8427B18F0B543AB2C@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.82\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] TestCase inheritance...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nThomas Robbs wrote:\n\n&gt; Greetings Gurus... :-)\n&gt; \n&gt; \n&gt; \n&gt; I have a problem trying to determine the &quot;best practice&quot; (ooo that dirty\n&gt; phrase) for this particular scenario.  Here is the sitatution:\n&gt; \n&gt; \n&gt; \n&gt; Interface A   &lt;------implements---- GenericClassA\n&gt; \n&gt;      ^                                               ^\n&gt; \n&gt;      |                                                |\n&gt; \n&gt; extends                                     extends\n&gt; \n&gt;      |                                               |\n&gt; \n&gt;      |                                               |\n&gt; \n&gt; Interface B   &lt;------implements---- GenericClassB\n&gt; \n&gt; \n&gt; \n&gt; Given the above, I want to create a new class that extends\n&gt; &quot;GenericClassB&quot;, let&#39;s call it &quot;Foo&quot;.   \n\nI&#39;m going to use shorter names to make it easier for myself. :)\n\nBad news: As far as I can see so far, no matter how you do this, you \nwill have some runtime duplication in the tests. I would /really/ have \nto think about how to fix this.\n\nFoo extends BImpl implements B\nBImpl extends AImpl implements A\n\nHere&#39;s where I put the various tests:\n\n1. Tests for the contract of A go into Abstract Test Case ATestCase.\n2. Tests for the non-A behavior in AImpl go into Concrete Test Case \nAImplTest extends ATestCase. This way, AImplTest includes tests both for \nAImpl itself and how well it satisfies the contract of A.\n\nSIMILARLY...\n\n3. Tests for the contract of B go into Abstract Test Case BTestCase, \nwhich extends ATestCase to include the contract tests for both A and B.\n4. Tests for the non-B behavior in BImpl go into Concrete Test Case \nBImplTest which extends BTestCase.\n\nFINALLY...\n\nTests for Foo-specific, non-B (and therefore non-A) behavior go into \nFooTest extends BImplTest. This way, FooTest inherits all the tests for \nthe A and B interfaces.\n\nNow, to your questions:\n\n&gt; 1.      Do I need to set up FooTest to ensure that I haven&#39;t broken the\n&gt; contract outlined by InterfaceA or InterfaceB?\n\nI would.\n\n&gt; 2.      What&#39;s the best approach for setting up the tests so that I can\n&gt; do this, while still maximizing the value in having FooTest inherit from\n&gt; GenericClassBTest?\n\nI think I outlined a good solution for this above.\n\n&gt; 1.      It&#39;s difficult for me to wrap my head around how to connect the\n&gt; initialization of the Test Fixture in the setUp() of the inner class to\n&gt; a factory method which will return an instance of the class under test,\n&gt; say at FooTest.createGenericClassB() when that inner class is in the\n&gt; super class.  \n\nI can&#39;t wrap my head around that, because I can&#39;t understand it. You and \nI need to pair, dude.\n\n &gt; Duplicating the inner class feels wrong and would be\n&gt; especially painful if the inheritance tree was long and it was up to the\n&gt; Programmer to research the inheritance and insure that they have inner\n&gt; class for all possible interfaces.\n\nInner classes... ewwwww.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11811, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11812, 
+    "contentTrasformed": false, 
+    "postDate": "1092961761", 
+    "canDelete": false, 
+    "nextInTopic": 11817, 
+    "prevInTopic": 11811, 
+    "headers": {
+        "inReplyToHeader": "PENDNzdCMzg1NzYzN0VFNENCNzZFQTg0MjdCMThGMEI1NDNBQjJDQG1haW4tc3J2LmNhc2Vyby5jb20+", 
+        "messageIdInHeader": "PDQxMjU0NUUxLjIwMzA3MDNAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PENDNzdCMzg1NzYzN0VFNENCNzZFQTg0MjdCMThGMEI1NDNBQjJDQG1haW4tc3J2LmNhc2Vyby5jb20+"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 20788, 
+    "senderId": "Hp5-JYkGXL4miTGGcWVR-XQIR5nIhATg-iIZIUo7CQYz-Ao6gZDrePHldpIaX-yx1Iqc6W7uD8VTR4Z0_KUhTric0_9MNUA", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Testing on AWT thread", 
+    "from": "hybrid180 &lt;aaron@...&gt;", 
+    "authorName": "hybrid180", 
+    "msgSnippet": "Hi Alex, Thank you for your suggestions, I looked into the FEST framework and I actually have started to use it.  However, when I tried to use it I would still", 
+    "msgId": 20787, 
+    "topicId": 20775, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 355508157, 
+    "messageBody": "<div id=\"ygrps-yiv-420705163\">Hi Alex,<br/>\n<br/>\nThank you for your suggestions, I looked into the FEST framework and I<br/>\nactually have started to use it.  However, when I tried to use it I would<br/>\nstill get the same problem that I started this thread with.<br/>\n<br/>\nFrom what I can tell by looking at the FEST source is that FEST still<br/>\nqueries the table from whichever thread it is being called from.  This again<br/>\nbrings me back to my problem: How do I query the table that gets modified on<br/>\nthe EDT thread from a junit thread.<br/>\n<br/>\nI ultimately ended up using SwingUtilities.invokeAndWait using a final int<br/>\narray that stores the number of rows in the table.  I then use an assert<br/>\nafter the invoteAndWait on this final int array to make sure the number of<br/>\nrows is correct.<br/>\n<br/>\nOne other thing, so happens when I finally got around to your suggestion and<br/>\nlooked at FEST, you had taken out the GuiTask class!  I finally figured it<br/>\nout and noticed too that you are adding a whole lot of queries that get run<br/>\nin the EDT thread.  So far I really like what I see with FEST and will<br/>\ncontinue to use it.<br/>\n<br/>\nThanks for the suggestions and keep up the good work!<br/>\nAaron<br/>\n<br/>\n<br/>\nAlex Ruiz wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; Hi Aaron,<br/>\n&gt; <br/>\n&gt; My suggestion is either:<br/>\n&gt; <br/>\n&gt; 1. Use FEST ( <a rel=\"nofollow\" target=\"_blank\" href=\"http://fest.easytesting.org/swing\">http://fest.easytesting.org/swing</a> ) to<br/>\n&gt; test your GUIs. FEST is a library provides a compact,<br/>\n&gt; intuitive and easy-to-use API that makes GUI testing<br/>\n&gt; easy (disclaimer: I&#39;m the creator of FEST.)<br/>\n&gt; <br/>\n&gt; 2. If you decide not to use FEST, you can still use<br/>\n&gt; FEST&#39;s GuiTask to solve your problem. Since FEST is<br/>\n&gt; open source and under the Apache 2.0 license, you can<br/>\n&gt; copy the source of GuiTask. Please note that GuiTask<br/>\n&gt; uses invokeAndWait instead of invokeLater. IMHO, most<br/>\n&gt; of the time in your test you need to wait for an<br/>\n&gt; action to be executed in the EDT before you can<br/>\n&gt; continue the execution of your test. You can find the<br/>\n&gt; code for GuiTask at<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://code.google.com/p/fest/source/browse/trunk/fest/fest-swing/src/main/java/org/fest/swing/core/GuiTask.java\">http://code.google.com/p/fest/source/browse/trunk/fest/fest-swing/src/main/java/org/fest/swing/core/GuiTask.java</a><br/>\n&gt; <br/>\n&gt; Cheers,<br/>\n&gt; -Alex<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; --- hybrid180 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:aaron@...\">aaron@...</a>&gt; wrote:<br/>\n&gt; <br/>\n&gt;&gt; <br/>\n&gt;&gt; Hi,<br/>\n&gt;&gt; <br/>\n&gt;&gt; I am actually relatively new to Junit testing and I<br/>\n&gt;&gt; have a quick question<br/>\n&gt;&gt; about running tests on two different threads.  I am<br/>\n&gt;&gt; trying to verify that<br/>\n&gt;&gt; something is done on the swing thread with a junit<br/>\n&gt;&gt; test.  For example the<br/>\n&gt;&gt; following:<br/>\n&gt;&gt; <br/>\n&gt;&gt; \t\tSwingUtilities.invokeLater(new Runnable(){<br/>\n&gt;&gt; \t\t\tpublic void run() {<br/>\n&gt;&gt; \t\t\t\tassertEquals(2, tableModel.getRowCount());<br/>\n&gt;&gt; \t\t\t};<br/>\n&gt;&gt; \t\t\t<br/>\n&gt;&gt; \t\t});<br/>\n&gt;&gt; <br/>\n&gt;&gt; When this test actually fails I&#39;ve noticed an<br/>\n&gt;&gt; AssertionError exception is<br/>\n&gt;&gt; thrown on the Swing thread but the test overall<br/>\n&gt;&gt; still passes.<br/>\n&gt;&gt; <br/>\n&gt;&gt; My question is this: is there a way to make the test<br/>\n&gt;&gt; not pass when this<br/>\n&gt;&gt; assert fails?  Or at least throw the AssertionError<br/>\n&gt;&gt; on the Junit thread<br/>\n&gt;&gt; instead of the Swing thread?<br/>\n&gt;&gt; <br/>\n&gt;&gt; Thanks for any help,<br/>\n&gt;&gt; Aaron<br/>\n&gt;&gt; -- <br/>\n&gt;&gt; View this message in context:<br/>\n&gt;&gt;<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/Testing-on-AWT-thread-tp18876848p18876848.html\">http://www.nabble.com/Testing-on-AWT-thread-tp18876848p18876848.html</a><br/>\n&gt;&gt; Sent from the JUnit - User mailing list archive at<br/>\n&gt;&gt; Nabble.com.<br/>\n&gt;&gt; <br/>\n&gt;&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;       <br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n </span></blockquote>-- <br/>\nView this message in context: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.nabble.com/Testing-on-AWT-thread-tp18876848p18918286.html\">http://www.nabble.com/Testing-on-AWT-thread-tp18876848p18918286.html</a><br/>\nSent from the JUnit - User mailing list archive at Nabble.com.</div>", 
+    "prevInTime": 20786, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1218434074", 
+    "canDelete": false, 
+    "nextInTopic": 20793, 
+    "prevInTopic": 20783, 
+    "headers": {
+        "messageIdInHeader": "PDE4OTE4Mjg2LnBvc3RAdGFsay5uYWJibGUuY29tPg=="
+    }
+}

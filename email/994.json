@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 995, 
+    "senderId": "ISEVptMxlRI0lqeL6x26Munjbp_9GYDRQwrRc3V2przd1ol42c8wTovx8qUvb61EjGdMsfuC1uMaaqnIKSoV3T4", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] In what order are the test run through...", 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "authorName": "Joi Ellis", 
+    "msgSnippet": "... I have a test suite which needs to talk to a remote process. Here s a class which pre-loads some user data into that remote process using shell scripts: ", 
+    "msgId": 994, 
+    "topicId": 992, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-640730806\">On Thu, 19 Apr 2001, Christian van der Leeden wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi all,<br/>\n&gt; <br/>\n&gt; \tI&#39;m testing some classes which leave state in the db. This one is<br/>\n&gt; a user class. So I definitely want to have the test to create the<br/>\n&gt; user before the test to search for the user. AND I&#39;d prefer<br/>\n&gt; to set this up with new TestSuite(User.class) instead of<br/>\n&gt; adding the methods by hand.<br/>\n&gt; <br/>\n&gt; Is there a specific ordering of the test runs (or method calls)?<br/>\n&gt; Is the solution to add the test cases by hand?<br/>\n&gt; suite.addTest(&quot;testAddUser&quot;);<br/>\n&gt; suite.addTest(&quot;findUser&quot;);<br/>\n<br/>\n </span></blockquote>I have a test suite which needs to talk to a remote process.<br/>\nHere&#39;s a class which pre-loads some user data into that remote process<br/>\nusing shell scripts:<br/>\n<br/>\nMPSetup.java:<br/>\n<br/>\npackage com.aravox.nsapi;<br/>\npublic class MPSetup extends TestSetup {<br/>\n  String ip = &quot;10.77.77.77&quot;;<br/>\n<br/>\n  public MPSetup( Test t) {<br/>\n    super(t);<br/>\n  }<br/>\n  protected void setUp() {<br/>\n    System.out.println();<br/>\n    System.out.println(&quot;com.aravox.nsapi.MPSetup.setUp()&quot;);<br/>\n    try {<br/>\n    Runtime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/setupTestUsers&quot;);<br/>\n    } catch (IOException ioex) {<br/>\n      ioex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n  protected void tearDown() {<br/>\n    System.out.println();<br/>\n    System.out.println(&quot;com.aravox.nsapi.MPSetup.tearDown()&quot;);<br/>\n    try {<br/>\n      Runtime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/removeTestUsers&quot;);<br/>\n    } catch (IOException ioex) {<br/>\n      ioex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n  protected void setIpAddress( String ip ) {<br/>\n    this.ip = ip;<br/>\n  }<br/>\n}<br/>\n<br/>\nHere&#39;s how MPSetup is used:<br/>\n<br/>\nAllTests.java:<br/>\n<br/>\npackage com.aravox.nsapi;<br/>\npublic class AllTests {<br/>\n  public static Test suite() {<br/>\n    TestSuite suite = new TestSuite();<br/>\n    suite.addTest(TestUdpConnect.suite());<br/>\n    ...<br/>\n    suite.addTest(TestResBundle.suite());<br/>\n    MPSetup mps = new MPSetup( suite );<br/>\n    mps.setIpAddress( targetFirewall.getIpAddressString() );<br/>\n    return mps;<br/>\n  }<br/>\n...<br/>\n}<br/>\n<br/>\nNote how the AllTests.suite() method builds its own suite, and then<br/>\nwraps that within an MPSetup object.  The resulting mps object is<br/>\nreturned to JUnit.  <br/>\n<br/>\n-- <br/>\nJoi Ellis                    Software Engineer<br/>\nAravox Technologies          <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gyles19@...\">gyles19@...</a><br/>\n<br/>\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I<br/>\nreally like about Linux is that it has Microsoft worried.  Anything<br/>\nthat kicks a monopoly in the pants has got to be good for something.<br/>\n           - Chris Johnson</div>", 
+    "prevInTime": 993, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987707455", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 993, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDEwNDE5MTg0MzE0LjYzMDI3NjgyOEBib28uYWJzdXJkLmRuc2FsaWFzLm9yZz4=", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwNDE5MTQwMzM4MC4zMTAxLTEwMDAwMEBqb2kuYXJhdm94LmNvbT4="
+    }
+}

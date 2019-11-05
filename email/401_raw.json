@@ -1,0 +1,28 @@
+{
+    "topicId": 401, 
+    "postDate": "981559951", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "lrb3000@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "R0bCaohOp8PZZleukj3q2cJW9VPXcBtlQ6LReU1zTdUVjPgLZdyMH4kkEoYA3YbhN2Uci4eh8ilEMw", 
+    "nextInTime": 402, 
+    "userId": 0, 
+    "prevInTime": 400, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDk1cnBxZitjcnRwQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "lrb3000@hotmail.com", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "Hello All, How do I access my EJB from a jUnit test.  I am getting an error in my setup method.  More specifically, in the line:  Object objref =", 
+    "contentTrasformed": false, 
+    "msgId": 401, 
+    "nextInTopic": 402, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;lrb3000@...&gt;\r\nX-Sender: lrb3000@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_3); 7 Feb 2001 15:32:39 -0000\r\nReceived: (qmail 57347 invoked from network); 7 Feb 2001 15:32:38 -0000\r\nReceived: from unknown (10.1.10.26) by l8.egroups.com with QMQP; 7 Feb 2001 15:32:38 -0000\r\nReceived: from unknown (HELO f19.egroups.com) (10.1.2.136) by mta1 with SMTP; 7 Feb 2001 15:32:37 -0000\r\nX-eGroups-Return: lrb3000@...\r\nReceived: from [10.1.4.68] by f19.egroups.com with NNFMP; 07 Feb 2001 15:32:34 -0000\r\nDate: Wed, 07 Feb 2001 15:32:31 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Help on testing EJBs\r\nMessage-ID: &lt;95rpqf+crtp@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2684\r\nX-Mailer: eGroups Message Poster\r\nFrom: lrb3000@...\r\n\r\nHello All,\n\nHow do I access my EJB from a jUnit test.  I am getting an error in \nmy setup method.  More specifically, in the line:\n&quot; Object objref = initial.lookup(&quot;ViewFinder&quot;); &quot;  \nViewFinder is the JNDI name for my EJB.  \n\nThe exception returned in the line print is: \n&quot;.Need to specify class name in environment or system property: \njava.naming.factory.initial&quot;  \n\nI think I am incorrectly specifing where the ViewFinder EJB is, but I \ndon&#39;t know how else to specify it.\n\nI am pretty new to using EJBs and this is my first test using jUnit.  \nI am running my EJB on a Weblogic 5.1 app/web server.\n\nThanks for anyhelp,\nLuis\n\n-------BEGIN CODE-----------\n\npackage com.reta.af.viewfinder.test;\n\nimport junit.framework.*;\nimport com.reta.af.eventhandler.*;\nimport com.reta.af.viewfinder.*;\nimport com.reta.af.common.viewfinder.*;\n\nimport javax.naming.Context;\nimport javax.naming.InitialContext;\nimport javax.rmi.PortableRemoteObject;\n\npublic class ViewFinderTest extends TestCase \n{\n    protected ViewFinderRemote vfr;\n    \n    public ViewFinderTest(String name)\n    {\n    \tsuper(name);\n    }\n    \n    public static void main (String[] args)\n    {\n    \tjunit.textui.TestRunner.run (suite());\n    }\n    \n    protected void setUp() throws Exception\n    {\n\ttry\n\t{\n\t\tObject objref = initial.lookup(&quot;ViewFinder&quot;);\n\t\tViewFinderHome home = (ViewFinderHome)\nPortableRemoteObject.narrow(objref, ViewFinderHome.class);\n\t        this.vfr = home.create();\n\t}\n\tcatch (Exception ex2 )\n        {\n        \tSystem.out.println(ex2.getMessage());\n        }\n\t\n    }\n\n\t\n    public static Test suite()\n    {\n\treturn new TestSuite(ViewFinderTest.class);\n    }\n    \n    public void testGetView() throws Exception\n    {\n       \n        try\n        {\n            \n            //Set the test attributes    \n            ViewFinder viewFinderObj = new ViewFinder();\n            viewFinderObj.setTaskname(&quot;com.reta.pmwb.start.TLogin&quot;);\n            viewFinderObj.setAudience(new Integer(1));\n\t    viewFinderObj.setChannel(&quot;H&quot;);\n\t\n\t    //Instantiate Return Value\n\t    View retView = new View();\n\t\t\n\t    //Instantiate Expected Value and Set Attributes\n\t    View expView = new View();\n\t    expView.setUrl(&quot;/loginSuccess.jsp&quot;);\n\t    expView.setStylesheet(&quot;style.css&quot;);\n    \t\t\n\t    try\n    \t    {\t\n                retView = this.vfr.getView(viewFinderObj);\n            }\n       \n            catch (java.rmi.RemoteException x)\n            {\n                // do something here\n            }\n            \n            //Compare expected and return values\n           //** good code: assertEquals(expView, retView);\n              fail(&quot;This is a manual fail&quot;);\n        \t    \n\t}\n\t\t\n\tcatch (Exception ex)\n\t{\n\t}\n    \n    }\n\n}\n\n\n", 
+    "subject": "Help on testing EJBs"
+}

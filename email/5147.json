@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 5148, 
+    "senderId": "vsoNJVUC9Tn4dhpN9OQPznxbBOIvc4cuYky059r8ZchQc6kt-IRqdIgc_KZjBZk7a7lZYHf5jJOR-aJjdJBtdTG8lVDSRnPgNqnWP9Ek", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Having trouble with junit architecture", 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "authorName": "Mark Meyers", 
+    "msgSnippet": "The problem is that all user interaction in a swing application, is done in a single event thread . Swing classes are not meant to be thread safe. So if you", 
+    "msgId": 5147, 
+    "topicId": 5141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 61568997, 
+    "messageBody": "<div id=\"ygrps-yiv-2078188834\">The problem is that all user interaction in a swing application, is done in<br/>\na single &quot;event thread&quot;. Swing classes are not meant to be thread safe. So<br/>\nif you start your tests in your (JUnit&#39;s) main thread, and start actions<br/>\nfrom there, the implementation code is run in the &quot;main&quot; thread, and the<br/>\nautomatic repaints etc, are run in the default &quot;event thread&quot;.<br/>\n<br/>\nOne way to overcome that is by using a method of javax.swing.SwingUtilities,<br/>\ninvokeAndWait(Runnable). Then the code in the Runnable&#39;s run() method will<br/>\nbe executed in the event thread. invokeAndWait(...) is blocking, you<br/>\nprobably do not want invokeLater(...) because after the execution you might<br/>\nwant to do some asserts ?<br/>\nThe problem is that your actual testCode must be wrapped in a Runnable, and<br/>\nit is less straight forward.<br/>\nMaybe something like:<br/>\n<br/>\nclass MyTestCase extends TestCase{<br/>\n\tpublic static final Object[] NO_ARGS = new Object[0];<br/>\n<br/>\n\tpublic void testXxx(){<br/>\n\t\tnew MyInvoker(&quot;doTestXxx&quot;).doIt();<br/>\n\t}<br/>\n\tprivate void doTestXxx(){<br/>\n\t\t...<br/>\n\t\tassertXxx(...);<br/>\n\t\t...<br/>\n\t}<br/>\n<br/>\n\tclass MyInvoker implements Runnable{<br/>\n\t\tMethod method;<br/>\n\t\tMyInvoker(String methodName){<br/>\n\t\t\t...<br/>\n\t\t\tthis.method = doTestMethod;<br/>\n      \t}<br/>\n\t\tpublic void run(){<br/>\n\t\t\ttestMethod.invoke(MyTestCase.this, NO_ARGS);<br/>\n\t\t}<br/>\n\t\tpublic void doIt(){<br/>\n\t\t\tSwingUtilities.invokeAndWait(MyInvoker.this);<br/>\n\t\t}<br/>\n\t}<br/>\n}<br/>\n<br/>\nOn the other hand it seems to me the JFCTestCase (from JFCUnit ?) should<br/>\nprovide some solution to this threading issue, but I do not know it nor have<br/>\nI used it.<br/>\nHope this helps a little.<br/>\n<br/>\nMark<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: thenoodle1974 [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:thenoodle1974@...\">thenoodle1974@...</a>]<br/>\n&gt; Subject: [junit] Having trouble with junit architecture<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I&#39;m using junit to test a swing program. <br/>\n&gt; <br/>\n&gt; I have written a bunch of helper functions: click this, enter this, <br/>\n&gt; find that, etc. I&#39;d like those functions to be available in every <br/>\n&gt; test case. Along with that I&#39;d like to only start the application <br/>\n&gt; once and run a suite. Then close the application.<br/>\n&gt; <br/>\n&gt; I&#39;ve made a subclass of JFCTestCase which has those helper functions. <br/>\n&gt; One helper function is startApplication. If I run each test <br/>\n&gt; individually, there is no problem. A testcase is created, I start the <br/>\n&gt; application, it runs. I close the application done.<br/>\n&gt; <br/>\n&gt; But if I try to separete starting the application I have threading <br/>\n&gt; issues. What I&#39;ve tried to do is startApplication, run the suite, <br/>\n&gt; then close the application. But each time my sublcass of JFCTestCase <br/>\n&gt; is created, a new thread is created by JFCTestCase. This thread is <br/>\n&gt; then run separately of the startApplication thread (not good). Does <br/>\n&gt; this make sense?<br/>\n&gt; <br/>\n&gt; My workaround was to create a class that passes in the reference to <br/>\n&gt; an object on this thread. Which works fine.<br/>\n&gt; <br/>\n&gt; So I now:<br/>\n&gt; <br/>\n&gt; Create MyTestCase (which does not extend JUnit in anyway.) It has <br/>\n&gt; it&#39;s own setUpo() and tearDown(). I then pass in a reference to XCase <br/>\n&gt; (which extends JUnit), and run the test. But now I&#39;m not really using <br/>\n&gt; JUnit at all. It&#39;s like I&#39;m creating my own suite object.<br/>\n&gt; <br/>\n&gt; Any ideas/help would be greatly appreciated. </span></blockquote></div>", 
+    "prevInTime": 5146, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1023783349", 
+    "canDelete": false, 
+    "nextInTopic": 5150, 
+    "prevInTopic": 5141, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ4MDc5QENBU0UwNTI+"
+    }
+}

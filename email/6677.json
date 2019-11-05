@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 6678, 
+    "senderId": "bwjD7g5i1IDAU0BQ4bmK3IKkt1nFcTNDA0d_o8ej8Iwrg2PPVctWy_bgqNC-GiyeCNFvJT0_7LTBGEcwyFT_BbjFbbCbJrW-qljT5OlC4xW6wDV5-Yvcd2U21xY", 
+    "systemMessage": false, 
+    "subject": "tearDown() even if setUp() throws unexpected exception?", 
+    "from": "&quot;Paul Holser &lt;pholser@...&gt;&quot; &lt;pholser@...&gt;", 
+    "authorName": "Paul Holser &lt;pholser@yahoo.com&gt;", 
+    "msgSnippet": "... import java.sql.*; import junit.framework.*; public class FooTest extends TestCase { private Connection dbConnection; private Foo aFoo; protected void", 
+    "msgId": 6677, 
+    "profile": "pholser", 
+    "topicId": 6677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 66805313, 
+    "messageBody": "<div id=\"ygrps-yiv-2142173815\">imagine the following test class:<br/>\n<br/>\n---<br/>\nimport java.sql.*;<br/>\nimport junit.framework.*;<br/>\n<br/>\npublic class FooTest extends TestCase {<br/>\n  private Connection dbConnection;<br/>\n  private Foo aFoo;<br/>\n<br/>\n  protected void setUp() throws Exception {<br/>\n    this.dbConnection = getConnection();  // from somewhere<br/>\n    this.aFoo = new Foo( 23 );  // could throw an exception<br/>\n  }<br/>\n<br/>\n  protected void tearDown() throws Exception {<br/>\n    try {<br/>\n      dbConnection.close();<br/>\n    }<br/>\n    finally {<br/>\n      super.tearDown();<br/>\n    }<br/>\n  }<br/>\n<br/>\n  // test methods here...<br/>\n}<br/>\n---<br/>\n<br/>\nif Foo&#39;s ctor starts throwing exceptions, all of a sudden the test <br/>\nclass is leaking connections, since tearDown() is not called if setUp<br/>\n() throws an unexpected exception.<br/>\n<br/>\nshould the developer exercise extra caution in such circumstances, <br/>\nperhaps by wrapping the remainder of the fixture set up thusly:<br/>\n<br/>\n  try {<br/>\n    // remainder of set up<br/>\n  }<br/>\n  catch ( Exception ex ) {<br/>\n    dbConnection.close();<br/>\n    throw ex;<br/>\n  }<br/>\n<br/>\nor, subclass TestCase and override runBare() to call setUp() in the <br/>\nsame try block as runTest()?<br/>\n<br/>\nhow best to handle this situation?  (let&#39;s suppose for the sake of <br/>\nargument that i&#39;m doing functional testing against a real DBMS and am <br/>\nthus not mocking the connection.)<br/>\n<br/>\nthanks for your guidance.<br/>\n<br/>\ncheers,<br/>\np</div>", 
+    "prevInTime": 6676, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1043172563", 
+    "canDelete": false, 
+    "nextInTopic": 6678, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGIwazJjais5cjhvQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 3259, 
+    "postDate": "1005902040", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "sHpRQ8XqqYHGCii9wUf4gZ0GWQtq3tvrnbWl3_wZ9XeVutpjA4WSKnPloeFmgrIi0QPLcaRGHFZZRMVimc6LRmGMV4_Vd8pB1vJNYwsn", 
+    "nextInTime": 3280, 
+    "userId": 0, 
+    "prevInTime": 3278, 
+    "prevInTopic": 3278, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxMzA2QTI5QENBU0UwNTI+"
+    }, 
+    "authorName": "Mark Meyers", 
+    "numMessagesInTopic": 31, 
+    "msgSnippet": "Why not use an instance of ResultSet that throws Exceptions whenever YOU want ? Write your own implementation of the ResultSet interface... Well, it s not very", 
+    "contentTrasformed": false, 
+    "msgId": 3279, 
+    "nextInTopic": 3282, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;markm@...&gt;\r\nX-Sender: markm@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 16 Nov 2001 09:14:40 -0000\r\nReceived: (qmail 71052 invoked from network); 16 Nov 2001 09:14:40 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m5.grp.snv.yahoo.com with QMQP; 16 Nov 2001 09:14:40 -0000\r\nReceived: from unknown (HELO eos.telenet-ops.be) (195.130.132.40)\n  by mta1.grp.snv.yahoo.com with SMTP; 16 Nov 2001 09:14:40 -0000\r\nReceived: from case052.minervasoftcare.com (D5767A13.kabel.telenet.be [213.118.122.19])\n\tby eos.telenet-ops.be (Postfix) with ESMTP id A2FF72042F\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 16 Nov 2001 10:14:36 +0100 (CET)\r\nReceived: by CASE052 with Internet Mail Service (5.5.2448.0)\n\tid &lt;W2BQA1DN&gt;; Fri, 16 Nov 2001 10:14:02 +0100\r\nMessage-ID: &lt;C450D96664CBD31182B600A0C97668B1306A29@CASE052&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Anyone know of a decent debugger?\r\nDate: Fri, 16 Nov 2001 10:14:00 +0100\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2448.0)\r\nContent-Type: text/plain;\n\tcharset=&quot;ISO-8859-1&quot;\r\nFrom: Mark Meyers &lt;markm@...&gt;\r\n\r\nWhy not use an instance of ResultSet that throws Exceptions whenever YOU\nwant ? Write your own implementation of the ResultSet interface... \nWell, it&#39;s not very practical since that means implementing 129 methods.\nThere is a way in Jdk 1.3: dynamic proxy, just try it. It even works\n(slightly modified) in JUnit ;)\n\n\npackage testproxy;\n\nimport java.sql.*;\nimport java.lang.reflect.*;\n/**\n *\n * @author  M. Meyers\n */\npublic class ResultSetTestDelegate extends Object implements\nInvocationHandler{\n\n    /** Creates new ResultSetTestDelegate */\n    public ResultSetTestDelegate() {\n    }\n    \n    public Object failMethod(String methodName)throws SQLException{\n        throw new SQLException(&quot;JUnit testing&quot;, methodName);\n    }\n    public Object failMethod(Method method)throws SQLException{\n        return failMethod(method.getName());\n    }\n    public Object invoke(Object proxy, Method method, Object[] args) throws\nThrowable{\n        //do testing here to return something under certain conditions\n(method, arguments)...\n        if(method.getName().equals(&quot;findColumn&quot;)){\n            return new Integer(23);\n        }\n        return failMethod(method);\n    }\n}\n\n\npackage testproxy;\n\nimport java.sql.*;\nimport java.lang.reflect.*;\n/**\n *\n * @author  M. Meyers\n * @version\n */\npublic class ProxyDemo extends Object {\n    public static ResultSet createTestResultSet(){\n        try{\n            return\n(ResultSet)Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new\nClass[]{ResultSet.class}, new ResultSetTestDelegate());\n        }catch(IllegalArgumentException e){\n            System.err.println(&quot;Sorry, does not work...&quot;);\n            e.printStackTrace(System.err);\n            return null;\n        }\n    }\n   \n    public static void main (String args[]) {\n        try{\n            ResultSet resultSet = createTestResultSet();\n         \n            int index = resultSet.findColumn(&quot;somename&quot;);\n            System.out.print(&quot;Should get here&quot;);\n         \n            resultSet.getArray(&quot;someothercolumn&quot;);\n            System.out.print(&quot;Should NEVER get here&quot;);\n         \n        }catch(Exception e){\n            System.out.println(&quot;OK, it works just fine.&quot;);\n            e.printStackTrace();\n        }\n    }\n    \n}\n\n", 
+    "subject": "RE: [junit] Anyone know of a decent debugger?"
+}

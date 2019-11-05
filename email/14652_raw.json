@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14653, 
+    "senderId": "LtV32KI1oHISuHQbutb9tTN9EtuymKfG2ou0hvHLJMdtBeMRJAdxsds1YMjljfVMAzRB5xF7QPHZruUP5AmOQBuxvw", 
+    "systemMessage": false, 
+    "subject": "Re: Testing with various log levels", 
+    "from": "&quot;Robert&quot; &lt;yahoo@...&gt;", 
+    "authorName": "Robert", 
+    "msgSnippet": "... Here s another one (which has bitten me before): classes that, during initialisation, have an invalid hashcode, which are populated via the Apache Commons", 
+    "msgId": 14652, 
+    "rawEmail": "Return-Path: &lt;yahoo@...&gt;\r\nX-Sender: yahoo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 67383 invoked from network); 5 Sep 2005 10:57:54 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m29.grp.scd.yahoo.com with QMQP; 5 Sep 2005 10:57:54 -0000\r\nReceived: from unknown (HELO n8.bulk.dcn.yahoo.com) (216.155.201.61)\n  by mta4.grp.scd.yahoo.com with SMTP; 5 Sep 2005 10:57:54 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [216.155.201.64] by n8.bulk.dcn.yahoo.com with NNFMP; 05 Sep 2005 10:57:12 -0000\r\nReceived: from [66.218.69.5] by mailer1.bulk.dcn.yahoo.com with NNFMP; 05 Sep 2005 10:57:12 -0000\r\nReceived: from [66.218.66.80] by mailer5.bulk.scd.yahoo.com with NNFMP; 05 Sep 2005 10:57:12 -0000\r\nDate: Mon, 05 Sep 2005 10:57:09 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;dfh8a5+isih@...&gt;\r\nIn-Reply-To: &lt;dfgk16+tksf@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1737\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Robert&quot; &lt;yahoo@...&gt;\r\nSubject: Re: Testing with various log levels\r\nX-Yahoo-Group-Post: member; u=189784721; y=wyDppFG8JzjykKgIROMV0kcuvEylFsGYRiestk-ZDnmUC3a-TA\r\nX-Yahoo-Profile: robertdw26\r\n\r\n--- In junit@yahoogroups.com, &quot;javayoffe&quot; &lt;javayoffe@y...&gt; wrote:\n&gt; I want to execute my unit tests with both logging set to DEBUG and \n&gt; then execute them again with logging set to FATAL.   This is to \n&gt; ensure that no bugs exist/are introduced that will be exhibited only \n&gt; when logging is set to a certain level.   An example of such a bug \n&gt; might be:\n\nHere&#39;s another one (which has bitten me before): classes that, during\ninitialisation, have an invalid hashcode, which are populated via the\nApache Commons BeanUtils - at a low enough log level, it tries to\nprint the hashcode, causing NullPointerExceptions.\n\n&gt; Either way, is there something more clever that I can do to \n&gt; accomplish my goal of testing min/max logging levels?\n\nTry this: create your test class as normal, then give it a suite()\nmethod that does this:\n\npublic static Test suite() {\n  TestSuite suite = new TestSuite();\n  suite.add(LoggingTestSetup.decorate(ThisTest.class, Level.DEBUG));\n  suite.add(LoggingTestSetup.decorate(ThisTest.class, Level.FATAL));\n}\n\n\nLoggingTestSetup looks like this:\n\nimport junit.extensions.TestSetup;\npublic class LoggingTestSetup extends TestSetup {\n  private Level logLevel;\n  private Level oldLogLevel;\n  \n  private LoggingTestSetup(Test test, Level level) {\n    super(test);\n    logLevel = level;\n  }\n\n  protected void setUp() {\n    oldLogLevel = ...; // lookup the current log level.\n    // set the log level\n  }\n  \n  protected void tearDown() {\n    // reset the log level.\n  }\n\n  public static Test decorate(Class&lt;? extends TestCase&gt; test, Level\nlevel) {\n    return new LoggingTestSetup(new TestSuite(test), level);\n  }\n}\n\n\nYou&#39;ll get two passes over the code base - once with the DEBUG level,\nand again with the FATAL level.\n\n\n\n\n\n", 
+    "profile": "robertdw26", 
+    "topicId": 14648, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "prevInTime": 14651, 
+    "contentTrasformed": false, 
+    "postDate": "1125917829", 
+    "canDelete": false, 
+    "nextInTopic": 14683, 
+    "prevInTopic": 14648, 
+    "headers": {
+        "inReplyToHeader": "PGRmZ2sxNit0a3NmQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGRmaDhhNStpc2loQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 16427, 
+    "senderId": "zh__EFKiQ4A-3Ri-IBmzCHDYlKin9Q6yLlRLK0I2kzGDIWbywowgMa9UgPWpbfKdHyw2KM63KwskIlD264ye-ykXopJMUmlwzCUAR372Ow", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test a recursive method", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Two steps: 1. Mock the action. Since Action is a class in Struts, you have to use the CGLIB-mock library. I hope Action has a default constructor. (I think", 
+    "msgId": 16426, 
+    "profile": "nails762", 
+    "topicId": 16390, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1562835901\">amine achergui wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Bonjour Cédric,<br/>\n&gt; In fact, I want to have a black box test of my method.<br/>\n&gt; my method have this shape:<br/>\n&gt; <br/>\n&gt; Result execute (String actionName, confdata data){<br/>\n&gt; ....<br/>\n&gt; Action a = findAction(actionName);<br/>\n&gt; Result result = a.process (someohterdata);<br/>\n&gt; if (result.isLast())<br/>\n&gt;     retrun result;<br/>\n&gt; else<br/>\n&gt;     return process(result.getNextAction(), result.getData();<br/>\n&gt; <br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; the execute method calls a.process method of the action depending on<br/>\n&gt; it&#39;s result the execute method will execute another action or will return<br/>\n&gt; the final result.<br/>\n&gt; for my tests i would mock the action a and the result .<br/>\n<br/>\n </span></blockquote>Two steps:<br/>\n<br/>\n1. Mock the action. Since Action is a class in Struts, you have to use <br/>\nthe CGLIB-mock library. I hope Action has a default constructor. (I <br/>\nthink it does.)<br/>\n<br/>\n2. Subclass to test. Since execute() hardwires its dependency on the <br/>\nlookup table for the action, you need to override findAction(actionName) <br/>\nto return the proxy to the mocked action from step #1. To do this, use <br/>\nan anonymous subclass of your class-to-test and override findAction().<br/>\n<br/>\nThat would do for now.<br/>\n<br/>\nEventually, you&#39;ll want to Replace Subclass with Collaborator. (Google <br/>\nthat to get an article on it.) This will leave you with an object that <br/>\ndepends on an ActionLookupTable or FindActionStrategy that is easily <br/>\nmockable in the future.<br/>\n<br/>\nThat&#39;s what I would do.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 16425, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1143636725", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16417, 
+    "headers": {
+        "inReplyToHeader": "PGEwM2EyMDkzMDYwMzI2MDMyMmgxM2I1ZTI4MHk1NGVlMzMyZjE2MGE5ODQ5QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQ0MkE4MkY1LjQwMzAxMDZAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGEwM2EyMDkzMDYwMzI0MDk0OGw3OTIzMTJhMnRhZDQ4Y2I0MTNkYmM4YTZiQG1haWwuZ21haWwuY29tPgkgPGI4NmI2YTljMDYwMzI1MjAxMW03YTJlZTM2MmpmMjEzNzFjMmE5ZTMxMzNhQG1haWwuZ29vZ2xlLmNvbT4gPGEwM2EyMDkzMDYwMzI2MDMyMmgxM2I1ZTI4MHk1NGVlMzMyZjE2MGE5ODQ5QG1haWwuZ21haWwuY29tPg=="
+    }
+}

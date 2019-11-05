@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 7596, 
+    "senderId": "FJLyNvg6SGjwzaEBAsB9G0Q487ZVEO96Te16SXLbV_cE09s0NhSFby_iaQohhx60hiMtlAXX1oHdfSSayd5fe_tv51eVJQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] problem reusing fixtures", 
+    "from": "Levi Cook &lt;levicook@...&gt;", 
+    "authorName": "Levi Cook", 
+    "msgSnippet": "All the classic OO tricks still apply... For instance, if you have relatively few (or stable) anA scenarios, template method could works ok. ie. abstract", 
+    "msgId": 7595, 
+    "profile": "lcook53703", 
+    "topicId": 7486, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 72977190, 
+    "messageBody": "<div id=\"ygrps-yiv-2034296407\">All the classic OO tricks still apply...<br/>\n<br/>\nFor instance, if you have relatively few (or stable) &quot;anA&quot; scenarios,  <br/>\ntemplate method could works ok.<br/>\n<br/>\nie.<br/>\n<br/>\nabstract class BaseTest extends TestCase<br/>\n{<br/>\n\tprivate A aUT;<br/>\n\tprivate B bUT;<br/>\n<br/>\n\tprotected abstract A newATestScenario();<br/>\n\tprotected abstract B newBTestScenario();<br/>\n\t<br/>\n\tprotected void setUpDerivedFixture(){}<br/>\n<br/>\n\tpublic final void setUp()<br/>\n\t{<br/>\n\t\taUT = newATestScenario();<br/>\n\t\tbUT = newBTestScenario();<br/>\n\t\tsetUpDerivedFixture();<br/>\n\t}<br/>\n<br/>\n\tpublic final void test1() {}<br/>\n\t...<br/>\n\tpublic final void testN() {}<br/>\n}<br/>\n<br/>\npublic final Case1Test extends BaseTest<br/>\n{<br/>\n\tprotected final A newATestScenario()<br/>\n\t{<br/>\n\t\treturn new Case1AImpl();<br/>\n\t}<br/>\n\tprotected final B newBTestScenario()<br/>\n\t{<br/>\n\t\treturn new Case1BImpl();<br/>\n\t}\t<br/>\n}<br/>\n<br/>\npublic final Case2Test extends BaseTest<br/>\n{<br/>\n\tprotected final A newATestScenario()<br/>\n\t{<br/>\n\t\treturn new Case2AImpl();<br/>\n\t}<br/>\n\tprotected final B newBTestScenario()<br/>\n\t{<br/>\n\t\treturn new Case2BImpl();<br/>\n\t}\t<br/>\n}<br/>\n<br/>\netc...<br/>\n<br/>\nStrategy could work fine too...<br/>\n<br/>\n<br/>\npublic final ATest extends TestCase<br/>\n{<br/>\n\tprivate A aUT;<br/>\n\tprivate B bUT;<br/>\n<br/>\n\tpublic ATest(A theAUT, B theBUT)<br/>\n\t{<br/>\n\t\taUT = theAUT;<br/>\n\t\tbUT = theBUT;<br/>\n\t}<br/>\n<br/>\n\tpublic final void test1() {}<br/>\n\t...<br/>\n\tpublic final void testN() {}<br/>\n}<br/>\n<br/>\nThis approach would probably affect your suite construction, but can  <br/>\nsave you pain in other ways...<br/>\n<br/>\nRegards,<br/>\n-- Levi<br/>\n<br/>\nPS&gt; suite construction could look something like this (you mentioned  <br/>\nints?):<br/>\n\t<br/>\npublic final class AllTests<br/>\n{<br/>\n\tpublic Test suite()<br/>\n\t{<br/>\n\t\tTestSuite suite = new TestSuite();<br/>\n\t\t<br/>\n\t\tfor(int i = 0; i &lt; 100; i++)<br/>\n\t\t{<br/>\n\t\t\tsuite.addTest(new ATest(i));<br/>\n\t\t}<br/>\n\t\treturn suite<br/>\n\t}<br/>\n}<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thursday, April 3, 2003, at 08:02  AM, Adelbert Groebbens wrote:<br/>\n<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; I have a TestCase that uses following fixtures and setUp :<br/>\n&gt;<br/>\n&gt; protecte A anA;<br/>\n&gt; protected B aB;<br/>\n&gt;<br/>\n&gt; public void\tsetUp() {<br/>\n&gt; \t// set up of anA<br/>\n&gt; \t// set up of aB based on anA<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Then, I have a **bunch** of test methods (tests).<br/>\n&gt;<br/>\n&gt; Now, I want reuse these for different kinds of anA.<br/>\n&gt;<br/>\n&gt; For, example anA is an int and I want to run<br/>\n&gt; test for 10 random or specified integers.<br/>\n&gt;<br/>\n&gt; What is the simplest way to achieve this ?<br/>\n&gt;<br/>\n&gt; I don&#39;t find a simple solution.<br/>\n&gt; Maybe I&#39;m missing something ?<br/>\n&gt;<br/>\n&gt; Thanks for any help,<br/>\n&gt; AG<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------ Yahoo! Groups Sponsor  <br/>\n&gt; ---------------------~--&gt;<br/>\n&gt; Get 128 Bit SSL Encryption!<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/xaxhjB/hdqFAA/VygGAA/5cFolB/TM\">http://us.click.yahoo.com/xaxhjB/hdqFAA/VygGAA/5cFolB/TM</a><br/>\n&gt; --------------------------------------------------------------------- <br/>\n&gt; ~-&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to  <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 7594, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049775481", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 7486, 
+    "headers": {
+        "inReplyToHeader": "PE5GQkJKRFBMRURITENIQUpPRk1NSUVPTURCQUEuYWRlbGJlcnQuZ3JvZWJiZW5zQGludGVjLnJ1Zy5hYy5iZT4=", 
+        "messageIdInHeader": "PDE2MTc1OEE5LTY5NzktMTFENy04RjRFLTAwMDM5M0FEMjczMkBwYXBham8uY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 5939, 
+    "senderId": "6zacw1HTlFu9GGJx6bAGbLkj0xQEMpAMUtR3RYRmoJNsfXJOJducOHslHvPfzsRoc9YtpemjRgSwBlBi6M6t2DwgIstiI2b6GAWyXYmLQEI", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Reg: Finding Time taken for every Test case in Test suite.", 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "authorName": "Steven Taschuk", 
+    "msgSnippet": "... Ant s  task does this, with . If you don t want to use Ant, it seems to me you can write the functionality yourself with", 
+    "msgId": 5938, 
+    "topicId": 5932, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 114327599, 
+    "messageBody": "<div id=\"ygrps-yiv-689402471\">Quoth Anantha Lakshmi:<br/>\n<blockquote><span title=\"ireply\"> &gt; [...] I&#39;ve created a TestSuite, which contains<br/>\n&gt; sequence of Tests. I want to find out the &quot;Time Taken<br/>\n&gt; for each Test case in a Test suite&quot; while running the<br/>\n&gt; Test Suite. [...]<br/>\n<br/>\n </span></blockquote>Ant&#39;s &lt;junit&gt; task does this, with &lt;formatter type=&#39;plain&#39;/&gt;.<br/>\n<br/>\nIf you don&#39;t want to use Ant, it seems to me you can write the<br/>\nfunctionality yourself with not so much work.  Something like this:<br/>\n<br/>\n  1. If you&#39;re writing your own implementations of Test<br/>\n     (instead of, say, using TestCases), then make sure<br/>\n     they call TestResult.startTest() and .endTest()<br/>\n     in their run() methods.<br/>\n<br/>\n  2. Subclass java.textui.TestRunner, overriding the<br/>\n     protected method createTestResult(); something like<br/>\n<br/>\n           protected TestResult createTestResult() {<br/>\n                   TestResult result = super.createTestResult();<br/>\n                   result.addTestListener( new TimingTestListener() );<br/>\n                   return result;<br/>\n           }<br/>\n<br/>\n  3. Write the TimingTestListener; a trivial version:<br/>\n<br/>\n           public class TimingTestListener implements TestListener {<br/>\n                   private long start;<br/>\n                   public void startTest( Test test ) {<br/>\n                           start = new Date().getTime();<br/>\n                   }<br/>\n                   public void endTest( Test test ) {<br/>\n                           System.out.println( test.toString() + &quot;: &quot;<br/>\n                                   + (new Date().getTime() - start)<br/>\n                                   + &quot;ms&quot; );<br/>\n                   }<br/>\n                   // ... the rest of the TestListener interface ...<br/>\n           }<br/>\n<br/>\nAnd that would be it.  I haven&#39;t tested this, it&#39;s just off the<br/>\ntop of my head, and I don&#39;t actually know what I&#39;m talking about,<br/>\nso I invite comments and corrections.<br/>\n<br/>\n(One obvious point: what TimingTestListener should actually do is<br/>\naccumulate the results and provide methods for retrieving the<br/>\ninformation later.  Also you might want to think about the<br/>\npossibility that your tests might someday be run concurrently in<br/>\nmultiple threads, with one TestResult -- and hence one<br/>\nTimingTestListener -- shared among all those threads.  The<br/>\nimplementation suggested above would fail miserably in such a<br/>\nscenario.)</div>", 
+    "prevInTime": 5937, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1033702696", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 5933, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMDAzMDQ1MzAzLjIzNzgxLnFtYWlsQHdlYjk2MDQubWFpbC55YWhvby5jb20+OyBmcm9tIGFuYW50aGFsYWtzaG1pX21jYUB5YWhvby5jb20gb24gV2VkLCBPY3QgMDIsIDIwMDIgYXQgMDk6NTM6MDNQTSAtMDcwMA==", 
+        "messageIdInHeader": "PDIwMDIxMDAzMjEzODE2LkE2MDgzQHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "referencesHeader": "PDIwMDIxMDAzMDQ1MzAzLjIzNzgxLnFtYWlsQHdlYjk2MDQubWFpbC55YWhvby5jb20+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 12490, 
+    "senderId": "TyFFe2zc5S-in6iq1MwhTH0KoHz_XoBAD_oddLmu7JIGzdkXdijbJkA8ZA9OW0K3p3D5x-jvFF1KXftEQUH5ih-o_e9SkUfgBCn6S8ypAA", 
+    "systemMessage": false, 
+    "subject": "Gathering tests together into a large suite", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... There s no reason you can t do this: * Use Ant * Use GSBase s RecursiveTestSuite * Use JUnit-addons s DirectorySuiteBuilder * Create a custom suite method", 
+    "msgId": 12489, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 74513 invoked from network); 16 Dec 2004 17:58:11 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m22.grp.scd.yahoo.com with QMQP; 16 Dec 2004 17:58:11 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta6.grp.scd.yahoo.com with SMTP; 16 Dec 2004 17:58:11 -0000\r\nReceived: from unknown (HELO ?8.8.8.113?) (srainsberger5790@207.161.70.172 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 16 Dec 2004 17:58:10 -0000\r\nMessage-ID: &lt;41C1CCB4.8070007@...&gt;\r\nDate: Thu, 16 Dec 2004 11:58:12 -0600\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cpjtit+nvc5@...&gt;\r\nIn-Reply-To: &lt;cpjtit+nvc5@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.81\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Gathering tests together into a large suite\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\ngfisher365 wrote:\n\n&gt; Thanks for your reply. You are right that some of my code is redundant\n&gt; as presently shown. I was just trying to illustrate a point. I&#39;ve got\n&gt; quite a few other test cases and I would like to run all of them\n&gt; together as a single test suite rather than as a series of standalone\n&gt; test cases.\n\nThere&#39;s no reason you can&#39;t do this:\n\n  * Use Ant\n  * Use GSBase&#39;s RecursiveTestSuite\n  * Use JUnit-addons&#39;s DirectorySuiteBuilder\n  * Create a custom suite method and add other suites to it (the \n&quot;AllTests&quot; pattern)\n\npublic static Test suite() {\n     TestSuite suite = new TestSuite(&quot;All My Tests&quot;);\n     suite.addTestSuite(TestClass1.class);    // extract test*() methods\n     suite.addTest(TestClass2.suite());       // use custom suite()\n     return suite;\n}\n\nAny of these work perfectly. Put the above method in any class (not \nnecessarily a subclass of TestCase -- that&#39;s not needed), then do\n\n     java -cp &lt;your classpath&gt; &lt;your favorite test runner&gt; &lt;your \nAllTests class&gt;\n\nThat&#39;ll do it.\n\n&gt; Thus, \n&gt; \n&gt; 1. junit.swingui.TestRunner.run(InfoRequestStoreTest.class) is fine.\n&gt; \n&gt; 2. junit.swingui.TestRunner.run(suite()) is not fine.\n&gt; \n&gt; In the first example I&#39;m passing a TestCase to TestRunner.run(). In\n&gt; the second example I&#39;m passing a TestSuite. Both TestCase and\n&gt; TestSuite implement the Test interface. However, TestSuite cannot be\n&gt; cast to Test.\n\nThis statement is false, so I have to assume that you mean something \nelse. TestSuite implements Test, so clearly, this assignment works:\n\n     TestSuite suite = new TestSuite();\n     ...\n     Test test = suite;\n\nSo what did you mean to write here?\n\n&gt; What puzzles me is that this failure to cast occurs in\n&gt; junit.swingui.TestRunner.run() and junit.awtui.TestRunner.run() but\n&gt; not in junit.textui.TestRunner.run().\n\nIf you&#39;re talking about a ClassCastException, then read the FAQ or \nchapter 8 of _JUnit Recipes_. My guess is that your production class \nInfoRequestStore relies on some third-party software that doesn&#39;t like \nto be reloaded by JUnit&#39;s class loader. /That/ is what you might put in \nthe excluded.properties file.\n\n&gt; I&#39;ve read older messages at this site and it seems this is not an\n&gt; unusual problem. The only difference that I can see is that they got\n&gt; their code to compile but then encountered ClassCastException at\n&gt; runtime. Whereas in my case I don&#39;t get as far as running the code\n&gt; because this potential runtime exception is being picked up earlier\n&gt; during compilation.\n\nI don&#39;t understand this statement, either, because runtime exceptions \nare not picked up during compilation, whatever &quot;picked up&quot; means. \nExceptions only occur when code executes.\n\n&gt; The recommended solution is to edit the excluded.properties file. In\n&gt; my case I&#39;ve added a new entry - excluded.9=test.* where &#39;test&#39; is my\n&gt; package name. This has had no effect and I wonder if I&#39;m doing the\n&gt; right thing.\n\nThat is rarely necessary for test code; usually only for third party \ncode, such as JDBC drivers, that don&#39;t react well when reloaded. See the \nabove. I bet it&#39;s something your InfoRequestStore depends on. To test \nthis, comment out the declaration of that variable from your tests and \ntry running them.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 12458, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12488, 
+    "contentTrasformed": false, 
+    "postDate": "1103219892", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12472, 
+    "headers": {
+        "inReplyToHeader": "PGNwanRpdCtudmM1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxQzFDQ0I0LjgwNzAwMDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNwanRpdCtudmM1QGVHcm91cHMuY29tPg=="
+    }
+}

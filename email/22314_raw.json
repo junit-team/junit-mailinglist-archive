@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 22315, 
+    "senderId": "c3b3gVtLnZDFwJOEeJU3RGnxwvcQtZGwJpKZhR8U-oLPLfj4qjofG2CO2O8lIuXzlJ2Yb2MyBKmwBiMRUDupWfjy9QpMdXql", 
+    "systemMessage": false, 
+    "subject": "Re: Why must test methods return void?", 
+    "from": "&quot;dmcg123&quot; &lt;duncan@...&gt;", 
+    "authorName": "dmcg123", 
+    "msgSnippet": "Hey David, thanks for the swift response. I can see your argument, I was indeed trying to avoid the nasty doALotOfWorkToMakeABigThing in a test that just", 
+    "msgId": 22314, 
+    "rawEmail": "Return-Path: &lt;duncan@...&gt;\r\nX-Sender: duncan@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 65700 invoked from network); 22 Jan 2010 19:21:12 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m2.grp.sp2.yahoo.com with QMQP; 22 Jan 2010 19:21:12 -0000\r\nX-Received: from unknown (HELO n42b.bullet.mail.sp1.yahoo.com) (66.163.168.156)\n  by mta2.grp.sp2.yahoo.com with SMTP; 22 Jan 2010 19:21:12 -0000\r\nX-Received: from [69.147.65.150] by n42.bullet.mail.sp1.yahoo.com with NNFMP; 22 Jan 2010 19:21:11 -0000\r\nX-Received: from [98.137.34.184] by t7.bullet.mail.sp1.yahoo.com with NNFMP; 22 Jan 2010 19:21:11 -0000\r\nDate: Fri, 22 Jan 2010 19:21:08 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;hjctr4+6agp@...&gt;\r\nIn-Reply-To: &lt;4f7da6b91001221048k6da70cdal3fbc6680ee3d739b@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;dmcg123&quot; &lt;duncan@...&gt;\r\nSubject: Re: Why must test methods return void?\r\nX-Yahoo-Group-Post: member; u=76232662; y=7yQtJ9PFLb2wJlG3MG2HxmxH45dNUCtTVvhxqhX0L1XlcA\r\nX-Yahoo-Profile: dmcg123\r\n\r\nHey David, thanks for the swift response. I can see your argument, I was in=\r\ndeed trying to avoid the nasty doALotOfWorkToMakeABigThing in a test that j=\r\nust wanted to add assertions to a previous test, but where adding them to t=\r\nhe base test would just have overwhelmed it.\n\nNothing that can&#39;t be solved =\r\n(and made just that little bit too opaque) with another layer of indirectio=\r\nn...\n\nCheers\n\nDuncan\n\n\n\n--- In junit@yahoogroups.com, David Saff &lt;david@...=\r\n&gt; wrote:\n&gt;\n&gt; Duncan,\n&gt; \n&gt; On Fri, Jan 22, 2010 at 1:17 PM, dmcg123 &lt;duncan@=\r\n...&gt; wrote:\n&gt; &gt; After over 10 years of using JUnit, it has only just struck=\r\n me that test methods must return void, but why?\n&gt; \n&gt; I can imagine a value=\r\n in _allowing_ certain classes to override the\n&gt; validation behavior, but n=\r\not as much value in loosening the class\n&gt; validation by default.\n&gt; \n&gt; For m=\r\ne, imagine someone writes this as their first JUnit test:\n&gt; \n&gt; @Test public=\r\n boolean threeIsPrime() {\n&gt;   PrimeAnalyzer a =3D new PrimeAnalyzer();\n&gt;   =\r\nreturn a.isPrime(3);\n&gt; }\n&gt; \n&gt; This test is likely to not do what its author=\r\n intended.  Pushing this\n&gt; author to understand how JUnit works a little be=\r\ntter provides value,\n&gt; and I haven&#39;t yet seen a proposal for loosening retu=\r\nrn value\n&gt; restrictions that provides more value.\n&gt; \n&gt; As an example:\n&gt; \n&gt; =\r\n&gt; I&#39;ve just come across an example where a particular test did a lot of wor=\r\nk, and I wanted to piggy-back on its final state by calling the method from=\r\n another test.\n&gt; \n&gt; It seems to me that this pattern would solve this desir=\r\ne, at the cost\n&gt; of just one additional extracted method:\n&gt; \n&gt; private BigT=\r\nhing doALotOfWorkToMakeABigThing() { ... }\n&gt; \n&gt; @Test public void basicBigT=\r\nhing() {\n&gt;   assertEquals(Size.BIG, doALotOfWorkToMakeABigThing().size());\n=\r\n&gt; }\n&gt; \n&gt; @Test public void shrink() {\n&gt;   BigThing thing =3D doALotOfWorkTo=\r\nMakeABigThing();\n&gt;   thing.shrink();\n&gt;   assertEquals(Size.SMALL, thing.siz=\r\ne());\n&gt; }\n&gt; \n&gt; &gt; Is there any fundamental reason for not allowing me to ret=\r\nurn values? It might even be an opportunity to write an annotation expressi=\r\nng constraints about the value returned.\n&gt; \n&gt; What would be the advantage o=\r\nf writing assertions as annotations\n&gt; rather than plain old Java?\n&gt; \n&gt; Than=\r\nks,\n&gt; \n&gt;    David Saff\n&gt; \n&gt; &gt;\n&gt; &gt; Cheers\n&gt; &gt;\n&gt; &gt; Duncan McGregor\n&gt; &gt;\n&gt; &gt;\n&gt; =\r\n&gt;\n&gt; &gt; ------------------------------------\n&gt; &gt;\n&gt; &gt; Yahoo! Groups Links\n&gt; &gt;\n=\r\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt;\n\n\n\n", 
+    "profile": "dmcg123", 
+    "topicId": 22312, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 76232662, 
+    "prevInTime": 22313, 
+    "contentTrasformed": false, 
+    "postDate": "1264188068", 
+    "canDelete": false, 
+    "nextInTopic": 22315, 
+    "prevInTopic": 22313, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MTAwMTIyMTA0OGs2ZGE3MGNkYWwzZmJjNjY4MGVlM2Q3MzliQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGhqY3RyNCs2YWdwQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 24503, 
+    "senderId": "uxRl15gcx5yKd0fRVgUnP-xm0jtprvg86gpGzxKdj6CMC1vO25xsY4nEHJxFNXJ8gYp_aC8y9UMlc88Layoy2GhLAYlDXGg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Is it possible to have write NonBlocking Junit tests", 
+    "from": "Neil Swingler &lt;neil@...&gt;", 
+    "authorName": "Neil Swingler", 
+    "msgSnippet": "Use a SettableFuture from guava. To borrow Colin s example @Test public void testAsync() throws Exception { final SettableFuture future =", 
+    "msgId": 24502, 
+    "profile": "neil_swingler", 
+    "topicId": 24500, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 230174996, 
+    "messageBody": "<div id=\"ygrps-yiv-1355999297\"><div dir=\"ltr\">Use a SettableFuture from guava. To borrow Colin&#39;s example<div><br></div><div><div dir=\"ltr\" style=\"font-family:arial, sans-serif;font-size:12.800000190734863px;\"><div><span style=\"white-space:pre-wrap;\">\t</span>@Test</div>\n<div><span style=\"white-space:pre-wrap;\">\t</span>public void testAsync() throws Exception {</div><div><span style=\"white-space:pre-wrap;\">\t\t</span>final SettableFuture&lt;Message&gt; future = SettableFuture.create();</div><div>\n<span style=\"white-space:pre-wrap;\">\t\t</span>someAsyncCode(new Handler() {</div><div><span style=\"white-space:pre-wrap;\">\t\t\t</span>public void handle(Message message) {</div><div><br></div><div><span style=\"white-space:pre-wrap;\">\t\t\t</span>} &nbsp;<br>\n</div><div><span style=\"white-space:pre-wrap;\">\t\t</span>});</div><div><span style=\"white-space:pre-wrap;\">\t\t</span></div><div><span style=\"white-space:pre-wrap;\">\t\t</span></div><div><span style=\"white-space:pre-wrap;\">\t\t</span>lock.acquire();</div>\n<div><span style=\"white-space:pre-wrap;\">\t</span>}</div><div><br></div></div><div class=\"ygrps-yiv-1355999297gmail_extra\" style=\"font-family:arial, sans-serif;font-size:12.800000190734863px;\"></div></div></div><div class=\"ygrps-yiv-1355999297gmail_extra\"><br><br><div class=\"ygrps-yiv-1355999297gmail_quote\">\n<blockquote><span title=\"qreply\"> On 10 April 2014 18:32, Colin Vipurs <span dir=\"ltr\">&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:zodiaczx6@...\">zodiaczx6@...</a>&gt;</span> wrote:<br><blockquote class=\"ygrps-yiv-1355999297gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;\">\n\n\n\n\n\n\n\n        \n\n\n\n\n<div>\n\n\n\n\n\n<br><br>\n\n\n\n\n<div dir=\"ltr\">You could use a locking mechanism shared between your test and handler so that progress continues as quick as possible and then put an overall timeout on your test in the event of failure.<div><br></div><div>\n\nSomething like this should work just fine:</div><div><br></div><div><div><span style=\"white-space:pre-wrap;\">\t</span>@Test</div><div><span style=\"white-space:pre-wrap;\">\t</span>public void testAsync() throws Exception {</div>\n\n<div><span style=\"white-space:pre-wrap;\">\t\t</span>final Semaphore lock = new Semaphore(0);</div><div><span style=\"white-space:pre-wrap;\">\t\t</span>someAsyncCode(new Handler() {</div><div><span style=\"white-space:pre-wrap;\">\t\t\t</span>public void handle() {</div>\n\n<div><span style=\"white-space:pre-wrap;\">\t\t\t\t</span>// put your assertions in here</div><div><span style=\"white-space:pre-wrap;\">\t\t\t\t</span>lock.release();</div><div><span style=\"white-space:pre-wrap;\">\t\t\t</span>} &nbsp;</div>\n<div><span style=\"white-space:pre-wrap;\">\t\t</span>});</div><div><span style=\"white-space:pre-wrap;\">\t\t</span></div><div><span style=\"white-space:pre-wrap;\">\t\t</span></div><div><span style=\"white-space:pre-wrap;\">\t\t</span>lock.acquire();</div>\n\n<div><span style=\"white-space:pre-wrap;\">\t</span>}</div></div></div><div class=\"ygrps-yiv-1355999297gmail_extra\"><div class=\"ygrps-yiv-1355999297\"><br><br><div class=\"ygrps-yiv-1355999297gmail_quote\">On Thu, Apr 10, 2014 at 4:21 PM,  <span dir=\"ltr\">&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:abhijeet.kushe@...\">abhijeet.kushe@...</a>&gt;</span> wrote:<br>\n\n<blockquote class=\"ygrps-yiv-1355999297gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;\">\n\n\n<u></u>\n\n\n\n\n\n\n\n\n\n \n<div>\n<span>&nbsp;</span>\n\n\n<div>\n  <div>\n\n\n    <div>\n      \n      \n      <p><span style=\"font-family:Arial,;font-size:14px;\">I am writing a Junit tests for Amqp Message Listener.This is how the test is written.I send a message to a exchange and introduce a delay of 1s (assuming that the listener will do its job within that time frame).This approach slows down the build process as there 15-20 tests like these which take a minimum of 20 seconds to execute.Is there a way in which I can do this is a non blocking way.For pass a call handler which verifies the tests after the listener does it job.Something like Actors might be internally used</span></p>\n\n\n\n    </div>\n     \n\n    \n    <div style=\"color:#fff;min-height:0;\"></div>\n\n\n</div>\n\n\n\n  \n\n\n\n\n\n\n</div></div></blockquote></div><br><br clear=\"all\"><div><br></div></div><span class=\"ygrps-yiv-1355999297HOEnZb\"><font color=\"#888888\">-- <br>Maybe she awoke to see the roommate&#39;s boyfriend swinging from the chandelier wearing a boar&#39;s head.<br>\n<br>Something which you, I, and everyone else would call &quot;Tuesday&quot;, of course.\n</font></span></div><div class=\"ygrps-yiv-1355999297\">\n\n\n\n\n\n\n<br>\n\n\n<br>\n\n\n\n\n<div style=\"color:white;clear:both;\"></div>\n\n\n\n</div></div></blockquote></span></blockquote></div><br></div>\n</div>", 
+    "prevInTime": 24501, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1397157251", 
+    "canDelete": false, 
+    "nextInTopic": 24503, 
+    "prevInTopic": 24501, 
+    "headers": {
+        "inReplyToHeader": "PENBS2k0MjczdHdYMzVpUmdNZzk1THl3K3BCSHByc0JRUnFvMXRjTGErQ3g0SEZUM3dyd0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBRllIOUJwaFcrRUs5RUdkR3dBSHhVQzExY3lHWj1nWkhYVFBnSDZXOFMtXzd4Vy1KUUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGxpNmN0aitoNWw2cWtAWWFob29Hcm91cHMuY29tPgk8Q0FLaTQyNzN0d1gzNWlSZ01nOTVMeXcrcEJIcHJzQlFScW8xdGNMYStDeDRIRlQzd3J3QG1haWwuZ21haWwuY29tPg=="
+    }
+}

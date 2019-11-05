@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 24039, 
+    "senderId": "059gJXuE2j-xdFDfx0XfpLNASH6BC3L3OK8toVglXeeHQ1JSExuzKLAXYwag3ZXVk7uH3C7SbpKqX4UjPWk-Yp8IUpWjjWePeHS8RO6yUU3asQ", 
+    "systemMessage": true, 
+    "subject": "Filte, Suite and Runner", 
+    "from": "Sebastian Hennebrueder &lt;usenet@...&gt;", 
+    "authorName": "Sebastian Hennebrueder", 
+    "msgSnippet": "Hello, my impression of filter and suites is a little bit mixed. Custom filters and custom runners are coupled and not trivial to use. I understood a suite as", 
+    "msgId": 24038, 
+    "profile": "sebastian_4711", 
+    "topicId": 24038, 
+    "spamInfo": {
+        "reason": "3", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 221114014, 
+    "messageBody": "<div id=\"ygrps-yiv-1499124349\">Hello,<br/>\n<br/>\nmy impression of filter and suites is a little bit mixed. Custom filters and custom runners are coupled and not trivial to use. I understood a suite as the place to choose classes to execute but a suite can be run with a filter which is a suite itself.  You can use a suite to control what is executed but you must explicitly name classes, use a custom runner to make use of advanced filtering like packages.<br/>\n<br/>\nUsing an IDE like Eclipse or IntelliJ, using a Suite causes multiple execution of the same test and is more or less unusable. <br/>\n<br/>\nConsidering issue <a rel=\"nofollow\" target=\"_blank\" href=\"https://github.com/KentBeck/junit/issues/issue/172\">https://github.com/KentBeck/junit/issues/issue/172</a> I am thinking about working a little bit on filtering.<br/>\n<br/>\nMy idea is that there is a set of common filter and the user can register further filters. <br/>\n<br/>\ndefault filters:<br/>\n- @Ignore which should be a filter actually as well (but isn&#39;t)<br/>\n- group filter<br/>\n- package filter<br/>\n<br/>\nTo allow custom registration, we could follow the idea of the ServiceLoader provided with Java 1.6. As junit uses 1.5 we would have to reimplement a part of it but could switch to it later.<br/>\n<br/>\nBasic principle:<br/>\nin a directory META-INF/service you can create a file named like the interface: org.junit.runner.manipulation.Filter and in this class you add the qualified name of custom classes implementing this interface.<br/>\nAll filters are added to the chain.<br/>\n<br/>\nAlternatively, such a config file contains only a class which can be used for the user to register additional filters and possibly other stuff.<br/>\n<br/>\nI am thinking about configuration profiles, which allows to customize multiple filters at the same time. I would consider YAML a nice format.<br/>\n<br/>\n---<br/>\nprofile: integration<br/>\nfilter: groups<br/>\n\t- queueintegration<br/>\n\t- dbintegration<br/>\nfilter: package<br/>\n\t- de.laliluna.foo<br/>\n\t- de.laliluna.bar<br/>\nfilter: de.custom.FilterClass<br/>\n\t- max: 5<br/>\n\t- boost: true<br/>\n---<br/>\nprofile: unit<br/>\nfilter: groups<br/>\n\t- !queueintegration<br/>\n\t- !dbintegration<br/>\nfilter: package<br/>\n\t- de.laliluna.foo<br/>\n\t- de.laliluna.bar<br/>\nfilter: de.custom.FilterClass<br/>\n\t- max: 5<br/>\n\t- boost: true<br/>\n---<br/>\n<br/>\nRunning the tests, you specify the configuration profile, can register custom filters if you like and have them configured.<br/>\n<br/>\n<br/>\nWhat do you think?<br/>\n<br/>\n<br/>\n-- <br/>\nBest Regards / Viele Grüße<br/>\n<br/>\nSebastian Hennebrueder<br/>\n<br/>\n-----<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.laliluna.de\">http://www.laliluna.de</a><br/>\nJava software developer and trainer for Hibernate and Java Persistence<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 24037, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1348594339", 
+    "canDelete": false, 
+    "nextInTopic": 24043, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEEzNzA0MzY1LUMxMEMtNEJEQy04NjQ3LTkwMzI3NDhDNTYzOEBsYWxpbHVuYS5kZT4="
+    }
+}

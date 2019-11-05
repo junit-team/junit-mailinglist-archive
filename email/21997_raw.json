@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 21998, 
+    "senderId": "XVvHpqMtZ1sdl__dPBalToaAp7Fh36AcWemUntvlfqM2UP83nllAaAFTuLWyHXQ6wV3LZ1X5ejjxH2-qs1ra2mk3", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to build a test suite automatically in Junit4?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "ju_10101, Are you able to use pre-release code?  HEAD at github includes a Category system, which you could combine with Link s cpsuite runner to get what you", 
+    "msgId": 21997, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 20677 invoked from network); 23 Oct 2009 02:27:20 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m8.grp.re1.yahoo.com with QMQP; 23 Oct 2009 02:27:20 -0000\r\nX-Received: from unknown (HELO mail-iw0-f188.google.com) (209.85.223.188)\n  by mta2.grp.sp2.yahoo.com with SMTP; 23 Oct 2009 02:27:20 -0000\r\nX-Received: by iwn26 with SMTP id 26so4952039iwn.5\n        for &lt;junit@yahoogroups.com&gt;; Thu, 22 Oct 2009 19:27:20 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.231.122.103 with SMTP id k39mr3293194ibr.10.1256264839917; \n\tThu, 22 Oct 2009 19:27:19 -0700 (PDT)\r\nIn-Reply-To: &lt;hbqq02+10t7n@...&gt;\r\nReferences: &lt;hbqq02+10t7n@...&gt;\r\nDate: Thu, 22 Oct 2009 22:27:19 -0400\r\nX-Google-Sender-Auth: b4cb764e184df9cd\r\nMessage-ID: &lt;4f7da6b90910221927l61d1e943s2815a8fd36b91531@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] How to build a test suite automatically in Junit4?\r\nX-Yahoo-Group-Post: member; u=341876227; y=Tmlyb_ApjYuE4baFfpaWjU9KPzEJrpbg4Ky4rWNfSpc\r\nX-Yahoo-Profile: dsaff\r\n\r\nju_10101,\n\nAre you able to use pre-release code?  HEAD at github includes a=\r\n\nCategory system, which you could combine with Link&#39;s cpsuite runner to\nget=\r\n what you want.\n\n   David Saff\n\nOn Thu, Oct 22, 2009 at 7:31 PM, ju_10101 &lt;=\r\nju_10101@...&gt; wrote:\n&gt; Hi,\n&gt;\n&gt; I&#39;ve just updated to 4.7 from 3.8.2. =\r\n=A0I have a large project with a lot of classes and packages, but I also an=\r\nnotate tests for fast and slow. =A0I create my FastSuite to find all tests =\r\nclasses annotated with SmallTest. =A0That way, these can be run first in th=\r\ne continuous environment, and the slow ones run later, on a different machi=\r\nne, so I don&#39;t backup the queue, etc.\n&gt;\n&gt; It seems the way to make suites i=\r\nn 4.7 is to explicitly list each classname as an annotation to your suite c=\r\nlass, but I don&#39;t want to do that because a) I have a lot, and b) I don&#39;t w=\r\nant to not run new tests because someone didn&#39;t go update the manual list o=\r\nf test classes somewhere.\n&gt;\n&gt; My old way doesn&#39;t work anymore. =A0Can anyon=\r\ne tell me how to accomplish the same in junit 4.7??\n&gt;\n&gt;\n&gt; My code in 3.8.2 =\r\nwas (sorry for the formatting!):\n&gt;\n&gt; =A0 =A0public static Test suite() {\n&gt; =\r\n=A0 =A0 =A0 =A0final String smallTestName =3D SmallTest.class.getCanonicalN=\r\name();\n&gt; =A0 =A0 =A0 =A0TestSuite suite =3D new TestSuite();\n&gt;\n&gt; =A0 =A0 =\r\n=A0 =A0Enumeration testClasses =3D new LoadingTestCollector().collectTests(=\r\n);\n&gt; =A0 =A0 =A0 =A0while (testClasses.hasMoreElements()) {\n&gt; =A0 =A0 =A0 =\r\n=A0 =A0 =A0final String className =3D testClasses.nextElement().toString();=\r\n\n&gt;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0try {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0Annotati=\r\non[] annotations =3D Class.forName(className).getAnnotations();\n&gt; =A0 =A0 =\r\n=A0 =A0 =A0 =A0 =A0 =A0for (Annotation a : annotations) {\n&gt; =A0 =A0 =A0 =A0=\r\n =A0 =A0 =A0 =A0 =A0 =A0if (a.annotationType().getCanonicalName().equals(sm=\r\nallTestName)) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0System.out=\r\n.println(&quot;HELLOOO- working on class &quot; + className);\n&gt; =A0 =A0 =A0 =A0 =A0 =\r\n=A0 =A0 =A0 =A0 =A0 =A0 =A0suite.addTestSuite(Class.forName(className));\n&gt; =\r\n=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}=\r\n\n&gt; =A0 =A0 =A0 =A0 =A0 =A0} =A0 =A0catch (ClassNotFoundException e) {\n&gt; =A0=\r\n =A0 =A0 =A0 =A0 =A0 =A0 =A0System.err.println(&quot;Error: Couldn&#39;t deal with &quot;=\r\n + className);\n&gt; =A0 =A0 =A0 =A0 =A0 =A0}\n&gt; =A0 =A0 =A0 =A0}\n&gt; =A0 =A0 =A0 =\r\n=A0return suite;\n&gt; =A0 =A0}\n&gt;\n&gt;\n&gt; The compiler error is: addTestSuite(java.=\r\nlang.Class&lt;? extends junit.framework.TestCase&gt;) in junit.framework.TestSuit=\r\ne cannot be applied to (java.lang.Class&lt;capture#337 of ?&gt;)\n&gt; =A0 =A0[javac]=\r\n =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 suite.addTestSuite(Class.f=\r\norName(className));\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Ya=\r\nhoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21994, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21996, 
+    "contentTrasformed": false, 
+    "postDate": "1256264839", 
+    "canDelete": false, 
+    "nextInTopic": 22018, 
+    "prevInTopic": 21994, 
+    "headers": {
+        "inReplyToHeader": "PGhicXEwMisxMHQ3bkBlR3JvdXBzLmNvbT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkxMDIyMTkyN2w2MWQxZTk0M3MyODE1YThmZDM2YjkxNTMxQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGhicXEwMisxMHQ3bkBlR3JvdXBzLmNvbT4="
+    }
+}

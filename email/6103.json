@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 6104, 
+    "senderId": "Jhb-pZTDfXlBN1jKVR2XFuYnc5lEvjVxSQ5mSEtw633hRxKDszEDSdlbBxC7mBZ-r69JpKGSHURpkPyLo7EQE5EweC6pvcADxrw", 
+    "systemMessage": false, 
+    "subject": "Junit Decorator", 
+    "from": "&quot;jenjerina&quot; &lt;jenjerina@...&gt;", 
+    "authorName": "jenjerina", 
+    "msgSnippet": "Hi, I have two junit classes. One is TestInterface.java and the other is TestInterfaceDecorator.java. In TestInterface.java, I have tests to test a file", 
+    "msgId": 6103, 
+    "profile": "jenjerina", 
+    "topicId": 6103, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 129147956, 
+    "messageBody": "<div id=\"ygrps-yiv-703669382\">Hi, <br/>\n<br/>\nI have two junit classes. One is TestInterface.java and the other is <br/>\nTestInterfaceDecorator.java. <br/>\n<br/>\nIn TestInterface.java, I have tests to test a file ServiceBureau.java <br/>\nwhich is supposed to respond correctly to the messages it is sent. <br/>\n<br/>\nIn TestInterface.java, I want to set up a log file and other <br/>\nvariables ONCE only for all my tests. For this I have discovered I <br/>\nneed another JUnit file, a decorator which I have called <br/>\nTestInterfaceDecorator.java <br/>\n<br/>\nSo my question is, in TestInterfaceDecorator.java, how do I access <br/>\nTestInterface.java &#39;s variables eg the log file? Where should the log <br/>\nfile and other variables be defined and how can TestInterface and <br/>\nTestInterfaceDecorator have access to them? <br/>\n<br/>\nI thought of something like this.. but it didn&#39;t work because of the <br/>\ncast from TestInterface to Test... <br/>\n<br/>\npackage testTool; <br/>\n<br/>\nimport java.io.*; import java.util.ResourceBundle; import <br/>\njunit.framework.*; import junit.extensions.*; <br/>\n<br/>\npublic class TestInterfaceDecorator extends TestSetup { <br/>\n<br/>\n  public TestInterface testInterface; <br/>\n<br/>\n  public TestInterfaceDecorator(Test test) { <br/>\n   super(test);<br/>\n   // This is the line that doesn&#39;t compile<br/>\n   testInterface = test;<br/>\n  }<br/>\n<br/>\n  public void setUp() {<br/>\n   //User values is a resource bundle<br/>\n   testInterface.userValues = ResourceBundle.getBundle<br/>\n(&quot;testTool.userInput&quot;);<br/>\n   testInterface.commandRate = (new Integer(userValues.getString<br/>\n(&quot;commandRate&quot;))).intValue();<br/>\n   testInterface.loggingRequired = (new Boolean(userValues.getString<br/>\n(&quot;loggingRequired&quot;))).booleanValue();<br/>\n   testInterface.logFileLocation = userValues.getString<br/>\n(&quot;logFileLocation&quot;);<br/>\n   testInterface.ipSDP = userValues.getString(&quot;ipSDP&quot;);<br/>\n   testInterface.portSDP = userValues.getString(&quot;portSDP&quot;);<br/>\n<br/>\n   if(testInterface.loggingRequired) { <br/>\n    try { <br/>\n     log = new PrintStream(new FileOutputStream<br/>\n(testInterface.logFileLocation));<br/>\n    } catch (Exception e) {} <br/>\n   }<br/>\n<br/>\n   try { <br/>\n    humanTest = new PrintStream(new FileOutputStream<br/>\n(testInterface.HumanTestFileLocation));<br/>\n   } catch(Exception e) {} <br/>\n  }<br/>\n<br/>\n  public static TestSuite suite() {<br/>\n   TestSuite suite = new TestSuite();<br/>\n   suite.addTest(new TestInterfaceDecorator(TestInterface.suite()));<br/>\n   return suite;<br/>\n  }<br/>\n<br/>\n  public static void main(String args[]) {<br/>\n   junit.textui.TestRunner.run(suite());<br/>\n  }<br/>\n<br/>\n} <br/>\n<br/>\nThanks for your help, <br/>\n<br/>\nJen</div>", 
+    "prevInTime": 6102, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1036467632", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFxN2VqZytrZnAzQGVHcm91cHMuY29tPg=="
+    }
+}

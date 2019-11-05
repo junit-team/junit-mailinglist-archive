@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 15657, 
+    "senderId": "EKc8445lCOSMolLjBeyCx9hbOYowFKqizQc911_hf2bvsU5h0PKz148qF7CzYURoZRSVUxH6IJaOFBW42Dilm2PAKK6JFtaQAW4UQlesFFsPGOFgZYtU67dj7PWr8ej6v8zA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Clarifying how to use unit tests", 
+    "from": "=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "... Looks good to me, especially if you are going to use dependency injection to remove even the hardcoded Impl mentions from your code. Note that TestNG s", 
+    "msgId": 15656, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 77557 invoked from network); 8 Dec 2005 18:28:19 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m27.grp.scd.yahoo.com with QMQP; 8 Dec 2005 18:28:19 -0000\r\nReceived: from unknown (HELO smtp-out.google.com) (216.239.45.12)\n  by mta4.grp.scd.yahoo.com with SMTP; 8 Dec 2005 18:28:19 -0000\r\nReceived: from brian.corp.google.com (brian.corp.google.com [172.24.0.122])\n\tby smtp-out.google.com with ESMTP id jB8IS8QD026598\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 8 Dec 2005 10:28:08 -0800\r\nReceived: from smtp-out2.google.com (epa14.prod.google.com [10.253.129.14])\n\tby brian.corp.google.com with ESMTP id jB8IRQcf004517\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 8 Dec 2005 10:27:56 -0800\r\nReceived: by smtp-out2.google.com with SMTP id 14so47594epa\n        for &lt;junit@yahoogroups.com&gt;; Thu, 08 Dec 2005 10:27:56 -0800 (PST)\r\nReceived: by 10.253.130.16 with SMTP id 16mr6023epb;\n        Thu, 08 Dec 2005 10:27:56 -0800 (PST)\r\nReceived: by 10.253.129.12 with HTTP; Thu, 8 Dec 2005 10:27:56 -0800 (PST)\r\nMessage-ID: &lt;b86b6a9c0512081027o78c4861at310adf313fc99517@...&gt;\r\nDate: Thu, 8 Dec 2005 10:27:56 -0800\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;43987211.1060406@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;4380CEC9.6000704@...&gt;\n\t &lt;1132583193.4381d919cef10@...&gt;\n\t &lt;439842C4.8090700@...&gt;\n\t &lt;b86b6a9c0512080820v53ec6164gba4e57f72a0079e9@...&gt;\n\t &lt;43987211.1060406@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: =?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;\r\nSubject: Re: [junit] Clarifying how to use unit tests\r\nX-Yahoo-Group-Post: member; u=199443513; y=gUJMG0YeySqp5ZfuelXR-Et7vJiWzJ-o4ACsl7vpZS8_\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nOn 12/8/05, Rakesh Patel &lt;rakesh.mailgroups@...&gt; wrote:\n&gt;\n&gt; Hi Cedric=\r\n,\n&gt;\n&gt; if i write a test against my interface then i am essentially writing =\r\na\n&gt; functional test. Thats not terrible except for the fact that as its so\n=\r\n&gt; high up i will probably have to wire up the layers beneath, which you\n&gt; m=\r\nention.\n&gt;\n&gt; So for my high level test, I end up doing this:\n&gt;\n&gt; protected v=\r\noid setUp() throws Exception {\n&gt; super.setUp();\n&gt; fs =3D new FetserverSoapB=\r\nindingImpl();\n&gt; ls =3D new LogonServiceImpl(manager, &quot;testCache&quot;);\n&gt; ps =3D=\r\n new PostcodeServiceMockImpl();\n&gt;\n&gt; ((FetserverSoapBindingImpl) fs).setLs(l=\r\ns);\n&gt; ((FetserverSoapBindingImpl) fs).setPs(ps);\n&gt; }\n&gt;\n&gt; which is wiring up=\r\n all my classes. Fortunately, i may have dummy\n&gt; implementations instead i =\r\ncan use (PostcodeServiceMockImpl for example).\n&gt;\n&gt; I don&#39;t have a big issue=\r\n doing this because i intend to use Spring which\n&gt; will allow wiring up bea=\r\nns like this in a much simpler fashion.\n\n\nLooks good to me, especially if y=\r\nou are going to use dependency injection to\nremove even the hardcoded Impl =\r\nmentions from your code.\n\nNote that TestNG&#39;s data providers could come up h=\r\nandy for this as well to\nlet you test several implementations in the same t=\r\nest method:\n\n@Test(dataProviderName =3D  &quot;server-implementations&quot;)\npublic v=\r\noid verifyServer(FetServerBinding binding) {\n  ...\n}\n\n@DataProvider(name =\r\n=3D &quot;server-implementations&quot;)\npublic Object[][] provideSoapImplementation()=\r\n {\n  return new Object[][] {\n    { new FetserverSoapBindingImpl() },\n    { =\r\nnew FetserverRpcBindingImpl() }\n  }\n}\n\nand of course, dependency injection =\r\ncould be used on the data provider as\nwell so that even the class names of =\r\nthese implementations are no longer\nhardcoded in your Java source.\n\n--\nC=E9=\r\ndric\nhttp://testng.org\n\n\n[Non-text portions of this message have been remov=\r\ned]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 15467, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 15655, 
+    "contentTrasformed": false, 
+    "postDate": "1134066476", 
+    "canDelete": false, 
+    "nextInTopic": 15673, 
+    "prevInTopic": 15653, 
+    "headers": {
+        "inReplyToHeader": "PDQzOTg3MjExLjEwNjA0MDZAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDUxMjA4MTAyN283OGM0ODYxYXQzMTBhZGYzMTNmYzk5NTE3QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PDQzODBDRUM5LjYwMDA3MDRAZ21haWwuY29tPgkgPDExMzI1ODMxOTMuNDM4MWQ5MTljZWYxMEBpbWFwLmNzYWlsLm1pdC5lZHU+CSA8NDM5ODQyQzQuODA5MDcwMEBnbWFpbC5jb20+CSA8Yjg2YjZhOWMwNTEyMDgwODIwdjUzZWM2MTY0Z2JhNGU1N2Y3MmEwMDc5ZTlAbWFpbC5nb29nbGUuY29tPgkgPDQzOTg3MjExLjEwNjA0MDZAZ21haWwuY29tPg=="
+    }
+}

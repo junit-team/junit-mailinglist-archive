@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 10820, 
+    "senderId": "xEsCcFe01A_aH3X0ZkJDp6QGXz2e1l2x7eJSvxszVObF_Y76BCRzmoJhq5r7whSkLCbPm8m3Kwbky889bM_Wcjs5mq79s67KDc2_7lDKnw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Pls Help : automating ok click of Joptionpane", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Here is my general approach to this problem. You want to /simulate/ (the key word) pressing OK on a dialog. In your test, you want to invoke a method like", 
+    "msgId": 10819, 
+    "profile": "nails762", 
+    "topicId": 10807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-310175470\">Jagdish Rao wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; hello all<br/>\n&gt; <br/>\n&gt; hi i&#39;m jagdish n i&#39;m new to java development so dont get annoyed<br/>\n&gt; if i&#39;m asking something  silly<br/>\n&gt; <br/>\n&gt; The Prob : I have a swing based GUI called LoginView which is a<br/>\n&gt; typical login screen.i have written test cases to test the variuos<br/>\n&gt; conditions<br/>\n&gt; such as blank username and password or incorrect password.<br/>\n&gt; <br/>\n&gt; for this in my loginview class i am using the Joptionpane to display<br/>\n&gt; the<br/>\n&gt; alerts to user such as please enter data or incorrect password.<br/>\n&gt; <br/>\n&gt; now here when i run my test case the execution stops for the user to<br/>\n&gt; respond to Joptionpane.this is the problem<br/>\n&gt; <br/>\n&gt; i want to pass ok click to the test case(Incorrect password)  so that<br/>\n&gt; testing wont require user intervention.<br/>\n&gt; <br/>\n&gt; please guide me if it is possible as i know it is a modal window<br/>\n&gt; or there r any other better way to achieve this<br/>\n&gt; <br/>\n&gt; something in the test case not in the GUI class which will do the<br/>\n&gt; needful<br/>\n<br/>\n </span></blockquote>Here is my general approach to this problem. You want to /simulate/ (the <br/>\nkey word) pressing OK on a dialog. In your test, you want to invoke a <br/>\nmethod like this:<br/>\n<br/>\n     ...<br/>\n     optionPane.ok();<br/>\n     ...<br/>\n<br/>\nTo do this, you need an /interface/ that exposes this method.<br/>\n<br/>\ninterface OptionPane {<br/>\n     void ok();<br/>\n}<br/>\n<br/>\nTo use this, you need a /wrapper/ for JOptionPane that implements <br/>\nOptionPane.<br/>\n<br/>\nclass MyOptionPane implements OptionPane {<br/>\n     private JOptionPane jOptionPane;<br/>\n<br/>\n     public MyOptionPane() {<br/>\n         // initialize jOptionPane...<br/>\n     }<br/>\n<br/>\n     public void show() {<br/>\n         jOptionPane.go();<br/>\n     }<br/>\n<br/>\n     public void ok() {<br/>\n         jOptionPane.click(OK):    // Whatever the actual Swing code is<br/>\n     }<br/>\n}<br/>\n<br/>\nNow you need to be able inject an implementation of OptionPane into <br/>\nwhichever class was using JOptionPane directly...<br/>\n<br/>\nclass MyTask {<br/>\n     public MyTask(OptionPane optionPane) {<br/>\n         this.optionPane = optionPane;<br/>\n         ...<br/>\n     }<br/>\n     ...<br/>\n}<br/>\n<br/>\nNow you can pass MyTask a real MyOptionPane in production, but use a <br/>\nfake OptionPane in your tests that doesn&#39;t actually require the user to <br/>\npress a key.<br/>\n<br/>\nI hope this helps.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 10818, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1081528374", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10807, 
+    "headers": {
+        "inReplyToHeader": "PGM0dTI2byticmNmQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwNzZEMDM2LjYwNzA3MDhAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGM0dTI2byticmNmQGVHcm91cHMuY29tPg=="
+    }
+}

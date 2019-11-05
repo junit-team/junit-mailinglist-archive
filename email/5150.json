@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 5151, 
+    "senderId": "cbgaVzo8hqdKlamq2nVeRr1l8w-I1FdQFcrYZ3_K_C4Tl6gf3vJzV0fTS1HpMoPCpKcfag9ja9vfjS1RdGhFKNYoJy2wO-sLMII", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Having trouble with junit architecture", 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "authorName": "Timothy Wall", 
+    "msgSnippet": "JFCUnit does indeed provide AWT event thread locking. Another alternative is abbot (http://abbot.sourceforge.net), which explicitly provides for launching one", 
+    "msgId": 5150, 
+    "topicId": 5141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106503903, 
+    "messageBody": "<div id=\"ygrps-yiv-1398679829\">JFCUnit does indeed provide AWT event thread locking.<br/>\n<br/>\nAnother alternative is abbot (http://abbot.sourceforge.net), which <br/>\nexplicitly provides for launching one instance of an application for <br/>\nmultiple tests, and also has JUnit integration.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Tuesday, June 11, 2002, at 04:15 AM, Mark Meyers wrote:<br/>\n<br/>\n&gt; The problem is that all user interaction in a swing application, is <br/>\n&gt; done in<br/>\n&gt; a single &quot;event thread&quot;. Swing classes are not meant to be thread safe. <br/>\n&gt; So<br/>\n&gt; if you start your tests in your (JUnit&#39;s) main thread, and start actions<br/>\n&gt; from there, the implementation code is run in the &quot;main&quot; thread, and the<br/>\n&gt; automatic repaints etc, are run in the default &quot;event thread&quot;.<br/>\n&gt;<br/>\n&gt; One way to overcome that is by using a method of <br/>\n&gt; javax.swing.SwingUtilities,<br/>\n&gt; invokeAndWait(Runnable). Then the code in the Runnable&#39;s run() method <br/>\n&gt; will<br/>\n&gt; be executed in the event thread. invokeAndWait(...) is blocking, you<br/>\n&gt; probably do not want invokeLater(...) because after the execution you <br/>\n&gt; might<br/>\n&gt; want to do some asserts ?<br/>\n&gt; The problem is that your actual testCode must be wrapped in a Runnable, <br/>\n&gt; and<br/>\n&gt; it is less straight forward.<br/>\n&gt; Maybe something like:<br/>\n&gt;<br/>\n&gt; class MyTestCase extends TestCase{<br/>\n&gt; \tpublic static final Object[] NO_ARGS = new Object[0];<br/>\n&gt;<br/>\n&gt; \tpublic void testXxx(){<br/>\n&gt; \t\tnew MyInvoker(&quot;doTestXxx&quot;).doIt();<br/>\n&gt; \t}<br/>\n&gt; \tprivate void doTestXxx(){<br/>\n&gt; \t\t...<br/>\n&gt; \t\tassertXxx(...);<br/>\n&gt; \t\t...<br/>\n&gt; \t}<br/>\n&gt;<br/>\n&gt; \tclass MyInvoker implements Runnable{<br/>\n&gt; \t\tMethod method;<br/>\n&gt; \t\tMyInvoker(String methodName){<br/>\n&gt; \t\t\t...<br/>\n&gt; \t\t\tthis.method = doTestMethod;<br/>\n&gt;       \t}<br/>\n&gt; \t\tpublic void run(){<br/>\n&gt; \t\t\ttestMethod.invoke(MyTestCase.this, NO_ARGS);<br/>\n&gt; \t\t}<br/>\n&gt; \t\tpublic void doIt(){<br/>\n&gt; \t\t\tSwingUtilities.invokeAndWait(MyInvoker.this);<br/>\n&gt; \t\t}<br/>\n&gt; \t}<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; On the other hand it seems to me the JFCTestCase (from JFCUnit ?) should<br/>\n&gt; provide some solution to this threading issue, but I do not know it nor <br/>\n&gt; have<br/>\n&gt; I used it.<br/>\n&gt; Hope this helps a little.<br/>\n&gt;<br/>\n&gt; Mark<br/>\n&gt;<br/>\n&gt;&gt; -----Original Message-----<br/>\n&gt;&gt; From: thenoodle1974 [mailto:thenoodle1974@...]<br/>\n&gt;&gt; Subject: [junit] Having trouble with junit architecture<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; I&#39;m using junit to test a swing program.<br/>\n&gt;&gt;<br/>\n&gt;&gt; I have written a bunch of helper functions: click this, enter this,<br/>\n&gt;&gt; find that, etc. I&#39;d like those functions to be available in every<br/>\n&gt;&gt; test case. Along with that I&#39;d like to only start the application<br/>\n&gt;&gt; once and run a suite. Then close the application.<br/>\n&gt;&gt;<br/>\n&gt;&gt; I&#39;ve made a subclass of JFCTestCase which has those helper functions.<br/>\n&gt;&gt; One helper function is startApplication. If I run each test<br/>\n&gt;&gt; individually, there is no problem. A testcase is created, I start the<br/>\n&gt;&gt; application, it runs. I close the application done.<br/>\n&gt;&gt;<br/>\n&gt;&gt; But if I try to separete starting the application I have threading<br/>\n&gt;&gt; issues. What I&#39;ve tried to do is startApplication, run the suite,<br/>\n&gt;&gt; then close the application. But each time my sublcass of JFCTestCase<br/>\n&gt;&gt; is created, a new thread is created by JFCTestCase. This thread is<br/>\n&gt;&gt; then run separately of the startApplication thread (not good). Does<br/>\n&gt;&gt; this make sense?<br/>\n&gt;&gt;<br/>\n&gt;&gt; My workaround was to create a class that passes in the reference to<br/>\n&gt;&gt; an object on this thread. Which works fine.<br/>\n&gt;&gt;<br/>\n&gt;&gt; So I now:<br/>\n&gt;&gt;<br/>\n&gt;&gt; Create MyTestCase (which does not extend JUnit in anyway.) It has<br/>\n&gt;&gt; it&#39;s own setUpo() and tearDown(). I then pass in a reference to XCase<br/>\n&gt;&gt; (which extends JUnit), and run the test. But now I&#39;m not really using<br/>\n&gt;&gt; JUnit at all. It&#39;s like I&#39;m creating my own suite object.<br/>\n&gt;&gt;<br/>\n&gt;&gt; Any ideas/help would be greatly appreciated.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; junit-unsubscribe@yahoogroups.com<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <br/>\n&gt; http://docs.yahoo.com/info/terms/<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 5149, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1023792401", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 5147, 
+    "headers": {
+        "inReplyToHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ4MDc5QENBU0UwNTI+", 
+        "messageIdInHeader": "PDgzODczM0RDLTdEMjgtMTFENi05RUFBLTAwMzA2NTZDNTREOEBvY3VsdXN0ZWNoLmNvbT4="
+    }
+}

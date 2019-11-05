@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 21372, 
+    "senderId": "5LkUrr0AfW7SYU7uiQrflzP85WjCZakC3dGeOWwVsPWPAi-8ojJqtyvVG3fZzGKnjSQmXAG9fu9CCtQ9FTT9KGrIbKzmtW-YYG480UEM0MQ", 
+    "systemMessage": false, 
+    "subject": "Re: Conditionally running tests", 
+    "from": "&quot;yme0987654321&quot; &lt;yme0987654321@...&gt;", 
+    "authorName": "yme0987654321", 
+    "msgSnippet": "That is a great suggestion, thanks. But in either case the brittle hack remains to do the delegation from SlowSelector.class or GroupSelectionRunner.class as", 
+    "msgId": 21371, 
+    "profile": "yme0987654321", 
+    "topicId": 21356, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 386557907, 
+    "messageBody": "<div id=\"ygrps-yiv-1019556746\">That is a great suggestion, thanks. But in either case the brittle<br/>\nhack remains to do the delegation from SlowSelector.class or<br/>\nGroupSelectionRunner.class as the case may be to the actual runner<br/>\nthat will do the work, when the correct runner isn&#39;t obvious (JUnit3,<br/>\n4, or perhaps it should be ignored, etc.)<br/>\n<br/>\nYou suggestion solves the next problem, of how to segregate the<br/>\nmultiple types of tests, which is certainly appreciated.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Malte Finsterwalder &lt;malte@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; I didn&#39;t think it through as much as you did obviously.<br/>\n&gt; <br/>\n&gt; I just thought that it might be easier to have a generic Runner-class.<br/>\n&gt; <br/>\n&gt; When I understood you correctly you would do<br/>\n&gt; @RunWith(SlowSelector.class)<br/>\n&gt; <br/>\n&gt; another test class has:<br/>\n&gt; @RunWith(InContainerSelector.class)<br/>\n&gt; <br/>\n&gt; and so on...<br/>\n&gt; <br/>\n&gt; I was thinking of something like:<br/>\n&gt; <br/>\n&gt; @RunWith(GroupSelectionRunner.class)<br/>\n&gt; @Group(&quot;slow&quot;);<br/>\n&gt; <br/>\n&gt; and another test class would be annotated with<br/>\n&gt; <br/>\n&gt; @RunWith(GroupSelectionRunner.class)<br/>\n&gt; @Group(&quot;in-container&quot;);<br/>\n&gt; <br/>\n&gt; The GroupSelectionRunner would look for the Group-annotation and look<br/>\n&gt; for the according property in the environment or something like that.<br/>\n&gt; <br/>\n&gt; Do you now understand, what I mean?<br/>\n&gt; It&#39;s just off the top of my head. The idea might be totally flawed.<br/>\n&gt; <br/>\n&gt; Greetings,<br/>\n&gt;    Malte<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; yme0987654321 wrote:<br/>\n&gt; &gt; My plan for desktop running was to have a seperate IDEA run<br/>\n&gt; &gt; configuration that sets the system parameter, so developers can always<br/>\n&gt; &gt; pick which one to run.<br/>\n&gt; &gt; <br/>\n&gt; &gt; Regarding using a custom runner, I&#39;m not sure how your suggestion<br/>\n&gt; &gt; differs from what I am doing. I suppose we could start looking at a<br/>\n&gt; &gt; custom Request object that returns a runner that is never intended to<br/>\n&gt; &gt; be used with the @RunWith annotation, but rather delegates run<br/>\n&gt; &gt; building on each class. But I&#39;m not sure that IDEA or ant support a<br/>\n&gt; &gt; custom Request object, or how you would get them to use it.<br/>\n&gt; &gt; <br/>\n&gt; &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Malte Finsterwalder &lt;malte@&gt; wrote:<br/>\n&gt; &gt;&gt; yme0987654321 wrote:<br/>\n&gt; &gt;&gt;&gt; In answer to your second question, basically the slow tests<br/>\nwould run<br/>\n&gt; &gt;&gt;&gt; at check in, or during the general build process, whereas the fast<br/>\n&gt; &gt;&gt;&gt; test would just be part of the TDD of making sure everything is<br/>\ngreen.<br/>\n&gt; &gt;&gt;&gt; For point of comparison, the slow tests are currently 1/2 hour for<br/>\n&gt; &gt;&gt;&gt; less than 100, and the fast tests are under 60 seconds, even though<br/>\n&gt; &gt;&gt;&gt; there are about 700 of them.<br/>\n&gt; &gt;&gt; I understand that reasoning.<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; But as you said you want to have several categories:<br/>\n&gt; &gt;&gt; DB-Tests, In Container Tests, ...<br/>\n&gt; &gt;&gt; Maybe you should create a runner hat can be parameterized to<br/>\nhandle all<br/>\n&gt; &gt;&gt; these cases?<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; And how do you setup the runtime, so that it does run the tests<br/>\nor does<br/>\n&gt; &gt;&gt; not run the tests on a per run basis?<br/>\n&gt; &gt;&gt; Setting a system property seams cumbersome to me.<br/>\n&gt; &gt;&gt; That&#39;s ok for the server, but sometimes I want to run the slow<br/>\ntests on<br/>\n&gt; &gt;&gt; my desktop too, don&#39;t I?<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; Maybe we can come up with something better?<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; Greetings,<br/>\n&gt; &gt;&gt;    Malte<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; ------------------------------------<br/>\n&gt; &gt; <br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21370, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1234970690", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 21370, 
+    "headers": {
+        "inReplyToHeader": "PDQ5OUMyNDg5LjEwNTA4MDRAZmluc3RlcndhbGRlci5uYW1lPg==", 
+        "messageIdInHeader": "PGduaDk4MitwODI3QGVHcm91cHMuY29tPg=="
+    }
+}

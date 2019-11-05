@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8003, 
+    "senderId": "StK-gMNxZsGlJxSoKCESHAPj4fzjzMnB24foGuADW7L6g2TftXDFjcC9dAIpPLyHPZS3-le6iYG7wVc0z9TYdyGQart6_g", 
+    "systemMessage": false, 
+    "subject": "Re: Does Static Invocation call setUp()/tearDown()?", 
+    "from": "quikdraw@...", 
+    "authorName": "quikdraw@GunslingerSoftware.com", 
+    "msgSnippet": "... It does not keep them from being invoked, but they only get invoked once per TestCase, not before and after each test method. Perhaps I was not clear when", 
+    "msgId": 8002, 
+    "rawEmail": "Return-Path: &lt;quikdraw@...&gt;\r\nReceived: (qmail 87244 invoked by uid 7800); 9 May 2003 14:37:06 -0000\r\nX-Sender: quikdraw@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 9 May 2003 11:30:43 -0000\r\nReceived: (qmail 71867 invoked from network); 9 May 2003 11:30:41 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 9 May 2003 11:30:41 -0000\r\nReceived: from unknown (HELO mta5.snfc21.pbi.net) (206.13.28.241)\n  by mta3.grp.scd.yahoo.com with SMTP; 9 May 2003 11:30:41 -0000\r\nReceived: from gunslingersoftware.com ([65.65.8.156])\n by mta5.snfc21.pbi.net (iPlanet Messaging Server 5.1 HotFix 1.6 (built Oct 18\n 2002)) with ESMTP id &lt;0HEM0063XAL3S0@...&gt; for\n junit@yahoogroups.com; Fri, 09 May 2003 04:29:27 -0700 (PDT)\r\nDate: Fri, 09 May 2003 06:29:43 -0500\r\nSubject: Re: Does Static Invocation call setUp()/tearDown()?\r\nTo: junit@yahoogroups.com\r\nMessage-id: &lt;3EBB9127.9080603@...&gt;\r\nMIME-version: 1.0\r\nContent-type: text/plain; format=flowed; charset=us-ascii\r\nContent-transfer-encoding: 7bit\r\nX-Accept-Language: en-us, en\r\nUser-Agent: Mozilla/5.0 (Windows; U; Win98; en-US; rv:1.0.1) Gecko/20020823\n Netscape/7.0\r\nReferences: &lt;3EBB142E.1080808@...&gt;\n &lt;3EBB1FF1.3050303@...&gt;\r\nFrom: quikdraw@...\r\nX-Yahoo-Group-Post: member; u=126432822\r\nX-Yahoo-Profile: quikdraw2700\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 9 May 2003 14:37:06 -0000\r\n\r\nVladimir R. Bossicard wrote:\n&gt;&gt;However a question came up recently that if you specify the\n&gt;&gt;tests by overriding the runTest() method as below (static\n&gt;&gt;invocation), that setUp() and tearDown() do not get called\n&gt;&gt;for every method, but only get called once.\n&gt; \n&gt; I don&#39;t see why on earth you would write a test by overwriting runTest, \n&gt; but let&#39;s take that as an example.\n&gt; \n&gt; If you take a look at the TestCase class, you&#39;ll notice that it&#39;s in \n&gt; fact runBare that calls setUp/tearDown:\n&gt; \n&gt; \tpublic void runBare() throws Throwable {\n&gt; \t\tsetUp();\n&gt; \t\ttry {\n&gt; \t\t\trunTest();\n&gt; \t\t}\n&gt; \t\tfinally {\n&gt; \t\t\ttearDown();\n&gt; \t\t}\n&gt; \t}\n&gt; \n&gt; runTest is only executing _one single_ method of the TestCase object. \n&gt; Creating a TestCase like you do [new MyTest(&quot;Testing runTest()&quot;)] is \n&gt; wrong (in a normal case).  The name passed to the TestCase is originally \n&gt; the name of the test method that will be executed.\n&gt; \n&gt; so you see that overwriting runTest will not prevent the setUp and \n&gt; tearDown methods to be invoked.\n\nIt does not keep them from being invoked, but they only get invoked\nonce per TestCase, not before and after each test method. Perhaps I\nwas not clear when I stated what I was looking for. I want the behavior\nthat is:\n\nsetUp() -&gt; first test -&gt; tearDown()\nsetUp() -&gt; next test -&gt; tearDown()\n...\nsetUp() -&gt; last test -&gt; tearDown()\n\nBut overriding runTest() produces:\n\nsetUp() -&gt; first test -&gt; next test -&gt; last test -&gt; tearDown()\n\nOnly calling setUp() once before all testXXX() methods, and\ntearDown() once after all testXXX() methods. The JUnit 3.8.1\nJavaDoc for TestCase shows the overriding of runTest(), as well\nas at least one of the other HTML files in the doc/ directory\nof the 3.8.1 download (I don&#39;t remember which one off hand).\n\nI did see the TestCase source you mention above for runBare(),\nbut as usual it didn&#39;t register to me quite the way it did when\nyou put it here, isolated from the rest of the class. Don&#39;t you\njust love pair programming? &lt;G&gt;\n\nI think I have figured out how this is supposed to work regarding\noverriding runTest(). To get setUp()/tearDown() called once per test\nmethod, only one test method should be added to runTest(), but use\nof suite() is required to make this behavior fluid.\n\nAs far as the name passed to the TestCase not being the test method\nname, that does work as in my example, if you override runTest().\nThe test method name can be passed to the constructor to invoke a\nsingle test method by the programmer, or by the framework when it\nis executing a TestSuite. At least that&#39;s what I see in the source\nand when running in the debugger.\n\nOnce again, lest y&#39;all think I&#39;m completely nuts, I wasn&#39;t advocating\nthis approach, just trying to understand the behavior since it is\nboth possible and documented in the JUnit files.\n\nThanks for all the help. Sorry for bogging things down with this\nsomewhat off the wall question.\n-- \nThanks,\nDerek Lane\n=====================================\n--- The Gunslinger\nquikdraw@...\n\n\n", 
+    "profile": "quikdraw2700", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126432822, 
+    "prevInTime": 8001, 
+    "contentTrasformed": false, 
+    "postDate": "1052479783", 
+    "canDelete": false, 
+    "nextInTopic": 8004, 
+    "prevInTopic": 8000, 
+    "headers": {
+        "messageIdInHeader": "PDNFQkI5MTI3LjkwODA2MDNAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4=", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4gPDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4="
+    }
+}

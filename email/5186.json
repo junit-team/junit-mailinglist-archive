@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 67, 
+    "nextInTime": 5187, 
+    "senderId": "Sf4fbUvN-RDE6V9JNfofs-Vn6hnhwJX-DFYVMjzX4ozvKJYq0OLChuxb_sitbyrkluY1vL9_vHn0SAgrNbBq7R4t_3E", 
+    "systemMessage": false, 
+    "subject": "exceptions and distinguishing between failures and errors", 
+    "from": "&quot;pholser&quot; &lt;pholser@...&gt;", 
+    "authorName": "pholser", 
+    "msgSnippet": "hi all... i ve been reading some of the threads regarding testing for thrown exceptions, and read the wiki page http://c2.com/cgi/wiki? ", 
+    "msgId": 5186, 
+    "profile": "pholser", 
+    "topicId": 5186, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 66805313, 
+    "messageBody": "<div id=\"ygrps-yiv-586553783\">hi all...<br/>\n<br/>\ni&#39;ve been reading some of the threads regarding testing for<br/>\nthrown exceptions, and read the wiki page <a rel=\"nofollow\" target=\"_blank\" href=\"http://c2.com/cgi/wiki?\">http://c2.com/cgi/wiki?</a><br/>\nCodingJavaUnitExceptionTests.  i&#39;m wondering whether, in the face<br/>\nof exceptions (or otherwise), anyone really distinguishes between<br/>\nfailures and errors.<br/>\n<br/>\ni used to do this:<br/>\n<br/>\npublic void testForThrownException() {<br/>\n  try {<br/>\n    new ArrayList( 10 ).get( 11 );<br/>\n    fail( &quot;should have thrown IndexOutOfBoundsException&quot; );<br/>\n  }<br/>\n  catch ( IndexOutOfBoundsException shouldBeThrown ) {<br/>\n  }<br/>\n  catch ( Exception ex ) {<br/>\n    fail( &quot;threw wrong exception: &quot; + ex );<br/>\n  }<br/>\n}<br/>\n<br/>\nafter reading the material mentioned above, i&#39;m leaning toward:<br/>\n<br/>\npublic void testForThrownException() throws Exception {<br/>\n  try {<br/>\n    new ArrayList( 10 ).get( 11 );<br/>\n    fail( &quot;should have thrown IndexOutOfBoundsException&quot; );<br/>\n  }<br/>\n  catch ( IndexOutOfBoundsException shouldBeThrown ) {<br/>\n  }<br/>\n}<br/>\n<br/>\nletting JUnit handle unexpected exceptions, treating them as errors<br/>\ninstead of failures.<br/>\n<br/>\nnow, imagine a class-under-test:<br/>\n<br/>\npublic class Foo {<br/>\n  public void bar( int i ) throws FooException, BarException {<br/>\n    // ...<br/>\n  }<br/>\n}<br/>\n<br/>\nand a test intended to yield a FooException:<br/>\n<br/>\npublic void testForThrownFooException throws Exception {<br/>\n  try {<br/>\n    new Foo().bar( -1 );<br/>\n  }<br/>\n  catch ( FooException shouldBeThrown ) {<br/>\n  }<br/>\n}<br/>\n<br/>\nsince BarException is a &quot;could happen but shouldn&#39;t&quot;, should i treat<br/>\nthat as a failure instead of an error by adding a catch/fail<br/>\nsequence for BarException?  does it really matter, since if i&#39;m<br/>\ndoing TDD i know that the last code change i made should be the<br/>\ncause of the fault, so i know where to look?  when running all unit<br/>\ntests, does anyone really go &quot;uh-oh, i got three _errors_, that&#39;s way<br/>\nmore troublesome than three _failures_&quot;?<br/>\n<br/>\nmy gut tells me to treat &quot;could be thrown but shouldn&#39;t&quot; exceptions--<br/>\nthat is, those advertised in the throws clauses of methods invoked<br/>\nin the test, plus any runtime exceptions known to be thrown under<br/>\ncertain conditions (for example, IllegalArgumentException for<br/>\ninteger arguments out of range)--as failures, and anything else as<br/>\nerrors.  this goes for tests whose successful outcome doesn&#39;t involve<br/>\nthe throwing of a specific exception, too.  i get the feeling most<br/>\ndevelopers don&#39;t do that because they perceive the extra code<br/>\ninvolved to be too much of a whipping to create and maintain.<br/>\nor, the failure/error distinction is not important to them.  i&#39;ve<br/>\nbeen trying to distinguish between failures and errors with these<br/>\nkinds of tests, and maybe i shouldn&#39;t be.<br/>\n<br/>\ni wonder if writing exception tests in this way can sniff out &quot;smells&quot;<br/>\nthat using a particular method might be too noisy?  that is, instead<br/>\nof throwing three different, possibly unrelated exceptions, maybe<br/>\nhave the method declare one wrapping exception be thrown?<br/>\n<br/>\neager to hear your thoughts.<br/>\n<br/>\ncheers,<br/>\np<br/>\n<br/>\nPaul Holser</div>", 
+    "prevInTime": 5185, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1024321129", 
+    "canDelete": false, 
+    "nextInTopic": 5188, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFla29wOSsyOW12QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 80, 
+    "nextInTime": 18631, 
+    "senderId": "-haQoVe3EAHhDwbiyHLwIsW5tih9SGyAKszM3f8sp_O3grUalTz-hZcCC5hQrQnp5W1CXSu-2oZfK40KoV0S5Asna9dQlA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] 100%% Method Testing and Generating Unit Tests", 
+    "from": "Jeff Langr &lt;jeff@...&gt;", 
+    "authorName": "Jeff Langr", 
+    "msgSnippet": "... Greetings Cedric, I prefer not to use coverage tools (in fact, I strongly resist characterizing the quality of unit testing with coverage numbers), but ", 
+    "msgId": 18630, 
+    "rawEmail": "Return-Path: &lt;Jeff@...&gt;\r\nX-Sender: Jeff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 27988 invoked from network); 3 Jan 2007 21:50:35 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m27.grp.scd.yahoo.com with QMQP; 3 Jan 2007 21:50:35 -0000\r\nReceived: from unknown (HELO sirius.lunarpages.com) (64.235.234.147)\n  by mta1.grp.scd.yahoo.com with SMTP; 3 Jan 2007 21:50:25 -0000\r\nReceived: from cpanel by sirius.lunarpages.com with local (Exim 4.52)\n\tid 1H2Duk-000308-Ip\n\tfor junit@yahoogroups.com; Wed, 03 Jan 2007 13:44:50 -0800\r\nReceived: from 151.193.220.29 ([151.193.220.29]) by\n\tlogin.sirius.lunarpages.com (Horde MIME library) with HTTP; Wed, 03 Jan\n\t2007 13:44:50 -0800\r\nMessage-ID: &lt;20070103134450.4o3e3sd4qpwkkww4@...&gt;\r\nDate: Wed, 03 Jan 2007 13:44:50 -0800\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;b86b6a9c0701030905h22ed98e6qb23710592537568f@...&gt;\n\t&lt;20070103175609.83976.qmail@...&gt;\n\t&lt;b86b6a9c0701031131o13d24f1eqc747eee84a5247ce@...&gt;\r\nIn-Reply-To: &lt;b86b6a9c0701031131o13d24f1eqc747eee84a5247ce@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=ISO-8859-1;\n\tDelSp=&quot;Yes&quot;;\n\tformat=&quot;flowed&quot;\r\nContent-Disposition: inline\r\nContent-Transfer-Encoding: quoted-printable\r\nUser-Agent: Internet Messaging Program (IMP) H3 (4.1.3)\r\nX-AntiAbuse: This header was added to track abuse, please include it with any abuse report\r\nX-AntiAbuse: Primary Hostname - sirius.lunarpages.com\r\nX-AntiAbuse: Original Domain - yahoogroups.com\r\nX-AntiAbuse: Originator/Caller UID/GID - [32001 32940] / [47 12]\r\nX-AntiAbuse: Sender Address Domain - LangrSoft.com\r\nX-Source: \r\nX-Source-Args: \r\nX-Source-Dir: \r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Jeff Langr &lt;jeff@...&gt;\r\nSubject: Re: [junit] 100%% Method Testing and Generating Unit Tests\r\nX-Yahoo-Group-Post: member; u=238525042; y=plstNWFrOZL5u4T9c6QimVyaN6-TMOiUMEJcRGUjSTHQ\r\nX-Yahoo-Profile: jlangr\r\n\r\nQuoting C=E9dric Beust ?  &lt;cbeust@...&gt;:\n&gt; public URL createUrl(int a=\r\n, int b) {\n&gt; try {\n&gt;   if (a =3D=3D 0 || b =3D=3D 0) {\n&gt;   }\n&gt;   if (c =3D=\r\n=3D 0 && d =3D=3D 0) {\n&gt;   }\n&gt; }\n&gt; catch(IOException ex) {\n&gt; }\n&gt; catch(Malf=\r\normedURLException ex) {\n&gt; }\n&gt;\n&gt; 100% coverage for this code means something=\r\n like 2*2*2*2 =3D 16 test cases\n&gt; (I&#39;m approximating, but you get the idea)=\r\n.\n&gt;\n&gt; Do you really feel it&#39;s useful to write 16 test cases for these 6 lin=\r\nes of\n&gt; code?\n\nGreetings Cedric,\n\nI prefer not to use coverage tools (in fa=\r\nct, I strongly resist  \ncharacterizing the quality of unit testing with cov=\r\nerage numbers), but  \ninstead test-drive as much as possible in the code. I=\r\nn other words,  \nthe complex conditionals don&#39;t get complex until I have a =\r\nsecond test  \nthat drives out the &quot;or&quot; part of the clause. So in theory I&#39;d=\r\n end up  \nwith the combinatorial explosion you&#39;re suggesting.\n\nHowever, in =\r\npractice that doesn&#39;t happen often.\n\nSometimes these complex conditionals e=\r\nnd up as method calls:\n   if (a =3D=3D null || b =3D=3D null)\nbecomes:\n   i=\r\nf (areAnyNull(a, b)) // yes this is a trivial example, but it&#39;s  \nnot atypi=\r\ncal\n\nI end up with comprehensive tests against areAnyNull; that&#39;s easy to  =\r\n\ntest (it often becomes a public method on another class). Then I only  \nco=\r\nncern myself with two cases to cover the &quot;if&quot; block in the enclosing  \nmeth=\r\nod (createUrl in this example). I often find that encapsulating  \nthe compl=\r\nex conditionals within separate methods (a) helps make the  \ncode easier to=\r\n follow,  (b) often helps reduce the overall code size  \n(it makes some dup=\r\nlication more obvious), and (c) makes some defects  \nvery apparent.\n\nEven i=\r\nf I need to explode the tests, they end up extremely short,  \nsometimes a s=\r\ningle line, by virtue of test refactoring.\n\nIn general, it&#39;s the refactorin=\r\ng that keeps the tests in TDD sane. I  \ndon&#39;t end up with a lot of methods =\r\nthat have more than a couple of  \nbranch statements, so I don&#39;t usually hav=\r\ne a problem with covering all  \nthe combinations.\n\nRegardless, I&#39;d rather h=\r\nave the test that demonstrates that the rhs of  \nthe conditional really wor=\r\nks, and that all of the combinations thus  \nreally work. Particularly given=\r\n short circuit evaluation, I&#39;ve  \nencountered many cases where not complete=\r\nly testing this allowed  \ndefects that weren&#39;t found until much later.\n\nReg=\r\nards,\nJeff\n\n", 
+    "profile": "jlangr", 
+    "topicId": 18605, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 238525042, 
+    "prevInTime": 18629, 
+    "contentTrasformed": false, 
+    "postDate": "1167860690", 
+    "canDelete": false, 
+    "nextInTopic": 18631, 
+    "prevInTopic": 18629, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDcwMTAzMTEzMW8xM2QyNGYxZXFjNzQ3ZWVlODRhNTI0N2NlQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDIwMDcwMTAzMTM0NDUwLjRvM2Uzc2Q0cXB3a2t3dzRAbG9naW4uc2lyaXVzLmx1bmFycGFnZXMuY29tPg==", 
+        "referencesHeader": "PGI4NmI2YTljMDcwMTAzMDkwNWgyMmVkOThlNnFiMjM3MTA1OTI1Mzc1NjhmQG1haWwuZ21haWwuY29tPgk8MjAwNzAxMDMxNzU2MDkuODM5NzYucW1haWxAd2ViNjA3MjIubWFpbC55YWhvby5jb20+CTxiODZiNmE5YzA3MDEwMzExMzFvMTNkMjRmMWVxYzc0N2VlZTg0YTUyNDdjZUBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

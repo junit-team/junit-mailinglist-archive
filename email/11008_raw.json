@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 11009, 
+    "senderId": "-DrSPOOGscLgJ0E0DWeyzpTGE36sYpngTfnS_9-RjMQGzhIxDrIzVgY3bBX3dA_e8U6DpIkiz9Da9N2AVqMUSpNWSUtvgRgwfuAwMm19aTQ", 
+    "systemMessage": false, 
+    "subject": "Re: Overriding AssertEquals", 
+    "from": "&quot;ericnickell2000&quot; &lt;nickell@...&gt;", 
+    "authorName": "ericnickell2000", 
+    "msgSnippet": "... Lavangu, You may have long ago, stopped reading this thread, but just in case... So, no, you can t override AssertEquals . What you can do is: ", 
+    "msgId": 11008, 
+    "rawEmail": "Return-Path: &lt;nickell@...&gt;\r\nX-Sender: nickell@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 59718 invoked from network); 12 May 2004 18:35:18 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m15.grp.scd.yahoo.com with QMQP; 12 May 2004 18:35:18 -0000\r\nReceived: from unknown (HELO n21.grp.scd.yahoo.com) (66.218.66.77)\n  by mta5.grp.scd.yahoo.com with SMTP; 12 May 2004 18:35:18 -0000\r\nReceived: from [66.218.67.187] by n21.grp.scd.yahoo.com with NNFMP; 12 May 2004 18:33:58 -0000\r\nDate: Wed, 12 May 2004 18:33:56 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;c7tqmk+e0o9@...&gt;\r\nIn-Reply-To: &lt;c7ff3i+9tqc@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1871\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.77\r\nFrom: &quot;ericnickell2000&quot; &lt;nickell@...&gt;\r\nSubject: Re: Overriding AssertEquals\r\nX-Yahoo-Group-Post: member; u=153975919\r\nX-Yahoo-Profile: ericnickell2000\r\n\r\n--- In junit@yahoogroups.com, &quot;lavangu&quot; &lt;lavangu@y...&gt; wrote:\n&gt; Is there any way i can override AssertEquals?\n&gt; My intention is to compare 2 Arraylists for similarity of its \n&gt; contents.\n\nLavangu,\n\nYou may have long ago, stopped reading this thread, but just in case...\n\nSo, &quot;no, you can&#39;t override AssertEquals&quot;. What you can do is:\n  assertTrue(isSimilar(a, b));\nfor two ArrayLists a and b. Write your own isSimilar, depending on\nwhether you mean:\n  /1/ a and b have the same number of elements, and are element by\nelement equal.\n  /2/ a and b have the same elements, and the same number of each\nelement, but they might be out of order\n  /3/ a and b are composed of the same constituent elements, but they\nmight be out of order, and we&#39;re not concerned with duplications.\n\nEric\n\n\n\n\npublic void testAssumption2() {\n\tArrayList x = new ArrayList(Arrays.asList(new String[] {&quot;a&quot;, &quot;b&quot;, &quot;a&quot;}));\n\tArrayList x2 = new ArrayList(Arrays.asList(new String[] {&quot;a&quot;, &quot;b&quot;,\n&quot;a&quot;}));\n\tArrayList y = new ArrayList(Arrays.asList(new String[] {&quot;a&quot;, &quot;a&quot;, &quot;b&quot;}));\n\tArrayList z = new ArrayList(Arrays.asList(new String[] {&quot;b&quot;, &quot;a&quot;, &quot;b&quot;}));\n\t\n\tassertEquals(true, isSimilar1(x, x2));\n\tassertEquals(false, isSimilar1(x, y));\n\tassertEquals(false, isSimilar1(x, z));\n\t\n\tassertEquals(true, isSimilar2(x, x2));\n\tassertEquals(true, isSimilar2(x, y));\n\tassertEquals(false, isSimilar2(x, z));\n\t\n\tassertEquals(true, isSimilar3(x, x2));\n\tassertEquals(true, isSimilar3(x, y));\n\tassertEquals(true, isSimilar3(x, z));\n}\n\nprivate boolean isSimilar1(ArrayList a, ArrayList b) {\n\treturn a.equals(b);\n}\n\nprivate boolean isSimilar2(ArrayList a, ArrayList b) {\n\tArrayList tmp = new ArrayList(a);\n\tfor (int i=0; i&lt;b.size(); ++i) {\n\t\tif (!tmp.remove(b.get(i))) {\n\t\t\treturn false;\n\t\t}\n\t}\n\treturn tmp.isEmpty();\n}\n\nprivate boolean isSimilar3(ArrayList a, ArrayList b) {\n\treturn new HashSet(a).equals(new HashSet(b));\n}\n\n\n", 
+    "profile": "ericnickell2000", 
+    "topicId": 10968, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 153975919, 
+    "prevInTime": 11007, 
+    "contentTrasformed": false, 
+    "postDate": "1084386836", 
+    "canDelete": false, 
+    "nextInTopic": 11012, 
+    "prevInTopic": 11005, 
+    "headers": {
+        "inReplyToHeader": "PGM3ZmYzaSs5dHFjQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGM3dHFtaytlMG85QGVHcm91cHMuY29tPg=="
+    }
+}

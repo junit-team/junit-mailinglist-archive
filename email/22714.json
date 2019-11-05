@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 22715, 
+    "senderId": "bnb4fWlLUhRBd9nrFpfi2mN7dK24SZ73I6iHZlWIUk7Cd-ruDo_a7h-PuG5rQBpea7i4OrfKHIZNtBO6KbnYISxb", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How do I set the testcase name dynamically with using \tjunit4?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Tao, There s nothing good for this right now.  However, better naming of Parameterized tests is very high in the feature-request voting right now", 
+    "msgId": 22714, 
+    "profile": "dsaff", 
+    "topicId": 22713, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1753679073\">Tao,<br/>\n<br/>\nThere&#39;s nothing good for this right now.  However, better naming of<br/>\nParameterized tests is very high in the feature-request voting right<br/>\nnow (<a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/KentBeck/junit/issues#issue/44)\">http://github.com/KentBeck/junit/issues#issue/44)</a>, so I imagine<br/>\nthis will change soon.<br/>\n<br/>\n   David Saff<br/>\n<br/>\nOn Sun, May 23, 2010 at 11:10 PM, zx200287853714<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:zx200287853714@...\">zx200287853714@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; Hi, experts<br/>\n&gt;<br/>\n&gt; We&#39;re using the junit 3.8.1 currently, and we&#39;re planning to move to junit4, but we meet a question that we want to address.<br/>\n&gt;<br/>\n&gt; Imagine we have a test, and it has four test cases:<br/>\n&gt;<br/>\n&gt; public class XXXTest extends TestCase {<br/>\n&gt;    public void testA();<br/>\n&gt;    public void testB();<br/>\n&gt;    public void testC();<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; And we have a boolean type which presents whether the test is transactional or not, and we want either transactional or non-transactional needs to run under testA, testB, testC.<br/>\n&gt;<br/>\n&gt; To do that, we add a suite() method, and add the tests with different transactional configuration, so that it can run actually 6 test cases. But here comes another question, how can we distinguish the failures, because there are actually 3 test cases in the test?<br/>\n&gt;<br/>\n&gt; Luckily Junit3.8.1 can set the test case name dynamically through setName, so we can do this:<br/>\n&gt;<br/>\n&gt; public class XXXTest extends TestCase {<br/>\n&gt;    boolean transactional;<br/>\n&gt;<br/>\n&gt;    public static Test suite() {<br/>\n&gt;        TestSuite allTests = new TestSuite();<br/>\n&gt;        addTests(allTests, false);<br/>\n&gt;        addTests(allTests, true);<br/>\n&gt;        return allTests;<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    private static void addTests(Testsuite allTests,<br/>\n&gt;                                 boolean transactional) {<br/>\n&gt;         Testsuite suite = new TestSuite(XXXTest.class);<br/>\n&gt;         Enumeration e = suite.tests();<br/>\n&gt;         while (e.hasMoreElements()) {<br/>\n&gt;              XXXTest test = (XXXTest) e.nextElement();<br/>\n&gt;              test.init(transactional);<br/>\n&gt;              allTests.addTest(test);<br/>\n&gt;          }<br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt;     private void init(boolean transactional) {<br/>\n&gt;          this.transactional = transactional;<br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt;     public void tearDown() {<br/>\n&gt;          setName(getName() + (transactional ? &quot;-txnal&quot; : &quot;-nontxnal&quot;));<br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt;     public void testA();<br/>\n&gt;     public void testB();<br/>\n&gt;     public void testC();<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; So when we run the test, we will get the test case name as following:<br/>\n&gt;<br/>\n&gt;    testA-txnal<br/>\n&gt;    testA-non-txnal<br/>\n&gt;    testB-txnal<br/>\n&gt;    testB-non-txnal<br/>\n&gt;    testC-txnal<br/>\n&gt;    testC-non-txnal<br/>\n&gt;<br/>\n&gt; With these information, we can easily figure out which test fails.<br/>\n&gt;<br/>\n&gt; But the setName() method doesn&#39;t work in Junit4, since I don&#39;t need to extend from TestCase any longer. I know I can use the Parameterized to do the same thing, but there is no way to set the customerized test case name, so what I get is:<br/>\n&gt;<br/>\n&gt;     testA-0<br/>\n&gt;     testA-1<br/>\n&gt;     testB-0<br/>\n&gt;     testB-1<br/>\n&gt;     testC-0<br/>\n&gt;     testC-1<br/>\n&gt;<br/>\n&gt; Which doesn&#39;t make sense to figure out in which mode the test fails, and the worse is that we use the test case name to create a directory to save the failed test results, but now it&#39;s hard to do that in junit4.<br/>\n&gt;<br/>\n&gt; So is there anyway to support dynamically naming a test case?<br/>\n&gt;<br/>\n&gt; Thanks and regards!<br/>\n&gt; Tao<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22713, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1274715812", 
+    "canDelete": false, 
+    "nextInTopic": 22721, 
+    "prevInTopic": 22713, 
+    "headers": {
+        "inReplyToHeader": "PGh0Y3FucytkYjhwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGltSU5neXJsT2lSZ0xNcjZ3bTk3TWgxODhXQWR1Q0xtTEtkc3o4d0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGh0Y3FucytkYjhwQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 20594, 
+    "senderId": "XwBTecjovihOyJI7kscZn6nQfiKVafWVpHHQPgQcQBvD8x3zDALLdvxNJpN2AlIRafxcN-1kX_1HhqZZyVny3rdcznZImZVN", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Testing code that depends on today&#39;s date", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "I wouldn t think first of making the Calendar (a thing that makes Dates) a global variable (i.e. singleton ). I d rather pass it everywhere it is needed. ", 
+    "msgId": 20593, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 43745 invoked from network); 18 Jun 2008 04:34:18 -0000\r\nX-Received: from unknown (66.218.67.94)\n  by m49.grp.scd.yahoo.com with QMQP; 18 Jun 2008 04:34:18 -0000\r\nX-Received: from unknown (HELO elasmtp-curtail.atl.sa.earthlink.net) (209.86.89.64)\n  by mta15.grp.scd.yahoo.com with SMTP; 18 Jun 2008 04:34:18 -0000\r\nX-Received: from [65.100.6.133] (helo=kentspavilion)\n\tby elasmtp-curtail.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1K8pNA-0001sZ-EI\n\tfor junit@yahoogroups.com; Wed, 18 Jun 2008 00:34:17 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;860D47F8904F6041AEEE55F9B684667F162D46EF05@...&gt;,&lt;35c507d30806171620p281e5f2cv6ba0da17a60a9eb6@...&gt; &lt;860D47F8904F6041AEEE55F9B684667F162D309196@...&gt;\r\nDate: Tue, 17 Jun 2008 21:33:43 -0700\r\nMessage-ID: &lt;00db01c8d0fc$7e2b92e0$4000a8c0@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;860D47F8904F6041AEEE55F9B684667F162D309196@...&gt;\r\nX-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.3198\r\nThread-index: AcjQ0M7FIGuivfuuSu2xoZkYN9DS0AAKElOfAADIqGA=\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d4780182ff3a4749f0d9d6dc3e9507fa35f5e1b07b6de8ea84a0350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] Testing code that depends on today&#39;s date\r\nX-Yahoo-Group-Post: member; u=173198504; y=6WZaB7HMIwLiU6pLM6IGPQBeHjj8btRg_mvDesNYVcIM6OFo\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nI wouldn&#39;t think first of making the Calendar (a thing that makes Dates) a\nglobal variable (i.e. &quot;singleton&quot;). I&#39;d rather pass it everywhere it is\nneeded.\n \nCheers,\n \nKent Beck\nThree Rivers Institute\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of Per\nJacobsson\nSent: Tuesday, June 17, 2008 9:17 PM\nTo: junit@yahoogroups.com\nSubject: RE: [junit] Testing code that depends on today&#39;s date\n\n\n\nThat would work, but I wouldn&#39;t be really happy about going back to the old\nsingleton factory pattern. It may just be the best fit for this case though.\n/ Per\n________________________________________\nFrom: junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com\n[junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com] On Behalf Of\nAndrew McDonagh [andrewmcdonagh@ &lt;mailto:andrewmcdonagh%40gmail.com&gt;\ngmail.com]\nSent: Tuesday, June 17, 2008 4:20 PM\nTo: junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com\nSubject: Re: [junit] Testing code that depends on today&#39;s date\n\nHi,\n\nIf you use the Abstract Factory pattern to create the Date() object\ninstance, instead of calling new Date() yourself or passing it around,\nthen the production TodaysDateConcreteFactory can simply :\n\nreturn new Date();\n\nWhereas during your unit or functional tests, you use a\nMockTodaysDateConcreteFactory object, which returns what ever you want\n\nreturn expectedDate;\n\nHope this helps\n\nAndrew\n\n2008/6/17 Per Jacobsson &lt;perjacobsson@ &lt;mailto:perjacobsson%40eharmony.com&gt;\neharmony.com&lt;mailto:perjacobsson%40eharmony.com&gt;&gt;:\n&gt; Hi,\n&gt; This has been annoying me for a while and I can&#39;t think of a clean\nsolution\n&gt; for it. Hope this makes sense: I have some code that returns different\n&gt; results depending on what today&#39;s date is (the number of days since a user\n&gt; first registered, etc). The simple approach is to just create a new\ninstance\n&gt; of java.util.Date whenever I need to know the current date, but that tends\n&gt; to make both unit and automated functional testing difficult.\n&gt;\n&gt; I&#39;m currently injecting today&#39;s date into the classes that need it, and\nthen\n&gt; the tests can just use a static date. It gets pretty ugly though, a lot of\n&gt; times this date has to be dragged along deep into the domain model.\n&gt;\n&gt; An alternative would be to take the old school approach and have a static\n&gt; factory that everything that needs to know today&#39;s date calls, and allow\nthe\n&gt; unit tests to override with a test date. Of course, then you run into all\n&gt; the other issues that dependency injection solves.\n&gt;\n&gt; Any thoughts?\n&gt; Thanks,\n&gt; / Per\n&gt;\n&gt; [Non-text portions of this message have been removed]\n&gt;\n&gt;\n\n\n \n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 20590, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 20592, 
+    "contentTrasformed": false, 
+    "postDate": "1213763623", 
+    "canDelete": false, 
+    "nextInTopic": 20594, 
+    "prevInTopic": 20592, 
+    "headers": {
+        "inReplyToHeader": "PDg2MEQ0N0Y4OTA0RjYwNDFBRUVFNTVGOUI2ODQ2NjdGMTYyRDMwOTE5NkBFWENIQU5HRS1WUzEuZWhhcm1vbnkuY29tPg==", 
+        "messageIdInHeader": "PDAwZGIwMWM4ZDBmYyQ3ZTJiOTJlMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "referencesHeader": "PDg2MEQ0N0Y4OTA0RjYwNDFBRUVFNTVGOUI2ODQ2NjdGMTYyRDQ2RUYwNUBFWENIQU5HRS1WUzEuZWhhcm1vbnkuY29tPiw8MzVjNTA3ZDMwODA2MTcxNjIwcDI4MWU1ZjJjdjZiYTBkYTE3YTYwYTllYjZAbWFpbC5nbWFpbC5jb20+IDw4NjBENDdGODkwNEY2MDQxQUVFRTU1RjlCNjg0NjY3RjE2MkQzMDkxOTZARVhDSEFOR0UtVlMxLmVoYXJtb255LmNvbT4="
+    }
+}

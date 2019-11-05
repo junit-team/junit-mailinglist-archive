@@ -1,0 +1,29 @@
+{
+    "topicId": 901, 
+    "postDate": "986439540", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Wb3Nl7uciQezE3Q_xL4CUez4rGJbMCHMX5FfIvbRUYFzXu2570mJ33nTO0XJixE_KqaPKxvOeAJB6WyW_Oigf0-jhq1d", 
+    "nextInTime": 910, 
+    "userId": 0, 
+    "prevInTime": 908, 
+    "prevInTopic": 905, 
+    "headers": {
+        "inReplyToHeader": "PFBpbmUuTE5YLjQuMjEuMDEwNDA0MTkyNzEyMC4yMzg3OC0xMDAwMDBAam9pLmFyYXZveC5jb20+", 
+        "messageIdInHeader": "PDIwMDEwNDA1MDI1OTAwLjc3NzIucW1haWxAd2ViMTE2MDIubWFpbC55YWhvby5jb20+"
+    }, 
+    "authorName": "Robert Sartin", 
+    "numMessagesInTopic": 5, 
+    "msgSnippet": "... The problem is the callback may execute in a different Thread than the testIt method. That means if the callback calls assert(", 
+    "contentTrasformed": false, 
+    "msgId": 909, 
+    "nextInTopic": 918, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;sartin@...&gt;\r\nX-Sender: sartin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_1); 5 Apr 2001 02:59:03 -0000\r\nReceived: (qmail 29822 invoked from network); 5 Apr 2001 02:59:00 -0000\r\nReceived: from unknown (10.1.10.26) by l8.egroups.com with QMQP; 5 Apr 2001 02:59:00 -0000\r\nReceived: from unknown (HELO web11602.mail.yahoo.com) (216.136.172.54) by mta1 with SMTP; 5 Apr 2001 02:59:00 -0000\r\nMessage-ID: &lt;20010405025900.7772.qmail@...&gt;\r\nReceived: from [216.140.178.240] by web11602.mail.yahoo.com; Wed, 04 Apr 2001 19:59:00 PDT\r\nDate: Wed, 4 Apr 2001 19:59:00 -0700 (PDT)\r\nReply-To: sartin@...\r\nSubject: Re: [junit] How can I test async callbacks?\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;Pine.LNX.4.21.0104041927120.23878-100000@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Robert Sartin &lt;sartin@...&gt;\r\nFrom: Robert Sartin &lt;sartin@...&gt;\r\n\r\n\n--- Joi Ellis &lt;joi@...&gt; wrote:\n&gt;Here&#39;s what my first try at a callback test would look like. I&#39;ve&lt;BR&gt;\n&gt;never written one before, and I have nothing here to try this on.&lt;BR&gt;\n\nThe problem is the callback may execute in a different Thread than the\ntestIt method. That means if the callback calls assert(&lt;some false\nexpression) or fail(), the Error gets thrown, but not caught by the\nJUnit framework (because it is thrown on the stack of a different\nThread). Having the callback be within the TestCase is not enough to\nsolve this, it is not a class problem it is a stack/thread problem.\n\nThe way we wound up dealing with it for our aynchronous callbacks is by\ncreating way to configure our code to make the callbacks in the same\nthread under certain circumstances. By happy coincidence this same\nmechanism is also used to handle many of the differences between our\nvarious platforms. We run most of our tests against the non-threaded\n&quot;Test&quot; platform and only run a few threading-specific tests in the more\ncomplicated environments. Those tests have been much harder to write\nand I would love good suggestions. Most of them have testFoo method\nthat end something like this (from memory, probably with typos):\n\n  // Wait for asynchronous operations to complete, fail if they don&#39;t\n  try {\n    asynchObject.wait(ASYNC_TIMEOUT);\n  }\n  catch (InterruptedException e) {\n    fail(&quot;Aynchronous operations did not complete in time&quot;);\n  }\n\nRegards,\n\nRob\n\n\n__________________________________________________\nDo You Yahoo!?\nGet email at your own domain with Yahoo! Mail. \nhttp://personal.mail.yahoo.com/\n\n", 
+    "subject": "Re: [junit] How can I test async callbacks?"
+}

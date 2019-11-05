@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 2984, 
+    "senderId": "JL5KC2gGs5t54CrNJHj2cyPMMb3uTBsxNDT9rr9GQqrM67sKJh9Es7sX3jnebCaLdlCQnKLyKUJ51X_cTOZZxONchqEiPWT9oVCcG2f-", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: swingui & jdk1.4", 
+    "from": "&quot;David Hooker&quot; &lt;dhooker@...&gt;", 
+    "authorName": "David Hooker", 
+    "msgSnippet": "I ve discovered more about this problem. In the FAQ, it states how the testui uses the system class loader, and the GUI uses a custom class loader - but only", 
+    "msgId": 2983, 
+    "rawEmail": "Return-Path: &lt;dhooker@...&gt;\r\nX-Sender: dhooker@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 17 Oct 2001 17:59:17 -0000\r\nReceived: (qmail 81655 invoked from network); 17 Oct 2001 17:59:16 -0000\r\nReceived: from unknown (10.1.10.142)\n  by l9.egroups.com with QMQP; 17 Oct 2001 17:59:16 -0000\r\nReceived: from unknown (HELO imta02a2.registeredsite.com) (64.225.255.11)\n  by mta3 with SMTP; 17 Oct 2001 17:59:11 -0000\r\nReceived: from DHOOKER ([10.0.58.26]) by imta02a2.registeredsite.com\n          with ESMTP\n          id &lt;20011017175910.FRGX6638.imta02a2.registeredsite.com@DHOOKER&gt;\n          for &lt;junit@yahoogroups.com&gt;; Wed, 17 Oct 2001 13:59:10 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Re: swingui & jdk1.4\r\nDate: Wed, 17 Oct 2001 12:58:52 -0500\r\nMessage-ID: &lt;000001c15735$62d3dea0$6b01a8c0@DHOOKER&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.2627\r\nIn-Reply-To: &lt;5.1.0.14.2.20011017125453.00af5778@...&gt;\r\nImportance: Normal\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700\r\nFrom: &quot;David Hooker&quot; &lt;dhooker@...&gt;\r\nX-Yahoo-Profile: dudehook\r\n\r\nI&#39;ve discovered more about this problem.\n\nIn the FAQ, it states how the testui uses the system class loader, and\nthe GUI uses a custom class loader - but only when the &quot;reload classes&quot;\nbox is checked.  So I ran my tests with the box unchecked and everything\nworked fine.  Same with the textui.  So the problem is with the custom\nloader.\n\nWhen I have more time, I&#39;ll track it down and send in a fix.\n\n-----Original Message-----\nFrom: David V. Olivier [mailto:dolivier@...] \nSent: Wednesday, October 17, 2001 12:56 PM\nTo: junit@yahoogroups.com\nSubject: Re: [junit] Re: swingui & jdk1.4\n\n\nThis is similar to a question I had a week ago and I was told many other\n\nsubscribers had had the same type of question.  Perhaps this is a\ncandidate \nfor the new FAQ.\n\nDavid Olivier\n\nAt 05:43 PM 10/17/2001 +0000, you wrote:\n&gt;I&#39;m having similar issues when test code that uses dom4j (which uses\n&gt;JAXP to instantiate an XML parser, like Xerces).  When I run under\n&gt;junit, it can&#39;t find some org.xml classes.  When I run standalone I\n&gt;have no problems.\n&gt;\n&gt;If anyone knows why, I&#39;d love to find out.\n&gt;\n&gt;--- In junit@y..., Anthony  Pereira &lt;apereira@3...&gt; wrote:\n&gt; &gt; Hi,\n&gt; &gt;\n&gt; &gt; I&#39;m not sure whether this is the place to submit what I&#39;m just\n&gt;going to\n&gt; &gt; write about, if not please do point me in the right direction,\n&gt;cheers.\n&gt; &gt;\n&gt; &gt; I came across a rather bizzare scenario, today using the\n&gt; &gt; junit.swingui.TestRunner in a java 1.4beta2 environment. In some of\n&gt;my code,\n&gt; &gt; I reference classes in org.w3c.dom and org.apache.crimson. Now, as\n&gt;soon as\n&gt; &gt; junit came across classes from these packages, it threw class not\n&gt;found\n&gt; &gt; exceptions. Please note that this doesn&#39;t happen in the the textui\n&gt;nor my\n&gt; &gt; own testing classes, since they are both in the classpath.\n&gt; &gt;\n&gt; &gt; org.w3c.dom specifically is in the rt.jar\n&gt; &gt; org.apache.crimson is a separate jar, which is on my classpath\n&gt; &gt;\n&gt; &gt; After a bit of digging around in the source code, specifically in\n&gt;the\n&gt; &gt; TestCaseClassLoader, I found out about the\n&gt;junit&#92;runner&#92;exclude.properties\n&gt; &gt; file. When I added these package names to that file, things seemed\n&gt;ok, and\n&gt; &gt; those exceptions didn&#39;t take place.\n&gt; &gt;\n&gt; &gt; What confused me was why it didn&#39;t find the classes, even though\n&gt;they was on\n&gt; &gt; my classpath, especially the org.w3c ones which are in the rt.jar\n&gt;(with\n&gt; &gt; 1.4). Furthermore, this was only a problem when using the swingui,\n&gt;with the\n&gt; &gt; textui, it was fine.\n&gt; &gt;\n&gt; &gt; I&#39;ve got it working now that I put those details in the\n&gt;exclude.properties\n&gt; &gt; file. Is this perhaps a issue with using 1.4?\n&gt; &gt;\n&gt; &gt; Any comments or explainations?\n&gt; &gt; Thanks\n&gt; &gt; Anthony\n&gt;\n&gt;\n&gt;To unsubscribe from this group, send an email to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt;Your use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n\n\n\n", 
+    "profile": "dudehook", 
+    "topicId": 2764, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 2982, 
+    "contentTrasformed": false, 
+    "postDate": "1003341532", 
+    "canDelete": false, 
+    "nextInTopic": 2984, 
+    "prevInTopic": 2982, 
+    "headers": {
+        "inReplyToHeader": "PDUuMS4wLjE0LjIuMjAwMTEwMTcxMjU0NTMuMDBhZjU3NzhAY3lwcmVzcy5ucmxzc2MubmF2eS5taWw+", 
+        "messageIdInHeader": "PDAwMDAwMWMxNTczNSQ2MmQzZGVhMCQ2YjAxYThjMEBESE9PS0VSPg=="
+    }
+}

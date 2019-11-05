@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 11828, 
+    "senderId": "JR-2GZK9tVskJZV05zzXIFQQuL20mcmSSaI19HPJo-ZOktfdLnml7vdzaqULZY4z614OyK54YcXvEqMRUuEK8ksSIgh8XK7t-88", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] TestCase inheritance...", 
+    "from": "Allan Halme &lt;allan.halme@...&gt;", 
+    "authorName": "Allan Halme", 
+    "msgSnippet": "I realise you weren t trying to solve that problem, but the question still came to mind :) And, indeed, the one-test-suite-per-production-class is not a rule, ", 
+    "msgId": 11827, 
+    "rawEmail": "Return-Path: &lt;allan.halme@...&gt;\r\nReceived: (qmail 74352 invoked from network); 22 Aug 2004 11:59:49 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m15.grp.scd.yahoo.com with QMQP; 22 Aug 2004 11:59:49 -0000\r\nReceived: from unknown (HELO n28.grp.scd.yahoo.com) (66.218.66.84)\n  by mta1.grp.scd.yahoo.com with SMTP; 22 Aug 2004 11:59:48 -0000\r\nReceived: from [66.218.67.150] by n28.grp.scd.yahoo.com with NNFMP; 22 Aug 2004 11:59:24 -0000\r\nX-Sender: allan.halme@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 51895 invoked from network); 21 Aug 2004 22:54:03 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m24.grp.scd.yahoo.com with QMQP; 21 Aug 2004 22:54:03 -0000\r\nReceived: from unknown (HELO mproxy.gmail.com) (64.233.170.199)\n  by mta2.grp.scd.yahoo.com with SMTP; 21 Aug 2004 22:54:03 -0000\r\nReceived: by mproxy.gmail.com with SMTP id 73so32370rnk\n        for &lt;junit@yahoogroups.com&gt;; Sat, 21 Aug 2004 15:54:02 -0700 (PDT)\r\nReceived: by 10.38.13.31 with SMTP id 31mr526823rnm;\n        Sat, 21 Aug 2004 15:54:02 -0700 (PDT)\r\nReceived: by 10.38.72.17 with HTTP; Sat, 21 Aug 2004 15:54:02 -0700 (PDT)\r\nMessage-ID: &lt;621e8f3c0408211554201f5e7b@...&gt;\r\nDate: Sun, 22 Aug 2004 01:54:02 +0300\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;4126D7BB.9070202@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nReferences: &lt;CC77B3857637EE4CB76EA8427B18F0B543AB2C@...&gt; &lt;412545E1.2030703@...&gt; &lt;621e8f3c040820022574062ee6@...&gt; &lt;4126D7BB.9070202@...&gt;\r\nX-eGroups-Remote-IP: 64.233.170.199\r\nFrom: Allan Halme &lt;allan.halme@...&gt;\r\nReply-To: allan@...\r\nSubject: Re: [junit] TestCase inheritance...\r\nX-Yahoo-Group-Post: member; u=190870518\r\nX-Yahoo-Profile: allanhalme\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 22 Aug 2004 11:59:22 -0000\r\nX-eGroups-Remote-IP: 66.218.66.84\r\n\r\nI realise you weren&#39;t trying to solve that problem, but the question\nstill came to mind :)\n\nAnd, indeed, the one-test-suite-per-production-class is not a rule,\nbut it&#39;s pretty neat; but no so neat that we won&#39;t depart from it when\nnecessary.\n\nt.allan\n\n\n----- Original Message -----\nFrom: J. B. Rainsberger &lt;jbrains@...&gt;\nDate: Sat, 21 Aug 2004 01:03:55 -0400\nSubject: Re: [junit] TestCase inheritance...\nTo: junit@yahoogroups.com\n\n Allan Halme wrote:\n \n &gt; This is great -- but what if we have a concrete class implementing\n &gt; multiple interfaces?\n \n Well, that wasn&#39;t the problem I was trying to solve! :)\n \n Let&#39;s look at the simplest case: Foo implements A, B. It turns out that \n this is very simple: have one test suite (TestCase class) per interface.\n \n 1. FooAContractTest extends ATestCase verifies that Foo implements A&#39;s \n contract correctly.\n \n 2. FooBContractTest extends BTestCase verifies that Foo implements B&#39;s \n contract correctly.\n \n 3. FooTest, if necessary, verifies Foo&#39;s behavior beyond the contracts \n of A and B.\n \n So, in the more complicated case:\n \n &gt; Foo extends BImpl implements B implements C\n &gt; BImpl extends AImpl implements A\n \n 1. Start with three different Abstract Test Cases for the contract tests \n for A, B, C: ATestCase, BTestCase, CTestCase.\n \n 2. AImplTest extends ATestCase.\n \n 3. BImplAContractTest extends AImplTest if you can, and ATestCase if you \n can&#39;t. (BImpl might change an implementation detail of an A method, but \n respect the weaker A contract.)\n \n 4. BImplBContractTest extends BTestCase.\n \n 5. BImplCContractTest extends CTestCase.\n \n 6. FooTest, if necessary, verifies Foo&#39;s behavior beyond the contracts \n of A, B and C.\n \n The key thing to remember is that one test suite per production class is \n only a starting point heuristic, and not a requirement of JUnit.\n -- \n J. B. Rainsberger,\n Diaspar Software Services\n http://www.diasparsoftware.com :: +1 416 791-8603\n Let&#39;s write software that people understand\n \n\n \n \n Yahoo! Groups Sponsor \n \n ADVERTISEMENT\n \n \n ________________________________\n Yahoo! Groups Links\n \nTo visit your group on the web, go to:\nhttp://groups.yahoo.com/group/junit/\n  \nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n  \nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service.\n\n\n", 
+    "profile": "allanhalme", 
+    "topicId": 11811, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190870518, 
+    "prevInTime": 11826, 
+    "contentTrasformed": false, 
+    "postDate": "1093128842", 
+    "canDelete": false, 
+    "nextInTopic": 11829, 
+    "prevInTopic": 11823, 
+    "headers": {
+        "inReplyToHeader": "PDQxMjZEN0JCLjkwNzAyMDJAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDYyMWU4ZjNjMDQwODIxMTU1NDIwMWY1ZTdiQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PENDNzdCMzg1NzYzN0VFNENCNzZFQTg0MjdCMThGMEI1NDNBQjJDQG1haW4tc3J2LmNhc2Vyby5jb20+IDw0MTI1NDVFMS4yMDMwNzAzQHJvZ2Vycy5jb20+IDw2MjFlOGYzYzA0MDgyMDAyMjU3NDA2MmVlNkBtYWlsLmdtYWlsLmNvbT4gPDQxMjZEN0JCLjkwNzAyMDJAcm9nZXJzLmNvbT4="
+    }
+}

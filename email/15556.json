@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 15557, 
+    "senderId": "OMKfymXiz4UN0Cn4VLSX6NWtv42vxECIDIgQTSLsSt7sy306k2VupBzmv8GE2TSxsVbvzp1i9x_8gNLUC5AZUfMserk", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] displaying multiple errors from the same condition", 
+    "from": "Eugene Kuleshov &lt;eu@...&gt;", 
+    "authorName": "Eugene Kuleshov", 
+    "msgSnippet": "David, It is much better to generate suite and let the runner to iterate trough tests and mark failed urls. See somehow shortened version of the test case", 
+    "msgId": 15556, 
+    "profile": "ekuleshov", 
+    "topicId": 15542, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150395705, 
+    "messageBody": "<div id=\"ygrps-yiv-2102192107\">David,<br/>\n<br/>\n  It is much better to generate suite and let the runner to iterate <br/>\ntrough tests and mark failed urls. See somehow shortened version of the <br/>\ntest case below (shortened, because usually people using FailedTestCase <br/>\ninstead of mergig its code into the test class).<br/>\n  Note getName() methods below.<br/>\n  Also note that testInvalidUrl() will always fail pointing to the line <br/>\nwith &quot;new URL(url)&quot;.<br/>\n<br/>\npublic class SampleTest extends TestCase {<br/>\n    private static String[] URLS = {...};<br/>\n   <br/>\n    private String url;<br/>\n    private URL u;<br/>\n    private Exception ex;<br/>\n<br/>\n    public SampleTest(String url) throws MalformedURLException {<br/>\n        super(&quot;testUrl&quot;);<br/>\n        this.url = url;<br/>\n        this.u = new URL(url);<br/>\n    }<br/>\n<br/>\n    public SampleTest( String url, Exception ex) {<br/>\n        super(&quot;testInvalidUrl&quot;);<br/>\n        this.ex = ex;<br/>\n        this.url = url;<br/>\n    }<br/>\n   <br/>\n    public String getName() {<br/>\n        return super.getName()+&quot; &quot;+url;<br/>\n    }<br/>\n<br/>\n    public void testUrl() {<br/>\n        // test<br/>\n    }<br/>\n   <br/>\n    public void testInvalidUrl() throws Exception {<br/>\n        throw ex;<br/>\n    }<br/>\n   <br/>\n    public static Test suite() {<br/>\n        TestSuite suite = new TestSuite();<br/>\n        for( int i = 0; i &lt; URLS.length; i++) {<br/>\n            try {<br/>\n                suite.addTest(new SampleTest(URLS[i]));<br/>\n            } catch(MalformedURLException ex) {<br/>\n                suite.addTest(new SampleTest(URLS[i], ex));<br/>\n            }<br/>\n        }<br/>\n        return suite;<br/>\n    }<br/>\n   <br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n  regards,<br/>\n  Eugene<br/>\n<br/>\n<br/>\nDavid Jackman wrote:<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt;In this case, I would have my test ping each URL, then in case of<br/>\n&gt;failure add the URL to a list of failed URLs (no assertions here).  At<br/>\n&gt;the end of the loop, assert that the list of failed URLs is empty and<br/>\n&gt;have the failure message include the list of URLs.<br/>\n&gt;<br/>\n&gt;________________________________<br/>\n&gt;<br/>\n&gt;From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\n&gt;kmjosey<br/>\n&gt;Sent: Monday, November 28, 2005 11:39 AM<br/>\n&gt;To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt;Subject: [junit] displaying multiple errors from the same condition<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;I have a test that pings a URL to see if a webservice is available.<br/>\n&gt;<br/>\n&gt;I do not want the test to have be aware of the specific URLs being<br/>\n&gt;tested. I go to the database where the URLs are stored and then open a<br/>\n&gt;URL connection and ping the service. <br/>\n&gt;<br/>\n&gt;I iterate through the URLs, and collect the results. I want to be able<br/>\n&gt;to display a message for all the URLs that fail. But I cannot see how<br/>\n&gt;to do that.<br/>\n&gt;<br/>\n&gt;This test only does on thing, so I don&#39;t think this is a case where I<br/>\n&gt;need to break up the test. Also I don&#39;t want to have to be aware of<br/>\n&gt;what URLs fail before hand by checking specific URLs with assertEquals.<br/>\n&gt;<br/>\n&gt;Is there a way I can display multiple errors or failures, in Junit?<br/>\n&gt;I have read the FAQ about the logic for not being able to display<br/>\n&gt;multiple results, but I don&#39;t feel like the argument is applicable here.<br/>\n&gt;<br/>\n&gt;If there is a previous response, please fowared the message id, when<br/>\n&gt;searched I kept getting &#39;search timed out, only partial results&#39;.<br/>\n&gt;<br/>\n&gt;Thanks, Karen<br/>\n&gt;  <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 15555, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1133283657", 
+    "canDelete": false, 
+    "nextInTopic": 15562, 
+    "prevInTopic": 15555, 
+    "headers": {
+        "inReplyToHeader": "PDBFMEU5QUVDNjJEMUZDNDA4QjUwMjRCQ0ZEQTg4NkVBMkZDOTk0QHNsY2VzMDEuYWQuZmFzdC5ubz4=", 
+        "messageIdInHeader": "PDQzOEM4OTQ5LjEwMjA4MDdAbWQucHAucnU+", 
+        "referencesHeader": "PDBFMEU5QUVDNjJEMUZDNDA4QjUwMjRCQ0ZEQTg4NkVBMkZDOTk0QHNsY2VzMDEuYWQuZmFzdC5ubz4="
+    }
+}

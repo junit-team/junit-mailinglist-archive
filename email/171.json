@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 172, 
+    "senderId": "1kYTtkXacVz_snX55kXJrlFRjoedP-RAdSkmpPbz-B9dfnW-UltHynHsMvMG9HAYSoMqO5qFTbolDr_p3BFrGiVUYdHAFbnaa1w9zd-U4MUNiWkFRkoePek4", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: newbie question: how to avoid rerunning fixture code on every test", 
+    "from": "&quot;Stephen P Peterson&quot; &lt;stephen.peterson@...&gt;", 
+    "authorName": "Stephen P Peterson", 
+    "msgSnippet": "Hi Charlie, Thanks - this comment and example is illuminating.  But I have a followup question.  Again, I m pretty new to java so this is a bit of a", 
+    "msgId": 171, 
+    "topicId": 161, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-604896621\">Hi Charlie,<br/>\nThanks - this comment and example is illuminating.  But I have a followup<br/>\nquestion.  Again, I&#39;m pretty new to java so this is a bit of a brain-teaser for<br/>\nme.<br/>\n<br/>\nIn your example, I think you are assuming a class variable &#39;Connection&#39; in the<br/>\nMyTestSetup class, as follows:<br/>\n<br/>\nclass MyTestSetup extends TestSetup {<br/>\n  Connection connection;<br/>\n  public MyTestSetup( Test t ) {<br/>\n    super(t);<br/>\n  }<br/>\n<br/>\n  protected void setUp() {<br/>\n    connection = DriverManager.getConnection(&quot;jdbc:url&quot;);<br/>\n  }<br/>\n<br/>\n  protected void tearDown() {<br/>\n  }<br/>\n}<br/>\n<br/>\nSo in the MyTest class there is a unit-test called &#39;testOne()&#39;.  To extend your<br/>\nexample, this unit-test needs a reference to the Connection instance saved in<br/>\nthe &#39;MyTestSetup&#39; class.  How does it get it?  I am guessing that class<br/>\nvariables are also needed in the MyTest class just like in the MyTestSetup<br/>\nclass, and maybe the &#39;MyTest.setup&#39; method needs to initialize the<br/>\nMyTest.connection class variable before each test starts.  But how does the<br/>\nMyTest find a reference to the MyTestSetup instance?<br/>\n<br/>\nthanks<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:charliehubbard76@...\">charliehubbard76@...</a> on 12/26/2000 10:13:04 AM<br/>\n<br/>\nPlease respond to <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a><br/>\n<br/>\nTo:   <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a><br/>\ncc:    (bcc: Stephen P Peterson/CT/Unitedmail)<br/>\nSubject:  [junit] Re: newbie question: how to avoid rerunning fixture code on<br/>\n      every test<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@egroups.com\">junit@egroups.com</a>, &quot;Stephen P Peterson&quot;<br/>\n&lt;stephen.peterson@i...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; What if the setup logic involves connecting to databases and<br/>\n&gt; running queries that tends to be a bit slow for doing on every<br/>\n&gt; single test?  Is an explanation available anywhere on the web<br/>\n&gt; telling how to get tests to run faster by executing slow<br/>\n&gt; initialization code only once before all the tests?<br/>\n<br/>\n </span></blockquote>Stephen,<br/>\n<br/>\nWhat you want to do is create a class that extends TestSetup.<br/>\nTestSetups allow you to do some initilization/de-initilization around<br/>\na test suite just as you described.<br/>\n<br/>\nclass MyTestSetup extends TestSetup {<br/>\n  public MyTestSetup( Test t ) {<br/>\n    super(t);<br/>\n  }<br/>\n<br/>\n  protected void setUp() {<br/>\n    Connection = DriverManager.getConnection(&quot;jdbc:url&quot;);<br/>\n  }<br/>\n<br/>\n  protected void tearDown() {<br/>\n  }<br/>\n}<br/>\n<br/>\nclass MyTest extends TestCase {<br/>\n  public MyTest( String name ) {<br/>\n    super( name );<br/>\n  }<br/>\n<br/>\n  public void testOne() {<br/>\n  }<br/>\n<br/>\n  public static Test suite() {<br/>\n     return new MyTestSetup( new TestSuite( MyTest.class ) );<br/>\n  }<br/>\n<br/>\n  public static void main( String args[] ) {<br/>\n     TestRunner.run( suite() );<br/>\n  }<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@egroups.com\">junit-unsubscribe@egroups.com</a></div>", 
+    "prevInTime": 170, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "978016405", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 166, 
+    "headers": {
+        "messageIdInHeader": "PDg1MjU2OUMzLjAwNTFDQjQxLjAwQHVoY25oMDAyLnVoYy5jb20+"
+    }
+}

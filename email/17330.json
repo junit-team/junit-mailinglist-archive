@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 17331, 
+    "senderId": "JaPT2a0zYyvE9AELHJacsnKr6v-8IrvnEI9_ufHBW_X-gJryrOb5UFj9f6EterhRrP_ElD2tTJTbiX1eIIHjfsSAD294_o6HpnFigL69wAp3TQGQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing Contexts", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Hi, From what I understand you are on the right track when you ask should i inject the contexts from outside . I would look for an abstraction here. To me it", 
+    "msgId": 17330, 
+    "profile": "j0hlrogge", 
+    "topicId": 17327, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-1832436187\">Hi,<br/>\n<br/>\nFrom what I understand you are on the right track when you ask &quot;should<br/>\ni inject the contexts from outside&quot;. I would look for an abstraction<br/>\nhere. To me it seems that you want to send a mail with a generated<br/>\nmessage and for that you use velocity to produce the text and java<br/>\nmessaging to send the message.<br/>\n<br/>\n<br/>\nSo, Maybe the fact that velocity is procucing the message is not that<br/>\nimportant? Perhaps you can create an interface called something like<br/>\n&quot;MessageProducer&quot; to get the message. I am assuming here that you can<br/>\nget the requestmap from somewhere. You could also pass it, or<br/>\nsomething derived from it to createMessage.<br/>\n<br/>\npublic interface MessageProducer {<br/>\n    String createMessage();<br/>\n}<br/>\n<br/>\nand then you wan&#39;t to send it somewhere:<br/>\n<br/>\npublic interface MessageSender {<br/>\n    void sendMessage( String message, ...);<br/>\n<br/>\n}<br/>\n<br/>\n<br/>\nThey could be uses something like this. Of course you could improve on<br/>\nthat design.<br/>\nThe point I am trying to make is that it can be a good design<br/>\ninvestment to make abstractions around your contexts. Then you only<br/>\nhave to test them once (in tyour concrete implementations) and then<br/>\nyou can inject your abstractions and mock them in other places in your<br/>\ncode:<br/>\n<br/>\npublic void sendMessage() {<br/>\n   // could be velocity, webmacro or something else<br/>\n   String message = messageProducer.createMessage();<br/>\n<br/>\n   // could be java-messaging or whatever<br/>\n   messageSender.sendMessage(message);<br/>\n }</div>", 
+    "prevInTime": 17329, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1154951155", 
+    "canDelete": false, 
+    "nextInTopic": 17337, 
+    "prevInTopic": 17327, 
+    "headers": {
+        "inReplyToHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwODA3MDQ0NXQxNzkyNjA0ZmhiMGE3NmUxMGEyZjk1ZjRiQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGViMGMzNytocWJ1QGVHcm91cHMuY29tPg=="
+    }
+}

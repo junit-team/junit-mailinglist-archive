@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19268, 
+    "senderId": "Ih2Im9ZsP_WF1fCy3ApquyQlO3aGwwy-Mfv0iLY3iWdVV1DwSgN1l1GIRUZrF_cYWK2DfTc6rqJBiRaVw2If6ejwidu7", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit behaviour", 
+    "from": "Ilja Preuss &lt;it@...&gt;", 
+    "authorName": "Ilja Preuss", 
+    "msgSnippet": "Seems I failed to make myself clear. Imagine two classes class Super { @Before void beforeSuper() .. ] class Sub extends Super { @Before void beforeSub1() ... ", 
+    "msgId": 19267, 
+    "rawEmail": "Return-Path: &lt;it@...&gt;\r\nX-Sender: it@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 83473 invoked from network); 9 Apr 2007 14:04:09 -0000\r\nReceived: from unknown (66.218.66.72)\n  by m23.grp.scd.yahoo.com with QMQP; 9 Apr 2007 14:04:09 -0000\r\nReceived: from unknown (HELO moutng.kundenserver.de) (212.227.126.187)\n  by mta14.grp.scd.yahoo.com with SMTP; 9 Apr 2007 14:04:09 -0000\r\nReceived: from [84.163.252.86] (helo=[127.0.0.1])\n\tby mrelayeu.kundenserver.de (node=mrelayeu3) with ESMTP (Nemesis),\n\tid 0MKxQS-1Hau0p1Xrb-0001AW; Mon, 09 Apr 2007 15:34:28 +0200\r\nMessage-ID: &lt;461A40DA.5000002@...&gt;\r\nDate: Mon, 09 Apr 2007 15:34:18 +0200\r\nUser-Agent: Thunderbird 1.5.0.10 (Windows/20070221)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ev2jmr+jroi@...&gt; &lt;461A2B90.4040500@...&gt; &lt;c6f400460704090531i17f8528dg844cac181114d6c0@...&gt;\r\nIn-Reply-To: &lt;c6f400460704090531i17f8528dg844cac181114d6c0@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-Provags-ID: V01U2FsdGVkX18CivO0j/VoR7CIK337JlRk/mmhDKm8J8ItbST\n ObSLWSOSroBVypTb9VnJLroOhyoTKA8p71+AqMqMONVCJWjmgi\n 0grc1K5YHdYSf1qT+XNYsFY/ghxc8/G\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Ilja Preuss &lt;it@...&gt;\r\nSubject: Re: [junit] JUnit behaviour\r\nX-Yahoo-Group-Post: member; u=182451331; y=ywiUV5XMpdrJ7ucu-pA-Ho7argAJRGoNTylw8dSpJsy4OUUw\r\nX-Yahoo-Profile: ipreussde\r\n\r\nSeems I failed to make myself clear.\n\nImagine two classes\n\nclass Super {\n   @Before void beforeSuper() ..\n]\n\nclass Sub extends Super {\n   @Before void beforeSub1() ...\n   @Before void beforeSub2() ...\n}\n\nMy educated guess is that beforeSuper will always be executed first, but \nthat there is no guarantee whatsoever in which order beforeSub1 and \nbeforeSub2 will be executed.\n\nDoes that make sense?\n\nCheers, Ilja\n\nAlexandru Popescu ☀ schrieb:\n&gt; On 09 Apr 2007 05:09:30 -0700, Ilja Preuss &lt;it@...&gt; wrote:\n&gt;&gt; My first guess without a closer look at the code would be that it&#39;s done\n&gt;&gt;  so that @Before(Class) methods in subclasses are run before those in\n&gt;&gt;  superclasses.\n&gt;&gt;\n&gt;&gt;  I don&#39;t think there is any guarantee on the order of methods inside one\n&gt;&gt;  class. I could be wrong, though.\n&gt;&gt;\n&gt; \n&gt; If so, then I would say that this is a possible problem. The\n&gt; invocation order should follow the one of initialization and TestNG is\n&gt; trying to guarantee this rule (where the superclass is firstly\n&gt; initialized), otherwise this is quite a limitation (imagine a scenario\n&gt; where the parent class initializes some test data, and the child will\n&gt; need to customize it - this will never work).\n&gt; \n&gt; bests,\n&gt; \n&gt; ./alex\n&gt; --\n&gt; .w( the_mindstorm )p.\n&gt;   TestNG co-founder\n&gt; EclipseTestNG Creator\n&gt;&gt;  Cheers, Ilja\n&gt;&gt;\n&gt;&gt;  jonhnnyweslley schrieb:\n&gt;&gt;  &gt; I was creating tests, when in any test I dont understand a behaviour\n&gt;&gt;  &gt; of the framework. The Junit framework executes Before and BeforeClass\n&gt;&gt;  &gt; test methods in reverse order. Why?\n&gt;&gt;  &gt;\n&gt;&gt;  &gt; In TestIntrospector I find the below code, but I dont understand the\n&gt;&gt;  &gt; cause.\n&gt;&gt;  &gt;\n&gt;&gt;  &gt; public List&lt;Method&gt; getTestMethods(\n&gt;&gt;  &gt;      Class&lt;? extends Annotation&gt; annotationClass) {\n&gt;&gt;  &gt;     ...\n&gt;&gt;  &gt;     if (runsTopToBottom(annotationClass))\n&gt;&gt;  &gt;         Collections.reverse(results);\n&gt;&gt;  &gt;     return results;\n&gt;&gt;  &gt; }\n&gt;&gt;  &gt;\n&gt;&gt;  &gt; private boolean runsTopToBottom(\n&gt;&gt;  &gt;         Class&lt; ? extends Annotation&gt; annotation) {\n&gt;&gt;  &gt;     return annotation.equals(Before.class) ||\n&gt;&gt;  &gt;          annotation.equals(BeforeClass.class);\n&gt;&gt;  &gt; }\n&gt;&gt;  &gt;\n&gt;&gt;  &gt;\n&gt;&gt;  &gt;\n&gt;&gt;  &gt;\n&gt;&gt;  &gt; Yahoo! Groups Links\n&gt;&gt;  &gt;\n&gt;&gt;  &gt;\n&gt;&gt;  &gt;\n&gt;&gt;  &gt;\n&gt;&gt;\n&gt;&gt;                    \n&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt; \n\n\n", 
+    "profile": "ipreussde", 
+    "topicId": 19243, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 182451331, 
+    "prevInTime": 19266, 
+    "contentTrasformed": false, 
+    "postDate": "1176125658", 
+    "canDelete": false, 
+    "nextInTopic": 19268, 
+    "prevInTopic": 19266, 
+    "headers": {
+        "inReplyToHeader": "PGM2ZjQwMDQ2MDcwNDA5MDUzMWkxN2Y4NTI4ZGc4NDRjYWMxODExMTRkNmMwQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQ2MUE0MERBLjUwMDAwMDJAaWxqYXByZXVzcy5kZT4=", 
+        "referencesHeader": "PGV2Mmptcitqcm9pQGVHcm91cHMuY29tPiA8NDYxQTJCOTAuNDA0MDUwMEBpbGphcHJldXNzLmRlPiA8YzZmNDAwNDYwNzA0MDkwNTMxaTE3Zjg1MjhkZzg0NGNhYzE4MTExNGQ2YzBAbWFpbC5nbWFpbC5jb20+"
+    }
+}

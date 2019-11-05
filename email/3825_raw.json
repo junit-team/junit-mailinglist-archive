@@ -1,0 +1,28 @@
+{
+    "topicId": 3825, 
+    "postDate": "1011362210", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "_9FoWb3NyFTVYhedSiOc744zq2Zam6p4aixvLD5XHxzYPcMxH05rHSliGbPvwe9j2JrRrXSSd-l5ivnQLmFq6B8EGFQKslp524S-QtyO", 
+    "nextInTime": 3826, 
+    "userId": 61568997, 
+    "prevInTime": 3824, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxNjQ3RjQ5QENBU0UwNTI+"
+    }, 
+    "authorName": "Mark Meyers", 
+    "numMessagesInTopic": 1, 
+    "msgSnippet": "... You need more information to pinpoint the problem. My best guess is that it is about static variables combined with the classic classloader problem . If", 
+    "contentTrasformed": false, 
+    "msgId": 3825, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;markm@...&gt;\r\nX-Sender: markm@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_1_3); 18 Jan 2002 13:58:27 -0000\r\nReceived: (qmail 48725 invoked from network); 18 Jan 2002 13:58:27 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m10.grp.snv.yahoo.com with QMQP; 18 Jan 2002 13:58:27 -0000\r\nReceived: from unknown (HELO eos.telenet-ops.be) (195.130.132.40)\n  by mta1.grp.snv.yahoo.com with SMTP; 18 Jan 2002 13:58:27 -0000\r\nReceived: from case052.minervasoftcare.com (D5767ACA.kabel.telenet.be [213.118.122.202])\n\tby eos.telenet-ops.be (Postfix) with ESMTP id 7B938205AB\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 18 Jan 2002 14:58:25 +0100 (CET)\r\nReceived: by CASE052 with Internet Mail Service (5.5.2448.0)\n\tid &lt;C03ZC6BK&gt;; Fri, 18 Jan 2002 14:56:55 +0100\r\nMessage-ID: &lt;C450D96664CBD31182B600A0C97668B1647F49@CASE052&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Test fails when run alone but passes when run togethe\n\tr with others!\r\nDate: Fri, 18 Jan 2002 14:56:50 +0100\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2448.0)\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nFrom: Mark Meyers &lt;markm@...&gt;\r\nX-Yahoo-Group-Post: member; u=61568997\r\n\r\n\n\n&gt; Jason Rogers :\n&gt; \n&gt; The point being to make sure that *YOU* write your tests so \n&gt; that they are\n&gt; independent of each other.  If you write tests that effect \n&gt; data that other\n&gt; tests rely on, you will have issues.  I don&#39;t know if that is \n&gt; your problem\n&gt; here, I just thought I&#39;d &quot;stir you up by way of remembrance.&quot;\n\n&gt; marko schulz:\n&gt; Problems might come up, if you are using some kind of singleton or\n&gt; global data. Other sources of of trouble include the use of mechanisms\n&gt; that do additional class loading, such as CORBA.\n\nYou need more information to pinpoint the problem. My best guess is that it\nis about static variables combined with the classic classloader &quot;problem&quot;.\nIf you have a class like this: \n\npackage org.foo;\n\npublic class StaticClass{\n    static int count=0;\n    public static void increment(){ count++; }\n    public static int getCount(){ return count;}\n}\n\nand a test method like this:\n\npublic void testStatic(){\n        org.foo.StaticClass.increment();\n        assertEquals(&quot;count not reset&quot;, 1, org.foo.StaticClass.getCount());\n}\n\nthe test will always succeed the first time, and only the second time if the\nStaticClass is reloaded. By default all classes in com.sun. sun.  java.\n(etc...) are not reloaded, therefore some libraries will retain state you\nthought you did not retain (in particular when they implement singleton as\nMarko pointed out).\n\nDoes your code use java.net, javax.rmi.CORBA, java.sql , ... ?\n\n", 
+    "subject": "RE: [junit] Test fails when run alone but passes when run togethe\tr with others!"
+}

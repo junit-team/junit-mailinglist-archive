@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 3033, 
+    "senderId": "pw4QKr8Cm_e0mBk6sryLiPTqxJjiXWt3FekcFsZCy5ZI3uI9PDTENXV-8_WJ0iRyJ-Ub2rwHbRDYZpsSGf6U5NBvVcoT", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit test for infinite loop", 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "authorName": "Robert Sartin", 
+    "msgSnippet": "... How about taking a little Design by Contract, a little bit of John Carter s suggestions about writing tests and code that are integrated and write a loop", 
+    "msgId": 3032, 
+    "rawEmail": "Return-Path: &lt;sartin@...&gt;\r\nX-Sender: sartin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 20 Oct 2001 23:57:37 -0000\r\nReceived: (qmail 78397 invoked from network); 20 Oct 2001 23:57:37 -0000\r\nReceived: from unknown (10.1.10.27)\n  by 10.1.1.220 with QMQP; 20 Oct 2001 23:57:37 -0000\r\nReceived: from unknown (HELO web11603.mail.yahoo.com) (216.136.172.55)\n  by mta2 with SMTP; 20 Oct 2001 23:57:36 -0000\r\nMessage-ID: &lt;20011020235736.3228.qmail@...&gt;\r\nReceived: from [66.68.65.13] by web11603.mail.yahoo.com via HTTP; Sat, 20 Oct 2001 16:57:36 PDT\r\nDate: Sat, 20 Oct 2001 16:57:36 -0700 (PDT)\r\nReply-To: sartin@...\r\nSubject: Re: [junit] Unit test for infinite loop\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;039901c159ad$1663ad50$27a3e9c7@gates&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Robert Sartin &lt;sartin@...&gt;\r\nFrom: Robert Sartin &lt;sartin@...&gt;\r\nX-Yahoo-Profile: robert_sartin\r\n\r\n\n--- David Corbin &lt;dcorbin@...&gt; wrote:\n&gt; How does one write a unit test that exposes an infinte loop?  Well,\n&gt; writing one that exposes it isn&#39;t hard.  How do you expose it with \n&gt; out the test hanging?\n\nHow about taking a little Design by Contract, a little bit of John\nCarter&#39;s suggestions about writing tests and code that are integrated\nand write a loop variant, including an assertion that it always\ndecreases? Having done that to the production code, write a unit test\nthat exposes the infinite loop. It should be exposed by a violation of\none of the loop variant assertions causing an Exception (or Error) to\nbe thrown.\n\nA loop variant is usually an expression that results in a non-negative\ninteger and the assertion is that the loop invariant on pass n through\na loop must be less than the loop invariant on pass n-1.\n\nExample (no compiler check, sorry) assumes assertTrue is available in\nthe production class, which may or may not be appropriate:\n\n  // ...\n  public void doStuffToElements(final Collection elements) {\n    int loopVariantNow = elements.size();\n    int loopVariantBefore = loopInvariantNow + 1;\n    final Iterator iterator = elements.iterator();\n    while (iterator.hasNext()) {\n      assertTrue(&quot;negative loop variant not allowed&quot;, \n                 loopVariantNow &gt;= 0);\n      assertTrue(&quot;loop variant must be monotonically decreasing&quot;,\n                 loopVariantNow &lt; loopVariantBefore);\n      doStuff(iterator.next());\n      loopVariantBefore = loopVariantNow;\n      loopVariantNow--;\n    }\n  }\n  // ...\n\nEiffel includes loop variants in the language\n(http://www.eiffel.com/doc/questions/variant.html). I&#39;m sure someone\ncould write a decent loop variant class that would better encapsulate\nthe variants than the code above.\n\nThe interesting thing is that I can&#39;t recall ever having written and\nrun an infinite loop when I make a variant. Of course, having said\nthat, the above code probably loops infinitely.... I always seem to\ndiscover the infinite loop while writing the variant and fix it before\never running the code. Despite that, I don&#39;t usually write variants. I\nwonder why (seriously) I don&#39;t write them more often.\n\nRegards,\n\nRob\n\n\n__________________________________________________\nDo You Yahoo!?\nMake a great connection at Yahoo! Personals.\nhttp://personals.yahoo.com\n\n", 
+    "profile": "robert_sartin", 
+    "topicId": 3029, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3031, 
+    "contentTrasformed": false, 
+    "postDate": "1003622256", 
+    "canDelete": false, 
+    "nextInTopic": 3033, 
+    "prevInTopic": 3031, 
+    "headers": {
+        "inReplyToHeader": "PDAzOTkwMWMxNTlhZCQxNjYzYWQ1MCQyN2EzZTljN0BnYXRlcz4=", 
+        "messageIdInHeader": "PDIwMDExMDIwMjM1NzM2LjMyMjgucW1haWxAd2ViMTE2MDMubWFpbC55YWhvby5jb20+"
+    }
+}

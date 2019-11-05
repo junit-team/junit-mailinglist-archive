@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 9669, 
+    "senderId": "ahAKzqVxZjjd6juhFFdTri-MlRlbIKrJnWA9YCcoJfLx664SMixduNkaLwsxTmDb4X6GFlmrXwLlRfnnRBtvLxG3Hw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: How to write a Mock Class for a 3rd party class w\there the contructor are private", 
+    "from": "richard.denadel@...", 
+    "authorName": "richard.denadel@vodafone.com", 
+    "msgSnippet": "I am currently trying to use aspects to mock these kinds of classes (works even for static). My first try already works. I also need to learn aspects, so I am", 
+    "msgId": 9668, 
+    "rawEmail": "Return-Path: &lt;richard.denadel@...&gt;\r\nReceived: (qmail 78086 invoked from network); 13 Oct 2003 15:15:19 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m10.grp.scd.yahoo.com with QMQP; 13 Oct 2003 15:15:19 -0000\r\nReceived: from unknown (HELO n6.grp.scd.yahoo.com) (66.218.66.90)\n  by mta1.grp.scd.yahoo.com with SMTP; 13 Oct 2003 15:15:19 -0000\r\nX-eGroups-Return: richard.denadel@...\r\nReceived: from [66.218.67.178] by n6.grp.scd.yahoo.com with NNFMP; 13 Oct 2003 15:15:19 -0000\r\nX-Sender: richard.denadel@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 35088 invoked from network); 13 Oct 2003 08:40:12 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m4.grp.scd.yahoo.com with QMQP; 13 Oct 2003 08:40:12 -0000\r\nReceived: from unknown (HELO smtr-exh6.libertel) (62.140.141.8)\n  by mta4.grp.scd.yahoo.com with SMTP; 13 Oct 2003 08:40:11 -0000\r\nReceived: by SMTR-EXH6.LIBERTEL with Internet Mail Service (5.5.2655.55)\n\tid &lt;42BNPNTK&gt;; Mon, 13 Oct 2003 10:40:09 +0200\r\nMessage-ID: &lt;0A6D479A763FD711A4FE00306E0248A405080C70@...&gt;\r\nTo: junit@yahoogroups.com\r\nSubject: RE: [junit] Re: How to write a Mock Class for a 3rd party class w\n\there the contructor are private\r\nDate: Mon, 13 Oct 2003 10:40:00 +0200\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2655.55)\r\nFrom: richard.denadel@...\r\nX-Yahoo-Group-Post: member; u=130768890\r\nX-Yahoo-Profile: drahcir1970\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 13 Oct 2003 15:15:19 -0000\r\n\r\nI am currently trying to use aspects to mock these kinds of classes (works\neven for static). My first try already works.\n\nI also need to learn aspects, so I am taking really small steps.\n\n \n\nJust tell me if you&#39;re interested, so I can share my work.\n\n \n\nRichard.\n\n \n\n-----Original Message-----\nFrom: Jeff Grigg [mailto:jeffgrigg@...] \nSent: donderdag 9 oktober 2003 15:27\nTo: junit@yahoogroups.com\nSubject: [junit] Re: How to write a Mock Class for a 3rd party class where\nthe contructor are private\n\n \n\n--- &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; wrote:\n&gt; Question: do you instantiate the class directly (using a\n&gt; creation method) or does some framework do it for you?\n&gt; \n&gt; However the class is created, hide that behind an interface,\n&gt; which you can then mock.\n\n[JBR makes some good points and asks the right question.]\n\nYou can build a Facade in front of the object you want to mock -- so \nthat you can mock out the Facade object, which will often be simpler \nthan the real object.\n\nBut the weakness to this approach is that if you&#39;re using a framework \n(a library that your classes extend, or which takes pointers to \nclasses you want to mock), then to build a Facade for the framework, \nyou&#39;ll discover that your Facade must be another complete framework, \nif it can be done at all.  Frameworks can be a real barrier to \ntesting.\n\n\nAnother option:\nCan you subclass the class in question?\n\n\nAnother option:\nDigging *DEEP* into the bag of tricks, here&#39;s something to use when \nnothing else will work:  See Neil Swingler&#39;s javassist class loader \nin the Files section of this group:  \nName &quot;name.swingler.neil.classreloader.zip&quot;, description &quot;reloading \nclassloader that can introduce imposter mock classes&quot;.  It will \nenable you to swap out the offending 3rd party class with one of your \nown making.\n\nIn a similar situation, I used jAdvise (which is built on top of \njavassist) to intercept and modify the internal behavior of the 3rd \nparty class factory so that I could create instances of the class I \nwanted to test, intercept all method calls to it, and disable \neverything it did that had undesirable side effects, replacing method \nbody functionality with my mock implementation.\n\n\n\n\n\n\n\nYahoo! Groups Sponsor\n\n\n\nADVERTISEMENT\n \n&lt;http://rd.yahoo.com/M=194081.3897168.5135684.1261774/D=egroupweb/S=17050069\n05:HM/A=1732163/R=0/SIG=11n0nglqg/*http:/www.ediets.com/start.cfm?code=30510\n&media=zone&gt; click here\n\n\n \n&lt;http://us.adserver.yahoo.com/l?M=194081.3897168.5135684.1261774/D=egroupmai\nl/S=:HM/A=1732163/rand=539195452&gt; \n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo!\n&lt;http://docs.yahoo.com/info/terms/&gt;  Terms of Service. \n\n\n\n[Non-text portions of this message have been removed]\n\n\n\n", 
+    "profile": "drahcir1970", 
+    "topicId": 9668, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 130768890, 
+    "prevInTime": 9667, 
+    "contentTrasformed": false, 
+    "postDate": "1066034400", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDBBNkQ0NzlBNzYzRkQ3MTFBNEZFMDAzMDZFMDI0OEE0MDUwODBDNzBAU01UUi1FWEg4LkxJQkVSVEVMPg=="
+    }
+}

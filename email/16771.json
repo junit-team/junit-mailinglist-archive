@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 16772, 
+    "senderId": "eAJCRUj0lapHhYnGFZgtVyB_Klph3dGLhdecFkZtKHOP83aekAie1OPZfjMRk_2cRkuEyl7xg6xqEXYmh-_h02ubNC78wFqG", 
+    "systemMessage": true, 
+    "subject": "Re: testing for compile", 
+    "from": "Jon Barrilleaux &lt;jonb@...&gt;", 
+    "authorName": "Jon Barrilleaux", 
+    "msgSnippet": "public interface Node { protected void process(T value) { // class public static In extends Node { public void connectFrom(Node.Out node); ", 
+    "msgId": 16771, 
+    "profile": "jonbarril", 
+    "topicId": 16771, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 102238185, 
+    "messageBody": "<div id=\"ygrps-yiv-132096192\">public interface Node&lt;T&gt; {<br/>\n\tprotected void process(T value) {<br/>\n<br/>\n\t// class<br/>\n<br/>\n\tpublic static In&lt;T&gt; extends Node&lt;T&gt; {<br/>\n\t\tpublic void connectFrom(Node.Out&lt;? super T&gt; node);<br/>\n\t}<br/>\n<br/>\n\tpublic static Out&lt;T&gt; extends Node&lt;T&gt; {<br/>\n\t\tpublic void connectTo(Node.In&lt;? extends T&gt; node);<br/>\n\t}<br/>\n}<br/>\n<br/>\nNow, create some delegator classes that extend and use Node as a <br/>\ndelegate for passing various types and subtypes of data.<br/>\n<br/>\npublic interface Type {}<br/>\npublic interface SubType extends Type {}<br/>\n<br/>\npublic interface Delegator {<br/>\n\tpublic Node&lt;Type&gt; getNodeIn();<br/>\n\tpublic Node&lt;Type&gt; getNodeOut();<br/>\n}<br/>\n<br/>\npublic interface SubDeleg {<br/>\n\tpublic Node&lt;SubType&gt; getNodeIn();<br/>\n\tpublic Node&lt;SubType&gt; getNodeOut();<br/>\n}<br/>\n<br/>\nHow do you test to make sure that what you think should happen actually <br/>\nhappens at compile time?  Don&#39;t forget that JUnit is about regression <br/>\ntesting.  If you make some change in the type hierarchies or <br/>\nimplementations, how do you make sure you haven&#39;t broken the <br/>\ncompile-time enforcement of what should and should not be allowed...<br/>\n<br/>\n<br/>\nDelegatorA.getNodeOut().connectTo(DelegatorB.getNodeIn()); // no error<br/>\nDelegatorA.getNodeIn().connectTo(DelegatorB.getNodeOut()); // error<br/>\nDelegatorA.getNodeOut().connectFrom(DelegatorB.getNodeIn()); // error<br/>\nDelegatorA.getNodeIn().connectFrom(DelegatorB.getNodeOut()); // no error<br/>\n<br/>\nDelegatorA.getNodeOut().connectTo(DelegatorB.getNodeIn()); // no error<br/>\nDelegatorA.getNodeIn().connectTo(SubDelegB.getNodeOut()); // error<br/>\nSubDelegA.getNodeOut().connectTo(DelegatorB.getNodeIn()); // no error<br/>\nSubDelegA.getNodeIn().connectTo(SubDelegB.getNodeOut()); // no error<br/>\n<br/>\netc, etc, etc....<br/>\n<br/>\nTo make the argument even more compelling, add a few more generic <br/>\nmethods to Node.In and Node.Out.  Now create a Node.InOut by extending <br/>\nNode.In and Node.Out, and test for combinations of In-InOut, Out-InOut, <br/>\nInOut-In, etc, etc.<br/>\n<br/>\nAs a client I can use one such method and can readily see if there is a <br/>\ncompile error.  However, as a developer I&#39;d like to be able to test for <br/>\nall the key combinations and permutations, which can only be done <br/>\nstatically, at compile time.<br/>\n<br/>\nSo, is there any way for JUnit to include an assertion for a compile <br/>\ntime error?  Earlier attempts on my part, and suggestions by others, <br/>\nhave been unsuccessful.  Is this something that is currently impossible <br/>\nin Java?<br/>\n<br/>\n--jon\t<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; Message: 7 Date: Tue May 30, 2006 10:57 am (PDT) From: &quot;J. B.<br/>\n&gt; Rainsberger&quot; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a> Subject: Re: testing for compile<br/>\n&gt; errors Jon Barrilleaux wrote:<br/>\n&gt; <br/>\n&gt;&gt;&gt; A while back I posted a question/suggestion about being able to<br/>\n&gt;&gt;&gt; test for compile-time erros.  Such testing is especially<br/>\n&gt;&gt;&gt; important in the presence of java generics -- you want to be sure<br/>\n&gt;&gt;&gt; that some data types, such as in method parameters, compile<br/>\n&gt;&gt;&gt; correctly, but others result in a compile error.  Testing these<br/>\n&gt;&gt;&gt; cases by hand defeats the whole purpose of unit testing.<br/>\n&gt;&gt;&gt; <br/>\n&gt;&gt;&gt; Is there any way to test for a compile time error in a JUnit<br/>\n&gt;&gt;&gt; test?  Is this something that would be impossible to add?<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I am not a Java 5 programmer, and do not play one on TV, but I&#39;d love<br/>\n&gt; to see an example of this where compiling or not compiling isn&#39;t<br/>\n&gt; blaringly obvious to any competent person reading the code. -- J. B.<br/>\n&gt; (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a> Your guide to software<br/>\n&gt; craftsmanship JUnit Recipes: Practical Methods for Programmer Testing<br/>\n&gt; 2005 Gordon Pask Award for contribution Agile Software Practice </span></blockquote></div>", 
+    "prevInTime": 16770, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1149094619", 
+    "canDelete": false, 
+    "nextInTopic": 16774, 
+    "prevInTopic": 0, 
+    "headers": {
+        "inReplyToHeader": "PDExNDkwNjMzMjUuNzk0LjgxOTUyLm0xOUB5YWhvb2dyb3Vwcy5jb20+", 
+        "messageIdInHeader": "PDQ0N0RDQURCLjQwOTA5MDhAam1iYWFpLmNvbT4=", 
+        "referencesHeader": "PDExNDkwNjMzMjUuNzk0LjgxOTUyLm0xOUB5YWhvb2dyb3Vwcy5jb20+"
+    }
+}

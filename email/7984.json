@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 7985, 
+    "senderId": "bZDr-sHyxrglGxxBADdZNQP7gRl8txCYeg9SPfKwlEuXgeJy03lkF_LeP7LQ2vXtTytKIgzUrSOolQfOHS4qiCa9KV9l3qmrYubYXhotGuiLaIM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] need help", 
+    "from": "&quot;Erik Mattsson&quot; &lt;erik.mattsson@...&gt;", 
+    "authorName": "Erik Mattsson", 
+    "msgSnippet": "You should try to make each test() method independent of other test() methods. If you disable one or more test methods (by commenting them) then this should", 
+    "msgId": 7984, 
+    "profile": "erikmattsson73", 
+    "topicId": 7981, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 135813500, 
+    "messageBody": "<div id=\"ygrps-yiv-75521102\">You should try to make each test() method independent of other<br/>\ntest() methods. If you disable one or more test methods (by commenting them)<br/>\nthen this should not interfere with other test methods. And you cant<br/>\nbe sure in the order of the tests either, the tests in the bottom of the<br/>\nclass may be tested first and vice-versa.<br/>\n<br/>\n<br/>\nSince each test() method invocation is executed on a new instance <br/>\nof the TestCase class, then you must setup everything before each test.<br/>\n<br/>\nWrite a setUp() method, this method is invoked before each test in the<br/>\nTestCase. In this you should prepare all variables/resources that are needed<br/>\nby the testcases, for instance in your class populat the CDlist with<br/>\nvalues that are used in the different tests. <br/>\n<br/>\n<br/>\nIf you need to do some clean up after each test, then implement<br/>\nthe tearDown() method, which is invoked after each test. (unless there<br/>\nwas an Error when testing)<br/>\n<br/>\n<br/>\nBTW, what are you trying to test in your testGetData()?<br/>\n<br/>\n<br/>\n<br/>\npublic class ClientDataListTest extends TestCase<br/>\n{<br/>\n/** omitted */<br/>\n   protected void setUp() throws Exception<br/>\n   {<br/>\n      // fix all variables that are needed for ALL tests<br/>\n   }<br/>\n   protected void tearDown() throws Exception<br/>\n   {<br/>\n      // do some clean up IF necessary<br/>\n   }<br/>\n/** the rest of the class */<br/>\n}<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; Hi,<br/>\n&gt; <br/>\n&gt; How can I take the value of variable of my tested class in other testcase<br/>\n&gt; ( test function ) which is updated in my another testcase.<br/>\n&gt; <br/>\n&gt; My tested class put,get and delete the data from Hashtable<br/>\n&gt; <br/>\n&gt; --------------------------------------------------<br/>\n&gt; <br/>\n&gt; import junit.framework.*;<br/>\n&gt; <br/>\n&gt; public class ClientDataListTest extends TestCase<br/>\n&gt; {<br/>\n&gt;     /* instance of tested class */<br/>\n&gt;      ClientDataList cdList = new ClientDataList();<br/>\n&gt; <br/>\n&gt;      public static void main (String[] args)<br/>\n&gt;      {<br/>\n&gt;           junit.textui.TestRunner.run (suite());<br/>\n&gt;      }<br/>\n&gt;      public static Test suite()<br/>\n&gt;      {<br/>\n&gt;           return new TestSuite(ClientDataListTest.class);<br/>\n&gt;      }<br/>\n&gt;      public void testUpdateData()<br/>\n&gt;      {<br/>\n&gt;           String clientData = &quot;&quot;;<br/>\n&gt; <br/>\n&gt;           cdList.updateData(1,&quot;1&quot;,&quot;query1&quot;);<br/>\n&gt;           cdList.updateData(2,&quot;2&quot;,&quot;query2&quot;);<br/>\n&gt;           cdList.updateData(1,&quot;1&quot;,&quot;query3&quot;);<br/>\n&gt;           assertEquals(&quot;query3&quot;,cdList.getClientData(1));<br/>\n&gt;           assertNotSame(clientData,cdList.getClientData(2));<br/>\n&gt;           assertSame(clientData,cdList.getClientData(3));<br/>\n&gt;      }<br/>\n&gt;     public void testGetData()<br/>\n&gt;     {<br/>\n&gt;         String clientData = &quot;&quot;;<br/>\n&gt; <br/>\n&gt;         assertEquals(&quot;query3&quot;,cdList.getClientData(1));<br/>\n&gt;         assertNotSame(clientData,cdList.getClientData(2));<br/>\n&gt;         assertSame(clientData,cdList.getClientData(3));<br/>\n&gt;     }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; I got the following result:<br/>\n&gt; <br/>\n&gt; ..F<br/>\n&gt; Time: 0.03<br/>\n&gt; There was 1 failure:<br/>\n&gt; 1) testGetData(ClientDataListTest)junit.framework.ComparisonFailure:<br/>\n&gt; expected:&lt;query3&gt; but was:&lt;&gt;<br/>\n&gt;  at ClientDataListTest.testGetData(ClientDataListTest.java:65)<br/>\n&gt;  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br/>\n&gt;  at<br/>\n&gt; sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39<br/>\n&gt; )<br/>\n&gt;  at<br/>\n&gt; sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl<br/>\n&gt; .java:25)<br/>\n&gt;  at ClientDataListTest.main(ClientDataListTest.java:45)<br/>\n&gt; <br/>\n&gt; FAILURES!!!<br/>\n&gt; Tests run: 2,  Failures: 1,  Errors: 0<br/>\n&gt; <br/>\n&gt; ------------------------------------------------------------------<br/>\n&gt; <br/>\n&gt; Thank you.<br/>\n&gt; <br/>\n&gt; - Mukund Patel<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 7983, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1052408131", 
+    "canDelete": false, 
+    "nextInTopic": 7993, 
+    "prevInTopic": 7981, 
+    "headers": {
+        "messageIdInHeader": "PDAwNGYwMWMzMTU3NyQ3NWVlNzg0MCQwNjAwYThjMEBpbWJyaWRnZS5zZT4=", 
+        "referencesHeader": "PGI4b3NnMStyanRsQGVHcm91cHMuY29tPiA8MTA1MTcyMTAyNC4zZWFmZmQ0MGM2OGIwQG1haWwuc2NkaS5vcmc+IDwwMDM5MDFjMzEwMTkkMDZkZmMxNjAkNGIzMjAxM2RAbXVrdW5kPiA8M0VCMUYyQUUuMjA3MDQwOUBib3NzaWNhcmQuY29tPiA8MDA1ZTAxYzMxNWNiJGNlNWY0M2MwJGYzMzEwMTNkQG11a3VuZD4="
+    }
+}

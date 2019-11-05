@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 38, 
+    "nextInTime": 22250, 
+    "senderId": "a5SX9IflBQyvtkuZVbowuqGuqTcxSOGQiNff0gmta-PTn4BPP4ByrkqEIWgslKBaj4uv3YlmyO9uw8GJx0w5az2yVdiWMb6naQ", 
+    "systemMessage": false, 
+    "subject": "Re: Order of execution for tests", 
+    "from": "&quot;adrian.kuhn&quot; &lt;akuhn@...&gt;", 
+    "authorName": "adrian.kuhn", 
+    "msgSnippet": "Theories are indeed awesome! What I like most is that they open up the door for dynamic n:n dependencies between tests. That is something I never liked wrt", 
+    "msgId": 22249, 
+    "profile": "adrian.kuhn", 
+    "topicId": 22219, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 370478133, 
+    "messageBody": "<div id=\"ygrps-yiv-236463262\">Theories are indeed awesome! <br/>\n<br/>\nWhat I like most is that they open up the door for dynamic n:n dependencies<br/>\n between tests. That is something I never liked wrt JExample: dependencies are<br/>\n limited to hardwired declarations in the code.<br/>\n<br/>\nMy concern with the theories of JUnit 4.4  is that they introduce two    <br/>\n abstractions, @DataPoint and @Theory, and that none of these two abstractions<br/>\n returns reusable instances of the class under tests. To speak in JExample<br/>\n lingo you got pure producers and pure consumers only (with more flexible<br/>\n links between both though!) As a consequence, theories are limited to<br/>\n dependency hierarchies of two levels only, while JExample can be used to<br/>\n express dependency graphs of any depth. <br/>\n<br/>\n(Furthermore, of the two abstractions only theories are tests, so we cannot<br/>\n assert the validity of data points before returning them. This should be<br/>\n fairly simple to solve though.)<br/>\n<br/>\nImagine that @Theory were able to return reusable instances of the class under<br/>\n tests, then @DataPoint would become a theory without input. Then we could<br/>\n rewrite our working example as <br/>\n<br/>\n  @RunWith(Examples.class)<br/>\n  public class ExampleStack {<br/>\n    @Example public Stack empty() { <br/>\n      Stack s = new Stack();<br/>\n      assertEquals(true, s.isEmpty());<br/>\n      return s;<br/>\n    }<br/>\n    @Example public Object FOO = &quot;Foo&quot;;<br/>\n    @Example public Object BAR = &quot;Bar&quot;;<br/>\n    @Example public Stack shouldPushItemToTheTop(Stack s, Object item) {<br/>\n      s.push(item);<br/>\n      assertEquals(false, s.isEmpty());<br/>\n      assertEquals(item, s.top());<br/>\n      assertEquals(false, s.isEmpty());<br/>\n      return s;<br/>\n    }<br/>\n    @Example public Stack shouldPopPushedItem(Stack s, Object item) {<br/>\n      assumeFalse(s.isEmpty());<br/>\n      stack.push(item);<br/>\n      assertEquals(item, s.pop());<br/>\n      return s;<br/>\n    }<br/>\n    @Example public Stack shouldPopTopItem(Stack s) {<br/>\n      assumeFalse(s.isEmpty());<br/>\n      Object item = s.top();<br/>\n      assertEquals(item, s.pop());<br/>\n      return s;<br/>\n    }<br/>\n  }<br/>\n<br/>\nRunning this will start without available input and thus run all theories<br/>\n (above called @Example so users dont attempt to run this code in JUnit)  <br/>\n without input, once inputs are available we can run turn by turn all theories<br/>\n on all input. In fact, what we got now is a grammar for the creation of valid<br/>\n instances of the class under test.<br/>\n<br/>\nHowever, since the number of valid stack instances is infinite (as is the case<br/>\n for any non-trivial class) we have to stop somewhere if the test shall not<br/>\n run forever. <br/>\n<br/>\nWhat I&#39;d like to emphasize is that JExample is not about dependencies only,<br/>\n its other major focus is *composable tests*. When writing tests (or<br/>\n experimenting on a REPL, alas we have none in Java...) you should be able to<br/>\n just say &quot;gimme a valid instance of a stack with 3 elements&quot; and the<br/>\n framework goes and creates one for you. So the above example is maybe even<br/>\n closer to my initial vision of JExample than what we have now. Using an<br/>\n assumptions to express that condition seems more flexile, whereas in JExample<br/>\n you would need to depend by name on another test that explicitly creates an<br/>\n elements with three instances. So that seems to confirm your &quot;assumption<br/>\n sufficiency&quot; hypothesis, given there were composable theories.<br/>\n<br/>\nPersonally I do not consider dependencies the major contribution of JExample<br/>\n (even though it is a nice selling point) but *composable tests* thanks to<br/>\n return values. The very idea that tests produce valid instances of the class<br/>\n under tests and that these instances should be reused by other tests. (Which<br/>\n of course opens up the Pandora&#39;s box of having to clone examples to avoid<br/>\n quadratic runtime and side-effects.)<br/>\n<br/>\ncheers,<br/>\nAA</div>", 
+    "prevInTime": 22248, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1262450753", 
+    "canDelete": false, 
+    "nextInTopic": 22250, 
+    "prevInTopic": 22247, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MTAwMTAxMTg1MWc1MmI5YmRlOWczYzYxZjhlMzY0NDExNTI1QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGhobnQ4MStjbjlrQGVHcm91cHMuY29tPg=="
+    }
+}

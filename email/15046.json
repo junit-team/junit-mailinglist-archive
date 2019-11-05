@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 15047, 
+    "senderId": "w-hqDxDpt3WIRoPnsqdG046CHTWfuLIP3Skqj91wzZhSx577cNk7UFqp2Ka9TUXO6hOqLeBvkFcP_Qp8SVTXnwd4sXKFZVLhCIRF7RugNg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit4: Exceptions in TestListener", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I looked at your reply, the code, your reply, what I wrote, the code, your reply, the code... then concluded I was drunk when I replied to you. Sorry about", 
+    "msgId": 15046, 
+    "profile": "nails762", 
+    "topicId": 14967, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-2006222085\">Kent Beck wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; <br/>\n&gt;  &gt; -----Original Message-----<br/>\n&gt;  &gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On<br/>\n&gt;  &gt; Behalf Of J. B. Rainsberger<br/>\n&gt;  &gt; Sent: Thursday, September 29, 2005 5:01 AM<br/>\n&gt;  &gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt;  &gt; Subject: Re: [junit] junit4: Exceptions in TestListener<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; Kent Beck wrote:<br/>\n&gt;  &gt; &gt; David,<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt; I think that the framework should continue to work in as<br/>\n&gt;  &gt; many situations as<br/>\n&gt;  &gt; &gt; possible. If a listener throws an exception, the framework<br/>\n&gt;  &gt; should deal with<br/>\n&gt;  &gt; &gt; it. Contributing to Eclipse calls this the Safe Platform<br/>\n&gt;  &gt; Rule: &quot;As the<br/>\n&gt;  &gt; &gt; provider of an extension point, you must protect yourself against<br/>\n&gt;  &gt; &gt; misbehavior on the part of extenders.&quot; Here is the test I<br/>\n&gt;  &gt; came up with that<br/>\n&gt;  &gt; &gt; I think should pass (and doesn&#39;t currently):<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt;       int count;<br/>\n&gt;  &gt; &gt;     <br/>\n&gt;  &gt; &gt;       class FailingListener implements TestListener {<br/>\n&gt;  &gt; &gt;             public void testRunStarted(int testCount) {<br/>\n&gt;  &gt; &gt;                   count++;<br/>\n&gt;  &gt; &gt;                   throw new Error();<br/>\n&gt;  &gt; &gt;             }<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt;             public void testRunFinished(Runner runner) {<br/>\n&gt;  &gt; &gt;             }<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt;             public void testStarted(Object test, String name) {<br/>\n&gt;  &gt; &gt;             }<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt;             public void testFinished(Object test, String name) {<br/>\n&gt;  &gt; &gt;             }<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt;             public void testFailure(Failure failure) {<br/>\n&gt;  &gt; &gt;             }<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt;             public void testIgnored(Method method) {<br/>\n&gt;  &gt; &gt;             }<br/>\n&gt;  &gt; &gt;       }<br/>\n&gt;  &gt; &gt;     <br/>\n&gt;  &gt; &gt;       public static class OneTest {<br/>\n&gt;  &gt; &gt;             @Test public void nothing() {}<br/>\n&gt;  &gt; &gt;       }<br/>\n&gt;  &gt; &gt;     <br/>\n&gt;  &gt; &gt;       @Test public void failingListener() {<br/>\n&gt;  &gt; &gt;             count= 0;<br/>\n&gt;  &gt; &gt;             Runner runner= new Runner();<br/>\n&gt;  &gt; &gt;             runner.addListener(new FailingListener());<br/>\n&gt;  &gt; &gt;             runner.addListener(new FailingListener());<br/>\n&gt;  &gt; &gt;             runner.run(OneTest.class);<br/>\n&gt;  &gt; &gt;             assertEquals(2, count);<br/>\n&gt;  &gt; &gt;       }<br/>\n&gt;  &gt; &gt;     <br/>\n&gt;  &gt; &gt;     <br/>\n&gt;  &gt; &gt;       public static junit.framework.Test suite() {<br/>\n&gt;  &gt; &gt;             return new JUnit4TestAdapter(TestListenerTest.class);<br/>\n&gt;  &gt; &gt;       }<br/>\n&gt;  &gt; &gt;<br/>\n&gt;  &gt; &gt; I am working on an implementation. Alternatively, should<br/>\n&gt;  &gt; the count be 1?<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; If you&#39;re wondering whether the new FailingListeners should<br/>\n&gt;  &gt; be counted<br/>\n&gt;  &gt; as equal, I believe not. They aren&#39;t Value Objects, so I don&#39;t think<br/>\n&gt;  &gt; they should be compared with value equality.<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; If you&#39;re wondering about something else, then ignore me and<br/>\n&gt;  &gt; wait for an<br/>\n&gt;  &gt; intelligent reply.<br/>\n&gt; <br/>\n&gt; J.B.<br/>\n&gt; <br/>\n&gt; The equality of the listeners wasn&#39;t in question. I wrote the test the way I<br/>\n&gt; did so that it didn&#39;t matter what order the listeners were called (it isn&#39;t<br/>\n&gt; guaranteed), the test would prove that both listeners were called in spite<br/>\n&gt; of their exceptions. My first version of the test had one failing listener<br/>\n&gt; and a second listener that set a flag that was checked with assertTrue(),<br/>\n&gt; but that test implicitly relied on the listeners being called in the order<br/>\n&gt; they were added.<br/>\n<br/>\n </span></blockquote>I looked at your reply, the code, your reply, what I wrote, the code, <br/>\nyour reply, the code... then concluded I was drunk when I replied to <br/>\nyou. Sorry about that.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\n2005 Gordon Pask Award Winner for contribution to Agile practice<br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 15045, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1128266259", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15040, 
+    "headers": {
+        "inReplyToHeader": "PEUxRUxPMEwtMDAwOFZLLTBBQHNtdHBhdXRoMDgubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4=", 
+        "messageIdInHeader": "PDQzM0ZGQTEzLjkwOTA4MDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PEUxRUxPMEwtMDAwOFZLLTBBQHNtdHBhdXRoMDgubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

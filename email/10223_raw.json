@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 10224, 
+    "senderId": "nZGGKi95pphzZdZdB4SkwbOG1ZVfN2pZWIDtz2vLtfhzCI2EjcmYVSQyiVY__l4WJe8iwx79l7KvuMXBcANNeOliRmqHZqSfyATVE8M", 
+    "systemMessage": false, 
+    "subject": "Re: Universal Parameterized Test Suite", 
+    "from": "Chad Woolley &lt;lists@...&gt;", 
+    "authorName": "Chad Woolley", 
+    "msgSnippet": "... I got a little confused here.  When you refer to the hypothetical example , you are NOT talking about the example code just below - correct? I think you", 
+    "msgId": 10223, 
+    "rawEmail": "Return-Path: &lt;lists@...&gt;\r\nX-Sender: lists@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 40133 invoked from network); 17 Jan 2004 00:09:13 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m11.grp.scd.yahoo.com with QMQP; 17 Jan 2004 00:09:13 -0000\r\nReceived: from unknown (HELO breaker.dakotacom.net) (66.192.152.146)\n  by mta2.grp.scd.yahoo.com with SMTP; 17 Jan 2004 00:09:13 -0000\r\nReceived: from thewoolleyweb.com (dhcp490.broadband01.tus.dakotacom.net [69.9.21.234])\n\tby breaker.dakotacom.net (8.12.2/x.y.z) with ESMTP id i0H099Ob011675\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 16 Jan 2004 17:09:13 -0700 (MST)\r\nX-Sent-Via: DakotaCom.NET\r\nMessage-ID: &lt;40087DDA.5030806@...&gt;\r\nDate: Fri, 16 Jan 2004 17:12:10 -0700\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.6b) Gecko/20031205 Thunderbird/0.4\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;1074294446.5890.69423.m12@yahoogroups.com&gt;\r\nIn-Reply-To: &lt;1074294446.5890.69423.m12@yahoogroups.com&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 66.192.152.146\r\nFrom: Chad Woolley &lt;lists@...&gt;\r\nSubject: Re: Universal Parameterized Test Suite\r\nX-Yahoo-Group-Post: member; u=142650165\r\nX-Yahoo-Profile: thewoolleyman\r\n\r\nJ. B. Rainsberger wrote:\n&gt; Subject: Re: Re: Universal Parameterized Test Suite\n&gt; \n&gt; Bert wrote:\n&gt;&gt;Take your example below.  You pass 4 parameters to the constructor of\n&gt;&gt;your test class and then execute testReturnValues for the number of\n&gt;&gt;fixtures you&#39;ve set up (5 in the example).\n&gt;&gt;\n&gt;&gt;Now take my example below.  I have 3 distinct test methods.   Each of\n&gt;&gt;the 3 methods requires a different set of parameters.  \n&gt; \n&gt; \n&gt; &quot;different set of parameters&quot; =&gt; different fixtures, using the \n&gt; definition of &quot;fixture&quot;.\n&gt; \n&gt; In general, if you have two tests that operate on different objects, \n&gt; then they should use different fixtures. That means one of two things:\n&gt; \n&gt;   * Put them in separate TestCase classes, *or*\n&gt;   * Put them in the same TestCase class, but /do not/ extract fixture \n&gt; setup code into setUp()\n&gt; \n&gt; As a result, I would implement your hypothetical example as three \n&gt; separate Parameterized Test Case classes.\n\nI got a little confused here.  When you refer to the &quot;hypothetical example&quot;, you \nare NOT talking about the example code just below - correct?\n\nI think you are saying that the Parameterized Test Case (not Suite) makes sense \nwhen you want to run the SAME test MULTIPLE times with DIFFERENT sets of data. \nIs that right?\n\n&gt;&gt;class MyClassTest extends TestCase {\n&gt;&gt;RealClass realClase;\n&gt;&gt;\n&gt;&gt;public MyClassTest(String testCaseName) {\n&gt;&gt;   super(testCaseName);\n&gt;&gt;}\n&gt;&gt;\n&gt;&gt;public void setUp() throws Exception {\n&gt;&gt;   realClass = new RealClass();\n&gt;&gt;   // Do some setup\n&gt;&gt;}\n&gt;&gt;\n&gt;&gt;public testGetStuff() {\n&gt;&gt;    realClass.getStuff(param1, param2);\n&gt;&gt;    // Do your asserts, etc.\n&gt;&gt;}\n&gt;&gt;\n&gt;&gt;public testUpdateStuff() {\n&gt;&gt;    realClass.getStuff(param1, param2, param3);\n&gt;&gt;    // Do your asserts, etc.\n&gt;&gt;}\n&gt;&gt;\n&gt;&gt;public testDeleteStuff() {\n&gt;&gt;    realClass.getStuff(param1, param2, param3, param4);\n&gt;&gt;    // Do your asserts, etc.\n&gt;&gt;}\n&gt; \n&gt; \n&gt; Looking on these tests, there is no gain to using Parameterized Test \n&gt; Case/Suite. The whole point of the parameterized test patterns is to \n&gt; make it easier to write data-driven tests where you&#39;re executing the \n&gt; same set of tests on multiple rows of data, much like a FIT test.\n\nSo, to clarify:  This example doesn&#39;t makes sense as a Parameterized Test Case \nbecause, because you are running DIFFERENT tests with DIFFERENT sets of data. \nSome PORTIONS of the sets of data may be the same (for example, param1 may \nalways have the same value), but the SETS are different for each test (because \nthe *number* of params is different for each test, even though the *value* of an \nindividual param may be the same across multiple tests).  Is this right?\n\nSo, this means that there may be some duplication in setting up portions of the \nfixture code (the part that assigns the value to param1, for example).  However, \nthis duplication should be addressed in other ways, such as consolidating the \ncommon logic to a setUp() method and instance variables, or pulling it out to a \nsuperclass or utility class, if it needs to be used across multiple TestCases. \nDoes that sound right too?\n\nThanks,\nChad\n\n\n", 
+    "profile": "thewoolleyman", 
+    "topicId": 9906, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 142650165, 
+    "prevInTime": 10222, 
+    "contentTrasformed": false, 
+    "postDate": "1074298330", 
+    "canDelete": false, 
+    "nextInTopic": 10241, 
+    "prevInTopic": 10222, 
+    "headers": {
+        "inReplyToHeader": "PDEwNzQyOTQ0NDYuNTg5MC42OTQyMy5tMTJAeWFob29ncm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwMDg3RERBLjUwMzA4MDZAdGhld29vbGxleXdlYi5jb20+", 
+        "referencesHeader": "PDEwNzQyOTQ0NDYuNTg5MC42OTQyMy5tMTJAeWFob29ncm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 297, 
+    "postDate": "980283129", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "AeUyfj5gokRdL9Zb_92b4UDU4ATDhOefGMquuAyfGMmi6u0nYAXnx1_aXo1lIdGx7xT9iZHkqYXTm06lOGa2Ue-9-oDf", 
+    "nextInTime": 300, 
+    "userId": 0, 
+    "prevInTime": 298, 
+    "prevInTopic": 297, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDEwMTIzMjA1MjA5LjMzNjQucW1haWxAd2ViMTE2MDgubWFpbC55YWhvby5jb20+"
+    }, 
+    "authorName": "Robert Sartin", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "Well, unit testing really requires having an implementation, so let s assume one: import java.util.LinkedList; /** A trivial and incomplete FIFO Queue class. *", 
+    "contentTrasformed": false, 
+    "msgId": 299, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;sartin@...&gt;\r\nX-Sender: sartin@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-7_0_1_2); 23 Jan 2001 21:11:04 -0000\r\nReceived: (qmail 42143 invoked from network); 23 Jan 2001 20:52:10 -0000\r\nReceived: from unknown (10.1.10.27) by l8.egroups.com with QMQP; 23 Jan 2001 20:52:10 -0000\r\nReceived: from unknown (HELO web11608.mail.yahoo.com) (216.136.172.60) by mta2 with SMTP; 23 Jan 2001 20:52:09 -0000\r\nMessage-ID: &lt;20010123205209.3364.qmail@...&gt;\r\nReceived: from [24.27.18.33] by web11608.mail.yahoo.com; Tue, 23 Jan 2001 12:52:09 PST\r\nDate: Tue, 23 Jan 2001 12:52:09 -0800 (PST)\r\nReply-To: sartin@...\r\nSubject: Re: [junit] tests for a queue class?\r\nTo: junit@egroups.com\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Robert Sartin &lt;sartin@...&gt;\r\nFrom: Robert Sartin &lt;sartin@...&gt;\r\n\r\nWell, unit testing really requires having an implementation, so let&#39;s\nassume one:\n\nimport java.util.LinkedList;\n\n/** A trivial and incomplete FIFO Queue class.\n * @author Robert Sartin\n * @version 1.1\n */\npublic class Queue {\n  LinkedList queue = new LinkedList();\n\n  /** Construct an empty Queue. */\n  public Queue() {\n  }\n\n  /** Remove and return first item from a Queue that has an item.\n   * @return the Object that was at the front of the Queue\n   */\n  public Object remove() {\n    return queue.removeFirst();\n  }\n\n  /** Add an Object to the end of the Queue.\n   * @param o the Object to add\n   */\n  public void add(Object o) {\n    queue.addLast(o);\n  }\n\n  /** Query if Queue is empty.\n   * @return true if the Queue is empty\n   */\n  public boolean isEmpty() {\n    return 0 == queue.size();\n  }\n}\n\nand a quickie TestCase for it:\n\nimport junit.framework.Test;\nimport junit.framework.TestCase;\nimport junit.framework.TestSuite;\n\npublic class QueueTest extends TestCase {\n  public QueueTest(String name) {\n    super(name);\n  }\n\n  public static Test suite() {\n    return new TestSuite(QueueTest.class);\n  }\n\n  public static void main(String[] args) {\n    junit.textui.TestRunner.run(suite());\n  }\n\n  /** Verify Queue is empty when created. */\n  public void testEmptyOnCreation() {\n    Queue qut = new Queue();\n    assert(qut.isEmpty());\n  }\n\n  /** Verify Queue can have single item added and \n   * it is returned on remove. \n   */\n  public void testAddThenRemove() {\n    Queue qut = new Queue();\n    Object foo = new Object();\n    qut.add(foo);\n\n    assertSame(foo, qut.remove());\n    assert(qut.isEmpty());\n  }\n\n  /** Verify Queue can have multiple items added and \n   * they are returned in FIFO order. Verify with two\n   * simple interleavings of add/remove.\n   */\n  public void testFiFo() {\n    Queue qut = new Queue();\n    Object foo1 = new Object();\n    Object foo2 = new Object();\n    Object foo3 = new Object();\n    Object foo4 = new Object();\n\n    qut.add(foo1);\n    qut.add(foo2);\n    assertSame(foo1, qut.remove());\n    assertSame(foo2, qut.remove());\n    assert(qut.isEmpty());\n\n    qut.add(foo3);\n    assertSame(foo3, qut.remove());\n    assert(qut.isEmpty());\n    qut.add(foo4);\n    assertSame(foo4, qut.remove());\n    assert(qut.isEmpty());\n  }\n}\n\nIt seems to test everything that could possibly break. Of course, now\nthat I&#39;ve said that someone will point out some defects....\n\nNote the missing tests:\n\n- nothing to try to &quot;overflow&quot; a Queue since I didn&#39;t define what that\nwould mean or how it would happen. [In fact, it doesn&#39;t have limits\nother than available heap.] A BoundedQueue would have test on those\naspects.\n\n- nothing to verify thread safety since I did not explicitly say it was\nthread safe. [In fact, it is not thread safe.] A ThreadSafeQueue would\nhave tests on those aspects.\n\n- nothing to verify what happens when I remove from an empty Queue\nsince I did not specify what should happen. [In fact, it will throw\nNoSuchElementException, but this wasn&#39;t specified.] Personally, if it\nwere really necessary I suppose I might test (and then maybe specify)\nthe NoSuchElementException.\n\nRegards,\n\nRob\n\n\n__________________________________________________\nDo You Yahoo!?\nYahoo! Auctions - Buy the things you want at great prices. \nhttp://auctions.yahoo.com/\n\n", 
+    "subject": "Re: [junit] tests for a queue class?"
+}

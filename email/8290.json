@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 8291, 
+    "senderId": "991Cum1zKwO_fMShdpUL2y55va0Kvr1ADDd_8cov659LXc8sufZSeEZIwMFWitFyULEA1_CquerVPLZdnggxKRVNkNKOuJbJGCKcNO3hEQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Dynamic names for tests revisited", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "By George I think he s got it! Still, get rid of the abbreviations and use meaningful names. Since you re using Eclipse, you don t have to do much typing. :) ", 
+    "msgId": 8290, 
+    "profile": "nails762", 
+    "topicId": 8244, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1283376482\">By George I think he&#39;s got it!<br/>\n<br/>\nStill, get rid of the abbreviations and use meaningful names. Since you&#39;re using Eclipse, you don&#39;t have to do much typing. :)<br/>\n<br/>\nBTW: if you&#39;re not using Eclipse 2.1, upgrade NOW. The refactoring tools are much nicer.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;So said Thomas Porter on 2003-06-01 --------------------<br/>\n&gt;Thanks to all for the quick responses.  here is what I have so far, but <br/>\n&gt;I am still getting errors when I try to run the tests.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;The class to be tested:<br/>\n&gt;---------------------------------------------------------<br/>\n&gt;/**<br/>\n&gt;  * Vol, a trivial volume object.<br/>\n&gt;  *<br/>\n&gt;  */<br/>\n&gt;public class Vol {<br/>\n&gt;   private int hight;<br/>\n&gt;   private int width;<br/>\n&gt;   private int depth;<br/>\n&gt;   private int volume;<br/>\n&gt;<br/>\n&gt;   public Vol() {<br/>\n&gt;     volume = 0;<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   /**<br/>\n&gt;    * @param i<br/>\n&gt;    */<br/>\n&gt;   public void calcVolume(int h, int w, int d) {<br/>\n&gt;     volume = h * w * d;<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   /**<br/>\n&gt;    * Get the Volume value.<br/>\n&gt;    * @return the Volume value.<br/>\n&gt;    */<br/>\n&gt;   public int getVolume() {<br/>\n&gt;     return volume;<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;}<br/>\n&gt;---------------------------------------------------------<br/>\n&gt;<br/>\n&gt;The extended TestCase class: ParameterizedTestCase:<br/>\n&gt;----------------------------------------------------------<br/>\n&gt;public class ParameterizedTestCase extends TestCase {<br/>\n&gt;      static int p1;<br/>\n&gt;      static int p2;<br/>\n&gt;      static int p3;<br/>\n&gt;      static int p4;<br/>\n&gt;<br/>\n&gt;      ParameterizedTestCase(int p1, int p2, int p3, int p4 ) {<br/>\n&gt;            super(makeSuiteName(p1, p2, p3));<br/>\n&gt;            ParameterizedTestCase.p1 = p1;<br/>\n&gt;            ParameterizedTestCase.p2 = p2;<br/>\n&gt;            ParameterizedTestCase.p3 = p3;<br/>\n&gt;            ParameterizedTestCase.p4 = p4;<br/>\n&gt;      }<br/>\n&gt;      static String makeSuiteName(int p1, int p2, int p3) {<br/>\n&gt;      return &quot;ParameterizedTestCase&lt;&quot; + p1 + &quot;, &quot; + p2 + &quot;, &quot; + p3 + &quot;&gt;&quot;;<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;      public void testV1() {<br/>\n&gt;            Vol v1 = new Vol();<br/>\n&gt;            v1.calcVolume(p1, p2, p3);<br/>\n&gt;            assertEquals(p4, v1.getVolume());<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;}<br/>\n&gt;----------------------------------------------------------<br/>\n&gt;<br/>\n&gt;And the test code, TestVol<br/>\n&gt;---------------------------------------------------------<br/>\n&gt;mport junit.framework.Test;<br/>\n&gt;import junit.framework.TestCase;<br/>\n&gt;import junit.framework.TestSuite;<br/>\n&gt;import junit.textui.TestRunner;<br/>\n&gt;<br/>\n&gt;public class TestVol extends TestCase {<br/>\n&gt;      public static Test suite() {<br/>\n&gt;      TestSuite suite = new TestSuite();<br/>\n&gt;<br/>\n&gt;      suite.addTest(new ParameterizedTestCase(0, 0, 0, 0));<br/>\n&gt;      return suite;<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;      public static void main( String[] args ) {<br/>\n&gt;            TestRunner.main( new String[] { &quot;TestVol&quot; } );<br/>\n&gt;      }<br/>\n&gt;<br/>\n&gt;}<br/>\n&gt;---------------------------------------------------------<br/>\n&gt;<br/>\n&gt;And the error I get JUnit output captured from ant run:<br/>\n&gt;---------------------------------------------------------<br/>\n&gt;Testsuite: TestVol<br/>\n&gt;Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.011 sec<br/>\n&gt;<br/>\n&gt;Testcase: ParameterizedTestCase&lt;0, 0, 0&gt; took 0.006 sec<br/>\n&gt;         FAILED<br/>\n&gt;Method &quot;ParameterizedTestCase&lt;0, 0, 0&gt;&quot; not found<br/>\n&gt;junit.framework.AssertionFailedError: Method &quot;ParameterizedTestCase&lt;0, <br/>\n&gt;0, 0&gt;&quot; not found<br/>\n&gt;<br/>\n&gt;Testcase: ParameterizedTestCase&lt;0, 0, 0&gt;<br/>\n&gt;---------------------------------------------------------<br/>\n&gt;<br/>\n&gt;While I appear to have generated a name, which perhaps needs to change <br/>\n&gt;to a valid method name (no embedded spaces & &#39;&lt;&#39; characters), it does <br/>\n&gt;not appear that the suite.addTest<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Yahoo! Groups Sponsor<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;To unsubscribe from this group, send an email to:<br/>\n&gt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service.<br/>\n </span></blockquote>J. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 8289, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1055174489", 
+    "canDelete": false, 
+    "nextInTopic": 8293, 
+    "prevInTopic": 8246, 
+    "headers": {
+        "inReplyToHeader": "PDNFREE5MTFGLjYwMDAxMDJAbWluZHNwcmluZy5jb20+", 
+        "messageIdInHeader": "PDIwMDMwNjA5MTIwMTI5MDgyNC40NzNCMjNBMkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDNFREE5MTFGLjYwMDAxMDJAbWluZHNwcmluZy5jb20+"
+    }
+}

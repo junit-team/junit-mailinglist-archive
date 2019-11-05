@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20688, 
+    "senderId": "VYbOIEwJXsSf3K90y3Ve_x40EkKp-fSC32_Ddy6jvJ3-hjaJxy91PAwGhQXaiKCTF17OYZi09NwdYVZ4Ju21fz7ZhqE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] which is the best way to obtain test method execution time", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Shubha, In JUnit 4.4, you can subclass JUnit4ClassRunner, and override invokeTestMethod.  This works in 4.4, and works, but is deprecated in 4.5. Do you want", 
+    "msgId": 20687, 
+    "profile": "dsaff", 
+    "topicId": 20672, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1882038492\">Shubha,<br/>\n<br/>\nIn JUnit 4.4, you can subclass JUnit4ClassRunner, and override<br/>\ninvokeTestMethod.  This works in 4.4, and works, but is deprecated in<br/>\n4.5.<br/>\n<br/>\nDo you want to execute the method many times on different instances of<br/>\na class, or on the same instance?<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Sun, Jul 13, 2008 at 9:47 PM, Shubha B S &lt;mailtoshubha@...&gt; wrote:<br/>\n&gt; Hello Kent,<br/>\n&gt;<br/>\n&gt; Do we have a way to achieve this with Junit 4.4?<br/>\n&gt;<br/>\n&gt; Thanks<br/>\n&gt; Shubha<br/>\n&gt;<br/>\n&gt; ----- Original Message ----<br/>\n&gt; From: Kent Beck &lt;kentb@...&gt;<br/>\n&gt; To: junit@yahoogroups.com<br/>\n&gt; Sent: Friday, 11 July, 2008 1:53:41 AM<br/>\n&gt; Subject: RE: [junit] which is the best way to obtain test method execution<br/>\n&gt; time<br/>\n&gt;<br/>\n&gt; Dear Shubha,<br/>\n&gt;<br/>\n&gt; Here is one way to solve your problem in JUnit 4.5. The key is understanding<br/>\n&gt; that in 4.5 every test is run by a &quot;block&quot; of &quot;statements&quot; (see<br/>\n&gt; http://threeriversi nstitute. org/TwoMoreImple mentationPattern s.htm for<br/>\n&gt; more<br/>\n&gt; details). Befores and afters are run by statements high up in the block. The<br/>\n&gt; last statement in the block just invokes the test method. You can modify<br/>\n&gt; this behavior by wrapping this statement in a statement that measures time.<br/>\n&gt; Here&#39;s an overview of the sample code below:<br/>\n&gt; * NanoTimer is a little utility to measure time (at the end we&#39;ll make<br/>\n&gt; sure that timing just the test takes less than half the time of timing the<br/>\n&gt; test including @Before and @After)<br/>\n&gt; * MeasuringInvoker wraps a Statement and times it. You will probably want<br/>\n&gt; to save your timing measurements somewhere for later reporting.<br/>\n&gt; * The MeasuringRunner extends the default BlockJUnit4ClassRun ner by<br/>\n&gt; wrapping the superclass&#39; default invoker with our MeasuringInvoker.<br/>\n&gt;<br/>\n&gt; That&#39;s the body of the extension.. What follows is a self-test of the code.<br/>\n&gt; The sample class has a @Before and @After to start and end measuring the<br/>\n&gt; overall time. The test ensures that the time required for just the test<br/>\n&gt; method is less than half of the time required for the whole test including<br/>\n&gt; befores and afters.<br/>\n&gt;<br/>\n&gt; I hope this helps.<br/>\n&gt;<br/>\n&gt; Regards,<br/>\n&gt;<br/>\n&gt; Kent Beck<br/>\n&gt; Three Rivers Institute<br/>\n&gt; public class MeasureTestOnlyTime Test {<br/>\n&gt;<br/>\n&gt; static class NanoTimer {<br/>\n&gt; private long start;<br/>\n&gt; private long end;<br/>\n&gt; public void start() { start= System.nanoTime( ); }<br/>\n&gt; public void end() { end= System.nanoTime( ); }<br/>\n&gt; public long duration() { return end - start; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; static NanoTimer all= new NanoTimer();<br/>\n&gt; static NanoTimer justTest= new NanoTimer();<br/>\n&gt;<br/>\n&gt; static class MeasuringInvoker extends Statement {<br/>\n&gt; private final Statement invoker;<br/>\n&gt;<br/>\n&gt; public MeasuringInvoker( Statement invoker) {<br/>\n&gt; this.invoker= invoker;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Override<br/>\n&gt; public void evaluate() throws Throwable {<br/>\n&gt; justTest.start( );<br/>\n&gt; invoker.evaluate( );<br/>\n&gt; justTest.end( );<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; public static class MeasuringRunner extends BlockJUnit4ClassRun ner {<br/>\n&gt; public MeasuringRunner( Class&lt; ? &gt; klass) throws InitializationError {<br/>\n&gt; super(klass) ;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Override<br/>\n&gt; protected Statement invoke(FrameworkMet hod method, Object test) {<br/>\n&gt; return new MeasuringInvoker( super.invoke( method, test));<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @RunWith(MeasuringR unner.class)<br/>\n&gt; public static class LongBeforeAndAfter {<br/>\n&gt; @Before public void before() {<br/>\n&gt; all.start();<br/>\n&gt; }<br/>\n&gt; @After public void after() {<br/>\n&gt; all.end();<br/>\n&gt; }<br/>\n&gt; @Test public void test() {<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; @Test public void dontMeasureBeforeAn dAfter() {<br/>\n&gt; JUnitCore.runClasse s(LongBeforeAndA fter.class) ;<br/>\n&gt; assertTrue(all. duration( ) &gt; justTest.duration( ) * 2);<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt; Download prohibited? No problem. CHAT from any browser, without download. Go<br/>\n&gt; to http://in.messenger.yahoo.com/webmessengerpromo.php/<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 20686, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1216135988", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20681, 
+    "headers": {
+        "inReplyToHeader": "PDgzNTEwMy41MzkzOC5xbUB3ZWI5NDgwMy5tYWlsLmluMi55YWhvby5jb20+", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgwNzE1MDgzM2c2NmUzM2MxZHA2Y2Y1ZmM3M2FhMGRmZDFmQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDgzNTEwMy41MzkzOC5xbUB3ZWI5NDgwMy5tYWlsLmluMi55YWhvby5jb20+"
+    }
+}

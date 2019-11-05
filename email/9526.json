@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 40, 
+    "nextInTime": 9527, 
+    "senderId": "paRUsJwi2ywsHMYs785_I2iruZBYZmRatcmzOwFHvWz9DRmFlwUExLSERiufXIj1Gw7XrGXQILlChYcTaz_2w9YGxIrcH2V82Tjy", 
+    "systemMessage": false, 
+    "subject": "Re: Recursive TestRunner -- one implementation", 
+    "from": "&quot;Jeff Grigg&quot; &lt;jeffgrigg@...&gt;", 
+    "authorName": "Jeff Grigg", 
+    "msgSnippet": "... Funny; it just happens that I m doing recursive testing: I m using jAdvise/javassist to instrument classes at run time, a kind of Aspect-Oriented", 
+    "msgId": 9526, 
+    "profile": "jeffgrigg63132", 
+    "topicId": 9399, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139880894, 
+    "messageBody": "<div id=\"ygrps-yiv-104639608\"><blockquote><span title=\"ireply\">&gt; On Sat, 27 Sep 2003, Rakesh wrote:<br/>\n&gt;&gt; I have designed a set of test cases which I have added<br/>\n&gt;&gt; to a TestSuite. Now I want to run this TestSuite<br/>\n&gt;&gt; recursively.  [...]<br/>\n<br/>\n </span></blockquote>--- Jim Dixon &lt;jdd@d...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Just to get things clear, please confirm that you mean<br/>\n&gt; something like this:<br/>\n&gt; public TestX extends TestCase {  [...]<br/>\n&gt;    public void testRecursively () { ...<br/>\n&gt;         testRecursively();<br/>\n&gt;    } }<br/>\n<br/>\n </span></blockquote>Funny; it just happens that I&#39;m doing &quot;recursive&quot; testing:<br/>\n<br/>\nI&#39;m using jAdvise/javassist to instrument classes at run time, a <br/>\nkind of Aspect-Oriented Programming (AOP).  I do this to implement <br/>\nMock Objects for classes in an uncooperative third party library -- <br/>\nmade by people who seem to believe that unsubclassable concrete <br/>\nclasses are a good idea, and that interfaces are an unnecessary <br/>\ncomplexity.  Using AOP I can change some aspects of the <br/>\nimplementation of the 3rd party library while running in the test <br/>\nenvironment.<br/>\n<br/>\n*BUT* for any of this to work, the classes under test must be loaded <br/>\nwith a custom class loader.  This is the rub:  Standard JUnit test <br/>\nrunners load the TestCase classes using the standard Java class <br/>\nloader.  So when I load the application classes using the <br/>\njAdvise/javassist class loader, the tests can only communicate with <br/>\nthe application objects using Reflection, because classes and <br/>\ninterfaces are incompatible when loaded with different class <br/>\nloaders.  Writing all test logic using Reflection would be really <br/>\nunpleasant.  So I need to load the TestCase classes with the <br/>\njAdvise/javassist class loader.<br/>\n<br/>\nHmmm...<br/>\n<br/>\nHere&#39;s what I do:<br/>\nEach test method that needs to run under jAdvise/javassist checks to <br/>\nsee if it was loaded by a JUnit runner or jAdvise.  If it was loaded <br/>\nby a JUnit runner, it calls a common method that fires up jAdvise, <br/>\nloads the class with the custom class loader, and then calls the <br/>\nsame method in the loaded class.  (It also calls setUp & tearDown in <br/>\nthe other class.)<br/>\n<br/>\nHere&#39;s what it looks like:<br/>\n| public class MyTestCase extends TestCase {<br/>\n|    final boolean runningInCustomClassLoader;<br/>\n|    public MyTestCase() { super(&quot;MyTestCase&quot;);<br/>\n|       this.runningInCustomClassLoader = true; }<br/>\n|    public MyTestCase(String name) { super(name);<br/>\n|       this.runningInCustomClassLoader = false; }<br/>\n|<br/>\n|    public void testMethod() {<br/>\n|       if (this.runningInCustomClassLoader) {<br/>\n|          // Do application testing here.<br/>\n|       } else { // called by JUnit<br/>\n|          callSelfInCustomClassLoader();<br/>\n| } } }<br/>\n<br/>\nCrazy, eh?  ;-&gt;<br/>\n<br/>\n(In Java 1.4 there&#39;s an easy way to get a useful stack trace -- <br/>\nso &#39;callSelfInCustomClassLoader&#39; can determine the caller&#39;s class <br/>\nand method name.)<br/>\n<br/>\n_ _ _<br/>\n<br/>\n<br/>\nFurther  (or worse, if you wish  ;-) ...<br/>\n<br/>\nI often find myself in a related &quot;recursive testing&quot; situation much <br/>\nlike this:<br/>\n<br/>\nI&#39;ve written a bunch of really nice test methods in a TestCase.  <br/>\nThey work great.  Now I want to run all these tests with a slightly <br/>\ndifferent configuration of the system -- in addition to the existing <br/>\nconfiguration that they test, not instead of it.  Like, here are a <br/>\nbunch of tests that check sending integers and strings through <br/>\na &quot;pipe&quot; from client to server.  Now I&#39;d like to run the whole thing <br/>\nagain, going from server to client.  (The protocol is asymmetrical.  <br/>\nDon&#39;t blame me; I inherited it!  ;-)  OK, that was great for XML <br/>\nformatted messages, but I&#39;d like to try both directions again with <br/>\nbinary formatted messages.  Oh, and one more time, both ways, using <br/>\nMicrosoft&#39;s DCOM object serialization.<br/>\n<br/>\nThus far I&#39;ve been accomplishing these tricks by having each test <br/>\nmethod call subroutines that try each of the desired permutations.  <br/>\nSo I&#39;ll have the &#39;testSendBooleanTrue&#39; method call XML, binary and <br/>\nDCOM methods.  Each of those calls clientToServer and serverToClient <br/>\nmethods.  And then, after all that configuration goes on, down at <br/>\nthe deepest levels, the test takes place -- often by calling back to <br/>\nanonymous inner classes passed in from the higher levels.<br/>\n<br/>\nIt&#39;s icky, but it works.<br/>\n<br/>\nAt least I&#39;ve yet to resort to Reflection or rewriting JUnit to <br/>\naccomplish what I need.  ;-&gt;     ...at least /not yet./   ;-&gt;</div>", 
+    "prevInTime": 9525, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1064711476", 
+    "canDelete": false, 
+    "nextInTopic": 9527, 
+    "prevInTopic": 9525, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwOTI3MTk1NDI1LkU5NzI5OS0xMDAwMDBAbG9jYWxob3N0Pg==", 
+        "messageIdInHeader": "PGJsNWNmaytwYzljQGVHcm91cHMuY29tPg=="
+    }
+}

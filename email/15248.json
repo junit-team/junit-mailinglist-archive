@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 79, 
+    "nextInTime": 15249, 
+    "senderId": "aoDYqG_0iNgwFZbMh9UbDwMOZqCkTG12zTT6E7U3L2otE2cLolS8JCnToBo72-amQ9Tdat0VtLLjilevKTdsPNW1HE25Acs", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit 4 restructuring", 
+    "from": "Neil Swingler &lt;neil@...&gt;", 
+    "authorName": "Neil Swingler", 
+    "msgSnippet": "... Hi Kent, I have made invokeTestMethod protected in my version of junit. It enables me to introduce the classloader. Here is my code: public class", 
+    "msgId": 15248, 
+    "profile": "neil_swingler", 
+    "topicId": 15154, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 230174996, 
+    "messageBody": "<div id=\"ygrps-yiv-1417692006\">Kent Beck wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Neil,<br/>\n&gt;<br/>\n&gt; Thank you for the example. Would it be sufficient to make<br/>\n&gt; invokeTestMethod(Method method) protected so you could subclass<br/>\n&gt; TestClassRunner?<br/>\n&gt;<br/>\n&gt;   <br/>\n&gt;&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt;&gt; Behalf Of Neil Swingler<br/>\n&gt;&gt;     <br/>\n&gt;&gt; decorating a test class TestSuite in JUnit3 but does not offer a <br/>\n&gt;&gt; solution to decorating the individual test methods.<br/>\n&gt;&gt;<br/>\n&gt;&gt; Lets say I code a custom Runner to run each test in it&#39;s own <br/>\n&gt;&gt; classloader <br/>\n&gt;&gt; but otherwise I want all the other standard JUnit4 annotations to be <br/>\n&gt;&gt; respected. I can reuse the TestIntrospector and <br/>\n&gt;&gt; TestMethodRunner classes <br/>\n&gt;&gt; (although they are in an internal package). But there is <br/>\n&gt;&gt; still code in <br/>\n&gt;&gt; TestClassRunner to do with exception handling that I will <br/>\n&gt;&gt; have to duplicate.<br/>\n&gt;&gt;<br/>\n&gt;&gt;     <br/>\n </span></blockquote>Hi Kent, I have made invokeTestMethod protected in my version of junit. <br/>\nIt enables me to introduce the classloader. Here is my code:<br/>\n<br/>\npublic class ReloadingTestClassRunner extends TestClassRunner {<br/>\n    private TestNotifier notifier;<br/>\n    private Class&lt;?&gt; testClass;<br/>\n<br/>\n    public void initialize(TestNotifier notifier,<br/>\n            Class&lt;? extends Object&gt; testClass) {<br/>\n        super.initialize(notifier, testClass);<br/>\n        this.notifier = notifier;<br/>\n        this.testClass = testClass;<br/>\n    }<br/>\n<br/>\n    protected void invokeTestMethod(Method method) throws Exception {<br/>\n        ClassReloader classReloader = new ClassReloader(<br/>\n                (URLClassLoader) testClass<br/>\n                        .getClassLoader());<br/>\n        Class&lt;?&gt; reloadedClass = classReloader<br/>\n                .reload(testClass);<br/>\n        Method reloadedMethod = reloadedClass.getMethod(method<br/>\n                .getName(), (Class[]) method<br/>\n                .getParameterTypes());<br/>\n        new TestMethodRunner(reloadedClass.newInstance(),<br/>\n                reloadedMethod, this.notifier).run();<br/>\n    }<br/>\n}<br/>\n<br/>\n- Neil</div>", 
+    "prevInTime": 15247, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1130103470", 
+    "canDelete": false, 
+    "nextInTopic": 15252, 
+    "prevInTopic": 15247, 
+    "headers": {
+        "inReplyToHeader": "PEUxRVQ4aVMtMDAwMjM0LURyQHNtdHBhdXRoMDYubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4=", 
+        "messageIdInHeader": "PDQzNUMwMkFFLjIwMjA3MDlAc3dpbmdsZXIuY2g+", 
+        "referencesHeader": "PEUxRVQ4aVMtMDAwMjM0LURyQHNtdHBhdXRoMDYubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

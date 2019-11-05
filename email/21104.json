@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 21105, 
+    "senderId": "wWkOHYtQBg0ZBDrXFYcVA5YpNyddBhMmb1uHUYZS9RlVJw-uGrOdjyxtp37wvUDtFAKK_gTskpdkGyAGH9oMfMnRg44", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] FYI - random (JVM-related?) test error", 
+    "from": "&quot;David Saff&quot; &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "James, If I had to guess, there was a mismatch in JUnit versions.  If an older JUnit was before a newer JUnit on the classpath, then this could happen:", 
+    "msgId": 21104, 
+    "profile": "dsaff", 
+    "topicId": 21082, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-2089038856\">James,<br/>\n<br/>\nIf I had to guess, there was a mismatch in JUnit versions.  If an<br/>\nolder JUnit was before a newer JUnit on the classpath, then this could<br/>\nhappen: BlockJUnit4ClassRunner has only been defined since 4.5, but<br/>\nqueries on other class names would have found the earlier versions.<br/>\nThanks,<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Mon, Nov 10, 2008 at 10:00 AM, James Abley &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:james.abley@...\">james.abley@...</a>&gt; wrote:<br/>\n&gt; Hi all,<br/>\n&gt;<br/>\n&gt; Our continuous integration environment picked up a strange thing which<br/>\n&gt; I&#39;m sharing in case anyone else has similar cause to scratch their<br/>\n&gt; head.<br/>\n&gt;<br/>\n&gt; ----------------------------------------------------------<br/>\n&gt; Test set: com.example.expression.evaluator.TestFormatDateTime<br/>\n&gt; ----------------------------------------------------------<br/>\n&gt; Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.007<br/>\n&gt; sec &lt;&lt;&lt; FAILURE!<br/>\n&gt; initializationError0(com.example.expression.evaluator.TestFormatDateTime)<br/>\n&gt; Time elapsed: 0.003 sec &lt;&lt;&lt; ERROR!<br/>\n&gt; java.lang.NoSuchFieldError: NULL<br/>\n&gt; at org.junit.runners.ParentRunner.&lt;init&gt;(ParentRunner.java:47)<br/>\n&gt; at<br/>\n&gt; org.junit.runners.BlockJUnit4ClassRunner.&lt;init&gt;(BlockJUnit4ClassRunner.java:56)<br/>\n&gt; at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)<br/>\n&gt; at<br/>\n&gt; sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)<br/>\n&gt; at<br/>\n&gt; sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)<br/>\n&gt; at java.lang.reflect.Constructor.newInstance(Constructor.java:494)<br/>\n&gt; at<br/>\n&gt; org.junit.internal.requests.ClassRequest.buildRunner(ClassRequest.java:33)<br/>\n&gt; at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:28)<br/>\n&gt; at<br/>\n&gt; org.apache.maven.surefire.junit4.JUnit4TestSet.&lt;init&gt;(JUnit4TestSet.java:45)<br/>\n&gt; at<br/>\n&gt; org.apache.maven.surefire.junit4.JUnit4DirectoryTestSuite.createTestSet(JUnit4DirectoryTestSuite.java:56)<br/>\n&gt; at<br/>\n&gt; org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.locateTestSets(AbstractDirectoryTestSuite.java:96)<br/>\n&gt; at<br/>\n&gt; org.apache.maven.surefire.Surefire.createSuiteFromDefinition(Surefire.java:209)<br/>\n&gt; at org.apache.maven.surefire.Surefire.run(Surefire.java:156)<br/>\n&gt; at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br/>\n&gt; at<br/>\n&gt; sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)<br/>\n&gt; at<br/>\n&gt; sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)<br/>\n&gt; at java.lang.reflect.Method.invoke(Method.java:585)<br/>\n&gt; at<br/>\n&gt; org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:338)<br/>\n&gt; at<br/>\n&gt; org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:997)<br/>\n&gt;<br/>\n&gt; It looks to be JVM related. For whatever reason, that test class had<br/>\n&gt; an explicit @RunWith(BlockJUnit4ClassRunner.class)<br/>\n&gt;<br/>\n&gt; The developer machines (mix of 32 and 64 bit Windows Vista and Ubuntu,<br/>\n&gt; all running Java 6) were fine.<br/>\n&gt;<br/>\n&gt; $ java -version<br/>\n&gt; java version &quot;1.6.0_07&quot;<br/>\n&gt; Java(TM) SE Runtime Environment (build 1.6.0_07-b06)<br/>\n&gt; Java HotSpot(TM) Server VM (build 10.0-b23, mixed mode)<br/>\n&gt;<br/>\n&gt; $ java -version<br/>\n&gt; java version &quot;1.6.0_0&quot;<br/>\n&gt; OpenJDK Runtime Environment (build 1.6.0_0-b11)<br/>\n&gt; OpenJDK Server VM (build 1.6.0_0-b11, mixed mode)<br/>\n&gt;<br/>\n&gt; The continuous integration (Fedora Core 8 64bit, running Java 5, was<br/>\n&gt; not so happy and consistently had the above problem.<br/>\n&gt;<br/>\n&gt; $ java -version<br/>\n&gt; java version &quot;1.5.0_14&quot;<br/>\n&gt; Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_14-b03)<br/>\n&gt; Java HotSpot(TM) 64-Bit Server VM (build 1.5.0_14-b03, mixed mode)<br/>\n&gt;<br/>\n&gt; Removing the @RunWith annotation fixed it in the CI environment.<br/>\n&gt;<br/>\n&gt; Cheers,<br/>\n&gt;<br/>\n&gt; James<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21103, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1226949697", 
+    "canDelete": false, 
+    "nextInTopic": 21106, 
+    "prevInTopic": 21082, 
+    "headers": {
+        "inReplyToHeader": "PDIzZmNlOGU2MDgxMTEwMDcwMGsyNDU2MmY2YmdlM2JkMDhkNjAwZjc3Y2RmQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDgxMTE3MTEyMW41NThiNjg5OXRiOGM1ZTMyMjM3MThmNWYzQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIzZmNlOGU2MDgxMTEwMDcwMGsyNDU2MmY2YmdlM2JkMDhkNjAwZjc3Y2RmQG1haWwuZ21haWwuY29tPg=="
+    }
+}

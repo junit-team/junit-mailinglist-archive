@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 20363, 
+    "senderId": "abnRVALeg2ukQcQqP8vtdbylbgobGPjptXPS337eSS76ZF-bcwEV5n5bmJlHaL1NDTx-2EUa9WVGolqT-qOB2sofkMXo86l7rd3j_A", 
+    "systemMessage": true, 
+    "subject": "Failurs, Exception and AssertionError", 
+    "from": "&quot;toalexsmail&quot; &lt;toalexsmail@...&gt;", 
+    "authorName": "toalexsmail", 
+    "msgSnippet": "In JUnit 3.8 there was difference between assertion error (assertTrue(flag) fails, for example) and exception (unexpected exception thrown). It was indicated", 
+    "msgId": 20362, 
+    "rawEmail": "Return-Path: &lt;toalexsmail@...&gt;\r\nReceived: (qmail 67964 invoked from network); 12 Mar 2008 13:42:17 -0000\r\nReceived: from unknown (66.218.67.97)\n  by m44.grp.scd.yahoo.com with QMQP; 12 Mar 2008 13:42:17 -0000\r\nReceived: from unknown (HELO n40a.bullet.mail.sp1.yahoo.com) (66.163.168.134)\n  by mta18.grp.scd.yahoo.com with SMTP; 12 Mar 2008 13:42:16 -0000\r\nReceived: from [216.252.122.219] by n40.bullet.mail.sp1.yahoo.com with NNFMP; 12 Mar 2008 13:42:16 -0000\r\nReceived: from [66.218.69.6] by t4.bullet.sp1.yahoo.com with NNFMP; 12 Mar 2008 13:42:16 -0000\r\nReceived: from [66.218.67.201] by t6.bullet.scd.yahoo.com with NNFMP; 12 Mar 2008 13:42:16 -0000\r\nX-Sender: toalexsmail@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 66602 invoked from network); 12 Mar 2008 12:37:32 -0000\r\nX-Received: from unknown (66.218.67.97)\n  by m57.grp.scd.yahoo.com with QMQP; 12 Mar 2008 12:37:32 -0000\r\nX-Received: from unknown (HELO n26c.bullet.scd.yahoo.com) (66.218.67.218)\n  by mta18.grp.scd.yahoo.com with SMTP; 12 Mar 2008 12:37:31 -0000\r\nX-Received: from [66.218.69.2] by n26.bullet.scd.yahoo.com with NNFMP; 12 Mar 2008 12:37:31 -0000\r\nX-Received: from [66.218.66.92] by t2.bullet.scd.yahoo.com with NNFMP; 12 Mar 2008 12:37:31 -0000\r\nDate: Wed, 12 Mar 2008 12:37:29 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;fr8iq9+lff7@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;toalexsmail&quot; &lt;toalexsmail@...&gt;\r\nSubject: Failurs, Exception and AssertionError\r\nX-Yahoo-Group-Post: member; u=340165037; y=lU5i5HXfeJigC1f6F74o_WoiKTbCJa0STLKorCWCxsAwTSaZbOQ\r\nX-Yahoo-Profile: toalexsmail\r\nX-eGroups-Approved-By: ddoss_2006 &lt;didoss@...&gt; via web; 12 Mar 2008 13:42:16 -0000\r\n\r\nIn JUnit 3.8 there was difference between assertion error\n(assertTrue(flag)=\r\n fails, for example) and exception (unexpected\nexception thrown). It was in=\r\ndicated as F (failures) and E (exception).\nWhy this was removed from JUnit =\r\n4?\n\nMoreover, if asserts of JDK 1.4 was used (assert obj!=3Dnull;) both in\n=\r\nthe tested code and in the tests than, if assertion is enabled,\nAssertionEr=\r\nror was thrown that caused to exception. In JUnit 4 it will\ncause to failur=\r\ne because AssertionFailedError now extends\nAssertionError so from JUnit poi=\r\nnt of view there is no difference.\nIt is true, that in JUnit 4 there is no =\r\ndifference between failures\nand exception, so it shouldn&#39;t be a problem. Bu=\r\nt, as I see it is.\nConsider for example following example.\n\npublic class Ca=\r\nlculator {\n ...\n public double sqrt(double a){\n   //here should be check th=\r\nat a&gt;=3D0 that is missing\n   return doSqrt(a);\n }\n\n private double doSqrt(d=\r\nouble a){\n   //a should be valid at this point\n   assert &quot;a should be not n=\r\negative!&quot; : a&gt;=3D0;\n   ...\n  }\n}\n\npublic class CalculatorTest {\n // the log=\r\nger\n private static final Log log =3D LogFactory.getLog(CalculatorTest.clas=\r\ns);\n private Calculator calc;\n\n\n @BeforeClass\n public static void oneTimeSe=\r\ntup(){\n\t// do your one time set-up here!\n\tlog.debug(&quot;Going to check whether=\r\n asserts are enabled&quot;);\n\tboolean assertsEnabled =3D false;\n\tassert (asserts=\r\nEnabled =3D true); // Intentional side effect!!!\n\tif (!assertsEnabled) {\n\t =\r\n throw new AssertionError(&quot;Asserts must be enabled!!!&quot;);\n\t}\n  }\n\n @Before\n =\r\npublic void setUp() throws Exception {\n   calc =3D new Calculator(...);\n }\n=\r\n\n public static void main(String[] args) throws Exception {\n   Request r =\r\n=3D Request.aClass(clazz);\n   JUnitCore runner =3D new JUnitCore();\n   RunL=\r\nistener listener=3D new TextListener();\n   runner.addListener(listener);\n  =\r\n runner.run(r);\n }\n\n @Test\n public void testNegativeInput() {\n   try {\n    =\r\n calc.sqrt(-1);\n     fail(&quot;AssertionError expected&quot;);\n   catch(AssertionErr=\r\nor e){\n     assert true: &quot;it&#39;s ok&quot;;\n   }\n }\n}\n\nassert are used inside the c=\r\node in order to validate what programmer\nis think is true in some point of =\r\nthe program. They are often used to\ncheck preconditions of the private meth=\r\nods. In the above example,\nprogrammer that writed doSqrt() method states th=\r\nat precondition of\nthis method is that he receives valid parameter. So, thi=\r\ns JDK 1.4\nassertion fails has nothing with JUnit 4 assertXXX() fails and it=\r\n\nshould be considered as exception, as in case that unexpected\nexception is=\r\n thrown.\n\n\n\n", 
+    "profile": "toalexsmail", 
+    "topicId": 20362, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 340165037, 
+    "prevInTime": 20361, 
+    "contentTrasformed": false, 
+    "postDate": "1205325449", 
+    "canDelete": false, 
+    "nextInTopic": 20369, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGZyOGlxOStsZmY3QGVHcm91cHMuY29tPg=="
+    }
+}

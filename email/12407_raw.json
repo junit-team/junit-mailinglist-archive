@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 12408, 
+    "senderId": "scFZkbBlGosAOO0ry8Nn3xARGOEJubNXzOYDz91c13NxXcIrfJybteiMB47eyfSb1taDu4dvuXbztw2_tJEwbZs6c0i06JAs7I9OToS5bwmuB8zF", 
+    "systemMessage": true, 
+    "subject": "Re: Virtualmock in practice", 
+    "from": "&quot;wellman_daniel&quot; &lt;daniel_wellman@...&gt;", 
+    "authorName": "wellman_daniel", 
+    "msgSnippet": "OK, so I played around a bit and was able to get VirtualMock and jMock working with my tests. I used the AspectWerkz offline mode for testing; looking through", 
+    "msgId": 12407, 
+    "rawEmail": "Return-Path: &lt;daniel_wellman@...&gt;\r\nReceived: (qmail 52426 invoked from network); 2 Dec 2004 00:43:38 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 2 Dec 2004 00:43:38 -0000\r\nReceived: from unknown (HELO n7a.bulk.scd.yahoo.com) (66.94.237.41)\n  by mta1.grp.scd.yahoo.com with SMTP; 2 Dec 2004 00:43:38 -0000\r\nReceived: from [66.218.69.3] by n7.bulk.scd.yahoo.com with NNFMP; 02 Dec 2004 00:41:19 -0000\r\nReceived: from [66.218.67.189] by mailer3.bulk.scd.yahoo.com with NNFMP; 02 Dec 2004 00:41:19 -0000\r\nX-Sender: daniel_wellman@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 20035 invoked from network); 30 Nov 2004 01:19:43 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m18.grp.scd.yahoo.com with QMQP; 30 Nov 2004 01:19:43 -0000\r\nReceived: from unknown (HELO n2a.bulk.scd.yahoo.com) (66.94.237.36)\n  by mta5.grp.scd.yahoo.com with SMTP; 30 Nov 2004 01:19:43 -0000\r\nReceived: from [66.218.69.2] by n2.bulk.scd.yahoo.com with NNFMP; 30 Nov 2004 01:18:45 -0000\r\nReceived: from [66.218.67.165] by mailer2.bulk.scd.yahoo.com with NNFMP; 30 Nov 2004 01:18:45 -0000\r\nDate: Tue, 30 Nov 2004 01:18:42 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;coghpi+9mo2@...&gt;\r\nIn-Reply-To: &lt;419E6E27.90701@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2928\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Remote-IP: 66.94.237.36\r\nFrom: &quot;wellman_daniel&quot; &lt;daniel_wellman@...&gt;\r\nSubject: Re: Virtualmock in practice\r\nX-Yahoo-Group-Post: member; u=203434778\r\nX-Yahoo-Profile: wellman_daniel\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 02 Dec 2004 00:41:15 -0000\r\nX-eGroups-Remote-IP: 66.94.237.41\r\n\r\n\n\nOK, so I played around a bit and was able to get VirtualMock and jMock\nworking with my tests.\n\nI used the AspectWerkz offline mode for testing; looking through the\nant build script included with virtualmock, I determined that all I\nreally needed to add was the post-compilation task -- called\n&quot;virtualmock:transform:aspectwerkz:offline&quot;.  \n\nI read this excellent introduction to AOP at OnJava, which gave some\ndetailed info about AspectWerkz&#39; offline mode.\n\n  http://www.onjava.com/pub/a/onjava/2004/01/14/aop.html\n\nMy observations:\n\n1. I did not play with AspectWerkz&#39; online mode as I didn&#39;t get a\nchance to learn how it works, and the &quot;virtualmock:vmunit:aspectwerkz&quot;\nsaid it was under construction.  \n\n2. I didn&#39;t try AspectJ because the OnJava article suggested that\nusing AspectJ required a different compiler which added keywords to\nthe Java language.  Without too much time to play, this spooked me, so\nI avoided it.\n\n3. It seems like a good idea to follow the virtualmock ant build\nscript and create a JAR of both the code under test and the unit tests\n, especially if you use the AspectWerkz offline mode -- which changes\nyour class files!  This, or make a new directory with a copy of all\nyour class files so your deployment scripts don&#39;t accidentally ship\noff the AOP-modified code!\n\n4. If I DO put the tests in a JAR, then I&#39;ll need to use something\nlike JUnit add-ons as described in J.B.&#39;s book to auto locate tests in\na JAR file.\n\n5. The most interesting; I found my existing tests ran *significantly*\nslower, on the order of six times slower when using Aspectwerkz.  This\nisn&#39;t a big deal, as my 50 tests which used to run in under two\nseconds now run in a little over 15 seconds.  Does anyone have a feel\nfor this; does this figure seem about right?  I&#39;m running on a recent\nP4 machine with 1 GB of RAM on Win 2000.  Running the AW post-compiler\nadds another 20 seconds or so.\n\n\nAll in all, it seems like it will do the trick; though the (overall\nsmall for now) speed hit and extra steps feel a bit &#39;heavy&#39;.  Still,\nI&#39;m not complaining, because it makes it possible to test the system\nas it is, which is a great thing!\n\n\nBased on the earlier recommendations I&#39;ve read, I do want to refactor\nthe system to make it easier to mock my collaborating service and DAO\nclasses.  The problem I face now is that the way I get my services and\nDAOs is through a factory; not such a bad thing.  However,\nthe factories don&#39;t cache the services or DAO&#39;s, instead they delegate\nto a services finder which caches a map interface full package names\nto concrete class full package names (both Strings).  The objects are\nreturned with Class.newInstance() methods from the finder back to the\nfactory.  It seems like it would be better for the factory to cache\nactual instances, or have methods in the factories to register new\nimplementations (and then check the cache before calling the services\nfinder/newInstance() method).\n\n-d\n\n\n\n\n\n\n\n", 
+    "profile": "wellman_daniel", 
+    "topicId": 12349, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 203434778, 
+    "prevInTime": 12406, 
+    "contentTrasformed": false, 
+    "postDate": "1101777522", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12357, 
+    "headers": {
+        "inReplyToHeader": "PDQxOUU2RTI3LjkwNzAxQHJvZ2Vycy5jb20+", 
+        "messageIdInHeader": "PGNvZ2hwaSs5bW8yQGVHcm91cHMuY29tPg=="
+    }
+}

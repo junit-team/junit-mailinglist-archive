@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 20687, 
+    "senderId": "BllNVSztni8CKQ5QRmiCxnCq6yeoJgMe-TbnoP-0B3NwSYesRcA472GIBQ46qkr7ovF67TfEM_J4dm_Sqb-rIvOnJduHIrum-ZDHzAJ4Rsr5ZNrSzg", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] JUnit Exception Test Advice", 
+    "from": "Malte Finsterwalder &lt;malte@...&gt;", 
+    "authorName": "Malte Finsterwalder", 
+    "msgSnippet": "Hello Sergio, Just as Nat said, those are definitely two testcases. They don t belong into one test method. The first test would look like: @Test(expected=...)", 
+    "msgId": 20686, 
+    "profile": "maltefinsterwalder", 
+    "topicId": 20683, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199072473, 
+    "messageBody": "<div id=\"ygrps-yiv-527487076\">Hello Sergio,<br/>\n<br/>\nJust as Nat said, those are definitely two testcases. They don&#39;t belong <br/>\ninto one test method.<br/>\n<br/>\nThe first test would look like:<br/>\n<br/>\n@Test(expected=...)<br/>\npublic void xxx() {<br/>\n     DriverManager.getConnection(badConnString);<br/>\n}<br/>\n<br/>\nThat&#39;s it.<br/>\n<br/>\nBut I see another common anti-pattern in the second part of the code you <br/>\nshowed:<br/>\n<br/>\nSergio Bobillier wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; try<br/>\n&gt; {<br/>\n&gt; connection = DriverManager.getConnection(goodConnString);<br/>\n&gt; }<br/>\n&gt; catch(SQLException sEx)<br/>\n&gt; {<br/>\n&gt; fail(SQLException was not expected but was thrown&quot;);<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>The JUnit Rule is: Don&#39;t catch exceptions that you don&#39;t expect! Declare <br/>\nthem as throws instead.<br/>\nSo it would be better to do:<br/>\n<br/>\n@Test<br/>\npublic void xxx() throws SQLException {<br/>\n     connection = DriverManager.getConnection(goodConnString);<br/>\n     //....<br/>\n     assertXXXX<br/>\n}<br/>\n<br/>\nThe problem with the first approach of catching the exception and then <br/>\nfailing is, that you loose all the information about the exception. And <br/>\nit&#39;s a lot wordier too.<br/>\nShould an unexpected exception occur, will it fail the test anyways and <br/>\nin addition you get the stacktrace in JUnit, to analyse the root problem.<br/>\n<br/>\nGreetings,<br/>\n    Malte</div>", 
+    "prevInTime": 20685, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1216120826", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 20684, 
+    "headers": {
+        "inReplyToHeader": "PGc1ZnNrZiszdnJoQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ4N0M4N0ZBLjcwMTAxMDlAZmluc3RlcndhbGRlci5uYW1lPg==", 
+        "referencesHeader": "PGc1ZnNrZiszdnJoQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 1848, 
+    "postDate": "994798849", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "rainsber@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "o597LGSkVpONMt_ECLTC655naPcM17KGPtmaowqmdBarq9rCSkUT9zL6FnMnKdJ8qhLIt23jPWBsjA", 
+    "nextInTime": 1850, 
+    "userId": 0, 
+    "prevInTime": 1848, 
+    "prevInTopic": 1848, 
+    "headers": {
+        "messageIdInHeader": "PE9GNUE4NDA0Q0EuOTg2RUQ0RjItT044NTI1NkE4NS4wMDcyOTI3NEB0b3JvbGFiLmlibS5jb20+"
+    }, 
+    "authorName": "rainsber@ca.ibm.com", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "Step 1: Try to test the *feature* and not just each method. That might solve your problem, by giving you a natural name for those tests. As an example, when I", 
+    "contentTrasformed": false, 
+    "msgId": 1849, 
+    "nextInTopic": 1850, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;rainsber@...&gt;\r\nX-Sender: rainsber@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 10 Jul 2001 21:01:39 -0000\r\nReceived: (qmail 65853 invoked from network); 10 Jul 2001 21:00:56 -0000\r\nReceived: from unknown (10.1.10.142) by l9.egroups.com with QMQP; 10 Jul 2001 21:00:56 -0000\r\nReceived: from unknown (HELO e31.bld.us.ibm.com) (32.97.110.129) by mta3 with SMTP; 10 Jul 2001 21:00:56 -0000\r\nReceived: from westrelay02.boulder.ibm.com (westrelay02.boulder.ibm.com [9.99.140.23]) by e31.bld.us.ibm.com (8.9.3/8.9.3) with ESMTP id QAA29736 for &lt;junit@yahoogroups.com&gt;; Tue, 10 Jul 2001 16:52:56 -0400\r\nReceived: from d25ml02.torolab.ibm.com (d25ml02.torolab.ibm.com [9.26.6.103]) by westrelay02.boulder.ibm.com (8.11.1m3/NCO v4.96.1.0) with ESMTP id f6AL0sZ170202 for &lt;junit@yahoogroups.com&gt;; Tue, 10 Jul 2001 15:00:54 -0600\r\nImportance: Normal\r\nSubject: Re: [junit] names for overloading methods\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Lotus Notes Release 5.0.3 (Intl) 21 March 2000\r\nMessage-ID: &lt;OF5A8404CA.986ED4F2-ON85256A85.00729274@...&gt;\r\nDate: Tue, 10 Jul 2001 17:00:49 -0400\r\nX-MIMETrack: Serialize by Router on D25ML02/25/M/IBM(Release 5.0.5 |September 22, 2000) at 07/10/2001 05:00:53 PM\r\nMIME-Version: 1.0\r\nContent-type: text/plain; charset=us-ascii\r\nFrom: rainsber@...\r\n\r\nStep 1: Try to test the *feature* and not just each method. That might\nsolve your problem, by giving you a natural name for those tests.\n\nAs an example, when I test that my data model class handles a data store\nwith no widgets in it, I generally write a test like:\n\ntestNoWidgets() {\n    MockDataModel model = new MockDataModel();    // MockDataModel extends\nDataModel\n    model.ensureNoWidgets();    // special method on mock data model to let\nme &quot;sneak in&quot; and change things.\n\n    // Test public interface of DataModel when there are no widgets.\n    assertEquals(0, model.countWidgets());\n\n    assertTrue(model.collectAllWidgets().isEmpty());\n\n    assertTrue(model.collectAllWidgets(new WidgetFilter() {\n        public void accept(Widget each) {\n            // Accept all widgets.\n        }\n    }).isEmpty());\n\n    model.eachWidget(new WidgetBlock() {\n        public void execute(Widget each) {\n            fail(&quot;How did I get here?!&quot;);\n        }\n    });\n    ...\n}\n\nNotice that I create a scenario, then test each method under that scenario.\nThis is an inverse view from writing a separate test for each method, then\nvarying the scenarios.\n\nStep 2: If Step 1 fails because you can&#39;t figure out a good way to do it,\nthen there is no &quot;rule&quot;. I would suggest naming the test methods by what\nthe method under test *does* and not its signature.\n\ntestEngineDigestReturnsEmptyBuffer() {\n    // simulate/set up empty buffer...\n    assertNotNull(&quot;engineDigest() returned null?!&quot;, myObject.engineDigest\n());\n    assertEquals(0, myObject.engineDigest().length);\n}\n...\ntestEngineDigestAcceptsEmptyBuffer() {\n    assertEquals(0, engineDigest(new byte[0], 0, 0));\n}\n\nYou would have similar tests for buffers of different sizes, contents, or\nwhatever variables might change, given the feature you&#39;re trying to\nimplement.\n\nGood luck,\nJ. B. Rainsberger  &lt;rainsber@...&gt;\nCommerce Suite Accelerator: Rule Services, IBM Toronto Lab\n8200 Warden Av, Office A3-735 [A3/FNB/8200/MKM]\nMarkham ON   L6G 1C7\n905 413-2501 (969-2501)\n\n\nUwe Guenther &lt;uwe@...&gt;@... on 07/10/2001 16:50:10\n\nPlease respond to junit@yahoogroups.com\n\nSent by:  uwe@...\n\n\nTo:   junit@yahoogroups.com\ncc:\nSubject:  [junit] names for overloading methods\n\n\n\n\nHello,\n\nis there a rule how I should choose the names for overloading\nmethods like these in my test class:\n\nprotected byte[] engineDigest(){}\nprotected int engineDigest(byte[] buf, int offset, int len){}\n\n\n1. should  I use one test method like:\n\npublic void testEngineDigest(){}\n\n\n\n2. Or should I use  two names with diffrent extensions like these:\n\npublic void testEngineDigest_byte(){}\npublic void testEngineDigest_byte_array(){}\n\n--\nRegards Uwe Guenther\n\n\n\n", 
+    "subject": "Re: [junit] names for overloading methods"
+}

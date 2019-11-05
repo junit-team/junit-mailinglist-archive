@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 22446, 
+    "senderId": "mmsDJGWN-e81pG5FwhunZNg0ucgxw9ouEUZ_zMv2ojj4XyBk0XMiLMolkYMs7aJbxz33eFGKatuDs47XuR7ZOKVB", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Cannot use @Rule in Scala", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Sorry, just back from vacation. I assume then that some public accessor method gets generated for the field?  Is there any way to have the annotation attach to", 
+    "msgId": 22445, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 51732 invoked from network); 18 Feb 2010 16:38:19 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m5.grp.sp2.yahoo.com with QMQP; 18 Feb 2010 16:38:19 -0000\r\nX-Received: from unknown (HELO mail-pz0-f194.google.com) (209.85.222.194)\n  by mta3.grp.sp2.yahoo.com with SMTP; 18 Feb 2010 16:38:19 -0000\r\nX-Received: by pzk32 with SMTP id 32so270877pzk.4\n        for &lt;junit@yahoogroups.com&gt;; Thu, 18 Feb 2010 08:38:16 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.140.56.19 with SMTP id e19mr5295056rva.232.1266511096306; Thu, \n\t18 Feb 2010 08:38:16 -0800 (PST)\r\nIn-Reply-To: &lt;27552231.post@...&gt;\r\nReferences: &lt;27552231.post@...&gt;\r\nDate: Thu, 18 Feb 2010 11:38:16 -0500\r\nX-Google-Sender-Auth: 1abfca55422b0b13\r\nMessage-ID: &lt;4f7da6b91002180838g17f4d1c6n5d5de0428b79c8f@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Cannot use @Rule in Scala\r\nX-Yahoo-Group-Post: member; u=341876227; y=-f0y6W9gduNBRmgFeoz7ZVmkEmaMxSAc3fy1vcrIW0U\r\nX-Yahoo-Profile: dsaff\r\n\r\nSorry, just back from vacation.\n\nI assume then that some public accessor me=\r\nthod gets generated for the\nfield?  Is there any way to have the annotation=\r\n attach to the Java\nmethod rather than the field?\n\nJust brainstorming how t=\r\no make this work.  Thanks.\n\n   David Saff\n\nOn Thu, Feb 11, 2010 at 1:57 PM,=\r\n Barry Kaplan &lt;groups1@...&gt; wrote:\n&gt;\n&gt; Running the following test\n&gt;=\r\n\n&gt; =A0 =A0class MongoUserDetailsManagerTest {\n&gt; =A0 =A0 =A0@Rule val mongo =\r\n=3D new MongoResource(&quot;test_insight&quot;)\n&gt; =A0 =A0 =A0...\n&gt; =A0 =A0}\n&gt;\n&gt; Resul=\r\nts in\n&gt;\n&gt; =A0 =A0java.lang.Exception: Field mongo must be public\n&gt; =A0 =A0 =\r\n=A0 =A0at\n&gt; org.junit.runners.BlockJUnit4ClassRunner.validateRuleField(Bloc=\r\nkJUnit4ClassRunner.java:184)\n&gt;\n&gt; This is because the bytecode for scala pub=\r\nlic vars (public is the default\n&gt; scope scala) are not public.\n&gt;\n&gt; To be ab=\r\nle to use @Rule in scala I had to hack BlockJUnit4ClassRunner with:\n&gt;\n&gt; =A0=\r\n =A0private void validateRuleField(Field field, List&lt;Throwable&gt; errors) {\n&gt;=\r\n =A0 =A0 =A0 =A0if (!MethodRule.class.isAssignableFrom(field.getType()))\n&gt; =\r\n=A0 =A0 =A0 =A0 =A0 =A0errors.add(new Exception(&quot;Field &quot; + field.getName()\n=\r\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0+ &quot; must implement MethodRule&quot;=\r\n));\n&gt; =A0 =A0 =A0 =A0//TP_HACK To allow for scala val&#39;s\n&gt; =A0 =A0 =A0 =A0fi=\r\neld.setAccessible(true);\n&gt; =A0 =A0 =A0 =A0// if (!Modifier.isPublic(field.g=\r\netModifiers()))\n&gt; =A0 =A0 =A0 =A0// errors.add(new Exception(&quot;Field &quot; + fie=\r\nld.getName()\n&gt; =A0 =A0 =A0 =A0// =A0 =A0 =A0 =A0 =A0 + &quot; must be public&quot;));=\r\n\n&gt; =A0 =A0 =A0 =A0}\n&gt;\n&gt; Might it be considered to allow for non-public fiel=\r\nds as some kind of JUnit\n&gt; option?\n&gt;\n&gt; -barry\n&gt; --\n&gt; View this message in c=\r\nontext: http://old.nabble.com/Cannot-use-%40Rule-in-Scala-tp27552231p275522=\r\n31.html\n&gt; Sent from the JUnit - User mailing list archive at Nabble.com.\n&gt;\n=\r\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n=\r\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22392, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22444, 
+    "contentTrasformed": false, 
+    "postDate": "1266511096", 
+    "canDelete": false, 
+    "nextInTopic": 22450, 
+    "prevInTopic": 22392, 
+    "headers": {
+        "inReplyToHeader": "PDI3NTUyMjMxLnBvc3RAdGFsay5uYWJibGUuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MTAwMjE4MDgzOGcxN2Y0ZDFjNm41ZDVkZTA0MjhiNzljOGZAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDI3NTUyMjMxLnBvc3RAdGFsay5uYWJibGUuY29tPg=="
+    }
+}

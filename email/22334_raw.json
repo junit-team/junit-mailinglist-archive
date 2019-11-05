@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 22335, 
+    "senderId": "WFvsRv86nzjnrp8swwb6c7zjaMd2yUIoSZZTjsDtb7-KnYDxtPuJNX0epYirfd0rzG3-Fco_DjJUINnReG3qOZ82", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing test infastructure", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Steve, There s two solutions I know, and neither is super. The first, which we do with the JUnit self-tests, is to declare a Suite and hand-include the tests", 
+    "msgId": 22334, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 34650 invoked from network); 1 Feb 2010 15:34:30 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 1 Feb 2010 15:34:30 -0000\r\nX-Received: from unknown (HELO mail-pz0-f195.google.com) (209.85.222.195)\n  by mta2.grp.sp2.yahoo.com with SMTP; 1 Feb 2010 15:34:30 -0000\r\nX-Received: by pzk33 with SMTP id 33so688983pzk.2\n        for &lt;junit@yahoogroups.com&gt;; Mon, 01 Feb 2010 07:33:38 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.141.108.5 with SMTP id k5mr3291638rvm.3.1265038418464; Mon, 01 \n\tFeb 2010 07:33:38 -0800 (PST)\r\nIn-Reply-To: &lt;hk4cui+34bs@...&gt;\r\nReferences: &lt;hk4cui+34bs@...&gt;\r\nDate: Mon, 1 Feb 2010 10:33:38 -0500\r\nX-Google-Sender-Auth: d473935c078b8cf0\r\nMessage-ID: &lt;4f7da6b91002010733j3ed46e8dwe1427d9563894d4a@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Testing test infastructure\r\nX-Yahoo-Group-Post: member; u=341876227; y=dPzYsRFo99dCAaiOiYalnbhkqTT9emiDm3v35VJouz0\r\nX-Yahoo-Profile: dsaff\r\n\r\nSteve,\n\nThere&#39;s two solutions I know, and neither is super.\n\nThe first, whi=\r\nch we do with the JUnit self-tests, is to declare a\nSuite and hand-include =\r\nthe tests that should actually be run.\n\nThe second, I just realized, is mad=\r\ne a little easier by Rules.  Start\nwith this rule:\n\npublic class EnableDuri=\r\nngRun extends ExternalResource {\n  private boolean enabled =3D false;\n  pro=\r\ntected void before() { enabled =3D true; }\n  protected void after() { enabl=\r\ned =3D false; }\n  public boolean isEnabled() { return enabled; }\n\n  public =\r\nMethodRule skipUnlessEnabled() {\n    return new MethodRule() {\n      Statem=\r\nent apply(Statement base, Framework method, Object target) {\n        if (en=\r\nabled) {\n          return base;\n        } else {\n          return new State=\r\nment() { public void evaluate() {} };\n        }\n      }\n    };\n  }\n}\n\nAnd t=\r\nhen your test classes become:\n\npublic class OuterTest {\n   @Rule public Ena=\r\nbleDuringRun runInners =3D new EnableDuringRun();\n\n   public static class I=\r\nnnerTest {\n     @Rule public MethodRule onlyAsExample =3D runInners.skipUnl=\r\nessEnabled();\n   }\n\n   @Test public void foo() { ... }\n}\n\nThis will allow t=\r\nhe inner tests to be detected and run, but will have\nthem simply pass unles=\r\ns they&#39;re run within the context of an outer\nclass&#39;s test method.\n\nMake sen=\r\nse?\n\n   David\n\nOn Sun, Jan 31, 2010 at 12:00 PM, steve.ebersole &lt;steve@hibe=\r\nrnate.org&gt; wrote:\n&gt; Hey all,\n&gt;\n&gt; I am developing some tests with JUnit 4.7.=\r\n =A0It includes a bunch of standard stuff that I refactored out into rules =\r\nand runners and 2 base test classes. =A0I want to test theses pieces of the=\r\n &quot;testing infrastructure&quot;, so I wrote some basic JUnit tests that themselve=\r\ns invoke JUnitCore.runClasses directly passing inner classes as the tests. =\r\n=A0That part actually works great! =A0The issue is that when T try to run a=\r\nll the tests, these inner clases are picked up as well. =A0For example, in =\r\nhttp://tinyurl.com/yc6j46y I actually end up getting tests for both Functio=\r\nnalTestCaseTest and FunctionalTestCaseTest$FixtureTests.\n&gt;\n&gt; This is inside=\r\n the IDE, when I right click on a package or the test dir and ask it to run=\r\n tests. =A0I understand in {build-tool=3Dof-choice-goes-here} I could exclu=\r\nde these inner classes. =A0Guess I am looking for a general purpose solutio=\r\nn that works no matter how the tests are launched.\n&gt;\n&gt; Thanks in advance :)=\r\n\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;=\r\n\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22333, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22333, 
+    "contentTrasformed": false, 
+    "postDate": "1265038418", 
+    "canDelete": false, 
+    "nextInTopic": 22344, 
+    "prevInTopic": 22333, 
+    "headers": {
+        "inReplyToHeader": "PGhrNGN1aSszNGJzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MTAwMjAxMDczM2ozZWQ0NmU4ZHdlMTQyN2Q5NTYzODk0ZDRhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGhrNGN1aSszNGJzQGVHcm91cHMuY29tPg=="
+    }
+}

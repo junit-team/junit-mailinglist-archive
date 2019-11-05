@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 10376, 
+    "senderId": "gxg6dstjqmYFy-EJNrQti2GV-ZGAY91ArPvreKhOM3p4Qlgl4Vpe6mDoTcEBD5_dlg_81PjkoaejuZSbQc9hVAZ0iAfz9IJbFbXW1SKUfXRXYWcKTjj9", 
+    "systemMessage": false, 
+    "subject": "Re: Prob. in extending TestCase class", 
+    "from": "&quot;joshi_pranav_p&quot; &lt;pranav_p_joshi@...&gt;", 
+    "authorName": "joshi_pranav_p", 
+    "msgSnippet": "Thanks Jamie, I got my answer. it is wise to set up for each test. ... use only once.  Although it is usually wise to set up each individually test and this is", 
+    "msgId": 10375, 
+    "rawEmail": "Return-Path: &lt;pranav_p_joshi@...&gt;\r\nReceived: (qmail 59085 invoked from network); 2 Feb 2004 23:42:29 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 2 Feb 2004 23:42:29 -0000\r\nReceived: from unknown (HELO n17.grp.scd.yahoo.com) (66.218.66.72)\n  by mta1.grp.scd.yahoo.com with SMTP; 2 Feb 2004 23:42:29 -0000\r\nX-eGroups-Return: pranav_p_joshi@...\r\nReceived: from [66.218.66.124] by n17.grp.scd.yahoo.com with NNFMP; 02 Feb 2004 23:41:17 -0000\r\nX-Sender: pranav_p_joshi@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 63236 invoked from network); 2 Feb 2004 10:06:19 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m10.grp.scd.yahoo.com with QMQP; 2 Feb 2004 10:06:19 -0000\r\nReceived: from unknown (HELO n10.grp.scd.yahoo.com) (66.218.66.65)\n  by mta6.grp.scd.yahoo.com with SMTP; 2 Feb 2004 10:06:19 -0000\r\nReceived: from [66.218.67.150] by n10.grp.scd.yahoo.com with NNFMP; 02 Feb 2004 10:05:47 -0000\r\nDate: Mon, 02 Feb 2004 10:05:46 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;bvl7dq+bis7@...&gt;\r\nIn-Reply-To: &lt;LAW11-OE454hsT9JMLf00002f6f@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2513\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.65\r\nFrom: &quot;joshi_pranav_p&quot; &lt;pranav_p_joshi@...&gt;\r\nSubject: Re: Prob. in extending TestCase class\r\nX-Yahoo-Group-Post: member; u=173962397\r\nX-Yahoo-Profile: joshi_pranav_p\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 02 Feb 2004 23:41:17 -0000\r\nX-eGroups-Remote-IP: 66.218.66.72\r\n\r\nThanks Jamie,\n    I got my answer. it is wise to set up for each test. \n\n\n\n--- In junit@yahoogroups.com, &quot;Jamie&quot; &lt;jimbobdobson@h...&gt; wrote:\n&gt; I think you want to encapsulate the call to the API that your tests \nuse only once.  Although it is usually wise to set up each \nindividually test and this is why setUp and tearDown are so handy.  \n&gt; \n&gt; However, it you really want to re-use an object throughout your \ntests create them in the constructor.  The class that your tests are \nin will only be instantiated ONCE by the test framework.  Therefore, \nif you want to create an object X once and re-use it in all your \ntests you can do something like this:\n&gt; \n&gt; class YourTests extends TestCase\n&gt; {\n&gt;     public YourTests(String name)\n&gt;     {    \n&gt;         super(name);\n&gt;         // YOUR SET UP CODE HERE\n&gt;         TheObjectYouWantToReUse X = new TheObjectYouWantToReUse\n();        \n&gt;     }    \n&gt; \n&gt;     \n&gt;     public void testXXX()\n&gt;     {\n&gt; \n&gt;     }\n&gt; }\n&gt; \n&gt; James Dobson\n&gt; \n&gt; \n&gt;   ----- Original Message ----- \n&gt;   From: rb \n&gt;   To: junit@yahoogroups.com \n&gt;   Sent: Saturday, January 31, 2004 1:05 AM\n&gt;   Subject: [junit] Re: Prob. in extending TestCase class\n&gt; \n&gt; \n&gt;   I believe that is normal, with or without extending: setUp and \n&gt;   tearDown get called for every test method. Makes sense \nconceptually \n&gt;   if you think about it: each method is an entire test unto itself, \nand \n&gt;   so needs its own setup.\n&gt;   r:b:\n&gt; \n&gt;   --- In junit@yahoogroups.com, &quot;joshi_pranav_p&quot; \n&lt;pranav_p_joshi@i...&gt; \n&gt;   wrote:\n&gt;   &gt; Hi,\n&gt;   &gt;    I am using Junit Framwork for Testing our java product. we \nhave \n&gt;   &gt; created 5 testXXX method to test diff. functionality. for all \nthe \n&gt;   &gt; method some API call is required,that we have difine in setUp() \n&gt;   which \n&gt;   &gt; is same for all 5 testXXX method. now whenever i run the case \nIt \n&gt;   &gt; create 5 diff. object of the class and it is calling 5 time \nsetUp() \n&gt;   &gt; method for each textXXX call. \n&gt;   &gt; \n&gt;   &gt; Can we do it in single call ? How ? \n&gt;   &gt; \n&gt;   &gt; Thanks in advance,\n&gt;   &gt; Pranav.\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; --------------------------------------------------------------------\n----------\n&gt;   Yahoo! Groups Links\n&gt; \n&gt;     a.. To visit your group on the web, go to:\n&gt;     http://groups.yahoo.com/group/junit/\n&gt;       \n&gt;     b.. To unsubscribe from this group, send an email to:\n&gt;     junit-unsubscribe@yahoogroups.com\n&gt;       \n&gt;     c.. Your use of Yahoo! Groups is subject to the Yahoo! Terms of \nService. \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; [Non-text portions of this message have been removed]\n\n\n\n", 
+    "profile": "joshi_pranav_p", 
+    "topicId": 10315, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173962397, 
+    "prevInTime": 10374, 
+    "contentTrasformed": false, 
+    "postDate": "1075716346", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10367, 
+    "headers": {
+        "inReplyToHeader": "PExBVzExLU9FNDU0aHNUOUpNTGYwMDAwMmY2ZkBob3RtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PGJ2bDdkcStiaXM3QGVHcm91cHMuY29tPg=="
+    }
+}

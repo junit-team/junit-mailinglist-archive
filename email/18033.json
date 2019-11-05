@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18034, 
+    "senderId": "YnLv_XPuPFP1gENKLRuMzaHcyGBFBJowVbcV-UMTIQ0___gSU8DlvDUXJWv_R6tA-4-83n28hhDb03e24Eha8tI9zC_Gnc0XfNMcn_IMwR9-Dnq-", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Help needed in Mocking", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Your question is quite general so I give you my general answer: In general I think you should avoid mocking external API:s wrap the API in a service and mock", 
+    "msgId": 18033, 
+    "profile": "j0hlrogge", 
+    "topicId": 18031, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-1901679472\">Your question is quite general so I give you my general answer:<br/>\n<br/>\nIn general I think you should avoid mocking external API:s wrap the API in a<br/>\nservice and mock that<br/>\nis my general advice. Something like:<br/>\n<br/>\npublic interface Queue {<br/>\n   void sendMessage(Message msg);<br/>\n}<br/>\n<br/>\npublic class JmsQueue  implements Queue {<br/>\n    &lt;jms-stuff goes here&gt;<br/>\n}<br/>\n<br/>\nIf the &quot;wrapper&quot; (JmsQueue) remains the only un-unittested part of your<br/>\nsystem it is good enough to catch<br/>\nthose problems the in your automated integration/acceptance tests. You can<br/>\nalso test the wrapper in isolation with JMS mocked out.<br/>\nThen JMS is only visible in those tetsts and those tests can focus solely on<br/>\nthe aspects of the wrapper while<br/>\ntests for your other classes can use a mocked Queue.<br/>\n<br/>\nThe same goes if you are listening to a JMS queue, keep the JMS stuff out of<br/>\nyour business logic (at the edges of your system) and<br/>\nI beleive you will have an easier time with testing.<br/>\n<br/>\nI hope this helps.<br/>\n/Joakim Ohlrogge<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 9/29/06, tester_junit &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:sujal14@...\">sujal14@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;   I am in the process of testing a message driven application.<br/>\n&gt;<br/>\n&gt; I would like to test the MessageService ( that communicates through<br/>\n&gt; JMS with Deployment service to process the request) by Mocking<br/>\n&gt; JMSobjects.<br/>\n&gt;<br/>\n&gt; I am new to easymock and wondering how should I go around Mock JMS<br/>\n&gt; objects and verify that correct JMS APIs are called<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 18032, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1159535389", 
+    "canDelete": false, 
+    "nextInTopic": 18034, 
+    "prevInTopic": 18031, 
+    "headers": {
+        "inReplyToHeader": "PGVmaWM5ZituMHVzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwOTI5MDYwOXY2NWQwYmY1M3IxMjcwMzJjYmZiMTE3OTc4QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVmaWM5ZituMHVzQGVHcm91cHMuY29tPg=="
+    }
+}

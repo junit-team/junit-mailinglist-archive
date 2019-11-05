@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 20288, 
+    "senderId": "-fm31gCKzfXmu2Kkj5jajD3yyqWq7bMwL17vP1oqYIDuDsQCeiSjG785mYIY-eIPS4WoL51kIrlOQ7gZpLw9t43Mksmryc0I20PjaA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Question about JUnit 4 execution", 
+    "from": "&quot;James Abley&quot; &lt;james.abley@...&gt;", 
+    "authorName": "James Abley", 
+    "msgSnippet": "... Well, I just did a little experiment, which confirmed my intuitive understanding of how it works. public class TestBeforeClass { public static MyClass ins;", 
+    "msgId": 20287, 
+    "rawEmail": "Return-Path: &lt;james.abley@...&gt;\r\nX-Sender: james.abley@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 51761 invoked from network); 4 Feb 2008 14:07:07 -0000\r\nX-Received: from unknown (66.218.67.95)\n  by m48.grp.scd.yahoo.com with QMQP; 4 Feb 2008 14:07:07 -0000\r\nX-Received: from unknown (HELO ug-out-1314.google.com) (66.249.92.168)\n  by mta16.grp.scd.yahoo.com with SMTP; 4 Feb 2008 14:07:07 -0000\r\nX-Received: by ug-out-1314.google.com with SMTP id o4so1399007uge.23\n        for &lt;junit@yahoogroups.com&gt;; Mon, 04 Feb 2008 06:07:06 -0800 (PST)\r\nX-Received: by 10.78.129.16 with SMTP id b16mr12247916hud.39.1202134025624;\n        Mon, 04 Feb 2008 06:07:05 -0800 (PST)\r\nX-Received: by 10.78.143.17 with HTTP; Mon, 4 Feb 2008 06:07:05 -0800 (PST)\r\nMessage-ID: &lt;23fce8e60802040607s1dbbb90fn9a442f04be1ff810@...&gt;\r\nDate: Mon, 4 Feb 2008 14:07:05 +0000\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;507414.53982.qm@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;507414.53982.qm@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;James Abley&quot; &lt;james.abley@...&gt;\r\nSubject: Re: [junit] Question about JUnit 4 execution\r\nX-Yahoo-Group-Post: member; u=212683928; y=qGdaou-ZS0fgM_7g0oqV1dsKZu5aIQNLZM7KRsSwH0Qlu444\r\nX-Yahoo-Profile: taboozizi\r\n\r\nOn 03/02/2008, Milan Milanovic &lt;milanmilanovich@...&gt; wrote:\n&gt; Hi,\n&gt;\n&gt;  if I may rewrite my question, when I run this &quot;Test&quot; class, how many instances of this class are created and runned ?!\n&gt;\n&gt;  --\n&gt;  Thx, Milan.\n&gt;\n&gt;  ----- Original Message ----\n&gt;  From: Lasse Koskela &lt;lasse.koskela@...&gt;\n&gt;  To: junit@yahoogroups.com\n&gt;  Sent: Sunday, February 3, 2008 12:28:29 AM\n&gt;  Subject: Re: [junit] Question about JUnit 4 execution\n&gt;\n&gt;  Hi,\n&gt;\n&gt;  On Jan 28, 2008 4:37 PM, milanmilanovich &lt;milanmilanovich@ yahoo.com&gt; wrote:\n&gt;\n&gt;  &gt;  public class Test {\n&gt;\n&gt;  &gt;    public static MyClass ins;\n&gt;\n&gt;  &gt;    @BeforeClass\n&gt;\n&gt;  &gt;    public static void beforeAllMethod( ) {\n&gt;\n&gt;  &gt;      ins = new MyClass();\n&gt;\n&gt;  &gt;      // Is this &quot;ins&quot; object available in all @Test methods in the class?\n&gt;\n&gt;  &gt;    }\n&gt;\n&gt;  &gt;  }\n&gt;\n&gt;  &gt;\n&gt;\n&gt;  &gt;  My question is related to the static &quot;ins&quot; object, is this object\n&gt;\n&gt;  &gt;  unique to this Class and its @Test methods during JUnit test of this\n&gt;\n&gt;  &gt;  test class ?\n&gt;\n&gt;  I&#39;m not sure what you mean by &quot;unique to this class&quot; but the static\n&gt;\n&gt;  field initialized by a @BeforeClass method is accessible by all\n&gt;\n&gt;  instances of the test class and therefore by all @Test methods.\n&gt;\n&gt;  Lasse\n&gt;\n&gt;  --\n&gt;\n&gt;  Lasse Koskela\n&gt;\n&gt;  * Author of &quot;Test Driven&quot; (Manning Publications, 2007) *\n&gt;\n&gt;  * Reaktor Innovations * http://www.ri. fi/en *\n&gt;\n\nWell, I just did a little experiment, which confirmed my intuitive\nunderstanding of how it works.\n\npublic class TestBeforeClass {\n\n    public static MyClass ins;\n\n    public MyOtherClass oth;\n\n    @BeforeClass\n    public static void beforeAllMethod() {\n        // if I initialize &quot;ins&quot; static object here\n        ins = new MyClass();\n\n        // Is this &quot;ins&quot; object available in all @Test methods in the\n\n    }\n\n    @Before\n    public void before() {\n        // If I instantiate &quot;oth&quot; object here\n        oth = new MyOtherClass();\n\n    }\n\n    @After\n    public void after() {\n\n    }\n\n    @Test\n    public void testMethod() {\n        // I work here with my objects;\n        ins.someMethod();\n        oth.someMethod();\n    }\n\n    @Test\n    public void otherTestHere() {\n        ins.someMethod();\n        oth.someMethod();\n    }\n}\n\n\nAnd with appropriate System.out calls in constructors and methods:\n\nMyClass.&lt;init&gt;\nMyOtherClass.&lt;init&gt;\nMyClass.someMethod\nMyOtherClass.someMethod\nMyOtherClass.&lt;init&gt;\nMyClass.someMethod\nMyOtherClass.someMethod\n\nSo @BeforeClass only gets called once, but @Before gets called before\neach test, as you would expect,\n\nCheers,\n\nJames\n\n", 
+    "profile": "taboozizi", 
+    "topicId": 20266, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 212683928, 
+    "prevInTime": 20286, 
+    "contentTrasformed": false, 
+    "postDate": "1202134025", 
+    "canDelete": false, 
+    "nextInTopic": 20289, 
+    "prevInTopic": 20285, 
+    "headers": {
+        "inReplyToHeader": "PDUwNzQxNC41Mzk4Mi5xbUB3ZWIzNjMxMC5tYWlsLm11ZC55YWhvby5jb20+", 
+        "messageIdInHeader": "PDIzZmNlOGU2MDgwMjA0MDYwN3MxZGJiYjkwZm45YTQ0MmYwNGJlMWZmODEwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDUwNzQxNC41Mzk4Mi5xbUB3ZWIzNjMxMC5tYWlsLm11ZC55YWhvby5jb20+"
+    }
+}

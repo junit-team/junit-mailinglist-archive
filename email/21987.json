@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21988, 
+    "senderId": "aH39ggiYNcv0rkUfYdLsnENXL_qEH6emj7Eks4Z3U44WSl69zovBYbRFXtVcEru2-ADWDRg_H1o14N7bX3F9G8au_8YvHQ4rA-L3nRg", 
+    "systemMessage": true, 
+    "subject": "Re: Enhancing JUnit myself, how to?", 
+    "from": "&quot;remoliechti&quot; &lt;remo.liechti@...&gt;", 
+    "authorName": "remoliechti", 
+    "msgSnippet": "there is none. but anyhow, I found THE way how to do it: implement your own annotation which you add on method level. then also implement an own junit test", 
+    "msgId": 21987, 
+    "profile": "remoliechti", 
+    "topicId": 21974, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 418251684, 
+    "messageBody": "<div id=\"ygrps-yiv-1529725824\">there is none. but anyhow, I found THE way how to do it:<br/>\nimplement your own annotation which you add on method level. then also implement an own junit test runner, that does a try catch around the test method invocation and checks the exception according the attributes set of the own annotation.<br/>\n<br/>\n<br/>\n@RunWith(MyRunner.class)<br/>\npublic class MyTestClass {<br/>\n<br/>\n@Test(expected=MyException.class)<br/>\n@MyAnnotation(error = 16)<br/>\npublic void thetestMethod() {<br/>\n<br/>\n<br/>\n<br/>\n<br/>\npublic class MyRunner extends BlockJUnit4ClassRunner {<br/>\n<br/>\n@Override<br/>\nprotected Statement methodInvoker(FrameworkMethod method, Object test) {<br/>\nreturn new MyInvokeMethod(method, test);<br/>\n}<br/>\n<br/>\n<br/>\npublic class MyInvokeMethod extends InvokeMethod{<br/>\n<br/>\nprivate FrameworkMethod testMethod;<br/>\n<br/>\npublic SwisslogInvokeMethod(FrameworkMethod testMethod, Object target) {<br/>\nsuper(testMethod, target);<br/>\nthis.testMethod= testMethod;<br/>\n}<br/>\n<br/>\n@Override<br/>\npublic void evaluate() throws Throwable {<br/>\ntry{<br/>\n  super.evaluate();<br/>\n}catch (Throwable e) {<br/>\nMyException ex = getMyExceptionOutOfTheExceptionTree(e);<br/>\nif(ex==null){<br/>\n// throw original exception if MyException is not within the tree<br/>\nthrow e;<br/>\n}<br/>\n<br/>\nMyAnnotation annotation = testMethod.getAnnotation(MyAnnotation .class);<br/>\n<br/>\nif(annotation.error()!=ex.getErrorCode()){<br/>\nthrow new Exception(&quot;Error code does not match. Expected &lt;&quot;+annotation.error()+&quot;&gt; but was actual &lt;&quot;+ex.getErrorCode()+&quot;&gt;&quot;,e);<br/>\n}<br/>\n<br/>\nthrow ex;<br/>\n}<br/>\n}<br/>\n<br/>\n<br/>\nThis just works PERFECT!<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Alistair Israel &lt;aisrael@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; On Thu, Oct 22, 2009 at 2:21 PM, remoliechti &lt;remo.liechti@...&gt; wrote:<br/>\n&gt; <br/>\n&gt; &gt; that&#39;s what I did. My jar is within the classpath, so eclipse recognizes this jar file on compilation time (supporting my customized annotation).<br/>\n&gt; &gt;<br/>\n&gt; &gt; Never the less it does not use my jar file on running the unit tests :(<br/>\n&gt; <br/>\n&gt; Strange. I&#39;ve built multiple &#39;custom builds&#39; of JUnit, and not only<br/>\n&gt; can I successfully compile and run my tests against them under<br/>\n&gt; Eclipse, but they also work using Maven.<br/>\n&gt; <br/>\n&gt; Maybe there&#39;s another JUnit JAR on the run-time classpath? Have you<br/>\n&gt; checked your run configurations?<br/>\n&gt; <br/>\n&gt; - alistair<br/>\n&gt; -- <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://alistairisrael.wordpress.com\">http://alistairisrael.wordpress.com</a><br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21986, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1256205480", 
+    "canDelete": false, 
+    "nextInTopic": 21999, 
+    "prevInTopic": 21986, 
+    "headers": {
+        "inReplyToHeader": "PGY5ZjM2ZjkyMDkxMDIyMDIyM243ZTZlMGRkNHI3ZmViZmE0MDU5MjQxMDI4QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGhicGFiOCt1MWdyQGVHcm91cHMuY29tPg=="
+    }
+}

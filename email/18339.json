@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 18340, 
+    "senderId": "x3fm34phjaBVeEvJ3KpH-59KgNNP1HJomGmvhVXjh_hjv2dT5V22liVXp9GGs0JQMJMkFKoBZ7VkQenDTN4b33fC-9sat-lQCQg", 
+    "systemMessage": true, 
+    "subject": "Re: Dynamically discovering classes in a package. (was: Re: [junit] Why is it considered an error if there is no test in the file?)", 
+    "from": "&quot;Danny Aden&quot; &lt;danny.aden@...&gt;", 
+    "authorName": "Danny Aden", 
+    "msgSnippet": "The convention most people use is to create a separate directories for their test code and business code. /myproject/src /myproject/test Some times you may", 
+    "msgId": 18339, 
+    "topicId": 18329, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 269775852, 
+    "messageBody": "<div id=\"ygrps-yiv-50939679\">The convention most people use is to create a separate directories for their<br/>\ntest code and business code.<br/>\n<br/>\n/myproject/src<br/>\n/myproject/test<br/>\n<br/>\nSome times you may still want to have utilities that have no tests in them<br/>\nand another convention used is to have all of the test classes start or end<br/>\nwith Test.<br/>\n<br/>\n/myproject/test/some.package/TestMyClass.java<br/>\n/myproject/test/some.package/MyClassTest.java<br/>\n<br/>\nThen you can create a file set based only upon the tests classes that you<br/>\nwant to run.<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://ant.apache.org/manual/CoreTypes/fileset.html\">http://ant.apache.org/manual/CoreTypes/fileset.html</a><br/>\n<br/>\n&lt;fileset dir=&quot;${src.dir}&quot; casesensitive=&quot;yes&quot;&gt;<br/>\n  &lt;include name=&quot;**/Test*.java&quot;/&gt;<br/>\n  &lt;include name=&quot;**/*Test.java&quot;/&gt;<br/>\n&lt;/fileset&gt;<br/>\n<br/>\n<br/>\nGood Luck,<br/>\n<br/>\n~Danny<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 11/9/06, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;   The ability to, with even just 80% reliability, get at runtime all of<br/>\n&gt; the<br/>\n&gt; classes in a package, without having to parse directories of source code,<br/>\n&gt; would be great for JUnit and other packages. Of course, Java makes 100%<br/>\n&gt; reliability impossible, but it would seem that examining the classpath<br/>\n&gt; could<br/>\n&gt; allow some magic to be worked. It would also seem the kind of problem that<br/>\n&gt; someone out there may have already solved. Anyone have a pointer? Thanks,<br/>\n&gt;<br/>\n&gt; David Saff<br/>\n&gt;<br/>\n&gt; On 11/8/06, Kevin Lawrence &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:kev.lawrence@...\">kev.lawrence@...</a>&lt;kev.lawrence%40gmail.com&gt;&gt;<br/>\n&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; On 11/7/06, Joseph Shraibman &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jks@...\">jks@...</a> &lt;jks%40iname.com&gt;&gt; wrote:<br/>\n&gt; &gt; &gt; to the code it is testing. I&#39;d like to create a junit ant task that<br/>\n&gt; &gt; &gt; just runs on my whole codebase, but not all of my classes will have<br/>\n&gt; &gt; &gt; test methods and I&#39;ll get an error for each class that doesn&#39;t (and I<br/>\n&gt; &gt; &gt; don&#39;t want to have to explictily add each class to my build.xml file<br/>\n&gt; &gt; &gt; when I add a test).<br/>\n&gt; &gt;<br/>\n&gt; &gt; If I were to try to tackle this, I&#39;d be looking at how the ANT JUnit<br/>\n&gt; &gt; runner is structured.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Very approximately, it is like this:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;junit&gt;<br/>\n&gt; &gt; &lt;test&gt;<br/>\n&gt; &gt; &lt;fileset /&gt;<br/>\n&gt; &gt; &lt;/test&gt;<br/>\n&gt; &gt; &lt;/junit&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; The &lt;junit&gt; task runs all the tests handed to it by one or more &lt;test&gt;<br/>\n&gt; &gt; elements. The &lt;test&gt; elements get their input from one or more nested<br/>\n&gt; &gt; &lt;filesets&gt;.<br/>\n&gt; &gt;<br/>\n&gt; &gt; So rather than having JUnit /not/ filter out the non-tests, I&#39;d have<br/>\n&gt; &gt; that logic in either a custom subclass of &lt;test&gt; or a custom &lt;fileset&gt;<br/>\n&gt; &gt; - or maybe even a customer selector within the fileset.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Even if you don&#39;t sprinkle tests throughout your fileset, it&#39;s kinda<br/>\n&gt; &gt; lame that you have to select tests by doing pattern matching on a<br/>\n&gt; &gt; .class or .java filename. It&#39;s also error-prone as I have found out<br/>\n&gt; &gt; way too many times.<br/>\n&gt; &gt;<br/>\n&gt; &gt; I have often wanted to do something similar myself but have never<br/>\n&gt; &gt; gotten around to it. Let us know how it goes.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Kevin<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\nc: 650.743.1832<br/>\nKG6HHX<br/>\nB.S. Computer Engineering<br/>\nCal Poly, San Luis Obispo<br/>\nwww.tempestanz.com<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 18338, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1163266298", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18333, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDYxMTA5MDY0MnUxNmFkNDI3cWJiNmYzOGI5OWFjZmI2OWFAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PGM4OWJmNjBmMDYxMTExMDkzMWk0NjRhOGM2MWo0MzM5YTE4NTlkMTMxZGNAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDRmN2RhNmI5MDYxMTA5MDY0MnUxNmFkNDI3cWJiNmYzOGI5OWFjZmI2OWFAbWFpbC5nbWFpbC5jb20+"
+    }
+}

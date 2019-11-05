@@ -1,0 +1,28 @@
+{
+    "topicId": 497, 
+    "postDate": "982716117", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "kconnor@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "BKANVFzV72LJcFQwFnpFR-m0sSQIm8GYH3XT2-YeEgtuO48zRC-bhy42Ll8H6_dJo9PeSM0OLlxVS7U7KA", 
+    "nextInTime": 498, 
+    "userId": 0, 
+    "prevInTime": 496, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDk2djJzbCszbmI4QGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "kconnor@interwoven.com", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "Hi All, Based on the Are TestSuites Useless thread here, Kevin Bourrillion s javadoc solution (JUnit Dynamic Suite Builder) and TCLTest functionality, I", 
+    "contentTrasformed": false, 
+    "msgId": 497, 
+    "nextInTopic": 502, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;kconnor@...&gt;\r\nX-Sender: kconnor@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_4); 21 Feb 2001 00:42:00 -0000\r\nReceived: (qmail 87489 invoked from network); 21 Feb 2001 00:41:59 -0000\r\nReceived: from unknown (10.1.10.26) by l9.egroups.com with QMQP; 21 Feb 2001 00:41:59 -0000\r\nReceived: from unknown (HELO hn.egroups.com) (10.1.2.221) by mta1 with SMTP; 21 Feb 2001 00:41:59 -0000\r\nX-eGroups-Return: kconnor@...\r\nReceived: from [10.1.10.106] by hn.egroups.com with NNFMP; 21 Feb 2001 00:41:59 -0000\r\nDate: Wed, 21 Feb 2001 00:41:57 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Test selection (Are TestSuites Useless?)\r\nMessage-ID: &lt;96v2sl+3nb8@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2835\r\nX-Mailer: eGroups Message Poster\r\nFrom: kconnor@...\r\n\r\nHi All,\nBased on the &quot;Are TestSuites Useless&quot; thread here, Kevin Bourrillion&#39;s \njavadoc solution (JUnit Dynamic Suite Builder) and TCLTest \nfunctionality, I explored adding selective testcase execution through \nfiltering on properties rather than using TestSuites for this.  \nI&#39;d like to have it be part of the general release or find out if \nthere is other work along the same lines.\n\nThe basic idea is you invoke junit with a property string (for example \n-Dfilter=inProgress) and your test class and it would run all the \ntests that pass the filter.  Properties are associated with tests \nusing the same &quot;pluggable&quot; pattern currently used to create TestCases. \n That is, the run method is found dynamically based on the name of the \nTestCase and so are the properties meant to be used as a filter.  \nProperties can be associated with all the tests in the TestCase and/or \nthe individual test methods.  These are combined and then checked \nagainst the filter.  \n\nProperties are optional and thus backward compatible with existing \nTestCases. Not including a filter string on the cmd line defaults to \nrunning all the tests.\n\nFiltering in this manner works well with the TestSetup decorator.  \nRemaking suites (running tests using tests.elementAt()), are apt to \nbreak TestSetup usage. Also, this filtering mechanism could be \nextended to work with picking from a gui list.\n\nSee below for an example TestCase and a sample textui run.  Currently, \nskips are reported with failures and errors but this could be \nsuppressed.  \n\nI realize adding &quot;skip&quot; to &quot;error&quot; and &quot;failure&quot; complicates an \notherwise squeaky clean report.  It can be suppressed when there are \nnone I suppose.\n\nComments appreciated.\n\nKevin Connor Interwoven\n\nExample Test Case: public class IWTest extends FilteredTestCase { \npublic final static String fTestCaseFlags = &quot;regression, productA&quot;;\n    public IWTest(String name)\n    { super(name,fTestCaseFlags); }\n\tpublic final static String testOneFlags = &quot;slow&quot;; public void \ntestOne()\n    { assert(false); }\n\tpublic final static String testTwoFlags = &quot;knownBug, \n-productA&quot;; public void testTwo()\n    { assert(true); }\n\tpublic final static String testThreeFlags = &quot;inProgress&quot;; \npublic void testThree()\n    { assert(true); }\n    public void testPlatform()\n    { String curPlatform = System.getProperty(&quot;os.name&quot;);\n        System.out.println(curPlatform + &quot;&#92;n&quot;);\n        if (curPlatform.toLowerCase().startsWith(&quot;windows&quot;))\n        { skip(&quot;This doesn&#92;&#39;t work on windows.&quot;); } }\n}\n\nExample Run:\njava -Dfilter=productA IWTest ..S..S\nTime: 0.35\nFAILURES!!! Test Results: Run: 4 Failures: 1 Errors: 0 Skips: 2 There \nwere 1 failure: 1) testOne(IWTest) \n&quot;junit.framework.AssertionFailedError&quot; There were 2 skips: 1) \ntestTwoFlags(IWTest) &quot;Test marked no [productA]&quot; 2) \ntestPlatform(IWTest) &quot;This doesn&#39;t work on windows.&quot; \n\n\n", 
+    "subject": "Test selection (Are TestSuites Useless?)"
+}

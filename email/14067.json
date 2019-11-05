@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 14068, 
+    "senderId": "ZjM_D0A-jXv8naCR_L5T2UHYIBKWcwi6susrsGwZyyIk-5sHYKsvkOG5ywiYuZDD2lAQ_Whncts36OQZT8kd3_uS-iaJL4_OBubS", 
+    "systemMessage": false, 
+    "subject": "&quot;Bug in JUnit MoneyBag.java example?&quot; found by Jamie Andrews", 
+    "from": "&quot;Jeff Grigg&quot; &lt;jeffgrigg@...&gt;", 
+    "authorName": "Jeff Grigg", 
+    "msgSnippet": "In news:comp.software.extreme-programming, Jamie Andrews reports finding a possible bug in the MoneyBag example that comes with JUnit.  See messages with", 
+    "msgId": 14067, 
+    "profile": "jeffgrigg63132", 
+    "topicId": 14067, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139880894, 
+    "messageBody": "<div id=\"ygrps-yiv-1517251508\">In news:comp.software.extreme-programming, Jamie Andrews reports <br/>\nfinding a possible bug in the MoneyBag example that comes with <br/>\nJUnit.  See messages with subject &quot;Bug in JUnit MoneyBag.java <br/>\nexample?&quot;.  She found it with the aid of a tool, &quot;RUTE-J&quot; <br/>\n(Randomized Unit Testing Engine for Java), programmed by her <br/>\nresearch group.<br/>\n<br/>\nIn essence, the &#39;appendTo()&#39; method, in the IMoney interface, as <br/>\nimplemented in the MoneyBag class does not (and cannot) return a new <br/>\nMoney instance if doing appendTo results in a MoneyBag with only one <br/>\ncurrency in it.  And in the &#39;equals()&#39; methods of both classes, <br/>\nMoney and MoneyBag objects are considered equal only if both are <br/>\nzero.  The possiblity of a MoneyBag with only one currency in it is <br/>\nnot considered -- possibly because calling &#39;appendTo()&#39; to put the <br/>\nobject in that state is not considered valid usage.<br/>\n<br/>\nI think that &#39;appendTo()&#39; is intended to be an implementation <br/>\ndetail, not a method in a general purpose public interface, but it <br/>\nis implemented as a public method in the IMoney interface.<br/>\n<br/>\nTests:<br/>\n<br/>\n    public void testMoneyBagToMoneyComparison() {<br/>\n        MoneyBag moneyBagTarget = (MoneyBag)<br/>\n          MoneyBag.create(new Money(5, &quot;CHF&quot;),  new Money<br/>\n(5, &quot;USD&quot;)); <br/>\n        Money minusFiveFrancs = new Money(-5, &quot;CHF&quot;); <br/>\n        Money fiveBucks = new Money(5, &quot;USD&quot;); <br/>\n        minusFiveFrancs.appendTo(moneyBagTarget); <br/>\n<br/>\n        assertEquals(fiveBucks, moneyBagTarget);  // This fails.<br/>\n    }<br/>\n    public void testMoneyBagToMoneyComparison2() {<br/>\n        MoneyBag moneyBagTarget = (MoneyBag)<br/>\n          MoneyBag.create(new Money(5, &quot;CHF&quot;),  new Money<br/>\n(5, &quot;USD&quot;)); <br/>\n        Money minusFiveFrancs = new Money(-5, &quot;CHF&quot;); <br/>\n        Money fiveBucks = new Money(5, &quot;USD&quot;); <br/>\n        minusFiveFrancs.appendTo(moneyBagTarget); <br/>\n<br/>\n        assertEquals(moneyBagTarget, fiveBucks);  // This fails.<br/>\n    }<br/>\n    public void testMoneyBagToMoneyComparison_add() {<br/>\n        MoneyBag moneyBagTarget = (MoneyBag)<br/>\n          MoneyBag.create(new Money(5, &quot;CHF&quot;),  new Money<br/>\n(5, &quot;USD&quot;)); <br/>\n        Money minusFiveFrancs = new Money(-5, &quot;CHF&quot;); <br/>\n        Money fiveBucks = new Money(5, &quot;USD&quot;); <br/>\n<br/>\n        IMoney fiveUSD = moneyBagTarget.add(minusFiveFrancs);<br/>\n        assertEquals(fiveBucks, fiveUSD);<br/>\n    }<br/>\n<br/>\n<br/>\nA possible &quot;fix:&quot;    ;-&gt;<br/>\nAdd to the FAQ:<br/>\n &quot;Q: Is there a bug in the Money sample code?&quot;<br/>\n &quot;A: Yes.  See if you can find it.  ;-&gt;&quot;</div>", 
+    "prevInTime": 14066, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1120139516", 
+    "canDelete": false, 
+    "nextInTopic": 14069, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGRhMHRkcytxZnRpQGVHcm91cHMuY29tPg=="
+    }
+}

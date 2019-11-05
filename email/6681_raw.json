@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 6682, 
+    "senderId": "EKW_JDLTIzgFL70WGiMf8dPvhQQNURsx8oviGpsAamnsv4K1gY862tmoqpxTVjx-tf-C68WjXwhMk3ROgEW8gwIi7-VVy_K_kKH0UH--Zsk5e-UaH8UkkBI", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] tearDown() even if setUp() throws unexpected exception?", 
+    "from": "&quot;Shellman, Joel&quot; &lt;joel.shellman@...&gt;", 
+    "authorName": "Shellman, Joel", 
+    "msgSnippet": "Some ideas (though they may not apply to a more complex case): 1) Swap the order of calls in the setUp: protected void setUp() throws Exception { this.aFoo =", 
+    "msgId": 6681, 
+    "rawEmail": "Return-Path: &lt;Joel.Shellman@...&gt;\r\nReceived: (qmail 79757 invoked from network); 21 Jan 2003 20:09:09 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m7.grp.scd.yahoo.com with QMQP; 21 Jan 2003 20:09:09 -0000\r\nReceived: from unknown (HELO n15.grp.scd.yahoo.com) (66.218.66.70)\n  by mta1.grp.scd.yahoo.com with SMTP; 21 Jan 2003 20:09:09 -0000\r\nX-eGroups-Return: Joel.Shellman@...\r\nReceived: from [66.218.66.141] by n15.grp.scd.yahoo.com with NNFMP; 21 Jan 2003 20:09:09 -0000\r\nX-Sender: Joel.Shellman@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 21 Jan 2003 18:56:07 -0000\r\nReceived: (qmail 20353 invoked from network); 21 Jan 2003 18:56:07 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m3.grp.scd.yahoo.com with QMQP; 21 Jan 2003 18:56:07 -0000\r\nReceived: from unknown (HELO firewall245.fiserv.com) (12.2.10.245)\n  by mta3.grp.scd.yahoo.com with SMTP; 21 Jan 2003 18:56:07 -0000\r\nReceived: from fiserv.com (root@localhost)\n\tby firewall245.fiserv.com (8.8.8/8.8.7) with ESMTP id MAA11837\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 21 Jan 2003 12:57:48 -0600 (CST)\r\nReceived: by Fiserv.US ; Tue, 21 Jan 2003 12:53:06 -0600\r\nHop-Count: 1\r\nDate: Tue, 21 Jan 2003 12:53:06 -0600\r\nSender: &quot;Shellman, Joel&quot; &lt;Joel.Shellman@...&gt;\r\nSubject: RE: [junit] tearDown() even if setUp() throws unexpected exception?\r\nTo: &quot;junit@yahoogroups.com&quot; &lt;junit@yahoogroups.com&gt;\r\nMessage-ID: &lt;EX-20030121-125605-0002@...-missive1.fiserv.net&gt;\r\nImportance: Normal\r\nOriginal-To: &#39;junit@yahoogroups.com&#39;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=US-ASCII\r\nFrom: &quot;Shellman, Joel&quot; &lt;joel.shellman@...&gt;\r\nX-Yahoo-Group-Post: member; u=135169457\r\nX-Yahoo-Profile: joelshellman\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 21 Jan 2003 20:09:09 -0000\r\n\r\nSome ideas (though they may not apply to a more complex case):\n\n1) Swap the order of calls in the setUp:\n\n   protected void setUp() throws Exception {\n     this.aFoo = new Foo( 23 );  // could throw an exception\n     this.dbConnection = getConnection();  // from somewhere\n   }\n\nIf new Foo throws an exception, the connection hasn&#39;t been created yet.\n\n2) Throwing an exception from a constructor may be considered a BadThing and so you might want to refactor your code accordingly.\n\n3) Get and close a connection in each test*() method.\n\n4) This is ugly, but you could do something like:\n\nsetUp() {\n\ttry {\n\t\tthis.aFoo = new Foo( 23 );  // could throw an exception\n\t\tthis.dbConnection = getConnection();  // from somewhere\n\t} catch (Exception e) {\n\t\ttearDown();\n\t\tthrow e;\n\t}\n}\n\nAnd you can put a conditional around the tearDown if you only want to run it in certain cases.\n\nBest wishes,\n\nJoel Shellman\n\n\n&gt; import java.sql.*;\n&gt; import junit.framework.*;\n&gt; \n&gt; public class FooTest extends TestCase {\n&gt;   private Connection dbConnection;\n&gt;   private Foo aFoo;\n&gt; \n&gt;   protected void setUp() throws Exception {\n&gt;     this.dbConnection = getConnection();  // from somewhere\n&gt;     this.aFoo = new Foo( 23 );  // could throw an exception\n&gt;   }\n&gt; \n&gt;   protected void tearDown() throws Exception {\n&gt;     try {\n&gt;       dbConnection.close();\n&gt;     }\n&gt;     finally {\n&gt;       super.tearDown();\n&gt;     }\n&gt;   }\n&gt; \n&gt;   // test methods here...\n&gt; }\n&gt; ---\n&gt; \n&gt; if Foo&#39;s ctor starts throwing exceptions, all of a sudden the test \n&gt; class is leaking connections, since tearDown() is not called if setUp\n&gt; () throws an unexpected exception.\n\n\n\n", 
+    "profile": "joelshellman", 
+    "topicId": 6677, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 135169457, 
+    "prevInTime": 6680, 
+    "contentTrasformed": false, 
+    "postDate": "1043175186", 
+    "canDelete": false, 
+    "nextInTopic": 6686, 
+    "prevInTopic": 6678, 
+    "headers": {
+        "messageIdInHeader": "PEVYLTIwMDMwMTIxLTEyNTYwNS0wMDAyQGV4Y2hhbmdlLmZpc2Vydi1taXNzaXZlMS5maXNlcnYubmV0Pg=="
+    }
+}

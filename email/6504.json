@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 108, 
+    "nextInTime": 6505, 
+    "senderId": "ROIoPbQdTfFypw8K-6iciLTaHvFukGmvHY_KX1JzKJliYhRVUYpnrAjB0zPA9MkiQMWDsnlSyeS5ObkyfbfRTCtfc8j2SbI1RrIpLM4xmPjFk2vNQVGmIdGT", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Testing Private Methods", 
+    "from": "&quot;Michael Silverstein&quot; &lt;msilverstein@...&gt;", 
+    "authorName": "Michael Silverstein", 
+    "msgSnippet": "... There s no need to use private methods to test this. Assuming the code paths for the two constructors converge at some point immediately after the input", 
+    "msgId": 6504, 
+    "topicId": 1696, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 62742148, 
+    "messageBody": "<div id=\"ygrps-yiv-574436038\"><blockquote><span title=\"ireply\">&gt; -----Original Message-----<br/>\n&gt; From: Steven Taschuk [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:staschuk@...\">staschuk@...</a>] <br/>\n&gt;<br/>\n&gt; So, I decide I want a partwise constructor<br/>\n&gt; \tpublic GregorianDate( int year, int month, int date )<br/>\n&gt; which will throw IllegalArgumentException if any of these <br/>\n&gt; constraints are violated.  I write some tests to express the <br/>\n&gt; expectation of such exceptions, watch them fail, write the <br/>\n&gt; constructor, watch them pass, go for a beer.<br/>\n&gt; <br/>\n&gt; Now I want a parsing constructor<br/>\n&gt; \tpublic GregorianDate( String s ) throws <br/>\n&gt; DateParseException which will parse strings in ISO 8601 <br/>\n&gt; format (such as &quot;2002-12-18&quot;), throwing a DateParseException <br/>\n&gt; if the string is malformed or if the constraints on valid <br/>\n&gt; dates are violated.  I factor the constraint checking out of <br/>\n&gt; the partwise constructor and into private methods so it can <br/>\n&gt; be reused by this new constructor, and now the problem arises.<br/>\n<br/>\n<br/>\n </span></blockquote>There&#39;s no need to use private methods to test this. Assuming the code<br/>\npaths for the two constructors converge at some point immediately after<br/>\nthe input String is parsed, you can test the parsing code and the date<br/>\nprocessing code separately.<br/>\n<br/>\nTo test the parsing code, you would compare instances created partwise<br/>\nwith instances created through parsing for equality, or assert that they<br/>\nthrow identical exceptions. Once you know that the two constructors<br/>\nbehave similarly across a set of reasonable variations, you can<br/>\nconcentrate on behavioral tests with just one of the constructor forms.<br/>\n<br/>\nYou can probably make things a little easier by  creating a method that<br/>\nconverts any partwise specification into a String formatted<br/>\nspecification. That way you only define your data variations in one<br/>\nplace and convert on the fly for the other constructor.<br/>\n<br/>\nI&#39;d also make a bunch of helper methods, such as one that takes a<br/>\npartwise date specification and an expected exception, and then<br/>\ninstantiates using both constructors, asserting that both cause the<br/>\nexpected exception to be thrown. That way you&#39;re not replicating a lot<br/>\nof code.<br/>\n<br/>\n- Mike<br/>\n<br/>\n-------------------<br/>\nMike Silverstein<br/>\nSilverMark, Inc.<br/>\nThe Object Testing Company<br/>\nwww.javatesting.com</div>", 
+    "prevInTime": 6503, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1040315256", 
+    "canDelete": false, 
+    "nextInTopic": 6505, 
+    "prevInTopic": 6503, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMjE5MDA0MDQ5LkEyMDkxQHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "messageIdInHeader": "PDAwMDMwMWMyYTc3YiQ4YzA0YjU1MCQ2NDAxYThjMEBsYXRpdHVkZTAxPg=="
+    }
+}

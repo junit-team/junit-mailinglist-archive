@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 20795, 
+    "senderId": "ZpqsvIDnNm7HdwPP16zNXLQBJ44rkSSh_Ljd9cqnjm9wddpUrVJhEG_1RyswZyRH8Zs5sOlPwcgUxIhqYYurh5H6g_kYoPzHwnIN_w", 
+    "systemMessage": false, 
+    "subject": "Re: Junit 3 suite setup tear down", 
+    "from": "&quot;toalexsmail&quot; &lt;toalexsmail@...&gt;", 
+    "authorName": "toalexsmail", 
+    "msgSnippet": "... Hello, David! Sorry, for long delay. ... I don t actually understand your question. Do you mean to define some BaseEJBTest class with @BeforeClass public", 
+    "msgId": 20794, 
+    "rawEmail": "Return-Path: &lt;toalexsmail@...&gt;\r\nX-Sender: toalexsmail@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 13236 invoked from network); 11 Aug 2008 19:12:00 -0000\r\nX-Received: from unknown (66.218.67.94)\n  by m52.grp.scd.yahoo.com with QMQP; 11 Aug 2008 19:12:00 -0000\r\nX-Received: from unknown (HELO n40b.bullet.mail.sp1.yahoo.com) (66.163.168.154)\n  by mta15.grp.scd.yahoo.com with SMTP; 11 Aug 2008 19:12:00 -0000\r\nX-Received: from [216.252.122.219] by n40.bullet.mail.sp1.yahoo.com with NNFMP; 11 Aug 2008 19:12:00 -0000\r\nX-Received: from [66.218.69.2] by t4.bullet.sp1.yahoo.com with NNFMP; 11 Aug 2008 19:12:00 -0000\r\nX-Received: from [66.218.66.91] by t2.bullet.scd.yahoo.com with NNFMP; 11 Aug 2008 19:12:00 -0000\r\nDate: Mon, 11 Aug 2008 19:05:28 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;g7q2ho+9opp@...&gt;\r\nIn-Reply-To: &lt;4f7da6b90808060327y5e9286bdqbde47edc66b97697@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;toalexsmail&quot; &lt;toalexsmail@...&gt;\r\nSubject: Re: Junit 3 suite setup tear down\r\nX-Yahoo-Group-Post: member; u=340165037; y=5mR7vcOExl6AtEFOJFweWG7Dwmtc7sdtm4RIRipaub2hS5AupV8\r\nX-Yahoo-Profile: toalexsmail\r\n\r\n--- In junit@yahoogroups.com, &quot;David Saff&quot; &lt;david@...&gt; wrote:\nHello, David!=\r\n\nSorry, for long delay.\n\n&gt;\n&gt; On Mon, Aug 4, 2008 at 4:52 PM, toalexsmail &lt;t=\r\noalexsmail@...&gt; wrote:\n&gt; &gt; No, I am not. I just want that doYourOneTimeSetu=\r\np() would be run once\n&gt; &gt; for ANY suite that run. doYourOneTimeSetup() will=\r\n startup\n&gt; &gt; microcontainer. Parameters to it doesn&#39;t changdes.\n&gt; \n&gt; Can yo=\r\nu define doYourOneTimeSetup in a superclass of the suites, and\n&gt; have all o=\r\nf your suites inherit from it?\nI don&#39;t actually understand your question. D=\r\no you mean to define some\nBaseEJBTest class with \n\n@BeforeClass\npublic stat=\r\nic void setUpClass();\n?\n\nAll test classes will inherit from this class. In =\r\nthis cases, however,\nBaseEJBTest.setUpClass() will be called for all test c=\r\nlass in the\nsuite. This is actually what I did. There is work-around, namel=\r\ny, to\nuse Bootstrap.getInstance().isStarted() to determine whether this is\n=\r\nfirst call to this method or not. \nPerhaps, you meant to use something like=\r\n this\n&gt; @RunWith(Suite.class)\n&gt; @SuiteClasses(A.class, B.class)\n&gt; public cl=\r\nass MySuite {\n&gt; @BeforeClass public static void doYourOneTimeSetup() {}\n&gt; @=\r\nAfterClass public static void doYourOneTimeTeardown() {}\n&gt; }\n?\nFirst of all=\r\n, until recently I wasn&#39;t aware of this opportunity.\nSecond of all, it is q=\r\nuite verbose and not very flexible.\n\n&gt; &gt;&gt; Choosing individual methods to ru=\r\nn\n&gt; &gt;&gt; from the command line or Eclipse is fairly simple, but mixing and\n&gt; =\r\n&gt;&gt; matching methods from multiple classes takes a fair amount of magic.\n&gt; &gt;=\r\n&gt; Do you find yourself wanting to do this often? (I usually am either\n&gt; &gt;&gt; =\r\nrunning a whole suite, one class in the suite, or one method).\n&gt; &gt; When I w=\r\nrite some code or fix the bug I usually want to run some\n&gt; &gt; subgroup of th=\r\ne test suite. I should split up my suite to the smaller\n&gt; &gt; one, I know, bu=\r\nt I couldn&#39;t to do it easily and, in fact, architecture\n&gt; &gt; don&#39;t want to d=\r\no it.\n&gt; \n&gt; So the suite that you want to run often involves one method, but=\r\n not\n&gt; all, from class A, and one method, but not all, from class B?  I&#39;m\n&gt;=\r\n sorry to ask the same question again, but I couldn&#39;t parse your answer\n&gt; (=\r\nnot enough coffee yet).\n&gt; \nUsually I want to run 2,3 or 10 method from some=\r\n class A. Typical use\ncase is the following (after I finished to write unit=\r\n test and I want\nto refactor the code&#92;improve the code&#92;find bug in producti=\r\non). \n1. Run all test classes that cover the method to change. Usually it i=\r\ns\n one class (this has a drawback to have huge test classes).\n2. Figure out=\r\n what test method has failed (after I made a change, I am\nnot describing a =\r\nprocess of refactoring in detail here). Usually all\nthese methods belongs t=\r\no one familiar that under normal circumstances\nwill be in different class. =\r\n\n3. Rerun only those methods.\n4. Make a change to test method&#92;method and re=\r\nrun those methods, test\nmethods that failed, one particular test method, ba=\r\nsed on what is best\nfeet in this case. \n\nI hope this helps. \n\n\n", 
+    "profile": "toalexsmail", 
+    "topicId": 20668, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 340165037, 
+    "prevInTime": 20793, 
+    "contentTrasformed": false, 
+    "postDate": "1218481528", 
+    "canDelete": false, 
+    "nextInTopic": 20886, 
+    "prevInTopic": 20762, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDgwODA2MDMyN3k1ZTkyODZiZHFiZGU0N2VkYzY2Yjk3Njk3QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGc3cTJobys5b3BwQGVHcm91cHMuY29tPg=="
+    }
+}

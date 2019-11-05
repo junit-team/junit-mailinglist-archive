@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 20187, 
+    "senderId": "cpMwJkDSXr5Y9kjsvspcS_Vs1vkSIU-PlHdQoO5Ems6RzQOHDvd2SSnLDwsGkQz3d94ctfIDUadplEvfWg1HdQXDIHE6LI_NcE5UT2BkH3KVXnR471A", 
+    "systemMessage": true, 
+    "subject": "Bug in org.junit.Assert", 
+    "from": "&quot;Walter Gildersleeve&quot; &lt;newsgroups@...&gt;", 
+    "authorName": "Walter Gildersleeve", 
+    "msgSnippet": "Hi, I searched around to see if anyone s submitted this bug.  I didn t find a dupe, so I ll go ahead and post; apologies if it s already known. In", 
+    "msgId": 20186, 
+    "rawEmail": "Return-Path: &lt;newsgroups@...&gt;\r\nReceived: (qmail 18938 invoked from network); 22 Dec 2007 02:40:43 -0000\r\nReceived: from unknown (66.218.67.94)\n  by m57.grp.scd.yahoo.com with QMQP; 22 Dec 2007 02:40:43 -0000\r\nReceived: from unknown (HELO n49b.bullet.mail.sp1.yahoo.com) (66.163.168.163)\n  by mta15.grp.scd.yahoo.com with SMTP; 22 Dec 2007 02:40:43 -0000\r\nReceived: from [216.252.122.216] by n49.bullet.mail.sp1.yahoo.com with NNFMP; 22 Dec 2007 02:40:43 -0000\r\nReceived: from [66.218.69.5] by t1.bullet.sp1.yahoo.com with NNFMP; 22 Dec 2007 02:40:43 -0000\r\nReceived: from [66.218.66.89] by t5.bullet.scd.yahoo.com with NNFMP; 22 Dec 2007 02:40:43 -0000\r\nX-Sender: newsgroups@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 69280 invoked from network); 21 Dec 2007 20:34:17 -0000\r\nX-Received: from unknown (66.218.67.96)\n  by m53.grp.scd.yahoo.com with QMQP; 21 Dec 2007 20:34:17 -0000\r\nX-Received: from unknown (HELO n51d.bullet.mail.sp1.yahoo.com) (66.163.169.49)\n  by mta17.grp.scd.yahoo.com with SMTP; 21 Dec 2007 20:34:17 -0000\r\nX-Received: from [216.252.122.218] by n51.bullet.mail.sp1.yahoo.com with NNFMP; 21 Dec 2007 20:34:17 -0000\r\nX-Received: from [66.218.69.1] by t3.bullet.sp1.yahoo.com with NNFMP; 21 Dec 2007 20:34:17 -0000\r\nX-Received: from [66.218.66.78] by t1.bullet.scd.yahoo.com with NNFMP; 21 Dec 2007 20:34:17 -0000\r\nDate: Fri, 21 Dec 2007 20:34:16 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;fkh808+493m@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;Walter Gildersleeve&quot; &lt;newsgroups@...&gt;\r\nSubject: Bug in org.junit.Assert\r\nX-Yahoo-Group-Post: member; u=230339302; y=DjHo_j-o60fPhk2R45pa5U57qgBNEnPCryFnitPr6zk0Ed4G\r\nX-Yahoo-Profile: null_bock\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 22 Dec 2007 02:40:42 -0000\r\n\r\nHi,\n\nI searched around to see if anyone&#39;s submitted this bug.  I didn&#39;t\nfin=\r\nd a dupe, so I&#39;ll go ahead and post; apologies if it&#39;s already known.\n\nIn A=\r\nssert#format(String, Object, Object), a NullPointerException is\nthrown if e=\r\nither param &quot;expected&quot; or &quot;actual&quot; is null and the other is\n*the string* &quot;n=\r\null&quot;.  Here are a couple test cases demonstrating this:\n\n@Test(expected=3DN=\r\nullPointerException.class)\npublic void confirmError() {\n    assertEquals(nu=\r\nll, &quot;null&quot;);\n}\n\n@Test(expected=3DNullPointerException.class)\npublic void co=\r\nnfirmErrorToo() {\n    assertEquals(&quot;null&quot;, null);\n}\n\nThis is because Assert=\r\n#format is trying to print extended information\nwhen two objects are visual=\r\nly identical but semantically different;\nnamely, it wants to display the cl=\r\nass names as well as the values,\ndoing a Object#getClass() without checking=\r\n if the object is null.\n\nHere&#39;s a possible fix:\n\n\nstatic String format(Stri=\r\nng message, Object expected, Object actual) {\n    String formatted =3D &quot;&quot;;\n=\r\n    if (message !=3D null && !message.equals(&quot;&quot;)) {\n        formatted =3D m=\r\nessage + &quot; &quot;;\n    }\n\n    String expectedString =3D String.valueOf(expected)=\r\n;\n    String actualString =3D String.valueOf(actual);\n\n    if (expected =3D=\r\n=3D null) {\n        return formatted + &quot;expected: &lt;null&gt; but was: &quot;\n       =\r\n     + actual.getClass().getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;\n    } else i=\r\nf (actual =3D=3D null) {\n        return formatted + &quot;expected: &quot; + expected=\r\n.getClass().getName()\n                + &quot;&lt;&quot; + expectedString + &quot;&gt; but was: =\r\n&lt;null&gt;&quot;;\n    } else if (expectedString.equals(actualString)) {\n        retu=\r\nrn formatted + &quot;expected: &quot; + expected.getClass().getName()\n               =\r\n + &quot;&lt;&quot; + expectedString + &quot;&gt; but was: &quot;\n                + actual.getClass()=\r\n.getName() + &quot;&lt;&quot; + actualString + &quot;&gt;&quot;;\n    } else {\n        return formatte=\r\nd + &quot;expected:&lt;&quot; + expectedString + &quot;&gt; but was:&lt;&quot;\n                + actualS=\r\ntring + &quot;&gt;&quot;;\n    }\n}\n\nThe assumption here is that actual and expected will =\r\nnever *both* be\nnull.  Right?\n\nWalter Gildersleeve\nPortland, OR\n\n\n", 
+    "profile": "null_bock", 
+    "topicId": 20186, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 230339302, 
+    "prevInTime": 20185, 
+    "contentTrasformed": false, 
+    "postDate": "1198269256", 
+    "canDelete": false, 
+    "nextInTopic": 20188, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGZraDgwOCs0OTNtQGVHcm91cHMuY29tPg=="
+    }
+}

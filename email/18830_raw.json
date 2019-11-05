@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 18831, 
+    "senderId": "-D3bVFR_iURBthOdyBHRQ_ITPYETs0ZAnA2jdt1DQZqB3v6ZmPaqNtZ_s4NmAHDE1SM_ekiJ6iivWK3QX000Odus", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterized", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Vasu, I m sorry to be late in a reply--it s been a busy month.  The general scenario you describe should work.  If you run class D by itself, does everything", 
+    "msgId": 18830, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 85725 invoked from network); 2 Feb 2007 18:18:04 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m36.grp.scd.yahoo.com with QMQP; 2 Feb 2007 18:18:04 -0000\r\nReceived: from unknown (HELO nf-out-0910.google.com) (64.233.182.189)\n  by mta7.grp.scd.yahoo.com with SMTP; 2 Feb 2007 18:18:04 -0000\r\nReceived: by nf-out-0910.google.com with SMTP id n29so1103739nfc\n        for &lt;junit@yahoogroups.com&gt;; Fri, 02 Feb 2007 10:17:54 -0800 (PST)\r\nReceived: by 10.49.58.13 with SMTP id l13mr1062172nfk.1170440273425;\n        Fri, 02 Feb 2007 10:17:53 -0800 (PST)\r\nReceived: by 10.49.43.16 with HTTP; Fri, 2 Feb 2007 10:17:53 -0800 (PST)\r\nMessage-ID: &lt;4f7da6b90702021017x2f56d362x58ff676f407be4d0@...&gt;\r\nDate: Fri, 2 Feb 2007 13:17:53 -0500\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20070116181137.99022.qmail@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;20070116181137.99022.qmail@...&gt;\r\nX-Google-Sender-Auth: d4cacb64b3899578\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] Parameterized\r\nX-Yahoo-Group-Post: member; u=139771899; y=ksoq7sYbbmtlHvglsdriQayaapcGTKhansI7vcAEoy8\r\nX-Yahoo-Profile: dsaff\r\n\r\nVasu,\n\nI&#39;m sorry to be late in a reply--it&#39;s been a busy month.  The general\nscenario you describe should work.  If you run class D by itself, does\neverything work?  Are you running tests from the command line or\nwithin an IDE?\n\n   David Saff\n\nOn 1/16/07, Vasudevan Kalyanaraman &lt;vkvasudevan@...&gt; wrote:\n&gt; Hello David, Gabriel and other experts!\n&gt;\n&gt; Could you please help[ me with this special situation.\n&gt;\n&gt; In my company i have multiple heirarchical test suites. That is suites and sub suites.\n&gt;\n&gt; e.g. testsuite A has test suites B C and D\n&gt; again this test suite D aggregates test suite E.\n&gt; When i execute test suite A then everything is executed.\n&gt;\n&gt; In this scenraio, the D test suite should use the Paramerized Runner and the others use Custom Test Runner..\n&gt;\n&gt; I tried this and i am getting strange errors like &quot;no runnable methods&quot; for D.\n&gt;\n&gt; Is this possible ? Is there a better way choose the runner during runtime.\n&gt; Unfortunately the suite structure is a business requirement and cannot be changed.\n&gt;\n&gt; Any help on this is appreciated...\n&gt;\n&gt; Thanks\n&gt; Vasu\n&gt;\n&gt;\n&gt; ----- Original Message ----\n&gt; From: David Saff &lt;saff@...&gt;\n&gt; To: junit@yahoogroups.com\n&gt; Sent: Tuesday, January 16, 2007 3:17:26 PM\n&gt; Subject: Re: [junit] Re: Custom Runner Delegation\n&gt;\n&gt; Well,\n&gt;\n&gt; I still get passing with both JUnit 4.1 and JUnit 4.2, but I am using\n&gt; the latest Eclipse milestone. I&#39;ll download 3.2.1 and try again.\n&gt;\n&gt; Actually, can you try running the below much simpler test in your\n&gt; environment? Thanks,\n&gt;\n&gt; David Saff\n&gt;\n&gt; import static org.junit.Assert. *;\n&gt; import java.lang.annotatio n.Inherited;\n&gt; import java.lang.annotatio n.Retention;\n&gt; import java.lang.annotatio n.RetentionPolic y;\n&gt; import org.junit.Test;\n&gt;\n&gt; public class InheritedAnnotation Test {\n&gt; @Retention(Retentio nPolicy.RUNTIME)\n&gt; @Inherited\n&gt; public static @interface InheritMe {}\n&gt;\n&gt; @InheritMe\n&gt; public static class Base {}\n&gt;\n&gt; public static class Sub extends Base {}\n&gt;\n&gt; @Test public void annotationIsInherit ed() {\n&gt; assertNotNull( Sub.class. getAnnotation( InheritMe. class));\n&gt; }\n&gt; }\n&gt;\n&gt; On 1/15/07, gabrielcooper &lt;gabriel.cooper@ jtv.com&gt; wrote:\n&gt; &gt; &gt; Thank you very much for that example. The mystery thickens--your test\n&gt; &gt; &gt; passes in my environment! (Eclipse compiler on jdk 1.5.0_04). What\n&gt; &gt; &gt; compiler and runtime are you using? I&#39;m beginning to suspect\n&gt; &gt; &gt; differences in support for the @Inherited annotation.\n&gt; &gt;\n&gt; &gt; /boggle\n&gt; &gt;\n&gt; &gt; Windows XP\n&gt; &gt; JUnit 4.1\n&gt; &gt; JDK 1.5.0_06\n&gt; &gt; Eclipse 3.2.1\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; Yahoo! Groups Links\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; ____________________________________________________________________________________\n&gt; Be a PS3 game guru.\n&gt; Get your game face on with the latest PS3 news and previews at Yahoo! Games.\n&gt; http://videogames.yahoo.com/platform?platform=120121\n&gt;\n&gt; [Non-text portions of this message have been removed]\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 18751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 18829, 
+    "contentTrasformed": false, 
+    "postDate": "1170440273", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18751, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDcwMTE2MTgxMTM3Ljk5MDIyLnFtYWlsQHdlYjU2ODA5Lm1haWwucmUzLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwMjAyMTAxN3gyZjU2ZDM2Mng1OGZmNjc2ZjQwN2JlNGQwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDcwMTE2MTgxMTM3Ljk5MDIyLnFtYWlsQHdlYjU2ODA5Lm1haWwucmUzLnlhaG9vLmNvbT4="
+    }
+}

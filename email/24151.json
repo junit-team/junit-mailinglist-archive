@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 24152, 
+    "senderId": "febgjLb5bscZ3usQYR3XdRhIMF4tkeJoMOMfelTjEFPYhss0ArgihjUNhUVmwAxLO74y-qR012R0zM7NJKAjTUslrsDEHGIb", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Custom MethodSorter", 
+    "from": "Kevin Cooney &lt;kcooney@...&gt;", 
+    "authorName": "Kevin Cooney", 
+    "msgSnippet": "If you want to change the test method run order because you want that method order to change every run/hour/day, then a custom Runner is not a great option;", 
+    "msgId": 24151, 
+    "profile": "kevincooney2000", 
+    "topicId": 24135, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 475263748, 
+    "messageBody": "<div id=\"ygrps-yiv-924741789\">If you want to change the test method run order because you want that<br/>\nmethod order to change every run/hour/day, then a custom Runner is not a<br/>\ngreat option; your teammates will have to remember to use that custom<br/>\nrunner everywhere.<br/>\n<br/>\nInstead, you can create your own main class to replace JUnitCore and use<br/>\nRequest.sortWith() and use something like this to order it:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/collect/Ordering.html#arbitrary(\">http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/collect/Ordering.html#arbitrary(</a>)<br/>\n<br/>\nBe aware that if the method order changes during the day that could be<br/>\nproblematic. If I am doing development and a test starts to fail, my first<br/>\nthought is I made a code change that caused it to fail, and go and look for<br/>\nthe bug I introduced in my code or test. It wouldn&#39;t at all occur to me<br/>\nthat the test started failing because the clock passed 2pm, so the method<br/>\norder was changed because it was an even hour.<br/>\n<br/>\nIf you want your method order to periodically change, have it change at 2am<br/>\nand have a continuous build.<br/>\n<br/>\n-- Kevin<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thu, Dec 6, 2012 at 7:40 AM, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n<br/>\n&gt; Sorry to skip back to the top question.<br/>\n&gt;<br/>\n&gt; As many people point out, if you&#39;re doing this because test B only operates<br/>\n&gt; as expected if test A runs first, don&#39;t do that.  There are lots of ways to<br/>\n&gt; avoid that, and I&#39;m happy to talk about it.<br/>\n&gt;<br/>\n&gt; On the other hand, if the reason you&#39;re doing this is to order independent<br/>\n&gt; tests in a way that puts fast or often-failing tests near the beginning of<br/>\n&gt; a run in order to enhance feedback time, I totally understand what you&#39;re<br/>\n&gt; going for, so let&#39;s pretend that&#39;s why you want to do it.<br/>\n&gt;<br/>\n&gt; Don&#39;t use MethodSorter.  It&#39;s at a lower implementation level than you<br/>\n&gt; likely want.<br/>\n&gt;<br/>\n&gt; Instead, write a custom runner:<br/>\n&gt;<br/>\n&gt; public class Sorted extends Runner {<br/>\n&gt;   final Runner mDelegate;<br/>\n&gt;<br/>\n&gt;   public SortedRunner(Class&lt;?&gt; testClass) {<br/>\n&gt;     mDelegate = createDelegate(testClass);<br/>\n&gt;     mDelegate.sort(createSorter(testClass));<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   public Description getDescription() {<br/>\n&gt;      return mDelegate.getDescription():<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   public void run(RunNotifier notifier) {<br/>\n&gt;      mDelegate.run(notifier);<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   // ...<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Now, you just have to define createDelegate(...) and createSorter(...).<br/>\n&gt;  For a fully general solution, you could make new annotations, to enable:<br/>\n&gt;<br/>\n&gt; @RunWith(Sorted.class)<br/>\n&gt; @SortedRunWith(JUnit4.class)<br/>\n&gt; public class MyTest {<br/>\n&gt;   @Sorter public static final Sorter mySorter = new MyCustomSorter();<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; If you (or anyone listening) wanted to take a go at making a pull request<br/>\n&gt; to add something like that to the core, I think it would be useful.<br/>\n&gt;<br/>\n&gt; However, to just get your job done, you might go ahead and hard-code the<br/>\n&gt; particular Runner and Sorter that you want.<br/>\n&gt;<br/>\n&gt; Good luck,<br/>\n&gt;<br/>\n&gt;    David<br/>\n&gt;<br/>\n&gt; On Wed, Dec 5, 2012 at 7:27 AM, Eirik Lygre &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:eirik.lygre@...\">eirik.lygre@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt; &gt; **<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; I&#39;m looking at creating my own MethodSorter. Is there documentation on<br/>\n&gt; how<br/>\n&gt; &gt; to do that, and is it even possible?<br/>\n&gt; &gt;<br/>\n&gt; &gt; --<br/>\n&gt; &gt; Eirik<br/>\n&gt; &gt;<br/>\n&gt; &gt; There is no high like a tango high<br/>\n&gt; &gt; There is no low like a tango low<br/>\n&gt; &gt;<br/>\n&gt; &gt; [Non-text portions of this message have been removed]<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 24150, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1354812788", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 24150, 
+    "headers": {
+        "inReplyToHeader": "PENBTHJ3LVB6Y3lvQWgrRW5iTVZUdGV5eUYzekZDOT11MD1tTU5oPUFUb3Fia0F4VE9FUUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBQTNFK2VVNXhoNk5uY0ZLclpkdXVYYW91NDVfOGFwbj1jS1ZmRUpKK1BlUk5uLXRhZ0BtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBSEptU1ZfQz1Id1lZdFpNQVlUNXE5T2tvPTZtLWd2VlRaTWk5bnlCb3NURHJ2UT0zZ0BtYWlsLmdtYWlsLmNvbT4gPENBTHJ3LVB6Y3lvQWgrRW5iTVZUdGV5eUYzekZDOT11MD1tTU5oPUFUb3Fia0F4VE9FUUBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

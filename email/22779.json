@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 22780, 
+    "senderId": "JJdM0f4axUMuNdgHGfHCZ3Mq6nk5oox65RxjY-P_hg2S6JKetaZPcFz2V1DNcVeEzDDZV0hMGYkg4YJK1k5EHxwJLgiXzdhpBOg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: @BeforeClass method for DBUnit Dataset creation", 
+    "from": "Mike Forsberg &lt;bigmike.f@...&gt;", 
+    "authorName": "Mike Forsberg", 
+    "msgSnippet": "The hack of a initalizationOccurred boolean is always an option. In other words... use a static field that is initially set to false.  Then when you come to", 
+    "msgId": 22779, 
+    "profile": "bigmike_f", 
+    "topicId": 22776, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 421392598, 
+    "messageBody": "<div id=\"ygrps-yiv-145217736\">The hack of a initalizationOccurred boolean is always an option.<br/>\n<br/>\nIn other words... use a static field that is initially set to false.  Then<br/>\nwhen you come to your setup method, only do the update if the field is<br/>\nfalse.  Just remember to set the field to true once the update occurs.  This<br/>\nway, no matter which test runs first or even if a sub set of tests run, then<br/>\nthe reset only occurs initially.<br/>\n<br/>\nThere may be a better way to do this, but I like to fall back on this<br/>\nrecipe.<br/>\n<br/>\nBig Mike<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Thu, Jul 1, 2010 at 11:39 AM, hdave321321 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:hdave321321@...\">hdave321321@...</a>&gt; wrote:<br/>\n<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Thanks for the help. In my case, Spring Test does an automatic transaction<br/>\n&gt; rollback after every test method, so there are no dependencies between tests<br/>\n&gt; -- so thats not a problem. Because of the rollback, it is also the case that<br/>\n&gt; they order of the test runs also doesn&#39;t matter. The database is reset to a<br/>\n&gt; &quot;known&quot; state after each test method by the transactional rollback.<br/>\n&gt;<br/>\n&gt; I&#39;d just like to load the data once rather than 50 times. But the<br/>\n&gt; @BeforeClass requirement to be a static method makes it impossible to use.<br/>\n&gt; Is there any trigger that can run after a class is initialized by Spring and<br/>\n&gt; before any test method is executed?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> &lt;junit%40yahoogroups.com&gt;, Mike Forsberg<br/>\n&gt; &lt;bigmike.f@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; I would advise against that unless you were following the following guide<br/>\n&gt; &gt; lines....<br/>\n&gt; &gt; - No test method (or called method) manipulates the data base.<br/>\n&gt; &gt; - The order of the test methods do not cause conflicts with each other<br/>\n&gt; with<br/>\n&gt; &gt; required data being there.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Some things I&#39;d try before doing the @BeforeClass<br/>\n&gt; &gt; - Only populate the data you need for a given set of tests. (Don&#39;t<br/>\n&gt; populate<br/>\n&gt; &gt; the _whole_ database.)<br/>\n&gt; &gt; - Which of the DBUnit population features are you using... I think there<br/>\n&gt; is<br/>\n&gt; &gt; one that will revert to a known state, without the delete and insert.<br/>\n&gt; This<br/>\n&gt; &gt; may save some time.<br/>\n&gt; &gt; - Try to use a non-commitable transaction for testing. After all, one<br/>\n&gt; &gt; shouldn&#39;t need to test the commit functionality. If that breaks more than<br/>\n&gt; &gt; just you will have problems.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Hope I helped,<br/>\n&gt; &gt;<br/>\n&gt; &gt; Big Mike<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; On Wed, Jun 30, 2010 at 8:32 PM, hdave321321 &lt;hdave321321@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; My DAO integration tests are taking a long time to run. I am using<br/>\n&gt; Spring<br/>\n&gt; &gt; &gt; Test which automatically does a transaction rollback after each test<br/>\n&gt; method.<br/>\n&gt; &gt; &gt; However, I am also using DBUnit to load the exact same dataset before<br/>\n&gt; each<br/>\n&gt; &gt; &gt; test method via the @BeforeTransaction annotation.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; It has occured to me that I could save a lot of time if I load the<br/>\n&gt; DBUnit<br/>\n&gt; &gt; &gt; test data once per test class instead of once per test method.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I&#39;ve not used the @BeforeClass and @AfterClass methods before, but<br/>\n&gt; &gt; &gt; apparently they require the annotated method to be static and this is<br/>\n&gt; &gt; &gt; interfering with my normal use of Spring dependency injection that<br/>\n&gt; provides<br/>\n&gt; &gt; &gt; an application context, data source, and other things I need to load<br/>\n&gt; the<br/>\n&gt; &gt; &gt; correct data set.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Anyone experience this before? What&#39;s a good way to address this<br/>\n&gt; problem?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; [Non-text portions of this message have been removed]<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 22778, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1278010253", 
+    "canDelete": false, 
+    "nextInTopic": 22780, 
+    "prevInTopic": 22778, 
+    "headers": {
+        "inReplyToHeader": "PGkwaWdiaithcGNvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGlsVWlIRmVZblVFUUtteFh2NFFOd0QzMnptc0p5M3pISVBUWUFEWEBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PEFBTkxrVGlud0tRNzRqT09QNE85UEt2UEFHc2ZCNFFiSGhFMDQzZnZIMl9GckBtYWlsLmdtYWlsLmNvbT4JPGkwaWdiaithcGNvQGVHcm91cHMuY29tPg=="
+    }
+}

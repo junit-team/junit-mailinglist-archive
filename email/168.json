@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 169, 
+    "senderId": "g5RnjEH22wcbRnEGDpQ6xu8TSfRwqY8sd3aIy30eR1uCMY-jh3ne6rNF0SmJiv7fjpJcRDXADV1t8nzT-Fkvb-tYmCG2tUAkb8HYjw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: newbie question: how to avoid rerunning fixture c ode on every test", 
+    "from": "Kevin Bourrillion &lt;kevinb@...&gt;", 
+    "authorName": "Kevin Bourrillion", 
+    "msgSnippet": "Thanks--but how does MyTest access this Connection you created? I mean, I can think of ways to hack it, but what did the authors have in mind when they created", 
+    "msgId": 168, 
+    "topicId": 168, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1757232409\">\n<html><head>\n \n\n\n</head> \n \n<div><span class=\"ygrps-yiv-1757232409167402119-27122000\"><font face=\"Arial\" color=\"#0000ff\"\n size=\"2\">Thanks--but how does MyTest access this Connection you \ncreated?</font></span></div>\n<div><span class=\"ygrps-yiv-1757232409167402119-27122000\"><font face=\"Arial\" color=\"#0000ff\"\n size=\"2\"></font></span>&nbsp;</div>\n<div><span class=\"ygrps-yiv-1757232409167402119-27122000\"><font face=\"Arial\" color=\"#0000ff\" size=\"2\">I \nmean, I can think of ways to hack it, but what did the authors have in mind when \nthey created TestSetup?</font></span></div>\n<div><span class=\"ygrps-yiv-1757232409167402119-27122000\"><font face=\"Arial\" color=\"#0000ff\"\n size=\"2\"></font></span>&nbsp;</div>\n<div><span class=\"ygrps-yiv-1757232409167402119-27122000\"><font face=\"Arial\" color=\"#0000ff\"\n size=\"2\">Kevin</font></span></div>\n<blockquote><span title=\"qreply\"> <blockquote>\n  <div class=\"ygrps-yiv-1757232409OutlookMessageHeader\" dir=\"ltr\" align=\"left\"><font face=\"Tahoma\"\n size=\"2\">-----Original Message-----<br><b>From:</b> charliehubbard76@... \n  [mailto:charliehubbard76@...]<br><b>Sent:</b> Tuesday, December 26, 2000 \n  7:13 AM<br><b>To:</b> junit@egroups.com<br><b>Subject:</b> [junit] Re: newbie \n  question: how to avoid rerunning fixture code on every \n  test<br><br></font></div><tt>--- In junit@egroups.com, &quot;Stephen P Peterson&quot; \n  <br>&lt;stephen.peterson@i...&gt; wrote:<br>&gt; What if the setup logic \n  involves connecting to databases and <br>&gt; running queries that tends to be \n  a bit slow for doing on every <br>&gt; single test?&nbsp; Is an explanation \n  available anywhere on the web <br>&gt; telling how to get tests to run faster \n  by executing slow <br>&gt; initialization code only once before all the \n  tests?<br><br>Stephen,<br><br>What you want to do is create a class that \n  extends TestSetup.&nbsp; <br>TestSetups allow you to do some \n  initilization/de-initilization around <br>a test suite just as you \n  described.<br><br>class MyTestSetup extends TestSetup {<br>&nbsp; public \n  MyTestSetup( Test t ) {<br>&nbsp;&nbsp;&nbsp; super(t);<br>&nbsp; \n  }<br><br>&nbsp; protected void setUp() {<br>&nbsp;&nbsp;&nbsp; Connection = \n  DriverManager.getConnection(&quot;jdbc:url&quot;);<br>&nbsp; }<br><br>&nbsp; protected \n  void tearDown() {<br>&nbsp; }<br>}<br><br>class MyTest extends TestCase \n  {<br>&nbsp; public MyTest( String name ) {<br>&nbsp;&nbsp;&nbsp; super( name \n  );<br>&nbsp; }<br><br>&nbsp; public void testOne() {<br>&nbsp; }<br><br>&nbsp; \n  public static Test suite() {<br>&nbsp;&nbsp;&nbsp;&nbsp; return new \n  MyTestSetup( new TestSuite( MyTest.class ) );<br>&nbsp; }<br><br>&nbsp; public \n  static void main( String args[] ) {<br>&nbsp;&nbsp;&nbsp;&nbsp; \n  TestRunner.run( suite() );<br>&nbsp; }<br>}<br><br><br><br></tt><br><br><tt>To \n  unsubscribe from this group, send an email \n  to:<br>junit-unsubscribe@egroups.com<br><br></tt><br></blockquote></span></blockquote></html> \n</div>", 
+    "prevInTime": 167, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "977944907", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDU5Mzk2QTYzMjJBN0Q0MTFBNDUxMDAwMkIzMEExMjJBNTcwMEM2QGVtYWlsLm1vZGVsdDEuY29tPg=="
+    }
+}

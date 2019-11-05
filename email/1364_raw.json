@@ -1,0 +1,28 @@
+{
+    "topicId": 1308, 
+    "postDate": "991406633", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Matt Caswell &lt;m.caswell@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "XKu_-uLLRN43DSYcIyVPvgbZ0pHWXqCj64YO7SB8PwhVTzAzVs5DuUqqE72KH6egoiNma3i6fwCceaas6eIjEFvIC_wVp9-N27XPPLNnJw", 
+    "nextInTime": 1365, 
+    "userId": 0, 
+    "prevInTime": 1363, 
+    "prevInTopic": 1363, 
+    "headers": {
+        "messageIdInHeader": "PDI5Qzg0Q0YyNUQwM0Q1MTE5RkNGMDA5MDI3QjY3QjVBNzQwNzZDQEVYQ0hBTkdFMT4="
+    }, 
+    "authorName": "Matt Caswell", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "Very interesting. It seems to me that you could use 1-5 in certain circumstances. However I think I would be reluctant to change the way my code was", 
+    "contentTrasformed": false, 
+    "msgId": 1364, 
+    "nextInTopic": 1365, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;matt.caswell@...&gt;\r\nX-Sender: matt.caswell@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 1 Jun 2001 14:43:57 -0000\r\nReceived: (qmail 45546 invoked from network); 1 Jun 2001 14:43:56 -0000\r\nReceived: from unknown (10.1.10.142) by m8.onelist.org with QMQP; 1 Jun 2001 14:43:56 -0000\r\nReceived: from unknown (HELO relay1.hughesrae.co.uk) (212.126.105.136) by mta3 with SMTP; 1 Jun 2001 14:43:56 -0000\r\nReceived: from exchange1.hughesrae.co.uk (mail.hughesrae.co.uk [10.121.202.3]) by relay1.hughesrae.co.uk (8.11.2/8.11.2) with ESMTP id f51Ek2w01037 for &lt;junit@yahoogroups.com&gt;; Fri, 1 Jun 2001 15:46:02 +0100\r\nReceived: by EXCHANGE1 with Internet Mail Service (5.5.2653.19) id &lt;LBPBQXJ7&gt;; Fri, 1 Jun 2001 15:43:54 +0100\r\nMessage-ID: &lt;29C84CF25D03D5119FCF009027B67B5A74076C@EXCHANGE1&gt;\r\nReply-To: junit@yahoogroups.com\r\nTo: &quot;&#39;junit@yahoogroups.com &#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Method Chains, was Re: Testing private methods\r\nDate: Fri, 1 Jun 2001 15:43:53 +0100 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nList-Unsubscribe: &lt;mailto:junit-unsubscribe@yahoogroups.com&gt;\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nX-eGroups-From: Matt Caswell &lt;matt.caswell@...&gt;\r\nFrom: Matt Caswell &lt;m.caswell@...&gt;\r\n\r\nVery interesting. It seems to me that you could use 1-5 in certain\ncircumstances. However I think I would be reluctant to change the way my\ncode was implemented just so that I could test it, as some of the other\nposts on this topic have suggested you should do. Option 6 looks like it\ncould have a lot of potential - I would think it would work in almost all\nscenarios without requiring that you write your implementation code in a\nspecifc way. I agree - it definately looks like a fun thing to try and do!\n\nMatt\n\n-----Original Message-----\nFrom: ghouston@...\nTo: junit@yahoogroups.com\nSent: 01/06/01 14:41\nSubject: [junit] Method Chains, was Re: Testing private methods\n\n\nThere are several was to get Mock objects into your production code:\n\n1. Parameters \n\nAs Mr Freeman shows, you use parameters to pass the Mock into the \nclass that calls it.\n\n2 Reflection\n\nIf B is referenced in a field of A, you can use reflection to modify \nA and replace B with it&#39;s Mock.\n\n3 Mole Pattern\n\nSubclass A, and use the subclass to setup the Mock.  [I call this \ndesign the &quot;Mole Pattern&quot;]\n\n4 Strategy Pattern\n\nUse a Strategy design pattern.\n\n5 Dynamic Proxy\n\nIf the B is an implementation of an Interface, you can use a Dynamic \nProxy (new feature of Java 1.3b).  The Mock would be an \nInvocationHandler, instead of a twin of B.\n\n6 Classloader\n\nUse a classloader to load the Mock instead of the real class.\n\n---\n\nThere may be other options, but these are the ones I&#39;ve heard of.  \nPersonally, I&#39;ve used everything except #6.  Options #1 (parameters) \nand #2 (reflection) are my favorites.  They are usually the easiest \nto implement and understand.  For #2, I&#39;ve used the \nPrivilegedAccessor.java [posted by Mr DiIorio] to make the reflection \nwork simple.\n\nI&#39;ve never seen anyone use #6 (classloaders), I think it would be fun \nto try.\n\n- Greg\n\n\n--- In junit@y..., &quot;Steve Freeman&quot; &lt;steve@m...&gt; wrote:\n&gt; RE: Method Chains, was Re: Testing private methodsAlternatively, \n&gt; change from:\n&gt; \n&gt; public class A {\n&gt;   public void f() {\n&gt;     b = new B();\n&gt;     b.doSomething();\n&gt;   }\n&gt; }\n&gt; \n&gt; to:\n&gt; \n&gt; public class A {\n&gt;   public void f(B b) {\n&gt;     b.doSomething(aValue());\n&gt;   }\n&gt; }\n&gt; \n&gt; The test then becomes:\n&gt; \n&gt; public class TestA {\n&gt;   public void testF() {\n&gt;     A anA = new A(aValue);\n&gt;     MockB mockB = new MockB();\n&gt;     mockB.setExpectedSomething(aValue);\n&gt; \n&gt;     a.f(mockB);\n&gt; \n&gt;     mockB.verify();\n&gt;   }\n&gt; }\n&gt; \n&gt; We have found that changing to a style where you pass behaviours \naround, rather than data, avoids things like subclassing production \ncode in a test and pushes the code to flexing in the &#39;right&#39; kinda \nways. If you can figure out what to pass in and what to verify, then \nthe rest of the test usually falls out.\n&gt; \n&gt; Steve\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n\n", 
+    "subject": "RE: [junit] Method Chains, was Re: Testing private methods"
+}

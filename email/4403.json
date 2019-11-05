@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 4404, 
+    "senderId": "RqG-AZucM4_TxzLOOSfnNrArfmU3OYlPJPzUASOcStNtoDyPenLqio_CirTwaHpfBwkp7pp59Q4f2PI8KY6tmnAv30fQvjkI", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Get AssertionFailedError when assert from another thread.", 
+    "from": "Theodore Norvell &lt;theo@...&gt;", 
+    "authorName": "Theodore Norvell", 
+    "msgSnippet": "... Here s an idea that might work. In your new thread catch the errors and failures and put them in the TestResult.  The problem is that it is not clear how", 
+    "msgId": 4403, 
+    "topicId": 4397, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 105165521, 
+    "messageBody": "<div id=\"ygrps-yiv-1004504394\">On Mon, 18 Mar 2002, nsparis wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Let me make it clearer...The exception is thrown, which is what is<br/>\n&gt; suppose to happen, but instead of being printed out in JUnit it<br/>\n&gt; crashes JUnit.  I.e. JUnit isnt automatically catching it and<br/>\n&gt; flagging it as an error for the test case.<br/>\n&gt;<br/>\n&gt; What do I need to change so that JUnit catches the exception and<br/>\n&gt; reports it as an error?<br/>\n<br/>\n </span></blockquote>Here&#39;s an idea that might work. In your new thread catch the errors and<br/>\nfailures and put them in the TestResult.  The problem is that it is<br/>\nnot clear how to find the TestResult using a standard TestCase.<br/>\nBelow is a stab at how it might be done.<br/>\n<br/>\nclass UpdateTest extends TestCase {<br/>\n    \tUpdateTest( String fname ) { super(fname) ; }<br/>\n<br/>\n<br/>\n\tpublic void runBare(TestResult result) throws Throwable {<br/>\n\t\tsetUp();<br/>\n\t\ttry {<br/>\n\t\t\trunTest(result);<br/>\n\t\t}<br/>\n\t\tfinally {<br/>\n\t\t\ttearDown();<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tprotected void runTest(TestResult result) throws Throwable {<br/>\n\t\t...as in runTest() except look for a method<br/>\n\t\t   with a TestResult parameter...<br/>\n\t\ttry {<br/>\n\t\t\tObject[] params = new Object[]{ result } ;<br/>\n\t\t\trunMethod.invoke(this, params);<br/>\n\t\t}<br/>\n\t\t...as in runTest()...<br/>\n\t}<br/>\n<br/>\n\tprotected TestResult createResult() {<br/>\n\t    return new TestResult(){<br/>\n\t\t\tprotected void run(final TestCase test) {<br/>\n\t\t\t\tstartTest(test);<br/>\n\t\t\t\tProtectable p= new Protectable() {<br/>\n\t\t\t\t\tpublic void protect() throws Throwable {<br/>\n\t\t\t\t\t\ttest.runBare( this );<br/>\n\t\t\t\t\t}<br/>\n\t\t\t\t} ;<br/>\n\t\t\t\trunProtected(test, p);<br/>\n\t\t\t\tendTest(test); } } ;<br/>\n\t}<br/>\n<br/>\n// So far this is just a crude hack to pass the TestResult to the<br/>\n// test method.  Maybe there&#39;s a better way.  Maybe this way won&#39;t<br/>\n// work; I haven&#39;t tried it.<br/>\n}<br/>\n<br/>\nSo now you write a test method that takes a TestResult as<br/>\na parameter.  In it build a Runnable, passing in the TestResult,<br/>\nand wrap any code that might throw an AssertionFailedError<br/>\nor that calls the unit under test as follows:<br/>\n\t\ttry {<br/>\n\t\t\t..the actual testing code..<br/>\n\t\t}<br/>\n\t\tcatch (AssertionFailedError e) {<br/>\n\t\t\tresult.addFailure(test, e);<br/>\n\t\t}<br/>\n\t\tcatch (ThreadDeath e) { // don&#39;t catch ThreadDeath by accident<br/>\n\t\t\tthrow e;<br/>\n\t\t}<br/>\n\t\tcatch (Throwable e) {<br/>\n\t\t\tresult.addError(test, e);<br/>\n\t\t}<br/>\nwhere result is the TestResult object.  Now you can start the<br/>\nrunnable in a new thread. Luckly addFailure and addError<br/>\nare synchronized.<br/>\n<br/>\nCheers,<br/>\nTheodore Norvell</div>", 
+    "prevInTime": 4402, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1016517289", 
+    "canDelete": false, 
+    "nextInTopic": 4407, 
+    "prevInTopic": 4401, 
+    "headers": {
+        "inReplyToHeader": "PGE3NW9jNCs4czFxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuU09MLjQuNDQuMDIwMzE4MjEwNjUxMC4xMjA3Mi0xMDAwMDBAY2FzY2FkZS5jcy51YmMuY2E+"
+    }
+}

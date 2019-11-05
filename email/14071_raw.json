@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 14072, 
+    "senderId": "hIE4M4alPlhIQjUNV5FoWBBRuHa7PRsk1bq_t9DTTpjpdd7W_5oPplMSI_09hCGJjtpuZrK6PLZg-MNCZNWvz-idUcgT7fahEwscKMcrwy72on1KWJjEeipOPblNER0wIcU7bA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] testlisteners", 
+    "from": "=?ISO-8859-1?Q?Teemu_Kanstr=E9n?= &lt;teka@...&gt;", 
+    "authorName": "Teemu Kanstrén", 
+    "msgSnippet": "Kent, Thanks for the reply. Would you consider adding something like this in JUnit 4 so it is there if someone like me needs it someday? I d need to get this", 
+    "msgId": 14071, 
+    "rawEmail": "Return-Path: &lt;teka@...&gt;\r\nX-Sender: teka@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 24863 invoked from network); 4 Jul 2005 17:46:55 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m26.grp.scd.yahoo.com with QMQP; 4 Jul 2005 17:46:55 -0000\r\nReceived: from unknown (HELO oulu.fi) (130.231.240.1)\n  by mta5.grp.scd.yahoo.com with SMTP; 4 Jul 2005 17:46:54 -0000\r\nReceived: from paju.oulu.fi (paju.oulu.fi [130.231.240.20])\n\tby oulu.fi (8.13.1/8.13.1) with ESMTP id j64HknBY013193\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 4 Jul 2005 20:46:49 +0300 (EEST)\r\nReceived: from paju.oulu.fi (paju.oulu.fi [130.231.240.20])\n\tby paju.oulu.fi (8.12.10/8.12.10) with ESMTP id j64HkmnB025612\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 4 Jul 2005 20:46:48 +0300 (EEST)\r\nDate: Mon, 4 Jul 2005 20:46:48 +0300 (EEST)\r\nX-X-Sender: teka@...\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;200506240016.j5O0GunA014104@...&gt;\r\nMessage-ID: &lt;Pine.GSO.4.58.0507042037180.21973@...&gt;\r\nReferences: &lt;200506240016.j5O0GunA014104@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 8BIT\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: =?ISO-8859-1?Q?Teemu_Kanstr=E9n?= &lt;teka@...&gt;\r\nSubject: RE: [junit] testlisteners\r\nX-Yahoo-Group-Post: member; u=162224546; y=EO09XPMYbp4tzPa5ssWpgQJt6sDCwxya6wjhexebMxKMrwTX\r\nX-Yahoo-Profile: kibaltsis\r\n\r\nKent,\n\n Thanks for the reply. Would you consider adding something like this in\nJUnit 4 so it is there if someone like me needs it someday? I&#39;d need to\nget this working now with 3.8.1 but would still be nice to have it in the\nfuture supported by the framework more directly.\n\n I thought about modifying the TestCase tearDown method to call my\n&quot;listener&quot; code but then I realized not all tests might do the\nsuper.tearDown call if they override the method. As I haven&#39;t written all\nthe tests I want to collect data for I can&#39;t control that. So I am\nthinking of just modifying the TestResult class that collects the results\nand adding my listener there as it supports TestListeners. Does anyone\nsee problems with that? This would mean I take the junit source, add my\ncode and build the jar to use with the projects I want to collect data\nfor.\n\nThanks,\n\n-Teemu\n\nOn Thu, 23 Jun 2005, Kent Beck wrote:\n\n&gt; Teemu,\n&gt;\n&gt; You are correct that there is no generic way to add TestListeners. We\n&gt; discussed various mechanisms for doing so, but we never put any into\n&gt; production.\n&gt;\n&gt; Sincerely yours,\n&gt;\n&gt; Kent Beck\n&gt; Three Rivers Institute\n&gt;\n&gt; &gt; -----Original Message-----\n&gt; &gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On\n&gt; &gt; Behalf Of Teemu Kanstr�n\n&gt; &gt; Sent: Monday, June 20, 2005 12:42 PM\n&gt; &gt; To: junit@yahoogroups.com\n&gt; &gt; Subject: [junit] testlisteners\n&gt; &gt;\n&gt; &gt; Hello all,\n&gt; &gt;\n&gt; &gt;  I am trying to gather some data from the execution of JUnit test\n&gt; &gt; cases. For this purpose I wish to add a piece of code to be\n&gt; &gt; called after\n&gt; &gt; each test has been run. I noticed that TestResult has a possibility to\n&gt; &gt; add such a piece of code through TestListener.\n&gt; &gt;\n&gt; &gt; However, adding the listener requires that I have access to the\n&gt; &gt; TestResult objects created. And these in turn are created in the\n&gt; &gt; TestRunner instances. And if I run my tests from an IDE or Ant, the\n&gt; &gt; runner used is out of my control.\n&gt; &gt;\n&gt; &gt; I am thinking I could just modify the TestResult to always add my\n&gt; &gt; listener in its constructor or something similar (maybe a static\n&gt; &gt; listener..). But I am not sure if this is the best solution.\n&gt; &gt;\n&gt; &gt; So I guess my questions are:\n&gt; &gt;  -Did I understand the code correctly?\n&gt; &gt;  -Is there a way for me to easily add such a listener,\n&gt; &gt; hopefully without\n&gt; &gt;   messing too much with the JUnit sources?\n&gt; &gt;  -Can anyone think of reasons why modifying TestResult to contain my\n&gt; &gt; listener would not work? Are there some cases or environments\n&gt; &gt; that modify\n&gt; &gt; the execution so they dont use the standard TestResult? For\n&gt; &gt; example Ant,\n&gt; &gt; etc..\n&gt; &gt;\n&gt; &gt; Thanks for your trouble,\n&gt; &gt;\n&gt; &gt; -Teemu\n\n", 
+    "profile": "kibaltsis", 
+    "topicId": 13992, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 162224546, 
+    "prevInTime": 14070, 
+    "contentTrasformed": false, 
+    "postDate": "1120499208", 
+    "canDelete": false, 
+    "nextInTopic": 14107, 
+    "prevInTopic": 14034, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNjI0MDAxNi5qNU8wR3VuQTAxNDEwNEBwYWp1Lm91bHUuZmk+", 
+        "messageIdInHeader": "PFBpbmUuR1NPLjQuNTguMDUwNzA0MjAzNzE4MC4yMTk3M0BwYWp1Lm91bHUuZmk+", 
+        "referencesHeader": "PDIwMDUwNjI0MDAxNi5qNU8wR3VuQTAxNDEwNEBwYWp1Lm91bHUuZmk+"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 3559, 
+    "senderId": "UkvnkC3GLdzFAGc5yg7R9zOstSXshwqHBvljugHOTn8WvO5dHRZ8vJFT6ObArjNxcyRWjnhyVVRIoHf_tcrG1-ULn9CPx2QzrZoNVLFNlqdhm4rrDzw698OVorWEoQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Invariants: method within class or within test class?", 
+    "from": "&quot;Holliday, Donald B. (LNG-SHEP)&quot; &lt;dhollida@...&gt;", 
+    "authorName": "Holliday, Donald B. (LNG-SHEP)", 
+    "msgSnippet": "get better diagnostics resorting to soak testing What is soak testing ? Donald Holliday ... From: evought@qlue.com [mailto:evought@qlue.com] ", 
+    "msgId": 3558, 
+    "rawEmail": "Return-Path: &lt;Donald.Holliday@...&gt;\r\nX-Sender: Donald.Holliday@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_1_3); 17 Dec 2001 16:15:30 -0000\r\nReceived: (qmail 50115 invoked from network); 17 Dec 2001 16:15:29 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m4.grp.snv.yahoo.com with QMQP; 17 Dec 2001 16:15:29 -0000\r\nReceived: from unknown (HELO lexis-nexis.com) (207.25.178.45)\n  by mta1.grp.snv.yahoo.com with SMTP; 17 Dec 2001 16:15:29 -0000\r\nReceived: from lexis-nexis.com (mailgate [138.12.44.45])\n\tby lexis-nexis.com (8.10.2+Sun/8.10.2) with ESMTP id fBHGFr307003\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 17 Dec 2001 11:15:54 -0500 (EST)\r\nReceived: from lnxcspexch01.shepards.com \n        by lexis-nexis.com (8.9.3+Sun/8.9.3) with ESMTP id LAA04522\n        for &lt;junit@yahoogroups.com&gt;; Mon, 17 Dec 2001 11:15:06 -0500 (EST)\r\nReceived: by lnxcspexch01.lexis-nexis.com with Internet Mail Service (5.5.2650.21)\n\tid &lt;Y7QYT82H&gt;; Mon, 17 Dec 2001 09:15:06 -0700\r\nMessage-ID: &lt;1A3C5B43A705D311A7480060081FD21804261621@...-nexis.com&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Invariants: method within class or within test class?\r\nDate: Mon, 17 Dec 2001 09:15:04 -0700\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2650.21)\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nX-eGroups-From: &quot;Holliday, Donald B. (LNG-SHEP)&quot; &lt;Donald.Holliday@...&gt;\r\nFrom: &quot;Holliday, Donald B. (LNG-SHEP)&quot; &lt;dhollida@...&gt;\r\nX-Yahoo-Group-Post: member; u=70502042\r\nX-Yahoo-Profile: dbholliday\r\n\r\n&lt;snip&gt;get better diagnostics resorting to soak testing&lt;/snip&gt;\n\nWhat is &quot;soak testing&quot;?\n\nDonald Holliday\n\n\n\n-----Original Message-----\nFrom: evought@... [mailto:evought@...]\nSent: Monday, December 17, 2001 9:06 AM\nTo: &#39;junit@yahoogroups.com&#39;\nSubject: Re: [junit] Invariants: method within class or within test\nclass?\n\n\nI find that option #1 is superior. As you say, it reduces exposure to\ninternals. It also gives one the option of invoking that code in the\nfield. Especially where there are user accessable APIs, I find it handy to\nask a user to invoke invariants checking around problem code while\ndiagnosing a possible API bug. If your assertInvariants(..) method is\nrecursive, it is also not difficult to add a menu option that will invoke\na full internal state check at run-time.\n\nI always have the invariants checks run in my unit tests. This gives you\nthe ability to catch a lot more bugs and get better diagnostics resorting\nto soak testing. A lot of times, your unit test may pass but leave the\nclass-under-test in a bad state. In a real program, the next statement\nwould fail, but its never caught in your test because the fixture is\nrecycled. Invoking the invariants tests after state changes in tests is\ncheap and saves headaches in the long run.\n\nOn Fri, 14 Dec 2001, Robertson, Don wrote:\n\n&gt; Let&#39;s assume that invoking an assertInvariants() method within your\nclass&#39;s\n&gt; methods is too expensive to be practical, but you want it for the purpose\nof\n&gt; unit testing anyway. Would it be structurally superior to :\n&gt;\n&gt; 1) Implement such a method within the actual class and invoke it from the\n&gt; test case. The main benefits I see are minimal exposure of the class&#39;s\n&gt; internals (although it *is* white box testing after all), and visual\n&gt; proximity of the invariant conditions for implementors/modifiers. The\n&gt; negative is that there is &quot;dead code&quot; (from a runtime perspective) within\n&gt; the class.\n&gt; 2) Allow access to internal state within the class and write the\n&gt; assertInvariants() method within the test class(es). The benefits are\nvisual\n&gt; proximity of the invariant conditions with the other functional\ndescription\n&gt; of the class, and no dead code in the runtime class. The negative is the\n&gt; need for exposure of more internal state.\n&gt;\n&gt; Opinions?\n&gt;\n&gt;\n&gt; A second &quot;meta&quot; question might be whether you think it is worthwhile to\n&gt; check invariant conditions within your unit tests as a default behavior,\nor\n&gt; is it overkill?\n&gt;\n&gt; Don\n&gt;\n&gt;\n&gt;\n&gt;\n\n-- \nEric Vought\nChief Technical Officer - QLUE Consulting, Inc.\n\nevought@... toll-free: 888-771-3538  RTP area: 919-816-9901\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n", 
+    "profile": "dbholliday", 
+    "topicId": 3542, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 70502042, 
+    "prevInTime": 3557, 
+    "contentTrasformed": false, 
+    "postDate": "1008605704", 
+    "canDelete": false, 
+    "nextInTopic": 3588, 
+    "prevInTopic": 3542, 
+    "headers": {
+        "messageIdInHeader": "PDFBM0M1QjQzQTcwNUQzMTFBNzQ4MDA2MDA4MUZEMjE4MDQyNjE2MjFAbG54Y3NwZXhjaDAxLmxleGlzLW5leGlzLmNvbT4="
+    }
+}

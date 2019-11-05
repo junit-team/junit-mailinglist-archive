@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21590, 
+    "senderId": "qoRUldQB3NYLVbBbKBfN9q0KyJNOrhOfGROxqchgUDV9hqMvaE-eQ3DmaFxtEOmTfBCVsA_5wtJOueDLsNlRda5v", 
+    "systemMessage": false, 
+    "subject": "New 4.7 snapshot release: get the name of the current test", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "All, A new snapshot release of JUnit 4.7 is up: https://sourceforge.net/project/showfiles.php?group_id=15278&package_id=226053&release_id=682045 The newest", 
+    "msgId": 21589, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 62309 invoked from network); 12 May 2009 03:55:40 -0000\r\nX-Received: from unknown (69.147.108.200)\n  by m5.grp.re1.yahoo.com with QMQP; 12 May 2009 03:55:40 -0000\r\nX-Received: from unknown (HELO mail-fx0-f177.google.com) (209.85.220.177)\n  by mta1.grp.re1.yahoo.com with SMTP; 12 May 2009 03:55:40 -0000\r\nX-Received: by fxm25 with SMTP id 25so3146701fxm.20\n        for &lt;junit@yahoogroups.com&gt;; Mon, 11 May 2009 20:54:40 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.239.159.3 with SMTP id w3mr634712hbc.96.1242100479105; Mon, 11 \n\tMay 2009 20:54:39 -0700 (PDT)\r\nDate: Mon, 11 May 2009 23:54:39 -0400\r\nX-Google-Sender-Auth: d82599303a8b74e4\r\nMessage-ID: &lt;4f7da6b90905112054s480e21a2m3a5ed871bc6e6d03@...&gt;\r\nTo: junit-devel@..., \n\t&quot;junit@yahoogroups.com&quot; &lt;junit@yahoogroups.com&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: New 4.7 snapshot release: get the name of the current test\r\nX-Yahoo-Group-Post: member; u=341876227; y=YNpeKtgmTGx5tMjv5criY3R1BEaaB5efpRI7jbXwaDw\r\nX-Yahoo-Profile: dsaff\r\n\r\nAll,\n\nA new snapshot release of JUnit 4.7 is up:\n\nhttps://sourceforge.net/project/showfiles.php?group_id=15278&package_id=226053&release_id=682045\n\nThe newest feature in this release is a golden oldie: access to the\nname of the currently-running test method:\n\n\t@RunWith(Interceptors.class)\n\tpublic class NameInterceptorTest {\n\t\t@Interceptor public TestName name = new TestName();\n\t\t\n\t\t@Test public void testA() {\n\t\t\tassertEquals(&quot;testA&quot;, name.getMethodName());\n\t\t}\n\t}\n\nShare and Enjoy,\n\n   David Saff\n\n\nP.S. The entire release notes:\n\n## Summary of Changes in version 4.7 ##\n\n### Interceptors ###\n\n- Interceptors allow very flexible addition or redefinition of the behavior\n  of each test method in a test class.  For example, this class will\n  keep a log of each passing and failing test:\n\n\t@RunWith(Interceptors.class)\n\tpublic static class WatchmanTest {\n\t\tprivate static String watchedLog;\n\n\t\t@Interceptor\n\t\tpublic StatementInterceptor watchman= new TestWatchman() {\n\t\t\t@Override\n\t\t\tpublic void failed(Throwable e, FrameworkMethod method) {\n\t\t\t\twatchedLog+= method.getName() + &quot; &quot;\n\t\t\t\t\t\t+ e.getClass().getSimpleName() + &quot;&#92;n&quot;;\n\t\t\t}\n\n\t\t\t@Override\n\t\t\tpublic void succeeded(FrameworkMethod method) {\n\t\t\t\twatchedLog+= method.getName() + &quot; &quot; + &quot;success!&#92;n&quot;;\n\t\t\t}\n\t\t};\n\n\t\t@Test\n\t\tpublic void fails() {\n\t\t\tfail();\n\t\t}\n\n\t\t@Test\n\t\tpublic void succeeds() {\n\t\t}\n\t}\n\n\tFor more on this feature, see http://www.threeriversinstitute.org/blog/?p=155\n\n- The TestName Interceptor makes the current test name available\ninside test methods:\n\n\t@RunWith(Interceptors.class)\n\tpublic class NameInterceptorTest {\n\t\t@Interceptor public TestName name = new TestName();\n\t\t\n\t\t@Test public void testA() {\n\t\t\tassertEquals(&quot;testA&quot;, name.getMethodName());\n\t\t}\n\t\t\n\t\t@Test public void testB() {\n\t\t\tassertEquals(&quot;testB&quot;, name.getMethodName());\n\t\t}\n\t}\n\n- The Timeout Interceptor applies the same timeout to all test methods\nin a class:\n\n\t@RunWith(Interceptors.class)\n\tpublic static class HasGlobalTimeout {\n\t\tpublic static String log;\n\t\t\n\t\t@Interceptor public StatementInterceptor globalTimeout = new Timeout(20);\n\t\t\n\t\t@Test public void testInfiniteLoop1() {\n\t\t\tlog+= &quot;ran1&quot;;\n\t\t\tfor(;;) {}\n\t\t}\n\t\t\n\t\t@Test public void testInfiniteLoop2() {\n\t\t\tlog+= &quot;ran2&quot;;\n\t\t\tfor(;;) {}\n\t\t}\n\t}\n\n### Timeouts ###\n- Tests that timeout now show the stack trace of the test thread.\n\n### Docs ###\n- Javadocs now link to online JDK javadocs (bug 2090230)\n- Parameterized runner javadocs improved (bug 2186792)\n- Fixed Javadoc code sample for AfterClass (2126279)\n- Fixed Javadoc for assertArraysEqual(float[], float[])\n\n### Bug fixes ###\n- Fixed: BaseTestRunner.getTest() requires class to extend TestCase (1812200)\n- Fixed: Suite does not allow for inheritance in annotations (2783118)\n- Fixed: ParallelComputer skipped tests that took longer than 2 seconds\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21589, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21588, 
+    "contentTrasformed": false, 
+    "postDate": "1242100479", 
+    "canDelete": false, 
+    "nextInTopic": 21591, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNTExMjA1NHM0ODBlMjFhMm0zYTVlZDg3MWJjNmU2ZDAzQG1haWwuZ21haWwuY29tPg=="
+    }
+}

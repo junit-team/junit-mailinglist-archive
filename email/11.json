@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 12, 
+    "senderId": "dPHIKjnKJPU-2j26p4HqwOsxbc5wOa6Fqfhxbi9DYDfcdGHSl70h7KbIh84xN45hJCTXngiQObV_60WslxP9EMH4npNjljwn-oF_PyXl8AAm", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to hook test cases into GUI testrunner", 
+    "from": "Benjamin Schroeder &lt;schroeder@...&gt;", 
+    "authorName": "Benjamin Schroeder", 
+    "msgSnippet": "... If you run the GUI test runner (junit.ui.LoadingTestRunner, for example) with your test cases somewhere on the classpath, you can run them by typing the", 
+    "msgId": 11, 
+    "topicId": 10, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-2053793205\">on 11/14/00 7:58 AM, Paul Michali at <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:pcm@...\">pcm@...</a> wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; OK. I just D/Led the V3.2 JUnit and I made a simple application<br/>\n&gt; under JBuilder 4.0 (which I&#39;m also trying to come up to speed on)<br/>\n&gt; that has a simple unit test case (shown below). I&#39;ve been looking<br/>\n&gt; at the cook book HTML pages, but I don&#39;t see how I hook this into<br/>\n&gt; the GUI TestRunner. I made a test case and made a suite() function<br/>\n&gt; as suggested, but am now stuck on how to tie in one of the GUI<br/>\n&gt; TestRunners. There is an example for the batch version of the<br/>\n&gt; TestRunner, but I don&#39;t see anything on a GUI version.<br/>\n&gt; <br/>\n&gt; Can anyone provide some pointers?<br/>\n<br/>\n </span></blockquote>If you run the GUI test runner (junit.ui.LoadingTestRunner, for example)<br/>\nwith your test cases somewhere on the classpath, you can run them by typing<br/>\nthe name of the test case into the edit box in the UI and hitting &quot;run&quot;.  If<br/>\nthe test case has a static suite() method, it&#39;ll run that; otherwise, it<br/>\nwill use reflection to find all of the &quot;public void testXXX&quot; methods in your<br/>\nclass.<br/>\n<br/>\nThe LoadingTestRunner runner will reload your test classes each time you hit<br/>\n&quot;run&quot;, so you don&#39;t need to start it over all the time.  (It seems to have a<br/>\nfew quirks with native code, at least in my experience, though, and doesn&#39;t<br/>\nyet load from jars and zips, although I believe that is coming in 3.3.)  A<br/>\nnon-loading TestRunner class is also available.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Can I make use of Reflection to have the TestRunner find all my<br/>\n&gt; test cases?<br/>\n<br/>\n </span></blockquote>For an individual TestCase class, this works great in JUnit 3.2.  The runner<br/>\nwill find all of the methods in the test case with a signature like &quot;public<br/>\nvoid testXXX()&quot; if there is no other suite() method -- this means that you<br/>\ndon&#39;t have to build suite() methods for individual classes by hand, at least<br/>\nmost of the time.  If you&#39;re building AllTests suites (which I think are<br/>\nmentioned somewhere in the documentation) or the like, you can use something<br/>\nlike<br/>\n<br/>\npublic static Test suite()<br/>\n{<br/>\n    TestSuite suite = new TestSuite();<br/>\n<br/>\n    suite.add(new TestSuite(YourTestCase.class));<br/>\n    suite.add(new TestSuite(AnotherTestCase.class));<br/>\n<br/>\n    return suite;<br/>\n}<br/>\n<br/>\nto get the same effect with a composite suite.<br/>\n<br/>\nAs far as finding all the test case classes available in the system, I&#39;m not<br/>\naware of anything that does it.  I think that one could do it by examining<br/>\nthe classpath (available via System.getProperty()) for .class files and<br/>\nusing reflection to determine whether they were TestCases, but I haven&#39;t yet<br/>\ntried it.  Anybody have anything that does this?<br/>\n<br/>\nHope this helps,<br/>\nBen Schroeder<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:schroeder@...\">schroeder@...</a></div>", 
+    "prevInTime": 10, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "974213588", 
+    "canDelete": false, 
+    "nextInTopic": 12, 
+    "prevInTopic": 10, 
+    "headers": {
+        "inReplyToHeader": "PDh1cmN0ZStmdmRhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEI2MzZCQzAxLjE5NUYlc2Nocm9lZGVyQHN1cmZyZWUuY29tPg=="
+    }
+}

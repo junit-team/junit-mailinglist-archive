@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12577, 
+    "senderId": "1mETUQSWNm9_yJbCba13GwB49eOulvXttGeB1p9yeEONylNBtphxtF-uaa6K2oevUthnH1MWmCjyXrLUJK-hTsnx1ALOrU9LvRJ9AJR3-w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit dynamic testing with file modifications", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... It sounds like you have this situation: a bunch of tests are essentially the same, except for the input data and expected output data (called fixture", 
+    "msgId": 12576, 
+    "profile": "nails762", 
+    "topicId": 12557, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1773565693\"><a rel=\"nofollow\" target=\"_blank\" href=\"mailto:areinmeyer@...\">areinmeyer@...</a> wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; My problem is this.  Before development moves along much further, I<br/>\n&gt; would like to take the test harnesses for each object and remove the<br/>\n&gt; hardcoding from them.  Each test harness should still be able to be<br/>\n&gt; run individually as it&#39;s own test, but I&#39;m looking to the future as<br/>\n&gt; well, when we have the potential to do nightly builds and will want to<br/>\n&gt; run all of the test harnesses as a suite together.  This definitely<br/>\n&gt; cannot happen if any hardcoding exists, but there needs to be some<br/>\n&gt; external way to pass each object the information specific to it only<br/>\n&gt; to test.  I don&#39;t want to create a properties/configuration file for<br/>\n&gt; each object, as many of of the objects can re-use the same sdf file,<br/>\n&gt; logger, and other config files. <br/>\n&gt; <br/>\n&gt; Any suggestions?<br/>\n<br/>\n </span></blockquote>It sounds like you have this situation: a bunch of tests are essentially <br/>\nthe same, except for the input data and expected output data (called <br/>\n&quot;fixture data&quot;). There are two different solutions, depending on your <br/>\nstyle of testing.<br/>\n<br/>\n1. Write one test that loops over all the data.<br/>\n<br/>\nIn xUnit pseudocode, you have this:<br/>\n<br/>\ntestTheBigAlgorithm<br/>\n     foreach (row in testFixtures)<br/>\n         doTest(row)<br/>\n<br/>\ndoTest(row)<br/>\n     // Put the real test in here, using data from row<br/>\n<br/>\nHere, &#39;testFixtures&#39; is a collection of objects, each containing your <br/>\ninput data and expected output data.<br/>\n<br/>\nPROS: Simple and effective.<br/>\nCON: If the test fails for row 5 of your fixture data, the remaining <br/>\ntests don&#39;t run<br/>\n<br/>\n2. The Parameterized Test Case pattern.<br/>\n<br/>\nWrite a custom suite() method that builds a suite of tests, each test <br/>\nwith a row of your fixture data. To do this, you need to add a <br/>\nconstructor to your subclass of TestCase that&#39;ll accept the fixture data <br/>\nas a parameter:<br/>\n<br/>\nclass MyTestCase extends TestCase {<br/>\n     private MyTestCaseFixture fixture;<br/>\n<br/>\n     public MyTestCase(MyTestCaseFixture fixture) {<br/>\n         this.fixture = fixture;<br/>\n     }<br/>\n<br/>\n     protected void runTest() {<br/>\n         // Put the real test in here, using data from &#39;fixture&#39;<br/>\n     }<br/>\n<br/>\n     public static Test suite() {<br/>\n         TestSuite suite = new TestSuite(&quot;My Tests&quot;);<br/>\n<br/>\n         foreach (row in testFixtures) {<br/>\n             suite.addTest(new MyTestCase(row));<br/>\n         }<br/>\n<br/>\n         return suite;<br/>\n     }<br/>\n}<br/>\n<br/>\nThe method suite() contains some pseudoJava, but I think you know what I <br/>\nmean.<br/>\n<br/>\nIn either case, you can always write code to retrieve the fixture data <br/>\nfrom an external source, like a file or a relational database.<br/>\n<br/>\nI hope this helps you out. Does it?<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 12575, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1104795117", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12568, 
+    "headers": {
+        "inReplyToHeader": "PGNxc210Zys2dmY2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxRDlENUVELjMwMjA2MDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNxc210Zys2dmY2QGVHcm91cHMuY29tPg=="
+    }
+}

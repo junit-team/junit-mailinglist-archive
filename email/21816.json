@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21817, 
+    "senderId": "iGHb4HlrScNW2QB6mNPhyyBPUp4RSdvGs4CWjgE4Ys2tYAQBImNI8jaTvsuucWo2KQuglQ9ouHfwCaA_dLmSwJAV", 
+    "systemMessage": false, 
+    "subject": "Rules in JUnit 4.7", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "All, JUnit 4.7 will include a new mechanism for changing the behavior and interpretation of test methods.  We are calling this feature Rules (replacing the", 
+    "msgId": 21816, 
+    "profile": "dsaff", 
+    "topicId": 21816, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-803499091\">All,<br/>\n<br/>\nJUnit 4.7 will include a new mechanism for changing the behavior and<br/>\ninterpretation of test methods.  We are calling this feature Rules<br/>\n(replacing the earlier name Interceptors).  You can download a<br/>\nsnapshot of this release from<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/KentBeck/junit/downloads.\">http://github.com/KentBeck/junit/downloads.</a>  We are planning no new<br/>\nfeature for this version, and once the tagged bugs are resolved<br/>\n(<a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/KentBeck/junit/issues/labels/4.7)\">http://github.com/KentBeck/junit/issues/labels/4.7)</a>, we will issue an<br/>\nofficial release candidate, but early feedback is very, very welcome.<br/>\n<br/>\nTechnical goodies follow.  Thanks,<br/>\n<br/>\n   David Saff<br/>\n<br/>\nThere are already rules you&#39;re probably familiar with from way back in<br/>\nJUnit 4.0:<br/>\n<br/>\n- The fundamental rule of JUnit: a test method is executed on a new<br/>\ninstance of its declaring class.  It passes if and only if it<br/>\ncompletes without throwing an exception.<br/>\n- The Before rule: a @Test method is preceded by all @Before methods<br/>\nin the same class.<br/>\n- The After rule: a @Test method is followed by all @After methods in<br/>\nthe same class.<br/>\n- The timeout= rule: if a @Test annotation has a timeout= property, it<br/>\nfails if it does not complete in under the given number of<br/>\nmilliseconds<br/>\n- The expected= rule: if a @Test annotation has an expected= property,<br/>\nit passes if it throws an exception of the given class name, and fails<br/>\notherwise.<br/>\n<br/>\nStarting with 4.7, you can add additional rules to methods in a class<br/>\nby declaring public fields in the class annotated with @Rule.  For<br/>\nexample, here&#39;s a test that uses the TemporaryFolder rule (&quot;All files<br/>\ncreated in the temporary folder during the test are deleted after the<br/>\ntest completes.&quot;):<br/>\n<br/>\n  public static class HasTempFolder {<br/>\n    @Rule<br/>\n    public TemporaryFolder folder= new TemporaryFolder();<br/>\n<br/>\n    @Test<br/>\n    public void testUsingTempFolder() throws IOException {<br/>\n      File createdFile= folder.newFile(&quot;myfile.txt&quot;);<br/>\n      File createdFolder= folder.newFolder(&quot;subfolder&quot;);<br/>\n      // ...<br/>\n    }<br/>\n  }<br/>\n<br/>\nWe&#39;re including implementations of the following Rules:<br/>\n- TemporaryFolder: delete temp files after test completion<br/>\n- ExternalResource: reliably set up and tear down an arbitrary external resource<br/>\n- ErrorCollector: collect multiple assertion failures per test method,<br/>\nand report all at the end<br/>\n- Verifier: turn a passing test to failing if an arbitrary condition<br/>\nis not met (all expected mock-object calls made, no ERROR lines in the<br/>\nlogs)<br/>\n- TestWatchman: Perform an additional task before and after each test<br/>\n(a custom log, for example)<br/>\n- TestName: remember the name of each test method, and make it<br/>\navailable during the test execution.<br/>\n- Timeout: like the timeout= rule, but applies to all methods in a<br/>\nclass, and can take a run-time value.<br/>\n- ExpectedException: like the expected= rule, but can check exception<br/>\nmessages, and other arbitrary assertions.<br/>\n<br/>\nFor more on using these rules, please see the release notes:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/dsaff/junit/blob/99a84a542f2ac532a8425fa0a77884902b1c01b0/doc/ReleaseNotes4.7.txt\">http://github.com/dsaff/junit/blob/99a84a542f2ac532a8425fa0a77884902b1c01b0/doc/ReleaseNotes4.7.txt</a><br/>\n<br/>\nIn addition, you can implement your own Rules by implementing the<br/>\nMethodRule interface.  Here&#39;s a Rule that marks all tests as passing,<br/>\nas long as I&#39;m the one running them:<br/>\n<br/>\npublic class DavidsAlwaysRight implements MethodRule {<br/>\n\tpublic Statement apply(Statement base, FrameworkMethod method, Object target) {<br/>\n\t\tif (&quot;saff&quot;.equals(System.getenv(&quot;USER&quot;)))<br/>\n\t\t\treturn alwaysSuccess();<br/>\n\t\telse<br/>\n\t\t\treturn base;<br/>\n\t}<br/>\n<br/>\n\tprivate Statement alwaysSuccess() {<br/>\n\t\treturn new Statement() {<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic void evaluate() throws Throwable {<br/>\n\t\t\t\t// do nothing: always success!<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n\t}<br/>\n}</div>", 
+    "prevInTime": 21815, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1247768921", 
+    "canDelete": false, 
+    "nextInTopic": 21817, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNzE2MTEyOHM0MjVkYjU5MG9lNzE1MTQ1MjUyZDQ2YTliQG1haWwuZ21haWwuY29tPg=="
+    }
+}

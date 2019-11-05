@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12111, 
+    "senderId": "LXNIljGN7gLvJwU_yu4N7NPZ6GasSVgUZGJvxH6dJaRv8ZRLHZczOXH_g5aUFFra9j2-LSdUGe1ju9gsrfuJqTdGTJh7L1gYnsRBL57Tww", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Best Strategy for testing DAOs - dependency issues", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Don t worry about this. As long as you test some methods on their own, feel free to use those (tested) methods to test others, especially if it s costly to", 
+    "msgId": 12110, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 63250 invoked from network); 7 Oct 2004 20:17:11 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m22.grp.scd.yahoo.com with QMQP; 7 Oct 2004 20:17:11 -0000\r\nReceived: from unknown (HELO smtp105.rog.mail.re2.yahoo.com) (206.190.36.83)\n  by mta4.grp.scd.yahoo.com with SMTP; 7 Oct 2004 20:17:11 -0000\r\nReceived: from unknown (HELO ?192.168.1.114?) (srainsberger5790@24.156.43.226 with plain)\n  by smtp105.rog.mail.re2.yahoo.com with SMTP; 7 Oct 2004 20:16:10 -0000\r\nMessage-ID: &lt;4165A370.8070801@...&gt;\r\nDate: Thu, 07 Oct 2004 16:13:36 -0400\r\nUser-Agent: Mozilla Thunderbird 0.8 (X11/20040913)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ck389q+hgq4@...&gt;\r\nIn-Reply-To: &lt;ck389q+hgq4@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.83\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Best Strategy for testing DAOs - dependency issues\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nMKlaene wrote:\n\n&gt; I&#39;m having some concerns as I write some tests for my DAOs.  My\n&gt; concern is that I can&#39;t figure out a good way to write these tests\n&gt; without relying on other DAO methods.\n\nDon&#39;t worry about this. As long as you test some methods on their own, \nfeel free to use those (tested) methods to test others, especially if \nit&#39;s costly to avoid doing it.\n\nThink of testing List.add() and List.contains(). You can&#39;t invoke \ncontains() without having invoked add(), but that doesn&#39;t make it &quot;bad \nform&quot; to use add() to test contains(); or even to use contains() to test \nadd()!\n\n&gt; I&#39;ve looked at DBUnit.  The problem here is that I still have to\n&gt; populate my bean from the database - then I&#39;m back to calling a DAO\n&gt; method like getEmployeeById in every method - an undesirable\n&gt; dependency.  Another option I guess would be to have some DAO\n&gt; methods used only for testing but this seems overkill.  I&#39;d rather\n&gt; use the database during testing too, not mock objects.\n\nAnother option is to test using the back door: to test createEmployee(), \nuse raw JDBC and a SELECT statement to ensure that the record is \nactually there.\n\nThat said, why would you rather use the database? Are you concerned that \nyour JDBC driver doesn&#39;t work?\n\n&gt; So, I guess my questions are:\n&gt; \n&gt; 1.)Is there a good way to test DAOs in isolation, without relying on\n&gt; other DAO methods?\n\nYes: use the back door (raw JDBC) to make assertions about database \nstate at the end of the test.\n\n&gt; 2.)Does it really matter that much anyway if I use other DAO\n&gt; methods?  I mean, the goal is for ALL tests to pass anyway.  It can\n&gt; be confusing if your testDeleteEmployee method fails due to a\n&gt; failure in createEmployee which you have to call first, but I guess\n&gt; it wouldn&#39;t take long to figure out what really happened.\n\nYou could try this and observe the problems. I don&#39;t think there are \nmany when the problem is small, but over time, testing your DAO against \na real database becomes increasingly risky. Chapter 10 of _JUnit \nRecipes_ describes this in detail.\n\nTake care.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nPredictable, repeatable, quality delivery\n\n", 
+    "profile": "nails762", 
+    "topicId": 12106, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12109, 
+    "contentTrasformed": false, 
+    "postDate": "1097180016", 
+    "canDelete": false, 
+    "nextInTopic": 12112, 
+    "prevInTopic": 12106, 
+    "headers": {
+        "inReplyToHeader": "PGNrMzg5cStoZ3E0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxNjVBMzcwLjgwNzA4MDFAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNrMzg5cStoZ3E0QGVHcm91cHMuY29tPg=="
+    }
+}

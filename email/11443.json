@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 11444, 
+    "senderId": "GLj4lwmhevj0lmmkWCb6_g_OsK7prtj3UhZRex8nJOCpx_hKjVocnNzPYYKcvM6PHJtNfcVI4RbfLhxA_SCtJVVGexRbPHXBwYtHvXk", 
+    "systemMessage": false, 
+    "subject": "Returned WebPages", 
+    "from": "&quot;Chip Dunning&quot; &lt;cdunning@...&gt;", 
+    "authorName": "Chip Dunning", 
+    "msgSnippet": "I am adding testing capability to a program that currently has nothing, thus I am starting with the most fragile sections and working my way out. Two of these", 
+    "msgId": 11443, 
+    "profile": "chipdunning", 
+    "topicId": 11443, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 146967878, 
+    "messageBody": "<div id=\"ygrps-yiv-170068698\">I am adding testing capability to a program that currently has nothing, thus I am starting with the most fragile sections and working my way out. Two of these sections involve accessing a Web Server and a series of Web Services that may or may not be running when I am testing - each of these also access other resources that may not be running (data stream and a SQL database respectively).<br/>\n<br/>\nI thought HttpUnit would work, but that seems more geared to testing web pages - not testing Java code that reads web pages. What I want to do is build up a set SOAP page that my calls will act upon, thus I can create good and bad SOAP returns and test them - even mangled SOAP headers and test that it does the right thing when this happens (and given communication capabilities in the places this software will be deployed this will happen quite often).<br/>\n<br/>\nAs an example of testing the balanceCheck function I need to build up a XML file with a given balance result, let the code read it, then test that everything happened correctly.<br/>\n<br/>\nCode snippet at the bottom of email.<br/>\n<br/>\nAny ideas on how best to skin this cat?<br/>\n<br/>\n<br/>\nChip<br/>\n-----<br/>\n&quot;The reason the mainstream is thought of as a stream is because it&#39;s so shallow&quot; --George Carlin<br/>\n<br/>\n<br/>\n<br/>\n===================[ code snippet ]=============================<br/>\n<br/>\npublic long agentBalance(Agent agent, int channel) throws WagerSystemException {<br/>\n  cmdAgentBalance cmd = new cmdAgentBalance(agent.getID(), channel);<br/>\n  cmd.setInfo(kiosk, toteServerName, new Date());<br/>\n  BettingSession session = BettingSession.getInstance();<br/>\n<br/>\n  long surchargeBalance = 0;<br/>\n  long finalBalance = 0;<br/>\n  try {<br/>\n    rspAgentBalance rsp = (rspAgentBalance) cmd.sendCommand(toteServerURL);<br/>\n<br/>\n    if (rsp.isError()) {<br/>\n      String msg = rsp.getErrorMsg();<br/>\n      String code = rsp.getErrorCode();<br/>\n      if (code.equalsIgnoreCase(&quot;NOCONFIRM&quot;)) {<br/>\n        throw new WagerSystemException(&quot;&quot; + AGENTBALANCE_NOCONFIRM);<br/>\n<br/>\n      } else if (code.equalsIgnoreCase(&quot;TOTEERROR&quot;)) {<br/>\n        throw new WagerSystemException(msg);<br/>\n<br/>\n      } else {<br/>\n        throw new WagerSystemException(&quot;&quot; + AGENTBALANCE_NOTAVAILABLE);<br/>\n      }<br/>\n<br/>\n    } else {<br/>\n      int sessionID = agent.getSessionID();<br/>\n      setAgentBalanceCmd agentBalance = new setAgentBalanceCmd(rsp.getAmount(), new Integer sessionID));<br/>\n      getAgentBalanceResponse response = (getAgentBalanceResponse) agentBalance.callWebService(new Integer(0));<br/>\n<br/>\n      if (response != null) {<br/>\n        surchargeBalance = response.getSurchargeBalance();<br/>\n      }<br/>\n      session.setToteBalance( -rsp.getAmount());<br/>\n      finalBalance = -rsp.getAmount() + surchargeBalance;<br/>\n    }<br/>\n<br/>\n  } catch (FileNotFoundException ex2) {<br/>\n    ex2.printStackTrace();<br/>\n    finalBalance = 0;<br/>\n    throw new WagerSystemException(&quot;&quot; + AGENTBALANCE_NOTAVAILABLE);<br/>\n<br/>\n  } catch (IOException ex1) {<br/>\n    ex1.printStackTrace();<br/>\n    finalBalance = 0;<br/>\n    throw new WagerSystemException(&quot;&quot; + AGENTBALANCE_NOSERVICE);<br/>\n<br/>\n  } catch (UnexpectedResponseException ex3) {<br/>\n    ex3.printStackTrace();<br/>\n    finalBalance = 0;<br/>\n    throw new WagerSystemException(&quot;&quot; + AGENTBALANCE_NOTAVAILABLE);<br/>\n  }<br/>\n<br/>\n  return finalBalance;<br/>\n}</div>", 
+    "prevInTime": 11442, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1089726028", 
+    "canDelete": false, 
+    "nextInTopic": 11455, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEIwNjBCNDVEMzNBNURGNDc5MjkwNTk1MzhDRDAxODBBMDYyMkRCQGNpdGF0aW9uLmNoYXJsc29uLmxvY2FsPg=="
+    }
+}

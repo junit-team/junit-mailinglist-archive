@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 287, 
+    "nextInTime": 17905, 
+    "senderId": "zotKo9o-CcC2bChcLPk1L0wvJOASSt_af6sfzzThiddkpAyoShLjNKiNghfFK9A-H2JDlCCvdNGEmbmwhjfGvlKNlLGB9Gpz", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Test-friendly, but not caller-friendly?", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "All, I just wrote the section on interfaces vs. superclasses in Implementation Patterns, so I have some opinions. My analysis boils down to: interfaces hide", 
+    "msgId": 17904, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 54786 invoked from network); 12 Sep 2006 16:46:33 -0000\r\nReceived: from unknown (66.218.67.36)\n  by m26.grp.scd.yahoo.com with QMQP; 12 Sep 2006 16:46:33 -0000\r\nReceived: from unknown (HELO elasmtp-junco.atl.sa.earthlink.net) (209.86.89.63)\n  by mta10.grp.scd.yahoo.com with SMTP; 12 Sep 2006 16:46:31 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby elasmtp-junco.atl.sa.earthlink.net with asmtp (Exim 4.34)\n\tid 1GNBOj-0000ne-8a\n\tfor junit@yahoogroups.com; Tue, 12 Sep 2006 12:46:10 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Tue, 12 Sep 2006 09:45:57 -0700\r\nMessage-ID: &lt;014201c6d68a$ec9ed160$6501a8c0@T42&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962\r\nIn-Reply-To: &lt;b86b6a9c0609010905g3cacd898ucf694a95310b37b2@...&gt;\r\nThread-Index: AcbN4UEXnt75A5yBTty3ZVByx3XrjQIPWmjw\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d47800df650746cd6c7ed1669717ad5b49cc8eed5444d843f2eb350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] Test-friendly, but not caller-friendly?\r\nX-Yahoo-Group-Post: member; u=173198504; y=AwAGE08OwsWbB5TPT0j88myO3mdUmdHiCZJXl1IPV1MKWqDx\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nAll,\n \nI just wrote the section on interfaces vs. superclasses in Implement=\r\nation\nPatterns, so I have some opinions. My analysis boils down to: interfa=\r\nces\nhide more details (potentially) but you can&#39;t add a method to an interf=\r\nace\nwithout breaking client code the way you can with a superclass. In gene=\r\nral I\nprefer disciplined use of superclasses (no non-private members, judic=\r\nious\nuse of protected methods) but interfaces are more common.\n \nCheers,\n \n=\r\nKent Beck\nThree Rivers Institute\nAuthor of Implementation Patterns, due out=\r\n in the fourth quarter of 2006\n\n\n  _____  \n\nFrom: junit@yahoogroups.com [ma=\r\nilto:junit@yahoogroups.com] On Behalf Of\nC=E9dric Beust ? \nSent: Friday, Se=\r\nptember 01, 2006 9:06 AM\nTo: junit@yahoogroups.com\nSubject: Re: [junit] Tes=\r\nt-friendly, but not caller-friendly?\n\n\n\nHi Elliotte,\n\nOn 9/1/06, Elliotte H=\r\narold &lt;elharo@metalab.\n&lt;mailto:elharo%40metalab.unc.edu&gt; unc.edu&gt; wrote:\n&gt;\n=\r\n&gt; Michael Feathers wrote:\n&gt;\n&gt; &gt; Elliotte, what are the downsides of interfa=\r\nces, in your opinion? I know\n&gt; &gt; you don&#39;t like to use them as much as many=\r\n other people do, but I don&#39;t\n&gt; &gt; know why.\n&gt;\n&gt; 1. Excess complexity\n&gt;\n&gt; 2.=\r\n No precondition, postcondition, or class invariant validation\n&gt;\n&gt; 3. Canno=\r\nt add new methods to an existing interface in a later version\n&gt; without bre=\r\naking all existing code\n\nFair points.\n\nInterfaces do add some complexity, b=\r\nut they also buy you flexibility and\nextensibility, so I&#39;d be sure to alway=\r\ns weigh these different aspects before\nchoosing (or not) to introduce an in=\r\nterface.\n\nI would argue that concrete classes suffer from 2) as well, and t=\r\nhe only way\nyou can guarantee that the orchestration of your classes/interf=\r\naces is\nrespected is... with tests.\n\nIndeed, interfaces should become immut=\r\nable once they are published, but\nthere are ways to support interfaces with=\r\n added methods without breaking\nbackward compatibility. Here is how.\n\nSuppo=\r\nse you publish an interface:\n\npublic interface IAccount {\npublic void proce=\r\nssCash();\n}\n\nIn v2, you decide your account needs to support credit cards a=\r\ns well, so you\ncreate the following interface:\n\npublic interface IAccount2 =\r\nextends IAccount {\npublic void processCreditCard();\n}\n\nNow, your business c=\r\node needs to use the following trick:\n\nIAccount a =3D ...;\n\nif (a instanceo=\r\nf IAccount2) {\nIAccount2 a2 =3D (IAccount2) a;\na2.processCreditCard();\n}\n\nT=\r\nhis code is guaranteed to be fully backward compatible and yet allow for\nyo=\r\nur interfaces to grow with your needs. This trick is used extensively in\nCO=\r\nM and Eclipse, so while the instanceof is still a bit annoying, it&#39;s still\n=\r\nimportant to be aware of such a possibility.\n\n-- \nC=E9dric\nhttp://testng. &lt;=\r\nhttp://testng.org&gt; org\n\n[Non-text portions of this message have been remove=\r\nd]\n\n\n\n \n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 17266, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 17903, 
+    "contentTrasformed": false, 
+    "postDate": "1158079557", 
+    "canDelete": false, 
+    "nextInTopic": 17916, 
+    "prevInTopic": 17889, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYwOTAxMDkwNWczY2FjZDg5OHVjZjY5NGE5NTMxMGIzN2IyQG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDAxNDIwMWM2ZDY4YSRlYzllZDE2MCQ2NTAxYThjMEBUNDI+"
+    }
+}

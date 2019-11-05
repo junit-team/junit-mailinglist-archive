@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 9357, 
+    "senderId": "wk6kgy7vTp7rAkhg2PeoDbS_TX76rgudN_oYY365Z7BOovFgbIyGyH8Yho1QBdtLhu49DnbTrIXRUyglnqZrEiQCJT1duuMbYA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] a question about abstract/parameterised tests", 
+    "from": "Chris Dollin &lt;chris.dollin@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... The Ikky applied to the original code; the revised code I described doesn t need to do it, because the class gets passed into the suite-construction, and", 
+    "msgId": 9356, 
+    "rawEmail": "Return-Path: &lt;kers@...&gt;\r\nReceived: (qmail 23261 invoked by uid 7800); 16 Sep 2003 15:42:04 -0000\r\nX-Sender: kers@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 67739 invoked from network); 16 Sep 2003 15:15:43 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m20.grp.scd.yahoo.com with QMQP; 16 Sep 2003 15:15:43 -0000\r\nReceived: from unknown (HELO hplb.hpl.hp.com) (192.6.10.2)\n  by mta4.grp.scd.yahoo.com with SMTP; 16 Sep 2003 15:15:42 -0000\r\nReceived: from cdollin.hpl.hp.com (cdollin.hpl.hp.com [15.144.90.22])\n\tby hplb.hpl.hp.com (8.12.9/8.12.1/HP Labs Bristol relay) with ESMTP id h8GFDvjx008478\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 16 Sep 2003 16:13:57 +0100 (BST)\r\nReceived: from cdollin.hpl.hp.com (here [127.0.0.1])\n\tby cdollin.hpl.hp.com (8.12.8/8.12.8) with ESMTP id h8GFCkX3015106\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 16 Sep 2003 16:12:46 +0100\r\nReceived: from localhost (localhost [[UNIX: localhost]])\n\tby cdollin.hpl.hp.com (8.12.8/8.12.8/Submit) id h8GFCkso015104\n\tfor junit@yahoogroups.com; Tue, 16 Sep 2003 16:12:46 +0100\r\nOrganization: HPLB\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] a question about abstract/parameterised tests\r\nDate: Tue, 16 Sep 2003 16:12:46 +0100\r\nUser-Agent: KMail/1.5\r\nReferences: &lt;200308041444.12423.chris.dollin@...&gt; &lt;200309121538.53451.chris.dollin@...&gt; &lt;3F660399.4030004@...&gt;\r\nIn-Reply-To: &lt;3F660399.4030004@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n  charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nMessage-Id: &lt;200309161612.46012.chris.dollin@...&gt;\r\nX-HPL-BR-MailScanner: Found to be clean\r\nX-HPL-BR-MailScanner-SpamCheck: not spam (whitelisted),\n\tSpamAssassin (score=-6.7, required 5, BAYES_01 -5.40,\n\tEMAIL_ATTRIBUTION -0.50, IN_REP_TO -0.37, QUOTED_EMAIL_TEXT -0.38,\n\tREFERENCES 0.00, REPLY_WITH_QUOTES 0.00, USER_AGENT 0.00)\r\nFrom: Chris Dollin &lt;chris.dollin@...&gt;\r\nX-Yahoo-Group-Post: member; u=155741085\r\nX-Yahoo-Profile: anover_alias\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via email; 16 Sep 2003 15:42:04 -0000\r\n\r\nOn Monday 15 September 2003 19:23, J. B. Rainsberger wrote:\n&gt; Chris Dollin wrote:\n&gt; &gt; On Thursday 07 August 2003 18:25, J. B. Rainsberger wrote:\n&gt; &gt;  &gt; I have just built ParameterizedTestSuite, which allows you to\n&gt; &gt;\n&gt; &gt; automatically\n&gt; &gt;\n&gt; &gt;  &gt; build a suite of tests (from test* methods), but pass parameters to\n&gt; &gt;  &gt; the underlying test fixture.\n&gt; &gt;\n&gt; &gt; I didn&#39;t see this fly by, so [now the Release Pressure has dropped on our\n&gt; &gt; system] I&#39;m having a go myself. It&#39;s not very general, but here&#39;s what\n&gt; &gt; I&#39;ve got/done, and a Question:\n&gt; &gt;\n&gt; &gt; * AbstractTestGraph is the class [subclass, eventually, of TestCase] of\n&gt; &gt;   tests for Graph; subclasses must define getGraph() to return the Graph\n&gt; &gt;   to be tested.\n&gt; &gt;\n&gt; &gt; * There are three styles of Graph, so each new implementation of Graph at\n&gt; &gt;   the moment has to generate three new subclasses of AbstractTestGraph,\n&gt; &gt;   one for each style of Graph for getGraph, and suite them up together.\n&gt; &gt;   Ikky.\n&gt;\n&gt; To avoid this, pass the Graph to the graph test as a constructor. The\n&gt; graph test stores the graph in a field (as part of the fixture).\n\nThe &quot;Ikky&quot; applied to the original code; the revised code I described doesn&#39;t\nneed to do it, because the class gets passed into the suite-construction,\nand it replicates the test for each style, extracting the constructor from the\ngraph class as you suggest.\n\n&gt; What I haven&#39;t solved to my satisfaction is how best to create a\n&gt; parameterized test case that runs multiple tests with the same\n&gt; parameters. If I override runTest(), then that runs only one test, which\n&gt; I don&#39;t like. I want to know how to do this without re-implementing the\n&gt; code in JUnit that invokes a test by reflection.\n\nI gave up and re-implemented [a useful fragment of] that code. \n\n&gt; &gt; And the Question is, why are TestSuite::isPublicTestMethod and\n&gt; &gt; TestSuite::isTestMethod *private*? Because even if I wrote a subclass\n&gt; &gt; of TestSuite, rather than using methods in MetaTestGraph, I wouldn&#39;t\n&gt; &gt; be able to re-use them ...\n&gt;\n&gt; There was no need to make them non-private until now, I guess. :)\n\nThere wasn&#39;t a need to make them private in the first place, surely.\n\n-- \nChris &quot;electric hedgehog&quot; Dollin\nC FAQs at: http://www.faqs.org/faqs/by-newsgroup/comp/comp.lang.c.html\nC welcome: http://www.angelfire.com/ms3/bchambless0/welcome_to_clc.html\n\n", 
+    "profile": "anover_alias", 
+    "topicId": 9015, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 155741085, 
+    "prevInTime": 9355, 
+    "contentTrasformed": false, 
+    "postDate": "1063725166", 
+    "canDelete": false, 
+    "nextInTopic": 9362, 
+    "prevInTopic": 9348, 
+    "headers": {
+        "inReplyToHeader": "PDNGNjYwMzk5LjQwMzAwMDRAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwOTE2MTYxMi40NjAxMi5jaHJpcy5kb2xsaW5AaHAuY29tPg==", 
+        "referencesHeader": "PDIwMDMwODA0MTQ0NC4xMjQyMy5jaHJpcy5kb2xsaW5AaHAuY29tPiA8MjAwMzA5MTIxNTM4LjUzNDUxLmNocmlzLmRvbGxpbkBocC5jb20+IDwzRjY2MDM5OS40MDMwMDA0QHJvZ2Vycy5jb20+"
+    }
+}

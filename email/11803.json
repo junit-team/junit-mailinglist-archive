@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 11804, 
+    "senderId": "4bhWpI1jo7ZfHKi_4A__1U4_z3Xs59VivzfCPKNhMrZ72N7LDGPz5ayh6iwGDbeShomjTxkynFMiRAOnNgzrXH1ZQ2i5oh7C", 
+    "systemMessage": true, 
+    "subject": "Re: How to test XML file processing?", 
+    "from": "&quot;jxingtang&quot; &lt;jxingtang@...&gt;", 
+    "authorName": "jxingtang", 
+    "msgSnippet": "... Thanks a lot for all the valuable suggestions from J.B.Rainsberger, Allan Halme, Mark Van Peteghem, Kevin Lawerence! I first got input from", 
+    "msgId": 11803, 
+    "profile": "jxingtang", 
+    "topicId": 11782, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126373237, 
+    "messageBody": "<div id=\"ygrps-yiv-1808085942\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;jxingtang&quot; &lt;jxingtang@y...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I have a method to read an XML file and then use DOM to extract the <br/>\n&gt; data. Can anyone recommend a good way to unit test this method? The <br/>\n&gt; code snippet is blow:<br/>\n&gt; <br/>\n&gt; \tpublic void processConfigFile( String fileNameArg )<br/>\n&gt; \t\tthrows IllegalArgumentException<br/>\n&gt; \t{<br/>\n&gt; \t\tFile configFile = new File( fileNameArg );<br/>\n&gt; \t\tif( configFile.exists() == false )<br/>\n&gt; \t\t{<br/>\n&gt; \t\t\tString msg = &quot;Failed to locate the specified <br/>\n&gt; configuration file &#92;&quot;&quot; +<br/>\n&gt; \t\t\t\t\t\tfileNameArg + &quot;&#92;&quot;&quot;;<br/>\n&gt; \t\t\tthrow new IllegalArgumentException( msg );<br/>\n&gt; \t\t}<br/>\n&gt; \t\t<br/>\n&gt; \t\tDocumentBuilderFactory factory =<br/>\n&gt; \t\t\tDocumentBuilderFactory.newInstance();<br/>\n&gt; \t\t<br/>\n&gt; \t\ttry <br/>\n&gt; \t\t{<br/>\n&gt; \t\t   DocumentBuilder builder = <br/>\n&gt; factory.newDocumentBuilder();<br/>\n&gt; \t\t   configDoc = builder.parse( configFile );<br/>\n&gt; \t\t}<br/>\n&gt;                 ....<br/>\n<br/>\n </span></blockquote>Thanks a lot for all the valuable suggestions from J.B.Rainsberger,  <br/>\nAllan Halme, Mark Van Peteghem, Kevin Lawerence! <br/>\n<br/>\nI first got input from J.B.Rainsberger, I thought that I might need <br/>\nto create Java temporary files for various XML data files instead of <br/>\nmaintaining them in the persistent storage. Then I got better ideas <br/>\nfrom Allan and Mark to refactor my code and use string instead of <br/>\nfile as input to the testing method. Kevin seems to have the similar <br/>\napproach but honestly I do not have the enough knowledge to <br/>\nunderstand it fully. Definitely, I will re-visit back later to fine <br/>\ntune my code and I begin to find Junit testing is really fun. Here <br/>\nare my refactored source codes and testing codes.<br/>\n<br/>\n\tpublic void processConfigFile( String fileNameArg )<br/>\n\t\tthrows IllegalArgumentException<br/>\n\t{<br/>\n\t\tFileInputStream fileInputStream = null;<br/>\n<br/>\n\t\ttry<br/>\n\t\t{ <br/>\n\t\t\t//fileReader = new FileReader( configFile );<br/>\n\t\t\tfileInputStream = new FileInputStream( <br/>\nconfigFile );<br/>\n\t\t}<br/>\n\t\tcatch( FileNotFoundException fne )<br/>\n\t\t{<br/>\n\t\t\tString msg = &quot;Failed to locate the specified <br/>\nconfiguration file &#92;&quot;&quot; +<br/>\n\t\t\t\t\t\tfileNameArg + &quot;&#92;&quot;&quot;;<br/>\n\t\t\tthrow new IllegalArgumentException( msg );<br/>\n\t\t\t<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tprocessXMLConfigFile( fileInputStream );<br/>\n\t}<br/>\n<br/>\n\tprotected void processXMLConfigFile( InputStream inputStream )<br/>\n\t\tthrows IllegalArgumentException<br/>\n\t{<br/>\n\t\tDocumentBuilderFactory factory =<br/>\n\t\t\tDocumentBuilderFactory.newInstance();<br/>\n\t\t<br/>\n\t\ttry <br/>\n\t\t{<br/>\n\t\t   DocumentBuilder builder = <br/>\nfactory.newDocumentBuilder();<br/>\n\t\t   configDoc = builder.parse( inputStream );<br/>\n\t\t}<br/>\n<br/>\n\t\t......<br/>\n\t}<br/>\n<br/>\n<br/>\n=================<br/>\n<br/>\n\tprotected void setUp()<br/>\n\t{<br/>\n\t\tcfgFileParser = new XMLParser( ... );<br/>\n\t}<br/>\n<br/>\n\tprivate InputStream createXMLFileWithSyntaxError()<br/>\n\t{<br/>\n\t\tStringBuffer fileBuffer = new StringBuffer();<br/>\n\t\t<br/>\n\t\tfileBuffer.append( &quot;&lt;?xml version=&#92;&quot;1.0&#92;&quot; <br/>\nencoding=&#92;&quot;UTF-8&#92;&quot;?&gt;&#92;n&quot; );<br/>\n\t\tfileBuffer.append( &quot;&lt;configuration&gt;&#92;n&quot; );<br/>\n\t\tfileBuffer.append( &quot;&lt;/configure&gt;&quot; );<br/>\n\t\t<br/>\n\t\treturn new StringBufferInputStream( <br/>\nfileBuffer.toString());<br/>\n\t}<br/>\n<br/>\n\tpublic void testProcessXMLFileWithSyntaxError()<br/>\n\t{<br/>\n\t\ttry<br/>\n\t\t{<br/>\n\t\t\tcfgFileParser.processXMLConfigFile( <br/>\ncreateXMLFileWithSyntaxError());<br/>\n\t\t\tfail( &quot;Failed to throw <br/>\nIllegalArgumentException for XML file with syntax error&quot; );<br/>\n\t\t}<br/>\n\t\tcatch( IllegalArgumentException iae )<br/>\n\t\t{<br/>\n\t\t\tassertTrue( true );<br/>\n\t\t}<br/>\n\t}</div>", 
+    "prevInTime": 11802, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1092880809", 
+    "canDelete": false, 
+    "nextInTopic": 11812, 
+    "prevInTopic": 11793, 
+    "headers": {
+        "inReplyToHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGNnMTFqOStjMnJhQGVHcm91cHMuY29tPg=="
+    }
+}

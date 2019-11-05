@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 989, 
+    "senderId": "NniDlak4LUXiKCycZuTSHLRrUXgxnOL0icjgiLF_ImiFR0zE-iIG_D1nm5mZN7Kd6RYiTbN1jsTj0q-LgNXLzuTvSlgIYjHNIDE1pR8", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] textui vs swingui", 
+    "from": "Brian Button &lt;bbutton01@...&gt;", 
+    "authorName": "Brian Button", 
+    "msgSnippet": "... Hi, Ralf, I think may I know what may be causing this problem. You don t say which version of junit you re using, but I suspect it is not 3.6. I believe", 
+    "msgId": 988, 
+    "topicId": 985, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-796284989\"><blockquote><span title=\"ireply\">&gt;&gt;&gt;&gt;&gt; &quot;Ralf&quot; == Ralf Krakowski &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:ralf.krakowski@...\">ralf.krakowski@...</a>&gt; writes:<br/>\n<br/>\n </span></blockquote>Hi, Ralf,<br/>\n<br/>\nI think may I know what may be causing this problem. You don&#39;t say which<br/>\nversion of junit you&#39;re using, but I suspect it is not 3.6.<br/>\n<br/>\nI believe what is happening is that you are seeing the different<br/>\nbehaviors associated with the different ClassLoaders used by the<br/>\ntextui and swingui front ends. The textui uses the standard system<br/>\nClassLoader to create all classes. The swingui gives you the option of <br/>\nusing JUnit&#39;s own custom ClassLoader to reload classes that have<br/>\nchanged between invocations of the test.<br/>\n<br/>\nThe ClassCastException you&#39;re seeing could be due attempting to cast<br/>\nan object that has been loaded through the custom ClassLoader to a<br/>\nreference to an object that was created through a different<br/>\nClassLoader. This would cause this exact outcome.<br/>\n<br/>\nTo fix this, try starting junit with the -noloading flag from the<br/>\ncommand line. If this fixes your behavior, then you can continue doing <br/>\nthis, but you have to restart junit every time you change your<br/>\ncode. Or you can search in the archives for this group for<br/>\nexcluded.properties. There have been several messages sent that<br/>\ndescribe how to use this file to tell the custom ClassLoader to ignore <br/>\ncertain package hierarchies and let the system ClassLoader deal with<br/>\nthem. That is probably a better long term solution.<br/>\n<br/>\nbab<br/>\n<br/>\n    Ralf&gt;  I have two test that I run with<br/>\n    Ralf&gt; junit.textui.TestRunner.run(FooStatelessTest.class);<br/>\n<br/>\n<blockquote><span title=\"ireply\">     &gt;&gt; from my main method.<br/>\n </span></blockquote>    Ralf&gt; The output is like this(which is ok):<br/>\n<br/>\n    Ralf&gt; .F.  Time: 2,284 There was 1 failure:<br/>\n    Ralf&gt; 1) testSayGoodbye(FooStatelessTest) &quot;expected:&lt;Goodbye&gt; but<br/>\n    Ralf&gt;    was:&lt;Que&gt;&quot;<br/>\n<br/>\n    Ralf&gt; FAILURES!!!  Tests run: 2, Failures: 1, Errors: 0<br/>\n<br/>\n    Ralf&gt; When I run<br/>\n    Ralf&gt; junit.swingui.TestRunner.run(FooStatelessTest.class);<br/>\n<br/>\n    Ralf&gt; I get the following:<br/>\n<br/>\n    Ralf&gt; java.lang.ClassCastException:<br/>\n    Ralf&gt; Any thoughts? Why does it work with one but not the other?<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n-- <br/>\nBrian Button            <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bbutton@...\">bbutton@...</a><br/>\nSenior Consultant       Object Mentor, Inc<br/>\nSt. Louis, MO\t\t<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.objectmentor.com\">http://www.objectmentor.com</a></div>", 
+    "prevInTime": 987, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987681550", 
+    "canDelete": false, 
+    "nextInTopic": 989, 
+    "prevInTopic": 985, 
+    "headers": {
+        "inReplyToHeader": "UmFsZiBLcmFrb3dza2kncyBtZXNzYWdlIG9mICJUaHUsIDE5IEFwciAyMDAxIDExOjI3OjU2ICswMjAwIg==", 
+        "messageIdInHeader": "PG0zbjE5ZDVjZHQuZnNmQGVhcnRobGluay5uZXQ+", 
+        "referencesHeader": "PDcwMEVBMTdBMTQyQUQzMTE4QTFFMDAwOEM3MjRCQ0I0QjcyQTRFQGFnYmdudHMwMy5hZ2JnLmludHJhbmV0Pg=="
+    }
+}

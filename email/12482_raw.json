@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 12483, 
+    "senderId": "CRglIqMipnYXAZCLG2_jomtlxkinhfz-6594GT3ZemLwbKXil-UR5CDR81tt8v_5LdbxG5_9oZP_gOTbkv24whbjdcpKLlkZKBM", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] how to test private method with Junit?", 
+    "from": "Chris Collins &lt;gosub3000@...&gt;", 
+    "authorName": "Chris Collins", 
+    "msgSnippet": "Use reflection.  The example below uses the java reflection api to invoke a private method in the TestMe class. More information can be found at: ", 
+    "msgId": 12482, 
+    "rawEmail": "Return-Path: &lt;gosub3000@...&gt;\r\nReceived: (qmail 70396 invoked from network); 15 Dec 2004 22:18:53 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 15 Dec 2004 22:18:53 -0000\r\nReceived: from unknown (HELO n19a.bulk.scd.yahoo.com) (66.94.237.48)\n  by mta2.grp.scd.yahoo.com with SMTP; 15 Dec 2004 22:18:53 -0000\r\nReceived: from [66.218.69.4] by n19.bulk.scd.yahoo.com with NNFMP; 15 Dec 2004 22:18:52 -0000\r\nReceived: from [66.218.67.158] by mailer4.bulk.scd.yahoo.com with NNFMP; 15 Dec 2004 22:18:52 -0000\r\nX-Sender: gosub3000@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 94040 invoked from network); 15 Dec 2004 17:19:08 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m16.grp.scd.yahoo.com with QMQP; 15 Dec 2004 17:19:08 -0000\r\nReceived: from unknown (HELO wproxy.gmail.com) (64.233.184.194)\n  by mta5.grp.scd.yahoo.com with SMTP; 15 Dec 2004 17:19:07 -0000\r\nReceived: by wproxy.gmail.com with SMTP id 36so714512wra\n        for &lt;junit@yahoogroups.com&gt;; Wed, 15 Dec 2004 09:19:07 -0800 (PST)\r\nDomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;\n        s=beta; d=gmail.com;\n        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;\n        b=ds/l6q66Fy9NP7I9dmdgAzxo0WZ2XuO0Az4kV9FEzKXLzJar3eJr5hUb8ipeSIX0wm+eHf5vkyFerp1714IUzA/kkGBSQYNSjW4CZ5hXj22wvrgRVxX5WsvOiQcWuN1PLekdoHyy7DswdqyvI5NdLGx5a4byvQHmwwaqX+hNOqA=\r\nReceived: by 10.54.53.44 with SMTP id b44mr237336wra;\n        Wed, 15 Dec 2004 09:19:06 -0800 (PST)\r\nReceived: by 10.54.45.17 with HTTP; Wed, 15 Dec 2004 09:19:06 -0800 (PST)\r\nMessage-ID: &lt;81edc526041215091952e3ad55@...&gt;\r\nDate: Wed, 15 Dec 2004 17:19:06 +0000\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20041214155900.65620.qmail@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nReferences: &lt;20041214020002.7380.qmail@...&gt;\n\t &lt;20041214155900.65620.qmail@...&gt;\r\nX-eGroups-Remote-IP: 64.233.184.194\r\nFrom: Chris Collins &lt;gosub3000@...&gt;\r\nReply-To: Chris Collins &lt;gosub3000@...&gt;\r\nSubject: Re: [junit] how to test private method with Junit?\r\nX-Yahoo-Group-Post: member; u=206352336\r\nX-Yahoo-Profile: computingunit42\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 15 Dec 2004 22:18:49 -0000\r\nX-eGroups-Remote-IP: 66.94.237.48\r\n\r\n\nUse reflection.  The example below uses the java reflection api to\ninvoke a private method in the TestMe class.\n\nMore information can be found at:\nhttp://www.onjava.com/pub/a/onjava/2003/11/12/reflection.html\n\nFile: TestMe.java\n-------------------------\npublic class TestMe {\n    private int add(int a, int b){\n        return a+b;\n    }\n}\n\nFile: UnitTest_TestMe.java\n---------------------------------------\nimport junit.framework.TestCase;\nimport java.lang.reflect.*;\n\npublic class UnitTest_TestMe extends TestCase {\n    public void test_add(){\n        try {\n            TestMe classUnderTest = new TestMe();\n            Class cls = Class.forName(&quot;TestMe&quot;);\n            Class paramTypes[] = new Class[2];\n            paramTypes[0] = Integer.TYPE;\n            paramTypes[1] = Integer.TYPE;\n            Method[] methods = cls.getDeclaredMethods();\n            \n            for(int i=0; i&lt;methods.length; i++){\n                if(methods[i].getName().equals(&quot;add&quot;)){\n                    methods[i].setAccessible(true);\n                    Object arglist[] = new Object[2];\n                    arglist[0] = new Integer(37);\n                    arglist[1] = new Integer(47);\n                    Object retobj = methods[i].invoke(classUnderTest, arglist);\n                    Integer retval = (Integer)retobj;\n                    assertEquals(retval.intValue(), 37+47); \n                }\n            }           \n         }\n         catch (Throwable e) {\n            System.err.println(e);\n            fail();\n         }\n    }\n}\n\nHope this helps\n\n-Chris\n\n-- \nChris Collins\ne: gosub3000@...\nhttp://gosub3000.blogspot.com\n\n\n\n\n", 
+    "profile": "computingunit42", 
+    "topicId": 12475, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 206352336, 
+    "prevInTime": 12481, 
+    "contentTrasformed": false, 
+    "postDate": "1103131146", 
+    "canDelete": false, 
+    "nextInTopic": 12487, 
+    "prevInTopic": 12479, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMjE0MTU1OTAwLjY1NjIwLnFtYWlsQHdlYjE1NzA5Lm1haWwuY25iLnlhaG9vLmNvbT4=", 
+        "messageIdInHeader": "PDgxZWRjNTI2MDQxMjE1MDkxOTUyZTNhZDU1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDIwMDQxMjE0MDIwMDAyLjczODAucW1haWxAd2ViNTM1MDQubWFpbC55YWhvby5jb20+CSA8MjAwNDEyMTQxNTU5MDAuNjU2MjAucW1haWxAd2ViMTU3MDkubWFpbC5jbmIueWFob28uY29tPg=="
+    }
+}

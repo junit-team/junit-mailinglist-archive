@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 7762, 
+    "senderId": "1O3QxwNgmQrj8kA2ZZ8SlJXGKdu5PG0qR7xQi620F7Yhdf79tswXYC2aWhmg0UqJLp1RQBmVQ9WupiDShbHgRGTn2XARiy3ADGT5sojFVJ48_NN14E2D", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] ServerTestCase", 
+    "from": "&quot;McKinstry, Pete (HQP)&quot; &lt;pete.mckinstry@...&gt;", 
+    "authorName": "McKinstry, Pete (HQP)", 
+    "msgSnippet": "It looks like it s not finding the jboss JNDI client jars. When you do JNDI lookups in the server those jars are available by default. When you run outside of", 
+    "msgId": 7761, 
+    "rawEmail": "Return-Path: &lt;Pete.McKinstry@...&gt;\r\nReceived: (qmail 38236 invoked by uid 7800); 17 Apr 2003 21:23:19 -0000\r\nX-Sender: Pete.McKinstry@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 17 Apr 2003 21:06:18 -0000\r\nReceived: (qmail 96912 invoked from network); 17 Apr 2003 21:06:17 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m3.grp.scd.yahoo.com with QMQP; 17 Apr 2003 21:06:17 -0000\r\nReceived: from unknown (HELO rhalf.com) (204.75.127.103)\n  by mta3.grp.scd.yahoo.com with SMTP; 17 Apr 2003 21:06:17 -0000\r\nReceived: from HQPEXTR02 (hqpextr02.corp.rhalf.com [10.251.100.82])\n\tby rhalf.com (Switch-3.0.4/Switch-3.0.0) with SMTP id h3HL6GNV026234\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 17 Apr 2003 14:06:16 -0700 (PDT)\r\nReceived: from hqpex012.corp.rhalf.com ([10.251.102.50]) by HQPEXTR02 with InterScan Messaging Security Suite; Thu, 17 Apr 2003 14:06:06 -0700\r\nReceived: from 10.251.101.51 by hqpex012.corp.rhalf.com with ESMTP (\n Tumbleweed MMS SMTP Relay (MMS v4.7)); Thu, 17 Apr 2003 14:06:14 -0700\r\nX-Server-Uuid: cdced086-966c-11d3-b153-00c0f02de454\r\nReceived: by hqpex014.corp.rhalf.com with Internet Mail Service (\n 5.5.2653.19) id &lt;JA2GHBAH&gt;; Thu, 17 Apr 2003 14:06:14 -0700\r\nMessage-ID: &lt;00A851B1D52D3940B03DE868CCF0E61406F98AA2@...&gt;\r\nTo: &quot;&#39;scohan2005&#39;&quot; &lt;scohan@...&gt;, junit@yahoogroups.com\r\nSubject: RE: [junit] ServerTestCase\r\nDate: Thu, 17 Apr 2003 14:06:09 -0700\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nX-WSS-ID: 1281C8CC132459-01-02\r\nFrom: &quot;McKinstry, Pete (HQP)&quot; &lt;pete.mckinstry@...&gt;\r\nX-Yahoo-Group-Post: member; u=88936159\r\nX-Yahoo-Profile: pete_mckinstry\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 17 Apr 2003 21:23:19 -0000\r\n\r\nIt looks like it&#39;s not finding the jboss JNDI client jars. When you do JNDI\nlookups in the server those jars are available by default. When you run\noutside of the server, (unit test, or thick client) you have to include the\njars explicitly which contain the InitialContextFactory impl & it&#39;s related\nclasses. check the &lt;JBOSS_HOME&gt;/client/*.jar for the required jars. \n \n-pgm\n\n-----Original Message-----\nFrom: scohan2005 [mailto:scohan@...]\nSent: Thursday, April 17, 2003 12:06 PM\nTo: junit@yahoogroups.com\nSubject: [junit] ServerTestCase\n\n\nI am trying to integrate ServerTestCase with pre-existing junit \ntests.  Right now, I&#39;m just trying to test back end server DAO code - \nnot ejbs.  The back end code works - i&#39;m just trying to get the tests \nconverted to ServerTestCases.   We&#39;ve just moved to WebLogic 7.1.\n\nWithin my test case, call it MyTestCase (that extends ServerTestCase\n()), I have a main that instantiates MyTestCase passing \nin &quot;MyTestCase&quot;.  Before calling the method I want to test, I have to \ncall a login class to set up some initial data that is required in my \ntest method (i.e, login credential data).  This login class connects \nto an oracle db to get the initial data.  Before doing so, the login  \nclass attempts to instantiate an InitialContext (to get a \nconnection), however, &#39;new InitialContext()&#39; throws the following:\n\njavax.naming.NoInitialContextException: Cannot instantiate class: \norg.jnp.interfaces.NamingContextFactory [Root\nexception is java.lang.ClassNotFoundException: \norg.jnp.interfaces.NamingContextFactory]  \n\nThe login code works when called from our Struts front end, but \nthrows the above exception when called from MyTestCase.  What am I \nmissing as far as the InitialContext goes?  It seems that \nServerTestCase has successfully set up its InitialConext prior to me \ncalling this other class.  Shouldn&#39;t the Context then be available \nfor subsequent InitialConext calls?  Obviously, this is fuzzy to me.\n\nThanks.\n\n\n\nYahoo! Groups Sponsor\t\n \n&lt;http://rd.yahoo.com/M=249982.3179269.4495679.1728375/D=egroupweb/S=17050069\n05:HM/A=1524963/R=0/*http://hits.411web.com/cgi-bin/autoredir?camp=556&linei\nd=3179269&prop=egroupweb&pos=HM&gt; \t\n \n&lt;http://us.adserver.yahoo.com/l?M=249982.3179269.4495679.1728375/D=egroupmai\nl/S=:HM/A=1524963/rand=768156407&gt; \t\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service\n&lt;http://docs.yahoo.com/info/terms/&gt; . \n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "pete_mckinstry", 
+    "topicId": 7758, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88936159, 
+    "prevInTime": 7760, 
+    "contentTrasformed": false, 
+    "postDate": "1050613569", 
+    "canDelete": false, 
+    "nextInTopic": 7777, 
+    "prevInTopic": 7758, 
+    "headers": {
+        "messageIdInHeader": "PDAwQTg1MUIxRDUyRDM5NDBCMDNERTg2OENDRjBFNjE0MDZGOThBQTJASFFQRVgwMDYuY29ycC5yaGFsZi5jb20+"
+    }
+}

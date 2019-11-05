@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 19119, 
+    "senderId": "yVvBBAjgsgX10hH6_F9VHgxTMTuf3W9du4YA5LcSRSlE0zhYfSa1n6vbNgfI-ICY-B3irdtVPPhtLNTNrku5C5750fJHANxnJzHHVl7X7vkJPrbC3xR2MQ", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to check the value of one variable in one method in a class in  ajunit testcase..(variable is not returned)..", 
+    "from": "Archana Subramanian &lt;archu_subramanian@...&gt;", 
+    "authorName": "Archana Subramanian", 
+    "msgSnippet": "Thank u  Rainsberger.. Hope this ll help me.... J. B. Rainsberger  wrote: ... I m sorry I didn t see this before writing my previous", 
+    "msgId": 19118, 
+    "topicId": 19102, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 237320072, 
+    "messageBody": "<div id=\"ygrps-yiv-2074396741\">Thank u  Rainsberger..<br/>\n  Hope this ll help me....<br/>\n<br/>\n&quot;J. B. Rainsberger&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains762@...\">jbrains762@...</a>&gt; wrote:<br/>\n          Archana Subramanian wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Thanks raymond,<br/>\n&gt; i want to chk whether<br/>\n&gt; 1) the connection is established ..,<br/>\n&gt; 2)the query is proper(spell chk ,space chk)<br/>\n&gt; 3)the result of the query..<br/>\n&gt; <br/>\n&gt; in short i can say i want to chk the db functionality....<br/>\n<br/>\n </span></blockquote>I&#39;m sorry I didn&#39;t see this before writing my previous reply.<br/>\n<br/>\nTo check that the connection is established, I would write a test that <br/>\nissues a simple command against the database.<br/>\n<br/>\npublic void testConnectionEstablished() throws Exception {<br/>\nConnection connection = application.connectToDatabase();<br/>\nStatement statement = connection.createStatement(...some simple SQL <br/>\nstatement...);<br/>\nstatement.execute();<br/>\nstatement.close();<br/>\nconnection.close();<br/>\n// as long as no exception is thrown, the connection works<br/>\n}<br/>\n<br/>\nThis test fails only if an exception is thrown, which would indicate the <br/>\nconnection was not established correctly. Now I would write a method in <br/>\nyour production code called &quot;connectToDatabase()&quot; to make the test pass.<br/>\n<br/>\nTo test whether the query is correct, just check the string.<br/>\n<br/>\npublic void testSelectSubmissionQuerySql() throws Exception {<br/>\nSubmissionQuery query = new SubmissionQuery();<br/>\nassertEquals(<br/>\n&quot;SELECT SUBMISSION_GUID FROM SUBMISSION WHERE SUBMISSION_GUID = <br/>\n143&quot;,<br/>\nquery.getSql());<br/>\n}<br/>\n<br/>\nThis test simply makes sure that if someone changes the query in <br/>\nSubmissionQuery, then they do it twice to verify that they really wanted <br/>\nto change it. This is much like entering a password twice when you <br/>\nregister at a web site. Now I would create a new class SubmissionQuery <br/>\nthat encapsulates the statement. (It looks like too much design now, but <br/>\nas your system grows, it will be very helpful.)<br/>\n<br/>\nAs for the result of the query, I would write this test:<br/>\n<br/>\npublic void testSelectSubmissionQueryOneRow() throws Exception {<br/>\n//... insert a row into the database with GUID 143<br/>\nSubmissionQuery query = new SubmissionQuery();<br/>\nConnection connection = application.connectToDatabase();<br/>\nList guids = query.execute(connection);<br/>\nassertEquals(Collections.singletonList(new Integer(143)), guids);<br/>\n}<br/>\n<br/>\nFor the first comment, you need to put some sample data in the database <br/>\nso your test can find it. You can do this with some JDBC code or using a <br/>\ntool like DbUnit. Now you can implement SubmissionQuery.execute() with <br/>\nthe code you wrote in your first posting, except this time, execute() <br/>\naccepts the Connection as a parameter. This way, you can test the <br/>\nconnection separately. It will look like this:<br/>\n<br/>\nclass SubmissionQuery {<br/>\npublic List execute(Connection connection) throws Exception {<br/>\nResultSet resultSet = null;<br/>\nPreparedStatement selectStatement = null;<br/>\nList guids = new ArrayList();<br/>\n<br/>\ntry {<br/>\nselectStatement =<br/>\nconnection.prepareStatement(getSql());<br/>\nresultSet = selectStatement.executeQuery();<br/>\nwhile(resultSet.next()) {<br/>\nguids.add(resultSet.getInteger(&quot;SUBMISSION_GUID&quot;));<br/>\n}<br/>\n}<br/>\nfinally {<br/>\ntry {<br/>\nif(resultSet != null) resultSet.close();<br/>\nif(selectStatement != null) selectStatement.close();<br/>\n}<br/>\ncatch (Exception nothingWeCanDo) {}<br/>\n}<br/>\n<br/>\nreturn guids;<br/>\n}<br/>\n}<br/>\n<br/>\nGood luck.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.ca\">http://www.jbrains.ca</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice<br/>\n<br/>\n<br/>\n         <br/>\n<br/>\n Send instant messages to your online friends <a rel=\"nofollow\" target=\"_blank\" href=\"http://uk.messenger.yahoo.com\">http://uk.messenger.yahoo.com</a> <br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 19117, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1174020202", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19116, 
+    "headers": {
+        "inReplyToHeader": "PDQ1Rjk5NDEwLjEwODA4MDFAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDY3NTE1My41NDUzNS5xbUB3ZWIzNTUwNi5tYWlsLm11ZC55YWhvby5jb20+"
+    }
+}

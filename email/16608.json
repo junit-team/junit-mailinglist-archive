@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 16609, 
+    "senderId": "49e4sN3wgEhqRfczjvN-13HmROPPOKhKrzPmOST62nuUGhJ9FUG_3GzRuzsBShuIHV70GggAEX3iy4UfOYy1pH6XgkNjhxTU", 
+    "systemMessage": true, 
+    "subject": "JUnit and inner classes", 
+    "from": "&quot;eetadic69&quot; &lt;eetadic69@...&gt;", 
+    "authorName": "eetadic69", 
+    "msgSnippet": "Hi all, so I m continuing my learning curve with JUnit, and I have a scenario that I wish I could execute, but apparently I m not allowed to.  Basically, I", 
+    "msgId": 16608, 
+    "profile": "eetadic69", 
+    "topicId": 16608, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 267405105, 
+    "messageBody": "<div id=\"ygrps-yiv-146345282\">Hi all, so I&#39;m continuing my learning curve with JUnit, and I have a scenario that I wish I <br/>\ncould execute, but apparently I&#39;m not allowed to.  Basically, I want to test for interface <br/>\ncompliance using the AbstractInterfaceTest pattern, but with a slight twist.  Consider the <br/>\nfollowing example, where I have an interface &quot;InnerInterface&quot; extend another interface <br/>\n&quot;OuterInterface&quot; (all within a package called &quot;mypackage&quot;).<br/>\n<br/>\npublic Interface OuterInterface{}<br/>\n<br/>\npublic Interface InnerInterface extends OuterInterface{}<br/>\n<br/>\npublic abstract class OuterInterfaceTest<br/>\n{<br/>\n  public abstract OuterInterface getImplementingInstance();<br/>\n<br/>\n  @Test public final void outerInterfaceComplianceTest()<br/>\n  {<br/>\n    assertNotNull(this.getImplementingInstance());<br/>\n  }<br/>\n}<br/>\n<br/>\npublic abstract class InnerInterfaceTest<br/>\n{<br/>\n  public abstract InnerInterface getImplementingInstance();<br/>\n<br/>\n  @Test public final void innerInterfaceComplianceTest()<br/>\n  {<br/>\n    assertNotNull(this.getImplementingInstance());<br/>\n  }<br/>\n<br/>\n  @Test public final void testForInterfaceInheritance()<br/>\n  {<br/>\n    assertTrue(JUnitCore.runClasses((new OuterInterfaceTestImplementation()).getClass<br/>\n()).wasSuccessful());<br/>\n  }<br/>\n<br/>\n  public class OuterInterfaceTestImplementation extends mypackage.OuterInterfaceTest<br/>\n  {<br/>\n    public OuterInterface getImplementingInstance()<br/>\n    {<br/>\n      return InnerInterfaceTest.this.getImplementingInstance();<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\nAnd there will ultimately be some other test classes that either (a) inherit from <br/>\nInnerInterfaceTest, or (b) re-apply the design pattern you see above.  These will be the <br/>\nactual concrete tests that use instantiations of real classes (not interfaces).<br/>\n<br/>\nOK, for those that made it this far, you may already see the problem above.  First off, the <br/>\ntestForInterfaceInheritance() method is needed because JUnit cannot instantiate <br/>\nOuterInterfaceTestImplementation without an instance of InnerInterface (because the <br/>\nformer is a non-static inner class).  That being said, when the test gets to that line, it <br/>\nbombs by trying to create an instance of OuterInterfaceTestImplementation outside of the <br/>\ncontext of the current InnerInterface object, which is no good!<br/>\n<br/>\nOne may suggest to make OuterInterfaceTestImplementation a static nested class, but this <br/>\ndoesn&#39;t work well, either.  Why?  Because in order to call getImplementingInstance on the <br/>\ntrue implementing instance, OuterInterfaceTestImplementation needs a reference (this) to <br/>\nthe current instance of InnerInterfaceTest.<br/>\n<br/>\nNow, I&#39;ve already found a workaround, but it is a very un-elegant solution, and it actually <br/>\nleads to unavoidable unchecked type conversion warnings when doing the above with <br/>\ngenerics (I left that out for simplicity).  The workaround involves making the inner class a <br/>\nnested static class instead, calling a constructor that takes the current (this) instance of <br/>\nInnerClass and stores it as a static field that is then used by the instantiated instances of <br/>\nOuterInterfaceTestImplementation when JUnitCore.runClasses() is called.  Trust me when I <br/>\nsay this is ugly and can lead to confusion when trying to stick to a nice testing pattern.<br/>\n<br/>\nSo, ultimately the question is this, why can I not call JUnitCore.runClasses() on non-static <br/>\ninner classes?  I understand that JUnit wants to create a new instance of each class for <br/>\ntesting, but when I start some tests programmatically via the runClasses() method, it <br/>\nshould be able to (without much stretch of the imagination) instantiate inner classes within <br/>\nthe instance of the object that called runClasses().<br/>\n<br/>\nShould I be submitting this as a bug/design suggestion?<br/>\n<br/>\nAnyone else encountered this when having hierarchies of interfaces?<br/>\n<br/>\nThanks in advance for any input!</div>", 
+    "prevInTime": 16607, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1146707135", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGUzYm1idis3MGNAZUdyb3Vwcy5jb20+"
+    }
+}

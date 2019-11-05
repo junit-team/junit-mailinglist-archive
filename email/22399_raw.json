@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 22400, 
+    "senderId": "0t5XZPgNcqV52Jzdkbzrf3raNLPy4nHTK7qVSjQLwx15jio1n_0QY2VDBv2VBZFi-iuY-W6PmN-iw5O5vx13vcsTjYpoOZiLKaU", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Putting all your JUnit tests in separate Eclipse project?", 
+    "from": "Alistair Israel &lt;aisrael@...&gt;", 
+    "authorName": "Alistair Israel", 
+    "msgSnippet": "On Fri, Feb 12, 2010 at 5:28 AM, willmcqueen  wrote: Hi, Will. Since you said you welcome our thoughts, let me share/compare to how we", 
+    "msgId": 22399, 
+    "rawEmail": "Return-Path: &lt;aisrael@...&gt;\r\nX-Sender: aisrael@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 8907 invoked from network); 12 Feb 2010 06:45:31 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 12 Feb 2010 06:45:31 -0000\r\nX-Received: from unknown (HELO mail-px0-f179.google.com) (209.85.216.179)\n  by mta2.grp.sp2.yahoo.com with SMTP; 12 Feb 2010 06:45:31 -0000\r\nX-Received: by pxi9 with SMTP id 9so1419435pxi.24\n        for &lt;junit@yahoogroups.com&gt;; Thu, 11 Feb 2010 22:45:27 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.142.56.11 with SMTP id e11mr635739wfa.272.1265957127094; Thu, \n\t11 Feb 2010 22:45:27 -0800 (PST)\r\nIn-Reply-To: &lt;hl1sq2+b9cm@...&gt;\r\nReferences: &lt;hl1sq2+b9cm@...&gt;\r\nDate: Fri, 12 Feb 2010 14:45:06 +0800\r\nMessage-ID: &lt;f9f36f921002112245v61814c44r9266eb6b9fbaa7fb@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Alistair Israel &lt;aisrael@...&gt;\r\nSubject: Re: [junit] Putting all your JUnit tests in separate Eclipse project?\r\nX-Yahoo-Group-Post: member; u=190140219; y=FWd80Ble8-Lj-h5eCSO-ZrXcLIjE5_SYA6-nyqbUg4HoYw\r\nX-Yahoo-Profile: aisrael\r\n\r\nOn Fri, Feb 12, 2010 at 5:28 AM, willmcqueen &lt;willmcqueen@...&gt; wrote:=\r\n\n\nHi, Will. Since you said you welcome our thoughts, let me\nshare/compare t=\r\no how we do it..\n\nWe use Maven, and m2eclipse. Maven, by convention, locate=\r\ns\n&#39;production&#39; source code under &quot;src/main/java&quot; and test source code\nunder=\r\n &quot;src/test/java&quot;. m2eclipse then sets up two separate source\npaths under th=\r\ne same Eclipse project.\n\n1) The ability to set your project-specific settin=\r\ngs for your test\nproject to something other than what is set for the main p=\r\nroject.\n\nAs you know, run-time configuration can be configured per test/sui=\r\nte\nunder Eclipse. Using Maven, you can specify some run-time\nconfiguration =\r\nthat&#39;ll only get applied when running (all) unit tests.\nI&#39;m not sure why yo=\r\nu&#39;d need separate build configuration, except for\nyour point #4: libraries =\r\nonly needed for unit tests, which I&#39;ll get to\nbelow.\n\n\n2) Reduced risk in h=\r\naving your main code accidentally depend on a test\n(not likely to happen, b=\r\nut possible with single project).\n\nWhen Maven to perform the final build, t=\r\nhe &#39;compile&#39; phase executes\nbefore the &#39;compile tests&#39; phase; If any produc=\r\ntion code has hard\ndependencies on test code then the compile will fail.\n\nE=\r\nclipse won&#39;t raise any errors at all, though; so we need to depend on\nthe M=\r\naven build to catch this situation.\n\n\n3) Reduced risk in accidentally shipp=\r\ning test-specific jars with your\nproduction code.\n\nAgain, like in #2 by usi=\r\nng the Maven build we cleanly separate the\nproduction code from test code.\n=\r\n\n\n4) The freedom to add any version of a lib that you need for your tests.\n=\r\n\nTo a large extent, Maven lets you use a separate build classpath for\ntests=\r\n and production code. You can certainly specify libraries with\nonly &quot;test s=\r\ncope&quot;.\n\nYou can even use different test resources (e.g., configuration\n.pro=\r\nperties or .XML files, test data/fixtures) which are all invisible\nto the p=\r\nroduction code.\n\nHowever, I&#39;m unsure of how it&#39;ll work if you use a differe=\r\nnt or newer\nversion of the same dependency in your test scope. The Maven-Ec=\r\nlipse\nproject certainly doesn&#39;t complain=E2=80=94but again, I suspect Maven=\r\n will\n(properly) fail to compile if your test code which was written agains=\r\nt\nthe old library is broken by the new test library.\n\nOverall, Maven+Eclips=\r\ne is not 100% ideal compared to what you seem to\nwant to accomplish using s=\r\neparate projects. It does, however, let us\nseparate test code and productio=\r\nn code with relative ease, without\nhaving to manage two separate projects.\n=\r\n\nThe best part is how the whole compile, test, package, distribute and\ndepl=\r\noy cycle can be configured/managed using a single tool, which can\neven be r=\r\nun in an automated fashion (within a continuous integration\nsystem).\n\nUsing=\r\n Eclipse alone, with two separate projects, you&#39;d have to\nmanually run test=\r\ns in the test project, before building the main\nproject (or write your own =\r\nscript to do so), and so on by hand.\n\nHope this helps.\n\n- alistair\n--\nhttp:=\r\n//alistairisrael.wordpress.com\n\n", 
+    "profile": "aisrael", 
+    "topicId": 22398, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190140219, 
+    "prevInTime": 22398, 
+    "contentTrasformed": false, 
+    "postDate": "1265957106", 
+    "canDelete": false, 
+    "nextInTopic": 22404, 
+    "prevInTopic": 22398, 
+    "headers": {
+        "inReplyToHeader": "PGhsMXNxMitiOWNtQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGY5ZjM2ZjkyMTAwMjExMjI0NXY2MTgxNGM0NHI5MjY2ZWI2YjlmYmFhN2ZiQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGhsMXNxMitiOWNtQGVHcm91cHMuY29tPg=="
+    }
+}

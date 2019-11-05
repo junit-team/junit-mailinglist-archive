@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 17189, 
+    "senderId": "4PRu9Z6Ay935lFDCO8xWJLZYxUUIW_YkluwAi3-hOqq-PjkCRAgtMERvW_8HcXiXUSLZv0-yE-_4i36GOO5enqEcoV9Ggw", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] How to Test Private Methods Inside a Class", 
+    "from": "Ole Ersoy &lt;ole_ersoy@...&gt;", 
+    "authorName": "Ole Ersoy", 
+    "msgSnippet": "Hey Ilja, Separation of concerns is another great reason to put routines in their own class, and in this case I could put the private load method in it s own", 
+    "msgId": 17188, 
+    "rawEmail": "Return-Path: &lt;ole_ersoy@...&gt;\r\nReceived: (qmail 52536 invoked from network); 24 Jul 2006 19:49:46 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m26.grp.scd.yahoo.com with QMQP; 24 Jul 2006 19:49:46 -0000\r\nReceived: from unknown (HELO n15a.bullet.scd.yahoo.com) (66.94.237.32)\n  by mta3.grp.scd.yahoo.com with SMTP; 24 Jul 2006 19:49:45 -0000\r\nReceived: from [66.218.69.3] by n15.bullet.scd.yahoo.com with NNFMP; 24 Jul 2006 19:49:31 -0000\r\nReceived: from [66.218.66.75] by t3.bullet.scd.yahoo.com with NNFMP; 24 Jul 2006 19:49:30 -0000\r\nX-Sender: ole_ersoy@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 36958 invoked from network); 24 Jul 2006 15:13:09 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m41.grp.scd.yahoo.com with QMQP; 24 Jul 2006 15:13:09 -0000\r\nReceived: from unknown (HELO web60715.mail.yahoo.com) (209.73.178.218)\n  by mta9.grp.scd.yahoo.com with SMTP; 24 Jul 2006 15:13:08 -0000\r\nReceived: (qmail 55473 invoked by uid 60001); 24 Jul 2006 15:12:57 -0000\r\nMessage-ID: &lt;20060724151257.55471.qmail@...&gt;\r\nReceived: from [67.173.89.3] by web60715.mail.yahoo.com via HTTP; Mon, 24 Jul 2006 08:12:54 PDT\r\nDate: Mon, 24 Jul 2006 08:12:54 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;44C4581F.407@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Ole Ersoy &lt;ole_ersoy@...&gt;\r\nSubject: Re: [junit] How to Test Private Methods Inside a Class\r\nX-Yahoo-Group-Post: member; u=98908154; y=mvK32YzqJgQ3LcGqhcUzbSxxI7t-EoXOL_0j9MUXMJIz1bf6\r\nX-Yahoo-Profile: ole_ersoy\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via web; 24 Jul 2006 19:49:28 -0000\r\n\r\nHey Ilja,\n\nSeparation of concerns is another great reason to put\nroutines in their own class, and in this case I could\nput the private load method in it&#39;s own class, and use\naspects to trigger the load method within the maven\nmojo, but ... Here&#39;s the code and I&#39;ll comment further\non the but below:\n\n    private ComponentDefinition\nloadComponentDefinition(File resourceFile) throws\nMojoExecutionException {\n\n        ResourceSet resourceSet = new\nResourceSetImpl();\n\n        \n\n\n\n        resourceSet.getResourceFactoryRegistry().\n\n        getExtensionToFactoryMap().put(RDNA_EXTENSION,\nnew XMIResourceFactoryImpl());\n\n        \n\n        Resource resource = \n\n           \nresourceSet.createResource(URI.createFileURI(resourceFile.getAbsolutePath()));\n\n               \n\n\n\n        RdnaPackage rdnaPackage =\nRdnaPackage.eINSTANCE;\n\n       \nresourceSet.getPackageRegistry().put(rdnaPackage.getNsURI(),\nrdnaPackage);\n\n        \n\n\n        try {\n\n            resource.load(null);\n\n        } catch (IOException e1) {\n\n            throw new MojoExecutionException(&quot;Could\nnot read rdna resource.&quot;);\n\n        }\n\n               \n\n        ComponentDefinition componentDefinition =\n\n            (ComponentDefinition)\nresource.getContents().get(0);\n\n        \n\n        return componentDefinition;    \t\n\n    }\n\n\nThis code has a few parameters in it that are specific\n\nto the loading of this type of resource.\n\nFirst ComponentDefinition:\n\nThis is the model of the resource being loaded.\n\nRdnaPackage\n\nThis is part of the factory for creating instances of\nthe model being loaded.\n\nSo this method returns an instance of the loaded\nmodel.\n\nIn this case the RdnaPackage and ComponentDefinition\nhave a one to one correspondence, and both are needed\nto make use of the loaded model, so I decided just to\nkeep the method private and test it using the\nPriviligedAccessor...\n\nCheers,\n- Ole\n\n--- Ilja Preuss &lt;it@...&gt; wrote:\n\n&gt; Ole Ersoy wrote:\n&gt; \n&gt; &gt; The file loading part is in a private method,\n&gt; because\n&gt; &gt; the load routine is specific to the class that is\n&gt; &gt; being tested, and is therefore not useful in a\n&gt; utility\n&gt; &gt; library.\n&gt; \n&gt; Reusability is not the only reason to extract things\n&gt; into their own \n&gt; classes, is it?\n&gt; \n&gt; &gt; So I just wanted to put the load routine in a\n&gt; private\n&gt; &gt; method and test it there, then call it from the\n&gt; public\n&gt; &gt; method.\n&gt; \n&gt; Would putting it into its own class have had any\n&gt; negative effect?\n&gt; \n&gt; \n&gt; Can you show us the load routine?\n&gt; \n&gt; Curious, Ilja\n&gt; \n\n\n__________________________________________________\nDo You Yahoo!?\nTired of spam?  Yahoo! Mail has the best spam protection around \nhttp://mail.yahoo.com \n\n\n\n", 
+    "profile": "ole_ersoy", 
+    "topicId": 17170, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 98908154, 
+    "prevInTime": 17187, 
+    "contentTrasformed": false, 
+    "postDate": "1153753974", 
+    "canDelete": false, 
+    "nextInTopic": 17192, 
+    "prevInTopic": 17187, 
+    "headers": {
+        "inReplyToHeader": "PDQ0QzQ1ODFGLjQwN0BpbGphcHJldXNzLmRlPg==", 
+        "messageIdInHeader": "PDIwMDYwNzI0MTUxMjU3LjU1NDcxLnFtYWlsQHdlYjYwNzE1Lm1haWwueWFob28uY29tPg=="
+    }
+}

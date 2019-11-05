@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 12194, 
+    "senderId": "jhSAmv1LuW4P54NUqoP3rszw_mDBX37-FL_Dr2rRL96JVtZCNhsW2Gn2MOR13SVpOdCq8Xe83qbuWEe89nmca4cXKM2e2sRsZKsWFyE", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing Spring/Hibernate", 
+    "from": "Shane Mingins &lt;shanemingins@...&gt;", 
+    "authorName": "Shane Mingins", 
+    "msgSnippet": "... My reply has taken just as long ... I am on leave at the moment with child #3 :-) I left the original msg unsnipped for reference. To answer your", 
+    "msgId": 12193, 
+    "rawEmail": "Return-Path: &lt;shanemingins@...&gt;\r\nX-Sender: shanemingins@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 79445 invoked from network); 27 Oct 2004 07:46:36 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m6.grp.scd.yahoo.com with QMQP; 27 Oct 2004 07:46:36 -0000\r\nReceived: from unknown (HELO web60208.mail.yahoo.com) (216.109.118.103)\n  by mta6.grp.scd.yahoo.com with SMTP; 27 Oct 2004 07:46:36 -0000\r\nMessage-ID: &lt;20041027074628.59716.qmail@...&gt;\r\nReceived: from [219.88.117.206] by web60208.mail.yahoo.com via HTTP; Wed, 27 Oct 2004 00:46:28 PDT\r\nDate: Wed, 27 Oct 2004 00:46:28 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;415986F5.7050802@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-Remote-IP: 216.109.118.103\r\nFrom: Shane Mingins &lt;shanemingins@...&gt;\r\nReply-To: shanemingins@...\r\nSubject: Re: [junit] Testing Spring/Hibernate\r\nX-Yahoo-Group-Post: member; u=154456095\r\nX-Yahoo-Profile: shanemingins\r\n\r\n\n--- &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt; wrote:\n\n&gt; First, I apologize for taking this long to get to\n&gt; this message.\n&gt; \n&gt; Shane Mingins wrote:\n&gt; \n&gt; &gt; Our app is a Swing client calling WebServices\n&gt; running in WebSphere. \n&gt; &gt; The Webservices uses a DAO object which extends\n&gt; the\n&gt; &gt; HibernateDaoSupport class provided by the Spring\n&gt; framework.\n&gt; &gt; \n&gt; &gt; Now according to the contractor, the way we have\n&gt; the transaction\n&gt; &gt; manager setup in our applicationContext.xml file\n&gt; &gt; using &quot;PROPAGATION_REQUIRED&quot; for our\n&gt; get/save/update/delete\n&gt; &gt; operations means that the &quot;commit&quot; of the\n&gt; transaction will only occur\n&gt; &gt; when the starting method is finished.\n&gt; &gt; \n&gt; &gt; So if we were to create a JUnit test:\n&gt; &gt; \n&gt; &gt; public void testUpdate()\n&gt; &gt; {\n&gt; &gt;         InvestorWebServices iws = new\n&gt; InvestorWebServices();\n&gt; &gt;         InvestorDTO identity =\n&gt; iws.getInvestorByPK(new Integer\n&gt; &gt; (7000011));\n&gt; &gt;         identity.setName(&quot;Bob);\n&gt; &gt; \n&gt; &gt;         iws.updateInvestor(identity);\n&gt; &gt; }\n&gt; &gt; \n&gt; &gt; He is telling me that the commit to the Db will\n&gt; not have happened\n&gt; &gt; until the testUpdate method has completed.\n&gt; &gt; \n&gt; &gt; As part of the test we want to be able to assert\n&gt; that the record in\n&gt; &gt; the db has indeed been updated so in our current\n&gt; situation we could\n&gt; &gt; not do that within the testUpdate method.\n&gt; \n&gt; What is your goal here? Are you trying to test end\n&gt; to end? Are you \n&gt; trying to test your integration with some part of\n&gt; the framework? Is this \n&gt; a Learning Test?\n&gt; \n&gt; What are you afraid is broken right now?\n&gt; \n&gt; &gt; I was wondering if anyone with more experience\n&gt; than us is doing\n&gt; &gt; similar testing with Spring/Hibernate and how are\n&gt; the doing such\n&gt; &gt; testing?\n&gt; \n&gt; I have no experience, but I have ideas. You said\n&gt; that you want to verify \n&gt; that data makes it to the database. Who&#39;s\n&gt; responsible for making sure \n&gt; the data gets into the database? (Your code?\n&gt; Hibernate? WebSphere?) If \n&gt; you still need to/want to solve this problem, then\n&gt; I&#39;d like to start by \n&gt; establishing who has which responsibilities.\n&gt; -- \n\nMy reply has taken just as long ... I am on leave at\nthe moment with child #3 :-)\n\nI left the original msg unsnipped for reference.\n\nTo answer your questions:\n\n1. What was my goal?  \n\nIt was a type of end to end test.  The test&#39;s point of\nentry was the InvestorWebService object.  I asked the\nInvestorWebService for a PersonDTO (a person is one\ninvestor type), modified it, and sent it to the update\nmethod on the InvestorWebService.   \n\nTo check that this indeed worked as expected, in that\nall the tables in DB were updated as expected, I used\nDbUnit to assert that the tables matched XML datasets.\n\n2.  Responsibilities\n\nThe InvestorWebService is responsible for returning an\ninvestor as a DTO.  It uses a DAO object (this is\ninstantiated using Spring) to retrieve an investor\nbusiness object.  The DAO uses Hibernate to retreive\nthe requested investor object.\n\nThe InvestorWebService is responsible for updating an\ninvestor from a passed DTO.  It uses a DAO object\n(this is instantiated using Spring) to update an\ninvestor business object.  The DAO uses Hibernate to\nupdate the requested investor object.\n\nHibernate ultimately updates the database.\n\nIs that enough to start some discussion on your ideas?\n\nCheers\nShane\n\n\n\n\n\n=====\n\nShane Mingins\n\nshanemingins@...\n\nplease remove clothes before emailing\n\n\n__________________________________________________\nDo You Yahoo!?\nTired of spam?  Yahoo! Mail has the best spam protection around \nhttp://mail.yahoo.com \n\n", 
+    "profile": "shanemingins", 
+    "topicId": 11972, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 154456095, 
+    "prevInTime": 12192, 
+    "contentTrasformed": false, 
+    "postDate": "1098863188", 
+    "canDelete": false, 
+    "nextInTopic": 12200, 
+    "prevInTopic": 12072, 
+    "headers": {
+        "inReplyToHeader": "PDQxNTk4NkY1LjcwNTA4MDJAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDQxMDI3MDc0NjI4LjU5NzE2LnFtYWlsQHdlYjYwMjA4Lm1haWwueWFob28uY29tPg=="
+    }
+}

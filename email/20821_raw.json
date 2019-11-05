@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 20822, 
+    "senderId": "z9VA1PM1gc92-kIblxLiljywppfBORvmBkMEUfoM9dkclgn3A--tPHPAXjZoiaUWLVh2kQxfmWwk5TsTN4Tfk0xUeiKrug48Wg408w", 
+    "systemMessage": false, 
+    "subject": "Re: Paper on Abstract vs. Concrete parameters", 
+    "from": "&quot;toalexsmail&quot; &lt;toalexsmail@...&gt;", 
+    "authorName": "toalexsmail", 
+    "msgSnippet": "... www.threeriversinstitute.org/AbstractVsConcreteParameters.html. In ... I have read your paper and I have some comments. First of all lets consider concrete", 
+    "msgId": 20821, 
+    "rawEmail": "Return-Path: &lt;toalexsmail@...&gt;\r\nX-Sender: toalexsmail@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 5480 invoked from network); 29 Aug 2008 13:36:35 -0000\r\nX-Received: from unknown (66.218.67.94)\n  by m54.grp.scd.yahoo.com with QMQP; 29 Aug 2008 13:36:35 -0000\r\nX-Received: from unknown (HELO n34a.bullet.mail.sp1.yahoo.com) (66.163.168.128)\n  by mta15.grp.scd.yahoo.com with SMTP; 29 Aug 2008 13:36:35 -0000\r\nX-Received: from [69.147.65.150] by n34.bullet.mail.sp1.yahoo.com with NNFMP; 29 Aug 2008 13:36:35 -0000\r\nX-Received: from [66.218.69.6] by t7.bullet.mail.sp1.yahoo.com with NNFMP; 29 Aug 2008 13:36:35 -0000\r\nX-Received: from [66.218.66.88] by t6.bullet.scd.yahoo.com with NNFMP; 29 Aug 2008 13:36:35 -0000\r\nDate: Fri, 29 Aug 2008 13:36:34 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;g98u12+o0mn@...&gt;\r\nIn-Reply-To: &lt;A4BAF92AFE2542A0944B83791180A127@kentspavilion&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;toalexsmail&quot; &lt;toalexsmail@...&gt;\r\nSubject: Re: Paper on Abstract vs. Concrete parameters\r\nX-Yahoo-Group-Post: member; u=340165037; y=IJBSdDdFapLBQGT6708k10AUyixDfZ7z0fcMYqD8JkI8SYekjcE\r\nX-Yahoo-Profile: toalexsmail\r\n\r\n--- In junit@yahoogroups.com, &quot;kentb&quot; &lt;kentb@...&gt; wrote:\n&gt;\n&gt; All,\n&gt; \n&gt; In s=\r\npite of the one feedback message I got that my recent post about\n&gt; abstract=\r\n vs. concrete parameters was clear, I expanded the idea into a\n&gt; paper:\nwww=\r\n.threeriversinstitute.org/AbstractVsConcreteParameters.html. In\n&gt; short, it=\r\n tries to resolve the apparent contradiction between achieving\n&gt; testable c=\r\node sometimes by making parameters concrete and sometimes by\n&gt; making param=\r\neters abstract. I&#39;d appreciate feedback, examples, and\n&gt; counter-examples.\n=\r\n&gt; \n&gt; Regards,\n&gt; \n&gt; Kent Beck\n&gt; Three Rivers Institute\n&gt;\n\nI have read your p=\r\naper and I have some comments. First of all lets\nconsider concrete paramete=\r\nrs case. \nIf you have to write unit test to the legacy code you are in trou=\r\nble.\nConsider the case when method under test calls many other methods. If\n=\r\nyou have customer, then these other method may check different\ninformation =\r\nfrom it. Furthermore, API of these method expects to\nreceive customer objec=\r\nt. So in this case you cant use concrete parameters.\nAnother point is the f=\r\nollowing. I found very helpful to add some\nconcrete parameters to the metho=\r\nd. For example, if I have something\nlike this\npublic RechargeResult recharg=\r\ne(Customer cust){\n validate(cust);\n ...\n &lt;do the recharge&gt;\n}\n\nI can change =\r\nit to:\n\npublic RechargeResult recharge(Customer cust){\n return recharge(cus=\r\nt, true);\n}\n\nprivate RechargeResult recharge(Customer cust, boolean hasVali=\r\ndate){\n if(hasValudate){\n   validate(cust);\n }\n ...\n &lt;do the recharge&gt;\n}\n\nI=\r\nn this case API is not changed. Unit test however can call private\nrecharge=\r\n() method (using PrivalegeAccessor object or if you&#39;re not\naware of it, usi=\r\nng reflection you can call private methods) and pass\nhasValidate false if y=\r\nou want to skip validation. In this manner you\ncan actually alter behavior =\r\nof the method in order to know exactly\nwhat subsystem is called.\n\nSome note=\r\ns on this point. First of all, if you&#39;re using EJB you can&#39;t\nuse PrivalegeA=\r\nccessor (reflection). In this case you should alter your\nAPI. Another point=\r\n, it can be the case that your unit test need more\ninformation from the met=\r\nhod that API supply it. This information is\noften available in the method b=\r\nody, but is not returned. In this case\nyou can do the following trick: \n\npu=\r\nblic RechargeResult recharge(Customer cust){\n RechargeDTO rechargeDTO=3D re=\r\ncharge(cust, true);\n return rechargeDTO.getRechargeResult().\n}\n\nprivate Rec=\r\nhargeDTO recharge(Customer cust, boolean hasValidate){\n if(hasValudate){\n  =\r\n validate(cust)\n }\n ...\n &lt;do the recharge&gt;\n}\n\nThat is your private method w=\r\nill return extended data (that will be\nused in your unit test), and public =\r\nmethod will be return only the\ndata that is required by API.\n\nNow, lets con=\r\nsider abstract parameters. In the case of the legacy code\nyou can&#39;t use thi=\r\ns pattern very widely. \n\n\n", 
+    "profile": "toalexsmail", 
+    "topicId": 20817, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 340165037, 
+    "prevInTime": 20820, 
+    "contentTrasformed": false, 
+    "postDate": "1220016994", 
+    "canDelete": false, 
+    "nextInTopic": 20906, 
+    "prevInTopic": 20818, 
+    "headers": {
+        "inReplyToHeader": "PEE0QkFGOTJBRkUyNTQyQTA5NDRCODM3OTExODBBMTI3QGtlbnRzcGF2aWxpb24+", 
+        "messageIdInHeader": "PGc5OHUxMitvMG1uQGVHcm91cHMuY29tPg=="
+    }
+}

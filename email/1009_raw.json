@@ -1,0 +1,28 @@
+{
+    "topicId": 1009, 
+    "postDate": "987803995", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Di Iorio, Matthew (ISS Atlanta)&quot; &lt;mdiiorio@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "szWlXo_S8PamldbhKrCRghBEMhx2i3nhsGkMQQ2qVRjfv_sAwRvQZxuLu2dQWCa9p03sB0TRSswJSOmu6055cJUih-CaN_QTHvOLEnnyq1hgpDtRswihKyWXBQ", 
+    "nextInTime": 1010, 
+    "userId": 0, 
+    "prevInTime": 1008, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDc3ODNBMTQxQzc5NEQ0MTE4QUFBMDAzMDZFMDBCMEIxMTI1NjgzQG1zZ2F0bDA2Lmlzcy5uZXQ+"
+    }, 
+    "authorName": "Di Iorio, Matthew (ISS Atlanta)", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "Imagine never having to maintain an AllTests class again!  Wouldn t it be great if JUnit would pick-up test classes the same way it picks up tests? If this", 
+    "contentTrasformed": false, 
+    "msgId": 1009, 
+    "nextInTopic": 1043, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;MDiIorio@...&gt;\r\nX-Sender: MDiIorio@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 20 Apr 2001 22:04:24 -0000\r\nReceived: (qmail 858 invoked from network); 20 Apr 2001 22:04:24 -0000\r\nReceived: from unknown (10.1.10.142) by l8.egroups.com with QMQP; 20 Apr 2001 22:04:24 -0000\r\nReceived: from unknown (HELO atla-mx1.iss.net) (209.134.161.6) by mta3 with SMTP; 20 Apr 2001 22:04:23 -0000\r\nReceived: from atla-mx1.iss.net (localhost [127.0.0.1]) by atla-mx1.iss.net (8.9.3+Sun/8.9.2) with ESMTP id SAA12648 for &lt;junit@yahoogroups.com&gt;; Fri, 20 Apr 2001 18:04:22 -0400 (EDT)\r\nReceived: from msgatl03.iss.net (msgatl03.iss.net [209.134.160.148]) by atla-mx1.iss.net (8.9.3+Sun/8.9.2) with ESMTP id SAA12644 for &lt;junit@yahoogroups.com&gt;; Fri, 20 Apr 2001 18:04:22 -0400 (EDT)\r\nReceived: by msgatl03.iss.net with Internet Mail Service (5.5.2653.19) id &lt;J1H381DV&gt;; Fri, 20 Apr 2001 18:00:32 -0400\r\nMessage-ID: &lt;7783A141C794D4118AAA00306E00B0B1125683@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: TestFinderSuite for JUnit\r\nDate: Fri, 20 Apr 2001 17:59:55 -0400\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: multipart/mixed; boundary=&quot;----_=_NextPart_000_01C0C9E5.3B8CC970&quot;\r\nFrom: &quot;Di Iorio, Matthew (ISS Atlanta)&quot; &lt;mdiiorio@...&gt;\r\n\r\n\r\n------_=_NextPart_000_01C0C9E5.3B8CC970\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\n\r\nImagine never having to maintain an AllTests class again!  Wouldn&#39;t it be\ngreat if JUnit would pick-up test classes the same way it picks up tests?\nIf this sounds good, read on...\n\nI&#39;ve taken Andy Schneider&#39;s TestAll code from his JavaWorld article\n(http://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit.html) and\nreworked it a bit to fit into JUnit (in the extensions package).  For those\nof you not familiar with the TestAll code, it is a mechanism to\nauto-discover tests so you don&#39;t have to remember to add your tests to a\nTestSuite.\n\nThe TestFinderSuite will build a TestSuite by searching through the\nclasspath looking for TestCases.  You can even give it a package to limit\nthe search.  The following example would run all the tests in the &#39;com.foo&#39;\npackage:\n\nimport junit.extensions.TestFinderSuite;\npublic class AllTests {\n  public static void main( String args[] ) {\n    junit.textui.TestRunner.run( new TestFinderSuite( &quot;com.foo&quot; ) );\n  }\n}\n\nOR to run tests in certain packages:\n\n    TestSuite allMyTests = new TestSuite();\n    allMyTests.addTest( new TestFinderSuite( &quot;com.foo.common.tests&quot; ) );\n    allMyTests.addTest( new TestFinderSuite( &quot;com.foo.application.tests&quot; )\n);\n    junit.textui.TestRunner.run( allMyTests );\n\nTo use it just put the attached jar file in your classpath when running\nJUnit.  You will have to modify your current AllTests or create a new one.\n\nThe TestFinderSuite tries to pickup only valid TestCases.  That said, it&#39;s\nnot advisable to run it against the junit.test package, since there are so\nmany mock TestCase&#39;s that get picked up.  I&#39;ve found that it works for most\nother projects, though.\n\nI&#39;m curious to see if anyone finds this useful.  Feel free to mail me with\nquestions, comments or bugs.\n\n-- \nMatt Di Iorio                Software Engineer\nmdiiorio@...         Phone: (404) 236-2748\nInternet Security Systems (http://www.iss.net)\n\n\r\n------_=_NextPart_000_01C0C9E5.3B8CC970\r\nContent-Type: application/octet-stream;\n\tname=&quot;TestFinderSuite.jar&quot;\r\nContent-Disposition: attachment;\n\tfilename=&quot;TestFinderSuite.jar&quot;\r\n\r\n[ Attachment content not displayed ]\r\n------_=_NextPart_000_01C0C9E5.3B8CC970\r\nContent-Type: text/html;\n\tname=&quot;TestFinderSuite.html&quot;\r\nContent-Disposition: attachment;\n\tfilename=&quot;TestFinderSuite.html&quot;\r\n\r\n[ Attachment content not displayed ]\r\n------_=_NextPart_000_01C0C9E5.3B8CC970--\r\n\n", 
+    "subject": "TestFinderSuite for JUnit"
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 19160, 
+    "senderId": "9GKp4zi4o1Q3C-VM-2FabCcQEqi1XavDPEkU51-kpXF8m6VsFt7DfOLDc4Q8PxJvMJuBfDQE10iL_-YcPeP4Ar8q", 
+    "systemMessage": false, 
+    "subject": "Run class on one instance (was: Re: [junit] Request features)", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... This is possible with a custom runner I posted to the list some months ago (sorry about the formatting.  Yahoo seems to have squashed it): package", 
+    "msgId": 19159, 
+    "profile": "dsaff", 
+    "topicId": 19159, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-1269240789\">On 3/27/07, BrianHks &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:Brianhks@...\">Brianhks@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; There are two things I would like to do with JUnit.<br/>\n&gt; 1.  Run a bunch of tests on a class without junit creating a new<br/>\n&gt; instance of the class for each test.  I know you can use the<br/>\n&gt; BeforeClass and AfterClass methods to set static data but that is so ugly.<br/>\n<br/>\n </span></blockquote>This is possible with a custom runner I posted to the list some months<br/>\nago (sorry about the formatting.  Yahoo seems to have squashed it):<br/>\n<br/>\npackage constructonce;<br/>\n<br/>\nimport static org.junit.Assert.*;<br/>\n<br/>\nimport org.junit.Test;<br/>\nimport org.junit.internal.runners.InitializationError;<br/>\nimport org.junit.internal.runners.TestClassMethodsRunner;<br/>\nimport org.junit.internal.runners.TestClassRunner;<br/>\nimport org.junit.runner.JUnitCore;<br/>\nimport org.junit.runner.Result;<br/>\nimport org.junit.runner.RunWith;<br/>\n<br/>\npublic class ConstructOnceTest {<br/>\npublic static class OneInstance extends TestClassRunner {<br/>\npublic OneInstance(Class&lt;?&gt; klass) throws InitializationError {<br/>\nsuper(klass, new OneInstanceMethodsRunner(klass));<br/>\n}<br/>\n<br/>\nprivate static class OneInstanceMethodsRunner extends TestClassMethodsRunner {<br/>\nprivate Object fInstance;<br/>\n<br/>\npublic OneInstanceMethodsRunner(Class&lt;?&gt; klass) {<br/>\nsuper(klass);<br/>\nfInstance = null;<br/>\n}<br/>\n<br/>\n@Override<br/>\nprotected Object createTest() throws Exception {<br/>\nif (fInstance == null)<br/>\nfInstance = super.createTest();<br/>\nreturn fInstance;<br/>\n}<br/>\n}<br/>\n}<br/>\n<br/>\n@RunWith(OneInstance.class)<br/>\npublic static class RunWithOneInstance {<br/>\nprivate static boolean constructed = false;<br/>\n<br/>\npublic RunWithOneInstance() {<br/>\nif (constructed)<br/>\nthrow new IllegalStateException(&quot;Only construct me once!&quot;);<br/>\nconstructed = true;<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void firstTest() {<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void secondTest() {<br/>\n}<br/>\n}<br/>\n<br/>\n@Test<br/>\npublic void runWithOneInstance() {<br/>\nResult result = JUnitCore.runClasses(RunWithOneInstance.class);<br/>\nassertEquals(0, result.getFailureCount());<br/>\n}<br/>\n}</div>", 
+    "prevInTime": 19158, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1175110724", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwMzI4MTIzOGs1ZTMzMzllMHc1YzNjYmUyM2U2ZjMyZGNAbWFpbC5nbWFpbC5jb20+"
+    }
+}

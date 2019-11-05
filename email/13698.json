@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 81, 
+    "nextInTime": 13699, 
+    "senderId": "-aI-G7MgSranxgDvS8C-LCoZS8JAUPRKbqwIBLMD7Wj_FJvGGgcCcrTKslw7_rL_ndyoGxynq5IKf_f2oK4Vtrfj8n2kBLKCtA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] use of setUp and tearDown", 
+    "from": "&quot;Cedric Beust&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cedric Beust", 
+    "msgSnippet": "... Right, so I want the testing framework to *not* run any test method that depends on rectangle drawing because it s a waste of time.  And I also want the", 
+    "msgId": 13698, 
+    "profile": "cbeust", 
+    "topicId": 13634, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-1599438515\"><blockquote><span title=\"ireply\">&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of Elliotte Harold<br/>\n<br/>\n&gt; This is unavoidable and not necessarily bad. Some lines of <br/>\n&gt; code in a system are simply likely to be more fundamental <br/>\n&gt; than others and a breakage there will cascade. For example, <br/>\n&gt; suppose you&#39;re writing unit tests for the AWT or an AWT-like <br/>\n&gt; system. Now suppose you break the function that draw <br/>\n&gt; rectangles. This would break every method that needs to draw <br/>\n&gt; rectangles, including functions for drawing dialog boxes, <br/>\n&gt; menus, windows, and a lot more. <br/>\n<br/>\n </span></blockquote>Right, so I want the testing framework to *not* run any test method that<br/>\ndepends on rectangle drawing because it&#39;s a waste of time.  And I also want<br/>\nthe final report to let me know that all these test methods were skipped.<br/>\n<br/>\nIn TestNG, I would create a group of functions called &quot;2d&quot; that tests<br/>\neverything involving simple drawing:<br/>\n<br/>\npublic Test2D {<br/>\n  @Test(groups = &quot;2d&quot;) <br/>\n  public void rectangles() {<br/>\n    // test rectangles<br/>\n  }<br/>\n<br/>\n  @Test(groups = &quot;2d&quot;) <br/>\n  public void lines() {<br/>\n    // test lines<br/>\n  }<br/>\n<br/>\n  @Test(groups = &quot;2d&quot;) <br/>\n  public void fill() {<br/>\n    // test fill<br/>\n  }<br/>\n<br/>\n}<br/>\n<br/>\nThen I have the next layer of tests that takes care of AWT itself. These<br/>\ntests depend on the &quot;2d&quot; group:<br/>\n<br/>\npublic TestAWTMenus {<br/>\n  @Test(dependsOnGroups = { &quot;2d&quot; })<br/>\n  public void menus() {<br/>\n  }<br/>\n<br/>\n  @Test(dependsOnGroups = { &quot;2d&quot; })<br/>\n  public void buttons() {<br/>\n  }  <br/>\n}<br/>\n<br/>\nYou get the idea.<br/>\n<br/>\nIf at least one method of the group &quot;2d&quot; fails, TestNG won&#39;t run any of the<br/>\nmethods that depends on this group and it will mark these methods &quot;SKIPPED&quot;.<br/>\n<br/>\n-- <br/>\nCédric<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://beust.com/weblog\">http://beust.com/weblog</a></div>", 
+    "prevInTime": 13697, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1117463822", 
+    "canDelete": false, 
+    "nextInTopic": 13699, 
+    "prevInTopic": 13697, 
+    "headers": {
+        "inReplyToHeader": "PDQyOUFFQkMxLjUwNzAxMDlAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "messageIdInHeader": "PDIwMDUwNTMwMTQzNy5qNFVFYjJTTzAxOTgxMkAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

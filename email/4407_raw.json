@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 4408, 
+    "senderId": "tSSBPMD6iR-1342dgAUYwx9EkQTFQOTOyA1_171cRDggMXD4gZESw9HZ2h-8-4aoKZp982TtwBHwzVuC7VrM7wtE-xw4f4eVQDo2Mow", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Get AssertionFailedError when assert from another thread.", 
+    "from": "Brian Button &lt;bbutton01@...&gt;", 
+    "authorName": "Brian Button", 
+    "msgSnippet": "... Theodore Here s an idea that might work. In your new thread catch Theodore the errors and failures and put them in the TestResult. Theodore The problem", 
+    "msgId": 4407, 
+    "rawEmail": "Return-Path: &lt;bbutton@...&gt;\r\nX-Sender: bbutton@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 19 Mar 2002 16:58:48 -0000\r\nReceived: (qmail 43068 invoked from network); 19 Mar 2002 16:43:12 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m11.grp.scd.yahoo.com with QMQP; 19 Mar 2002 16:43:12 -0000\r\nReceived: from unknown (HELO brian) (24.217.113.132)\n  by mta3.grp.scd.yahoo.com with SMTP; 19 Mar 2002 16:43:12 -0000\r\nReceived: from bbutton by brian with local (Exim 3.34 #1 (Debian))\n\tid 16nMhX-000125-00\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 19 Mar 2002 10:43:07 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Re: Get AssertionFailedError when assert from another thread.\r\nReferences: &lt;Pine.SOL.4.44.0203182106510.12072-100000@...&gt;\r\nDate: 19 Mar 2002 10:43:06 -0600\r\nIn-Reply-To: &lt;Pine.SOL.4.44.0203182106510.12072-100000@...&gt;\r\nMessage-ID: &lt;m34rjcjyp1.fsf@...&gt;\r\nLines: 64\r\nUser-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Common Lisp)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Brian Button &lt;bbutton@...&gt;\r\nFrom: Brian Button &lt;bbutton01@...&gt;\r\nX-Yahoo-Group-Post: member; u=30216623\r\nX-Yahoo-Profile: bbutton\r\n\r\n&gt;&gt;&gt;&gt;&gt; &quot;Theodore&quot; == Theodore Norvell &lt;theo@...&gt; writes:\n\n    Theodore&gt; On Mon, 18 Mar 2002, nsparis wrote:\n    &gt;&gt; Let me make it clearer...The exception is thrown, which is what\n    &gt;&gt; is suppose to happen, but instead of being printed out in JUnit\n    &gt;&gt; it crashes JUnit.  I.e. JUnit isnt automatically catching it\n    &gt;&gt; and flagging it as an error for the test case.\n    &gt;&gt;\n    &gt;&gt; What do I need to change so that JUnit catches the exception\n    &gt;&gt; and reports it as an error?\n\n    Theodore&gt; Here&#39;s an idea that might work. In your new thread catch\n    Theodore&gt; the errors and failures and put them in the TestResult.\n    Theodore&gt; The problem is that it is not clear how to find the\n    Theodore&gt; TestResult using a standard TestCase.  Below is a stab\n    Theodore&gt; at how it might be done.\n\nI did something like this for a socket server test I was writing. It\nis not as robust as it should be, as it doesn&#39;t handle ThreadDeath,\netc, but it worked for my purposes.\n\nHere is the pertinent code:\n\n================================\nimport junit.framework.*;\n\npublic class SocketServerTest extends TestCase {\n  private TestResult result;\n\n  public void run(TestResult result) {\n    this.result = result;\n    super.run(result);\n  }\n\n  private void runServer() {\n    Runnable r = new Runnable() {\n      public void run() {\n        try {\n          server.acceptConnection();\n        }\n        catch (Exception e) {\n          result.addError(SocketServerTest.this, e);\n        }\n      }\n    };\n    t = new Thread(r);\n    t.start();\n  }\n}\n===============================\n\nBy doing this, the framework just works. Note that if I wanted to\ncatch test Failures, my exception handling in the runServer method\nwould need to be a little more complicated.\n\nHTH,\nbab\n\n-- \nBrian Button            bbutton@...\nSenior Consultant       Object Mentor, Inc\nSt. Louis, MO\t\thttp://www.objectmentor.com\n\nExtreme Programming in St. Louis - http://groups.yahoo.com/group/xpstl\n\n", 
+    "profile": "bbutton", 
+    "topicId": 4397, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30216623, 
+    "prevInTime": 4406, 
+    "contentTrasformed": false, 
+    "postDate": "1016556186", 
+    "canDelete": false, 
+    "nextInTopic": 4408, 
+    "prevInTopic": 4403, 
+    "headers": {
+        "inReplyToHeader": "PFBpbmUuU09MLjQuNDQuMDIwMzE4MjEwNjUxMC4xMjA3Mi0xMDAwMDBAY2FzY2FkZS5jcy51YmMuY2E+", 
+        "messageIdInHeader": "PG0zNHJqY2p5cDEuZnNmQG9iamVjdG1lbnRvci5jb20+", 
+        "referencesHeader": "PFBpbmUuU09MLjQuNDQuMDIwMzE4MjEwNjUxMC4xMjA3Mi0xMDAwMDBAY2FzY2FkZS5jcy51YmMuY2E+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 8453, 
+    "senderId": "42DYDHWHR2DhBwM-8w6SsUjpe_1eED29hGjqgKgl9NsAe-eipJw0gs2jB7HphAw3vZiSD1lCg0gM_VG1EBo", 
+    "systemMessage": false, 
+    "subject": "Test Design Pattern by inner class", 
+    "from": "&quot;tcxu&quot; &lt;tcxu@...&gt;", 
+    "authorName": "tcxu", 
+    "msgSnippet": "Thank you, J. B. Rainsberger and Dave Astels. Please comment on the following example I made with Netbean Junit. The class to be tested is obtained from Vince", 
+    "msgId": 8452, 
+    "profile": "tcxu", 
+    "topicId": 8452, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150620985, 
+    "messageBody": "<div id=\"ygrps-yiv-36829932\">Thank you, J. B. Rainsberger and Dave Astels. <br/>\n<br/>\nPlease comment on the following example I made with Netbean Junit.<br/>\n<br/>\nThe class to be tested is obtained from Vince Huston at <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://home.earthlink.net/~huston2/dp/patterns.html\">http://home.earthlink.net/~huston2/dp/patterns.html</a><br/>\nclass Subject {                                     <br/>\n   private Observer[ ] observers = new Observer[9];  <br/>\n   private int        totalObs  = 0;<br/>\n   private int        state;<br/>\n   public void attach( Observer o ) { observers[totalObs++] = o; } <br/>\n   public int  getState()           { return state; }<br/>\n   public void setState( int in ) {<br/>\n      state = in;<br/>\n      notifyObservers(); }<br/>\n   private void notifyObservers() {<br/>\n      for (int i=0; i &lt; totalObs; i++)<br/>\n         observers[i].update();         <br/>\n}  }                          <br/>\n<br/>\nThe  aggregated classes, such as  HexObserver is defined as follows :<br/>\n<br/>\nabstract class Observer {               <br/>\n   protected Subject subj;<br/>\n   public abstract void update(); }<br/>\n<br/>\nclass HexObserver extends Observer { <br/>\n   public HexObserver( Subject s ) {  <br/>\n      subj = s;  subj.attach( this ); } <br/>\n   public void update() {<br/>\n      System.out.print( &quot;  &quot; + Integer.toHexString( subj.getState() ) <br/>\n);<br/>\n}  }                                    <br/>\n<br/>\nTwo ways to obtain values of provide data members of the class<br/>\nSubject for testing. <br/>\n<br/>\n1.  a non-static inner class subway is inserted into the class <br/>\ndefinition Subject. The method ok( ) passes values of all private<br/>\ndata <br/>\nmembers of Subject as public to the testing class.<br/>\n     <br/>\npublic class subway {<br/>\n       public Observer[ ] pobservers = new Observer[9];<br/>\n       public int ptotalObs = 0;<br/>\n       public int pstate;<br/>\n       public void ok( ) {<br/>\n           pobservers = observers;<br/>\n           ptotalObs = totalObs;<br/>\n           pstate = state;<br/>\n       }<br/>\n   }<br/>\n<br/>\nso that the testing code could be written as follows:<br/>\n.....<br/>\npublic void testAttach() {<br/>\n        System.out.println(&quot;testAttach&quot;);<br/>\n        subinter.ok();<br/>\n        assertEquals(1, subinter.ptotalObs); <br/>\n        sub.attach( new BinObserver(sub) );<br/>\n        subinter.ok();<br/>\n        assertEquals(3, subinter.ptotalObs); <br/>\n    }<br/>\n.<br/>\n<br/>\nprivate Subject sub;<br/>\nprivate Observer hex;<br/>\nprivate Subject.subway  subinter;<br/>\n <br/>\n  protected void setUp() {<br/>\n      sub = new Subject();<br/>\n      subinter = sub.new subway(); <br/>\n      hex = new HexObserver( sub );     <br/>\n  }     <br/>\n}<br/>\n<br/>\n2. Insert the testing class directly into the definition of  the<br/>\nclass Subject. <br/>\n<br/>\nimport junit.framework.*;<br/>\nimport org.netbeans.junit.*;<br/>\n<br/>\nclass Subject {<br/>\n.....<br/>\npublic static class SubjectinnerTest extends NbTestCase {<br/>\n    <br/>\n    public SubjectinnerTest(java.lang.String testName) {<br/>\n        super(testName);<br/>\n    }<br/>\n.....<br/>\npublic void testAttach() {<br/>\n        System.out.println(&quot;testAttach&quot;);<br/>\n       <br/>\n        assertEquals(1, sub.totalObs); <br/>\n        sub.attach( new BinObserver(sub));<br/>\n        sub.attach( new OctObserver(sub));<br/>\n        assertEquals(5, sub.totalObs); <br/>\n    }<br/>\n.....<br/>\nprivate Subject sub;<br/>\n  private Observer hex;<br/>\n//  private Subject.subway  subinter;<br/>\n <br/>\n  protected void setUp() {<br/>\n      sub = new Subject();<br/>\n//      subinter = sub.new subway(); <br/>\n      hex = new HexObserver( sub );     <br/>\n            }     <br/>\n    }<br/>\n}<br/>\n<br/>\n<br/>\nIn this way,  we have to add one line of code into the RootSuite <br/>\nclass.<br/>\n<br/>\nsuite.addTest(Subject.SubjectinnerTest.suite( ));<br/>\n<br/>\nBoth  ways seem to work well.<br/>\n<br/>\n<br/>\nRelated discussions are also seen in  John D. Mitchell <br/>\nat <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.javaworld.com/javatips/jw-javatip106_p.html\">http://www.javaworld.com/javatips/jw-javatip106_p.html</a><br/>\nand discussion by Scott Stirling (see message 1095) <br/>\n<br/>\n<br/>\nRegards,<br/>\n<br/>\nTong</div>", 
+    "prevInTime": 8451, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1056379093", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJkNzNjbStxamk5QGVHcm91cHMuY29tPg=="
+    }
+}

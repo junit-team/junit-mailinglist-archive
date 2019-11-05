@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 41, 
+    "nextInTime": 6738, 
+    "senderId": "GV9WDihh3by1ximPJAoIgxJeb2fcaYoXre6fZuJ8xpoqD3lBvJmI-cA2vgCkcfgZfDUzB7l8HKJRdh_QfSH5aUKAZPyms25pCEs4L58ctw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Websphere Connection Pool", 
+    "from": "&quot;Scott Stirling&quot; &lt;scottstirling@...&gt;", 
+    "authorName": "Scott Stirling", 
+    "msgSnippet": "... [...] ... Assuming there are functional tests.  :- But then if you re catching unit bugs bubbling up at functional test scope (usually done at a higher", 
+    "msgId": 6737, 
+    "rawEmail": "Return-Path: &lt;scottstirling@...&gt;\r\nX-Sender: scottstirling@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 25 Jan 2003 20:11:26 -0000\r\nReceived: (qmail 91014 invoked from network); 25 Jan 2003 20:11:26 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m15.grp.scd.yahoo.com with QMQP; 25 Jan 2003 20:11:26 -0000\r\nReceived: from unknown (HELO smtp-hub.mrf.mail.rcn.net) (207.172.4.107)\n  by mta1.grp.scd.yahoo.com with SMTP; 25 Jan 2003 20:11:26 -0000\r\nReceived: from smtp01.mrf.mail.rcn.net ([207.172.4.60])\n\tby smtp-hub.mrf.mail.rcn.net with esmtp (Exim 3.35 #4)\n\tid 18cWeD-0003kt-00\n\tfor junit@yahoogroups.com; Sat, 25 Jan 2003 15:11:25 -0500\r\nReceived: from 207-172-67-6.c3-0.frm-ubr1.sbo-frm.ma.cable.rcn.com ([207.172.67.6] helo=javalaptop)\n\tby smtp01.mrf.mail.rcn.net with smtp (Exim 3.35 #4)\n\tid 18cWeD-0005QF-00\n\tfor junit@yahoogroups.com; Sat, 25 Jan 2003 15:11:25 -0500\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Websphere Connection Pool\r\nDate: Sat, 25 Jan 2003 15:10:47 -0500\r\nMessage-ID: &lt;KIEHIBIOBAELJAHIPNHDEEGICOAA.scottstirling@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106\r\nIn-Reply-To: &lt;Pine.NEB.4.51.0301251418530.596@...&gt;\r\nImportance: Normal\r\nFrom: &quot;Scott Stirling&quot; &lt;scottstirling@...&gt;\r\nReply-To: &lt;scottstirling@...&gt;\r\nX-Yahoo-Group-Post: member; u=112036634\r\nX-Yahoo-Profile: jrun5\r\n\r\n&gt; -----Original Message-----\n&gt; From: Curt Sampson [mailto:yahoo_sucks@...]\n[...]\n&gt; Use separate interfaces to get the connection from the pool and do work\n&gt; with the connection. I do something like this (the error handling may be\n&gt; a bit simplified):\n&gt;\n&gt;     Object doMyThing(Connection con, String something)\n&gt;     {\n&gt; \t// do stuff on the connection and return the object.\n&gt;     }\n&gt;\n&gt;     public Object doMyThing(ConnectionFactory factory, String something)\n&gt;     {\n&gt; \tConnection con = factory.getConnection();\n&gt; \treturn doMyThing(con, something);\n&gt; \tcon.close();\n&gt;     }\n&gt;\n&gt; The database test code invokes the first method; the real users of\n&gt; the code invoke the second. The second method isn&#39;t tested, because\n&gt; there&#39;s just not much there to break. If something did break in it, the\n&gt; functional tests catch it.\n\nAssuming there are functional tests.  :-&gt;\n\nBut then if you&#39;re catching unit bugs bubbling up at functional test scope\n(usually done at a higher scope than unit, such as subsystem or system test,\nand a later phase in the development cycle), they are more expensive to\ndebug and fix than if you could just come up with a better way to test the\nreal code at the unit level.\n\nI would predict that the strategy listed above, while good intentioned, on a\nproject of any size would wind up with lots of extra code throughout added\njust for testability.  I don&#39;t think you should add a method just to make\nyour stuff accessible to a test class, unless possibly as a last resort.\nTestability is an aspectual concern, not really a part of an object being\nmodeled.  So this strategy has the potential to make testability a\ncorrupting influence on the modeling of objects, in my opinion.\n\nThe whole doMyThing method is very general, but we can work with it.  I\nwould argue that rather than modify the class and adding code that,\nironically, is added for unit level testability but can&#39;t be unit tested,\none should use 2 mock objects here.  You&#39;d need a ConnectionFactory mock\nobject that could return a Connection mock object.  You create the mock\nobject in the TestCase, and you pass it to doMyThing.\n\npublic Object  doMyThing(ConnectionFactory factory, String s)\n    Connection con = factory.getConnection();\n    // do stuff on the connection\n    con.close();\n    // and return the object.\n    return object;\n}\n\nScott Stirling\n\n\n\n", 
+    "profile": "jrun5", 
+    "topicId": 6711, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112036634, 
+    "prevInTime": 6736, 
+    "contentTrasformed": false, 
+    "postDate": "1043525447", 
+    "canDelete": false, 
+    "nextInTopic": 6789, 
+    "prevInTopic": 6734, 
+    "headers": {
+        "inReplyToHeader": "PFBpbmUuTkVCLjQuNTEuMDMwMTI1MTQxODUzMC41OTZAYW5nZWxpYy5jeW5pYy5uZXQ+", 
+        "messageIdInHeader": "PEtJRUhJQklPQkFFTEpBSElQTkhERUVHSUNPQUEuc2NvdHRzdGlybGluZ0ByY24uY29tPg=="
+    }
+}

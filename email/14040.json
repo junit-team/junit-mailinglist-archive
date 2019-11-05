@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 47, 
+    "nextInTime": 14041, 
+    "senderId": "92bE91nZBNivTlyhZF9PNuoJLitfZdOVB8F9sSnJbIGnP0Ih2k6bmdkqYKYOnbR3P0lLYQidrDN6Woxl3UJMn4Ko8PTwQaZ_4QKa", 
+    "systemMessage": false, 
+    "subject": "Re: JUnit 4 - &quot;before all tests&quot; check turns off all tests", 
+    "from": "&quot;Jeff Grigg&quot; &lt;jeffgrigg@...&gt;", 
+    "authorName": "Jeff Grigg", 
+    "msgSnippet": "... Good points. Something I ve done to switch banks of tests on and off is to have them all inherit from a new class that is a child of TestCase, and then I", 
+    "msgId": 14040, 
+    "profile": "jeffgrigg63132", 
+    "topicId": 13907, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139880894, 
+    "messageBody": "<div id=\"ygrps-yiv-1285303098\"><blockquote><span title=\"ireply\">&gt; --- Kent Beck wrote:<br/>\n&gt;&gt; Thank you for the clear example. It seems to me that you can<br/>\n&gt;&gt; do this kind of validation in a @BeforeClass in JUnit 4.<br/>\n&gt;&gt; Would that solve your problem?<br/>\n<br/>\n </span></blockquote>--- Jason Rogers &lt;jacaetevha@f...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Not so easily in this case.  This is a validation that is<br/>\n&gt; run before any other test in the AllTests suite, if it fails<br/>\n&gt; no other test is run.  You get a single failure, fix the<br/>\n&gt; web.xml file and then run again.  In order to get this same<br/>\n&gt; behavior in JUnit4 I would have to duplicate the @BeforeClass<br/>\n&gt; and @AfterClass annotations into every TestCase.  Annotations<br/>\n&gt; in this sense are really starting to sound like Advices in<br/>\n&gt; the AOP world.<br/>\n&gt; <br/>\n&gt; Similarly, we have functional tests that use a type of<br/>\n&gt; validation like the one I mentioned before [...].  The<br/>\n&gt; validation checks the WSDL [...].  If they don&#39;t match<br/>\n&gt; [...then...] running the tests don&#39;t make too much sense,<br/>\n&gt; so we throw a failure and refuse to run any other tests.  [...]<br/>\n<br/>\n </span></blockquote>Good points.<br/>\n<br/>\nSomething I&#39;ve done to switch banks of tests on and off is to have <br/>\nthem all inherit from a new class that is a child of TestCase, and <br/>\nthen I can override &#39;run(...)&#39;, &#39;runBare()&#39; or &#39;runTest()&#39; to check <br/>\na flag and then runs the test (by calling the super class TestCase <br/>\nimplementation) or skips is.  In this case, I might put the test in <br/>\nthe &#39;setUp&#39; method of the new base class  (if I&#39;m confident that all <br/>\nchild class setUp methods call their superclass setUp method!  ;-)  <br/>\nand set a static flag to indicate if the &quot;before all tests&quot; check <br/>\nwas done, and another flag to indicate if it was successful or not.  <br/>\n(If it was run, but it was not successful, then I don&#39;t want to run <br/>\nthe tests.)<br/>\n<br/>\nI&#39;ve used this primarily to support configuration flags like &quot;run <br/>\nthe tests that connect to the database&quot; (or not) and &quot;run the really <br/>\ntime-consuming tests&quot; (or not).  When doing this, I typically also <br/>\noverride the constructor and &#39;setName&#39; method, to call a static <br/>\nfunction that modifies the test case name to show that it&#39;s not <br/>\nbeing run.  I&#39;ll change &quot;testThis&quot; to &quot;- NOT RUN -  testThis&quot;, for <br/>\nexample, for test cases I will chose not to run.  This trick may not <br/>\nbe as useful in your case; I&#39;m doing selective disabling of just <br/>\nsome of the tests.</div>", 
+    "prevInTime": 14039, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1119626811", 
+    "canDelete": false, 
+    "nextInTopic": 14041, 
+    "prevInTopic": 14038, 
+    "headers": {
+        "inReplyToHeader": "PDQyQkMxQjY5LjUwMzA5MDNAZmFzdC1tYWlsLm9yZz4=", 
+        "messageIdInHeader": "PGQ5aDhucis5MW4yQGVHcm91cHMuY29tPg=="
+    }
+}

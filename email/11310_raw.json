@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 11311, 
+    "senderId": "A3TUqyYWpldvVNFHJi0GkhgC0qcUPiJ2Rk6R817rAbaHrA1ZrdfohmIOXsWAP1-YeoOHJLVURpo1IBl9Oa-9LRn6uTC8vbrYfXtk0m4TFQc", 
+    "systemMessage": false, 
+    "subject": "Re: Help with MockObjects", 
+    "from": "&quot;cliftonccraig&quot; &lt;cliftonccraig@...&gt;", 
+    "authorName": "cliftonccraig", 
+    "msgSnippet": "Yes, It was in the JUnit In Action book where I saw the practice of using tearDown for calls to the verify on the mockobjects. It s right there in chapter 8", 
+    "msgId": 11310, 
+    "rawEmail": "Return-Path: &lt;cliftonccraig@...&gt;\r\nReceived: (qmail 77972 invoked from network); 29 Jun 2004 23:56:27 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m7.grp.scd.yahoo.com with QMQP; 29 Jun 2004 23:56:27 -0000\r\nReceived: from unknown (HELO n33.grp.scd.yahoo.com) (66.218.66.101)\n  by mta5.grp.scd.yahoo.com with SMTP; 29 Jun 2004 23:56:26 -0000\r\nX-eGroups-Return: cliftonccraig@...\r\nReceived: from [66.218.67.168] by n33.grp.scd.yahoo.com with NNFMP; 29 Jun 2004 23:56:26 -0000\r\nX-Sender: cliftonccraig@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 31578 invoked from network); 29 Jun 2004 13:01:30 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m25.grp.scd.yahoo.com with QMQP; 29 Jun 2004 13:01:30 -0000\r\nReceived: from unknown (HELO n30.grp.scd.yahoo.com) (66.218.66.87)\n  by mta2.grp.scd.yahoo.com with SMTP; 29 Jun 2004 13:01:30 -0000\r\nReceived: from [66.218.67.185] by n30.grp.scd.yahoo.com with NNFMP; 29 Jun 2004 13:01:29 -0000\r\nDate: Tue, 29 Jun 2004 13:01:28 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cbrp78+ovf8@...&gt;\r\nIn-Reply-To: &lt;40E10F88.50409@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2491\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.87\r\nFrom: &quot;cliftonccraig&quot; &lt;cliftonccraig@...&gt;\r\nSubject: Re: Help with MockObjects\r\nX-Yahoo-Group-Post: member; u=190580959\r\nX-Yahoo-Profile: cliftonccraig\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 29 Jun 2004 23:56:26 -0000\r\nX-eGroups-Remote-IP: 66.218.66.101\r\n\r\nYes, It was in the JUnit In Action book where I saw the practice of\nusing tearDown for calls to the verify on the mockobjects. It&#39;s right\nthere in chapter 8 page 168. Now they are using mocks from the\neasymock.org framework but I don&#39;t think that makes much of a\ndifference. Maybe their examples were based on an earlier version of\nJUnit where this wasn&#39;t a problem?\n\n--- In junit@yahoogroups.com, Steve Freeman &lt;steve@m...&gt; wrote:\n&gt; First. Consider moving to jmock (www.jmock.org). That&#39;s our current \n&gt; favourite.\n&gt; \n&gt; You shouldn&#39;t call verify() in the tearDown, it&#39;s just the same as \n&gt; calling Assert. The test is over by the time you get to tearDown(), so \n&gt; failures won&#39;t be logged properly. In jMock, we&#39;ve subclassed TestCase \n&gt; to collect mocks and call verify() automatically in the right place.\n&gt; \n&gt; S.\n&gt; \n&gt; cliftonccraig wrote:\n&gt; &gt; I new to this and I&#39;m not even sure I&#39;m posting to the right list or\n&gt; &gt; not but here goes. I just started using JUnit and TDD on this project\n&gt; &gt; I&#39;m working on. I am using MockObjects (I believe .9 version) through\n&gt; &gt; XDoclet to create a mock of an interface that the object I&#39;m testing\n&gt; &gt; uses. What I noticed is that introducing the call to mock.verify() in\n&gt; &gt; the TestCase tearDown method masks exceptions that are thrown from\n&gt; &gt; test methods. In other words if an unexpected exception occurs in a\n&gt; &gt; test method it doesn&#39;t appear to show in the logs when the\n&gt; &gt; mock.verify() executes. Mind you, I am using the JUnit support out of\n&gt; &gt; IntelliJ Idea. However I don&#39;t think that is relevant to the problem.\n&gt; &gt; The basics of my TestCase are as follows.\n&gt; &gt; class MyTestCase\n&gt; &gt; {\n&gt; &gt;    private MyMock mock;\n&gt; &gt; \n&gt; &gt;    public void testMyMethod() throws UnExcpectedException\n&gt; &gt;    {\n&gt; &gt;       //Test logic here\n&gt; &gt;    }\n&gt; &gt;      public void setup()\n&gt; &gt;    {\n&gt; &gt;       mock = new MyMock();\n&gt; &gt;       //logic to set mock preconditions and expectations...\n&gt; &gt;    }\n&gt; &gt;      public void verify()\n&gt; &gt;    {\n&gt; &gt;       //This executes and thorws an exception that masks the real\n&gt; &gt; exception in the test method.\n&gt; &gt;       mock.verify();\n&gt; &gt;    }\n&gt; &gt; }\n&gt; &gt; When I don&#39;t use mocks then I can test and figure out problems rather\n&gt; &gt; easily because I propogate exceptions up to the JUnit framework where\n&gt; &gt; the UI catches them and displays them accordingly. I&#39;m not sure if\n&gt; &gt; this is the best practice which is why I&#39;m writing. Could someone\n&gt; &gt; guide me here?\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt;  \n&gt; &gt; Yahoo! Groups Links\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt;  \n&gt; &gt;\n\n\n\n", 
+    "profile": "cliftonccraig", 
+    "topicId": 11303, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190580959, 
+    "prevInTime": 11309, 
+    "contentTrasformed": false, 
+    "postDate": "1088514088", 
+    "canDelete": false, 
+    "nextInTopic": 11312, 
+    "prevInTopic": 11309, 
+    "headers": {
+        "inReplyToHeader": "PDQwRTEwRjg4LjUwNDA5QG0zcC5jby51az4=", 
+        "messageIdInHeader": "PGNicnA3OCtvdmY4QGVHcm91cHMuY29tPg=="
+    }
+}

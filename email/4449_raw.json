@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 4450, 
+    "senderId": "GH2soWyZP7pVsj7QvRKDS6fy3waewqOHXw3XuLHjh9vUzg0V94KVV2b9qdUtpEXgvBNcXk7dPQiyZOKg1LEAxHRaYXd72iHJYe-WkPUPYjFxtuQGNtg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Get AssertionFailedError when assert from another  thread.", 
+    "from": "&quot;Nathan Paris&quot; &lt;nathan.paris@...&gt;", 
+    "authorName": "Nathan Paris", 
+    "msgSnippet": "You are correct and that is what I have done to correct the problem. Thanks for the help. ... From: Shane Celis [mailto:shane@terraspring.com] Sent: Thursday,", 
+    "msgId": 4449, 
+    "rawEmail": "Return-Path: &lt;nathan.paris@...&gt;\r\nX-Sender: nathan.paris@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: unknown); 22 Mar 2002 00:52:39 -0000\r\nReceived: (qmail 18621 invoked from network); 22 Mar 2002 00:52:38 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m12.grp.scd.yahoo.com with QMQP; 22 Mar 2002 00:52:38 -0000\r\nReceived: from unknown (HELO albatross.prod.itd.earthlink.net) (207.217.120.120)\n  by mta3.grp.scd.yahoo.com with SMTP; 22 Mar 2002 00:52:38 -0000\r\nReceived: from user-33qtp5r.dialup.mindspring.com ([199.174.228.187] helo=KEYSTONE)\n\tby albatross.prod.itd.earthlink.net with esmtp (Exim 3.33 #1)\n\tid 16oDIL-0004Jg-00\n\tfor junit@yahoogroups.com; Thu, 21 Mar 2002 16:52:38 -0800\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Re: Get AssertionFailedError when assert from another  thread.\r\nDate: Thu, 21 Mar 2002 17:52:18 -0700\r\nMessage-ID: &lt;004001c1d13b$d203bae0$02c809c0@KEYSTONE&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.2627\r\nImportance: Normal\r\nIn-Reply-To: &lt;D4564144-3D0A-11D6-8C18-003065F9A80E@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nFrom: &quot;Nathan Paris&quot; &lt;nathan.paris@...&gt;\r\nX-Yahoo-Group-Post: member; u=99994085\r\nX-Yahoo-Profile: nsparis\r\n\r\nYou are correct and that is what I have done to correct the problem.\nThanks=\r\n for the help.\n\n-----Original Message-----\nFrom: Shane Celis [mailto:shane@=\r\nterraspring.com] \nSent: Thursday, March 21, 2002 1:33 PM\nTo: junit@yahoogro=\r\nups.com\nSubject: Re: [junit] Re: Get AssertionFailedError when assert from\n=\r\nanother thread.\n\nI think I understand what is taking place.  An assertion i=\r\ns being made, \nbut it&#39;s not actually being run inside the JUnit framework. =\r\n Nathan said\n\nthat he starts a thread and the thread then calls update whic=\r\nh \npresummably runs some of these assertions.  Note that the thread is not =\r\n\nactually being run in the JUnit context, so any errors thrown by it \nsimpl=\r\ny bubble up and halt the framework.\n\nMy suggestion, if this is the case, is=\r\n to run the thread, then query the\n\nthread from your Test and run the asser=\r\ntions in the test.\n\npublic void testThread() {\n\tYourThread t =3D new YourTh=\r\nread();\n\tt.start();\n\tt.join();\n\tassert(&quot;thread isn&#39;t in correct state&quot;, t.s=\r\ntate() =3D=3D\nEXPECTED_STATE);\n}\n\n-shane\n\nOn Tuesday, March 19, 2002, at 10=\r\n:16  AM, Nathan Paris wrote:\n\n&gt; AssertionFailedError\n&gt;\n&gt; =A0\n&gt;\n&gt; -----Origi=\r\nnal Message-----\n&gt; From: Mike Clark [mailto:mike@...]\n&gt; Sent: Tue=\r\nsday, March 19, 2002 10:51 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: Re: [j=\r\nunit] Re: Get AssertionFailedError when assert from \n&gt; another thread.\n&gt;\n&gt; =\r\n=A0\n&gt;\n&gt; Nathan Paris wrote:\n&gt;\n&gt; That isn=92t the problem.The exception IS b=\r\neing thrown, but=A0JUnit isn=92t \n&gt; catching it so it is killing=A0JUnit.\n&gt;=\r\n\n&gt;\n&gt; =A0\n&gt;\n&gt;\n&gt; What kind of exception is it throwing?\n&gt;\n&gt; Mike\n&gt;\n&gt; --\n&gt; Mik=\r\ne Clark\n&gt; Clarkware Consulting, Inc.\n&gt; http://www.clarkware.com\n&gt; 720.851.2=\r\n014\n&gt; =A0\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-u=\r\nnsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to th=\r\ne Yahoo! Terms of Service.\n&gt;\n\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an=\r\n email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Gro=\r\nups is subject to the Yahoo! Terms of Service.\n\n\n\nTo unsubscribe from this =\r\ngroup, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Y=\r\nahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n\n\n", 
+    "profile": "nsparis", 
+    "topicId": 4397, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 99994085, 
+    "prevInTime": 4448, 
+    "contentTrasformed": false, 
+    "postDate": "1016758338", 
+    "canDelete": false, 
+    "nextInTopic": 4639, 
+    "prevInTopic": 4446, 
+    "headers": {
+        "inReplyToHeader": "PEQ0NTY0MTQ0LTNEMEEtMTFENi04QzE4LTAwMzA2NUY5QTgwRUB0ZXJyYXNwcmluZy5jb20+", 
+        "messageIdInHeader": "PDAwNDAwMWMxZDEzYiRkMjAzYmFlMCQwMmM4MDljMEBLRVlTVE9ORT4="
+    }
+}

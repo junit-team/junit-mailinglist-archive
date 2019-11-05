@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21940, 
+    "senderId": "tf9mdf67aMzabu_AW3d6yyQ0jRqok92qNYA8FW57TEeXL_Zg-8Wup2XZf97SJ1WXOb6y73d7r6sC9x_rE3U72Ihp99U", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] assertThat() failure output doesn&#39;t allow Matcher to describe the mismatch", 
+    "from": "&quot;kentb&quot; &lt;kentb@...&gt;", 
+    "authorName": "kentb", 
+    "msgSnippet": "Can you file this as a defect? We d appreciate the test that, when passing, will demonstrate that we re doing the right thing. Kent _____ From:", 
+    "msgId": 21939, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 40305 invoked from network); 23 Sep 2009 22:38:52 -0000\r\nX-Received: from unknown (69.147.108.202)\n  by m2.grp.re1.yahoo.com with QMQP; 23 Sep 2009 22:38:52 -0000\r\nX-Received: from unknown (HELO elasmtp-masked.atl.sa.earthlink.net) (209.86.89.68)\n  by mta3.grp.re1.yahoo.com with SMTP; 23 Sep 2009 22:38:52 -0000\r\nX-Received: from [65.100.5.111] (helo=kentspavilion)\n\tby elasmtp-masked.atl.sa.earthlink.net with esmtpa (Exim 4.67)\n\t(envelope-from &lt;kentb@...&gt;)\n\tid 1MqaTm-0002sD-Uw\n\tfor junit@yahoogroups.com; Wed, 23 Sep 2009 18:38:32 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;h93l1o+sccc@...&gt;\r\nDate: Wed, 23 Sep 2009 15:38:26 -0700\r\nMessage-ID: &lt;0AC881F63416404E924364D377284A4A@kentspavilion&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook 11\r\nIn-Reply-To: &lt;h93l1o+sccc@...&gt;\r\nX-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.5579\r\nThread-index: Aco5d+NAY9J5NlC5TCejjxzfcdHgTQDJpq6w\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478967b60bb43037af44964dcc7e128e6575a85072a12dccaf4350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: &quot;kentb&quot; &lt;kentb@...&gt;\r\nReply-To: &lt;kentb@...&gt;\r\nSubject: RE: [junit] assertThat() failure output doesn&#39;t allow Matcher to describe the mismatch\r\nX-Yahoo-Group-Post: member; u=173198504; y=M39zNuKW_8Ee_VRaXYogmL53pgXqb5eIocgH9eiz3bQNmW_L\r\nX-Yahoo-Profile: kentlbeck\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nCan you file this as a defect? We&#39;d appreciate the test that, when passing,\nwill demonstrate that we&#39;re doing the right thing.\n \nKent\n\n  _____  \n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\nbeckymc22\nSent: Saturday, September 19, 2009 3:13 PM\nTo: junit@yahoogroups.com\nSubject: [junit] assertThat() failure output doesn&#39;t allow Matcher to\ndescribe the mismatch\n\n\n  \n\nHi,\n\nI recently upgraded to JUnit 4 and started exploring Matchers. I found that\nthe org.junit.Assert.assertThat() method doesn&#39;t allow my Matcher&#39;s\ndescribeMismatch() method to influence the 2nd part of the failure output\n(the &quot;got:&quot; part), in my case it&#39;s not a String:\n\njava.lang.AssertionError: \nExpected: a CDR record with call ID: 12345678900\ngot: &lt;org.cafesip.sipexchange.ejbs.cdr.value.CdrRecord@1712b3a&gt;\n\nat org.junit.Assert.assertThat(Assert.java:778)\nat org.junit.Assert.assertThat(Assert.java:736)\nat org.cafesip.sipexchange.ejbs.cdr.tests.CdrServiceTest.testCdrCreation\n(CdrServiceTest.java:154)\n\nI think I see the reason for it in the code:\n\npublic static &lt;T&gt; void assertThat(String reason, T actual,\nMatcher&lt;T&gt; matcher) {\nif (!matcher.matches(actual)) {\nDescription description= new StringDescription();\ndescription.appendText(reason);\ndescription.appendText(&quot;&#92;nExpected: &quot;);\ndescription.appendDescriptionOf(matcher);\ndescription.appendText(&quot;&#92;n got: &quot;);\ndescription.appendValue(actual);\ndescription.appendText(&quot;&#92;n&quot;);\nthrow new java.lang.AssertionError(description.toString());\n}\n}\n\nBut if I use the hamcrest assertThat() method, it calls my Matcher&#39;s\ndescribeMatch() method and I get something more useful:\n\njava.lang.AssertionError: \nExpected: a CDR record with call ID: 12345678900\nbut: the call ID was &quot;1234567890&quot;\nat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)\nat org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)\nat org.cafesip.sipexchange.ejbs.cdr.tests.CdrServiceTest.testCdrCreation\n(CdrServiceTest.java:154)\n\nDid I miss something in using the JUnit version of assertThat? Or, it&#39;s not\nall there yet?\n\nThanks,\nBecky\n\n\n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 21934, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 21938, 
+    "contentTrasformed": false, 
+    "postDate": "1253745506", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 21934, 
+    "headers": {
+        "inReplyToHeader": "PGg5M2wxbytzY2NjQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDBBQzg4MUY2MzQxNjQwNEU5MjQzNjREMzc3Mjg0QTRBQGtlbnRzcGF2aWxpb24+", 
+        "referencesHeader": "PGg5M2wxbytzY2NjQGVHcm91cHMuY29tPg=="
+    }
+}

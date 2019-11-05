@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 10527, 
+    "senderId": "2gSSOcCRFdP5CcD9nUHv6aqYV1HYRjoILaTQRfbE_FDfvIVhkVJLWG76Uh89WcChBT5Ihx8o0eGjZ6gWmFXDsGjgDGQ-pmoId_wq", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Platform dependent JUnit testcases", 
+    "from": "Curt Sampson &lt;yahoo_sucks@...&gt;", 
+    "authorName": "Curt Sampson", 
+    "msgSnippet": "... If it s on the class level, I ve used marker interfaces in the past to indicate what can be used where. For example, for some customer tests executed via", 
+    "msgId": 10526, 
+    "profile": "cjstokyo", 
+    "topicId": 10512, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 110189933, 
+    "messageBody": "<div id=\"ygrps-yiv-1614350538\">On Mon, 23 Feb 2004, humbugzilla wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I was thinking that someone else might take the single testclass<br/>\n&gt; (potentially one of many) intended only for Windows and try to run it<br/>\n&gt; standalone on another platform, but I guess this boils down to a<br/>\n&gt; question of documenting the testcases properly including valid runtime<br/>\n&gt; environments.<br/>\n<br/>\n </span></blockquote>If it&#39;s on the class level, I&#39;ve used marker interfaces in the past to<br/>\nindicate what can be used where. For example, for some customer tests<br/>\nexecuted via junit I wanted to mark some as failing for the moment:<br/>\n<br/>\n    public interface FailingTestCase {<br/>\n    }<br/>\n<br/>\n    public class SomeTests extends TestCase implements FailingTestCase {<br/>\n\t...<br/>\n    }<br/>\n<br/>\nI one suite() method that would run all of the tests, and another that<br/>\nwould exclude the ones implementing FailingTestCase:<br/>\n<br/>\n    public class KnownWorking extends TestSuite {<br/>\n\tpublic static Test suite() {<br/>\n\t    TestSuite suite = new TestSuite();<br/>\n\t    for (int i = 0; i &lt; All.ALL_TEST_CLASSES.length; i++) {<br/>\n\t\tClass testCase = All.ALL_TEST_CLASSES[i];<br/>\n\t\tif (!NotKnownWorking.class.isAssignableFrom(testCase))<br/>\n\t\t    suite.addTestSuite(All.ALL_TEST_CLASSES[i]);<br/>\n\t    }<br/>\n\t    return suite;<br/>\n\t}<br/>\n    }<br/>\n<br/>\nThat didn&#39;t work so well because I wanted to do things on a test method<br/>\nby test method basis, so I switched to naming some methods with a<br/>\nspecial prefix:<br/>\n<br/>\n    public class SomeTests extends TestCase {<br/>\n\tpublic void testFoo() {<br/>\n\t    ...<br/>\n\t}<br/>\n\tpublic void FAILINGtestBar() {<br/>\n\t    ...<br/>\n\t}<br/>\n    }<br/>\n<br/>\nAnd then you can write your own little suite() method to deal with selecting<br/>\nout the failing methods as well as the standard methods.<br/>\n<br/>\nMaybe it would be simpler to just put an if statement at the beginning of<br/>\nsome tests:<br/>\n<br/>\n\tpublic void testFoo() {<br/>\n\t    if (!platformIs(WINDOWS))<br/>\n\t\treturn;<br/>\n\t    ...<br/>\n\t}<br/>\n<br/>\ncjs<br/>\n-- <br/>\nCurt Sampson  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cjs@...\">cjs@...</a>&gt;   +81 90 7737 2974   <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.NetBSD.org\">http://www.NetBSD.org</a><br/>\n    Don&#39;t you know, in this new Dark Age, we&#39;re all light.  --XTC</div>", 
+    "prevInTime": 10525, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1077612667", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10524, 
+    "headers": {
+        "inReplyToHeader": "PGMxZDdzaCs4ZHJsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNTguMDQwMjI0MTc0MzU2MC4xMjYwN0BhbmdlbGljLXZ0ZncuY3Zwbi5jeW5pYy5uZXQ+", 
+        "referencesHeader": "PGMxZDdzaCs4ZHJsQGVHcm91cHMuY29tPg=="
+    }
+}

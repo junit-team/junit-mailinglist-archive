@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 540, 
+    "senderId": "aDgW4RSFJtG1CJPd2gNAVe5H_SH-eFUYKvQ6RLZdyTC9tgOxskU-iqb_ZVMHazYyAPE44R8dMgqDtCZ0v4HL06VuA1TPvkIQPKc9KUyyON33EQ", 
+    "systemMessage": false, 
+    "subject": "J Unit&#39;s textui.TestRunner envoking System.runFinalization();", 
+    "from": "Michael Forsberg &lt;forsberg@...&gt;", 
+    "authorName": "Michael Forsberg", 
+    "msgSnippet": "Would it be possible for the next release to add the line System.runFinalization(); in each main for all TestRunners. The reason for this enhancement, if it is", 
+    "msgId": 539, 
+    "topicId": 539, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-768236480\">Would it be possible for the next release to add the line <br/>\n<br/>\nSystem.runFinalization();<br/>\n<br/>\nin each main for all TestRunners.<br/>\n<br/>\nThe reason for this enhancement, if it is an enhancement, would be to<br/>\nreduce setUp and tearDown between tests.<br/>\n<br/>\nIn using a finalization method a object that needs to exist (or be<br/>\ncreated) for multiple tests could be created once and deleted once<br/>\ninstead of between each test.   This object could reset it&#39;s state (as<br/>\nin the example below) in a setUp or tearDown but may not need to be<br/>\nreinstantiated.<br/>\n<br/>\nJust a request.<br/>\n<br/>\nBig Mike<br/>\n<br/>\n<br/>\n<br/>\nExample (current snippet)...<br/>\n<br/>\n..... inside test class extending TestCase<br/>\n<br/>\nprivate static File tempFile;<br/>\n<br/>\nprivate static RandomAccessFile raf;<br/>\n<br/>\nprotected void setUp()<br/>\nthrows IOException {<br/>\n\ttempFile = File.createTempFile(&quot;TempFile&quot;,null);<br/>\n\traf = new RandomAccessFile(tempFile, &quot;rw&quot;);<br/>\n}<br/>\n<br/>\nprotected void tearDown()<br/>\nthrows IOException {<br/>\n\traf.close();<br/>\n\traf = null;<br/>\n\tassert(&quot;Fail to delete temp file&quot;,<br/>\n\t\ttrue,<br/>\n\t\ttempFile.delete());<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\n<br/>\ncould be replaced with<br/>\n<br/>\nExample (new code snipet)....<br/>\n<br/>\n...inside class extending TestCase<br/>\n<br/>\n<br/>\nprivate static File tempFile;<br/>\n<br/>\nstatic {<br/>\n   try {<br/>\n      tempFile = createTempFile(&quot;TempFile&quot;,null);<br/>\n   } catch (IOException e) {<br/>\n      throw e.fillInStackTrace();<br/>\n   }<br/>\n}<br/>\n<br/>\nprivate static RandomAccessFile raf;<br/>\n<br/>\nstatic {<br/>\n   try {<br/>\n      raf = new RandomAccessFile(tempFile,&quot;rw&quot;);<br/>\n   } catch (IOException) {<br/>\n      throw e.fillInStackTrace();<br/>\n   }<br/>\n}<br/>\n<br/>\nprotected void setUp()<br/>\nthrows IOException {<br/>\n\traf.seek(0);<br/>\n\traf.setLength(0);<br/>\n}<br/>\n<br/>\nprotected void finalize()<br/>\nthrows Throwable {<br/>\n   raf.close();<br/>\n   raf = null;<br/>\n   if (!file.delete()) {<br/>\n      throw IOException(&quot;Unable to delete the tempfile.&quot;);<br/>\n   }<br/>\n}</div>", 
+    "prevInTime": 538, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "982868984", 
+    "canDelete": false, 
+    "nextInTopic": 545, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNBOTU2M0Y4LkVGNTQ2NEIzQHJvY3NvZnR3YXJlLmNvbT4="
+    }
+}

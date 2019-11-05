@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3028, 
+    "senderId": "BHoesGQCT7ZxTNrPwsfYjO3r6dk0TlDSSYcvHNc6z-mirP708DR47Up1xKiUABCh5RRytXm-Ew7APsvvUJutnbuczcLjShawVlaDDK3ij-_7nWo", 
+    "systemMessage": false, 
+    "subject": "Problems with WL transactions and JUnit", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Sadly, at some point, you may need to write a test that requires committing a transaction to make sense, depending on the transaction isolation level you set", 
+    "msgId": 3027, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 20 Oct 2001 19:50:14 -0000\r\nReceived: (qmail 77497 invoked from network); 20 Oct 2001 19:50:14 -0000\r\nReceived: from unknown (10.1.10.26)\n  by l7.egroups.com with QMQP; 20 Oct 2001 19:50:14 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.148.124)\n  by mta1 with SMTP; 20 Oct 2001 19:50:14 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC;\n\t Sat, 20 Oct 2001 12:50:13 -0700\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;1003575694.588.66493.m12@yahoogroups.com&gt;\r\nSubject: Problems with WL transactions and JUnit\r\nDate: Sat, 20 Oct 2001 15:51:12 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 6.00.2600.0000\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nMessage-ID: &lt;OE20hz2HFwDFUxzCOLF00003245@...&gt;\r\nX-OriginalArrivalTime: 20 Oct 2001 19:50:13.0997 (UTC) FILETIME=[6F4BE9D0:01C159A0]\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\nX-Yahoo-Profile: nails762\r\n\r\nSadly, at some point, you may need to write a test that requires committing\na transaction to make sense, depending on the transaction isolation level\nyou set on your EJBs. If you don&#39;t have access to &quot;dirty updates&quot; within a\ntransaction, then you have to commit one, start a new one, check your\nupdate, then undo it.\n\nI ran into the same problem, and since I wanted to test the EJBs, I just\ngave in to managing transactions within them. I couldn&#39;t find a better way\nquickly enough to do that. If anyone else has an idea, please give! :)\n\nJBR.\n\n----- Begin original message -----\nWe have subclassed TestCase into a TransactionTestCase for which the setUp()\ncreates a new javax.transaction.UserTransaction. When the test is finished,\nthe tearDown() rolls back the transaction. It works on almost all our test\ncases.\n\nOf the 200+ test cases we have, two of them have a weird behaviour. Our\nentity EJBs are all container-managed and pretty much all of them have\nfinder methods described in the descriptor. What we have found with the two\nill-behaved tests is that modifying some beans within the UnitTest does not\naffect the finder method. For example:\n\nFoo foo = home.create();\nfoo.setDefault(true);\nFoo foo2 = home.findDefault();\n// foo2 has the same data as foo\nfoo.setDefault(false);\n// The following should throw an exception but doesn&#39;t\nfoo2 = home.findDefault();\n\nNow, if print the content of foo2, I can see that the value of isDefault()\nis set to false. So the finder should never have found it, yet it does. We\nhave found that if we remove the transactional environment from our unit\ntest (i.e. extend TestCase instead of TransactionTestCase), then it works.\n\nWhy do we make our tests as transactions? To prevent pollution of the\ndatabase after failed tests or if developers forget to remove the data that\nthey added during the test.\n\nHas anyone else had experience in this reagard? Has anyone encountered this\ntype of behavior? How did you fix it?\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 3014, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3026, 
+    "contentTrasformed": false, 
+    "postDate": "1003607472", 
+    "canDelete": false, 
+    "nextInTopic": 3028, 
+    "prevInTopic": 3021, 
+    "headers": {
+        "messageIdInHeader": "PE9FMjBoejJIRndERlV4ekNPTEYwMDAwMzI0NUBob3RtYWlsLmNvbT4=", 
+        "referencesHeader": "PDEwMDM1NzU2OTQuNTg4LjY2NDkzLm0xMkB5YWhvb2dyb3Vwcy5jb20+"
+    }
+}

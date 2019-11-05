@@ -1,0 +1,29 @@
+{
+    "topicId": 2153, 
+    "postDate": "1001145332", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "hitesh gala &lt;gala700@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "9hNrjF_zxIuU-sbeuIwjLRRQ_4K2V3gN4-RMnzr-w-fUKkLuWVAp1ZAtoKmgWF3d37y2jwKjYfJ2dP_Dfo7hDcUCRd7OHA", 
+    "nextInTime": 2735, 
+    "userId": 0, 
+    "prevInTime": 2733, 
+    "prevInTopic": 2198, 
+    "headers": {
+        "inReplyToHeader": "PEZQRU5JRktQTkRQR0xOTlBMUExFR0VQSUNPQUEubmVpbC5zd2luZ2xlckBpbmdlbnRhLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDEwOTIyMDc1NTMyLjM1NTQ2LnFtYWlsQHdlYjEyOTA1Lm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "hitesh gala", 
+    "numMessagesInTopic": 17, 
+    "msgSnippet": "... __________________________________________________ Do You Yahoo!? Get email alerts & NEW webcam video instant messaging with Yahoo! Messenger.", 
+    "contentTrasformed": false, 
+    "msgId": 2734, 
+    "nextInTopic": 5940, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;gala700@...&gt;\r\nX-Sender: gala700@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_2_2); 22 Sep 2001 07:55:29 -0000\r\nReceived: (qmail 9084 invoked from network); 22 Sep 2001 07:55:29 -0000\r\nReceived: from unknown (10.1.10.26)\n  by 10.1.1.222 with QMQP; 22 Sep 2001 07:55:29 -0000\r\nReceived: from unknown (HELO web12905.mail.yahoo.com) (216.136.174.72)\n  by mta1 with SMTP; 22 Sep 2001 07:55:32 -0000\r\nMessage-ID: &lt;20010922075532.35546.qmail@...&gt;\r\nReceived: from [203.197.94.133] by web12905.mail.yahoo.com via HTTP; Sat, 22 Sep 2001 00:55:32 PDT\r\nDate: Sat, 22 Sep 2001 00:55:32 -0700 (PDT)\r\nSubject: unsubscribe\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;FPENIFKPNDPGLNNPLPLEGEPICOAA.neil.swingler@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: hitesh gala &lt;gala700@...&gt;\r\n\r\n\n--- Neil Swingler &lt;nswingler@...&gt; wrote:\n&gt; I always compare arrays like this:\n&gt; \n&gt; assertEquals( Arrays.asList(array1),\n&gt; Arrays.asList(array2) );\n&gt; \n&gt; Not very helpful diagnostics if the array length is\n&gt; long but it is simple.\n&gt; \n&gt; --\n&gt; Neil Swingler\n&gt; \n&gt; &gt; -----Original Message-----\n&gt; &gt; From: J. B. Rainsberger\n&gt; [mailto:jbrains762@...]\n&gt; &gt; Sent: 27 July 2001 17:47\n&gt; &gt; To: junit@yahoogroups.com\n&gt; &gt; Subject: [junit] assertEquals(array1, array2)\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; &gt;In this example you may want to write a custom\n&gt; assert().  You don&#39;t\n&gt; &gt; &gt;give the types of the arrays nor their expected\n&gt; lengths (do they hold\n&gt; &gt; &gt;a few simple elements, dozens of complicated\n&gt; ones, millions, ...).\n&gt; &gt; &gt;Perhaps you&#39;d be better off constructing a vector\n&gt; of differences and\n&gt; &gt; &gt;asserting the vector as empty.  Adding the\n&gt; differences to a string\n&gt; &gt; &gt;and asserting it as equal to &quot;&quot;.  Or counting the\n&gt; differences and\n&gt; &gt; &gt;assertEquals(0, count).\n&gt; &gt;\n&gt; &gt; Wow! This is an awesome idea. Let&#39;s see if we can\n&gt; take this\n&gt; &gt; further. Here is\n&gt; &gt; code off the top of my head.\n&gt; &gt;\n&gt; &gt; public class ArrayDifference {\n&gt; &gt;     public Object expected;\n&gt; &gt;     public Object actual;\n&gt; &gt;     public ArrayDifference(Object anExpected,\n&gt; Object anActual) {\n&gt; &gt;         expected = anExpected;\n&gt; &gt;         actual = anActual;\n&gt; &gt;     }\n&gt; &gt;     public String toString() {\n&gt; &gt;         return (&quot;Expected &lt;&quot; + expected + &quot;&gt; but\n&gt; got &lt;&quot; + actual + &quot;&gt;&quot;;\n&gt; &gt;     }\n&gt; &gt; }\n&gt; &gt;\n&gt; &gt; public void assertEqualArrays(Object[] expected,\n&gt; Object[] actual) {\n&gt; &gt;     assertNotNull(&quot;expected is null&quot;, expected);\n&gt; &gt;     assertNotNull(&quot;actual is null&quot;, actual);\n&gt; &gt;     assertEquals(expected.length, actual.length);\n&gt; &gt;     final List differences = new ArrayList();\n&gt; &gt;     for (int i = 0; i &lt; expected.length; i++) {\n&gt; &gt;         if (expected[i] == null\n&gt; &gt;             || !(expected[i].equals(actual[i]))) {\n&gt; &gt;             differences.add(new\n&gt; ArrayDifference(expected[i], actual[i]));\n&gt; &gt;         }\n&gt; &gt;     }\n&gt; &gt;     assertEquals(new ArrayList(), differences);\n&gt; &gt; }\n&gt; &gt;\n&gt; &gt; This builds up a list of differences. The list\n&gt; knows how to\n&gt; &gt; present itself\n&gt; &gt; as a string (List does that). Each difference\n&gt; presents itself as a string\n&gt; &gt; (ArrayDifference does that). If you need prettier\n&gt; output, create a class\n&gt; &gt; that wraps a List of ArrayDifferences and makes\n&gt; the output prettier.\n&gt; &gt;\n&gt; &gt; I like the sound of this technique. I think I&#39;ll\n&gt; put this up as a best\n&gt; &gt; practice until someone else tells me something\n&gt; wrong with it.\n&gt; &gt;\n&gt; &gt; JBR.\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt;\n_________________________________________________________________\n&gt; &gt; Get your FREE download of MSN Explorer at\n&gt; http://explorer.msn.com/intl.asp\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; To unsubscribe from this group, send an email to:\n&gt; &gt; junit-unsubscribe@yahoogroups.com\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; Your use of Yahoo! Groups is subject to\n&gt; http://docs.yahoo.com/info/terms/\n&gt; &gt;\n&gt; &gt;\n&gt; \n&gt; \n\n\n__________________________________________________\nDo You Yahoo!?\nGet email alerts & NEW webcam video instant messaging with Yahoo! Messenger. http://im.yahoo.com\n\n", 
+    "subject": "unsubscribe"
+}

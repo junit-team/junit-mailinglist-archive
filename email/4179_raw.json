@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 4180, 
+    "senderId": "gxgBh1AgLOBe3QqtLko24UBsFwuZkBFyL_zEiK4aFJznaE9YKEs75g9Ybe1olfN3NqXzVMEQ5VGJvQ_OEw40YXoAqVDsJ_gKzMt3Hj3YWT-9zQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] multiple assertions", 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "... having multiple assertions in one test case is absolutely correct.  But JUnit as is will always exit the method as soon as an assertion is failed. So you", 
+    "msgId": 4179, 
+    "rawEmail": "Return-Path: &lt;vladimir@...&gt;\r\nX-Sender: vladimir@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_2); 22 Feb 2002 18:36:23 -0000\r\nReceived: (qmail 95881 invoked from network); 22 Feb 2002 18:36:22 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m11.grp.snv.yahoo.com with QMQP; 22 Feb 2002 18:36:22 -0000\r\nReceived: from unknown (HELO c003.snv.cp.net) (209.228.32.227)\n  by mta1.grp.snv.yahoo.com with SMTP; 22 Feb 2002 18:36:22 -0000\r\nReceived: (cpmta 7483 invoked from network); 22 Feb 2002 10:36:21 -0800\r\nReceived: from 64.79.2.4 (HELO bossicard.com)\n  by smtp.telocity.com (209.228.32.227) with SMTP; 22 Feb 2002 10:36:21 -0800\r\nX-Sent: 22 Feb 2002 18:36:21 GMT\r\nMessage-ID: &lt;3C768F40.9060908@...&gt;\r\nDate: Fri, 22 Feb 2002 10:34:40 -0800\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.7) Gecko/20011221\r\nX-Accept-Language: en-us\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] multiple assertions\r\nReferences: &lt;200202221813.g1MID9020015@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Vladimir Bossicard &lt;vladimir@...&gt;\r\nX-Yahoo-Group-Post: member; u=43178095\r\nX-Yahoo-Profile: vbossica\r\n\r\n&gt; I am in a situation where I require one test case to have multiple assertions.\n\n &gt; If one of these assertions fails, I still need the others to run.\n\nhaving multiple assertions in one test case is absolutely correct.  But \nJUnit as is will always exit the method as soon as an assertion is failed.\n\nSo you write your own assert mechanisme.  For example:\n\n    Vector failures = new Vector;\n    if (a != b) failures.add(&quot;a differs from b&quot;);\n    if (c != d) failures.add(&quot;c differs from d&quot;);\n    if (failures.size() != 0)\n       fail(failures.toString());\n\nThis can be placed in your test method or (better) in a specialized \nAssert class.\n\npublic class MyAssert extends Assert {\n    public static void assertEqual(MyClass A, MyClass B) {\n       Vector failures = new Vector;\n       if (A.a != B.a) failures.add(&quot;variable a differ&quot;);\n       if (A.b != B.b) failures.add(&quot;variable b differ&quot;);\n       if (A.c != B.c) failures.add(&quot;variable c differ&quot;);\n       if (failures.size() != 0)\n          fail(failures.toString());\n    }\n}\n\nand you can use it in your test method:\n\n    public void setUp() {\n       A = new MyClass();\n       B = new MyClass();\n       ...\n    }\n    public void testBlahBlah() {\n       MyAssert.assertEqual(A, B);\n    }\n}\n\n-Vladimir\n\n-- \nVladimir Bossicard\nwww.bossicard.com\n\n\n", 
+    "profile": "vbossica", 
+    "topicId": 4177, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "prevInTime": 4178, 
+    "contentTrasformed": false, 
+    "postDate": "1014402880", 
+    "canDelete": false, 
+    "nextInTopic": 4180, 
+    "prevInTopic": 4177, 
+    "headers": {
+        "messageIdInHeader": "PDNDNzY4RjQwLjkwNjA5MDhAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PDIwMDIwMjIyMTgxMy5nMU1JRDkwMjAwMTVAZHltd3NtMTUubWFpbHdhdGNoLmNvbT4="
+    }
+}

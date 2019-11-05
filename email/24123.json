@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 24124, 
+    "senderId": "BIKhVH_zKMirAYEMEsziXr3ZkniLCRpgeE7lQf-xlSF_NtwM9raYFKbd7M68pLd0M37leGmMQS1UeUdy0Oq6bKc5n7FL1itJ7G7VYouJ", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Re: assertArrayEquals on arrays of objects", 
+    "from": "Matthew Farwell &lt;matthew@...&gt;", 
+    "authorName": "Matthew Farwell", 
+    "msgSnippet": "A number of reasons: 1) equals and hashCode are hard to get right, so why do something difficult twice? (see Always override hashCode when you override ", 
+    "msgId": 24123, 
+    "profile": "mjfarwell", 
+    "topicId": 24091, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 499556184, 
+    "messageBody": "<div id=\"ygrps-yiv-1634099682\">A number of reasons:<br/>\n<br/>\n1) equals and hashCode are hard to get right, so why do something difficult<br/>\ntwice? (see Always override hashCode when you override<br/>\nequals&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://books.google.ch/books?id=ka2VUBqHiWkC&pg=PA45&lpg=PA45&dq=effective+java+hashcode+equals&source=bl&ots=yYHiMfw2T3&sig=f9nvbLZBX1_WuKBQWaCwHUG1hkA&hl=en&sa=X&ei=OourULLXBOrd4QTwqYDwDA&ved=0CEkQ6AEwBA#v=onepage&q=effective%20java%20hashcode%20equals&f=false\">http://books.google.ch/books?id=ka2VUBqHiWkC&pg=PA45&lpg=PA45&dq=effective+java+hashcode+equals&source=bl&ots=yYHiMfw2T3&sig=f9nvbLZBX1_WuKBQWaCwHUG1hkA&hl=en&sa=X&ei=OourULLXBOrd4QTwqYDwDA&ved=0CEkQ6AEwBA#v=onepage&q=effective%20java%20hashcode%20equals&f=false</a>&gt;<br/>\n)<br/>\n2) as the above link says, you always need to do both. If you do one, then<br/>\ndo the other, so you have to apply the same rigour to your test code as you<br/>\ndo to your code under test.<br/>\n3) Lots of collection classes (such as Map, Set) implicitly rely on<br/>\nhashCode/equals. Overriding these methods can change behaviour, and<br/>\ngenerally confuse things. If equals() and hashCode() in your test code are<br/>\nimplemently correctly, then functionally the code will be correct, but may<br/>\nhave performance changes. (Think of public int hashCode() { return 13; } -<br/>\nThis will put all of your keys in the same bucket in a HashMap).<br/>\n4) Objects inserted in a map/set by the code under test won&#39;t be found by<br/>\nthe test code, because you&#39;ve overridden equals() and hashCode().<br/>\n5) ORMs such as hibernate depend implicitly on hashCode and equals. If they<br/>\nare lazily loaded, then the class itself will be a dynamic proxy, so<br/>\nthis.getClass() != o.getClass(), so implementing equals becomes more<br/>\ncomplicated.<br/>\n<br/>\nFor more information, I recommend reading Overriding equals and hashCode in<br/>\nJava&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://stackoverflow.com/questions/27581/overriding-equals-and-hashcode-in-java\">http://stackoverflow.com/questions/27581/overriding-equals-and-hashcode-in-java</a>&gt;,<br/>\nespecially the accepted answer, and the hibernate answer.<br/>\n<br/>\nConvinced yet?<br/>\n<br/>\nSo either implement equals() and hashCode() correctly in your real classes,<br/>\nor use custom code to test for equality (such as a Matcher, or simply a<br/>\ncustom method).<br/>\n<br/>\nMatthew Farwell.<br/>\n<br/>\n2012/11/20 halfpirate1210 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bell_beauty12@...\">bell_beauty12@...</a>&gt;<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; **<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Hi zodiaczx6<br/>\n&gt;<br/>\n&gt; I&#39;m a little curious; can you please tell me why you&#39;re against doing such<br/>\n&gt; for tests?<br/>\n&gt;<br/>\n&gt; Cheers,<br/>\n&gt; halfpirate1210<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Colin Vipurs &lt;zodiaczx6@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; You&#39;ll need to override equals (and by definition hashCode) on the<br/>\n&gt; objects in your array. I generally advise against doing this purely for<br/>\n&gt; tests and instead look at implementing your own hamcrest matcher.<br/>\n&gt; &gt;<br/>\n&gt; &gt; On Nov 17, 2012, at 7:39 PM, &quot;halfpirate1210&quot; &lt;bell_beauty12@...&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt; Hello.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Newbie here.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I created a class (let&#39;s say class A) and in my JUnit class, I created<br/>\n&gt; an object (let&#39;s say object A1) from class A. Object A1 contains several<br/>\n&gt; variables and most importantly, an array of objects which are instantiated<br/>\n&gt; from another class (let&#39;s say class B); so the elements in that array are<br/>\n&gt; objects, not data types like int, string, etc.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; So I wanted to test this array of objects with another array of<br/>\n&gt; objects by simply creating another object; A2 from class A. I wanted to<br/>\n&gt; test using assertArrayEquals and the result is red bar.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; So my question is why did the test fail? I&#39;m thinking probably objects<br/>\n&gt; are always different since they are based on reference? But then again<br/>\n&gt; assertArrayEquals checks array length and content.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Many thanks,<br/>\n&gt; &gt; &gt; halfpirate1210<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; [Non-text portions of this message have been removed]<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n </span></blockquote>[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 24122, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1353421010", 
+    "canDelete": false, 
+    "nextInTopic": 24124, 
+    "prevInTopic": 24121, 
+    "headers": {
+        "inReplyToHeader": "PGs4ZnJlZSt2bmszQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBT0Jrb0ZYLXJLTnZnbzkzTEcrYTN6K0NSYV9MNV9lbl9VZUJoSGNhUjhnWGRjS2lvQUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PERBNkU5MjI4LTZFREMtNDRBRS05MkEwLTM1QjA2RjgxMTA0Q0BnbWFpbC5jb20+IDxrOGZyZWUrdm5rM0BlR3JvdXBzLmNvbT4="
+    }
+}

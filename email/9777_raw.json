@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 9778, 
+    "senderId": "sjprMqhaKbI1kdAh814FU1mmZ9uAGWDku8_Pivk1oqsoIrOzt0ZLToSjb48kpk3edGRmybHiIp6cDhNas48I0W497Ct-jzROHyEdGF8O6A", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Detecting failure in tearDown()", 
+    "from": "&quot;Robert DiFalco&quot; &lt;rdifalco@...&gt;", 
+    "authorName": "Robert DiFalco", 
+    "msgSnippet": "Or you could always just rename the existing database in tearDown using the name of the running test-fixture. Then in setup, you always start with a new fresh", 
+    "msgId": 9777, 
+    "rawEmail": "Return-Path: &lt;rdifalco@...&gt;\r\nReceived: (qmail 77982 invoked from network); 3 Nov 2003 15:26:32 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m17.grp.scd.yahoo.com with QMQP; 3 Nov 2003 15:26:32 -0000\r\nReceived: from unknown (HELO n12.grp.scd.yahoo.com) (66.218.66.67)\n  by mta1.grp.scd.yahoo.com with SMTP; 3 Nov 2003 15:26:32 -0000\r\nX-eGroups-Return: rdifalco@...\r\nReceived: from [66.218.67.159] by n12.grp.scd.yahoo.com with NNFMP; 03 Nov 2003 15:26:31 -0000\r\nX-Sender: rdifalco@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 55909 invoked from network); 3 Nov 2003 06:13:28 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m16.grp.scd.yahoo.com with QMQP; 3 Nov 2003 06:13:28 -0000\r\nReceived: from unknown (HELO mail.tripwire.com) (12.33.17.140)\n  by mta5.grp.scd.yahoo.com with SMTP; 3 Nov 2003 06:13:28 -0000\r\nReceived: from seabass.tripwire.com (unverified [10.1.1.24]) by mail.tripwire.com\n (Content Technologies SMTPRS 4.3.6) with ESMTP id &lt;T65aaecfb84c0a8c00581c@...&gt; for &lt;junit@yahoogroups.com&gt;;\n Sun, 2 Nov 2003 22:15:54 -0800\r\nX-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0\r\ncontent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nSubject: RE: [junit] Detecting failure in tearDown()\r\nDate: Sun, 2 Nov 2003 22:13:27 -0800\r\nMessage-ID: &lt;71767983FD626146999FBFFF445390EE1136BC@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] Detecting failure in tearDown()\r\nThread-Index: AcOhk9ze3g6SM4/XRMmpSGCstkIgMAAPaTmQ\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nFrom: &quot;Robert DiFalco&quot; &lt;rdifalco@...&gt;\r\nX-Yahoo-Group-Post: member; u=35850082\r\nX-Yahoo-Profile: robert_difalco\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 03 Nov 2003 15:26:31 -0000\r\n\r\nOr you could always just rename the existing database in tearDown using\nthe=\r\n name of the running test-fixture. Then in setup, you always start\nwith a n=\r\new fresh database. This way, at the end of the test, you can\nexamine the da=\r\nta left after any test run without needing to branch your\nlogic.\n\nR.\n\n-----=\r\nOriginal Message-----\nFrom: Jan Vorel [mailto:me@...] \nSent: Sunda=\r\ny, November 02, 2003 2:47 PM\nTo: junit@yahoogroups.com\nSubject: Re: [junit]=\r\n Detecting failure in tearDown()\n\n\nmaybe this can help try to subclass Test=\r\nCase\n\nimport junit.framework.*;\n\npublic class YourTestCase extends TestCase=\r\n {\n\n    public void runBare() throws Throwable {\n        super.runBare();  =\r\n  \n        tearDownNoError();\n    }\n\n    // This teardown  will run only if=\r\n no error or failure occurs   \n    protected void tearDownNoError() throws =\r\nException {\n    }\n}\n\nInherit your test from &#39;YourTestCase&quot; and not from sta=\r\nndard TestCase.\nExtract parts from tearDown() to tearDownNoError() that you=\r\n would like\nto run only \nif no error or failure occurs in setup, test or te=\r\nardown. \n\nJan\n  ----- Original Message ----- \n  From: jlindwall \n  To: juni=\r\nt@yahoogroups.com \n  Sent: Wednesday, October 29, 2003 9:02 PM\n  Subject: [=\r\njunit] Detecting failure in tearDown()\n\n\n  I&#39;d like to be able to determine=\r\n in tearDown() whether or not the \n  test succeeded (eg, success, fail, or =\r\nerror).\n\n  If you&#39;re curious why: If the test failed I&#39;d like to leave the =\r\n\n  database in it&#39;s current state to assist in manually determining what \n =\r\n went wrong.  If the test succeeded I&#39;d like to cleanu p the db.\n\n  Using t=\r\nhe standard runner I don&#39;t see any way to do this.  Do I have \n  to subclas=\r\ns the runners to add this feature?\n\n  Advice?\n\n  Thanks!\n\n\n\n\n        Yahoo!=\r\n Groups Sponsor \n              ADVERTISEMENT\n             \n       \n       \n=\r\n\n  To unsubscribe from this group, send an email to:\n  junit-unsubscribe@ya=\r\nhoogroups.com\n\n\n  Your use of Yahoo! Groups is subject to the Yahoo! Terms =\r\nof Service. \n\n\n[Non-text portions of this message have been removed]\n\n\n\nTo =\r\nunsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroup=\r\ns.com\n \n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info=\r\n/terms/ \n\n\n\n\n", 
+    "profile": "robert_difalco", 
+    "topicId": 9763, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 35850082, 
+    "prevInTime": 9776, 
+    "contentTrasformed": false, 
+    "postDate": "1067840007", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 9775, 
+    "headers": {
+        "messageIdInHeader": "PDcxNzY3OTgzRkQ2MjYxNDY5OTlGQkZGRjQ0NTM5MEVFMTEzNkJDQHNlYWJhc3MudHJpcHdpcmUuY29tPg=="
+    }
+}

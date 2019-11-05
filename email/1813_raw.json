@@ -1,0 +1,29 @@
+{
+    "topicId": 1775, 
+    "postDate": "994466467", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "q2ibS-mv9AY0qLDJ0UVXU1KW36hy0GVDMuw6L1WSIT4ZNcUjCLshHZ4jiBdR0T3Z_2ECbnKAnF4d2MZJ2PWRs-3nC9Mchu80GrpNolJl", 
+    "nextInTime": 1814, 
+    "userId": 0, 
+    "prevInTime": 1812, 
+    "prevInTopic": 1787, 
+    "headers": {
+        "messageIdInHeader": "PE9FMTJSNklIdXBleXlmSUloczYwMDAwNTQ1N0Bob3RtYWlsLmNvbT4=", 
+        "referencesHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2MTFFQGV4Y2g+"
+    }, 
+    "authorName": "Mathieu Gervais", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "... From: Jason Rogers ... have ... I m not sure I understand your point. Can you explain? I  use the VAJ toolapi to extract automatically all tests to be run", 
+    "contentTrasformed": false, 
+    "msgId": 1813, 
+    "nextInTopic": 1821, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;egoine_@...&gt;\r\nX-Sender: egoine_@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 7 Jul 2001 00:42:03 -0000\r\nReceived: (qmail 39393 invoked from network); 7 Jul 2001 00:42:01 -0000\r\nReceived: from unknown (10.1.10.27) by l9.egroups.com with QMQP; 7 Jul 2001 00:42:01 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.236.116) by mta2 with SMTP; 7 Jul 2001 00:42:00 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC; Fri, 6 Jul 2001 17:42:00 -0700\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;87EE6B21C624D511B72400104BCF1EB01F611E@exch&gt;\r\nSubject: Re: [junit] Usage of JUnit with VAfJ\r\nDate: Fri, 6 Jul 2001 20:41:07 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.50.4133.2400\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nMessage-ID: &lt;OE12R6IHupeyyfIIhs600005457@...&gt;\r\nX-OriginalArrivalTime: 07 Jul 2001 00:42:00.0695 (UTC) FILETIME=[A2508870:01C1067D]\r\nFrom: &quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;\r\n\r\n----- Original Message -----\nFrom: Jason Rogers\n    &gt;  seems that everybody has it&#39;s own way of doing things.\n    &gt; What we do is simply\n    &gt; put the test classes with the code, in the same package &\n    &gt; the same project.\n    &gt; We use different project & packages for special test\n    &gt; classes (AllTests,\n    &gt; etc..).\n\n&gt;One of the disadvantages to this is that it makes it a little harder to\nhave\n&gt;that solitary project that will be responsible to run all tests, not\n&gt;impossible by any means, it just takes more doing.\n\nI&#39;m not sure I understand your point. Can you explain?\nI  use the VAJ toolapi to extract automatically all tests to be run (see\nbelow code. Not perfect code, but it&#39;s TSTTCPW). They can easily be packaged\nin another JAR if needed (with ant for example).\n\nWorkspace w = ToolEnv.connectToWorkspace();\n  BuilderFactory factory = w.createBuilderFactory();\n  Type allTestsClass = w.loadedTypeNamed(&quot;bla.bla.AllTests&quot;);\n  TypeBuilder classBuilder = factory.createTypeBuilder(allTestsClass);\n  MethodBuilder methodBuilder = factory.createMethodBuilder(&quot;&quot;);\n  StringBuffer buffer = new StringBuffer();\n  buffer.append(&quot;static public TestSuite suite() { &#92;n&quot;);  buffer.append(&quot;\nTestSuite suite = new TestSuite(&#92;&quot;AllTests for Unit Tests&#92;&quot;); &#92;n&quot;);\n  Enumeration e = (new AllTestSuiteBuilder()).collectTests();\n  while (e.hasMoreElements()) {\n   buffer.append(&quot;&#92;tsuite.addTestSuite(&quot;);   buffer.append(e.nextElement());\nbuffer.append(&quot;.class);&#92;n&quot;);\n  }\n  buffer.append(&quot; return suite;&#92;n }&#92;n&quot;);\n  methodBuilder.setSource(buffer.toString());\n  classBuilder.addMethodBuilder(methodBuilder);   classBuilder.save();\nallTestsClass.createVersion(null,true);\n\ncollectTests() will find every TestCase subclass in the workspace. I have a\nant script that loads the latest release stuff before running this.\n\nThose running the tests still need the code to be tested anyway. One other\npoint for this way of having tests in the same package/project that I didn&#39;t\nmention is that it&#39;s very easy to keep versions in sync (tests & code). If\nyou have two projects, you can end up runnning old tests on newer classes,\netc..\n\n    &gt; [...], it&#39;s also pretty easy to manipulate them when exporting.\n    &gt; Why hide the tests? I&#39;m proud of them! :) And I want them\n    &gt; to be seen right\n    &gt; aside the class they test, so it gives a visual clue that\n    &gt; they need to\n    &gt; follow the evolution of the class. Anyway.... :)\n&gt;A moot point from my perspective, but your mileage probably varies.\n\nIndeed, it is a moot point :)\n\nmathieu\n\n\n\n", 
+    "subject": "Re: [junit] Usage of JUnit with VAfJ"
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 11881, 
+    "senderId": "7jOSRI-CCMgkIpscydyevPrcNkmlb4s7R9kbUSn_PX691FrMrhc8TFrNJ3NEQSPKVmTGZmNWYMtwA_DcW0xNlKK9W0ZtTe-RSpa-wuNafKX5-PKdTg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] jWebUnit", 
+    "from": "Martijn Dashorst &lt;yahoogroups@...&gt;", 
+    "authorName": "Martijn Dashorst", 
+    "msgSnippet": "... For a typical web application, there are some concerns: each test (a void testXXX() method) gets its own session. So to test a particular webpage in your", 
+    "msgId": 11880, 
+    "rawEmail": "Return-Path: &lt;martijn@...&gt;\r\nX-Sender: martijn@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 62136 invoked from network); 2 Sep 2004 06:10:04 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m21.grp.scd.yahoo.com with QMQP; 2 Sep 2004 06:10:04 -0000\r\nReceived: from unknown (HELO pluto.isd-holland.nl) (62.221.254.24)\n  by mta5.grp.scd.yahoo.com with SMTP; 2 Sep 2004 06:10:04 -0000\r\nReceived: from [10.0.0.5] (62-221-202-202.dsl.uwadslprovider.nl [62.221.202.202])\n\tby pluto.isd-holland.nl (Postfix) with ESMTP id C92CA2FC33B\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  2 Sep 2004 08:10:02 +0200 (CEST)\r\nMessage-ID: &lt;4136BA16.2090507@...&gt;\r\nDate: Thu, 02 Sep 2004 08:13:42 +0200\r\nUser-Agent: Mozilla Thunderbird 0.6 (Windows/20040502)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20040901095615.82253.qmail@...&gt;\r\nIn-Reply-To: &lt;20040901095615.82253.qmail@...&gt;\r\nX-Enigmail-Version: 0.83.6.0\r\nX-Enigmail-Supports: pgp-inline, pgp-mime\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 62.221.254.24\r\nX-eGroups-From: Martijn Dashorst &lt;martijn@...&gt;\r\nFrom: Martijn Dashorst &lt;yahoogroups@...&gt;\r\nReply-To: martijn@...\r\nSubject: Re: [junit] jWebUnit\r\nX-Yahoo-Group-Post: member; u=130778978\r\nX-Yahoo-Profile: martijn_dashorst\r\n\r\nYagiz Erkan wrote:\n\n&gt; Hi,\n&gt;\n&gt; Somebody mentioned jWebUnit yesterday. I had a look at it and it looks \n&gt; very\n&gt; easy to use. However it looks more like a smoke testing framework \n&gt; rather than a\n&gt; unit testing framework. We&#39;re thinking about using it with scenario based\n&gt; tests. I am missing something? If you guys write unit test with jWebUnit,\n&gt; what&#39;s your &quot;unit&quot;? A request? Two requests? A scenario?\n\nFor a typical web application, there are some concerns: each test (a \nvoid testXXX() method) gets its own session. So to test a particular \nwebpage in your application, you&#39;ll need some navigation. This will \nconstantly test the sanity of the steps in your application (the best \nthing is to click() on a link, and then assert that the title of the \nreceived page equals your expectation). This way you *always* know \nyou&#39;re on the right page.\n\nWhen you reach the page you want to test, you typically try to test all \nfields, all validations, etc. So there will be a SearchCustomerPageTest, \nAddCustomerPageTest, EditCustomerPageTest. One &#39;unit&#39; test could be to \ntry to add a customer twice.\n\nI also try to do complete use case scenarios, just to be sure those also \nwork. Here I usually violate the &#39;each test must run independently&#39; \nrule. So testAddCustomerScenario() will add one customer, \ntestFindCustomerScenario() will assert that that customer could be found \n(in a new session). These constitute the integration tests.\n\nvoid testScenario() {\n    searchForCustomerNotFound(&quot;Martijn&quot;, &quot;Dashorst&quot;);\n    addNewCustomer(&quot;Martijn&quot;, &quot;Dashorst&quot;, &quot;Street 10&quot;, &quot;12345&quot;, &quot;City&quot;, \n&quot;Country&quot;);\n    assertTitleEquals(&quot;Customer data&quot;);\n    assertTextPresent(&quot;Customer added&quot;);\n    gotoSearchPetPage();\n    searchForCat(&quot;Siamese&quot;);\n\n    addCatToCar();\n    checkCarContents,\n    checkOut,\n    etc.\n}\n\nHope this helps.\n\nMartijn\n\n", 
+    "profile": "martijn_dashorst", 
+    "topicId": 11871, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 130778978, 
+    "prevInTime": 11879, 
+    "contentTrasformed": false, 
+    "postDate": "1094105622", 
+    "canDelete": false, 
+    "nextInTopic": 11882, 
+    "prevInTopic": 11875, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwOTAxMDk1NjE1LjgyMjUzLnFtYWlsQHdlYjQxNTAyLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDQxMzZCQTE2LjIwOTA1MDdAZGFzaG9yc3QuZGRzLm5sPg==", 
+        "referencesHeader": "PDIwMDQwOTAxMDk1NjE1LjgyMjUzLnFtYWlsQHdlYjQxNTAyLm1haWwueWFob28uY29tPg=="
+    }
+}

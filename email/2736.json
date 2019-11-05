@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 2737, 
+    "senderId": "uFwPhOwDfCdrggVr6_yJ_vE3zRFGtivWgOxvWLJ1PbNFpOznC_nTsiX1vIVLzLGi8OEQ8Qb9wjnqz3kiaRWt2i4OwemuVtxo9yfNRfcSzg", 
+    "systemMessage": false, 
+    "subject": "Multithreaded code", 
+    "from": "Emily Bache &lt;emily.bache@...&gt;", 
+    "authorName": "Emily Bache", 
+    "msgSnippet": "Hi, I am also a little unsure of how to test multithreaded code, and I hope my question is a bit more specific than the last one :-) I wrote this test case to", 
+    "msgId": 2736, 
+    "topicId": 2726, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1299206388\">Hi,<br/>\n<br/>\nI am also a little unsure of how to test multithreaded code, and I hope my<br/>\nquestion is a bit more specific than the last one :-)<br/>\n<br/>\nI wrote this test case to test my multithreaded code, and it appears to work<br/>\non my platform. (Windows NT, jdk 1.2.2) I am just worried that it only<br/>\npasses because the thread scheduling of the JVM implementation I am using<br/>\nhappens to work out right. Has anyone else tried to write this kind of test?<br/>\nWhat might be a better approach?<br/>\n<br/>\nThanks!<br/>\n<br/>\nEmily<br/>\n<br/>\n----- code in question -------------------<br/>\n<br/>\npublic class LockManagerTest extends TestCase {<br/>\n    private LockManager lockManager = new LockManager();<br/>\n    <br/>\n    /** <br/>\n     * test for the requirement that the obtainLock method on<br/>\n     * LockManager must block until the requested lock becomes<br/>\n     * available<br/>\n     */ <br/>\n    public void testBlocks() {<br/>\n        final int recordNo = 1;<br/>\n        Runnable getsLockFirst = new GetAndHoldLockFor100(recordNo);<br/>\n        Runnable getsLockAfterwards = new Runnable() {<br/>\n            public void run() {<br/>\n                // assert the record is locked when we first ask, but<br/>\nbecomes<br/>\n                // available (or else the whole test run hangs).<br/>\n                assert(lockManager.isRecordLocked(recordNo));<br/>\n                int key = lockManager.obtainLock(recordNo);<br/>\n            }<br/>\n        };<br/>\n        Thread one = new Thread(getsLockFirst);<br/>\n        Thread two = new Thread(getsLockAfterwards);<br/>\n        one.start();<br/>\n        two.start();<br/>\n        // wait for test to run before returning<br/>\n        try {<br/>\n            Thread.currentThread().sleep(300); <br/>\n        } catch (InterruptedException e) {}<br/>\n<br/>\n    }<br/>\n<br/>\n    private class GetAndHoldLockFor100 implements Runnable {<br/>\n        private int recordNo;<br/>\n        public GetAndHoldLockFor100(int recordNo) {<br/>\n            this.recordNo = recordNo;<br/>\n        }<br/>\n        public void run() {<br/>\n                int recordKey = lockManager.obtainLock(recordNo);<br/>\n                try {<br/>\n                    Thread.currentThread().sleep(100);<br/>\n                } catch (InterruptedException e) {}<br/>\n                lockManager.releaseLock(recordNo, recordKey);<br/>\n            }<br/>\n    }<br/>\n}<br/>\n <br/>\n------ end code in question ---------------------------------</div>", 
+    "prevInTime": 2735, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1001328374", 
+    "canDelete": false, 
+    "nextInTopic": 2737, 
+    "prevInTopic": 2729, 
+    "headers": {
+        "messageIdInHeader": "PDcwMEVBMTdBMTQyQUQzMTE4QTFFMDAwOEM3MjRCQ0I0RUI3OUY2QGFnYmdudHMwMy5hZ2JnLmludHJhbmV0Pg=="
+    }
+}

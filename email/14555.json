@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 14556, 
+    "senderId": "wDLVOvg0D-uk3IQVnTutonWOgfkTJ-EKcw3jJXr0TJrB-Aoiwr5gAPBULyNIYagpDDlef2ArCWxXxEnmH8MOB-AVH9PIW5DSlQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Passing parameters to methods", 
+    "from": "Robert Watkins &lt;yahoo@...&gt;", 
+    "authorName": "Robert Watkins", 
+    "msgSnippet": "... Correction: you don t have to maintain state across methods. Because each test is in its instance, there is no possibility of having the state modified. ", 
+    "msgId": 14555, 
+    "profile": "robertdw26", 
+    "topicId": 14555, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "messageBody": "<div id=\"ygrps-yiv-2041025291\">Cedric Beust wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Still, it&#39;s far from perfect since you have to create one field on your<br/>\n&gt; class per parameter, make sure this state is maintained across methods and<br/>\n&gt; then read this state in the method.<br/>\n<br/>\n </span></blockquote>Correction: you don&#39;t have to maintain state across methods. Because<br/>\neach test is in its instance, there is no possibility of having the<br/>\nstate modified.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; public class A extends TestCase {<br/>\n&gt;  private String m_name;<br/>\n&gt;  private String m_xmlFileName;<br/>\n&gt; <br/>\n&gt;  public A(String name, String xmlFileName) {<br/>\n&gt;    m_name = name;<br/>\n&gt;    m_xmlFileName = xmlFileName;<br/>\n&gt;  }<br/>\n&gt; <br/>\n&gt;  public void testName() {<br/>\n&gt;    // do something with m_name<br/>\n&gt;  }<br/>\n&gt; <br/>\n&gt;  public void testXmlFileName) {<br/>\n&gt;    // do something with m_xmlFileName<br/>\n&gt;  }<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>Try again. Parameterized Test Cases in JUnit are best done with only<br/>\none type of test per class. Like so:<br/>\n<br/>\npublic class NameTest extends TestCase {<br/>\n  private String m_name;<br/>\n  private NameTest(String name) {<br/>\n      m_name = name;<br/>\n      super.setName(&quot;NameTest&quot; - name);  // give the test a meaningful<br/>\nname for reports.<br/>\n  }<br/>\n  public static Test suite() {<br/>\n    TestSuite testSuite = new TestSuite();<br/>\n    testSuite.add(new NameTest(&quot;name&quot;);<br/>\n    // create instances for other types of names here. Maybe read them<br/>\nfrom a file?<br/>\n  }<br/>\n<br/>\n  protected void runTest() {<br/>\n    // test the name.<br/>\n  }<br/>\n}<br/>\n<br/>\n<br/>\npublic class ValidNameTest extends TestCase {<br/>\n  private String m_name;<br/>\n  private NameTest(String name) {<br/>\n      m_validName = name;<br/>\n      super.setName(&quot;ValidNameTest&quot; - name);  // give the test a<br/>\nmeaningful name for reports.<br/>\n  }<br/>\n  public static Test suite() {<br/>\n    TestSuite testSuite = new TestSuite();<br/>\n    testSuite.add(new ValidNameTest(&quot;validName&quot;);<br/>\n    // create instances for other types of names here. Maybe read them<br/>\nfrom a file?<br/>\n  }<br/>\n<br/>\n  protected void runTest() {<br/>\n    // test the vallid name<br/>\n  }<br/>\n}<br/>\n<br/>\nThe major advantage of this technique is that I can easily create<br/>\ntests for lots of valid names. If I&#39;m reading it from a file, the list<br/>\ncould be quite extensive _and_ you&#39;ll know which names passed the test<br/>\nand which names didn&#39;t.<br/>\n<br/>\nOut of curiousity: any easy way to do this in TestNG?<br/>\n(&quot;Parameterising&quot; a list or a file name doesn&#39;t count; you wouldn&#39;t<br/>\nget the easy reporting of the bad values vs the good values).<br/>\n<br/>\nRobert.</div>", 
+    "prevInTime": 14554, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1125560831", 
+    "canDelete": false, 
+    "nextInTopic": 14580, 
+    "prevInTopic": 0, 
+    "headers": {
+        "inReplyToHeader": "PDExMjU1NTczNDYuMTcyNS4zMDY0Ny5tMjFAeWFob29ncm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGU5MTJlOTQ2MDUwOTAxMDA0NzJiYTNmMTY5QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDExMjU1NTczNDYuMTcyNS4zMDY0Ny5tMjFAeWFob29ncm91cHMuY29tPg=="
+    }
+}

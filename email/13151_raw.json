@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 13152, 
+    "senderId": "lkk0HOKKqCazG_iT8hxZvnvC46z0C18rrzYYlWS2OWJr-3Pfvc78-XcRwfV8uqxY2q8w7XfHpql3elbQDRseiijyufDYs6ZyUQ43jSk", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: detect test failure in teardown()", 
+    "from": "&quot;Robert Wenner&quot; &lt;robert.wenner@...&gt;", 
+    "authorName": "Robert Wenner", 
+    "msgSnippet": "Hi, ... This can only yield wrong results, as you create a new TestResult rather than using the one JUnit uses. You can just overwrite the runBare method in", 
+    "msgId": 13151, 
+    "rawEmail": "Return-Path: &lt;robert.wenner@...&gt;\r\nX-Sender: robert.wenner@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 38926 invoked from network); 23 Mar 2005 21:54:21 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m24.grp.scd.yahoo.com with QMQP; 23 Mar 2005 21:54:21 -0000\r\nReceived: from unknown (HELO mail.gmx.net) (213.165.64.20)\n  by mta4.grp.scd.yahoo.com with SMTP; 23 Mar 2005 21:54:21 -0000\r\nReceived: (qmail 26134 invoked by uid 0); 23 Mar 2005 21:54:20 -0000\r\nReceived: from 65.16.203.77 by www17.gmx.net with HTTP;\n\tWed, 23 Mar 2005 22:54:20 +0100 (MET)\r\nDate: Wed, 23 Mar 2005 22:54:20 +0100 (MET)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nReferences: &lt;d1sbgc+62jp@...&gt;\r\nX-Priority: 3 (Normal)\r\nX-Authenticated: #1286805\r\nMessage-ID: &lt;9893.1111614860@...&gt;\r\nX-Mailer: WWW-Mail 1.6 (Global Message Exchange)\r\nX-Flags: 0001\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;Robert Wenner&quot; &lt;robert.wenner@...&gt;\r\nSubject: Re: [junit] Re: detect test failure in teardown()\r\nX-Yahoo-Group-Post: member; u=115089258\r\nX-Yahoo-Profile: robertwenner\r\n\r\nHi,\n\n&gt; \tTestResult tr = new TestResult(); \nThis can only yield wrong results, as you create a new TestResult rather\nthan using the one JUnit uses.\n\nYou can just overwrite the runBare method in TestCase, like this:\n\n\nimport junit.framework.*;\n\npublic class fail extends TestCase {\n    public void runBare() throws Throwable {\n        setUp();\n        runTest();\n        tearDown();\n    }\n\n    public void tearDown() {\n        System.out.println(&quot;down&quot;);\n    }\n\n    public void testWorks() {\n        // Nothing works always ;-)\n    }\n\n    public void testFails() {\n        fail(&quot;did not work&quot;);\n    }\n\n    public void testThrows() {\n        throw new RuntimeException(&quot;woops&quot;);\n    }\n}\n\n\nRunning this, I get\n\nrobert@sauerbraten:~&gt; javac -classpath\n/home/robert/sw/junit3.8.1/junit.jar:. fail.java && java -classpath\n/home/robert/sw/junit3.8.1/junit.jar:. junit.textui.TestRunner fail\n.down\n.F.E\nTime: 0.007\nThere was 1 error:\n1) testThrows(fail)java.lang.RuntimeException: woops\n        at fail.testThrows(fail.java:24)\n        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n        at\nsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)\n        at\nsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)\n        at fail.runBare(fail.java:7)\nThere was 1 failure:\n1) testFails(fail)junit.framework.AssertionFailedError: did not work\n        at fail.testFails(fail.java:20)\n        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n        at\nsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)\n        at\nsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)\n        at fail.runBare(fail.java:7)\n\nFAILURES!!!\nTests run: 3,  Failures: 1,  Errors: 1\n\n\ntearDown is only called after the succesful test.\nIs that what you are looking for?\n\nRobert\n\n-- \nDSL Komplett von GMX +++ Superg�nstig und stressfrei einsteigen!\nAKTION &quot;Kein Einrichtungspreis&quot; nutzen: http://www.gmx.net/de/go/dsl\n\n", 
+    "profile": "robertwenner", 
+    "topicId": 13146, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 115089258, 
+    "prevInTime": 13150, 
+    "contentTrasformed": false, 
+    "postDate": "1111614860", 
+    "canDelete": false, 
+    "nextInTopic": 13157, 
+    "prevInTopic": 13149, 
+    "headers": {
+        "messageIdInHeader": "PDk4OTMuMTExMTYxNDg2MEB3d3cxNy5nbXgubmV0Pg==", 
+        "referencesHeader": "PGQxc2JnYys2MmpwQGVHcm91cHMuY29tPg=="
+    }
+}

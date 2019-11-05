@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 11826, 
+    "senderId": "vaO3hutjzv-CWuFFKl-Qn56HJRRZJDLgt2idSgwV79jY1X4UdIF3SfCtO-jJeHmt2TukOVou1hfeWf7IT9O13glgIum1TMoQdUUeVQ", 
+    "systemMessage": true, 
+    "subject": "Re: awkward threading situation", 
+    "from": "&quot;sagyrozman&quot; &lt;sagyrozman@...&gt;", 
+    "authorName": "sagyrozman", 
+    "msgSnippet": "thanks for the reply. I was thinking the same thing but didn t know how to sync with the AWT event queue thread. I tried it and it passed at first attempt, but", 
+    "msgId": 11825, 
+    "rawEmail": "Return-Path: &lt;sagyrozman@...&gt;\r\nReceived: (qmail 7180 invoked from network); 22 Aug 2004 11:59:36 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m19.grp.scd.yahoo.com with QMQP; 22 Aug 2004 11:59:36 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta1.grp.scd.yahoo.com with SMTP; 22 Aug 2004 11:59:36 -0000\r\nReceived: from [66.218.67.159] by n3.grp.scd.yahoo.com with NNFMP; 22 Aug 2004 11:59:28 -0000\r\nX-Sender: sagyrozman@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 50549 invoked from network); 22 Aug 2004 06:45:17 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m24.grp.scd.yahoo.com with QMQP; 22 Aug 2004 06:45:17 -0000\r\nReceived: from unknown (HELO n2.grp.scd.yahoo.com) (66.218.66.75)\n  by mta2.grp.scd.yahoo.com with SMTP; 22 Aug 2004 06:45:17 -0000\r\nReceived: from [66.218.67.156] by n2.grp.scd.yahoo.com with NNFMP; 22 Aug 2004 06:45:16 -0000\r\nDate: Sun, 22 Aug 2004 06:45:16 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cg9fds+3djf@...&gt;\r\nIn-Reply-To: &lt;5317330D-F128-11D8-82EF-003065BF83DA@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2296\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Remote-IP: 66.218.66.75\r\nFrom: &quot;sagyrozman&quot; &lt;sagyrozman@...&gt;\r\nSubject: Re: awkward threading situation\r\nX-Yahoo-Group-Post: member; u=190178427\r\nX-Yahoo-Profile: sagyrozman\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 22 Aug 2004 11:59:25 -0000\r\nX-eGroups-Remote-IP: 66.218.66.86\r\n\r\nthanks for the reply.\nI was thinking the same thing but didn&#39;t know how to sync with the \nAWT event queue thread.\nI tried it and it passed at first attempt, but the next attempts \ndidn&#39;t always pass.\nI think the problem is the empty runnable is sometimes added before \nthe setVisible(true) event is added to the queue, maybe because a \ndifferent thread (other than the main thread) is responsible for \nadding the events to the AWT queue?\n\nIs a there a different way to synchronize with the swing event queue?\n\nIf this topic is out of scope for this discussion group, please let \nme know. It might be better suited for a swing discussion group.\n\n\n\n--- In junit@yahoogroups.com, Timothy Wall &lt;twall@o...&gt; wrote:\n&gt; It&#39;s entirely possible that your main thread checks the mock status \n&gt; prior to the events actually being handled.\n&gt; \n&gt; Consider adding the following after frame.show():\n&gt; \n&gt; SwingUtilities.invokeAndWait(new Runnable() { public void run() \n{ }});\n&gt; \n&gt; \n&gt; On Aug 18, 2004, at 2:15 AM, sagyrozman wrote:\n&gt; \n&gt; &gt; hi all,\n&gt; &gt; I was writing a test for a GUI class which should delegate GUI \nevents\n&gt; &gt; to another object:\n&gt; &gt;\n&gt; &gt; class MyFrame extends JFrame implements WindowListener{\n&gt; &gt;\n&gt; &gt; TargetForEvents target;\n&gt; &gt;\n&gt; &gt; public void setTarget(TargetForEvents t) {\n&gt; &gt;    target = t;\n&gt; &gt; }\n&gt; &gt;\n&gt; &gt; ....\n&gt; &gt; }\n&gt; &gt;\n&gt; &gt; in the test case:\n&gt; &gt;\n&gt; &gt; ...\n&gt; &gt; MyFrame frame = new MyFrame();\n&gt; &gt; frame.setTarget(mockTarget);\n&gt; &gt; frame.setVisible();\n&gt; &gt;\n&gt; &gt; now I check that the expected functions where called on the taget \nin\n&gt; &gt; response to the WindowOpened events of MyFrame.\n&gt; &gt;\n&gt; &gt; the test fails even though it should have passed because using the\n&gt; &gt; eclipse debuger I can see that the mock is called upon in the \nswing\n&gt; &gt; event handling thread, but when checking back with the main thread\n&gt; &gt; the mock is not affected by these changes.\n&gt; &gt; Another weird thing: I tried to do a similar test only not through\n&gt; &gt; junit, instead of asserting that the methods where called, I wrote\n&gt; &gt; the mock log string out to the stdout. This time the output shows\n&gt; &gt; that all methods where called in the correct order.\n&gt; &gt; Am I missing something here? please let me know if any further\n&gt; &gt; clarification is needed.\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; Yahoo! Groups Links\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n&gt; &gt;\n\n\n\n", 
+    "profile": "sagyrozman", 
+    "topicId": 11797, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190178427, 
+    "prevInTime": 11824, 
+    "contentTrasformed": false, 
+    "postDate": "1093157116", 
+    "canDelete": false, 
+    "nextInTopic": 11831, 
+    "prevInTopic": 11802, 
+    "headers": {
+        "inReplyToHeader": "PDUzMTczMzBELUYxMjgtMTFEOC04MkVGLTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4=", 
+        "messageIdInHeader": "PGNnOWZkcyszZGpmQGVHcm91cHMuY29tPg=="
+    }
+}

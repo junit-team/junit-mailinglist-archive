@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4260, 
+    "senderId": "_gg5YMBtlDf5dUMpSPuo0vdZyCLT-n8U4FcUna5HqbvL8FILUFaWQHduuaSFRntXPlJJZuAIXatHlxWwPFRkZnKGqYjqKtE3Owv1SddIr6-ohd738pxmuw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Needhelp regarding exception testing", 
+    "from": "&quot;&#92;&quot;J. B. Rainsberger&#92;&quot;&quot; &lt;jbr@...&gt;", 
+    "authorName": "&quot;J. B. Rainsberger&quot;", 
+    "msgSnippet": "... Is your question: How do I test whether my class throws the right exceptions? If so, Brian s suggestion should give you the answer.", 
+    "msgId": 4259, 
+    "profile": "nails762", 
+    "topicId": 4254, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-1805009428\">Quoting vinitshah76013 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:vinitshah76013@...\">vinitshah76013@...</a>&gt;:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi<br/>\n&gt; I am working on a project for testing java code for exceptions and I <br/>\n&gt; need to automate this process. Does anyone have any idea how I can <br/>\n&gt; use junit to test for exceptions such as FileNotFoundException?<br/>\n&gt; Please reply.<br/>\n<br/>\n </span></blockquote>Is your question: How do I test whether my class throws the right exceptions? <br/>\nIf so, Brian&#92;&#39;s suggestion should give you the answer. <a rel=\"nofollow\" target=\"_blank\" href=\"http://c2.com/cgi/wiki?\">http://c2.com/cgi/wiki?</a><br/>\nJavaUnitBestPractices also contains examples of good ways to write JUnit test <br/>\ncases. It covers your question and more.<br/>\n<br/>\nIs your question: How do I test whether my class handles exceptions thrown by <br/>\nother classes? If so, you need to understand that it is much easier to SIMULATE <br/>\nexceptions rather than RECREATE the conditions under which they occur. <br/>\n<br/>\nFor example, suppose your class uses a FileSystem object. Suppose the <br/>\nFileSystem object throws a DiskFullException whenever you try to write to the <br/>\nFileSystem and the disk is full. How do you test how your class behaves when <br/>\nthe disk is full?<br/>\n<br/>\nOption 1: Fill up the disk, run your test and return the disk to normal. <br/>\nAlthough this is an option, it&#92;&#39;s not an easy thing (nor a safe thing) to do.<br/>\n<br/>\nOption 2: Use a MockFileSystem object, which implements the same interface as <br/>\nFileSystem, to simulate the condition.<br/>\n<br/>\nExample:<br/>\n<br/>\npublic class MockFileSystem extends FileSystem {<br/>\n...<br/>\n    public void setupThrowException(final Throwable throwable) {<br/>\n        // Remember to throw &#92;&quot;throwable&#92;&quot; on every method call<br/>\n    }<br/>\n...<br/>\n}<br/>\n<br/>\n...<br/>\n<br/>\npublic void testDiskFull() throws Exception {<br/>\n    final MockFileSystem mockFileSystem = new MockFileSystem();<br/>\n    final String expectedFullDisk = &#92;&quot;c:/&#92;&quot;;<br/>\n    mockFileSystem.setupThrowException(new DiskFullException(expectedFullDisk));<br/>\n    final MyClass myClass = new MyClass(mockFileSystem);<br/>\n    try {<br/>\n        myClass.doSomething();<br/>\n        fail(&#92;&quot;How did you do that with a full disk!?&#92;&quot;);<br/>\n    }<br/>\n    catch(final MyClassException success) {<br/>\n        final Throwable enclosedException = success.getSourceThrowable();<br/>\n        assertTrue(enclosedException instanceof DiskFullException);<br/>\n        final DiskFullException actualException = (DiskFullException) <br/>\nenclosedException;<br/>\n        assertEquals(expectedFullDisk, actualException.getFullDisk());<br/>\n    }<br/>\n}<br/>\n<br/>\nI hope this helps a little.<br/>\n<br/>\nJ. B. (Joe) Rainsberger<br/>\nPresident, Diaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nLet&#92;&#39;s write software that people understand.</div>", 
+    "prevInTime": 4258, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1015249910", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4255, 
+    "headers": {
+        "inReplyToHeader": "PGE1dHV1cyt0ZG1mQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDEwMTUyNDk5MTAuM2M4MzdiZjY5MDE0M0B3ZWJtYWlsLmJsYWNrc3VuLmNhPg==", 
+        "referencesHeader": "PGE1dHV1cyt0ZG1mQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 125, 
+    "nextInTime": 14652, 
+    "senderId": "hjU18i3oAjNNdObgDZCfHPTMaLKXkAAwCn4GPtqaMYunMFomaO86ukjgo2YWnV9ZH23rWk9WF-9LMEeTjFenIhqW4VRCMOvKMmhz4A8mQafy", 
+    "systemMessage": true, 
+    "subject": "RE: [junit] Re: How to test private methods in a class.", 
+    "from": "&quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@...&gt;", 
+    "authorName": "Iliya Agoshkov", 
+    "msgSnippet": "Continuing about testing private methods. What if a private method represent some kind of functionality that is needed only to this concrete class. You know", 
+    "msgId": 14651, 
+    "rawEmail": "Return-Path: &lt;Iliya.Agoshkov@...&gt;\r\nReceived: (qmail 1772 invoked from network); 5 Sep 2005 10:35:28 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m28.grp.scd.yahoo.com with QMQP; 5 Sep 2005 10:35:28 -0000\r\nReceived: from unknown (HELO n13a.bulk.scd.yahoo.com) (66.94.237.24)\n  by mta3.grp.scd.yahoo.com with SMTP; 5 Sep 2005 10:35:28 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.5] by n13.bulk.scd.yahoo.com with NNFMP; 05 Sep 2005 10:35:13 -0000\r\nReceived: from [66.218.66.86] by mailer5.bulk.scd.yahoo.com with NNFMP; 05 Sep 2005 10:35:13 -0000\r\nX-Sender: Iliya.Agoshkov@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 30086 invoked from network); 5 Sep 2005 08:02:17 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m31.grp.scd.yahoo.com with QMQP; 5 Sep 2005 08:02:17 -0000\r\nReceived: from unknown (HELO newton.hq.actis.ru) (212.248.55.201)\n  by mta6.grp.scd.yahoo.com with SMTP; 5 Sep 2005 08:02:15 -0000\r\nContent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nX-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0\r\nDate: Mon, 5 Sep 2005 12:01:07 +0400\r\nMessage-ID: &lt;9BEAA1B86783344BA6CF9B95F5B620923C1888@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: [junit] Re: How to test private methods in a class.\r\nthread-index: AcWx7YCsxADry596QUC2rseXW+CQIQAAHddw\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@...&gt;\r\nSubject: RE: [junit] Re: How to test private methods in a class.\r\nX-Yahoo-Group-Post: member; u=234978661; y=T8QQADF7XBUBZWhYClnIexLF-LsPcD0XlR_yTZVq1v8mAAYXvw\r\nX-Yahoo-Profile: agoshkoviv\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 05 Sep 2005 10:35:12 -0000\r\n\r\nContinuing about testing private methods.\n\nWhat if a private method represent some kind of functionality that is\nneeded only to this concrete class.\n\nYou know sometimes there is a big method which is not clearly readable.\n\nSo usually I extract some smaller pieces of code naming them\ncorrespondingly.\n\nSo the code becomes more readable. But these methods are private and it\nseems to me,\n\nthat there is no way to extract them to a separate class.\n\n \n\nConsider this example:\n\n \n\npublic static Collection /* Flight */ search( FlightSearchParameters\nparams ) throws Exception\n\n{\n\nQS qs = Site.getSite().getUdeSession().getQS( Flight.TABLE_NAME );\n\nStringBuffer whereString = new StringBuffer();\n\nCollection whereParams = new ArrayList();\n\nif ( params.getCityId() != null )\n\n{          \n\n                        addDirectionFilter( params, whereString,\nwhereParams, &quot;T_AIRPORT.XM_CITY_ID&quot;, params.getCityId() );\n\n}\n\nelse\n\n{\n\n                        addDirectionFilter( params, whereString,\nwhereParams, &quot;T_AIRPORT.M_ID&quot;, params.getAirportId() );\n\n}\n\nif ( params.getAirlineId() != null )\n\n{\n\n                        addAirlineFilter( whereString, whereParams,\nparams.getAirlineId() );\n\n}\n\nif ( params.getDate() != null )\n\n{\n\n                        addDateFilter( whereString, whereParams,\nparams.getDate() );\n\n}\n\nqs.setWhere( whereString.toString(), whereParams.toArray() );\n\nqs.open();\n\nwhile ( qs.next() )\n\n{\n\n                        results.add( Flight.getById( (String)\nqs.getUnit().getPropertyValue( &quot;ID&quot; ) ) );\n\n}\n\nqs.close();\n\n}\n\n \n\nQS - is the analog of JDBC&#39;s Statement.\n\nAnd methods like addXXXFilter just add some filtering conditions\n(sometimes complex, it takes about 15-20 lines of code to construct em)\nto &#39;where&#39; clause of &#39;select&#39; statement.\n\n \n\nAnyway I&#39;m not arguing to you, just want to know your opinion about this\ncase.\n\nHow do I test these all &#39;addXXXFilter&#39; methods? \n\nOr I don&#39;t need to test em at all (cause they are tested through the\ntest of &#39;public search(...)&#39; method)??\n\nOr may be you can suggest a better design solution?\n\nAny help appreciated.\n\n \n\nThanks, Ilya.\n\n\n\n[Non-text portions of this message have been removed]\n\n\n\n\n", 
+    "profile": "agoshkoviv", 
+    "topicId": 14490, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 234978661, 
+    "prevInTime": 14650, 
+    "contentTrasformed": false, 
+    "postDate": "1125907267", 
+    "canDelete": false, 
+    "nextInTopic": 14654, 
+    "prevInTopic": 14650, 
+    "headers": {
+        "messageIdInHeader": "PDlCRUFBMUI4Njc4MzM0NEJBNkNGOUI5NUY1QjYyMDkyM0MxODg4QG5ld3Rvbi5ocS5hY3Rpcy5ydT4="
+    }
+}

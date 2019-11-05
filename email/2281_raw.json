@@ -1,0 +1,28 @@
+{
+    "topicId": 2267, 
+    "postDate": "997207854", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "9Z0yddQw2nVG10tg6DCjii9ydLmoOn3gWdZFYKl1hK731LdOUkP_a5wBXBT2emCtOAdeRF0VrxLke2-KXGcPh2_yykO6neo-7fN8wQtaZ37WgA", 
+    "nextInTime": 2282, 
+    "userId": 0, 
+    "prevInTime": 2280, 
+    "prevInTopic": 2273, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDEwODA3MTgxMDU0LjUzNjIuY3BtdGFAYzAwNy5zbnYuY3AubmV0Pg=="
+    }, 
+    "authorName": "Vladimir Bossicard", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "If you refactor your class to have this template: public class validator () { protected List validate (Class cls) { ... } protected PrintStream print", 
+    "contentTrasformed": false, 
+    "msgId": 2281, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;vbossica@...&gt;\r\nX-Sender: vbossica@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 7 Aug 2001 18:11:33 -0000\r\nReceived: (qmail 44766 invoked from network); 7 Aug 2001 18:10:54 -0000\r\nReceived: from unknown (10.1.10.142) by l10.egroups.com with QMQP; 7 Aug 2001 18:10:54 -0000\r\nReceived: from unknown (HELO c007.snv.cp.net) (209.228.33.211) by mta3 with SMTP; 7 Aug 2001 18:10:54 -0000\r\nReceived: (cpmta 5363 invoked from network); 7 Aug 2001 11:10:54 -0700\r\nDate: 7 Aug 2001 11:10:54 -0700\r\nMessage-ID: &lt;20010807181054.5362.cpmta@...&gt;\r\nX-Sent: 7 Aug 2001 18:10:54 GMT\r\nReceived: from [64.79.2.4] by mail.telocity.com with HTTP; 07 Aug 2001 11:10:54 PDT\r\nContent-Type: text/plain\r\nContent-Disposition: inline\r\nMime-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Web Mail 3.9.3.5\r\nX-Sent-From: vbossica@...\r\nSubject: RE: [junit] novice QA\r\nFrom: Vladimir Bossicard &lt;vladimir@...&gt;\r\n\r\nIf you refactor your class to have this template:\n\n   public class validator () {\n      protected List validate (Class cls) { ... }\n      protected PrintStream print (SpecificError error) { ...}\n   }\n\nit is then really easy to test.  Your class can implement other methods that use these two methods for testing.\n\nYou have two possibilities:\n - test for all errors in one test\n - test for one error in each test\n\nI would first test the most global case and then, if you found problems (or if you want to be more confident) you can write more specific tests.\n\nDefine an inner class that fires all possible errors.  Your test method looks like:\n\n   public void testFireAllErrors () {\n      ClassFiresAllErrors temp = new ClassFiresAllError();\n      List result = myValidator.validate(ClassErrorX);\n      assertTrue(result.size() == X /* number of possible errors */);\n      assertTrue(result.contains(new ErrorX());\n      assertTrue(result.contains(new ErrorY());\n      ...\n\u0003  }\n\nNow to test the print method: list all errors that can be reported.  For each error, write a test method\n\n   public void testPrintErrorX () {\n      PrintStream stream = myValidator.print(new SpecificError(X));\n      assertEquals(stream.toString(), &quot;...what the error should print...&quot;);\n   }\n   public void testPrintErrorY () {...}\n\nMy 2 cents\n\n-Vladimir\n\n\n\n", 
+    "subject": "RE: [junit] novice QA"
+}

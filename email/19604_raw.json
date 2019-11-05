@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 19605, 
+    "senderId": "A7zs1M9hwseaeTujbUYFb_9r5X4RrG36wUkeZDnWaDpd1Jz3nLE7wAGa_7rxR3EGR0x2LCv9-cmcX-KQqr6sT0pB", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to automatically verify state of fixture after test run", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Nat, Extending internals of your dependencies in order to give your users a better experience is a fact of life.  With 4.4, we took one step toward a more", 
+    "msgId": 19604, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 51599 invoked from network); 23 Jul 2007 13:30:34 -0000\r\nReceived: from unknown (66.218.66.68)\n  by m51.grp.scd.yahoo.com with QMQP; 23 Jul 2007 13:30:34 -0000\r\nReceived: from unknown (HELO wa-out-1112.google.com) (209.85.146.183)\n  by mta11.grp.scd.yahoo.com with SMTP; 23 Jul 2007 13:30:34 -0000\r\nReceived: by wa-out-1112.google.com with SMTP id n7so2298733wag\n        for &lt;junit@yahoogroups.com&gt;; Mon, 23 Jul 2007 06:30:34 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;\n        b=HECECVU8BWHMiPtfWVoRznyrayV/V4Ck4r1U50zzkNqVnMPXbqhvVswQyXCdbu8EaLLmEOvbb7CcanWZBpXDP3PjusO3CpEnSHTrOPnS7Sd6bEywotVVVJnsyZ12vEfvKjN9vafjapueoR7Mggn0On0LvIh6nNUOwYomyySC7fg=\r\nReceived: by 10.114.103.1 with SMTP id a1mr2985945wac.1185197433918;\n        Mon, 23 Jul 2007 06:30:33 -0700 (PDT)\r\nReceived: by 10.114.134.7 with HTTP; Mon, 23 Jul 2007 06:30:33 -0700 (PDT)\r\nMessage-ID: &lt;4f7da6b90707230630k7bd45788iafe1cc5897944589@...&gt;\r\nDate: Mon, 23 Jul 2007 09:30:33 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;17fa53d0707230500v4c710b9dy824d868e55b8aaf4@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nContent-Disposition: inline\r\nReferences: &lt;17fa53d0707230500v4c710b9dy824d868e55b8aaf4@...&gt;\r\nX-Google-Sender-Auth: 75045879223f9242\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;David Saff&quot; &lt;saff@...&gt;\r\nSubject: Re: [junit] How to automatically verify state of fixture after test run\r\nX-Yahoo-Group-Post: member; u=139771899; y=WfQ7OLQHU4kB4PMxgol9m0Np_M7mxzkEWrkybk7O7ME\r\nX-Yahoo-Profile: dsaff\r\n\r\nNat,\n\nExtending internals of your dependencies in order to give your users a\nbetter experience is a fact of life.  With 4.4, we took one step\ntoward a more extensible design for JUnit4ClassRunner.  In the next\nversion, we hope to finish, and stabilize, the object structure, so\nthat extenders can depend on it.  The way to do what you want in JUnit\n4.4 and beyond should look like this:\n\n\tpublic static class Mocks extends JUnit4ClassRunner {\n\t\tpublic Mocks(Class&lt;?&gt; klass) throws InitializationError {\n\t\t\tsuper(klass);\n\t\t}\n\t\t\n\t\t@Override\n\t\tprotected TestMethod wrapMethod(Method method) {\n\t\t\treturn new TestMethod(method, getTestClass()) {\n\t\t\t\t@Override\n\t\t\t\tprotected void invoke(Roadie context)\n\t\t\t\t\t\tthrows IllegalArgumentException,\n\t\t\t\t\t\tIllegalAccessException, InvocationTargetException {\n\t\t\t\t\tsuper.invoke(context);\n\t\t\t\t\tverifyMocks();\n\t\t\t\t}\n\t\t\t};\n\t\t}\n\t}\n\nThe Roadie class is new in 4.4: it sets up for the test, tears down\nafter the test, and records what&#39;s going on while the test is\nperforming.  (For cultural background to the metaphor, see:\nhttp://en.wikipedia.org/wiki/Roadie)\n\nThanks,\n\n   David Saff\n\nOn 7/23/07, Nat Pryce &lt;nat.pryce@...&gt; wrote:\n&gt; Hi all.\n&gt;\n&gt; It&#39;s our own fault I know, but the new JUnit 4.4 release breaks jMock\n&gt; 2 because we extended the internal runner classes to verify mock\n&gt; objects at the end of the test but before the @After methods are\n&gt; called to tear down the fixtures.\n&gt;\n&gt; The classes we extended no longer exist.  What&#39;s the new, approved way\n&gt; of doing this?\n&gt;\n&gt; --Nat\n&gt;\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 19603, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "prevInTime": 19603, 
+    "contentTrasformed": false, 
+    "postDate": "1185197433", 
+    "canDelete": false, 
+    "nextInTopic": 19605, 
+    "prevInTopic": 19603, 
+    "headers": {
+        "inReplyToHeader": "PDE3ZmE1M2QwNzA3MjMwNTAwdjRjNzEwYjlkeTgyNGQ4NjhlNTViOGFhZjRAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwNzIzMDYzMGs3YmQ0NTc4OGlhZmUxY2M1ODk3OTQ0NTg5QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDE3ZmE1M2QwNzA3MjMwNTAwdjRjNzEwYjlkeTgyNGQ4NjhlNTViOGFhZjRAbWFpbC5nbWFpbC5jb20+"
+    }
+}

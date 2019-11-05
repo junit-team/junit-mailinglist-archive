@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 11060, 
+    "senderId": "kGHGry6qsC9Tz6b2VdP15JvPiA63ZakNBm0-KG7Q6a67b0olQ38kXqedaZxB-y2Xx4f5AIiBDuQ3k-20hfb218xy4ncBsaBLsLJ2", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] using JUnit with derived classes", 
+    "from": "Curt Sampson &lt;yahoo_sucks@...&gt;", 
+    "authorName": "Curt Sampson", 
+    "msgSnippet": "... Interestingly enough, in the engineering world, having testing stuff built into the final product is very common. In part this is due to the vagaries of", 
+    "msgId": 11059, 
+    "profile": "cjstokyo", 
+    "topicId": 11010, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 110189933, 
+    "messageBody": "<div id=\"ygrps-yiv-1581874678\">On Wed, 12 May 2004, J. B. Rainsberger wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Glenn Robitaille wrote:<br/>\n&gt;<br/>\n&gt; &gt; As we all know, Java doesn&#39;t support multiple inheritance.  You can<br/>\n&gt; &gt; only extend TestCase or you business class, but not both.  If you<br/>\n&gt; &gt; want to use JUnit with a derived class, it seems you have to<br/>\n&gt; &gt; implement a lot of methods from the TestCase interface -- which<br/>\n&gt; &gt; isn&#39;t practical.<br/>\n&gt; ...<br/>\n&gt; Put simply, what you propose to do goes entirely against JUnit&#39;s<br/>\n&gt; philosophy, as well as the more general testing philosophies of the<br/>\n&gt; xUnit family of testing frameworks. Tests are tests and production code<br/>\n&gt; is production code.<br/>\n<br/>\n </span></blockquote>Interestingly enough, in the engineering world, having testing stuff<br/>\nbuilt into the final product is very common. In part this is due to the<br/>\nvagaries of manufacturing, of course; you want some way to ascertain<br/>\nthat this particular CPU you built functions as it should, which is not<br/>\nnormally a problem with software where you can produce perfect replicas.<br/>\n<br/>\nHowever, now that I&#39;ve played around with Ruby a bit, I am rather<br/>\ngetting to like the idea of getting the test and production code<br/>\n&quot;closer together.&quot; I often put my test classes in the same file as the<br/>\nproduction code, which can save a lot of switching back and forth. You<br/>\ncan even define a but of the production class, a bit of the test class<br/>\nwith the tests for that method or whatever, a bit more of the production<br/>\nclass, and so on.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Why do you want a production class also to be a test? I think it&#39;s<br/>\n&gt; generally a very bad idea.<br/>\n<br/>\n </span></blockquote>I don&#39;t see what the problem with it is. It might cause a bit of code<br/>\nbloat, but that&#39;s often not a problem in many projects.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; This brings up something I am struggling with: in C#/NUnit, we can<br/>\n&gt; declare a test without extending TestCase (even if we frequently extend<br/>\n&gt; Assert, anyway). Is there some great benefit to this over the way we do<br/>\n&gt; it in JUnit, SUnit, RubyUnit, PyUnit, ...?<br/>\n<br/>\n </span></blockquote>You can do the same in Ruby&#39;s Test::Unit:<br/>\n<br/>\n    require &#39;test/unit/testsuite&#39;<br/>\n    require &#39;test/unit/ui/console/testrunner&#39;<br/>\n<br/>\n    class NonTestcaseTest<br/>\n\tdef size; 1; end<br/>\n\tdef run(result); result.add_run; end<br/>\n    end<br/>\n<br/>\n    suite = Test::Unit::TestSuite.new<br/>\n    suite &lt;&lt; NonTestcaseTest.new<br/>\n    Test::Unit::UI::Console::TestRunner.run(suite)<br/>\n<br/>\nIn Ruby, and it sounds like in C#, &quot;interfaces&quot; are defined by what<br/>\nmessages an object will respond to; there&#39;s no need to explicitly<br/>\ndeclare them. Java people tend to be pretty uncomfortable with this, but<br/>\nit&#39;s a basic part of life in Smalltalk, and can be very handy, as it<br/>\nmakes basically everything extensible, and lets extend things in ways<br/>\nnot anticipated by the author of the package you&#39;re using. For fun:<br/>\n<br/>\n    require &#39;test/unit/testsuite&#39;<br/>\n    require &#39;test/unit/testcase&#39;<br/>\n    require &#39;test/unit/ui/console/testrunner&#39;<br/>\n<br/>\n    class ArrayOfTests &lt; Array<br/>\n\tdef run(result)<br/>\n\t    each { |test| test.run(result) { } }<br/>\n\tend<br/>\n    end<br/>\n<br/>\n    class SampleTestCase &lt; Test::Unit::TestCase<br/>\n\tdef test_nil_is_nil<br/>\n\t    assert_nil(nil)<br/>\n\tend<br/>\n    end<br/>\n<br/>\n    suite = Test::Unit::TestSuite.new<br/>\n    arrayOfTests = ArrayOfTests.new<br/>\n    suite &lt;&lt; arrayOfTests<br/>\n<br/>\n    2.times { arrayOfTests &lt;&lt; SampleTestCase.new(&quot;test_nil_is_nil&quot;) }<br/>\n<br/>\n    Test::Unit::UI::Console::TestRunner.run(suite)<br/>\n<br/>\nOne can even keep the &quot;dynamic&quot; feel of this but still have static<br/>\ntyping by having the compiler do type inference, as done in Haskell and<br/>\nML.<br/>\n<br/>\ncjs<br/>\n-- <br/>\nCurt Sampson  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cjs@...\">cjs@...</a>&gt;   +81 90 7737 2974   <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.NetBSD.org\">http://www.NetBSD.org</a><br/>\n    Don&#39;t you know, in this new Dark Age, we&#39;re all light.  --XTC</div>", 
+    "prevInTime": 11058, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1085459957", 
+    "canDelete": false, 
+    "nextInTopic": 11062, 
+    "prevInTopic": 11013, 
+    "headers": {
+        "inReplyToHeader": "PDQwQTJBQ0Y3LjkwMzA3MDRAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNTguMDQwNTI1MTMwOTU0MC45MjMzQGFuZ2VsaWMtdnRmdy5jdnBuLmN5bmljLm5ldD4=", 
+        "referencesHeader": "PGM3dHN1MytmY3NiQGVHcm91cHMuY29tPiA8NDBBMkFDRjcuOTAzMDcwNEByb2dlcnMuY29tPg=="
+    }
+}

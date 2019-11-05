@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 7125, 
+    "senderId": "QaXC4ti6F_jv-0Gr40vst9rSnVSBMGJH3sp_XyWMKSQtP5py0b4TyVoYxZfO31sdrvrJ0nKWwB_dqAPIWAjOH6fylbI6Ng", 
+    "systemMessage": false, 
+    "subject": "Object deserialisation error", 
+    "from": "&quot;Aditya Yadav&quot; &lt;yadava@...&gt;", 
+    "authorName": "Aditya Yadav", 
+    "msgSnippet": "hi! I m serialising a class and sending it over a socket to another machine which does not have the classes of the agent. So I m making two trips, first I m", 
+    "msgId": 7124, 
+    "rawEmail": "Return-Path: &lt;yadava@...&gt;\r\nReceived: (qmail 95283 invoked from network); 5 Mar 2003 16:37:31 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m9.grp.scd.yahoo.com with QMQP; 5 Mar 2003 16:37:31 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta1.grp.scd.yahoo.com with SMTP; 5 Mar 2003 16:37:32 -0000\r\nX-eGroups-Return: yadava@...\r\nReceived: from [66.218.67.184] by n3.grp.scd.yahoo.com with NNFMP; 05 Mar 2003 16:37:32 -0000\r\nX-Sender: yadava@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_1); 5 Mar 2003 16:14:29 -0000\r\nReceived: (qmail 25707 invoked from network); 5 Mar 2003 16:14:29 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m9.grp.scd.yahoo.com with QMQP; 5 Mar 2003 16:14:29 -0000\r\nReceived: from unknown (HELO CHNMFW01.ETH.NET) (202.9.145.21)\n  by mta1.grp.scd.yahoo.com with SMTP; 5 Mar 2003 16:14:28 -0000\r\nReceived: from smtp-23 ([202.9.178.23] unverified) by CHNMFW01.ETH.NET with Microsoft SMTPSVC(5.0.2195.5329);\n\t Wed, 5 Mar 2003 21:52:29 +0530\r\nReceived: from 202.9.151.91 by smtp-23 (InterScan E-Mail VirusWall NT); Wed, 05 Mar 2003 21:50:14 +0530\r\nMessage-ID: &lt;005001c2e333$65f09ca0$5b9709ca@yadava&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;20030304175433.66202.qmail@...&gt; &lt;001f01c2e32c$2b83f690$6500a8c0@nilla&gt;\r\nSubject: Object deserialisation error\r\nDate: Wed, 5 Mar 2003 21:52:09 +0530\r\nMIME-Version: 1.0\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 6.00.2600.0000\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000\r\nX-OriginalArrivalTime: 05 Mar 2003 16:22:29.0578 (UTC) FILETIME=[6AE142A0:01C2E333]\r\nFrom: &quot;Aditya Yadav&quot; &lt;yadava@...&gt;\r\nX-Yahoo-Group-Post: member; u=70418286\r\nX-Yahoo-Profile: adityayadav76\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 05 Mar 2003 16:37:31 -0000\r\n\r\nhi!\n\nI&#39;m serialising a class and sending it over a socket to another machine which does not have the classes of the agent. So I&#39;m making two trips, first I&#39;m transferring the jar file containing the classes and I&#39;m using Class.forname(&quot;agentclass&quot;,true,customjarclassloader) to load the classes.\nThen in the next connection I&#39;m transferring the serialised class object to the host. But on reaching the host it gives a ClassNotFoundError when I&#39;m trying to deserialise the object.\n\nWhat should I do? And how can I implement this serialised object transfer dynamically without first installing the classes on the other host.\n\nPlease help me out!\n\n\n----- Original Message ----- \n  From: Erik Hanson \n  To: junit@yahoogroups.com \n  Sent: Wednesday, March 05, 2003 9:00 PM\n  Subject: Re: [junit] Re: How to test error handling?\n\n\n  &quot;Tung Wai Yip&quot; &lt;tungwaiyip@...&gt; wrote:\n  &gt; Let me give a more concrete example.\n  &gt; \n  &gt;   try {\n  &gt;     // execute my sql query\n  &gt;     ResultSet rs = sql.executeQuery();\n  &gt;     while (rs.next()) {\n  &gt;       String name = rs.getString(&quot;name&quot;);\n  &gt;       // do my processing\n  &gt;     }\n  &gt;     sql.close();\n  &gt;   }\n  &gt;   catch (SQLException e) {\n  &gt;     // do my smart error handling here.\n  &gt;     //\n  &gt;     // however this is never called because it is hard to \n  &gt;     // generate a SQLException.\n  &gt;   }\n\n  How about extracting your error handling code and testing it by itself: \n\n  public class Foo {\n    public void bar() {\n      try {\n        // execute my sql query\n        ResultSet rs = sql.executeQuery();\n        while (rs.next()) {\n          String name = rs.getString(&quot;name&quot;);\n          //do my processing\n        }\n        sql.close();\n      }\n      catch (SQLException e) {\n        handleSQLException(e);\n      }\n    }\n\n    void handleSQLException(e) {\n      //do my smart error handling here.\n    }\n  }\n\n  public class FooTest extends TestCase {\n    public void testBar() {\n      //do whatever tests on bar you want to do\n    }\n\n    public void testHandleSQLException() {\n      Foo f = new Foo();\n      f.handleSQLException(newSQLException(...));\n      //assert that the exeption was handled correctly\n    }\n  }\n\n\n\n  Erik Hanson\n\n\n\n        Yahoo! Groups Sponsor \n              ADVERTISEMENT\n             \n       \n       \n\n  To unsubscribe from this group, send an email to:\n  junit-unsubscribe@yahoogroups.com\n\n\n  Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service. \n\n\n\n[Non-text portions of this message have been removed]\n\n\n\n", 
+    "profile": "adityayadav76", 
+    "topicId": 7124, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 70418286, 
+    "prevInTime": 7123, 
+    "contentTrasformed": false, 
+    "postDate": "1046881329", 
+    "canDelete": false, 
+    "nextInTopic": 7128, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDAwNTAwMWMyZTMzMyQ2NWYwOWNhMCQ1Yjk3MDljYUB5YWRhdmE+", 
+        "referencesHeader": "PDIwMDMwMzA0MTc1NDMzLjY2MjAyLnFtYWlsQHdlYjgwNDAyLm1haWwueWFob28uY29tPiA8MDAxZjAxYzJlMzJjJDJiODNmNjkwJDY1MDBhOGMwQG5pbGxhPg=="
+    }
+}

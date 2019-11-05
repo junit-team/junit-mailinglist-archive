@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 7516, 
+    "senderId": "IIaUHsns5OF5rRFLYTqFaFye11PftdUxZQwCf4Q7PbkfDJXpyk9rNBqjmv6pvqwHXWpotZdBh_UR8i6G5-VG", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Junit and RMI, please help ...", 
+    "from": "&quot;Bernd&quot; &lt;berndq@...&gt;", 
+    "authorName": "Bernd", 
+    "msgSnippet": "Sam, ... No, anyObject.equals(null) should return false, see javadoc above. ... the result of this expression is always false. question: how is clientObject", 
+    "msgId": 7515, 
+    "topicId": 7374, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106754364, 
+    "messageBody": "<div id=\"ygrps-yiv-114949327\">Sam, <br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;sidenote:<br/>\n&gt; &gt;from javadoc Object.equals():<br/>\n&gt; &gt;&quot;For any non-null reference value x, x.equals(null) should <br/>\n&gt; return false.&quot;<br/>\n&gt; <br/>\n&gt; So in my case, if the client process is killed, the client <br/>\n&gt; reference stored <br/>\n&gt; in the server becomes null reference, and so <br/>\n&gt; clientObject.equals(null) == <br/>\n&gt; true.  Could it be the case? <br/>\n<br/>\n </span></blockquote>No, anyObject.equals(null) should return false, see javadoc above.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; if (clientObject != null && clientObject.equals(null)) { <br/>\n </span></blockquote>the result of this expression is always false.<br/>\n<br/>\nquestion: how is clientObject set to null if client disconnects?<br/>\nIs this an RMI feature?<br/>\n<br/>\nIn your other mail I saw that the client passes a this to the<br/>\nserver. But client and server do not run in the same VM. What happens<br/>\nif the client gets garbage collected (will this happen?) while<br/>\nit is connected to the server. Will the server have an<br/>\ninvalid reference?  Does it make sence to pass this client VM specific<br/>\nrefernece to the server VM?<br/>\nI am not familiar with RMI so this questions may be nonsense.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I tested the server and 2 <br/>\n&gt; clients locally (I <br/>\n&gt; have no access to a network system) and it *seemed* (I don&#39;t <br/>\n&gt; know for sure <br/>\n&gt; though) to work fine.  Am I missing something?<br/>\n<br/>\n </span></blockquote>does not matter where the processes run, on one the same node or on<br/>\ndifferent nodes.<br/>\nThe process always see the same behaviour from the network interface.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; &gt;However if the tcp connection is not closed properly (client <br/>\n&gt; disconnected <br/>\n&gt; from net,<br/>\n&gt; &gt;client OS crashed, ...) the server ist not informed by the <br/>\n&gt; tcp layer about<br/>\n&gt; &gt;it. For such cases you will have to add functionality to <br/>\n&gt; your server to <br/>\n&gt; &gt;actively detect them by a call to a client&#39;s method.<br/>\n&gt; <br/>\n&gt; I don&#39;t know how to implement this.  Right now, all the <br/>\n&gt; server&#39;s methods are <br/>\n&gt; declared in the remote interface, and the client gets a <br/>\n&gt; remote object of the <br/>\n&gt; remote interface&#39;s type to call its method.  If the server <br/>\n&gt; calls the client&#39;s <br/>\n&gt; method, would it be in another remote interface?  And what <br/>\n&gt; does the method <br/>\n&gt; do, or just an empty method and may be some kind of Exception will be <br/>\n&gt; generated when called on?  <br/>\n<br/>\n </span></blockquote>This callback funtion makes the client a server for this operation.<br/>\n<br/>\nI would probably start with using a mock object to be able to test<br/>\nthe behaviour of the server if a client disconnects:<br/>\n<br/>\n<br/>\non the server side define an interface independet from RMI stuff<br/>\n(with possible syntax errors included)<br/>\n<br/>\ninterface Client{<br/>\n   void isClientStillConnected() throw MyNoClientCommunicationException;<br/>\n}<br/>\n<br/>\nbuild your server code to work against the interface only.<br/>\n<br/>\nin production:<br/>\nclass ClientImpl implements client{<br/>\n  void isClientStillConnected() throws MyNoClientCommunicationException{<br/>\n    try{<br/>\n      // force network communication<br/>\n      yourRMIStub.isClientStillConnected();<br/>\n    } catch (RMIException ex){<br/>\n       throw new MyNoClientCommunicationException(&quot;client disconnect&quot;, ex);<br/>\n    }<br/>\n}<br/>\n<br/>\nfor unit tests build a mock wich is able to simmulate the error:<br/>\n<br/>\nclass MockClient implements Client{<br/>\n  void isClientStillConnected() throws MyNoClientCommunicationException{<br/>\n  if(System.getProperty(&quot;someTriggerKey&quot;).equals(&quot;true&quot;)){<br/>\n\tthrow new MyNoClientCommunicationException(&quot;unit test exeption&quot;);<br/>\n  } else {<br/>\n\t// do nothing<br/>\n  }<br/>\n}<br/>\n<br/>\n<br/>\nMaybe the easiest solution is to have a timestamp in your locklist when<br/>\nthe lock was aquired. let the server thread search for timed out locks.<br/>\n<br/>\nBernd</div>", 
+    "prevInTime": 7514, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049437693", 
+    "canDelete": false, 
+    "nextInTopic": 7516, 
+    "prevInTopic": 7492, 
+    "headers": {
+        "inReplyToHeader": "PDE1My4xZGNiMTIyNC4yYmJjY2JmMUBhb2wuY29tPg==", 
+        "messageIdInHeader": "PDAwMjYwMWMyZmE3MyQ2MWNlZWZkMCQxZjAzYThjMEBkZWxsPg=="
+    }
+}

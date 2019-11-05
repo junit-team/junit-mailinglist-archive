@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 18729, 
+    "senderId": "EW8NrGGFzQ2bbl31EgYQxz3nycN5_TbzMUC_yzF2X5tUSGM5YRZQFJOjYJkh2QsRRjqXrANaJkO45rdKfscpY01sTHmXgrUh2Ab8VL92Tg", 
+    "systemMessage": false, 
+    "subject": "Re: How to get test&#39;s name in JUnit 4", 
+    "from": "&quot;gabrielcooper&quot; &lt;gabriel.cooper@...&gt;", 
+    "authorName": "gabrielcooper", 
+    "msgSnippet": "... [...] ... [...] ... To get a test s name use this runner with the @RunWith(NameAwareTestClassRunner.class) at the top of your test class and inside your", 
+    "msgId": 18728, 
+    "rawEmail": "Return-Path: &lt;gabriel.cooper@...&gt;\r\nReceived: (qmail 4137 invoked by uid 7800); 12 Jan 2007 15:49:50 -0000\r\nX-Sender: gabriel.cooper@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 7642 invoked from network); 12 Jan 2007 14:53:19 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m26.grp.scd.yahoo.com with QMQP; 12 Jan 2007 14:53:19 -0000\r\nReceived: from unknown (HELO n25c.bullet.scd.yahoo.com) (66.218.67.216)\n  by mta7.grp.scd.yahoo.com with SMTP; 12 Jan 2007 14:53:18 -0000\r\nReceived: from [66.218.69.3] by n25.bullet.scd.yahoo.com with NNFMP; 12 Jan 2007 14:52:16 -0000\r\nReceived: from [66.218.66.87] by t3.bullet.scd.yahoo.com with NNFMP; 12 Jan 2007 14:52:16 -0000\r\nDate: Fri, 12 Jan 2007 14:52:14 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;eo87au+62mk@...&gt;\r\nIn-Reply-To: &lt;4f7da6b90701111204o2700a1b4obe34e24bc6345652@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0\r\nFrom: &quot;gabrielcooper&quot; &lt;gabriel.cooper@...&gt;\r\nSubject: Re: How to get test&#39;s name in JUnit 4\r\nX-Yahoo-Group-Post: member; u=294114387; y=adq9DTcDghZZlK3vVNH8s4XP9Fy82XYxUtH8RP1_hFd0MWfhf1sqeg\r\nX-Yahoo-Profile: gabrielcooper\r\nX-eGroups-Approved-By: ddoss_2006 &lt;didoss@...&gt; via email; 12 Jan 2007 15:49:49 -0000\r\n\r\n\n&gt; &gt; It seems like the RunListeneer would have a reference to the currently=\r\n\n&gt; &gt; running test, simply because of its &quot;testStarted&quot; and &quot;testFinished&quot;\n&gt;=\r\n &gt; functions \n[...]\n&gt; &gt; Is it possible to get access to this from within th=\r\ne test class\n&gt; &gt; itself?\n&gt; \n&gt; No, by design.  Sorry about that.\n[...] \n&gt; In=\r\nformation on custom runners is currently somewhat lacking.  It\n&gt; appears fr=\r\nom your later message that you&#39;ve somewhat successfully\n&gt; navigating the wa=\r\nters.  Any interest in writing up a short blog entry\n&gt; or article on your e=\r\nxperiences?  Thanks,\n&gt; \n&gt;    David Saff\n&gt;\n\n\nTo get a test&#39;s name use this r=\r\nunner with the\n@RunWith(NameAwareTestClassRunner.class) at the top of your =\r\ntest class\nand inside your @Before method do something like:\n\nString testNa=\r\nme =3D NameAwareTestClassRunner.getTestName();\n\nAnyway, here&#39;s the runner.\n=\r\n\n\n// NameAwareTestClassRunner.java\nimport org.junit.internal.runners.Initia=\r\nlizationError;\nimport org.junit.internal.runners.TestClassRunner;\nimport or=\r\ng.junit.runner.Description;\nimport org.junit.runner.notification.RunListene=\r\nr;\nimport org.junit.runner.notification.RunNotifier;\n\npublic class NameAwar=\r\neTestClassRunner extends TestClassRunner {\n\tpublic NameAwareTestClassRunner=\r\n(Class&lt;?&gt; klass) throws\nInitializationError {\n\t\tsuper(klass);\n\t}\n\n\tprivate =\r\nstatic String testName;\n\t\n\tprotected static String getName() {\n\t\treturn tes=\r\ntName;\n\t}\n\t\n\tprotected static void setName(final String name) {\n\t\ttestName =\r\n=3D name;\n\t}\n\t\n\tprotected static String getTestName() {\n\t\tif (testName =3D=\r\n=3D null)\n\t\t\treturn null;\n\t\t\n\t\tint last =3D testName.indexOf(&#39;(&#39;);\n\t\tif (la=\r\nst &lt; 0)\n\t\t\tlast =3D testName.length() + 1;\n\t\treturn testName.substring(0, l=\r\nast);\n\t}\n\t\n\tprivate static class NameListener extends RunListener {\n\t\t/** R=\r\necord start of tests, not suites */\n\t\tpublic void testStarted(Description d=\r\nescription) throws Exception {\n\t\t\tSystem.err.println(&quot; STARTED: &quot; + descrip=\r\ntion.getDisplayName());\n\t\t\tsetName(description.isTest() ? description.getDi=\r\nsplayName() : null);\n\t\t}\n\t\t\n\t\tpublic void testFinished(Description descript=\r\nion) throws Exception {\n\n\t\t\tSystem.err.println(&quot;FINISHED: &quot; + description.g=\r\netDisplayName());\n\t\t\tif (getName() !=3D null)\n\t\t\t\tif (getName().equals(desc=\r\nription.getDisplayName()))\n\t\t\t\t\tsetName(null);\n\t\t\t\telse\n\t\t\t\t\tthrow new Exce=\r\nption(&quot;Test name mismatch&quot;);\n\t\t}\n\t}\n\n\tpublic void run(final RunNotifier not=\r\nifier) {\n\t\tnotifier.addListener(new NameListener());\n\t\tsuper.run(notifier);=\r\n\n\t}\n}\n\n\n\n\n\n\n", 
+    "profile": "gabrielcooper", 
+    "topicId": 18651, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 294114387, 
+    "prevInTime": 18727, 
+    "contentTrasformed": false, 
+    "postDate": "1168613534", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18727, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwMTExMTIwNG8yNzAwYTFiNG9iZTM0ZTI0YmM2MzQ1NjUyQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGVvODdhdSs2Mm1rQGVHcm91cHMuY29tPg=="
+    }
+}

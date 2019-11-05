@@ -1,0 +1,30 @@
+{
+    "topicId": 14443, 
+    "postDate": "1125310817", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "qoy1yyT7NRNJuxTqzRO9esYrDKcgJmuverklfizqcSkmsWtTUTdWVWeHNKHVtovmyE7sxze6oQ0qMgse81Em8x0_IiA-bs92Z12_uXfKYw", 
+    "nextInTime": 14485, 
+    "userId": 12653864, 
+    "prevInTime": 14483, 
+    "prevInTopic": 14476, 
+    "headers": {
+        "inReplyToHeader": "PDQzMTIyMjRCLjkwODA1MDBAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQzMTJFMTYxLjIwMjA4MDlAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "referencesHeader": "PGRlaG85ZysyZmlzQGVHcm91cHMuY29tPiA8NDMwRDJBNDYuMzA1MDUwM0Byb2dlcnMuY29tPiA8NDMwRDg0MkEuMTA0MDcwNUBtZXRhbGFiLnVuYy5lZHU+IDw0MzBFNzRGMS4xMDUwMTA5QHJvZ2Vycy5jb20+IDw0MzBFRjBERS4xMDQwOEBtZXRhbGFiLnVuYy5lZHU+IDw0MzEyMjI0Qi45MDgwNTAwQHJvZ2Vycy5jb20+"
+    }, 
+    "authorName": "Elliotte Harold", 
+    "numMessagesInTopic": 21, 
+    "msgSnippet": "... That s not quite what s going on. getCause() Returns the cause of this throwable or null if the cause is nonexistent or unknown. (The cause is the", 
+    "contentTrasformed": false, 
+    "msgId": 14484, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;elharo@...&gt;\r\nX-Sender: elharo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 11668 invoked from network); 29 Aug 2005 10:21:34 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m1.grp.scd.yahoo.com with QMQP; 29 Aug 2005 10:21:34 -0000\r\nReceived: from unknown (HELO mail28.sea5.speakeasy.net) (69.17.117.30)\n  by mta3.grp.scd.yahoo.com with SMTP; 29 Aug 2005 10:21:34 -0000\r\nReceived: (qmail 6386 invoked from network); 29 Aug 2005 10:20:18 -0000\r\nReceived: from dsl254-067-087.nyc1.dsl.speakeasy.net (HELO [192.168.254.100]) (elharo@[216.254.67.87])\n          (envelope-sender &lt;elharo@...&gt;)\n          by mail28.sea5.speakeasy.net (qmail-ldap-1.03) with AES256-SHA encrypted SMTP\n          for &lt;junit@yahoogroups.com&gt;; 29 Aug 2005 10:20:18 -0000\r\nMessage-ID: &lt;4312E161.2020809@...&gt;\r\nDate: Mon, 29 Aug 2005 06:20:17 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0+ (Macintosh/20050712)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;deho9g+2fis@...&gt; &lt;430D2A46.3050503@...&gt; &lt;430D842A.1040705@...&gt; &lt;430E74F1.1050109@...&gt; &lt;430EF0DE.10408@...&gt; &lt;4312224B.9080500@...&gt;\r\nIn-Reply-To: &lt;4312224B.9080500@...&gt;\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 2:12:4:0\r\nFrom: Elliotte Harold &lt;elharo@...&gt;\r\nSubject: Re: [junit] Unit testing Exception classes\r\nX-Yahoo-Group-Post: member; u=12653864; y=EAASD3yN8EZAhGyyL84cslHbwsfTqus1El0pVH1YQ-8zlJpB\r\n\r\nJ. B. Rainsberger wrote:\n\n&gt; Incidentally, I just learned that, by default, an exception /is/ its own \n&gt; cause in JDK 1.4, so are you sure you want to stop people from doing that?\n\nThat&#39;s not quite what&#39;s going on. getCause() &quot;Returns the cause of this \nthrowable or null if the cause is nonexistent or unknown. (The cause is \nthe throwable that caused this throwable to get thrown.)&quot; Further \ninitCause is specified to throw an IllegalArgumentException &quot;if cause is \nthis throwable. (A throwable cannot be its own cause.)&quot; The getCause \nmethod works like this:\n\n     public Throwable getCause() {\n         return (cause==this ? null : cause);\n     }\n\nThe intiCause method looks like this:\n\n     public synchronized Throwable initCause(Throwable cause) {\n         if (this.cause != this)\n             throw new IllegalStateException(&quot;Can&#39;t overwrite cause&quot;);\n         if (cause == this)\n             throw new IllegalArgumentException(&quot;Self-causation not \npermitted&quot;);\n         this.cause = cause;\n         return this;\n     }\n\nI don&#39;t know why internally the default cause is set to this. I suspect \nit&#39;s some sort of optimization, but this is purely a private \nimplementation detail. It is never exposed through the public API.\n\n&gt; This I understand. I guess I&#39;ve just never seen that level of \n&gt; sophistication in exception classes before. It looks like unnecessary \n&gt; complexity to me, but then I don&#39;t understand the problems you&#39;re trying \n&gt; to solve. I&#39;m sure that if you explained it to me over beer, I would see \n&gt; it differently. :)\n\nIt&#39;s implementation complexity, but it results in less API complexity. \nBetter to reuse the existing, standard API than to invent something new. \nIf you want chained exception handling that&#39;s compatible across \nversions, this is what you need.\n\n\n-- \n﻿Elliotte Rusty Harold  elharo@...\nXML in a Nutshell 3rd Edition Just Published!\nhttp://www.cafeconleche.org/books/xian3/\nhttp://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim\n\n", 
+    "subject": "Re: [junit] Unit testing Exception classes"
+}

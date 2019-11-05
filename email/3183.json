@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 3184, 
+    "senderId": "7detLKXH_dDuYwwQHvZULbIDat8DS60F2YvjbkKN49uT7wPDXSXRj6j7yFY_n6i6O25DSHpLfxmGZ6Cee4fvC6rrCLJ8vUVz6B-0w48sT28adVE", 
+    "systemMessage": false, 
+    "subject": "RE: Who can tell me the scape of unit test of class.", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Actually, it *can* break, depending on your naming conventions. public class Broken { private String message; public Broken(String message) { message =", 
+    "msgId": 3183, 
+    "profile": "nails762", 
+    "topicId": 3167, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-588221247\">Actually, it *can* break, depending on your naming conventions.<br/>\n<br/>\npublic class Broken {<br/>\n    private String message;<br/>\n    public Broken(String message) {<br/>\n        message = message;<br/>\n    }<br/>\n    public String getMessage() { return message; }<br/>\n    public void setMessage() { message = message; }<br/>\n}<br/>\n<br/>\nThis class is broken, but this simple test would expose the bug.<br/>\n<br/>\npublic class BrokenTestCase extends TestCase {<br/>\n    public BrokenTestCase(String name) { super(name); }<br/>\n    public void testCreate() {<br/>\n        Broken b = new Broken(&quot;Hello&quot;);<br/>\n        assertEquals(&quot;Hello&quot;, b.getMessage());<br/>\n        b.setMessage(&quot;Hello2&quot;);<br/>\n        assertEquals(&quot;Hello2&quot;, b.getMessage());<br/>\n    }<br/>\n}<br/>\n<br/>\nNow you will likely write, &quot;I would never make that mistake.&quot; You might, if <br/>\nyou do a global search-and-replace on your code and the end result is the <br/>\ncode above. I leave it as an exercise to the reader to imagine how that <br/>\ncould happen. HINT: It happened to me. :)<br/>\n<br/>\nMy suggestions:<br/>\n<br/>\n1. Use the immutable object idiom. (No setX() methods. If you need a new <br/>\nvalue, make a new object.)<br/>\n2. Write a simple test to ensure that what you pass to the constructor is <br/>\nwhat the getX() methods answer.<br/>\n<br/>\nDo this until you start writing perfect code all the time. :)<br/>\n<br/>\nJBR.<br/>\n<br/>\n----- Begin original message -----<br/>\nHow about a class that can&#39;t possibly break?  Say a class with only setters<br/>\nand getters?<br/>\n<br/>\n<br/>\n<br/>\n_________________________________________________________________<br/>\nGet your FREE download of MSN Explorer at <a rel=\"nofollow\" target=\"_blank\" href=\"http://explorer.msn.com/intl.asp\">http://explorer.msn.com/intl.asp</a></div>", 
+    "prevInTime": 3182, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1005064727", 
+    "canDelete": false, 
+    "nextInTopic": 3184, 
+    "prevInTopic": 3178, 
+    "headers": {
+        "messageIdInHeader": "PEYxMWRweGNTeWN3b3BZSFRseDQwMDAwOTg5MEBob3RtYWlsLmNvbT4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 11832, 
+    "senderId": "3PF0dnTssrpU5XdHhbDwmCmdbgof5DzbU-IwvaE-YTeT4LgSxcDkdKieAmymQXnkIisEUIiGczWTJgV-n9DDhGJg205sg3-71Ic", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: awkward threading situation", 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "authorName": "Timothy Wall", 
+    "msgSnippet": "Add another listener to your window for WINDOW_OPENED (note that this event is only posted once for any given window) which sets a flag.  In your main test", 
+    "msgId": 11831, 
+    "topicId": 11797, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106503903, 
+    "messageBody": "<div id=\"ygrps-yiv-1415172355\">Add another listener to your window for WINDOW_OPENED (note that this <br/>\nevent is only posted once for any given window) which sets a flag.  In <br/>\nyour main test thread, wait for that flag to be set before posting the <br/>\ninvokeAndWait empty runnable.  This ensures that your runnable gets <br/>\nprocessed *after* your original WINDOW_OPENED handler has finished <br/>\n(unless it spawns threads or some such).<br/>\n<br/>\nYou might also check out <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:java-gui-testing@yahoogroups.com\">java-gui-testing@yahoogroups.com</a>.  There are <br/>\nseveral extensions to JUnit which are specifically designed to handle <br/>\nsuch issues (see the Links/Tools area of the group).<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Aug 22, 2004, at 2:45 AM, sagyrozman wrote:<br/>\n<br/>\n&gt; thanks for the reply.<br/>\n&gt; I was thinking the same thing but didn&#39;t know how to sync with the<br/>\n&gt; AWT event queue thread.<br/>\n&gt; I tried it and it passed at first attempt, but the next attempts<br/>\n&gt; didn&#39;t always pass.<br/>\n&gt; I think the problem is the empty runnable is sometimes added before<br/>\n&gt; the setVisible(true) event is added to the queue, maybe because a<br/>\n&gt; different thread (other than the main thread) is responsible for<br/>\n&gt; adding the events to the AWT queue?<br/>\n&gt;<br/>\n&gt; Is a there a different way to synchronize with the swing event queue?<br/>\n&gt;<br/>\n&gt; If this topic is out of scope for this discussion group, please let<br/>\n&gt; me know. It might be better suited for a swing discussion group.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Timothy Wall &lt;twall@o...&gt; wrote:<br/>\n&gt;&gt; It&#39;s entirely possible that your main thread checks the mock status<br/>\n&gt;&gt; prior to the events actually being handled.<br/>\n&gt;&gt;<br/>\n&gt;&gt; Consider adding the following after frame.show():<br/>\n&gt;&gt;<br/>\n&gt;&gt; SwingUtilities.invokeAndWait(new Runnable() { public void run()<br/>\n&gt; { }});<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; On Aug 18, 2004, at 2:15 AM, sagyrozman wrote:<br/>\n&gt;&gt;<br/>\n&gt;&gt;&gt; hi all,<br/>\n&gt;&gt;&gt; I was writing a test for a GUI class which should delegate GUI<br/>\n&gt; events<br/>\n&gt;&gt;&gt; to another object:<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; class MyFrame extends JFrame implements WindowListener{<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; TargetForEvents target;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; public void setTarget(TargetForEvents t) {<br/>\n&gt;&gt;&gt;    target = t;<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; ....<br/>\n&gt;&gt;&gt; }<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; in the test case:<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; ...<br/>\n&gt;&gt;&gt; MyFrame frame = new MyFrame();<br/>\n&gt;&gt;&gt; frame.setTarget(mockTarget);<br/>\n&gt;&gt;&gt; frame.setVisible();<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; now I check that the expected functions where called on the taget<br/>\n&gt; in<br/>\n&gt;&gt;&gt; response to the WindowOpened events of MyFrame.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; the test fails even though it should have passed because using the<br/>\n&gt;&gt;&gt; eclipse debuger I can see that the mock is called upon in the<br/>\n&gt; swing<br/>\n&gt;&gt;&gt; event handling thread, but when checking back with the main thread<br/>\n&gt;&gt;&gt; the mock is not affected by these changes.<br/>\n&gt;&gt;&gt; Another weird thing: I tried to do a similar test only not through<br/>\n&gt;&gt;&gt; junit, instead of asserting that the methods where called, I wrote<br/>\n&gt;&gt;&gt; the mock log string out to the stdout. This time the output shows<br/>\n&gt;&gt;&gt; that all methods where called in the correct order.<br/>\n&gt;&gt;&gt; Am I missing something here? please let me know if any further<br/>\n&gt;&gt;&gt; clarification is needed.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Yahoo! Groups Links<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 11830, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1093198625", 
+    "canDelete": false, 
+    "nextInTopic": 11836, 
+    "prevInTopic": 11825, 
+    "headers": {
+        "inReplyToHeader": "PGNnOWZkcyszZGpmQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDc4QUExODdELUY0NjctMTFEOC04NkI0LTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4=", 
+        "referencesHeader": "PGNnOWZkcyszZGpmQGVHcm91cHMuY29tPg=="
+    }
+}

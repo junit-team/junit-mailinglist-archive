@@ -1,0 +1,29 @@
+{
+    "topicId": 1848, 
+    "postDate": "994840494", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Uwe Guenther &lt;uwe@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "lcdiCYsVurGbQs_ehnO3kAcDRDkiZE_qTjSz6TEtBGda8hgqcYJYwoaxApqPC0jIxZczo94urJj2wjsPw1AI2IU", 
+    "nextInTime": 1872, 
+    "userId": 0, 
+    "prevInTime": 1870, 
+    "prevInTopic": 1870, 
+    "headers": {
+        "messageIdInHeader": "PDNCNEMwRkFFLjVCRTk1ODQzQG9wYS5mYW1pbHkubG9jYWw+", 
+        "referencesHeader": "PE9GNUE4NDA0Q0EuOTg2RUQ0RjItT044NTI1NkE4NS4wMDcyOTI3NEB0b3JvbGFiLmlibS5jb20+"
+    }, 
+    "authorName": "Uwe Guenther", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "Hello, you opened my eyes. I tried to prove my class in a mathemaical way ;-) I believe it s mutch easier to do the test in junit as i would do it in a simple", 
+    "contentTrasformed": false, 
+    "msgId": 1871, 
+    "nextInTopic": 1883, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;uwe@...&gt;\r\nX-Sender: uwe@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 11 Jul 2001 08:35:28 -0000\r\nReceived: (qmail 97622 invoked from network); 11 Jul 2001 08:35:27 -0000\r\nReceived: from unknown (10.1.10.26) by l10.egroups.com with QMQP; 11 Jul 2001 08:35:27 -0000\r\nReceived: from unknown (HELO moutvdom01.kundenserver.de) (195.20.224.200) by mta1 with SMTP; 11 Jul 2001 08:35:27 -0000\r\nReceived: from [195.20.224.204] (helo=mrvdom00.kundenserver.de) by moutvdom01.kundenserver.de with esmtp (Exim 2.12 #2) id 15KFSw-0005ZQ-00 for junit@yahoogroups.com; Wed, 11 Jul 2001 10:35:26 +0200\r\nReceived: from b6c14.pppool.de ([213.7.108.20] helo=vater.family.local) by mrvdom00.kundenserver.de with esmtp (Exim 2.12 #2) id 15KFSu-0006oZ-00 for junit@yahoogroups.com; Wed, 11 Jul 2001 10:35:24 +0200\r\nReceived: from opa.family.local (opa.family.local [192.168.1.100]) by vater.family.local (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) with ESMTP id KAA12566 for &lt;junit@yahoogroups.com&gt;; Wed, 11 Jul 2001 10:35:42 +0200\r\nReceived: from opa.family.local (localhost [127.0.0.1]) by opa.family.local (8.11.0/8.11.0/SuSE Linux 8.11.0-0.4) with ESMTP id f6B8Yuk28978 for &lt;junit@yahoogroups.com&gt;; Wed, 11 Jul 2001 10:35:41 +0200\r\nSender: uwe@...\r\nMessage-ID: &lt;3B4C0FAE.5BE95843@...&gt;\r\nDate: Wed, 11 Jul 2001 10:34:54 +0200\r\nX-Mailer: Mozilla 4.77 [en] (X11; U; Linux 2.2.19 i686)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] names for overloading methods\r\nReferences: &lt;OF5A8404CA.986ED4F2-ON85256A85.00729274@...&gt;\r\nContent-Type: multipart/signed; protocol=&quot;application/x-pkcs7-signature&quot;; micalg=sha1; boundary=&quot;------------ms7AD7AC34C23BF74BF1F130E7&quot;\r\nFrom: Uwe Guenther &lt;uwe@...&gt;\r\n\r\n\r\n--------------ms7AD7AC34C23BF74BF1F130E7\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\n\r\nHello,\n\nyou opened my eyes. I tried to prove my class in a mathemaical way ;-)\nI believe it&#39;s mutch easier to do the test in junit as i would do it \nin a simple main method in every class to test the behavior of this class.\n\nI am right in the interpretation of your answer?\n\n-- \nUwe\n\n\nrainsber@... wrote:\n&gt; \n&gt; Step 1: Try to test the *feature* and not just each method. That might\n&gt; solve your problem, by giving you a natural name for those tests.\n&gt; \n&gt; As an example, when I test that my data model class handles a data store\n&gt; with no widgets in it, I generally write a test like:\n&gt; \n&gt; testNoWidgets() {\n&gt;     MockDataModel model = new MockDataModel();    // MockDataModel extends\n&gt; DataModel\n&gt;     model.ensureNoWidgets();    // special method on mock data model to let\n&gt; me &quot;sneak in&quot; and change things.\n&gt; \n&gt;     // Test public interface of DataModel when there are no widgets.\n&gt;     assertEquals(0, model.countWidgets());\n&gt; \n&gt;     assertTrue(model.collectAllWidgets().isEmpty());\n&gt; \n&gt;     assertTrue(model.collectAllWidgets(new WidgetFilter() {\n&gt;         public void accept(Widget each) {\n&gt;             // Accept all widgets.\n&gt;         }\n&gt;     }).isEmpty());\n&gt; \n&gt;     model.eachWidget(new WidgetBlock() {\n&gt;         public void execute(Widget each) {\n&gt;             fail(&quot;How did I get here?!&quot;);\n&gt;         }\n&gt;     });\n&gt;     ...\n&gt; }\n&gt; \n&gt; Notice that I create a scenario, then test each method under that scenario.\n&gt; This is an inverse view from writing a separate test for each method, then\n&gt; varying the scenarios.\n&gt; \n&gt; Step 2: If Step 1 fails because you can&#39;t figure out a good way to do it,\n&gt; then there is no &quot;rule&quot;. I would suggest naming the test methods by what\n&gt; the method under test *does* and not its signature.\n&gt; \n&gt; testEngineDigestReturnsEmptyBuffer() {\n&gt;     // simulate/set up empty buffer...\n&gt;     assertNotNull(&quot;engineDigest() returned null?!&quot;, myObject.engineDigest\n&gt; ());\n&gt;     assertEquals(0, myObject.engineDigest().length);\n&gt; }\n&gt; ...\n&gt; testEngineDigestAcceptsEmptyBuffer() {\n&gt;     assertEquals(0, engineDigest(new byte[0], 0, 0));\n&gt; }\n&gt; \n&gt; You would have similar tests for buffers of different sizes, contents, or\n&gt; whatever variables might change, given the feature you&#39;re trying to\n&gt; implement.\r\n--------------ms7AD7AC34C23BF74BF1F130E7\r\nContent-Type: application/x-pkcs7-signature; name=&quot;smime.p7s&quot;\r\nContent-Disposition: attachment; filename=&quot;smime.p7s&quot;\r\nContent-Description: S/MIME Cryptographic Signature\r\n\r\n[ Attachment content not displayed ]\r\n--------------ms7AD7AC34C23BF74BF1F130E7--\r\n\n", 
+    "subject": "Re: [junit] names for overloading methods"
+}

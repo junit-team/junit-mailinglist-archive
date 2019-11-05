@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 8726, 
+    "senderId": "NCECiASadaQYn_fUqqO8o6RoPMLCde45DFYXXHiz13IoivmMYgqEWMnF_YmreTkPu2yykBJ_VjN8dsvYLWCO0zKqV1AOyfVSo8CupOPQ_NB42jqW0l4C", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: JUnit test class reloading patch", 
+    "from": "&quot;Stirling, Scott&quot; &lt;scott.stirling@...&gt;", 
+    "authorName": "Stirling, Scott", 
+    "msgSnippet": "Hi Erich, Application classes would also go on the junit.test.path (junit.class.path ?).  Thus the regular java.class.path would only be used for 3rd party", 
+    "msgId": 8725, 
+    "profile": "stirlingdev", 
+    "topicId": 8699, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150177187, 
+    "messageBody": "<div id=\"ygrps-yiv-1302073600\">Hi Erich,\r<br/>\n \r<br/>\nApplication classes would also go on the junit.test.path (junit.class.path ?).  Thus the regular java.class.path would only be used for 3rd party libraries and other classes not needing to be reloaded dynamically.  I was so focused on situations where the class loading breaks without classes being changed (tests or application) I forgot about applications. :-)\r<br/>\n \r<br/>\nThe manipulation of another properties file, -D JVM arg or command line arg seems unavoidable for solving this problem, since custom classloaders need a configuration mechanism apart from that provided for the system classloader (such as the -cp command line switch).  An established convention for a directory in which to put reloadable app and test classes would also work, but seems more of a pain than a separate classpath.\r<br/>\n \r<br/>\nScott S.\r<br/>\n \r<br/>\n \r<br/>\n-----Original Message----- \r<br/>\nFrom: Erich Gamma [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:erich_gamma@...\">erich_gamma@...</a>] \r<br/>\n\r<br/>\nHi Scott,\r<br/>\n\r<br/>\nmoving to a Java 2 ClassLoader is the right direction.\r<br/>\n\r<br/>\nIf I understand it properly then only the test cases are\r<br/>\non the junit.test.path. This means only test cases\r<br/>\ncan be reloaded, but not application classes.\r<br/>\nIf this is correct then I don&#39;t see how the solution handles\r<br/>\nthe case where a fix to a test requires a change in\r<br/>\nan application class. Since the application class\r<br/>\nisn&#39;t reloaded the test runner needs to be restarted.\r<br/>\n\r<br/>\n--erich\r<br/>\n\r<br/>\n\r<br/>\n\r<br/>\n\r<br/>\n                                                                          \r<br/>\n             &quot;Scott Stirling&quot;                                             \r<br/>\n             &lt;scottstirling@rc                                            \r<br/>\n             n.com&gt;                                                     To\r<br/>\n                                       &quot;Junit@Yahoogroups. Com&quot;           \r<br/>\n             07/19/2003 03:31          &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;            \r<br/>\n             PM                                                         cc\r<br/>\n                                                                          \r<br/>\n                                                                   Subject\r<br/>\n             Please respond to         JUnit test class reloading patch   \r<br/>\n             &lt;scottstirling@rc                                            \r<br/>\n                  n.com&gt;                                                  \r<br/>\n                                                                          \r<br/>\n                                                                          \r<br/>\n                                                                          \r<br/>\n                                                                          \r<br/>\n\r<br/>\n\r<br/>\n\r<br/>\n\r<br/>\nHi,\r<br/>\n\r<br/>\nI&#39;d like to propose a fix for JUnit test class reloading.  The proposed fix\r<br/>\nis a Java 2 custom ClassLoader that loads test classes from its own\r<br/>\nclasspath and always delegates to the system/parent ClassLoader first\r<br/>\nwithout relying on anything like excluded.properties to filter system and\r<br/>\nnon-system classes.\r<br/>\n\r<br/>\nnote: this is how Servlets, JSPs, EJBs, etc. are reloaded dynamically on\r<br/>\nchange by J2EE containers that support dynamic reloads -- the Servlet,\r<br/>\nJSPs,\r<br/>\nEJBs, etc. are not on the system classpath, so the system classloader can\r<br/>\nalways be delegated to and will not find the classes and this leave it to\r<br/>\nthe custom loader(s) to load them.  All defined in the Java 2 ClassLoader\r<br/>\ndelegation contract.\r<br/>\n\r<br/>\nThe proposed means of configuring the custom loader&#39;s classpath is to use a\r<br/>\nJava system property named &quot;junit.test.path&quot;.  This can be set as a command\r<br/>\nline argument, or could be read from a properties file.\r<br/>\n\r<br/>\nI have implemented this proposal in a small patch that can be downloaded\r<br/>\nhere:\r<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://users.rcn.com/scottstirling/junit-patch.jar.\">http://users.rcn.com/scottstirling/junit-patch.jar.</a>\r<br/>\n\r<br/>\nA regression test (XmlTest.java) and series of steps for reproducing the\r<br/>\noriginal TestCaseClassLoader bug and running the test with the patch are\r<br/>\nhere:\r<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://users.rcn.com/scottstirling/2003/07/19.html#a61\">http://users.rcn.com/scottstirling/2003/07/19.html#a61</a>\r<br/>\n\r<br/>\nThank you,\r<br/>\nScott Stirling\r<br/>\nFramingham, MA</div>", 
+    "prevInTime": 8724, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1058882611", 
+    "canDelete": false, 
+    "nextInTopic": 8798, 
+    "prevInTopic": 8718, 
+    "headers": {
+        "messageIdInHeader": "PDcyMDY4Mjk4Q0Q5OTEwNEFBRURFMkZERjg5QUMxNjBEMDdGRjVCQGF2YW50aS5jb3JwLndvcmtzY2FwZS5uZXQ+"
+    }
+}

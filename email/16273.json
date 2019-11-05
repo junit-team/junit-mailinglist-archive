@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 21, 
+    "nextInTime": 16274, 
+    "senderId": "bHVJbHsMrAED6u8Y_ULnggXEmxsEl4BIzO0q7LMFUou4RvSkIceo7L2s39hQ5ynWzEYAZyHjM9j9_TnYgxw2BmujauMRZP1q7U0", 
+    "systemMessage": false, 
+    "subject": "testing switch statements in method", 
+    "from": "Kamal Ahmed &lt;KAhmed@...&gt;", 
+    "authorName": "Kamal Ahmed", 
+    "msgSnippet": "Hi, I am trying to test the following method , in the package different then where my test cases are: public Date getNextCheckDate(Date inStart) { ", 
+    "msgId": 16273, 
+    "topicId": 16273, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 253370470, 
+    "messageBody": "<div id=\"ygrps-yiv-1520511033\">Hi,<br/>\n<br/>\n <br/>\n<br/>\nI am trying to test the following method , in the package different then<br/>\nwhere my test cases are:<br/>\n<br/>\n <br/>\n<br/>\n    public Date getNextCheckDate(Date inStart) {<br/>\n<br/>\n        cal.setTime(inStart);<br/>\n<br/>\n <br/>\n<br/>\n        switch (type) {<br/>\n<br/>\n        case TOP_OF_MINUTE:<br/>\n<br/>\n            cal.set(Calendar.SECOND, 0);<br/>\n<br/>\n            cal.set(Calendar.MILLISECOND, 0);<br/>\n<br/>\n            cal.add(Calendar.MINUTE, 1);<br/>\n<br/>\n            break;<br/>\n<br/>\n        case TOP_OF_HOUR:<br/>\n<br/>\n            cal.set(Calendar.MINUTE, 0);<br/>\n<br/>\n            cal.set(Calendar.SECOND, 0);<br/>\n<br/>\n            cal.set(Calendar.MILLISECOND, 0);<br/>\n<br/>\n            cal.add(Calendar.HOUR_OF_DAY, 1);<br/>\n<br/>\n            break;<br/>\n<br/>\n        case HALF_DAY:<br/>\n<br/>\n            cal.set(Calendar.MINUTE, 0);<br/>\n<br/>\n            cal.set(Calendar.SECOND, 0);<br/>\n<br/>\n            cal.set(Calendar.MILLISECOND, 0);<br/>\n<br/>\n            int hour = cal.get(Calendar.HOUR_OF_DAY);<br/>\n<br/>\n            if (hour &lt; 12) {<br/>\n<br/>\n                cal.set(Calendar.HOUR_OF_DAY, 12);<br/>\n<br/>\n            } else {<br/>\n<br/>\n                cal.set(Calendar.HOUR_OF_DAY, 0);<br/>\n<br/>\n                cal.add(Calendar.DAY_OF_MONTH, 1);<br/>\n<br/>\n            }<br/>\n<br/>\n            break;<br/>\n<br/>\n        case TOP_OF_DAY:<br/>\n<br/>\n            cal.set(Calendar.HOUR_OF_DAY, 0);<br/>\n<br/>\n            cal.set(Calendar.MINUTE, 0);<br/>\n<br/>\n            cal.set(Calendar.SECOND, 0);<br/>\n<br/>\n            cal.set(Calendar.MILLISECOND, 0);<br/>\n<br/>\n            cal.add(Calendar.DATE, 1);<br/>\n<br/>\n            break;<br/>\n<br/>\n        case TOP_OF_WEEK:<br/>\n<br/>\n            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());<br/>\n<br/>\n            cal.set(Calendar.HOUR_OF_DAY, 0);<br/>\n<br/>\n            cal.set(Calendar.SECOND, 0);<br/>\n<br/>\n            cal.set(Calendar.MILLISECOND, 0);<br/>\n<br/>\n            cal.add(Calendar.WEEK_OF_YEAR, 1);<br/>\n<br/>\n            break;<br/>\n<br/>\n        case TOP_OF_MONTH:<br/>\n<br/>\n            cal.set(Calendar.DATE, 1);<br/>\n<br/>\n            cal.set(Calendar.HOUR_OF_DAY, 0);<br/>\n<br/>\n            cal.set(Calendar.SECOND, 0);<br/>\n<br/>\n            cal.set(Calendar.MILLISECOND, 0);<br/>\n<br/>\n            cal.add(Calendar.MONTH, 1);<br/>\n<br/>\n            break;<br/>\n<br/>\n        default:<br/>\n<br/>\n            throw new IllegalStateException(&quot;Unknown periodicity type.&quot;);<br/>\n<br/>\n        }<br/>\n<br/>\n        return cal.getTime();<br/>\n<br/>\n <br/>\n<br/>\n    } // getNextCheckDate(Date inStart)<br/>\n<br/>\n <br/>\n<br/>\nHere is my test class:<br/>\n<br/>\n <br/>\n<br/>\npublic class TimePeriodTest extends TestCase {<br/>\n<br/>\n <br/>\n<br/>\n          private static final TimeZone gmtTimeZone =<br/>\nTimeZone.getTimeZone(&quot;GMT&quot;);<br/>\n<br/>\n          private Date d;<br/>\n<br/>\n <br/>\n<br/>\n          TimePeriod tp;<br/>\n<br/>\n <br/>\n<br/>\n          Locale loc;<br/>\n<br/>\n <br/>\n<br/>\n          // int type;<br/>\n<br/>\n <br/>\n<br/>\n          /**<br/>\n<br/>\n           * public int getType() { return type; }<br/>\n<br/>\n           */<br/>\n<br/>\n <br/>\n<br/>\n          public void testGetType() {<br/>\n<br/>\n                   // System.out.println(gmtTimeZone.getDisplayName());<br/>\n<br/>\n                   assertEquals(gmtTimeZone.getDisplayName(), &quot;Greenwich<br/>\nMean Time&quot;);<br/>\n<br/>\n <br/>\n<br/>\n          }<br/>\n<br/>\n          public void testgetNextCheckDate()<br/>\n<br/>\n          {<br/>\n<br/>\n                   tp = new<br/>\nTimePeriod().getNextCheckDate(d.after(2006-03-05));<br/>\n<br/>\n          }<br/>\n<br/>\n <br/>\n<br/>\n}<br/>\n<br/>\n <br/>\n<br/>\nAny idea, Anyone on how to go about testing this? Because, When I am trying<br/>\nto use the TimePeriod constructor, I get an error: <br/>\n<br/>\n&quot;Change the visibility of TimePeriod.java to public.<br/>\n<br/>\n <br/>\n<br/>\nThanks,<br/>\n<br/>\n-Kamal.<br/>\n<br/>\n <br/>\n<br/>\n <br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 16272, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1141600072", 
+    "canDelete": false, 
+    "nextInTopic": 16274, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDVCMTBFNTBFMTRBNDU5NEVCMUI1NTY2QjY5QUQ5NDA3MEQxQUFDNjJAbWFpbGVhc3Q+"
+    }
+}

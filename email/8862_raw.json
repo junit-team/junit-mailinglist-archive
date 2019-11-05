@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 30, 
+    "nextInTime": 8863, 
+    "senderId": "zZveY3iIL4NH5CjuX5V_97FnupeaZ1KkAtu9Hy8btFNcxW4oCcwBeiBo-EKxTkuiUsUYh6j_X7rKOjARTKKj8AaTrtOphfB8", 
+    "systemMessage": false, 
+    "subject": "Re: How to test console output?", 
+    "from": "&quot;jxingtang&quot; &lt;jxingtang@...&gt;", 
+    "authorName": "jxingtang", 
+    "msgSnippet": "... StringWriter ... to ... to a ... create a new one. ... I have found a way to solve the problem. I calls the getBuffer()to get the string buffer from the", 
+    "msgId": 8862, 
+    "rawEmail": "Return-Path: &lt;jxingtang@...&gt;\r\nReceived: (qmail 96083 invoked by uid 7800); 30 Jul 2003 16:53:39 -0000\r\nX-Sender: jxingtang@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 29000 invoked from network); 30 Jul 2003 14:55:11 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m16.grp.scd.yahoo.com with QMQP; 30 Jul 2003 14:55:11 -0000\r\nReceived: from unknown (HELO n19.grp.scd.yahoo.com) (66.218.66.74)\n  by mta1.grp.scd.yahoo.com with SMTP; 30 Jul 2003 14:55:11 -0000\r\nReceived: from [66.218.67.160] by n19.grp.scd.yahoo.com with NNFMP; 30 Jul 2003 14:55:10 -0000\r\nDate: Wed, 30 Jul 2003 14:55:08 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: How to test console output?\r\nMessage-ID: &lt;bg8m8c+8es5@...&gt;\r\nIn-Reply-To: &lt;200307301602220838.004E8372@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3296\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;jxingtang&quot; &lt;jxingtang@...&gt;\r\nX-Yahoo-Group-Post: member; u=126373237\r\nX-Yahoo-Profile: jxingtang\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 30 Jul 2003 16:53:39 -0000\r\n\r\n--- In junit@yahoogroups.com, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; \nwrote:\n&gt; \n&gt; &gt;So said jxingtang on 2003-07-29 --------------------\n&gt; &gt;--- In junit@yahoogroups.com, Alain Ravet &lt;alain.ravet.list@w...&gt; \n&gt; &gt;wrote:\n&gt; &gt;&gt; \n&gt; &gt;&gt; J. B. Rainsberger wrote:\n&gt; &gt;&gt; \n&gt; &gt;&gt; &gt;1. Don&#39;t use System.out in your application directly. Your \n&gt; &gt;application components should accept a PrintWriter as a parameter \n&gt; &gt;somewhere.\n&gt; &gt;&gt; &gt;2. In your tests, substitute a PrintWriter wrapping a \nStringWriter \n&gt; &gt;in place of System.out. This is easy to verify.\n&gt; &gt;&gt; &gt;\n&gt; &gt;&gt; \n&gt; &gt;&gt; Without providing any code - :) -, I&#39;d suggest you use AspectJ \nto \n&gt; &gt;&gt; implement solution  (2) without modifying the orignal code.\n&gt; &gt;&gt; You would capture all the &quot;System.out.println()&quot; and feed them \nto a \n&gt; &gt;&gt; StringWriter that you would use in your tests.\n&gt; &gt;&gt; \n&gt; &gt;&gt; If you use IDEA, the eap/under construction version offers - \n&gt; &gt;partial - \n&gt; &gt;&gt; AspectJ support.\n&gt; &gt;&gt; \n&gt; &gt;&gt; Alain Ravet\n&gt; &gt;\n&gt; &gt;A further question for StringWriter manipulation. Since I have to \n&gt; &gt;test several methods with console output which share the same \n&gt; &gt;StringWriter wrapped in the PrinterWriter. The problem is how to \n&gt; &gt;clean up the buffer after one test case. flush() method seems not \n&gt; &gt;work as expected.  \n&gt; \n&gt; Why do you have to share the same StringWriter for each test? Just \ncreate a new one.\n&gt; \n&gt; \n\nI have found a way to solve the problem. I calls the getBuffer()to \nget the string buffer from the StringWriter and delete its content.\n\nThe reason for me to share the StringWriter is that I do not want to \nconstruct a new class instance being tested for each method. I only \nconstruct on in setUp(). Here are of my code snippets.\n\npublic class MyClass\n{\n    private PrintWriter MyWriter;\n\t\n    // Constructor for production release\n    public MyClass()\n    {\n        MyWriter = new PrintWriter( System.out );\n    }\n\n    // Constructor for Junit testing\t\n    public MyClass( PrintWriter pw )\n    {\n        MyWriter = pw;\n    }\n\n    public void DumpOutput( Vector params )\n    {\n       // Clip ...\n    }\n};\n\npublic class MyClassTest extends TestCase\n{\n    private MyClass MyTestObj = null;\n\n    private StringWriter StrWriter = null;\n\n    // Clip ...\n\n    protected void setUp()\n    {\n        StrWriter = new StringWriter();\n\tPrintWriter prWriter = new PrintWriter( StrWriter );\n\tTestObj = new MyClass( prWriter );\n    }\n\n    public DumpOutputTest()\n    {\n        Vector testParams = new Vector();\n        // Testcase 1\n        testParams.addElement( &quot;A&quot; );\n        testParams.addElement( &quot;B&quot; );\n        testParams.addElement( &quot;C&quot; );\n        \n        TestObj.DumpOutput( testParams );\n \n        String outStr = StrWriter.toString();\n        \n        // Code to evaluate outStr\n        // Clip ....  \n        \n        // Clean buffer of StringWriter\n        StringBuffer sbuff = StrWriter.getBuffer();\n        sbuff.delete( 0, outStr.length());\n\n        // Testcase 2 \n        testParams.addElement( &quot;X&quot; );\n        testParams.addElement( &quot;Y&quot; );\n        testParams.addElement( &quot;Z&quot; );\n        \n        TestObj.DumpOutput( testParams );\n \n        String outStr = StrWriter.toString();\n        \n        // Code to evaluate outStr\n        // Clip ....  \n     }\n\n     // Clip ...\n};\n\nPlease give your valuable comments for my further correction and \nimprovements.\n\n\n", 
+    "profile": "jxingtang", 
+    "topicId": 8734, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 126373237, 
+    "prevInTime": 8861, 
+    "contentTrasformed": false, 
+    "postDate": "1059576908", 
+    "canDelete": false, 
+    "nextInTopic": 8864, 
+    "prevInTopic": 8850, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwNzMwMTYwMjIyMDgzOC4wMDRFODM3MkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PGJnOG04Yys4ZXM1QGVHcm91cHMuY29tPg=="
+    }
+}

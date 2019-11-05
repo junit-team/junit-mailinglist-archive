@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 4227, 
+    "senderId": "jHRqKIddXv3C74h7SMeHbGjUkhsD9xEJjQJx7YlHd7Hwayt2YRedTF8EVTe5gkusgfbraI6anpdPXF1yqpIIx3p0wTGkMw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing GUIs - mouse clicks, list selections, and other user  inputs", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... GUI testing is difficult, but not entirely impossible.  Testing some things is easier than others, depending on the testability of the APIs for the ", 
+    "msgId": 4226, 
+    "profile": "clarkware", 
+    "topicId": 4222, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "messageBody": "<div id=\"ygrps-yiv-516247836\"><a rel=\"nofollow\" target=\"_blank\" href=\"mailto:tumb@...\">tumb@...</a> wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Can someone give me some references to how JUnit can be used to test<br/>\n&gt; GUIs? All the examples I&#39;ve seen test class fields, computations, etc.<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>GUI testing is difficult, but not entirely impossible.  Testing some things<br/>\nis easier than others, depending on the testability of the APIs for the<br/>\ncollaborating widgets.<br/>\n<br/>\nFor example, I don&#39;t know of a way to programmatically click the column<br/>\nheader of a table.  I do know that buttons have a doClick() method, and maybe<br/>\nthere&#39;s a table header button available through the API somewhere. You may<br/>\nalso be able to employ a Robot to go through the motions, though I&#39;ve never<br/>\ntried it.<br/>\n<br/>\nOn the other hand, it&#39;s relatively easy to programmatically select an item<br/>\nfrom a combo box and test that it notifies its listener:<br/>\n<br/>\n    public class MockItemListener implements ItemListener {<br/>\n        public String item;<br/>\n<br/>\n        public void itemStateChanged(ItemEvent ie) {<br/>\n            item = (String)ie.getItem();<br/>\n        }<br/>\n    }<br/>\n<br/>\n    JComboBox combo = new JComboBox();<br/>\n    // setup combo box<br/>\n<br/>\n    MockItemListener itemListener = new MockItemListener();<br/>\n    combo.addItemListener(itemListener);<br/>\n<br/>\n    combo.setSelectedItem(&quot;Animals&quot;);<br/>\n<br/>\n    assertEquals(&quot;Animals&quot;, itemListener.item);<br/>\n<br/>\nThen you can go on to test that the panel next to the combo box contains the<br/>\nappropriate text when a &quot;real&quot; item listener is registered with the combo<br/>\nbox.  Again, it&#39;s basically testing that all the components of the MVC design<br/>\nare hooked up properly and receiving notification.<br/>\n<br/>\nI try to keep the GUI tests limited to the initialization, structure, and<br/>\nhookup of widgets.  It helps to keep the GUI as thin as possible, without any<br/>\napplication-level behavior buried within the view layer.<br/>\n<br/>\nA few months back Bill Wake hosted a test-first design challenge.  Bill wrote<br/>\nthe tests, we made them pass.  The last part had us build a GUI for a simple<br/>\nspreadsheet application.  It really opened my eyes to ways to reasonably test<br/>\nthe interaction of GUI components.  All the code and tests are available at<br/>\n<br/>\n    <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com/tfchallenge/part5/\">http://www.clarkware.com/tfchallenge/part5/</a><br/>\n<br/>\nThe GUI tests are captured in SheetFrameTest.java.<br/>\n<br/>\nMike<br/>\n<br/>\n--<br/>\nMike Clark<br/>\nClarkware Consulting, Inc.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.clarkware.com\">http://www.clarkware.com</a><br/>\n720.851.2014</div>", 
+    "prevInTime": 4225, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1014909303", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 4224, 
+    "headers": {
+        "messageIdInHeader": "PDNDN0U0OTc3LkNENkFBMkJEQGNsYXJrd2FyZS5jb20+", 
+        "referencesHeader": "PDIwMDIwMjI3LjIxMDgxNS4tMjE0MjMxLjkudHVtYkBqdW5vLmNvbT4="
+    }
+}

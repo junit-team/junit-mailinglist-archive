@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 7052, 
+    "senderId": "s-z4NaG2oM2j18KS6CLerL8vm2OTYxpZfcb3r__13PWi_Earqrm3y27CLLWJk15vUR8o0uNtv6b7IMor_ZuKEtOvay_KhfzxRYlgG2uk3ieoxwKO", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] FindByPrimaryKey has returned more than one value  error", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "My guess is that the record is never removed from the database, because the test fails before that point. I don t know how JUnit pages work with WebLogic, but", 
+    "msgId": 7051, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 24 Feb 2003 23:13:24 -0000\r\nReceived: (qmail 20606 invoked from network); 24 Feb 2003 23:13:24 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m15.grp.scd.yahoo.com with QMQP; 24 Feb 2003 23:13:24 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta3.grp.scd.yahoo.com with SMTP; 24 Feb 2003 23:13:24 -0000\r\nReceived: from quincy ([24.42.96.247])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.06 201-253-122-126-106-20020509) with ESMTP\n          id &lt;20030224231316.QDFA5541.fep02-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Mon, 24 Feb 2003 18:13:16 -0500\r\nMessage-ID: &lt;200302241813170808.003C5EB9@...&gt;\r\nIn-Reply-To: &lt;b35gct+v3el@...&gt;\r\nReferences: &lt;b35gct+v3el@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Mon, 24 Feb 2003 18:13:17 -0500\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] FindByPrimaryKey has returned more than one value\n  error\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.42.96.247] using ID &lt;srainsberger5790@...&gt; at Mon, 24 Feb 2003 18:13:16 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nMy guess is that the record is never removed from the database, because\nthe test fails before that point.\n\nI don&#39;t know how JUnit pages work with WebLogic, but if you can specify\nsetUp() and tearDown() methods, you may be able to get the behavior you\nexpect.\n\n\nSo said  alleycoder &lt;alison.craine@...&gt;  on  2/21/2003\n--------------------\n\n&gt;I am currently using EJB CMP2.0 and have written a JUnit test page. \n&gt;(Weblogic server 6.1 SP3) \n&gt;\n&gt;There is a record in the DB with a primary key &quot;The Org Test&quot; \n&gt;When I call the remove and get the record using the FindByPrimaryKey \n&gt;I get an error.. \n&gt;\n&gt;FindByPrimaryKey has returned more than one value. This violates the \n&gt;EJB CMP2.0 specs.. \n&gt;\n&gt;Has anyone ran into this? \n&gt;I am assuming that something is stuck in cache that says there is an \n&gt;extra bean for that primarykey?? \n&gt;Any time I use the FindByPrimaryKey for that record gives the same \n&gt;error. \n&gt;\n&gt;JUnit Test Page: \n&gt;public void testRemoveOrg() \n&gt;throws Exception \n&gt;{ \n&gt;System.out.println(&quot;**********************************&quot;); \n&gt;System.out.println(&quot;* TEST REMOVE *&quot;); \n&gt;\n&gt;System.out.println(&quot;**********************************&quot;); \n&gt;System.out.println(&quot;&quot;); \n&gt;try \n&gt;{ \n&gt;  transaction.begin(); \n&gt;  System.out.println(&quot;[TestOrgEntity.testRemoveOrg()] Org id is &quot; + \n&gt;orgObjId); \n&gt;\n&gt;  OrgPK orgPK = new OrgPK(); \n&gt;  //Set the PK id to the current record (Use PK Class) \n&gt;  orgPK.id = &quot;The Org Test&quot;; \n&gt;  //Load the record from the DB \n&gt;  Org oci = (Org) orgHome.findByPrimaryKey(orgPK); \n&gt;  System.out.println(oci.getId()); \n&gt;  //call the remove method of the Business interface \n&gt;  oci.remove(); \n&gt;  transaction.commit(); \n&gt;} \n&gt;catch(Exception e) \n&gt;{ \n&gt;  System.out.println(&quot;&gt;&gt; ERROR: RemoveOrg: &quot;+e); \n&gt;  transaction.rollback(); \n&gt;  throw e; \n&gt;} \n&gt;} // testRemoveDocCatalog \n&gt;\n&gt;\n&gt;Record is never removed from DB.. Error on the FindByPrimaryKey \n&gt;method. \n&gt;Any help would be appreciated. \n&gt;\n&gt;\n&gt;------------------------ Yahoo! Groups Sponsor\n---------------------~--&gt;\n&gt;Get 128 Bit SSL Encryption!\n&gt;http://us.click.yahoo.com/FpY02D/vN2EAA/xGHJAA/5cFolB/TM\n&gt;---------------------------------------------------------------------~-\n&gt;\n&gt;\n&gt;To unsubscribe from this group, send an email to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt; \n&gt;\n&gt;Your use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/\n\n\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\nAll correspondence (c) 2002 Diaspar Software Services.\nIf you want to use it, just ask; don&#39;t steal.\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 7013, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 7050, 
+    "contentTrasformed": false, 
+    "postDate": "1046128397", 
+    "canDelete": false, 
+    "nextInTopic": 7059, 
+    "prevInTopic": 7023, 
+    "headers": {
+        "inReplyToHeader": "PGIzNWdjdCt2M2VsQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwMjI0MTgxMzE3MDgwOC4wMDNDNUVCOUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGIzNWdjdCt2M2VsQGVHcm91cHMuY29tPg=="
+    }
+}

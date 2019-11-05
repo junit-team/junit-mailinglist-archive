@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8001, 
+    "senderId": "FSZIHAZKGbJNvOpZkwyHtH2I1y4BWclcijSzDHLUIGM-8PBmwwCGFatTJxH_XOl3JVre-0fgAdh6h8C2YAD2X34PAa6e4V0DQOyzMAOWt-BtYVPg7Zm9", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does Static Invocation call setUp()/tearDown()?", 
+    "from": "&quot;Vladimir R. Bossicard&quot; &lt;vladimir@...&gt;", 
+    "authorName": "Vladimir R. Bossicard", 
+    "msgSnippet": "... I don t see why on earth you would write a test by overwriting runTest, but let s take that as an example. If you take a look at the TestCase class, you ll", 
+    "msgId": 8000, 
+    "profile": "vbossica", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 43178095, 
+    "messageBody": "<div id=\"ygrps-yiv-1414878498\"><blockquote><span title=\"ireply\">&gt; However a question came up recently that if you specify the<br/>\n&gt; tests by overriding the runTest() method as below (static<br/>\n&gt; invocation), that setUp() and tearDown() do not get called<br/>\n&gt; for every method, but only get called once.<br/>\n<br/>\n </span></blockquote>I don&#39;t see why on earth you would write a test by overwriting runTest, <br/>\nbut let&#39;s take that as an example.<br/>\n<br/>\nIf you take a look at the TestCase class, you&#39;ll notice that it&#39;s in <br/>\nfact runBare that calls setUp/tearDown:<br/>\n<br/>\n\tpublic void runBare() throws Throwable {<br/>\n\t\tsetUp();<br/>\n\t\ttry {<br/>\n\t\t\trunTest();<br/>\n\t\t}<br/>\n\t\tfinally {<br/>\n\t\t\ttearDown();<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nrunTest is only executing _one single_ method of the TestCase object. <br/>\nCreating a TestCase like you do [new MyTest(&quot;Testing runTest()&quot;)] is <br/>\nwrong (in a normal case).  The name passed to the TestCase is originally <br/>\nthe name of the test method that will be executed.<br/>\n<br/>\nso you see that overwriting runTest will not prevent the setUp and <br/>\ntearDown methods to be invoked.<br/>\n<br/>\nhth<br/>\n<br/>\n-Vladimir<br/>\n<br/>\n-- <br/>\nVladimir R. Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 7999, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1052450801", 
+    "canDelete": false, 
+    "nextInTopic": 8002, 
+    "prevInTopic": 7999, 
+    "headers": {
+        "inReplyToHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4=", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4="
+    }
+}

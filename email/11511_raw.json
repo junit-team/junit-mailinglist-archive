@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 11512, 
+    "senderId": "OWF3PC7_8ybGCEvFOworyQvB3eNDsODHkZvb537B467rW5XH-m_aKhLL6MofcUGZBc5O--R__-XHh3gUdSEGw6T__P1FIECnqVfkcuFVyQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Did my question get missed, somehow?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... You should realize that this is a design smell. I m not saying that we can t test it as is, but I /am/ saying that if it were my code, I d look to change", 
+    "msgId": 11511, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 52650 invoked from network); 15 Jul 2004 23:22:12 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m24.grp.scd.yahoo.com with QMQP; 15 Jul 2004 23:22:12 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta6.grp.scd.yahoo.com with SMTP; 15 Jul 2004 23:22:11 -0000\r\nReceived: from unknown (HELO ?192.168.1.119?) (jbrains@24.156.43.226 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 15 Jul 2004 23:22:11 -0000\r\nMessage-ID: &lt;40F71183.5070807@...&gt;\r\nDate: Thu, 15 Jul 2004 19:21:39 -0400\r\nUser-Agent: Mozilla Thunderbird 0.7.1 (Windows/20040626)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cd6upd+13s4@...&gt;\r\nIn-Reply-To: &lt;cd6upd+13s4@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.81\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Re: Did my question get missed, somehow?\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\ncypherfox wrote:\n\n&gt; Greetings,\n&gt; Totally reasonable, and I probably made it more complex\n&gt; than it needed to be.\n&gt; \n&gt; I&#39;ll try a simpler question, but still related...\n&gt; \n&gt; I have state that I need to track between tests, in this case\n&gt; it&#39;s the message id that the last test put on the server, so\n&gt; that the next test can test reading it, and the third test\n&gt; can test deleting it.\n\nYou should realize that this is a design smell. I&#39;m not saying that we \ncan&#39;t test it as is, but I /am/ saying that if it were my code, I&#39;d look \nto change the design so that the tests don&#39;t depend on one another.\n\n&gt; It appears that a new object is created for each call to a test*\n&gt; method, so there&#39;s no object-local way to preserve state.\n\nRight. At that point, you must do it through class-level data.\n\n&gt; Is there any way to override this, making it call the test*\n&gt; methods all on the same object?\n\nNot without rewriting the framework. The framework was written \n/expressly with the goal/ of isolating tests from one another. The \nframework achieves this by executing each test in its own instance of \nTest (or TestCase).\n\n&gt; My reasoning is that if I write a test which creates, reads,\n&gt; and deletes the entry from the server, I&#39;m doing too much\n&gt; in a single test.\n\nA test consists of three parts: arrange, act, assert. You need to set up \nthe system in a desired, known state (arrange), do something of interest \n(act), then check the results (assert). You are right: your test is \ndoing too much, but I don&#39;t think the test is at fault.\n\n&gt; The only place that threading comes in is that I can&#39;t use a\n&gt; static value to keep this data, because then it&#39;s shared among\n&gt; all the threads.\n\nI don&#39;t understand why you need multiple threads while running the \ntests. Could you run the tests in singlethreaded mode? The fact that you \nwant to test logic in multithreaded mode tells me that you may be trying \nto test too many things at once.\n\n &gt; Any suggestions?\n\nWhat is your goal? To verify your logic? To test concurrency? At a \nminimum, do each of these separately, and not together.\n\n&gt; p.s.  Nope, no extensions yet, although I&#39;m eyeing TestResult\n&gt; as needing a touch of an upgrade...\n\nInteresting... do tell.\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n", 
+    "profile": "nails762", 
+    "topicId": 11495, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 11510, 
+    "contentTrasformed": false, 
+    "postDate": "1089933699", 
+    "canDelete": false, 
+    "nextInTopic": 11512, 
+    "prevInTopic": 11509, 
+    "headers": {
+        "inReplyToHeader": "PGNkNnVwZCsxM3M0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwRjcxMTgzLjUwNzA4MDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNkNnVwZCsxM3M0QGVHcm91cHMuY29tPg=="
+    }
+}

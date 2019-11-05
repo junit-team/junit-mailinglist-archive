@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 3424, 
+    "senderId": "NNp2IH_bBMEDmxu3-jDfRwxwlxQ9R_7nkQnBjY1KMse4a8-eWMd2s-hpQqdPTtHoKyqDCEtVQi0", 
+    "systemMessage": false, 
+    "subject": "Does the tear down of fixtures get fired if my test spawns a thread?", 
+    "from": "ks558@...", 
+    "authorName": "ks558@hotmail.com", 
+    "msgSnippet": "I have a test fixture that appears to be calling the tear down method as soon as my test method creates and spawns a thread.  This causes my test to fail.  Is", 
+    "msgId": 3423, 
+    "profile": "pescador29", 
+    "topicId": 3423, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-327286374\">I have a test fixture that appears to be calling the tear down method <br/>\nas soon as my test method creates and spawns a thread.  This causes <br/>\nmy test to fail.  Is this the desired effects of the test fixtures <br/>\nsetup and tear down?  I thought setup was called before the method <br/>\nand tear down was called upon finishing the method?<br/>\n<br/>\nHere is what I do:<br/>\npackage suncertify.test;<br/>\n<br/>\n/**<br/>\n * TestDatabase<br/>\n */<br/>\nimport junit.framework.*;<br/>\nimport suncertify.db.*;<br/>\nimport java.util.*;<br/>\n<br/>\npublic class TestDatabase extends TestCase<br/>\n{<br/>\n  public static Data d1 = null;<br/>\n  private static boolean isClient1Finished = false;<br/>\n  protected void setUp(){<br/>\n    isClient1Finished = false;<br/>\n    try {<br/>\n      System.err.println(&quot;Initialized dbase&quot;);<br/>\n      d1 =  new Data(&quot;./build/db.db&quot;);<br/>\n    } catch (Exception exc){<br/>\n      exc.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n  protected void tearDown(){<br/>\n    d1 = null;<br/>\n    System.err.println(&quot;undid dbase...&quot;);<br/>\n  }<br/>\n<br/>\n  public void testConcurrentUsers(){<br/>\n    try {<br/>\n      isClient1Finished = false;<br/>\n     if(d1==null) TestCase.fail(&quot;Database is null in the beginning, <br/>\nbut don&#39;t know why&quot;);<br/>\n<br/>\n      // client2 gets lock.<br/>\n      new Thread(new Runnable(){<br/>\n        public void run(){<br/>\n          try {<br/>\n            System.err.println(&quot;In second client...&quot;);<br/>\n            if(d1==null) TestCase.fail(&quot;Database is null, but don&#39;t <br/>\nknow why&quot;);<br/>\n            d1.lock(1);<br/>\n            Thread.sleep(1000);<br/>\n            d1.unlock(1);<br/>\n            isClient1Finished = true;<br/>\n          } catch (Exception exc){<br/>\n            exc.printStackTrace();<br/>\n            TestCase.fail(&quot;Second Client failed due to unexpected <br/>\nexception.&quot;);<br/>\n          }<br/>\n        }<br/>\n      }).start();<br/>\n      // client1 gets lock<br/>\n      d1.lock(1);<br/>\n      TestCase.assertTrue(isClient1Finished);<br/>\n    } catch (Exception e){<br/>\n      e.printStackTrace();<br/>\n      TestCase.fail(&quot;Test Concurrent Users failed for unknown <br/>\nreason.&quot;);<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\nI get the following output:<br/>\nInitialized dbase<br/>\nundid dbase...<br/>\nIn second client...<br/>\njunit.framework.AssertionFailedError: Database is null, but don&#39;t <br/>\nknow why<br/>\n    at junit.framework.Assert.fail(Assert.java:51)<br/>\n    at suncertify.test.TestDatabase$1.run(TestDatabase.java:82)<br/>\n    at java.lang.Thread.run(Thread.java:484)<br/>\n<br/>\nAny help would be appreciated...<br/>\n<br/>\n-brent fisher</div>", 
+    "prevInTime": 3422, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1007399825", 
+    "canDelete": false, 
+    "nextInTopic": 3425, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDl1Z2MyaCtoMzJ2QGVHcm91cHMuY29tPg=="
+    }
+}

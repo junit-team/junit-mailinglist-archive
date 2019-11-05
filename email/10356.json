@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 10357, 
+    "senderId": "SgSvJ9f940qT4baXuwDxR0rbdM65F49GYsefxdm3b8Wwsy5OUu4-JSWx54rWEJjKxuKCnZ6VJeIoQ0okYZQjJ9uOqyJwFSmoTarivy8WO2etM5YwfO0G", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] your opinion needed: package for unit testing codes", 
+    "from": "&quot;Stirling, Scott&quot; &lt;scott.stirling@...&gt;", 
+    "authorName": "Stirling, Scott", 
+    "msgSnippet": "While we re comparing project structures, here s mine (slightly reduced).  There s always more than one way to do it, and this project has gone through a few", 
+    "msgId": 10356, 
+    "profile": "stirlingdev", 
+    "topicId": 9372, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150177187, 
+    "messageBody": "<div id=\"ygrps-yiv-907390885\">While we&#39;re comparing project structures, here&#39;s mine (slightly reduced).  There&#39;s always more than one way to do it, and this project has gone through a few revisions in structural evolution.  We keep test code in separate codebases because it just seems tidier when you&#39;re looking at things in an IDE like Eclipse, and because the dependency design for test code is looser than what we enforce for non-test code.  Whether or not we ship tests or want tests to have package access to CUTs is irrelevant, really.  The first problem can be solved with build scripts and naming conventions and the second problem can be solved by package definition regardless of codebase collocation.<br/>\n<br/>\nI have a separate codebase for:<br/>\n- each jar that needs to be produced<br/>\n- license-dependent 3rdparty worflow<br/>\n- corresponding test code for each non-test codebase<br/>\n- two jars outside the scope of our authentication provider<br/>\n<br/>\nThe primary drivers for the organization are:<br/>\n1. JAAS authentication (requires separate codebase)<br/>\n2. runtime classloader scope isolation: system classpath, EAR root or WAR (we have 2 WARs)<br/>\n3. test vs. non-test (we only bother to distinguish test codebases to the level of system and non-system)<br/>\n4. a key third party dependency isolated and enforced in the structure and build because it produces jars that licensed specially and installed depending on marketing bundle.<br/>\n<br/>\nTake together 1, 2, and 4 and the overarching driver comes down to classloaders and runtime dependencies.  Mapping codebases to jars makes it easy to use things like Ant 1.6&#39;s &lt;macrodef&gt; to do compile, jar, dist, etc.<br/>\n<br/>\nbuild.xml<br/>\n+ bin<br/>\n+ deployment<br/>\n+ docs<br/>\n+ lib<br/>\n  +-- 3rdparty<br/>\n  +-- Workscape<br/>\n+ resorces<br/>\n+ src<br/>\n  +-- java<br/>\n      +-- boot<br/>\n      +-- ejb<br/>\n      +-- ra<br/>\n      +-- system<br/>\n      +-- systest<br/>\n      +-- test<br/>\n      +-- user<br/>\n      +-- viewer<br/>\n      +-- web<br/>\n  +-- metadata<br/>\n      +-- struts<br/>\n      +-- web<br/>\n      +-- ra<br/>\n+ test-data <br/>\n<br/>\nGenerated EJB code is generated into the ejb codebase and removed in &quot;clean&quot; based on a unique tag output only in generated files.<br/>\n<br/>\nAll build output goes into a build dir completely outside this structure, after which the built jars are distributed into the lib dir for internal use or building and installer.  Apps are all in another project, where each app is a sort of plugin in its own mini project (not shown).  By &quot;app&quot; I mean a module of Web app functionality -- apps are all merged into one EAR/WAR after installation.<br/>\n<br/>\nScott Stirling<br/>\nWorkscape<br/>\n<br/>\n***********************************************************************<br/>\nThis message is intended only for the use of the intended recipient and<br/>\nmay contain information that is PRIVILEGED and/or CONFIDENTIAL.  If you<br/>\nare not the intended recipient, you are hereby notified that any use,<br/>\ndissemination, disclosure or copying of this communication is strictly<br/>\nprohibited.  If you have received this communication in error, please<br/>\ndestroy all copies of this message and its attachments and notify us<br/>\nimmediately.<br/>\n***********************************************************************</div>", 
+    "prevInTime": 10355, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1075507446", 
+    "canDelete": false, 
+    "nextInTopic": 10361, 
+    "prevInTopic": 10355, 
+    "headers": {
+        "messageIdInHeader": "PDcyMDY4Mjk4Q0Q5OTEwNEFBRURFMkZERjg5QUMxNjBENEM0QzRCQGF2YW50aS5jb3JwLndvcmtzY2FwZS5uZXQ+"
+    }
+}

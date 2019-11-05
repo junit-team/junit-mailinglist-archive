@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 19100, 
+    "senderId": "UV2y1vn5CaedkI0xW9ALFP95WRNkVrs_9WIbQxDkafoAIEKEz7hQsZUjJ-tSwnkiCXg-TUSAAvkBy0ShChmk97Z3QqqewzAGmAY", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] varying amount of time calculated using JUNIT 3.8 as well as 4.1", 
+    "from": "Shubha B S &lt;mailtoshubha@...&gt;", 
+    "authorName": "Shubha B S", 
+    "msgSnippet": "Colin, this variations happens only when I use JUnit. I have tried another sample like this.. class simple{ public static void main(String args[]) throws", 
+    "msgId": 19099, 
+    "rawEmail": "Return-Path: &lt;mailtoshubha@...&gt;\r\nReceived: (qmail 73773 invoked from network); 14 Mar 2007 09:43:33 -0000\r\nReceived: from unknown (66.218.67.33)\n  by m46.grp.scd.yahoo.com with QMQP; 14 Mar 2007 09:43:33 -0000\r\nReceived: from unknown (HELO n25c.bullet.scd.yahoo.com) (66.218.67.216)\n  by mta7.grp.scd.yahoo.com with SMTP; 14 Mar 2007 09:43:33 -0000\r\nReceived: from [66.218.69.2] by n25.bullet.scd.yahoo.com with NNFMP; 14 Mar 2007 09:43:20 -0000\r\nReceived: from [66.218.66.87] by t2.bullet.scd.yahoo.com with NNFMP; 14 Mar 2007 09:43:20 -0000\r\nX-Sender: mailtoshubha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 64305 invoked from network); 14 Mar 2007 06:16:42 -0000\r\nReceived: from unknown (66.218.67.34)\n  by m36.grp.scd.yahoo.com with QMQP; 14 Mar 2007 06:16:42 -0000\r\nReceived: from unknown (HELO web54315.mail.yahoo.com) (206.190.49.125)\n  by mta8.grp.scd.yahoo.com with SMTP; 14 Mar 2007 06:16:42 -0000\r\nReceived: (qmail 41693 invoked by uid 60001); 14 Mar 2007 06:16:32 -0000\r\nX-YMail-OSG: e1fZJMEVM1ktWaC7NiASoEqSAM83ZhbwBugvEZ6oemSsDQTUtpsabCTZIAexjXLK6oPzPEjdJrOaJzLmSvt7UC1gLh6IiySNvuuB_839g75XFrWTeN85CrxRiMPbNG_z\r\nReceived: from [196.15.16.20] by web54315.mail.yahoo.com via HTTP; Tue, 13 Mar 2007 23:16:31 PDT\r\nX-Mailer: YahooMailRC/471 YahooMailWebService/0.6.132.8\r\nDate: Tue, 13 Mar 2007 23:16:31 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nMIME-Version: 1.0\r\nMessage-ID: &lt;951411.41137.qm@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: Shubha B S &lt;mailtoshubha@...&gt;\r\nSubject: Re: [junit] varying amount of time calculated using JUNIT 3.8 as well as 4.1\r\nX-Yahoo-Group-Post: member; u=154704993; y=6K3ApMPkJNfHZ8fiUnmGluviEtIIyaEs-bewHZTgrK-vu8bYde0g\r\nX-Yahoo-Profile: mailtoshubha\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: copabella &lt;joe@...&gt; via web; 14 Mar 2007 09:43:20 -0000\r\n\r\nColin,\n\nthis variations happens only when I use JUnit. I have tried another sample like this..\n\nclass simple{\n    public static void main(String args[]) throws InterruptedException {\n    long token = System.currentTimeMillis();\n    Thread.sleep(2000);\n    System.out.println(&quot; time taken:&quot; + (System.currentTimeMillis() - token));\n        \n    }\n}\n\nIt always gives me constant value. Why this natural variation is not happening in this case and happens only when I use JUnit?\n\nthanks\nShubha\n----- Original Message ----\nFrom: Colin Vipurs &lt;colin.vipurs@...&gt;\nTo: junit@yahoogroups.com\nSent: Tuesday, March 13, 2007 8:07:58 PM\nSubject: RE: [junit] varying amount of time calculated using JUNIT 3.8 as well as 4.1\n\nShubha,\n\nYou&#39;re just experiencing natural variations in processing time, which\nwill be caused by your CPU doing something else while you&#39;re app is\nrunning. This could be the Java GC running, OS paging to disk or just\nanother application taking up some of the CPU. Short of having a true\nreal-time system you&#39;re always going to see this.\n\n____________ _________ _________ __\n\nFrom: junit@yahoogroups. com [mailto:junit@yahoogroups. com] On Behalf Of\nShubha B S\nSent: 13 March 2007 05:48\nTo: junit@yahoogroups. com\nSubject: [junit] varying amount of time calculated using JUNIT 3.8 as\nwell as 4.1\n\nHi,\n\nI have tried a simple calculator sample Calculator.java, another test\nwhich tests the Calculator is CalculatorTest. java. In this I am trying\nto calculate the time taken to execute the test method. I observed\nvarying times in msecs (2000, 2015, 2016). Can anybody tell what is the\nreason behind?\n\nCalculator.java\n\npackage calculator;\n\npublic class Calculator {\nprivate static int result; \n\npublic void add(int n) {\nresult = result + n;\n}\n}\n\nCalculatorTest. java\n\npackage calculator;\nimport calculator.Calculat or;\nimport org.junit.Before; \nimport org.junit.Test; \nimport static org.junit.Assert. *;\npublic class CalculatorTest \n{ \nprivate static Calculator calculator = \nnew Calculator() ; \n\n@Before \npublic void clearCalculator( ) {\ncalculator.clear( ); \n} \n\n@Test \npublic void add() throws InterruptedExceptio n {\nlong token = System.currentTimeM illis(); \nThread.sleep( 2000);\ncalculator.add( 1); \ncalculator.add( 1); \nassertEquals( calculator. getResult( ), 2); \nSystem.out.println( &quot; Time taken to execute:&quot; +\n(System.currentTime Millis()- token)) ;\n}\n}\n\nthanks\nShubha\n\n[Non-text portions of this message have been removed]\n\n\n\n\n\n \n____________________________________________________________________________________\nExpecting? Get great news right away with email Auto-Check. \nTry the Yahoo! Mail Beta.\nhttp://advision.webevents.yahoo.com/mailbeta/newmail_tools.html \n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "mailtoshubha", 
+    "topicId": 19092, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 154704993, 
+    "prevInTime": 19098, 
+    "contentTrasformed": false, 
+    "postDate": "1173852991", 
+    "canDelete": false, 
+    "nextInTopic": 19119, 
+    "prevInTopic": 19093, 
+    "headers": {
+        "messageIdInHeader": "PDk1MTQxMS40MTEzNy5xbUB3ZWI1NDMxNS5tYWlsLnlhaG9vLmNvbT4="
+    }
+}

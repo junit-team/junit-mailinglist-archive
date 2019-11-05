@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 6195, 
+    "senderId": "k2QjroNGkjTxHMDrZYb8OHL2hbJAS-Lv5mxR2Tl-Yj3_yQtv5KTSs8Ctnmsb-SN1c4_i6oHpY122HT7Pk-Yoz_xPOnlhv1J2iSQ8DBckm2jlmyOsiU_w-whQWi4FQH7l4ePiyxKreHxX", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] problem with assert equals", 
+    "from": "&quot;Stevens, Timothy J. (LNG-ALB)&quot; &lt;timothy.j.stevens@...&gt;", 
+    "authorName": "Stevens, Timothy J. (LNG-ALB)", 
+    "msgSnippet": "A batch of us just had the same problem here when running tests through an Ant script. The problem seems to have been caused by having two different versions", 
+    "msgId": 6194, 
+    "rawEmail": "Return-Path: &lt;Timothy.J.Stevens@...&gt;\r\nX-Sender: Timothy.J.Stevens@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 14 Nov 2002 15:46:19 -0000\r\nReceived: (qmail 76058 invoked from network); 14 Nov 2002 15:46:19 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m2.grp.scd.yahoo.com with QMQP; 14 Nov 2002 15:46:19 -0000\r\nReceived: from unknown (HELO lexis-nexis.com) (207.25.178.45)\n  by mta2.grp.scd.yahoo.com with SMTP; 14 Nov 2002 15:46:19 -0000\r\nReceived: from lexis-nexis.com (mailgate [138.12.44.45])\n\tby lexis-nexis.com (8.10.2+Sun/8.10.2) with ESMTP id gAEFjNl28697\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 14 Nov 2002 10:45:23 -0500 (EST)\r\nReceived: from bender.com \n        by lexis-nexis.com (8.11.6+Sun/8.11.6) with ESMTP id gAEFjrP19499\n        for &lt;junit@yahoogroups.com&gt;; Thu, 14 Nov 2002 10:45:54 -0500 (EST)\r\nReceived: from mbcalbexc01.bender.com by bender.com (8.8.8+Sun/SMI-SVR4)\n\tid KAA07317; Thu, 14 Nov 2002 10:45:53 -0500 (EST)\r\nReceived: by MBCALBEXC01.BENDER.COM with Internet Mail Service (5.5.2655.55)\n\tid &lt;W5NLFXFM&gt;; Thu, 14 Nov 2002 10:45:52 -0500\r\nMessage-ID: &lt;C137A0B27FAAD411B7DD00805F19D0EE0237BFDC@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] problem with assert equals\r\nDate: Thu, 14 Nov 2002 10:45:51 -0500\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2655.55)\r\nFrom: &quot;Stevens, Timothy J. (LNG-ALB)&quot; &lt;timothy.j.stevens@...&gt;\r\nX-Yahoo-Group-Post: member; u=75310489\r\nX-Yahoo-Profile: timothy_j_stevens\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\n\tA batch of us just had the same problem here when running tests\nthrough an Ant script. The problem seems to have been caused by having two\ndifferent versions of the JUnit jar in the classpath (ours was once in our\nsystem classpath, and once specified in the Ant classpath). Check your\nclasspaths and ensure that you don&#39;t have multiple references to junit.jar\nin there. \n\n\t-tim\n\n-----Original Message-----\nFrom: Durham David Cntr 805CSS/SCBE [mailto:David.Durham1@...]\nSent: Thursday, November 14, 2002 10:07 AM\nTo: junit@yahoogroups.com\nSubject: [junit] problem with assert equals\n\n\nI am making an assertion in a test script and it is throwing an error.  I\nknow that the arguments that I am passing into the assertion are valid\nString objects.\n\nHere&#39;s the error:\n\n\tCaused an ERROR\njunit.framework.Assert.assertEquals(Ljava/lang/String;Ljava/lang/String;)V\n\tat\nmil.usaf.rad.course.tests.CourseFactoryTest.testCreateSection(Unknown\nSource)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat\nsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39\n)\n\tat\nsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl\n.java:25)\n\tat\norg.netbeans.core.execution.RunClassThread.run(RunClassThread.java:119)\n\n\nHere&#39;s the code:\n\n    public void testCreateSection() throws Exception {\n        Section section = CourseFactory.newSection();\n\t  section.setCourse(course);\n        section.setName(&quot;section&quot;);\n        section.setAccountRequired(false);\n        section.save();\n\n        Section section2 = CourseFactory.getSection(section.getSectionID());\n\n        //System.err.println(&quot;section2 name: &quot; + section2.getName());\n        //System.err.println(&quot;section name: &quot; + section.getName());\n&gt;&gt;      assertEquals(section.getName(), section2.getName());     // throws\nthe error\n        assertEquals(section.getCourse(), section2.getCourse());  // if I\ncomment the line above, then this line will run just fine.\n        assertEquals(section.getAccountRequired(),\nsection2.getAccountRequired());\n    }\n\n\nIf I uncomment the System.err lines then I see that both of these objects\nhave the name &quot;section&quot; which is what I want, but for some reason the call\nto assertEquals will throw the error above.\n\n\nDoes anyone know what would or could be causing this?\n\n\n\nThanks,\n\nDave\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "timothy_j_stevens", 
+    "topicId": 6192, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 75310489, 
+    "prevInTime": 6193, 
+    "contentTrasformed": false, 
+    "postDate": "1037288751", 
+    "canDelete": false, 
+    "nextInTopic": 6196, 
+    "prevInTopic": 6193, 
+    "headers": {
+        "messageIdInHeader": "PEMxMzdBMEIyN0ZBQUQ0MTFCN0REMDA4MDVGMTlEMEVFMDIzN0JGRENATUJDQUxCRVhDMDQuQkVOREVSLkNPTT4="
+    }
+}

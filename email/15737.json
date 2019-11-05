@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 15738, 
+    "senderId": "AvJQXY8qASfpiiXkUD2-GulIy63PtEshgzVduU1I1koNRzIb63PSXvYeP3Wz6LKj_1kB8SyuToj9w1wpuOL7BLV4zU90cn_fC8cR9zvUCB1VNyteOA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit with Eclipse, error in setUp(), java.lang.NoClassDefFoundError: org/apache", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "... The problem /isn t/ with JUnit. Something else requires the Apache Commons Collections library, which you can download from ", 
+    "msgId": 15737, 
+    "profile": "tibbettj_at_verdi_sra_com", 
+    "topicId": 15736, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "messageBody": "<div id=\"ygrps-yiv-1295496888\">samanthaclark wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m fairly new to Junit, and am using it with Eclipse (on Windows XP).<br/>\n&gt; I&#39;m having problems running a simple JUnit test case. I have tried<br/>\n&gt; searching Google and the Eclipse/Junit forums about the problem, but I<br/>\n&gt; haven&#39;t found anything that helps. The code and failure trace are<br/>\n&gt; copied at the end of this message.<br/>\n&gt; <br/>\n&gt; The error occurs in setUp(), when the Network object is instantiated.<br/>\n&gt; I can&#39;t understand why I&#39;m getting the NoClassDefFoundError, because<br/>\n&gt; the NetworkTest class is in the same directory as the Network class.<br/>\n&gt; The Network constructor doesn&#39;t throw any exceptions, and Network<br/>\n&gt; doesn&#39;t have any static fields.<br/>\n&gt; <br/>\n&gt; Does anyone have an idea about what is wrong with the code?<br/>\n&gt; <br/>\n&gt; I have tried adding junit.jar and my source files to the Classpath<br/>\n&gt; (Control Panel -&gt; System -&gt; Advanced -&gt; Environment variables), but it<br/>\n&gt; didn&#39;t fix the problem. <br/>\n&gt; I tried commenting out setUp() and the body of testGetName(), in which<br/>\n&gt; case the test passes, so problem appears not to be with Junit itself.<br/>\n<br/>\n </span></blockquote>The problem /isn&#39;t/ with JUnit. Something else requires the Apache <br/>\nCommons Collections library, which you can download from <br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://jakarta.apache.org/commons/collections.\">http://jakarta.apache.org/commons/collections.</a> Odds are you already have <br/>\nthis in your classpath for the non-test code; you just need to make sure <br/>\nthat it&#39;s in the testing classpath.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; CODE:<br/>\n&gt; public class NetworkTest extends TestCase {<br/>\n&gt; \t<br/>\n&gt; \tNetwork testNetwork;<br/>\n&gt; <br/>\n&gt; \tpublic NetworkTest(String arg0) {<br/>\n&gt; \t\tsuper(arg0);<br/>\n&gt; \t}<br/>\n&gt; <br/>\n&gt; \tprotected void setUp() throws Exception {<br/>\n&gt; \t\tsuper.setUp();<br/>\n&gt; \t\ttestNetwork = new Network(&quot;testNetwork&quot;);<br/>\n&gt; \t}<br/>\n&gt; <br/>\n&gt; \tprotected void tearDown() throws Exception {<br/>\n&gt; \t\tsuper.tearDown();<br/>\n&gt; \t\ttestNetwork = null;<br/>\n&gt; \t}<br/>\n&gt; \t<br/>\n&gt; \tpublic static Test suite() {<br/>\n&gt; \t    TestSuite suite = new TestSuite();<br/>\n&gt; \t    suite.addTest(new NetworkTest(&quot;testGetName&quot;));<br/>\n&gt; \t    return suite;<br/>\n&gt; \t}<br/>\n&gt; \t<br/>\n&gt; \tpublic void testGetName() {<br/>\n&gt; \t\tassertEquals(testNetwork.getName(), &quot;testNetwork&quot;);<br/>\n&gt; \t}<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; FAILURE TRACE:<br/>\n&gt; java.lang.NoClassDefFoundError: org/apache/commons/collections/Predicate<br/>\n&gt; \tat java.lang.ClassLoader.defineClass1(Native Method)<br/>\n&gt; \tat java.lang.ClassLoader.defineClass(Unknown Source)<br/>\n&gt; \tat java.security.SecureClassLoader.defineClass(Unknown Source)<br/>\n&gt; \tat java.net.URLClassLoader.defineClass(Unknown Source)<br/>\n&gt; \tat java.net.URLClassLoader.access$100(Unknown Source)<br/>\n&gt; \tat java.net.URLClassLoader$1.run(Unknown Source)<br/>\n&gt; \tat java.security.AccessController.doPrivileged(Native Method)<br/>\n&gt; \tat java.net.URLClassLoader.findClass(Unknown Source)<br/>\n&gt; \tat java.lang.ClassLoader.loadClass(Unknown Source)<br/>\n&gt; \tat sun.misc.Launcher$AppClassLoader.loadClass(Unknown Source)<br/>\n&gt; \tat java.lang.ClassLoader.loadClass(Unknown Source)<br/>\n&gt; \tat java.lang.ClassLoader.loadClassInternal(Unknown Source)<br/>\n&gt; \tat java.lang.ClassLoader.defineClass1(Native Method)<br/>\n&gt; \tat java.lang.ClassLoader.defineClass(Unknown Source)<br/>\n&gt; \tat java.security.SecureClassLoader.defineClass(Unknown Source)<br/>\n&gt; \tat java.net.URLClassLoader.defineClass(Unknown Source)<br/>\n&gt; \tat java.net.URLClassLoader.access$100(Unknown Source)<br/>\n&gt; \tat java.net.URLClassLoader$1.run(Unknown Source)<br/>\n&gt; \tat java.security.AccessController.doPrivileged(Native Method)<br/>\n&gt; \tat java.net.URLClassLoader.findClass(Unknown Source)<br/>\n&gt; \tat java.lang.ClassLoader.loadClass(Unknown Source)<br/>\n&gt; \tat sun.misc.Launcher$AppClassLoader.loadClass(Unknown Source)<br/>\n&gt; \tat java.lang.ClassLoader.loadClass(Unknown Source)<br/>\n&gt; \tat java.lang.ClassLoader.loadClassInternal(Unknown Source)<br/>\n&gt; \tat framework.NetworkTest.setUp(NetworkTest.java:17) </span></blockquote></div>", 
+    "prevInTime": 15736, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1136492080", 
+    "canDelete": false, 
+    "nextInTopic": 15738, 
+    "prevInTopic": 15736, 
+    "headers": {
+        "inReplyToHeader": "PGRwamd0OCtucGowQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQzQkQ3RTMwLjUwNzAxMDdAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "referencesHeader": "PGRwamd0OCtucGowQGVHcm91cHMuY29tPg=="
+    }
+}

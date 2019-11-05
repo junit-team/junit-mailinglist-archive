@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 13502, 
+    "senderId": "dLI_jRqSWttkCz1S7bm33y3yt01nq-Hy4lfZesMjPtSOl1GlWRG8KPzL0Nj0w4xVqRv48KaDXvWmZciCs6t9TpyDLPVNdBP8g22WiO9GwQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] DbUnit & ORM", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Does your business logic need to know where it gets the data from? Usually not. Separate the data source from the business logic using the data... class", 
+    "msgId": 13501, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 5884 invoked from network); 13 May 2005 00:05:43 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m27.grp.scd.yahoo.com with QMQP; 13 May 2005 00:05:43 -0000\r\nReceived: from unknown (HELO smtp100.rog.mail.re2.yahoo.com) (206.190.36.78)\n  by mta4.grp.scd.yahoo.com with SMTP; 13 May 2005 00:05:43 -0000\r\nReceived: from unknown (HELO ?172.20.101.181?) (srainsberger5790@67.78.67.130 with plain)\n  by smtp100.rog.mail.re2.yahoo.com with SMTP; 13 May 2005 00:05:40 -0000\r\nMessage-ID: &lt;4283EF61.10700@...&gt;\r\nDate: Thu, 12 May 2005 19:05:53 -0500\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;20050511083054.4459.qmail@...&gt;\r\nIn-Reply-To: &lt;20050511083054.4459.qmail@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] DbUnit & ORM\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nJohn Smith wrote:\n&gt; \n&gt; &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt; wrote:\n&gt; \n&gt;  &gt;&gt;What are you trying to test?\n&gt;  &gt;&gt;\n&gt;  &gt;&gt;1. The client code that invokes your ORM layer.\n&gt;  &gt;&gt;2. The mappings between your entities and the database.\n&gt;  &gt;&gt;3. Your implementation of the ORM layer. (Did you build it?)\n&gt;  &gt;&gt;4. Something else entirely?\n&gt;  &gt;&gt;\n&gt;  &gt;&gt;I am also a fan of putting test data directly in the test, so I&#39;d be\n&gt;  &gt;&gt;inclined to use the ORM to set up test data on a test-by-test basis for\n&gt;  &gt;&gt;case #1 and #2, but not case #3. For case #3, my answer is long and\n&gt;  &gt;&gt;complex and I prefer not to type it unless that&#39;s what you mean. :)\n&gt;  &gt;&gt;\n&gt;  &gt;&gt;If it&#39;s case #4, then tell us more.\n&gt;  &gt;&gt;--\n&gt;  &gt;&gt;J. B. (Joe) Rainsberger\n&gt; \n&gt; I try to test number 1 if I understand what you mean. Its business logic\n&gt; which needs to be tested, like ABC analysis. For this you need to persist\n&gt; some entities in order to perform that business logic test.\n\nDoes your business logic need to know where it gets the data from? \nUsually not. Separate the data source from the business logic using the \ndata...\n\nclass TransferAction...\npublic TransferAction(Repository repository) {\n     // assign to field\n}\n\npublic void transfer(String fromAccountId, String toAccountId, Money \namount) {\n     Account fromAccount = repository.findAccount(fromAccountId);\n     Account toAccount = repository.findAccount(toAccountId);\n     fromAccount.transfer(amount, toAccount);\n}\n\ninterface Repository...\nAccount findAccount(String id);\n\nclass DatabaseRepository implements Repository {\n     public Account findAccount(String id) {\n         // Use your ORM solution...\n     }\n}\n\n\nNow how do I test whether my transfer action properly handles \ninsufficient funds?\n\npublic void testInsufficientFunds() {\n     Repository fake = new Repository() {\n         public Account findAccount(String id) {\n             return new Account(id) {\n                 public transfer(Money amount, Account toAccount) {\n                     throw new InsufficientFundsException(this, amount);\n                 }\n             };\n         }\n     };\n\n     try {\n         new TransferAction(fake).transfer(&quot;1&quot;, &quot;2&quot;, Money.dollars(50));\n         fail(&quot;Transfer was supposed to fail!&quot;);\n     }\n     catch (InsufficientFundsException expected) {\n     }\n}\n\n\nWe fake out the Repository to serve up only accounts that blow up when \nwe try to transfer funds. Although the syntax is weird, the idea is \nstraightforward: no need to create a special account in the database \nthat happens not to have enough money.\n\n&gt; Number 2 applies too I think. But not number 3.\n\nTo test the mapping between objects and tables, simply check that you \nspecify the mapping metadata correctly. Use the ORM solution&#39;s \ndocumentation to provide the expected behavior. If you&#39;re really unsure \nhow to map a particular data type, test that against the database, but \ndon&#39;t test /every/ mapping against the database. Doing that is testing \nthe ORM solution more than the way you use it. (Doesn&#39;t the ORM solution \nalready work?)\n\n&gt; Maybe DbUnit is good only for JDBC based applications and not for an ORM.\n\nDbUnit is good for any test that talks to a live database. I simply \nprefer to do that as little as possible.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 13451, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 13500, 
+    "contentTrasformed": false, 
+    "postDate": "1115942753", 
+    "canDelete": false, 
+    "nextInTopic": 13502, 
+    "prevInTopic": 13486, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTExMDgzMDU0LjQ0NTkucW1haWxAd2ViNjAwMTkubWFpbC55YWhvby5jb20+", 
+        "messageIdInHeader": "PDQyODNFRjYxLjEwNzAwQHJvZ2Vycy5jb20+", 
+        "referencesHeader": "PDIwMDUwNTExMDgzMDU0LjQ0NTkucW1haWxAd2ViNjAwMTkubWFpbC55YWhvby5jb20+"
+    }
+}

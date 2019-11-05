@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 17041, 
+    "senderId": "NI_fKyoZJHTQQOw-HTT4Zjfy5qPbGFAtYKkyKixGGgq26_K3NOLBBiB_DcXtN9DfI47PRyujDTRyhjhIQLZEi8E6PGwuQAxdhxPQx-7Ro9iW", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Testing EJB&#39;s with JUnit  on IBMWebsphere", 
+    "from": "&quot;Brett L. Schuchert&quot; &lt;schuchert@...&gt;", 
+    "authorName": "Brett L. Schuchert", 
+    "msgSnippet": "Here are the quick steps assuming the following: You are using RAD You are hitting WAS 5.1 First, for your project that has test units, you ll need to add", 
+    "msgId": 17040, 
+    "rawEmail": "Return-Path: &lt;schuchert@...&gt;\r\nReceived: (qmail 21487 invoked from network); 28 Jun 2006 22:01:16 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m41.grp.scd.yahoo.com with QMQP; 28 Jun 2006 22:01:16 -0000\r\nReceived: from unknown (HELO n20c.bullet.sc5.yahoo.com) (66.163.187.211)\n  by mta2.grp.scd.yahoo.com with SMTP; 28 Jun 2006 22:01:16 -0000\r\nReceived: from [66.163.187.121] by n20.bullet.sc5.yahoo.com with NNFMP; 28 Jun 2006 22:00:59 -0000\r\nReceived: from [66.218.66.59] by t2.bullet.sc5.yahoo.com with NNFMP; 28 Jun 2006 22:00:59 -0000\r\nReceived: from [66.218.66.92] by t8.bullet.scd.yahoo.com with NNFMP; 28 Jun 2006 22:00:59 -0000\r\nX-Sender: schuchert@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 86367 invoked from network); 28 Jun 2006 20:13:55 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m39.grp.scd.yahoo.com with QMQP; 28 Jun 2006 20:13:55 -0000\r\nReceived: from unknown (HELO web54108.mail.yahoo.com) (206.190.37.243)\n  by mta3.grp.scd.yahoo.com with SMTP; 28 Jun 2006 20:13:55 -0000\r\nReceived: (qmail 53362 invoked by uid 60001); 28 Jun 2006 20:13:53 -0000\r\nMessage-ID: &lt;20060628201353.53360.qmail@...&gt;\r\nReceived: from [12.41.204.3] by web54108.mail.yahoo.com via HTTP; Wed, 28 Jun 2006 13:13:53 PDT\r\nDate: Wed, 28 Jun 2006 13:13:53 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;e7deli+f8ej@...&gt;\r\nMIME-Version: 1.0\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Brett L. Schuchert&quot; &lt;schuchert@...&gt;\r\nReply-To: &quot;Brett L. Schuchert&quot; &lt;schuchert@...&gt;\r\nSubject: Re: [junit] Testing EJB&#39;s with JUnit  on IBMWebsphere\r\nX-Yahoo-Group-Post: member; u=162568887; y=lI5KETCcafeMcnIyx74TOXcnBb5faBtrvPOJYBg4hsmU_Bjw\r\nX-Yahoo-Profile: schuchert\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via web; 28 Jun 2006 22:00:59 -0000\r\n\r\nHere are the quick steps assuming the following:\nYou are using RAD\nYou are hitting WAS 5.1\nFirst, for your project that has test units, you&#39;ll need to add namingclient.jar to your class path. You can find it with the installed runtimes under RAD (and WSAD as well). I have RAD installed in c:&#92;tools&#92;rad, so the full location of that jar file on my system is: C:&#92;Tools&#92;Rad6&#92;runtimes&#92;base_v51&#92;lib&#92;namingclient.jar. (If you are doing this for several projects, create a classpath variable for this.)\n \nSecond, you&#39;ll need to configure JNDI. You can do this by creating a file called jndi.properties in your top-most project directory and make sure you have the following two properties defined in the jar:\njava.naming.factory.initial=com.ibm.websphere.naming.WsnInitialContextFactory\njava.naming.provider.url=iiop://localhost:2809\n \nWe are using ServerTestCase (see JUnit.org&#39;s extensions) with a customized version of a stateless session bean that comes with server test case and we have one project for all of our tests. The project is an EJB project in RAD (was the same in WSAD). The source directory is ejbModule. So we have a file called jndi.properties directly under ejbModule.\n\nIf you happen to be using WSAD, find the directory where you installed WSAD, go to the runtime directories, look for base_v51 and from there the lib directory. You should be able to find namingclient.jar there as well. Just add it as an external jar to the project.\n \nFor WAS 6.0, you can find naming client in a similar directory under the RAD install. If you are using WAS 6.1, let me know. Someone else has made that connection so I&#39;m pretty sure it&#39;s easy. Just don&#39;t know how to do it off the top of my head.\n \nFinally, when you run JUnit, you should be able to connect to JNDI, hit your server, look up your homes, etc.\n \nIf you have any problems, send along a complete stack trace. I think I&#39;ve covered all of the details, but your results may vary. Some assembly required.\n \nTutorials and Articles\n     http://schuchert.wikispaces.com/\n\n\n\n----- Original Message ----\nFrom: sb_syalamanchili &lt;sb_syalamanchili@...&gt;\nTo: junit@yahoogroups.com\nSent: Thursday, June 22, 2006 1:51:30 AM\nSubject: [junit] Testing EJB&#39;s with JUnit on IBMWebsphere\n\n\nHi,\ncan you help me in testing enterprise java beans with junit.\nCan tell me what are the necessary jars requires.\nCan we run ejbs with junit test runner or only with servlet test runner.\nI am expecting quick reply\n\n\n \n\n[Non-text portions of this message have been removed]\n\n\n\n\n\n", 
+    "profile": "schuchert", 
+    "topicId": 17003, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 162568887, 
+    "prevInTime": 17039, 
+    "contentTrasformed": false, 
+    "postDate": "1151525633", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 17005, 
+    "headers": {
+        "inReplyToHeader": "PGU3ZGVsaStmOGVqQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDYwNjI4MjAxMzUzLjUzMzYwLnFtYWlsQHdlYjU0MTA4Lm1haWwueWFob28uY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 526, 
+    "senderId": "U_CoPaSWfaW0pl68bGdkJBDqVPhZm4WZZ8hqIcUa6Mbyf1jHbDpwyet7nCrBbwCO5vdLH84E_FBStmviHVpXGCA2zvbZGA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] question regarding setup()", 
+    "from": "Ryan Ankarberg &lt;RyanA@...&gt;", 
+    "authorName": "Ryan Ankarberg", 
+    "msgSnippet": "Thank you!  very helpful ... From: Joi Ellis [mailto:joi@aravox.com] Sent: Wednesday, February 21, 2001 4:56 PM To: junit@yahoogroups.com Subject: Re:", 
+    "msgId": 525, 
+    "topicId": 521, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-336529534\">Thank you!  very helpful<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: Joi Ellis [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>]<br/>\nSent: Wednesday, February 21, 2001 4:56 PM<br/>\nTo: &#39;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&#39;<br/>\nSubject: Re: [junit] question regarding setup()<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wed, 21 Feb 2001, Ryan Ankarberg wrote:<br/>\n<br/>\n&gt; I was noticing that each time a particular test method within my test<br/>\ncases<br/>\n&gt; is called, it in turn calls setup(), each time... How can I go about<br/>\nhaving<br/>\n&gt; it only call setup() once, when the test case is initialized?<br/>\n<br/>\nBy default, the setup() and teardown() methods are called before and after<br/>\neach individual test method within the class.  <br/>\n<br/>\nIf you want a setup() to run once before any of the class test methods,<br/>\nand a teardown() to run once after all of the class test methods, then<br/>\nlook at junit.extensions.TestSetup.java.<br/>\n<br/>\nI&#39;ve included an example of how I used it.  An &#39;MP&#39; in this context<br/>\nis a native process which must be running for some of the tests.<br/>\nIt must contain a predefined, known set of user accounts which<br/>\nthe test case will be manipulating.<br/>\n<br/>\nThe TestSetup decorator calls a script in its setup() method<br/>\nwhich creates the expected accounts, and the teardown() method<br/>\ncalls another script which removes the accounts and returns the<br/>\nnative process to a known state.<br/>\n<br/>\npackage com.aravox.nsapi;<br/>\n<br/>\nimport junit.extensions.TestSetup;<br/>\nimport junit.framework.Test;<br/>\nimport java.io.IOException;<br/>\n<br/>\n/**<br/>\n * Title:        Test NSApi<br/>\n * Description:  Unit tests for NSApi<br/>\n * Copyright:    Copyright (c) 2000Joi Ellis<br/>\n * Company:      Aravox Technologies, Inc.<br/>\n * @author Joi Ellis<br/>\n * @version 1.0<br/>\n */<br/>\n<br/>\npublic class MPSetup extends TestSetup {<br/>\n<br/>\n  public MPSetup( Test t) {<br/>\n    super(t);<br/>\n  }<br/>\n  protected void setUp() {<br/>\n    try {<br/>\n <br/>\nRuntime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/setupTestUsers&quot;);<br/>\n    } catch (IOException ioex) {<br/>\n      ioex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n  protected void tearDown() {<br/>\n    try {<br/>\n <br/>\nRuntime.getRuntime().exec(&quot;/home/joi/jbproject/TestNSApi/removeTestUsers&quot;);<br/>\n    } catch (IOException ioex) {<br/>\n      ioex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\nTo use MPSetup, I wrap my existing suite object inside a new<br/>\nMPSetup suite like this:<br/>\n<br/>\npublic class AllTests extends TestCase {<br/>\n ....<br/>\n  public static Test suite() {<br/>\n    TestSuite suite = new TestSuite();<br/>\n    suite.addTest(com.aravox.nsapi.TestConnectionInfo.suite());<br/>\n    suite.addTest(TestUdpConnect.suite());<br/>\n    suite.addTest(TestFirewall.suite());<br/>\n    suite.addTest(TestJNsApiSubsystemInterfaces.suite());<br/>\n    suite.addTest(TestNsConvertStringToMD5Secret.suite());<br/>\n    suite.addTest(TestNsConvertStringToSHA1Secret.suite());<br/>\n    suite.addTest(TestLocales.suite());<br/>\n    suite.addTest(TestResBundle.suite());<br/>\n    // now wrap my suite inside a MPSetup suite and return it.<br/>\n    MPSetup mps = new MPSetup( suite );<br/>\n    return mps;<br/>\n  }<br/>\n....<br/>\n}<br/>\n<br/>\n<br/>\n-- <br/>\nJoi Ellis                    Software Engineer<br/>\nAravox Technologies          <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gyles19@...\">gyles19@...</a><br/>\n<br/>\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I<br/>\nreally like about Linux is that it has Microsoft worried.  Anything<br/>\nthat kicks a monopoly in the pants has got to be good for something.<br/>\n           - Chris Johnson<br/>\n<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n <br/>\n<br/>\nYour use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> </span></blockquote></div>", 
+    "prevInTime": 524, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "982805084", 
+    "canDelete": false, 
+    "nextInTopic": 526, 
+    "prevInTopic": 524, 
+    "headers": {
+        "messageIdInHeader": "PDREOUVFMEE0QkZFQ0QzMTFCMjQyMDA5MDI3NjE1MDdDMDEwRUY5RUNAc3J2X3dlYi5jb3JwLnh5bG8uY29tPg=="
+    }
+}

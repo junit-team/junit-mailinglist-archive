@@ -1,0 +1,29 @@
+{
+    "topicId": 1328, 
+    "postDate": "991240165", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Vladimir Bossicard &lt;vladimir@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "AZNoOZ5kKvmbwZPJPcNio-GQp7cYtIMXTDhayqjmp__K3uCEjo53OZrr2ZUzlBlJPOjLzshU1etj6yg7YUKFn9xu0n2Nk_LLf7ncof-oY_rF7w", 
+    "nextInTime": 1330, 
+    "userId": 0, 
+    "prevInTime": 1328, 
+    "prevInTopic": 1328, 
+    "headers": {
+        "messageIdInHeader": "PDNCMTUxRkU1LjQ2NkY2OURDQHdnYXRlLmNvbT4=", 
+        "referencesHeader": "PDlmMzYxNyttZHVnQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Vladimir Bossicard", 
+    "numMessagesInTopic": 12, 
+    "msgSnippet": "... I also extended JUnit to count the assertions and had to modify the Assert.java file.  I then wrote the test in the TestAssert.java file and it worked", 
+    "contentTrasformed": false, 
+    "msgId": 1329, 
+    "nextInTopic": 1330, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;vbossica@...&gt;\r\nX-Sender: vbossica@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_3); 30 May 2001 16:31:59 -0000\r\nReceived: (qmail 83515 invoked from network); 30 May 2001 16:29:17 -0000\r\nReceived: from unknown (10.1.10.27) by l8.egroups.com with QMQP; 30 May 2001 16:29:17 -0000\r\nReceived: from unknown (HELO mail.dvart.com) (64.79.2.12) by mta2 with SMTP; 30 May 2001 16:29:17 -0000\r\nReceived: from wgate.com (pipin.dvart.com [64.79.2.4]) by mail.dvart.com (Postfix) with ESMTP id 1FC24CD29 for &lt;junit@yahoogroups.com&gt;; Wed, 30 May 2001 09:25:16 +0000 (GMT)\r\nMessage-ID: &lt;3B151FE5.466F69DC@...&gt;\r\nDate: Wed, 30 May 2001 09:29:25 -0700\r\nReply-To: Vladimir Bossicard &lt;vladimir@...&gt;\r\nX-Mailer: Mozilla 4.7 [en] (WinNT; I)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] testing junit\r\nReferences: &lt;9f3617+mdug@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-From: Vladimir Bossicard &lt;vbossica@...&gt;\r\nFrom: Vladimir Bossicard &lt;vladimir@...&gt;\r\n\r\n&gt; We are extending JUnit a bit to display a count of assertions\n&gt; encountered when running a suite of tests. We can get this to work\n&gt; (i.e. to display the correct number of assertions encountered), but\n&gt; we want to do it right by having tests for this extension in JUnit\n&gt; itself. We want to write a test like this:\n\nI also extended JUnit to count the assertions and had to modify the\nAssert.java file.  I then wrote the test in the TestAssert.java file and\nit worked fine.  Maybe you&#39;re testing where it&#39;s harder to do.\n\n&gt; (inside TestCaseTest)\n&gt; public void testAssertionCount() {\n&gt;         TestCase assertionCount = new TestCase(&quot;assertionCount&quot;) {\n&gt;                 protected void runTest() {\n&gt;                 }\n&gt;                 public void testAssertionCount(){\n&gt;                         assertTrue(true);\n&gt;                         assertTrue(&quot;&quot;,true);\n&gt;                         assertEquals(true,true);\n&gt;                         assertEquals(&quot;&quot;,true,true);\n&gt;                 }\n&gt;         };\n&gt;         verifyAssertionCount(assertionCount);\n&gt; }\n\nI would code something like that:\n\npublic void testAssertionCount () {\n   setAssertCount(0);  // reset the assertions&#39; counter\n   assertTrue(true);\n   assertTrue(&quot;&quot;,true);\n   assertEquals(true,true);\n   assertEquals(&quot;&quot;,true,true);\n   assertTrue(&quot;Wrong assertion #&quot;, 4 == assertCount());\n}\n\nI assume that the setAssertCount and assertCount methods are accessible\nwithin a TestCase (which makes sense).  In my case they are defined in\nthe Assert class.\n\nVladimir\n\n", 
+    "subject": "Re: [junit] testing junit"
+}

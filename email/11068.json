@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 11069, 
+    "senderId": "4jvLde2P7-2OvOAS7iF1nBJY-KYcRQnbnz0jwjTcKwwMlHpA_Aqns-SCV7HB-GIWzVK5mOeOh_5ZWqNsoYAt-Nl9mJjC0I_geFpUEE-3Mw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing dynamically generating filepath and filename", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... A few things: 1. Test generating the filename on its own, without creating any actual files on disk. 2. Separate the random number generator or clock from", 
+    "msgId": 11068, 
+    "profile": "nails762", 
+    "topicId": 11061, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1699367272\">barath amarnath wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi All,<br/>\n&gt; Our system having module named Doc Management. In this<br/>\n&gt; module, the one class is generating filepath and<br/>\n&gt; filename as per STRING pattern<br/>\n&gt; (such as<br/>\n&gt; c:&#92;temp&#92;[date]&#92;[time]&#92;dynamicallygeneratedfilename<br/>\n&gt; c:&#92;temp&#92;[date][time]&#92;randomnumber&#92;dynamicallygeneratedfilename<br/>\n&gt; <br/>\n&gt; I am in the process of writing test cases for the<br/>\n&gt; above dynamically generated file path and name.<br/>\n&gt; <br/>\n&gt; If any of you give some tips or ideas how to test this<br/>\n&gt; functionality, it will be very useful to me.<br/>\n<br/>\n </span></blockquote>A few things:<br/>\n<br/>\n1. Test generating the filename on its own, without creating any actual <br/>\nfiles on disk.<br/>\n<br/>\n2. Separate the random number generator or clock from creating the <br/>\nfilename. The method that creates the filename should take a random <br/>\nnumber generator or clock as a parameter.<br/>\n<br/>\nThe reason for #1 is pretty obvious. The reason for #2 is to make it <br/>\npossible to test creating the filename without having to know what <br/>\nrandom number comes next.<br/>\n<br/>\nHere&#39;s the first test I&#39;d write, based on the system time:<br/>\n<br/>\ntestSystemTimeBasedFilename {<br/>\n     Clock fakeClock = new StoppedClock(2004, 5, 26, 17, 25, 0);<br/>\n<br/>\n     assertEquals(<br/>\n         new File(&quot;c:/temp/20040526/172500/myFileName&quot;).getAbsolutePath(),<br/>\n         new File(FileUtil.generateFileName(fakeClock)).getAbsolutePath());<br/>\n}<br/>\n<br/>\nwhere...<br/>\n<br/>\ninterface Clock {<br/>\n     long getTime();<br/>\n}<br/>\n<br/>\nand...<br/>\n<br/>\nclass StoppedClock implements Clock {<br/>\n     StoppedClock(int year, int month, ...) {}<br/>\n<br/>\n     long getTime() { return ...; }<br/>\n}<br/>\n<br/>\nand finally...<br/>\n<br/>\nclass SystemClock implements Clock {<br/>\n     long getTime() {<br/>\n         return System.currentTimeMillis();<br/>\n     }<br/>\n}<br/>\n<br/>\nso that in production....<br/>\n<br/>\nString timeBasedFileName = FileUtil.generateFileName(new SystemClock());<br/>\n<br/>\nNOTE: SystemClock could be a Singleton if you like.<br/>\n<br/>\nYou can do something similar with java.util.Random, wrapping it in some <br/>\nRandomNumberGenerator interface.<br/>\n<br/>\nThe idea is to easily replace unrepeatable behavior (system clock, <br/>\nrandom numbers) with repeatable behavior (fake versions of the clock or <br/>\na random number generator). Use the fake stuff to make testing easier, <br/>\nthen use the real stuff in production.<br/>\n<br/>\nEnjoy.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 11067, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1085521347", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 11063, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwNTI1MTc1MjQ3LjQ4ODg1LnFtYWlsQHdlYjIxNTEwLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDQwQjNCREMzLjEwMTAxMDBAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDQwNTI1MTc1MjQ3LjQ4ODg1LnFtYWlsQHdlYjIxNTEwLm1haWwueWFob28uY29tPg=="
+    }
+}

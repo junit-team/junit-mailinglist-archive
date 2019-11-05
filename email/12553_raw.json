@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 12554, 
+    "senderId": "IOX3-3Eh3sNuCfpEFXP8FCcJbv6fmQYcyD0a6l9ACrJlq-lQ7exVsO9Ct77aEOmL7lyk22bBfnjG_1qLXVWgYV-DF3PJQQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Multithreading: Testing scheduled method invocation?!", 
+    "from": "Mike Clark &lt;mike@...&gt;", 
+    "authorName": "Mike Clark", 
+    "msgSnippet": "... I tried writing some learning tests for Quartz a couple months back. For what it s worth, I ran into the same timing issues. Before reaching for sleep(), I", 
+    "msgId": 12553, 
+    "rawEmail": "Return-Path: &lt;mike@...&gt;\r\nX-Sender: mike@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 27704 invoked from network); 27 Dec 2004 17:10:23 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m24.grp.scd.yahoo.com with QMQP; 27 Dec 2004 17:10:23 -0000\r\nReceived: from unknown (HELO jhunter.xquery.com) (69.59.195.106)\n  by mta5.grp.scd.yahoo.com with SMTP; 27 Dec 2004 17:10:23 -0000\r\nReceived: from [192.168.1.101] (c-24-9-180-178.client.comcast.net [24.9.180.178])\n\t(authenticated bits=0)\n\tby jhunter.xquery.com (8.12.8/8.12.9) with ESMTP id iBRH6Kiu002756\n\t(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NO)\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 27 Dec 2004 09:06:21 -0800\r\nMime-Version: 1.0 (Apple Message framework v619)\r\nIn-Reply-To: &lt;200412220131.05639.michael@...&gt;\r\nReferences: &lt;200412220131.05639.michael@...&gt;\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nMessage-Id: &lt;BFFCC881-5829-11D9-9839-000A95A547BC@...&gt;\r\nContent-Transfer-Encoding: 7bit\r\nDate: Mon, 27 Dec 2004 10:07:12 -0700\r\nTo: junit@yahoogroups.com\r\nX-Mailer: Apple Mail (2.619)\r\nX-eGroups-Remote-IP: 69.59.195.106\r\nFrom: Mike Clark &lt;mike@...&gt;\r\nSubject: Re: [junit] Multithreading: Testing scheduled method invocation?!\r\nX-Yahoo-Group-Post: member; u=33026788\r\nX-Yahoo-Profile: clarkware\r\n\r\n\nOn Dec 21, 2004, at 5:31 PM, Michael Schuerig wrote:\n\n&gt; I&#39;m working on a class that interacts with the Spring framework&#39;s\n&gt; application context and the Quartz scheduler. I&#39;m pretty new to the\n&gt; latter, thus I&#39;m testing my understanding of Quartz just as much as I&#39;m\n&gt; testing my code. In effect, I can&#39;t (yet) build the fixture for my code\n&gt; completely with mocks as I have to ascertain what these mocks are\n&gt; supposed to do first.\n&gt;\n&gt; The complication here is that Quartz uses its own &quot;hidden&quot; thread(s) to\n&gt; fulfill its duties. It is such a thread that effects the change that I\n&gt; need to check for. As I don&#39;t want to test Quartz, of course, I&#39;m\n&gt; content with checking that my scheduled job is executed at all. Thus I\n&gt; schedule it for immediate execution, wait for 2 secs to give Quartz\n&gt; some time before the fixture is torn down again.\n&gt;\n&gt; Now, all this works surprisingly well. Still, I don&#39;t like the part of\n&gt; waiting some arbitrary time.\n\nI tried writing some learning tests for Quartz a couple months back.  \nFor what it&#39;s worth, I ran into the same timing issues.\n\nBefore reaching for sleep(), I tried to refactor Quartz innards so that \nthe internal clock could be programmatically advanced.  Unfortunately, \na direct call to System.currentTimeMillis() was duplicated in many \nplaces and even after consolidating all those calls through an \ninterface I was unable to mock the clock.\n\nI resorted to using sleep() with short schedules with the rationale \nbeing that I was primarily trying to learn how to use the Quartz API to \nschedule jobs, regardless of when those jobs ran.  Here&#39;s an example \ntest:\n\n     public void testRunEverySecondForTwoSeconds() {\n\n         CronTrigger trigger = new CronTrigger(&quot;trigger&quot;, &quot;testGroup&quot;, \n&quot;0/1 * * * * ?&quot;);\n         scheduler.scheduleJob(jobDetail, trigger);\n         scheduler.start();\n         sleep(2);\n         assertRanXTimes(2);\n         boolean waitForJobsToComplete = true;\n         scheduler.shutdown(waitForJobsToComplete);\n     }\n\n     private void assertRanXTimes(int count) {\n         assertEquals(count, jobDetail.getJobDataMap().getInt(&quot;count&quot;));\n         assertTrue(jobDetail.getJobDataMap().getBoolean(&quot;executed?&quot;));\n     }\n\nHope that helps somehow.\n\n--\nMike Clark\nClarkware Consulting, Inc.\nhttp://clarkware.com\n\n\n", 
+    "profile": "clarkware", 
+    "topicId": 12519, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 33026788, 
+    "prevInTime": 12552, 
+    "contentTrasformed": false, 
+    "postDate": "1104167232", 
+    "canDelete": false, 
+    "nextInTopic": 12554, 
+    "prevInTopic": 12522, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg==", 
+        "messageIdInHeader": "PEJGRkNDODgxLTU4MjktMTFEOS05ODM5LTAwMEE5NUE1NDdCQ0BjbGFya3dhcmUuY29tPg==", 
+        "referencesHeader": "PDIwMDQxMjIyMDEzMS4wNTYzOS5taWNoYWVsQHNjaHVlcmlnLmRlPg=="
+    }
+}

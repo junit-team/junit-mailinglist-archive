@@ -1,0 +1,29 @@
+{
+    "topicId": 693, 
+    "postDate": "984670152", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "sIYyNvvGBdJM0fFfhO5o2Hdw_DONhBM-c0lCAOco2lgSAukdWxedXQM1u1kWt3dBOYnt2Y7eIZ3tIdElnYJZ3bA", 
+    "nextInTime": 699, 
+    "userId": 0, 
+    "prevInTime": 697, 
+    "prevInTopic": 693, 
+    "headers": {
+        "inReplyToHeader": "PDkxM0QwRDJBOTA3MUQxMTFCN0MyMDA4MDVGRTZDNkU3MDI2NThENUFAVVMyPg==", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwMzE1MDkyMTQ1MC4xMzMzNi0xMDAwMDBAam9pLmFyYXZveC5jb20+"
+    }, 
+    "authorName": "Joi Ellis", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "... [snip] ... I write unit tests for the behavior of java beans.  JUnit can catch exceptions thrown in the event thread. I don t wrap my entire test inside an", 
+    "contentTrasformed": false, 
+    "msgId": 698, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;joi@...&gt;\r\nX-Sender: joi@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_4); 15 Mar 2001 15:30:20 -0000\r\nReceived: (qmail 24824 invoked from network); 15 Mar 2001 15:30:19 -0000\r\nReceived: from unknown (10.1.10.142) by l7.egroups.com with QMQP; 15 Mar 2001 15:30:19 -0000\r\nReceived: from unknown (HELO mail.aravox.com) (209.46.41.67) by mta3 with SMTP; 15 Mar 2001 16:31:23 -0000\r\nReceived: from linux.aravox.com (mail-gw.aravox.com [209.46.41.66]) by mail.aravox.com (Postfix) with ESMTP id D4051542E for &lt;junit@yahoogroups.com&gt;; Thu, 15 Mar 2001 09:30:18 -0600 (CST)\r\nReceived: from joi-10.aravox.com (IDENT:joi@... [10.0.0.28]) by linux.aravox.com (8.9.3/8.9.3) with ESMTP id JAA03104 for &lt;junit@yahoogroups.com&gt;; Thu, 15 Mar 2001 09:29:12 -0600\r\nDate: Thu, 15 Mar 2001 09:29:12 -0600 (CST)\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] JUnit, threads, and Swing\r\nIn-Reply-To: &lt;913D0D2A9071D111B7C200805FE6C6E702658D5A@US2&gt;\r\nMessage-ID: &lt;Pine.LNX.4.21.0103150921450.13336-100000@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: Joi Ellis &lt;joi@...&gt;\r\n\r\nOn Thu, 15 Mar 2001 chelck@... wrote:\n\n&gt; I have a bunch of tests that manipulate Swing obejcts. To be safe these\n&gt; tests should run in the Swing event loop. I can do this by using\n&gt; invokeLater() or invokeAndWait() in the test suite. Something like this:\n&gt; \n[snip]\n&gt; \n&gt; But this is very awkward, and (I&#39;m guessing) that JUnit can&#39;t automatically\n&gt; catch exceptions within the Swing event loop. Is there is an easier way?\n&gt; \n\nI write unit tests for the behavior of java beans.  JUnit can catch\nexceptions thrown in the event thread.\n\nI don&#39;t wrap my entire test inside an invoke*() method, I wrote safety\nmethods to wrap around unsafe swing methods.  So, when my test wants to\ncall doClick() on a button, it calls this static method on the AllTests \nclass:\n\n  /**\n   * Safely call doClick() on the specified JButton.\n   * @param button The button to doClick().\n   */\n  public static void safeDoClick(final JButton button) {\n    try {\n      SwingUtilities.invokeAndWait(\n        new Runnable() {\n          /**\n           *  Main processing method for the AllTests object\n           */\n          public void run() {\n            button.doClick();\n          }\n        }\n      );\n    }\n    catch (Exception ex) {\n      ex.printStackTrace();\n    }\n  }\n\nI have 3 or 4 of these methods for things like get/setText, doClick(), \nJList.setSelection(), and requestFocus().  I had to overload safeDoClick()\nto accept different button types.\n\nHere&#39;s a test that uses these methods:\n  public void testConnectionInfoTestButton() {\n    mp = ManagementProcessor.getInstance();\n    assertNotNull( foo );\n    JFrame frame = new JFrame(&quot;testConnectionInfoTestButton&quot;);\n    frame.getContentPane().add( foo );\n    frame.pack();\n    frame.setVisible(true);\n    assert(&quot;Frame should be visible&quot;,frame.isVisible());\n\n    AllTests.pause(1000);\n    AllTests.safeDoClick(foo.testButton);\n    String result = AllTests.safeGetText( foo.resultsString );\n    AllTests.pause(1000);\n    assert(&quot;Expected it to fail&quot;, result.equals(foo.FAILURE));\n\n    mp.start();\n    AllTests.safeDoClick(foo.testButton);\n    AllTests.pause(2000);\n    result = AllTests.safeGetText( foo.resultsString );\n    assert(&quot;Expected it to succeed&quot;, result.equals(foo.SUCCESS));\n  }\n\n-- \nJoi Ellis                    Software Engineer\nAravox Technologies          joi@..., gyles19@...\n\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I\nreally like about Linux is that it has Microsoft worried.  Anything\nthat kicks a monopoly in the pants has got to be good for something.\n           - Chris Johnson\n\n\n", 
+    "subject": "Re: [junit] JUnit, threads, and Swing"
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 17559, 
+    "senderId": "qxOEPkMgu0JsCvbVm7bZh4LKDcYgz3BkK8QHiQRZTDItYBHPAGJ8zFI3aRkOkR-vJG5sfqpvLF7wR7ydCcmis8BIH8L07Op_NImCVwh77Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Looking for example of necessary tearDown( )", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Run this code for a while and tell me what happens. public class MyTestCase extends TestCase { public static Test suite() { TestSuite suite = new", 
+    "msgId": 17558, 
+    "profile": "nails762", 
+    "topicId": 17522, 
+    "spamInfo": {
+        "reason": "4", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-183967934\">kultstatus77 wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m quite familiar with the purpose of tearDown(), I just fail to see<br/>\n&gt; the necessity of it. According to M. Feathers&#39; &quot;Working effectively<br/>\n&gt; with legacy code&quot; unit tests don&#39;t access databases or communicate via<br/>\n&gt; a nreal network connection. I do know that his book&#39;s focus is not on<br/>\n&gt; JUnit, but I do think that he has a point there. So: without a<br/>\n&gt; database and a network connection, when it is really necessary to free<br/>\n&gt; up resources with tearDown()? Isn&#39;t garbage collecting enough?<br/>\n<br/>\n </span></blockquote>Run this code for a while and tell me what happens.<br/>\n<br/>\npublic class MyTestCase extends TestCase {<br/>\n     public static Test suite() {<br/>\n         TestSuite suite = new TestSuite();<br/>\n<br/>\n         for (int i = 0; i &lt; 1000; i++)<br/>\n             suite.add(new MyTestCase());<br/>\n         }<br/>\n<br/>\n         return suite;<br/>\n     }<br/>\n<br/>\n     public void testOops() {<br/>\n         Connection connection = DriverManager.getConnection(&quot;database&quot;, <br/>\n&quot;user&quot;, &quot;password&quot;);<br/>\n         fail(&quot;Oops&quot;);<br/>\n         connection.close();<br/>\n     }<br/>\n}<br/>\n<br/>\nNow I admit this example is stupid at first sight, but now imagine <br/>\nfail(&quot;Oops&quot;); is replaced by more realistic code that throws an <br/>\nexception. Eventually you will run out of connections.<br/>\n<br/>\nNow you could use finally {}, but imagine if you have three or four such <br/>\ntests, each duplicating the finally {} block. I find it reveals much <br/>\nmore intent to grab the connection in setUp() and close it (if needed) <br/>\nin tearDown(). At least tearDown() is guaranteed to execute whether the <br/>\ntest passes or fails.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 17557, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1156032613", 
+    "canDelete": false, 
+    "nextInTopic": 17606, 
+    "prevInTopic": 17531, 
+    "headers": {
+        "inReplyToHeader": "PGVjM3Z1YSt0bDR1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ0RTdBODY1LjQwOTAzMDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGVjM3Z1YSt0bDR1QGVHcm91cHMuY29tPg=="
+    }
+}

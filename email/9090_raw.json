@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 9091, 
+    "senderId": "UocLYeQUxTEZBJ8WWy7aXULpJh4PvTOzcu9GvT3xY5DNSEsytcpqWNML3xsp1wsfbohk5oYlsmKawOUxFq5qTJX4HqCYiqlaq84AlKqI7w", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JNI (Shudder!)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Where is the *.dll in relation to the location of the *.class file on the file system? The only thing that s different, it appears, is the *.dll s path", 
+    "msgId": 9090, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 61421 invoked from network); 12 Aug 2003 12:40:45 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 12 Aug 2003 12:40:45 -0000\r\nReceived: from unknown (HELO ns3.lanyap.com) (64.90.14.2)\n  by mta3.grp.scd.yahoo.com with SMTP; 12 Aug 2003 12:40:45 -0000\r\nReceived: from barney ([64.90.14.37])\n\tby ns3.lanyap.com (8.9.3/8.9.3) with ESMTP id HAA12905\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 12 Aug 2003 07:40:43 -0500\r\nMessage-ID: &lt;200308120740250994.0014F5AF@...&gt;\r\nIn-Reply-To: &lt;3F37C1B8.9040004@...&gt;\r\nReferences: &lt;3F37C1B8.9040004@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Tue, 12 Aug 2003 07:40:25 -0500\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] JNI (Shudder!)\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nWhere is the *.dll in relation to the location of the *.class file on the f=\r\nile system? The only thing that&#39;s different, it appears, is the *.dll&#39;s pat=\r\nh relative to the *.class file.\n\nIs the *.dll picked up through the system =\r\nPATH?\n\nTake care.\n\n&gt;So said Mike Clark on 2003-08-11 --------------------\n&gt;=\r\nOK, I&#39;m stumped.  When a test class that loads a DLL is not in a \n&gt;package,=\r\n it runs successfully.  When the test class is put into a \n&gt;package -- as a=\r\nll good classes should be -- it fails to load the DLL. \n&gt;(The same holds tr=\r\nue if the test class delegates to another non-test \n&gt;class that loads the D=\r\nLL.)\n&gt;\n&gt;Example that works:\n&gt;\n&gt;----\n&gt;\n&gt;import junit.framework.*;\n&gt;\n&gt;public =\r\nclass MyTestCase extends TestCase {\n&gt;\n&gt;     public static native void runMy=\r\nDLL();\n&gt;\n&gt;     static {\n&gt;         System.loadLibrary(&quot;MyDLL&quot;) ;\n&gt;     }\n&gt;\n&gt;=\r\n     public void testRun() {\n&gt;         runMyDLL() ;\n&gt;     }\n&gt;}\n&gt;\n&gt;&gt; java ju=\r\nnit.textui.TestRunner MyTestCase\n&gt;\n&gt;..\n&gt;Time: 0.01\n&gt;OK (1 test)\n&gt;\n&gt;----\n&gt;\n&gt;=\r\nExample that doesn&#39;t work:\n&gt;\n&gt;package com.xyz;\n&gt;\n&gt;import junit.framework.*;=\r\n\n&gt;\n&gt;public class MyTestCasePackaged extends TestCase {\n&gt;\n&gt;     public stati=\r\nc native void runMyDLL();\n&gt;\n&gt;     static {\n&gt;         System.loadLibrary(&quot;My=\r\nDLL&quot;) ;\n&gt;     }\n&gt;\n&gt;     public void testRun() {\n&gt;         runMyDLL() ;\n&gt;   =\r\n  }\n&gt;}\n&gt;\n&gt;&gt; java junit.textui.TestRunner com.xyz.MyTestCasePackaged\n&gt;\n&gt;..E\n=\r\n&gt;Time: 0.01\n&gt;There was 1 error:\n&gt;1) testRun(com.xyz.MyTestCasePackaged)java=\r\n.lang.UnsatisfiedLinkError:\n&gt;    runMyDLL\n&gt;    at com.xyz.MyTestCasePackage=\r\nd.runMyDLL(Native Method)\n&gt;    at com.xyz.MyTestCasePackaged.testRun(MyTest=\r\nCasePackaged.java:14)\n&gt;    at sun.reflect.NativeMethodAccessorImpl.invoke0(=\r\nNative Method)\n&gt;    at sun.reflect.NativeMethodAccessorImpl.\n&gt;         invo=\r\nke(NativeMethodAccessorImpl.java:39)\n&gt;    at sun.reflect.DelegatingMethodAc=\r\ncessorImpl.\n&gt;         invoke(DelegatingMethodAccessorImpl.java:25)\n&gt;\n&gt;FAILU=\r\nRES!!!\n&gt;Tests run: 1,  Failures: 0,  Errors: 1\n&gt;\n&gt;----\n&gt;\n&gt;Is this a known p=\r\nroblem with JUnit or a known problem with my \n&gt;understanding of JNI?\n&gt;\n&gt;I r=\r\neally want to think it&#39;s the latter. I&#39;m going to be really surprised \n&gt;if =\r\nI&#39;m the first person to run into this.  The list archives contain one \n&gt;men=\r\ntion of an Oracle thick driver suffering a similar problem, but a \n&gt;search =\r\nof &quot;UnsatisfiedLinkError&quot; didn&#39;t turn up much.  And I&#39;ve played \n&gt;the exclu=\r\nded.properties tricks - adding &quot;com.xyz.*&quot; to the list.\n&gt;\n&gt;Anyway, I&#39;m prep=\r\nared to be educated by someone.\n&gt;\n&gt;Thanks!\n&gt;\n&gt;Mike\n&gt;\n&gt;-- \n&gt;Mike Clark\n&gt;http=\r\n://clarkware.com\n&gt;(303) 589-3812\n&gt;\n&gt;\n&gt;\n&gt;To unsubscribe from this group, sen=\r\nd an email to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt;Your use of Yahoo! G=\r\nroups is subject to the Yahoo! Terms of Service.\nJ. B. Rainsberger,\nPreside=\r\nnt, Diaspar Software Services\nLet&#39;s write software that people understand.\n=\r\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 9086, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 9089, 
+    "contentTrasformed": false, 
+    "postDate": "1060692025", 
+    "canDelete": false, 
+    "nextInTopic": 9092, 
+    "prevInTopic": 9086, 
+    "headers": {
+        "inReplyToHeader": "PDNGMzdDMUI4LjkwNDAwMDRAY2xhcmt3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwODEyMDc0MDI1MDk5NC4wMDE0RjVBRkBkaWFzcGFyc29mdHdhcmUuY29tPg==", 
+        "referencesHeader": "PDNGMzdDMUI4LjkwNDAwMDRAY2xhcmt3YXJlLmNvbT4="
+    }
+}

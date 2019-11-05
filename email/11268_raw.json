@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 11269, 
+    "senderId": "UMY-q2XTOJXDaEd5PbWLlPho4H5zPDlld1ud-Me5Ye_VpFYA-3aJGsGwrWMk-vNc6kuTUgAzbxSxENvfrZVDCqMDKsBq9kHnUhnoUdMDRl4", 
+    "systemMessage": false, 
+    "subject": "Re: Problem with simple test case", 
+    "from": "&quot;bartvdcammen&quot; &lt;bart.vandercammen@...&gt;", 
+    "authorName": "bartvdcammen", 
+    "msgSnippet": "If you re going to test lots of servlets, consider writing fake HttpServletRequest and HttpServletResponse. The response could f.i. provide a fake Printwriter", 
+    "msgId": 11268, 
+    "rawEmail": "Return-Path: &lt;bart.vandercammen@...&gt;\r\nReceived: (qmail 89341 invoked from network); 24 Jun 2004 15:53:44 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m4.grp.scd.yahoo.com with QMQP; 24 Jun 2004 15:53:44 -0000\r\nReceived: from unknown (HELO n13.grp.scd.yahoo.com) (66.218.66.68)\n  by mta6.grp.scd.yahoo.com with SMTP; 24 Jun 2004 15:53:44 -0000\r\nX-eGroups-Return: bart.vandercammen@...\r\nReceived: from [66.218.67.149] by n13.grp.scd.yahoo.com with NNFMP; 24 Jun 2004 15:52:44 -0000\r\nX-Sender: bart.vandercammen@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 46186 invoked from network); 24 Jun 2004 06:31:12 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m24.grp.scd.yahoo.com with QMQP; 24 Jun 2004 06:31:12 -0000\r\nReceived: from unknown (HELO n3.grp.scd.yahoo.com) (66.218.66.86)\n  by mta2.grp.scd.yahoo.com with SMTP; 24 Jun 2004 06:31:12 -0000\r\nReceived: from [66.218.67.132] by n3.grp.scd.yahoo.com with NNFMP; 24 Jun 2004 06:31:09 -0000\r\nDate: Thu, 24 Jun 2004 06:31:08 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cbdsfc+4d9r@...&gt;\r\nIn-Reply-To: &lt;cb9v30+jji9@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2159\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.86\r\nFrom: &quot;bartvdcammen&quot; &lt;bart.vandercammen@...&gt;\r\nSubject: Re: Problem with simple test case\r\nX-Yahoo-Group-Post: member; u=162084231\r\nX-Yahoo-Profile: bartvdcammen\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 24 Jun 2004 15:52:44 -0000\r\nX-eGroups-Remote-IP: 66.218.66.68\r\n\r\n\nIf you&#39;re going to test lots of servlets, consider writing fake \nHttpServletRequest and HttpServletResponse. \nThe response could f.i. provide a fake Printwriter that records \nwhat&#39;s printed on him. \nTest the doGet() method as any other method. Make a new HelloWorld()\nand call its doGet() with your fake request and response. After \nexecution you can inspect the changes in request and response. In \nyour case : get the fake writer and check the printed lines.\nYour tests will run without the server running. You&#39;re only testing \nthe class and not f.i. the configuration of the server.\n\nThe fake requests and responses can be found on the internet, \ngoogle &quot;MockHttpServletRequest&quot;.\nI took the sourcecode from http://mockrunner.sourceforge.net/ and \nmodified(simplified) the code for my use.\n\nHope it helps,\n\nBart\n \n&gt; public class HelloWorld extends HttpServlet {\n&gt;     public void doGet(HttpServletRequest request, \n&gt; HttpServletResponse response)\n&gt;     throws IOException, ServletException\n&gt;     {\n&gt;         response.setContentType(&quot;text/html&quot;);\n&gt;         PrintWriter out = response.getWriter();\n&gt;         out.println(&quot;&lt;html&gt;&quot;);\n&gt;         out.println(&quot;&lt;head&gt;&quot;);\n&gt;         //out.println(&quot;&lt;title&gt;Hello World!&lt;/title&gt;&quot;);\n&gt;         out.println(&quot;&lt;/head&gt;&quot;);\n&gt;         out.println(&quot;&lt;body&gt;&quot;);\n&gt;         out.println(&quot;&lt;h1&gt;Hello World!&lt;/h1&gt;&quot;);\n&gt;         out.println(&quot;&lt;/body&gt;&quot;);\n&gt;         out.println(&quot;&lt;/html&gt;&quot;);\n&gt;     }\n&gt;     public void doPost(HttpServletRequest request, \n&gt; HttpServletResponse response)\n&gt;     throws IOException, ServletException {\n&gt;         doGet(request, response);\n&gt;     }\n&gt; }\n&gt; \n&gt; *********************TEST CASE BEGIN*********************\n&gt; public class HelloWorldTest extends ServletTestCase{ \n&gt; \n&gt;     public void testDoGet() {\n&gt;        HelloWorld hw = new HelloWorld();\n&gt;        try {\n&gt;            hw.doGet(request,response); \n&gt;        }catch (Exception e) { }\n&gt;     }\n&gt;     \n&gt;     public void endDoGet(WebResponse theResponse) {\n&gt;         String expected = &quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello World!\n&gt; &lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;;\n&gt;         String actual = theResponse.getText();\n&gt;         \n&gt;         assertEquals(expected,actual);\n&gt;     }\n&gt; }\n&gt; \n\n\n\n", 
+    "profile": "bartvdcammen", 
+    "topicId": 11257, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 162084231, 
+    "prevInTime": 11267, 
+    "contentTrasformed": false, 
+    "postDate": "1088058668", 
+    "canDelete": false, 
+    "nextInTopic": 11369, 
+    "prevInTopic": 11261, 
+    "headers": {
+        "inReplyToHeader": "PGNiOXYzMCtqamk5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGNiZHNmYys0ZDlyQGVHcm91cHMuY29tPg=="
+    }
+}

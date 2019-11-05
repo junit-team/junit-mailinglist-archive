@@ -1,0 +1,28 @@
+{
+    "topicId": 15228, 
+    "postDate": "1129819716", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Elliotte Harold &lt;elharo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "cKPhXzft_RktbMMEp5lGVyuGak4GdJrBsxDsRaeytTSLeYJMrFvS0m8lrZp2zFHxcqYweSq7Jl6M-4STm_Wq4B15ISduKVpFIxvTyVUTjA", 
+    "nextInTime": 15229, 
+    "userId": 12653864, 
+    "prevInTime": 15227, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQzNTdBRTQ0LjgwNTA0MDlAbWV0YWxhYi51bmMuZWR1Pg=="
+    }, 
+    "authorName": "Elliotte Harold", 
+    "numMessagesInTopic": 1, 
+    "msgSnippet": "Could we please have a separate test target in the build.xml file so that ant test works as one would expect? Something like this should do the trick: ", 
+    "contentTrasformed": false, 
+    "msgId": 15228, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;elharo@...&gt;\r\nX-Sender: elharo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 80406 invoked from network); 20 Oct 2005 14:49:40 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m30.grp.scd.yahoo.com with QMQP; 20 Oct 2005 14:49:40 -0000\r\nReceived: from unknown (HELO mail23.sea5.speakeasy.net) (69.17.117.25)\n  by mta5.grp.scd.yahoo.com with SMTP; 20 Oct 2005 14:49:40 -0000\r\nReceived: (qmail 864 invoked from network); 20 Oct 2005 14:48:38 -0000\r\nReceived: from dsl254-067-087.nyc1.dsl.speakeasy.net (HELO [192.168.254.100]) (elharo@[216.254.67.87])\n          (envelope-sender &lt;elharo@...&gt;)\n          by mail23.sea5.speakeasy.net (qmail-ldap-1.03) with AES256-SHA encrypted SMTP\n          for &lt;junit@yahoogroups.com&gt;; 20 Oct 2005 14:48:37 -0000\r\nMessage-ID: &lt;4357AE44.8050409@...&gt;\r\nDate: Thu, 20 Oct 2005 10:48:36 -0400\r\nUser-Agent: Thunderbird 1.4 (Macintosh/20050908)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=UTF-8; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Elliotte Harold &lt;elharo@...&gt;\r\nSubject: build.xml test target\r\nX-Yahoo-Group-Post: member; u=12653864; y=LXutZZGwuh3vZ89oyf8fbtjYafWP9GgdeV9cOPU9MD6B5P9n\r\n\r\nCould we please have a separate test target in the build.xml file so \nthat &quot;ant test&quot; works as one would expect? Something like this should do \nthe trick:\n\n\t&lt;target name=&quot;test&quot; depends=&quot;build&quot;&gt;\n\t\t&lt;java classname=&quot;org.junit.runner.JUnitCore&quot; fork=&quot;yes&quot;&gt;\n\t\t    &lt;!--There must be a more intelligent way to do this--&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.AnnotationTest&quot;/&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.AssertionTest&quot;/&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.CommandLineTest&quot;/&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.ForwardCompatibilityTest&quot;/&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.OldTests&quot;/&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.PreJUnit4TestCaseRunnerTest&quot;/&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.TestMethodTest&quot;/&gt;\n\t\t\t&lt;arg value=&quot;org.junit.tests.TextListenerTest&quot;/&gt;\n\t\t\t&lt;classpath&gt;\n\t\t\t\t&lt;pathelement location=&quot;${dist}&quot; /&gt;\n\t\t\t\t&lt;pathelement location=&quot;${dist}/junit.jar&quot; /&gt;\n\t\t\t&lt;/classpath&gt;\n\t\t&lt;/java&gt;\n\n\t&lt;/target&gt;\n\nThen the dist target could depend on the test rather than the build:\n\n\t&lt;target name=&quot;dist&quot; depends=&quot;test&quot;&gt;\n\t\t&lt;delete dir=&quot;${dist}&quot; /&gt;\n\t\t&lt;mkdir dir=&quot;${dist}&quot; /&gt;\n\t\t&lt;jar\n\t\t\tjarfile=&quot;${dist}/src.jar&quot;\n\t\t\tbasedir=&quot;.&quot;\n\t\t\texcludes=&quot;**/*.jar, junit/tests/**, junit/samples/**, **/*.class, \ndoc/**, README.html, .classpath, .project, cpl-v10.html&quot;\n\t\t/&gt;\n\t\t&lt;jar\n\t\t\tjarfile=&quot;${dist}/junit.jar&quot;\n\t\t\tbasedir=&quot;.&quot;\n\t\t\texcludes=&quot;**/*.jar, junit/tests/**, junit/samples/**, **/*.java, \ndoc/**, README.html,  build.xml, jar-manifest.txt, .classpath, .project, \ncpl-v10.html&quot;\n\t\t/&gt;\n\t\t&lt;copy todir=&quot;${dist}/junit/samples&quot;&gt;\n\t\t\t&lt;fileset dir=&quot;junit/samples&quot; /&gt;\n\t\t&lt;/copy&gt;\n\t\t&lt;copy todir=&quot;${dist}/junit/tests&quot;&gt;\n\t\t\t&lt;fileset dir=&quot;junit/tests&quot; /&gt;\n\t\t&lt;/copy&gt;\n\n\t\t&lt;mkdir dir=&quot;${dist}/javadoc&quot; /&gt;\n\t\t&lt;javadoc\n\t\t\tsourcepath=&quot;.&quot;\n\t\t\tpackagenames=&quot;org.junit, org.junit.runner&quot;\n\t\t\tdestdir=&quot;${dist}/javadoc&quot;\n\t\t\tauthor=&quot;false&quot;\n\t\t\tversion=&quot;false&quot;\n\t\t\tuse=&quot;false&quot;\n\t\t\twindowtitle=&quot;JUnit API&quot;\n\t\t\tstylesheetfile=&quot;stylesheet.css&quot;\n\t\t/&gt;\n\t\t&lt;copy todir=&quot;${dist}/doc&quot;&gt;\n\t\t\t&lt;fileset dir=&quot;doc&quot;/&gt;\n\t\t&lt;/copy&gt;\t\t\n\t\t&lt;copy file=&quot;README.html&quot; tofile=&quot;${dist}/README.html&quot; /&gt;\n\t\t&lt;copy file=&quot;cpl-v10.html&quot; tofile=&quot;${dist}/cpl-v10.html&quot; /&gt;\n\t\t\n\t&lt;/target&gt;\n\nThanks.\n\n\n-- \n﻿Elliotte Rusty Harold  elharo@...\nXML in a Nutshell 3rd Edition Just Published!\nhttp://www.cafeconleche.org/books/xian3/\nhttp://www.amazon.com/exec/obidos/ISBN=0596007647/cafeaulaitA/ref=nosim\n\n", 
+    "subject": "build.xml test target"
+}

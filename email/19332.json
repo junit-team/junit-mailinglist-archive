@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 19333, 
+    "senderId": "KbV4HVPKIDJOGXrU0aYl03TeuzPqLzupHW3Wlrh3UdExQGNA0sTdyCGcJI8b3izJj_2dM3oNMc6g1EEG2NwP9zCvl_hGv8ReOQ-2eQXkdkk", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing abstract classes", 
+    "from": "Stephen Smith &lt;steve@...&gt;", 
+    "authorName": "Stephen Smith", 
+    "msgSnippet": "Is there much difference between writing a test for an interface and writing a test for an abstract class? For example, writing a test for Map and writing a", 
+    "msgId": 19332, 
+    "topicId": 19330, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 231973488, 
+    "messageBody": "<div id=\"ygrps-yiv-1390562004\">Is there much difference between writing a test for an interface and <br/>\nwriting a test for an abstract class?<br/>\n<br/>\nFor example, writing a test for Map and writing a test for <br/>\nAbstractMap... you write your test methods, and use the Template Method <br/>\npatternt to decorate your TestCase#setUp with your implementation.<br/>\n<br/>\nI&#39;ve tested abstract classes and interfaces in this manner before, and <br/>\nrarely had few complaints.<br/>\n<br/>\nSteve.<br/>\n<br/>\n---<br/>\nStephen Smith, MEng (Wales).<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.stephen-smith.co.uk/\">http://www.stephen-smith.co.uk/</a><br/>\n<br/>\nAndrew McDonagh wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; <br/>\n&gt; Yes, its normally better to test Abstract classes through their deriving<br/>\n&gt; classes. This way you are testing the real classes that are certain to be<br/>\n&gt; used, whereas any method on an abstract base class is viable for over<br/>\n&gt; riding.<br/>\n&gt; <br/>\n&gt; If it turns out that you are writing the same tests for each of the derived<br/>\n&gt; classes, because they only implement one or a small number of the abstract<br/>\n&gt; base classes methods, and you feel like its an exercise in typing out<br/>\n&gt; tests.... Then &#39;the code&#39; is telling you the design is wrong. Wrong, as<br/>\n&gt; in, why use Inheritance if all the derived classes do is add a single extra<br/>\n&gt; implementation detail. The cure for this is to &#39;Favour Delegation over<br/>\n&gt; Inheritance&#39;.<br/>\n&gt; <br/>\n&gt; What would the design look like if you used delegation to call those extra<br/>\n&gt; classes instead of virtual polymorphic calls?<br/>\n&gt; <br/>\n&gt; E.g. Inheritance<br/>\n&gt; <br/>\n&gt; class Car {<br/>\n&gt; abstract String getMake();<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; class BMW extends Car {<br/>\n&gt; String getMake() {<br/>\n&gt; returns &quot;BMW&quot;;<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; class Toyota extends Car<br/>\n&gt; String getMake() {<br/>\n&gt; returns &quot;Toyota&quot;;<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; Q: Do we Test Each class or abstract base class<br/>\n&gt; <br/>\n&gt; E.g. Delegation (Note using the String class as the class to delegate to -<br/>\n&gt; but it could easily be one of your own classes)<br/>\n&gt; <br/>\n&gt; class Car {<br/>\n&gt; private String make;<br/>\n&gt; <br/>\n&gt; Car(String aMake) {<br/>\n&gt; make = aMake;<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; String getMake() {<br/>\n&gt; return make;<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; class CarTest {<br/>\n&gt; <br/>\n&gt; @Test<br/>\n&gt; testMakeOfCars() {<br/>\n&gt; Car bmw = new Car(&quot;BMW&quot;);<br/>\n&gt; assertEquals(&quot;Wrong make!&quot;, &quot;BMW&quot;, bmw.getMake() );<br/>\n&gt; <br/>\n&gt; Car toyota = new Car(&quot;Toyota&quot;);<br/>\n&gt; assertEquals(&quot;Wrong make!&quot;, &quot;Toyota&quot;, toyota.getMake() );<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; On 5/10/07, elmoseeriksen &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:elmoseeriksen@...\">elmoseeriksen@...</a> <br/>\n&gt; &lt;mailto:elmoseeriksen%40yahoo.com&gt;&gt; wrote:<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; I read in the FAQ about testing abstract classes, but I do not<br/>\n&gt;  &gt; understand the example given in the link the FAQ refers to.<br/>\n&gt;  &gt; When I e.g. make the test class abstract, Eclipse gives the message<br/>\n&gt;  &gt; &quot;No JUnit tests found&quot;. Furthermore, my classes do not follow the<br/>\n&gt;  &gt; Liskov Substitution Principle mentioned in the article.<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; If someone has a simple example of testing abstract classes with<br/>\n&gt;  &gt; JUnit, or could explain it, I would really appreciate it.<br/>\n&gt;  &gt;<br/>\n&gt; <br/>\n&gt; Or should an abstract class simply be tested through the classes that<br/>\n&gt;  &gt; extends the abstract class?<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; - Louise<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt;<br/>\n&gt; <br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------------------------------------------------------<br/>\n&gt; <br/>\n&gt; No virus found in this incoming message.<br/>\n&gt; Checked by AVG Free Edition. <br/>\n&gt; Version: 7.5.467 / Virus Database: 269.6.5/792 - Release Date: 06/05/2007 21:01 </span></blockquote></div>", 
+    "prevInTime": 19331, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1178841021", 
+    "canDelete": false, 
+    "nextInTopic": 19333, 
+    "prevInTopic": 19331, 
+    "headers": {
+        "inReplyToHeader": "PDM1YzUwN2QzMDcwNTEwMTUwNXgxZjcxZWQ2aDJhNWVmNDY0OGI0ZjMyNzNAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDQ2NDNBRkJELjYwNTA2MDRAc3RlcGhlbi1zbWl0aC5jby51az4=", 
+        "referencesHeader": "PGYxdWo3OStwbHA2QGVHcm91cHMuY29tPiA8MzVjNTA3ZDMwNzA1MTAxNTA1eDFmNzFlZDZoMmE1ZWY0NjQ4YjRmMzI3M0BtYWlsLmdtYWlsLmNvbT4="
+    }
+}

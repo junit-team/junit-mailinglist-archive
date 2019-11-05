@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 14026, 
+    "senderId": "C37NAb1NIryqkc3krYEyqNcAoMRDy69xEmGQMAZ2cyDFlobRYXIUfFg6jm_kMqVogdaYsGB8WNxzix72WpQ9iDhUJrtKUln_HRCpFtx9ng", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing EJB...", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... To test an EJB, you can instantiate the bean class directly and use it like a normal Java class. To do this, you usually have to work around any JNDI", 
+    "msgId": 14025, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 6042 invoked from network); 23 Jun 2005 20:58:36 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m23.grp.scd.yahoo.com with QMQP; 23 Jun 2005 20:58:36 -0000\r\nReceived: from unknown (HELO smtp105.rog.mail.re2.yahoo.com) (206.190.36.83)\n  by mta6.grp.scd.yahoo.com with SMTP; 23 Jun 2005 20:58:36 -0000\r\nReceived: (qmail 25006 invoked from network); 23 Jun 2005 20:58:35 -0000\r\nReceived: from unknown (HELO ?192.168.1.110?) (srainsberger5790@69.197.252.38 with plain)\n  by smtp105.rog.mail.re2.yahoo.com with SMTP; 23 Jun 2005 20:58:35 -0000\r\nMessage-ID: &lt;42BB22A1.5050203@...&gt;\r\nDate: Thu, 23 Jun 2005 16:59:13 -0400\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;d9dq1o+6fc4@...&gt;\r\nIn-Reply-To: &lt;d9dq1o+6fc4@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Testing EJB...\r\nX-Yahoo-Group-Post: member; u=127224993; y=xavWdSYnHLYE78_2hyhBq9PsBsBUei4AeRFt6OIEXevfXe0\r\nX-Yahoo-Profile: nails762\r\n\r\ndans_19 wrote:\n\n&gt; I have an EJB that is creating some DAO objects through a factory\n&gt; class. I want to test my EJB through Junit. But the DAO classes have\n&gt; not been fully implemented yet. I want to test the EJB in a way that\n&gt; the tests be independent of DAO classes implementation. The DAO\n&gt; classes are returning DTO&#39;s to the EJB. Can this be done in any way.\n\nTo test an EJB, you can instantiate the bean class directly and use it \nlike a normal Java class. To do this, you usually have to &quot;work around&quot; \nany JNDI lookups the EJB makes and you often have to simulate the \nEJBContext somehow. Details in _JUnit Recipes_, Chapter 11.\n\nIt looks like you want to invoke your EJB, passing it something that \n&quot;looks like&quot; a DAO class, without it being the real thing. Extract an \ninterface from the DAO class and add a way to inject a DAO interface \ninto your EJB. It can be as simple as adding a method like this:\n\npublic void setDao(IMyDao myDao) {\n     this.myDao = myDao;\n}\n\nand invoking it only from the tests. When your EJB needs to use its \nmyDao field, it lazily instantiates a DAO class as long as you haven&#39;t \nalready given it a DAO interface object.\n\nThose should be all the pieces you need.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 14015, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 14024, 
+    "contentTrasformed": false, 
+    "postDate": "1119560353", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 14015, 
+    "headers": {
+        "inReplyToHeader": "PGQ5ZHExbys2ZmM0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyQkIyMkExLjUwNTAyMDNAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGQ5ZHExbys2ZmM0QGVHcm91cHMuY29tPg=="
+    }
+}

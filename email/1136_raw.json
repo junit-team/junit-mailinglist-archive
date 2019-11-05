@@ -1,0 +1,29 @@
+{
+    "topicId": 1015, 
+    "postDate": "989334550", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Robert Sartin &lt;sartin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "NXV2eR3XwDC3W5F7VkiERT-emgxJFai_jK4lFbh6QeB_nwiOwv_Bw0OP9lhW543KwJzzyJhNAG3RPC7Q-GGzvH6BNWrK", 
+    "nextInTime": 1137, 
+    "userId": 0, 
+    "prevInTime": 1135, 
+    "prevInTopic": 1134, 
+    "headers": {
+        "inReplyToHeader": "PG0zbjE4b295cGcuZnNmQGVhcnRobGluay5uZXQ+", 
+        "messageIdInHeader": "PDIwMDEwNTA4MTUwOTEwLjMxOTIucW1haWxAd2ViMTE2MDYubWFpbC55YWhvby5jb20+"
+    }, 
+    "authorName": "Robert Sartin", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "... 1. This leads to some possibly solutions for the OP s problem: public abstract class CommonTests extends TestCase { public void testOne() { // test that", 
+    "contentTrasformed": false, 
+    "msgId": 1136, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;sartin@...&gt;\r\nX-Sender: sartin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 8 May 2001 16:42:50 -0000\r\nReceived: (qmail 94995 invoked from network); 8 May 2001 15:35:59 -0000\r\nReceived: from unknown (10.1.10.26) by l8.egroups.com with QMQP; 8 May 2001 15:35:59 -0000\r\nReceived: from unknown (HELO web11606.mail.yahoo.com) (216.136.172.58) by mta1 with SMTP; 8 May 2001 15:35:59 -0000\r\nMessage-ID: &lt;20010508150910.3192.qmail@...&gt;\r\nReceived: from [207.8.70.117] by web11606.mail.yahoo.com; Tue, 08 May 2001 08:09:10 PDT\r\nDate: Tue, 8 May 2001 08:09:10 -0700 (PDT)\r\nReply-To: sartin@...\r\nSubject: Re: [junit] Re: Same tests with varying initialization?\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;m3n18ooypg.fsf@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Robert Sartin &lt;sartin@...&gt;\r\nFrom: Robert Sartin &lt;sartin@...&gt;\r\n\r\n\n--- Brian Button &lt;bbutton01@...&gt; wrote:\n&gt; Tests that share the same setUp and tearDown logic should be in the\n&gt; same TestCase. Those that do not should be in other TestCase-derived\n&gt; classes.\n\n1. This leads to some possibly solutions for the OP&#39;s problem:\n\npublic abstract class CommonTests extends TestCase {\n  public void testOne() {\n    // test that uses configurable\n  }\n  protected Object configurable = null;\n}\n\npublic class ConfigurationOneTest extends CommonTests {\n  public void setUp() throws Exception {\n    super.setUp();\n    configurable = // create for configuration 1....\n  }\n}\n\npublic class ConfigurationTwoTest extends CommonTests {\n  public void setUp() throws Exception {\n    super.setUp();\n    configurable = // create for configuration 2....\n  }\n}\n\n2. Here is another solution:\n\n\npublic abstract class CommonTests extends TestCase {\n  protected abstract Object getConfigurable();\n\n  public void testOne() {\n    Object configurable = getConfigurable();\n    // test that uses configurable\n  }\n}\n\npublic class ConfigurationOneTest extends CommonTests {\n  protected abstract Object getConfigurable() {\n    Object currentConfig = // create for configuration 1....\n  }\n}\n\npublic class ConfigurationTwoTest extends CommonTests {\n  protected abstract Object getConfigurable() {\n    Object currentConfig = // create for configuration 1....\n  }\n}\n\n3. Or combine 1 and 2, by having setUp defined in CommonTests call\ngetConfigurable() which is overridden by the subclasses:\n\npublic abstract class CommonTests extends TestCase {\n  protected abstract Object getConfigurable();\n\n  public void setUp() throws Exception {\n    super.setUp();\n    configurable = getConfigurable();\n  }\n\n  public void testOne() {\n    // test that uses configurable\n  }\n  private Object configurable;\n}\n\n4. Then there&#39;s the variation that allows for changing configuration to\nvary with common test bodies from test to test only running appropriate\ntests for each configuration:\n\npublic class TheTests extends TestCase {\n  protected doConfigurableTestOne(Object thing) {\n    // Do tests on thing\n  }\n  protected doConfigurableTestTwo(Object thing) {\n    // Do tests on thing\n  }\n  public Object getConfigurationOne() {\n    return // Object in configuration one\n  }\n  public Object getConfigurationTwo() {\n    return // Object in configuration one\n  }\n\n  public testOneWithConfigurationOne() {\n    Object testedThing = getConfigurationOne();\n    doConfigurableTestOne(testedThing);\n  }\n  public testOneWithConfigurationTwo() {\n    Object testedThing = getConfigurationTwo();\n    doConfigurableTestOne(testedThing);\n  }\n  public testTwoWithConfigurationOne() {\n    Object testedThing = getConfigurationOne();\n    doConfigurableTestTwo(testedThing);\n  }\n  // Omit testTwoWithConfigurationTwo as it doesn&#39;t make sense\n}\n\nand so on.....\n\nAll depends on the circumstances and personal preference. Be careful\nnot to abuse #4, it&#39;s a tad brittle.\n\nRegards,\n\nRob\n\n\n__________________________________________________\nDo You Yahoo!?\nYahoo! Auctions - buy the things you want at great prices\nhttp://auctions.yahoo.com/\n\n", 
+    "subject": "Re: [junit] Re: Same tests with varying initialization?"
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 20, 
+    "nextInTime": 7241, 
+    "senderId": "Bj72ACzxeaRjtSjtKzvyZhBq7I9b8v-J10pd2uEzb-rJ_6T3r6AkYxmmOoFaF7u4JKlBBTWwdNcztvIqdo5Wj6_dD8F_dRw7cPz7tT3zww", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] debuggers", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "There is duplication in the failure message and the assertion itself, but that s what the failure message is there for. You may eventually refactor to", 
+    "msgId": 7240, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_1); 17 Mar 2003 19:07:48 -0000\r\nReceived: (qmail 42106 invoked from network); 17 Mar 2003 19:07:47 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m3.grp.scd.yahoo.com with QMQP; 17 Mar 2003 19:07:47 -0000\r\nReceived: from unknown (HELO fep01-mail.bloor.is.net.cable.rogers.com) (66.185.86.71)\n  by mta2.grp.scd.yahoo.com with SMTP; 17 Mar 2003 19:07:47 -0000\r\nReceived: from quincy ([24.156.202.2])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030317190746.WTAK4832.fep01-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Mon, 17 Mar 2003 14:07:46 -0500\r\nMessage-ID: &lt;200303171407410760.191D01AC@...&gt;\r\nIn-Reply-To: &lt;1047926153.3e761589d6d0c@...&gt;\r\nReferences: &lt;OF3A5451B1.59427194-ONC1256CE7.00584E9F@...&gt;\n &lt;200303121501080975.0683F653@...&gt;\n &lt;1047504673.3794.3.camel@Rhino&gt;\n &lt;008201c2e987$d282f610$6500a8c0@nilla&gt;\n &lt;1047923444.3e760af442ee5@...&gt;\n &lt;200303171317310211.18EF11B7@...&gt;\n &lt;1047926153.3e761589d6d0c@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Mon, 17 Mar 2003 14:07:41 -0500\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] debuggers\r\nMime-Version: 1.0\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep01-mail.bloor.is.net.cable.rogers.com from [24.156.202.2] using ID &lt;jbrains@...&gt; at Mon, 17 Mar 2003 14:07:45 -0500\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\n&quot;There is duplication in the failure message and the assertion itself, but that&#39;s what the failure message is there for. You may eventually refactor to Vladimir&#39;s suggestion&quot;\n\nMaybe we both need to read more closely. :)\n\nSo said Vladimir R. Bossicard on 3/17/2003 --------------------\n&gt; What about this, which is currently supported by JUnit:\n&gt; \n&gt; assertTrue(\n&gt;     &quot;Rainbow &quot; + rainbow.colorListAsString() + &quot; unexpectedly does not\n&gt; contain &quot; + Color.orange.toString(), \n&gt;     rainbow.contains(Color.orange));\n\n- do you really need the method &#39;coloListAsString()&#39;?  If this method is not in\nyour public API, you&#39;re writing an additional methods just in the case of a\n*failing* test (it doesn&#39;t help your design at all).\n\n- let&#39;s finish the tests (and be careful when you&#39;re copy/pasting the code!):\n\nassertTrue(&quot;Rainbow &quot; + rainbow.colorListAsString() + &quot; unexpectedly does not\n    contain &quot; + Color.orange.toString(), rainbow.contains(Color.orange));\nassertTrue(&quot;Rainbow &quot; + rainbow.colorListAsString() + &quot; unexpectedly does not\n    contain &quot; + Color.blue.toString(), rainbow.contains(Color.blue));\nassertTrue(&quot;Rainbow &quot; + rainbow.colorListAsString() + &quot; unexpectedly does not\n    contain &quot; + Color.yellow.toString(), rainbow.contains(Color.yellow));\nassertTrue(&quot;Rainbow &quot; + rainbow.colorListAsString() + &quot; unexpectedly does not\n    contain &quot; + Color.red.toString(), rainbow.contains(Color.red));\nassertTrue(&quot;Rainbow &quot; + rainbow.colorListAsString() + &quot; unexpectedly does not\n    contain &quot; + Color.green.toString(), rainbow.contains(Color.green));\n...\n\n- or you can simply have:\n\nimport junitx.framework.ListAssert;\n\nListAssert.assertContains(rainbow, Color.orange);\nListAssert.assertContains(rainbow, Color.blue);\nListAssert.assertContains(rainbow, Color.yellow);\nListAssert.assertContains(rainbow, Color.red);\nListAssert.assertContains(rainbow, Color.green);\n\nyou&#39;re the judge.\n\n-Vladimir\n\n-- \nVladimir R. Bossicard\nwww.bossicard.com\n\nYahoo! Groups Sponsor\nADVERTISEMENT\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. \nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\nAll correspondence (c) 2002 Diaspar Software Services.\nIf you want to use it, just ask; don&#39;t steal.\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 7194, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 7239, 
+    "contentTrasformed": false, 
+    "postDate": "1047928061", 
+    "canDelete": false, 
+    "nextInTopic": 7303, 
+    "prevInTopic": 7239, 
+    "headers": {
+        "inReplyToHeader": "PDEwNDc5MjYxNTMuM2U3NjE1ODlkNmQwY0BtYWlsLnNjZGkub3JnPg==", 
+        "messageIdInHeader": "PDIwMDMwMzE3MTQwNzQxMDc2MC4xOTFEMDFBQ0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PE9GM0E1NDUxQjEuNTk0MjcxOTQtT05DMTI1NkNFNy4wMDU4NEU5RkBzYmFiLnNlPiA8MjAwMzAzMTIxNTAxMDgwOTc1LjA2ODNGNjUzQHNzbXRwLmJsb29yLmlzLm5ldC5jYWJsZS5yb2dlcnMuY29tPiA8MTA0NzUwNDY3My4zNzk0LjMuY2FtZWxAUmhpbm8+IDwwMDgyMDFjMmU5ODckZDI4MmY2MTAkNjUwMGE4YzBAbmlsbGE+IDwxMDQ3OTIzNDQ0LjNlNzYwYWY0NDJlZTVAbWFpbC5zY2RpLm9yZz4gPDIwMDMwMzE3MTMxNzMxMDIxMS4xOEVGMTFCN0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4gPDEwNDc5MjYxNTMuM2U3NjE1ODlkNmQwY0BtYWlsLnNjZGkub3JnPg=="
+    }
+}

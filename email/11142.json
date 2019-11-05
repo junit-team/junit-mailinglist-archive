@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 11143, 
+    "senderId": "jO2K5mPllCeWrx7hmi6T5zwo51bEoSvYsG0UFyNeB-tqRywLruQiJImIiu4yt2zue8vB8yLPKK9UeD1jfY3yDF7fx3t8tnecVyw_JX_VdQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] test Database Connection", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I suggest using jMock/EasyMock for this approach. Either product (they re essentially the same, but with different API styles) makes it very easy to make", 
+    "msgId": 11142, 
+    "profile": "nails762", 
+    "topicId": 11141, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1692156379\">anita23_n wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;   Hi All,<br/>\n&gt; I am stuck on database conn.......<br/>\n&gt; can anyone give me a solution????????<br/>\n&gt; <br/>\n&gt; -&gt;How to check database connection using mock object?<br/>\n&gt; My test case is not working<br/>\n&gt; How to approch to this problem???????<br/>\n&gt; code is like this<br/>\n&gt; <br/>\n&gt; java file contain one method public void xxx(object of bean<br/>\n&gt; class,Datasource ds)<br/>\n&gt; {<br/>\n&gt; con=ds.getConnection();<br/>\n&gt; //all the stuff using prepared stmt 4 insertion<br/>\n&gt; }<br/>\n<br/>\n </span></blockquote>I suggest using jMock/EasyMock for this approach. Either product <br/>\n(they&#39;re essentially the same, but with different API styles) makes it <br/>\nvery easy to make an interface, and DataSource, Connection, Statement, <br/>\nPreparedStatement are all interfaces.<br/>\n<br/>\nSo if you&#39;re testing an entity bean&#39;s remove(), you can do this <br/>\n(EasyMock style):<br/>\n<br/>\ntestRemove() {<br/>\n     dataSource = create mock DataSource<br/>\n     connection = create mock Connection<br/>\n     preparedStatement = create mock PreparedStatement<br/>\n     // each of these has a &quot;control&quot; and a &quot;proxy&quot;<br/>\n<br/>\n     // invoke method on proxy, saying &quot;I expect this to be invoked&quot;<br/>\n     dataSource.getConnection();<br/>\n<br/>\n     // invoke method on control, saying &quot;here&#39;s how to respond&quot;<br/>\n     dataSourceControl.setReturnValue(connection);<br/>\n<br/>\n     // proxy method... you&#39;re expecting this call<br/>\n     connection.prepareStatement(&quot;delete from TABLE where CONDITION&quot;);<br/>\n<br/>\n     // control method<br/>\n     connectionControl.setReturnValue(preparedStatement);<br/>\n<br/>\n     ...<br/>\n<br/>\n     // verify all mocks were used correctly<br/>\n     dataSourceControl.verify();<br/>\n     connectionControl.verify();<br/>\n     preparedStatementControl.verify();<br/>\n}<br/>\n<br/>\nDo you get the idea?<br/>\n<br/>\neasymock.org<br/>\njmock.org<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 11141, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1086638434", 
+    "canDelete": false, 
+    "nextInTopic": 11150, 
+    "prevInTopic": 11141, 
+    "headers": {
+        "inReplyToHeader": "PGNhMXI0NSsxc2o2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwQzRDOTYyLjUwOTAwMDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNhMXI0NSsxc2o2QGVHcm91cHMuY29tPg=="
+    }
+}

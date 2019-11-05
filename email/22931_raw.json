@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 22932, 
+    "senderId": "EY2krcJ5hxl0eg4B0jN-F8ChNb2r37tFoAmX7LzGKiXL_ZeO-lW0uC26JZbVvT58x6XyIBmi-h1DpIuG9YWG1EqulpCTH1gSekJg", 
+    "systemMessage": true, 
+    "subject": "Scheduling Junit tests for a concurrent execution", 
+    "from": "&quot;monika.moat&quot; &lt;monika.moat@...&gt;", 
+    "authorName": "monika.moat", 
+    "msgSnippet": "Hello Everybody, for some concurrrent Junit tests, I took the classes, which I found on the Junit Webside: http://www.junit.org/node/589 and ", 
+    "msgId": 22931, 
+    "rawEmail": "Return-Path: &lt;monika.moat@...&gt;\r\nReceived: (qmail 96121 invoked from network); 10 Sep 2010 14:48:01 -0000\r\nReceived: from unknown (66.196.94.107)\n  by m12.grp.re1.yahoo.com with QMQP; 10 Sep 2010 14:48:01 -0000\r\nReceived: from unknown (HELO n39b.bullet.mail.sp1.yahoo.com) (66.163.168.153)\n  by mta3.grp.re1.yahoo.com with SMTP; 10 Sep 2010 14:48:01 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1284130081; bh=yY4PdSb1ocN69pDH+qGPcBulPCGela2W2SaIlLlCjOI=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:X-Received:Date:To:Message-ID:User-Agent:MIME-Version:X-Mailer:X-Yahoo-Newman-Property:X-Originating-IP:X-Yahoo-Post-IP:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:Content-Type:Content-Transfer-Encoding:X-YGroups-SubInfo:Sender:X-eGroups-Approved-By:X-eGroups-Auth; b=VWUwaeW3gVo+OknFIk+Xzf1r8SAtnNF8CwDDLi23+PcdQSQNMuB3uYASx7VP6nu/VAuZl+y7z4b8SVgq3Phm38GCDlIhW4OolyffsA3JbE0zoOUhB9JQqOMzrxmcNaSB\r\nReceived: from [69.147.65.150] by n39.bullet.mail.sp1.yahoo.com with NNFMP; 10 Sep 2010 14:48:01 -0000\r\nReceived: from [98.137.34.34] by t7.bullet.mail.sp1.yahoo.com with NNFMP; 10 Sep 2010 14:48:01 -0000\r\nX-Sender: monika.moat@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 8290 invoked from network); 10 Sep 2010 14:42:27 -0000\r\nX-Received: from unknown (98.137.34.44)\n  by m3.grp.sp2.yahoo.com with QMQP; 10 Sep 2010 14:42:27 -0000\r\nX-Received: from unknown (HELO n46b.bullet.mail.sp1.yahoo.com) (66.163.168.160)\n  by mta1.grp.sp2.yahoo.com with SMTP; 10 Sep 2010 14:42:27 -0000\r\nX-Received: from [69.147.65.173] by n46.bullet.mail.sp1.yahoo.com with NNFMP; 10 Sep 2010 14:42:27 -0000\r\nX-Received: from [98.137.34.184] by t15.bullet.mail.sp1.yahoo.com with NNFMP; 10 Sep 2010 14:42:26 -0000\r\nDate: Fri, 10 Sep 2010 14:42:26 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;i6dg4i+o05r@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nFrom: &quot;monika.moat&quot; &lt;monika.moat@...&gt;\r\nSubject: Scheduling Junit tests for a concurrent execution\r\nX-Yahoo-Group-Post: member; u=309355445; y=F7v2hfrz13-LkqHV4zvAyo9jLQpNmrCxoCSs6hsh76vsi9o0-4fii9wy0_4\r\nX-Yahoo-Profile: monika.moat\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 10 Sep 2010 14:47:59 -0000\r\n\r\nHello Everybody,\n\nfor some concurrrent Junit tests, I took the classes, which I found on\nthe Junit Webside: http://www.junit.org/node/589 and\nhttp://mycila.googlecode.com/svn/sandbox/src/main/java/com/mycila/sandbo&#92;\nx/junit/runner/ respectively.\n\nMy problem is, that with my tests I access some classes, which\nschouldn&#39;t be accessed concurrently . Therefore I receive some\nexceptions, so that I cannot really run the concurrent junit plugin\ntests.\n\nTherefore I would like to use a newScheduledThreadPool instead of a\nnewFixedthreadPool in the classes &quot;ConcurrentJunitRunner&quot; and\n&quot;ConcurrentTestsuite&quot;:\n\nScheduledExecutorService executorService =\n                    \nExecutors.newScheduledThreadPool(klass.isAnnotationPresent(Sequential.cl&#92;\nass) ? klass.getAnnotation(\n                             Sequential.class).threads() : (int)\n(Runtime.getRuntime().availableProcessors() * 1.5),\n                             new\nNamedThreadFactory(klass.getSimpleName()));\n\ninstead of\n\nExecutorService executorService =\n                    \nExecutors.newFixedThreadPool(klass.isAnnotationPresent(Concurrent.class)\n? klass.getAnnotation(\n                             Concurrent.class).threads() : (int)\n(Runtime.getRuntime().availableProcessors() * 1.5),\n                             new\nNamedThreadFactory(klass.getSimpleName()));\n\nMy Problem is, that I don&#39;t find, the place where I should set;\n\nexecutorService.scheduleWithFixedDelay(command, initialDelay, delay,\nunit);\n\nor\n\nexecutorService.scheduleAtFixedRate(command, initialDelay, period,\nunit);\n\nI can set these values in the schedule () method, yet I would like to\nset them before I define:\n\nQueue&lt;ScheduledFuture&lt;?&gt;&gt; tasks = new LinkedList&lt;ScheduledFuture&lt;?&gt;&gt;();\n\nDoes anybody have an idea, how to modify these classes in that the\nconcuurent tests don&#39;t start at the same time?\n\nFor some help I would be grateful.\n\nKindly\nMonika\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "monika.moat", 
+    "topicId": 22931, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 309355445, 
+    "prevInTime": 22930, 
+    "contentTrasformed": false, 
+    "postDate": "1284129746", 
+    "canDelete": false, 
+    "nextInTopic": 22932, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGk2ZGc0aStvMDVyQGVHcm91cHMuY29tPg=="
+    }
+}

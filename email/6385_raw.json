@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 6386, 
+    "senderId": "p6BvXuw7FVKp7LMV0Fov--vi7hKl0ffZRJRZ5uJzY962ynhRhxWX-Tgus_WVubmGrHTlBcylNNRikHUmzcZ5QxxnwcB2-8KhmX9sEA048PKlllc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running time consuming JUnit Tests", 
+    "from": "&quot;Francois Beausoleil&quot; &lt;fbeausoleil@...&gt;", 
+    "authorName": "Francois Beausoleil", 
+    "msgSnippet": "Hello again, I think you misunderstood me.  Let s say that String.length() returns a wrong length when there s a zero char in a String.  So, you original code ", 
+    "msgId": 6385, 
+    "rawEmail": "Return-Path: &lt;fbeausoleil@...&gt;\r\nX-Sender: fbeausoleil@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 9 Dec 2002 20:41:06 -0000\r\nReceived: (qmail 18559 invoked from network); 9 Dec 2002 20:41:05 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m11.grp.scd.yahoo.com with QMQP; 9 Dec 2002 20:41:05 -0000\r\nReceived: from unknown (HELO server2.fastmail.fm) (66.111.4.3)\n  by mta1.grp.scd.yahoo.com with SMTP; 9 Dec 2002 20:41:05 -0000\r\nReceived: from server2.fastmail.fm (localhost [127.0.0.1])\n\tby fastmail.fm (Postfix) with ESMTP id B8CE71954F\n\tfor &lt;junit@yahoogroups.com&gt;; Mon,  9 Dec 2002 15:41:02 -0500 (EST)\r\nReceived: from 127.0.0.1 ([127.0.0.1] helo=server2.fastmail.fm) by fastmail.fm\n  with SMTP; Mon, 09 Dec 2002 15:41:02 -0500\r\nReceived: by server2.fastmail.fm (Postfix, from userid 99)\n\tid A6E5436C4D; Mon,  9 Dec 2002 15:41:02 -0500 (EST)\r\nContent-Disposition: inline\r\nContent-Transfer-Encoding: 7bit\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nMIME-Version: 1.0\r\nX-Mailer: MIME::Lite 1.2  (F2.71; T1.001; A1.51; B2.12; Q2.03)\r\nTo: junit@yahoogroups.com\r\nDate: Mon, 09 Dec 2002 15:41:02 -0500\r\nX-Epoch: 1039466462\r\nX-Sasl-enc: XfcFfuvAxMYpPUO5QzAd1g\r\nSubject: Re: [junit] Running time consuming JUnit Tests\r\nMessage-Id: &lt;20021209204102.A6E5436C4D@...&gt;\r\nFrom: &quot;Francois Beausoleil&quot; &lt;fbeausoleil@...&gt;\r\nX-Yahoo-Group-Post: member; u=122105634\r\nX-Yahoo-Profile: francois_beausoleil\r\n\r\nHello again,\n\nI think you misunderstood me.  Let&#39;s say that String.length() returns a\nwrong length when there&#39;s a zero char in a String.  So, you original code\nwould have been this:\n\npublic void testDomainTest() {\n    String s = createString(); // Method which potentially returns \n                               // a String with a character of zero value\n    assertEquals(12, s.length());\n}\n\nSo, when you encounter the bug, this test fails.  After investigating,\nyou discover that the JDK platform has the bug.  So now, you should add a\ntest like this:\n\npublic void testStringLengthHasBug() {\n    String s = &quot;a&#92;u0000a&quot;;\n    assertEquals(&quot;Bug in JDK returns one less char &quot;\n                + &quot;per char at zero value&quot;, 2, s.length());\n}\n\nAnd you update your domain code to remove or translate the zero char\nvalue.\n\nWhen you next update your JDK, you run your tests again.  Now, the\ntestStringLengthHasBug() method fails, because the bug was corrected. \nSo, you can safely remove the foolproof code, and update your domain code\nto correct the problem.\n\nI understand that the example is not quite correct, as you would not\nnormally have something related to the JDK platform, but this simple\nexample serves to illustrate my point.\n\nHope that helps !\nFrancois Beausoleil\n\n\nOn Fri, 06 Dec 2002 10:09:06 -0800, &quot;Vladimir R. Bossicard&quot;\n&lt;vbossica@...&gt; said:\n&gt; &gt; In my opinion, you should reverse your test.  So, instead of failing\n&gt; &gt; because the library has bad code, your test now fails if the library has\n&gt; &gt; *good* code.  Then, you should have another test which tests *your* code\n&gt; &gt; and makes sure that you prevent the bug from happening.\n&gt; \n&gt; The problem I have is that now that all my tests pass with a buggy code,\n&gt; how can I trust my tests?  What will remind me that my code is broken if\n&gt; my failing tests pass?\n&gt; \n&gt; If I&#39;m the only one on the project, I can keep track of the open issues\n&gt; (like upgrading a library) but things get complicated as soon as you\n&gt; have some decentralized organization (OSS e.g.)\n&gt; \n&gt; I think it&#39;s important that you have a red flag somewhere, and possibly\n&gt; automatic (not a todo list that you may or may not keep up-to-date).\n&gt; For JUnit-addons, I wrote a validator that checks for tests that are not\n&gt; starting with &quot;test&quot; and gives a notice.  I think that I will run this\n&gt; automatically in my build and comment-out my test (like &quot;public void\n&gt; failing-test&quot;): all my tests now pass but I have an automatic reminder\n&gt; that they are in fact broken.  The rule will be: all the defined tests\n&gt; must pass and no test must be commented-out.\n&gt; \n&gt; -Vladimir\n\n&lt;snip /&gt;\n\n-- \nhttp://fastmail.fm - A fast, anti-spam email service.\n\n", 
+    "profile": "francois_beausoleil", 
+    "topicId": 6359, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 122105634, 
+    "prevInTime": 6384, 
+    "contentTrasformed": false, 
+    "postDate": "1039466462", 
+    "canDelete": false, 
+    "nextInTopic": 6390, 
+    "prevInTopic": 6383, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDIxMjA5MjA0MTAyLkE2RTU0MzZDNERAc2VydmVyMi5mYXN0bWFpbC5mbT4="
+    }
+}

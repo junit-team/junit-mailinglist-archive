@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 15041, 
+    "senderId": "p9MhQE4n_1OjKH9IjEzxHNdQ_M_k8S-b5bvBWN--df1VruD5ITZu4n8mEl92qUf88BcLOquVoHkCjwvm5dX5yeooqoYrPNCF", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] junit4: Exceptions in TestListener", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "... J.B. The equality of the listeners wasn t in question. I wrote the test the way I did so that it didn t matter what order the listeners were called (it", 
+    "msgId": 15040, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 37339 invoked from network); 30 Sep 2005 16:47:33 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m31.grp.scd.yahoo.com with QMQP; 30 Sep 2005 16:47:33 -0000\r\nReceived: from unknown (HELO smtpauth08.mail.atl.earthlink.net) (209.86.89.68)\n  by mta6.grp.scd.yahoo.com with SMTP; 30 Sep 2005 16:47:32 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth08.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1ELO0L-0008VK-0A\n\tfor junit@yahoogroups.com; Fri, 30 Sep 2005 12:45:01 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Fri, 30 Sep 2005 09:44:49 -0700\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nIn-Reply-To: &lt;433BD768.4040902@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nThread-Index: AcXE7TjZLRMzvjRyQcioFHP9DM27NQAnTcHg\r\nMessage-ID: &lt;E1ELO0L-0008VK-0A@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d47808daa5b3e7ca120ffe7f9ca6dc7f589c839848bf58fae6a0350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] junit4: Exceptions in TestListener\r\nX-Yahoo-Group-Post: member; u=173198504; y=u95JMSVd-6w8SZH_4rglW9LrHrYi7RVIBXsQRegI5nkpNVpc\r\nX-Yahoo-Profile: kentlbeck\r\n\r\n \n\n&gt; -----Original Message-----\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; Behalf Of J. B. Rainsberger\n&gt; Sent: Thursday, September 29, 2005 5:01 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: Re: [junit] junit4: Exceptions in TestListener\n&gt; \n&gt; Kent Beck wrote:\n&gt; &gt; David,\n&gt; &gt; \n&gt; &gt; I think that the framework should continue to work in as \n&gt; many situations as\n&gt; &gt; possible. If a listener throws an exception, the framework \n&gt; should deal with\n&gt; &gt; it. Contributing to Eclipse calls this the Safe Platform \n&gt; Rule: &quot;As the\n&gt; &gt; provider of an extension point, you must protect yourself against\n&gt; &gt; misbehavior on the part of extenders.&quot; Here is the test I \n&gt; came up with that\n&gt; &gt; I think should pass (and doesn&#39;t currently):\n&gt; &gt; \n&gt; &gt;       int count;\n&gt; &gt;      \n&gt; &gt;       class FailingListener implements TestListener {\n&gt; &gt;             public void testRunStarted(int testCount) {\n&gt; &gt;                   count++;\n&gt; &gt;                   throw new Error();\n&gt; &gt;             }\n&gt; &gt; \n&gt; &gt;             public void testRunFinished(Runner runner) {\n&gt; &gt;             }\n&gt; &gt; \n&gt; &gt;             public void testStarted(Object test, String name) {\n&gt; &gt;             }\n&gt; &gt; \n&gt; &gt;             public void testFinished(Object test, String name) {\n&gt; &gt;             }\n&gt; &gt; \n&gt; &gt;             public void testFailure(Failure failure) {\n&gt; &gt;             }\n&gt; &gt; \n&gt; &gt;             public void testIgnored(Method method) {\n&gt; &gt;             }\n&gt; &gt;       }\n&gt; &gt;      \n&gt; &gt;       public static class OneTest {\n&gt; &gt;             @Test public void nothing() {}\n&gt; &gt;       }\n&gt; &gt;      \n&gt; &gt;       @Test public void failingListener() {\n&gt; &gt;             count= 0;\n&gt; &gt;             Runner runner= new Runner();\n&gt; &gt;             runner.addListener(new FailingListener());\n&gt; &gt;             runner.addListener(new FailingListener());\n&gt; &gt;             runner.run(OneTest.class);\n&gt; &gt;             assertEquals(2, count);\n&gt; &gt;       }\n&gt; &gt;      \n&gt; &gt;      \n&gt; &gt;       public static junit.framework.Test suite() {\n&gt; &gt;             return new JUnit4TestAdapter(TestListenerTest.class);\n&gt; &gt;       }\n&gt; &gt; \n&gt; &gt; I am working on an implementation. Alternatively, should \n&gt; the count be 1?\n&gt; \n&gt; If you&#39;re wondering whether the new FailingListeners should \n&gt; be counted \n&gt; as equal, I believe not. They aren&#39;t Value Objects, so I don&#39;t think \n&gt; they should be compared with value equality.\n&gt; \n&gt; If you&#39;re wondering about something else, then ignore me and \n&gt; wait for an \n&gt; intelligent reply.\n\nJ.B.\n\nThe equality of the listeners wasn&#39;t in question. I wrote the test the way I\ndid so that it didn&#39;t matter what order the listeners were called (it isn&#39;t\nguaranteed), the test would prove that both listeners were called in spite\nof their exceptions. My first version of the test had one failing listener\nand a second listener that set a flag that was checked with assertTrue(),\nbut that test implicitly relied on the listeners being called in the order\nthey were added.\n\nKent Beck\nThree Rivers Institute\n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 14967, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 15039, 
+    "contentTrasformed": false, 
+    "postDate": "1128098689", 
+    "canDelete": false, 
+    "nextInTopic": 15046, 
+    "prevInTopic": 15036, 
+    "headers": {
+        "inReplyToHeader": "PDQzM0JENzY4LjQwNDA5MDJAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PEUxRUxPMEwtMDAwOFZLLTBBQHNtdHBhdXRoMDgubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

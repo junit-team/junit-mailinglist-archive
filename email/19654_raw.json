@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 43, 
+    "nextInTime": 19655, 
+    "senderId": "cj3s4eIKh9pGlKQi_D4rCCmrk77CH19GX1P7RObEXN_hqrdgFmWJXAUNVI62u13lCT46Ndc3vPTzNOvqky2Bn--KF0PQzLtF", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing singleton patterns", 
+    "from": "&quot;Nat Pryce&quot; &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "The simplest approach I ve found is that if there is need for only one instance of some class in a system, to just create only one instance of that type. ", 
+    "msgId": 19654, 
+    "rawEmail": "Return-Path: &lt;nat.pryce@...&gt;\r\nX-Sender: nat.pryce@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 72711 invoked from network); 30 Jul 2007 15:12:16 -0000\r\nReceived: from unknown (66.218.66.71)\n  by m51.grp.scd.yahoo.com with QMQP; 30 Jul 2007 15:12:16 -0000\r\nReceived: from unknown (HELO ug-out-1314.google.com) (66.249.92.171)\n  by mta13.grp.scd.yahoo.com with SMTP; 30 Jul 2007 15:12:15 -0000\r\nReceived: by ug-out-1314.google.com with SMTP id p35so1152402ugc\n        for &lt;junit@yahoogroups.com&gt;; Mon, 30 Jul 2007 07:56:31 -0700 (PDT)\r\nDKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;\n        d=gmail.com; s=beta;\n        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:references;\n        b=uOiLQ/z2uh8sA5R5oDw8jkHPzV2aXI8QUtKaXKPjLHxiqeRH+7rvP2XzO6gv2udcR/AaLHssOEl5sckpdM6l2bmLoTR3cvAzf9NtvRj7sDlgtTfC0p5CO8eStNsaZmXQkCvYoZq8R3Cz5rmshbaEhnR1fAXLuzJNt/Pk2vsDWII=\r\nReceived: by 10.78.142.14 with SMTP id p14mr1518044hud.1185806788927;\n        Mon, 30 Jul 2007 07:46:28 -0700 (PDT)\r\nReceived: by 10.78.144.12 with HTTP; Mon, 30 Jul 2007 07:46:28 -0700 (PDT)\r\nMessage-ID: &lt;17fa53d0707300746w7ef03403x28d42828355efe8f@...&gt;\r\nDate: Mon, 30 Jul 2007 15:46:28 +0100\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;46ADEF51.8060407@...&gt;\r\nMIME-Version: 1.0\r\nReferences: &lt;46AB416C.2040400@...&gt;\n\t &lt;46ADEF51.8060407@...&gt;\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;Nat Pryce&quot; &lt;nat.pryce@...&gt;\r\nSubject: Re: [junit] Testing singleton patterns\r\nX-Yahoo-Group-Post: member; u=216973656; y=imCIOOh0RjhYBdzQzPvZlwtW2wfnZOvaJZ1p-LtDe2IwbcZG\r\nX-Yahoo-Profile: nat_pryce\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nThe simplest approach I&#39;ve found is that if there is need for only one\ninstance of some class in a system, to just create only one instance of that\ntype.\n\nAdding extra code just to stop me creating more than one is always, in my\nexperience, counter-productive.  It&#39;s more code to write, test and maintain\nand it gets in the way when I do need to create more than one.  For example,\nin unit tests.  Or when requirements change.\n\n--Nat\n\n\n\nOn 30/07/07, jason r tibbetts &lt;tibbettj@...&gt; wrote:\n&gt;\n&gt;   Pat,\n&gt;\n&gt; &gt; This may be a bit off charter, but I&#39;ve been reading some well argued\n&gt; &gt; articles that have names such as &quot;Why is Singleton evil?&quot; and at the top\n&gt; &gt; of the list are troubles that the singleton pattern causes for unit\n&gt; &gt; testing. (which is on topic.)\n&gt; &gt;\n&gt; &gt; The usual suggestions for rewriting the code are offered, such as using\n&gt; &gt; a factory class to allocate/create objects, and always always just\n&gt; &gt; returning the one and only.\n&gt; &gt;\n&gt; &gt; So far, so good. But, the Factory class has to keep a store of\n&gt; &gt; anti-singletons. And the usual call is something like\n&gt; &gt; AntiSingleton anAnti = Factory.createAntiSingleton();\n&gt; &gt;\n&gt; &gt; Which is used statically, and implies that the Factory is a singleton so\n&gt; &gt; its cache of AntiSingletons can be kept in one and only one store.\n&gt; &gt;\n&gt; &gt; I&#39;m not seeing how changing the Singleton class to a class that needs\n&gt; &gt; the singleton Factory class has done anything. We&#39;ve still got a\n&gt; &gt; singleton, and so all arguments that there is implied coupling, and bad\n&gt; &gt; karma for testing still hold.\n&gt;\n&gt; I don&#39;t see any mention yet in this thread of the simplest solution of\n&gt; them all: put all of the singleton&#39;s implementation in a non-singleton\n&gt; abstract base class, then subclass it as a singleton. The abstract base\n&gt; class can be subclassed separately for testing. In other words,\n&gt;\n&gt; // abstract base class\n&gt; public abstract class Foo {\n&gt; protected Foo() { }\n&gt;\n&gt; public String getBar() { return &quot;bar!&quot;; }\n&gt; }\n&gt;\n&gt; // singleton implementation\n&gt; public final class TheOneTrueFoo extends Foo {\n&gt; private TheOneTrueFoo() { super(); }\n&gt;\n&gt; public static Foo getInstance() { return foo; }\n&gt;\n&gt; private final static Foo = new TheOneTrueFoo();\n&gt; }\n&gt;\n&gt; // test-only implementation\n&gt; public final class TestFoo {\n&gt; public TestFoo() { super(); }\n&gt; }\n&gt;\n&gt; Voila! The 3 statements in the singleton implementation go untested, but\n&gt; all of the rest of Foo can be tested normally.\n&gt;\n&gt;  \n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "nat_pryce", 
+    "topicId": 19636, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "prevInTime": 19653, 
+    "contentTrasformed": false, 
+    "postDate": "1185806788", 
+    "canDelete": false, 
+    "nextInTopic": 19655, 
+    "prevInTopic": 19653, 
+    "headers": {
+        "inReplyToHeader": "PDQ2QURFRjUxLjgwNjA0MDdAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDE3ZmE1M2QwNzA3MzAwNzQ2dzdlZjAzNDAzeDI4ZDQyODI4MzU1ZWZlOGZAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDQ2QUI0MTZDLjIwNDA0MDBAcGZhcnJlbGwuY29tPgkgPDQ2QURFRjUxLjgwNjA0MDdAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 11794, 
+    "senderId": "nxbRvrTpUFdiBhByvg4k5ErpUJN4fibHITUZjgiuo_hcNErWaHXM0CYDoVYiEDDkwc_IkzVAmzq55iVwK4tNppg-ooz9cKzP0ilMGR8", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to test XML file processing?", 
+    "from": "Kevin Lawrence &lt;kevin@...&gt;", 
+    "authorName": "Kevin Lawrence", 
+    "msgSnippet": "... Split the file processing from the XML processing : public void processConfigFile( String fileNameArg ) { XmlDocument xml = new XmlDocument((new", 
+    "msgId": 11793, 
+    "rawEmail": "Return-Path: &lt;kevin@...&gt;\r\nX-Sender: kevin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 33848 invoked from network); 17 Aug 2004 17:01:09 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m14.grp.scd.yahoo.com with QMQP; 17 Aug 2004 17:01:09 -0000\r\nReceived: from unknown (HELO ylpvm01.prodigy.net) (207.115.57.32)\n  by mta5.grp.scd.yahoo.com with SMTP; 17 Aug 2004 17:01:09 -0000\r\nReceived: from [10.250.100.190] (64-166-72-226.ded.pacbell.net [64.166.72.226] (may be forged))\n\tby ylpvm01.prodigy.net (8.12.10 outbound/8.12.10) with ESMTP id i7HH08pO022207\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 17 Aug 2004 13:00:08 -0400\r\nMessage-ID: &lt;4122399A.7020605@...&gt;\r\nDate: Tue, 17 Aug 2004 10:00:10 -0700\r\nUser-Agent: Mozilla Thunderbird 0.7.3 (Windows/20040803)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cfpb23+155t@...&gt;\r\nIn-Reply-To: &lt;cfpb23+155t@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 207.115.57.32\r\nFrom: Kevin Lawrence &lt;kevin@...&gt;\r\nSubject: Re: [junit] How to test XML file processing?\r\nX-Yahoo-Group-Post: member; u=81949451\r\nX-Yahoo-Profile: kevinwilliamlawrence\r\n\r\n&gt; I have a method to read an XML file and then use DOM to extract the \n&gt; data. Can anyone recommend a good way to unit test this method? The \n&gt; code snippet is blow:\n&gt; \n&gt; \tpublic void processConfigFile( String fileNameArg )\n&gt; \t\tthrows IllegalArgumentException\n&gt; \t{\n&gt; \t\tFile configFile = new File( fileNameArg );\n&gt; \t\tif( configFile.exists() == false )\n&gt; \t\t{\n&gt; \t\t\tString msg = &quot;Failed to locate the specified \n&gt; configuration file &#92;&quot;&quot; +\n&gt; \t\t\t\t\t\tfileNameArg + &quot;&#92;&quot;&quot;;\n&gt; \t\t\tthrow new IllegalArgumentException( msg );\n&gt; \t\t}\n&gt; \t\t\n&gt; \t\tDocumentBuilderFactory factory =\n&gt; \t\t\tDocumentBuilderFactory.newInstance();\n&gt; \t\t\n&gt; \t\ttry \n&gt; \t\t{\n&gt; \t\t   DocumentBuilder builder = \n&gt; factory.newDocumentBuilder();\n&gt; \t\t   configDoc = builder.parse( configFile );\n&gt; \t\t}\n&gt;                 ....\n\nSplit the file processing from the XML processing :\n\n\npublic void processConfigFile( String fileNameArg ) {\n   XmlDocument xml = new XmlDocument((new File(filenameArg));\n   processConfig(xml);\n}\n\nvoid processConfig(XmlDocument doc){\n   Element root = doc.getDocumentElement();\n   //.....process ......\n}\n\npublic class TestConfig extends TestCase {\n  public void testProcessConfig(){\n    String xml = &quot;&lt;config&gt;&lt;property name=&#39;xxx&#39;&gt;yyy&lt;/property&gt;&lt;/config&gt;&quot;;\n\n    XmlDocument doc = new XmlDocument(new StringReader(xml))\n\n    config.processConfig(doc);\n    assertEquals(&quot;yyy&quot;, doc.getXXX());\n  }\n}\n\nwhere XmlDocument is a library class that you have written and tested \nseparately that has a constructor that takes a file and a constructor \nthat takes a Reader :\n\npublic class XmlDocument {\n   public XmlDocument(File file){\n     this(new FileReader(file));\n   }\n\n   public XmlDocument(Reader in){\n     try {\n        document build stuff\n        etc\n     }\n     ....\n   }\n}\n\nYou might find, once you have extracted an XmlDocument class, that you \ncan expose lots of useful methods to access the document using XPath \nrather than walking the DOM manually.\n\n\n(glossing over error/stream handling and encoding issues for brevity)\n\nKevin\n\n\n\n", 
+    "profile": "kevinwilliamlawrence", 
+    "topicId": 11782, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 81949451, 
+    "prevInTime": 11792, 
+    "contentTrasformed": false, 
+    "postDate": "1092762010", 
+    "canDelete": false, 
+    "nextInTopic": 11803, 
+    "prevInTopic": 11791, 
+    "headers": {
+        "inReplyToHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxMjIzOTlBLjcwMjA2MDVAZGlhbW9uZC1za3kuY29tPg==", 
+        "referencesHeader": "PGNmcGIyMysxNTV0QGVHcm91cHMuY29tPg=="
+    }
+}

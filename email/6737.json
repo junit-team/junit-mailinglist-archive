@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 41, 
+    "nextInTime": 6738, 
+    "senderId": "7OJ5snDE5h-WntRRRAPBtnVBx4CwGjk5tYllt4vnFH2DGV6pP_WRTZ7k0ajZQrYOH75ZuQTzgEdoIL1qIfzwEgG6Q_AgU79WzPQXDHi9eA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Websphere Connection Pool", 
+    "from": "&quot;Scott Stirling&quot; &lt;scottstirling@...&gt;", 
+    "authorName": "Scott Stirling", 
+    "msgSnippet": "... [...] ... Assuming there are functional tests.  :- But then if you re catching unit bugs bubbling up at functional test scope (usually done at a higher", 
+    "msgId": 6737, 
+    "profile": "jrun5", 
+    "topicId": 6711, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112036634, 
+    "messageBody": "<div id=\"ygrps-yiv-1066088825\"><blockquote><span title=\"ireply\">&gt; -----Original Message-----<br/>\n&gt; From: Curt Sampson [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:yahoo_sucks@...\">yahoo_sucks@...</a>]<br/>\n </span></blockquote>[...]<br/>\n<blockquote><span title=\"ireply\"> &gt; Use separate interfaces to get the connection from the pool and do work<br/>\n&gt; with the connection. I do something like this (the error handling may be<br/>\n&gt; a bit simplified):<br/>\n&gt;<br/>\n&gt;     Object doMyThing(Connection con, String something)<br/>\n&gt;     {<br/>\n&gt; \t// do stuff on the connection and return the object.<br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt;     public Object doMyThing(ConnectionFactory factory, String something)<br/>\n&gt;     {<br/>\n&gt; \tConnection con = factory.getConnection();<br/>\n&gt; \treturn doMyThing(con, something);<br/>\n&gt; \tcon.close();<br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt; The database test code invokes the first method; the real users of<br/>\n&gt; the code invoke the second. The second method isn&#39;t tested, because<br/>\n&gt; there&#39;s just not much there to break. If something did break in it, the<br/>\n&gt; functional tests catch it.<br/>\n<br/>\n </span></blockquote>Assuming there are functional tests.  :-&gt;<br/>\n<br/>\nBut then if you&#39;re catching unit bugs bubbling up at functional test scope<br/>\n(usually done at a higher scope than unit, such as subsystem or system test,<br/>\nand a later phase in the development cycle), they are more expensive to<br/>\ndebug and fix than if you could just come up with a better way to test the<br/>\nreal code at the unit level.<br/>\n<br/>\nI would predict that the strategy listed above, while good intentioned, on a<br/>\nproject of any size would wind up with lots of extra code throughout added<br/>\njust for testability.  I don&#39;t think you should add a method just to make<br/>\nyour stuff accessible to a test class, unless possibly as a last resort.<br/>\nTestability is an aspectual concern, not really a part of an object being<br/>\nmodeled.  So this strategy has the potential to make testability a<br/>\ncorrupting influence on the modeling of objects, in my opinion.<br/>\n<br/>\nThe whole doMyThing method is very general, but we can work with it.  I<br/>\nwould argue that rather than modify the class and adding code that,<br/>\nironically, is added for unit level testability but can&#39;t be unit tested,<br/>\none should use 2 mock objects here.  You&#39;d need a ConnectionFactory mock<br/>\nobject that could return a Connection mock object.  You create the mock<br/>\nobject in the TestCase, and you pass it to doMyThing.<br/>\n<br/>\npublic Object  doMyThing(ConnectionFactory factory, String s)<br/>\n    Connection con = factory.getConnection();<br/>\n    // do stuff on the connection<br/>\n    con.close();<br/>\n    // and return the object.<br/>\n    return object;<br/>\n}<br/>\n<br/>\nScott Stirling</div>", 
+    "prevInTime": 6736, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1043525447", 
+    "canDelete": false, 
+    "nextInTopic": 6789, 
+    "prevInTopic": 6734, 
+    "headers": {
+        "inReplyToHeader": "PFBpbmUuTkVCLjQuNTEuMDMwMTI1MTQxODUzMC41OTZAYW5nZWxpYy5jeW5pYy5uZXQ+", 
+        "messageIdInHeader": "PEtJRUhJQklPQkFFTEpBSElQTkhERUVHSUNPQUEuc2NvdHRzdGlybGluZ0ByY24uY29tPg=="
+    }
+}

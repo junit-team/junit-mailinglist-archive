@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 125, 
+    "nextInTime": 14662, 
+    "senderId": "RJodXSg3aeR-E6SI3yG4ZrsEsNSXbutxRIjy99jGIY8e8voMtk6OIBu23Ut-O_A6gpdK3T3whUNAVHwnU7MHqZANHg", 
+    "systemMessage": false, 
+    "subject": "Re: How to test private methods in a class.", 
+    "from": "&quot;Robert&quot; &lt;yahoo@...&gt;", 
+    "authorName": "Robert", 
+    "msgSnippet": "... Yes. As I said, I d probably start this as an inner class - I don t tend to give inner classes overly descriptive names because the containing class", 
+    "msgId": 14661, 
+    "profile": "robertdw26", 
+    "topicId": 14490, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 189784721, 
+    "messageBody": "<div id=\"ygrps-yiv-77123110\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Iliya Agoshkov&quot; &lt;Iliya.Agoshkov@a...&gt;<br/>\nwrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; But this QueryBuilder class looks for me more like<br/>\n&gt; FlightSearchQueryBuilder, as it doesn&#39;t provide any useful functionality<br/>\n&gt; for any places other<br/>\n&gt; <br/>\n&gt; then presented &#39;search&#39; method.<br/>\n<br/>\n </span></blockquote>Yes. As I said, I&#39;d probably start this as an inner class - I don&#39;t<br/>\ntend to give inner classes overly descriptive names because the<br/>\ncontaining class provides context.<br/>\n<br/>\nAlso, I was trying to keep the name short enough to focus on the<br/>\nproblem. :)<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Looks like &quot;the more you refactor the closer you come to a better<br/>\n&gt; solution&quot;.<br/>\n<br/>\n </span></blockquote>Umm... not quite how I would put it. However, certainly the more you<br/>\nthink about your design, the better it will become. Removing<br/>\nduplication, in particular, tends to produce better designs, and<br/>\nrefactoring is a primary one to remove duplication.<br/>\n<br/>\n(In fact, it&#39;s the fact that private methods tend to hide duplication<br/>\nthat makes me want to avoid them).<br/>\n<br/>\nAs for your XML problem: this sounds like a case for the Visitor<br/>\npattern. Umm... like this:<br/>\n<br/>\nclass AirlineVisitor {<br/>\n  private String airlineId;<br/>\n  public AirlineVistor(String id) { <br/>\n    // avoid future null checks.<br/>\n    airlineId == (id == null ? &quot;NOSUCHID&quot; : id); <br/>\n  }<br/>\n<br/>\n  public void visit(XMLBuffer buffer, Airline airline) {<br/>\n    airline.printXml(buffer, airlineId.equals(airline.getId()));<br/>\n    }<br/>\n  }<br/>\n}<br/>\n<br/>\nThen your printAirlines method becomes:<br/>\n<br/>\nprivate void printAirlines( XMLBuffer xmlBuf, FlightSearchParameters<br/>\nparams ) {<br/>\n  xmlBuf.openTag( &quot;airlines&quot; );<br/>\n  AirlineVisitor visitor = new AirlineVistor(params.getAirlineId());<br/>\n  for (Airline airline : Airline.getList()) {<br/>\n    visitor.visit(xmlBuf, airline);<br/>\n  }<br/>\n  xmlBuf.closeTag();  // surely it already knows which tag to close?<br/>\n}<br/>\n<br/>\nThen... a CitiesVisitor might look like this:<br/>\n<br/>\nclass CitiesVisitor {<br/>\n  private AirportVisitor airportVisitor;<br/>\n  private String cityId;<br/>\n  public CitiesVisitor (String id, List airportIds) {<br/>\n    cityId = (id == null ? &quot;NOSUCHID&quot;);<br/>\n    airportVisitor = new AirportVisitor(airportIds);<br/>\n  }<br/>\n<br/>\n  public void visit(XMLBuffer buffer, City city) {<br/>\n    city.printXml(buffer, id.equals(city.getId()), airportVisitor);<br/>\n  }<br/>\n}<br/>\n<br/>\nAirportVisitor might look like this:<br/>\nclass AirportVisitor {<br/>\n  private List&lt;String&gt; airportIds;<br/>\n  public AirportVisitor (List ids) {<br/>\n    airportIds = ids;<br/>\n  }<br/>\n<br/>\n  public void visit(XMLBuffer buffer, Airport airport) {<br/>\n    airport.printXml(buffer, ids.contains(city.getId()));<br/>\n  }<br/>\n}<br/>\n<br/>\nAt this point, I&#39;d probably think that the AirlineVisitor is a<br/>\ndegenerate case of the AirportVisitor - if Airline and Airport had a<br/>\ncommon interface (such as &quot;Xmlable&quot;?). So I might refactor the visitors.<br/>\n<br/>\nYou&#39;ll also notice that the visitors themselves have a fairly common<br/>\ninterface - that may be handy. Or it may not be.<br/>\n<br/>\nAgain, the aim of this is to improve testability: I can test the<br/>\nvarious permutations of the various visitors (no item selected, lots<br/>\nof airports selected, etc) in small, focused tests, with one larger<br/>\ntest for printAirlines() that focuses on a very small set of data -<br/>\njust enough to show the visitors are wired up okay.<br/>\n<br/>\nRobert.</div>", 
+    "prevInTime": 14660, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1125927894", 
+    "canDelete": false, 
+    "nextInTopic": 14663, 
+    "prevInTopic": 14659, 
+    "headers": {
+        "inReplyToHeader": "PDlCRUFBMUI4Njc4MzM0NEJBNkNGOUI5NUY1QjYyMDkyM0MxODhCQG5ld3Rvbi5ocS5hY3Rpcy5ydT4=", 
+        "messageIdInHeader": "PGRmaGk0bSs3ZGIzQGVHcm91cHMuY29tPg=="
+    }
+}

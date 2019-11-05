@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 10413, 
+    "senderId": "5bEUM2HCChnCo8Ok_1Dvr3GM-IPXdUb7quKY9hQ07PTt_SjzqgVME37ISrUyO6eSdEUZeKJKOYQJlhzanGz_6PmcFpkH8Mth1g", 
+    "systemMessage": false, 
+    "subject": "JUnit & Reflection -  test method doesn&#39;t fail cleanly", 
+    "from": "&quot;Oisin Kim&quot; &lt;oisin.kim@...&gt;", 
+    "authorName": "Oisin Kim", 
+    "msgSnippet": "Hi All, I ve searched the archives (& Google) for something like this but didn t find anything so here goes: a test method will run fine if ran by itself in a", 
+    "msgId": 10412, 
+    "profile": "oisinkim2000", 
+    "topicId": 10412, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 93528314, 
+    "messageBody": "<div id=\"ygrps-yiv-658354936\">Hi All,<br/>\nI&#39;ve searched the archives (& Google) for something like this but<br/>\ndidn&#39;t find anything so here goes:<br/>\n<br/>\na test method will run fine if ran by itself in a plain class which<br/>\nextends TestCase, it includes a section like this:<br/>\nString expectedExceptionMessage = &quot;someException&quot;;<br/>\nString actualExceptionMessage = null;<br/>\ntry {<br/>\n  SomeClass.someStaticMethod();<br/>\n  AssetFail(&quot;Never Should have got here&quot;);<br/>\n} catch (Throwable t) {<br/>\n  actualExceptionMessage = t.getMessage();<br/>\n} <br/>\nassertEquals(expectedExceptionMessage, actualExceptionMessage);<br/>\n<br/>\nwhat happens is that if this snippet is run from a regular test case,<br/>\neverything is fine, but if run via reflection like (shown below) it<br/>\ngives me something like:<br/>\n<br/>\n [junit] Testcase: testName took 8.407 sec<br/>\n [junit]     Caused an ERROR<br/>\n [junit] null<br/>\n [junit] java.lang.reflect.InvocationTargetException<br/>\n<br/>\nThe test method is called as follows :<br/>\n<br/>\nfinal Method[] methods = this.getClass().getDeclaredMethods();<br/>\n  final int size = methods.length;<br/>\n  for (int i = 0; i &lt; size; i++) {<br/>\n    method = methods[i];<br/>\n    if (method.getName().startsWith(&quot;test&quot;)<br/>\n      && method.getParameterTypes().length == 0) {<br/>\n      this.setUp();<br/>\n      try {<br/>\n        method.invoke(RunResourcesTest.class, null);<br/>\n      } finally {<br/>\n        this.tearDown();<br/>\n      }<br/>\n    }<br/>\n  }<br/>\n<br/>\nIt&#39;s as if the reflected calling of the test method makes the test<br/>\nmethod throw a Throwable object which is not &quot;catchable&quot; by the catch<br/>\nin the test.<br/>\n<br/>\nI&#39;ve tried to simplify this as much as possible, I hope I&#39;ve explained<br/>\nthings well enough,<br/>\n<br/>\nFinally, thanks to all who post to this list - I&#39;m learning lots from it!<br/>\n<br/>\nThanks <br/>\noisin</div>", 
+    "prevInTime": 10411, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1075987205", 
+    "canDelete": false, 
+    "nextInTopic": 10422, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJ2dGZ1NSt1cTJjQGVHcm91cHMuY29tPg=="
+    }
+}

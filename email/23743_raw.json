@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 23744, 
+    "senderId": "8OCiGK4RIrKe0jR5LsygmRvIepmt8EmcciO94S7EFpbQgtg2Dn4TFkZhHr09fWAfkw-nfUoJbTEZ5bCNQb9qhE0r", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Open up Description class to allow arbitrary test hierarchies?", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Dawid, The design of Description has several challenges, and I welcome the chance to move towards a better solution.  I think that getTestClass(),", 
+    "msgId": 23743, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 11060 invoked from network); 28 Oct 2011 18:34:09 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m10.grp.sp2.yahoo.com with QMQP; 28 Oct 2011 18:34:09 -0000\r\nX-Received: from unknown (HELO mail-vw0-f47.google.com) (209.85.212.47)\n  by mta3.grp.sp2.yahoo.com with SMTP; 28 Oct 2011 18:34:09 -0000\r\nX-Received: by vwe42 with SMTP id 42so5001078vwe.34\n        for &lt;junit@yahoogroups.com&gt;; Fri, 28 Oct 2011 11:34:08 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.68.72.9 with SMTP id z9mr5444262pbu.93.1319826848498; Fri, 28\n Oct 2011 11:34:08 -0700 (PDT)\r\nX-Received: by 10.68.44.106 with HTTP; Fri, 28 Oct 2011 11:34:08 -0700 (PDT)\r\nIn-Reply-To: &lt;CAM21Rt82L31Ek5uFbKCavnZtoX_5+kLCdP3H99dnUPe4M99WyQ@...&gt;\r\nReferences: &lt;CAM21Rt82L31Ek5uFbKCavnZtoX_5+kLCdP3H99dnUPe4M99WyQ@...&gt;\r\nDate: Fri, 28 Oct 2011 14:34:08 -0400\r\nX-Google-Sender-Auth: nkAxT0UICzbJt9Nggs8ztdmJPOI\r\nMessage-ID: &lt;CACj8BuPL6mKvc=FU9qv_S0kTfKyFWcoJvBkWj4rMCOLdKD7yPA@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Open up Description class to allow arbitrary test hierarchies?\r\nX-Yahoo-Group-Post: member; u=341876227; y=htDCvjHbZG7AF0sz56xmAiHgpIqrGZBkQ-BDH5zSBYo\r\nX-Yahoo-Profile: dsaff\r\n\r\nDawid,\n\nThe design of Description has several challenges, and I welcome the=\r\n\nchance to move towards a better solution.  I think that\ngetTestClass(), ge=\r\ntMethodName() and getClassName() are currently\nimplemented wrong: see https=\r\n://github.com/KentBeck/junit/issues/198\nfor how I&#39;d rather approach it.  In=\r\n short, I&#39;d like for Description to\nremain a serializeable, final, value cl=\r\nass, but allow for custom\nRunners to have full control over what data gets =\r\nput into that value\nstructure.  Would that work for you?  If so, want to pr=\r\noduce a patch\nfor this?\n\nSeparate from this are the problems that arise fro=\r\nm Description\ncontaining both the test structure graph, and the metadata fo=\r\nr each\nnode in that graph, but that doesn&#39;t seem to be your current\nchallen=\r\nge.\n\nOn the subject of error messages for Assume.*:  Oops.  :-)  Patches\nde=\r\nfinitely welcome.\n\n   David Saff\n\nOn Thu, Oct 27, 2011 at 5:05 PM, Dawid We=\r\niss &lt;dawid.weiss@...&gt; wrote:\n&gt; Hi everyone.\n&gt;\n&gt; My name is Dawid Weis=\r\ns, I&#39;m a committer to Apache Lucene/Solr. Lucene\n&gt; and Solr use a custom ru=\r\nnner to randomize test execution extensively.\n&gt; This works great and I&#39;ve d=\r\necided to try to pull a custom JUnit runner\n&gt; out of Lucene so that it can =\r\nbe reused without relying on the rest of\n&gt; Lucene&#39;s infrastructure. So... I=\r\n wrote a custom runner and on the way\n&gt; I came across a problem: I would re=\r\nally like to have a hierarchy of\n&gt; Descriptions to indicate something meani=\r\nngful, in particular contain\n&gt; the random seed for a suite group, then for =\r\nindividual tests, etc. I\n&gt; believe a similar situation could also be useful=\r\n for\n&gt; ParameterizedRunner...\n&gt;\n&gt; Unfortunately, the problem is that Descri=\r\nption is sealed and does not\n&gt; allow much in terms of flexibility (the cons=\r\ntructor is private, static\n&gt; factory methods).\n&gt;\n&gt; The design of this class=\r\n leads me to believe that Description should\n&gt; be a contract (interface or =\r\na class, but with the possibility of\n&gt; subclassing) so that getDisplayName(=\r\n) returns something meaningful (as\n&gt; in the example above), but getTestClas=\r\ns(), getMethodName() and\n&gt; getClassName() can still point IDEs and report w=\r\nriters to the right\n&gt; place. Or at least allow a custom display name not re=\r\nlated to the\n&gt; method name/ class of the test case?\n&gt;\n&gt; Another burning iss=\r\nue we have in Lucene is that Assume.* methods don&#39;t\n&gt; take any explanation =\r\nmessage. Why is this so? I mean: an assumption\n&gt; can fail, but just like wi=\r\nth failures it&#39;d be nice to be actually able\n&gt; to explain why a given assum=\r\nption wasn&#39;t met...\n&gt;\n&gt; Let me know what you think. I can provide a patch (=\r\nseveral ones :),\n&gt; but I wanted to hear what people think first.\n&gt;\n&gt; Dawid\n=\r\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n=\r\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23742, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23742, 
+    "contentTrasformed": false, 
+    "postDate": "1319826848", 
+    "canDelete": false, 
+    "nextInTopic": 23744, 
+    "prevInTopic": 23742, 
+    "headers": {
+        "inReplyToHeader": "PENBTTIxUnQ4MkwzMUVrNXVGYktDYXZuWnRvWF81K2tMQ2RQM0g5OWRuVVBlNE05OVd5UUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBQ2o4QnVQTDZtS3ZjPUZVOXF2X1Mwa1RmS3lGV2NvSnZCa1dqNHJNQ09MZEtEN3lQQUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBTTIxUnQ4MkwzMUVrNXVGYktDYXZuWnRvWF81K2tMQ2RQM0g5OWRuVVBlNE05OVd5UUBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

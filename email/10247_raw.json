@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 10248, 
+    "senderId": "sBX69HQxBGqal0n15OGkwg5USQSylMKHfqB6KxgYF-ZLPBZq4mrawjYfil-Jagm7xfSmEbHqnSD9ykwdB-os2ZdWZcn5axFyCw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] the good ol&#39; what-to-test question", 
+    "from": "&quot;James Cheesman&quot; &lt;jim@...&gt;", 
+    "authorName": "James Cheesman", 
+    "msgSnippet": "Looking at your class the following tests spring to mind: getPage: valid path, null path, invalid path, path to enormous file, path to zero byte file addPage:", 
+    "msgId": 10247, 
+    "rawEmail": "Return-Path: &lt;jim@...&gt;\r\nReceived: (qmail 90663 invoked by uid 7800); 20 Jan 2004 15:58:46 -0000\r\nX-Sender: jim@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 96893 invoked from network); 20 Jan 2004 08:34:37 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 20 Jan 2004 08:34:37 -0000\r\nReceived: from unknown (HELO servidorcorreo.edunet.es) (80.36.14.55)\n  by mta3.grp.scd.yahoo.com with SMTP; 20 Jan 2004 08:34:37 -0000\r\nReceived: from optenet.com ([80.33.231.107]) by\n          servidorcorreo.edunet.es (Netscape Messaging Server 4.15) with\n          ESMTP id HRS5B800.Q2T for &lt;junit@yahoogroups.com&gt;; Tue, 20 Jan\n          2004 09:37:56 +0100 \r\nMessage-ID: &lt;41C68E93.7060907@...&gt;\r\nDate: Mon, 20 Dec 2004 09:34:27 +0100\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.4) Gecko/20030624\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;400C7FE1.7000407@...&gt;\r\nIn-Reply-To: &lt;400C7FE1.7000407@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Remote-IP: 80.36.14.55\r\nFrom: &quot;James Cheesman&quot; &lt;jim@...&gt;\r\nSubject: Re: [junit] the good ol&#39; what-to-test question\r\nX-Yahoo-Group-Post: member; u=105359422\r\nX-Yahoo-Profile: jdcheesman\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 20 Jan 2004 15:58:46 -0000\r\n\r\nLooking at your class the following tests spring to mind:\n\ngetPage: valid path, null path, invalid path, path to enormous file, \npath to zero byte file\naddPage: paths as for getPage tests, null page, valid page (and all \ncombinations thereof...)\n\nYou&#39;ll need some way to make a Document and a Page in memory to test \nthis correctly - presumably some kind of mock.\n\nJust as important is the fact that by adding just one test to this class \nyou would then have the testing framework set up - which is useful for \ntesting any other classes you add.\n\n(As an aside, I&#39;d make the HashMap &quot;pages&quot; a Map instead - it&#39;s a little \nmore flexible that way...)\n\nHTH,\nJim Cheesman\n\n\n\n&gt; \n&gt; public class Site {\n&gt; \tprivate String domainName;\n&gt; \tprivate HashMap pages;\n&gt; \t\n&gt; \tpublic Site(String dn){\n&gt; \t\tdomainName = dn;\n&gt; \t\tpages = new HashMap();\n&gt; \t}\n&gt; \n&gt; \tpublic String getDomainName() { return domainName; }\n&gt; \n&gt; \tpublic void setDomainName(String dn) { domainName = dn; }\n&gt; \t\n&gt; \tpublic void addPage(String path, Page p){\n&gt; \t\tpages.put(path, p);\n&gt; \t}\n&gt; \t\n&gt; \tpublic Document getPage(String path){\n&gt; \t\tPage p = (Page) pages.get(path);\n&gt; \t\treturn p.makePage();\n&gt; \t}\n&gt; }\n&gt; \n&gt; (the &quot;Document&quot; returned by getPage is an XML document that will be \n&gt; printed to the servlet&#39;s output stream)\n&gt; \n&gt; So, does this class need a junit test? It seems pretty straight \n&gt; forward... I&#39;ve actually written a simple test program that makes a Site \n&gt; object and a Page object with some simple xhtml, puts the reference to \n&gt; the Page object into the Site object&#39;s HashMap and then invoke&#39;s the \n&gt; getPage method and prints the results to the console. It all works fine.\n&gt; \n&gt; Should I redo this test program in junit? And what would I assert? That \n&gt; the Page object in Site&#39;s HashMap is the same one I put in? That seems \n&gt; mind-numbingly obvious. Or, maybe I just haven&#39;t done anything \n&gt; complicated enough yet? But then, a lot of stuff I&#39;ve read says I should \n&gt; write the test cases first and then write the class... this, even though \n&gt; I&#39;ve also read that I shouldn&#39;t bother writing asserts for simple \n&gt; methods... what if that&#39;s all the class has?\n&gt; \n&gt; I&#39;d really like to write test cases for everything I write, but at this \n&gt; point I don&#39;t see the use of writing them for the classes I have so far. \n&gt; Please set me straight.\n&gt; \n&gt; Ben\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; To visit your group on the web, go to:\n&gt;  http://groups.yahoo.com/group/junit/\n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt;  junit-unsubscribe@yahoogroups.com\n&gt; \n&gt; Your use of Yahoo! Groups is subject to:\n&gt;  http://docs.yahoo.com/info/terms/ \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n\n-- \n\nJim Cheesman\nDpto. de Investigaci�n y Desarrollo\nOptenet S.A.\n\n(34) 91 357 9285\n\n\n", 
+    "profile": "jdcheesman", 
+    "topicId": 10238, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 105359422, 
+    "prevInTime": 10246, 
+    "contentTrasformed": false, 
+    "postDate": "1103531667", 
+    "canDelete": false, 
+    "nextInTopic": 10538, 
+    "prevInTopic": 10246, 
+    "headers": {
+        "inReplyToHeader": "PDQwMEM3RkUxLjcwMDA0MDdAbXVuYXQuY29tPg==", 
+        "messageIdInHeader": "PDQxQzY4RTkzLjcwNjA5MDdAb3B0ZW5ldC5jb20+", 
+        "referencesHeader": "PDQwMEM3RkUxLjcwMDA0MDdAbXVuYXQuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 8536, 
+    "postDate": "1059599475", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Celis &lt;shane@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "PWRiSn5xC50LPTTUE7fls1uSJc9odAFTxukVqaINJrbf3NFRjfzsG70bS5aug8B2e9ag1AdaGv9omy1y80SfEFglXPNY", 
+    "nextInTime": 8870, 
+    "userId": 126846930, 
+    "prevInTime": 8868, 
+    "prevInTopic": 8573, 
+    "headers": {
+        "inReplyToHeader": "PGJkcHZobCtzZ2dlQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDVCMUI5OTU4LUMyRDItMTFENy1CNURDLTAwMzA2NUY5QTgwRUBnbnVmb28ub3JnPg=="
+    }, 
+    "authorName": "Shane Celis", 
+    "numMessagesInTopic": 6, 
+    "msgSnippet": "It seems the only emails I ever write on this list are regarding this topic. // this is a test public void testJunk() { create(); get(); delete(); } // this is", 
+    "contentTrasformed": false, 
+    "msgId": 8869, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;shane@...&gt;\r\nReceived: (qmail 60766 invoked by uid 7800); 30 Jul 2003 21:17:49 -0000\r\nX-Sender: shane@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 8895 invoked from network); 30 Jul 2003 21:11:10 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m1.grp.scd.yahoo.com with QMQP; 30 Jul 2003 21:11:10 -0000\r\nReceived: from unknown (HELO nwkea-mail-2.sun.com) (192.18.42.14)\n  by mta3.grp.scd.yahoo.com with SMTP; 30 Jul 2003 21:11:10 -0000\r\nReceived: from sfbaymail1sca.SFBay.Sun.COM ([129.145.154.35])\n\tby nwkea-mail-2.sun.com (8.12.9/8.12.9) with ESMTP id h6ULBAAE001234\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 30 Jul 2003 14:11:10 -0700 (PDT)\r\nReceived: from phys-ha13sca-1 (phys-ha13sca-1.SFBay.Sun.COM [129.145.155.91])\n\tby sfbaymail1sca.SFBay.Sun.COM (8.12.9+Sun/8.12.9/ENSMAIL,v2.2) with ESMTP id h6ULBAhD025066\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 30 Jul 2003 14:11:10 -0700 (PDT)\r\nReceived: from gnufoo.org\n (dhcp-usca18-115-215.red.iplanet.com [192.18.115.215]) by\n ha13sca-mail1.sfbay.sun.com\n (iPlanet Messaging Server 5.2 HotFix 1.03 (built Oct  1 2002))\n with ESMTP id &lt;0HIU007UAW6LDC@...&gt; for\n junit@yahoogroups.com; Wed, 30 Jul 2003 14:11:10 -0700 (PDT)\r\nDate: Wed, 30 Jul 2003 14:11:15 -0700\r\nSubject: Re: [junit] Question about Interdependent Test Cases\r\nIn-reply-to: &lt;bdpvhl+sgge@...&gt;\r\nTo: junit@yahoogroups.com\r\nMessage-id: &lt;5B1B9958-C2D2-11D7-B5DC-003065F9A80E@...&gt;\r\nMIME-version: 1.0\r\nX-Mailer: Apple Mail (2.552)\r\nContent-type: text/plain; delsp=yes; charset=US-ASCII; format=flowed\r\nContent-transfer-encoding: 7BIT\r\nFrom: Shane Celis &lt;shane@...&gt;\r\nX-Yahoo-Group-Post: member; u=126846930\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 30 Jul 2003 21:17:49 -0000\r\n\r\nIt seems the only emails I ever write on this list are regarding this  \ntopic.\n\n// this is a test\npublic void testJunk() {\n\tcreate();\n\tget();\n\tdelete();\n}\n\n// this is not a test\npublic void create() {\n\tif (doStuff() == FAILED)\n\t\tfail(&quot;creation failed&quot;);\n}\n\nIf seems wrong to write them all in one method, that&#39;s because it  \nusually is.  If the method doesn&#39;t say &quot;test&quot; before it, it will not be  \nincluded in the test suite automatically.  So, I would recommend you  \nwrite your utility methods; they can call assert just like any other  \ntest.  Suppose calling delete twice violates your contract, writing  \nthat test becomes pretty simple with these utility methods.\n\npublic void testMultipleDeletes {\n\tcreate();\n\tget();\n\tdelete();\n\ttry {\n\t\tdelete();\n\t\tfail();\n      } catch (Exception e /* should be more specific, of course */) {\n}\n\nOnly the methods that start with &quot;test&quot; are tests.\n\n-shane\n\nOn Monday, June 30, 2003, at 11:29  AM, Leonardo Abreu de Barros wrote:\n\n&gt; Hi all,\n&gt;\n&gt; I have a simple question about arranging related tests inside a test\n&gt; case:\n&gt;\n&gt; - Let`s say I have three tests that in some way depend on each other:\n&gt; for example, a creation, a getter and a deletion method.\n&gt; These are distinct functionalities, and thus deserve to be on\n&gt; separate tests. The problem is: if one fails, the other two will run\n&gt; anyway. But if the creation or getter methods fail, it doesn`t make\n&gt; sense for me to test the deletion method, as it depends on the\n&gt; correctness of the other two. I know calling one test inside another\n&gt; is not recommended. What should I do in this case?\n&gt;\n&gt;\n&gt; ------------------------ Yahoo! Groups Sponsor  \n&gt; ---------------------~--&gt;\n&gt; Looking for the latest Free IT White Papers?\n&gt; Visit SearchNetworking.com to access over 500 white papers.\n&gt; Get instant access at SearchNetworking.com Today\n&gt; http://us.click.yahoo.com/8lAzoD/OLNGAA/witMAA/5cFolB/TM\n&gt; --------------------------------------------------------------------- \n&gt; ~-&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to  \n&gt; http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "subject": "Re: [junit] Question about Interdependent Test Cases"
+}

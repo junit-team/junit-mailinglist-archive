@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18133, 
+    "senderId": "k5VH2ZLb8Y-lCzf3PTtrHqYbC_xSEYZV8gFGv-N1-6jhHsqJs9boAe-p4qQuF4vI_TOg5amulah1GKk0ejDfMw_AKdZij4Fa727Z", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing Static block, members, class with JUnit", 
+    "from": "Robert Wenner &lt;robert.wenner@...&gt;", 
+    "authorName": "Robert Wenner", 
+    "msgSnippet": "... I would refactor the code to get rid of the static initializer for exactly the problems you noticed. You could use lazy initialization. Make the static", 
+    "msgId": 18132, 
+    "profile": "robertwenner", 
+    "topicId": 18131, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 115089258, 
+    "messageBody": "<div id=\"ygrps-yiv-503108423\">On Thursday 12 October 2006 13:36, mcdonald6692 wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; This brings up the general question, &quot;How do you<br/>\n&gt; test static blocks, classes and data-members?&quot; <br/>\n<br/>\n </span></blockquote>I would refactor the code to get rid of the static initializer for exactly <br/>\nthe problems you noticed.<br/>\n<br/>\nYou could use lazy initialization. Make the static block a method. In the <br/>\nlookup method, check whether the static member is null. If it is, call <br/>\nthe former static block (now method) to initialize the static members. <br/>\nThen proceed as usual.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; public class StateAbbrev {<br/>\n&gt;   // static list of all the abbreviations.<br/>\n&gt;   private static List accronyms = new ArrayList();<br/>\n&gt;<br/>\n&gt;   private String text = &quot;&quot;;<br/>\n&gt;<br/>\n&gt;   static {<br/>\n&gt;     DataSource ds = DataSource.getInstance();<br/>\n&gt;     List strings = ds.getAccronyms();<br/>\n&gt;     for (Iterator i = strings.iterator(); i.hasNext(); )<br/>\n&gt;       accronyms.add(new StateAbbrev((String)i.next()) );<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   public static StateAbbrev lookup(String letters)<br/>\n&gt;   {<br/>\n&gt;     for (Iterator i = accronyms.iterator(); i.hasNext(); )<br/>\n&gt;     {<br/>\n&gt;       StateAbbrev abbrev (StateAbbrev) i.next();<br/>\n&gt;       String accronym = abbrev.getText();<br/>\n&gt;       if (accronym.equals(letters))<br/>\n&gt;         return abbrev;<br/>\n&gt;     }<br/>\n&gt;     return null;<br/>\n&gt;   }<br/>\n<br/>\n </span></blockquote>becomes<br/>\n<br/>\npublic class StateAbbrev {<br/>\n  // static list of all the abbreviations.<br/>\n  private static List accronyms = null;<br/>\n  private String text = &quot;&quot;;<br/>\n<br/>\n  private static void initialize() {<br/>\n     acronyms = new ArrayList();<br/>\n     DataSource ds = DataSource.getInstance();<br/>\n     List strings = ds.getAccronyms();<br/>\n     for (Iterator i = strings.iterator(); i.hasNext(); )<br/>\n       accronyms.add(new StateAbbrev((String)i.next()) );<br/>\n   }<br/>\n<br/>\n   public static StateAbbrev lookup(String letters)<br/>\n   {<br/>\n     if (acronyms == null)<br/>\n     { <br/>\n        initialize();<br/>\n     }<br/>\n     for (Iterator i = accronyms.iterator(); i.hasNext(); )<br/>\n     {<br/>\n       StateAbbrev abbrev (StateAbbrev) i.next();<br/>\n       String accronym = abbrev.getText();<br/>\n       if (accronym.equals(letters))<br/>\n         return abbrev;<br/>\n     }<br/>\n     return null;<br/>\n  }<br/>\n}<br/>\n<br/>\nIf you like, you can also make acronyms more accessible than private (eg <br/>\nprotected and have the test in the same package) and then set the static <br/>\nmembers to null if you need (eg in tearDown).<br/>\n<br/>\nRobert</div>", 
+    "prevInTime": 18131, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1160696175", 
+    "canDelete": false, 
+    "nextInTopic": 18134, 
+    "prevInTopic": 18131, 
+    "headers": {
+        "inReplyToHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDYxMDEyMTgzNi4xNjAxMy5yb2JlcnQud2VubmVyQGdteC5kZT4=", 
+        "referencesHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPg=="
+    }
+}

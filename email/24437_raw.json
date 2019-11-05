@@ -1,0 +1,28 @@
+{
+    "topicId": 24437, 
+    "postDate": "1383243531", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "Stefan Bechtold &lt;stefan.bechtold@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "s6N0cd1TBqb1J4FSM9PuR05syBKepjj-dUAAp8zBaLg3WU3MDmUxay9sZuT6wvBgHMsdw9wzp5mNbFecaTc6fFhi8l-Nby-s5Db_2lmlew", 
+    "nextInTime": 24438, 
+    "userId": 558173103, 
+    "prevInTime": 24436, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEJBMUZBQkNGLURGNTktNEJDNS1BM0QyLUUzMjgyN0VGRDkwRkBtZS5jb20+"
+    }, 
+    "authorName": "Stefan Bechtold", 
+    "numMessagesInTopic": 3, 
+    "msgSnippet": "Hi folks I investigated some time to come up with a new Runner for JUnit and I would like to get feedback and your input about it. The runner aims on test", 
+    "contentTrasformed": false, 
+    "msgId": 24437, 
+    "nextInTopic": 24439, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;stefan.bechtold@...&gt;\r\nReceived: (qmail 79335 invoked by uid 7800); 31 Oct 2013 18:39:13 -0000\r\nX-Sender: stefan.bechtold@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 88315 invoked by uid 102); 31 Oct 2013 18:18:53 -0000\r\nX-Received: from unknown (HELO mtaq3.grp.bf1.yahoo.com) (10.193.84.142)\n  by m2.grp.bf1.yahoo.com with SMTP; 31 Oct 2013 18:18:53 -0000\r\nX-Received: (qmail 4608 invoked from network); 31 Oct 2013 18:18:53 -0000\r\nX-Received: from unknown (HELO nk11p03mm-asmtp002.mac.com) (17.158.232.237)\n  by mtaq3.grp.bf1.yahoo.com with SMTP; 31 Oct 2013 18:18:53 -0000\r\nX-Received: from [192.168.101.67] ([5.146.125.48]) by nk11p03mm-asmtp002.mac.com\n (Oracle Communications Messaging Server 7u4-27.08(7.0.4.27.7) 64bit (built Aug\n 22 2013)) with ESMTPSA id &lt;0MVJ00BV8PICIZ30@...&gt; for\n junit@yahoogroups.com; Thu, 31 Oct 2013 18:18:42 +0000 (GMT)\r\nX-Proofpoint-Virus-Version: vendor=fsecure\n engine=2.50.10432:5.10.8794,1.0.431,0.0.0000\n definitions=2013-10-31_07:2013-10-31,2013-10-31,1970-01-01 signatures=0\r\nX-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0\n suspectscore=1 phishscore=0 adultscore=0 bulkscore=0 classifier=spam adjust=0\n reason=mlx scancount=1 engine=7.0.1-1308280000 definitions=main-1310310156\r\nMessage-id: &lt;BA1FABCF-DF59-4BC5-A3D2-E32827EFD90F@...&gt;\r\nDate: Thu, 31 Oct 2013 19:18:51 +0100\r\nTo: junit@yahoogroups.com\r\nMIME-version: 1.0 (Mac OS X Mail 6.6 &#92;(1510&#92;))\r\nX-Mailer: Apple Mail (2.1510)\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Stefan Bechtold &lt;stefan.bechtold@...&gt;\r\nSubject: Hierarchical Context Runner for JUnit\r\nX-Yahoo-Group-Post: member; u=558173103\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 31 Oct 2013 18:39:13 -0000\r\n\r\nHi folks\n\nI investigated some time to come up with a new Runner for JUnit and I would like to get feedback and your input about it. The runner aims on test hierarchies, i.e. tests that can be grouped into contexts for better readability. You can compare this with the contexts in rspec and I would say it is an enhancement of the Enclosed Runner.\n\nLet&#39;s start with an example:\n\n@RunWith(HierarchicalContextRunner.class)\npublic class BankAccountTest {\n  private Account account;\n\n  public class SavingsAccountContext {\n    @Before\n    public void setup() {\n      myAccount = new SavingsAccount();\n    }\n\n    @Test\n    public void accountWithBalanceOf100_earns3InInterest() throws Exception {\n      myAccount.setBalance(100.0);\n      assertThat(myAccount.getInterestEarned(), is(closeTo(3.0, 0.001)));\n    }\n\n    @Test\n    public void accountWithBalanceOf200_earns6InInterest() throws Exception {\n      myAccount.setBalance(200.0);\n      assertThat(myAccount.getInterestEarned(), is(closeTo(6.0, 0.001)));\n    }\n  }\n\n  public class MoneyMarketAccountContext {\n    @Before\n    public void setup() {\n      myAccount = new MoneyMarketAccount();\n    }\n\n    @Test\n    public void accountWithBalanceOf100_earns4InInterest() throws Exception {\n      myAccount.setBalance(100.0);\n      assertThat(myAccount.getInterestEarned(), is(closeTo(4.0, 0.001)));\n    }\n\n    @Test\n    public void accountWithBalanceOf200_earns8InInterest() throws Exception {\n      myAccount.setBalance(200.0);\n      assertThat(myAccount.getInterestEarned(), is(closeTo(8.0, 0.001)));\n    }\n  }\n}\n\n(This example is copied from the newest video of Robert Martin from his website http://www.cleancoders.com, video 22 - Test Process, starting at 00:32:38)\n\nKey points to note:\n\n1. There are no static classes that contain tests.\n2. There are no extends statements, hierarchies are created by creating inner classes (nice syntax).\n3. Each context can access all variables of the parent context.\n4. @Rule, @Before and @After annotations are run for the complete hierarchy of a test (not visible from the example)\n5. Mostly all features of the BlockJUnit4ClassRunner are also supported.\n\nAnother example can be found on my github.org page at https://github.com/bechte/junit-hierarchicalcontextrunner/wiki.\n\nFor me, this runner closes a gap of missing ability of the JUnit framework to support hierarchies.\n\nI am really looking forward to getting some feedback on this runner.\n\nAll the best\n\nBechte\n\n-- \n\nStefan Bechtold\n\neCard: http://ecard.bechte.de/\n\nhttp://www.bechte.de, http://twitter.com/bechte \n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "subject": "Hierarchical Context Runner for JUnit"
+}

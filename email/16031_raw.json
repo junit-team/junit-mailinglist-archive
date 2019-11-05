@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 16032, 
+    "senderId": "wnjJL8FTBz3ec3J90Kz74AdGPFnDcluKhIXIWC4QsCfc1PxDpjJm-WpdcAKkq_-V3vOvk0DU7QtnbCFBLtqky25fStLthizEIF7T0eiDpg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] testing private methods in Struts Actions ?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... What do you want to test here? 1. How well your business logic integrates with Struts (reading form beans, populating error messages, that kind of thing..)", 
+    "msgId": 16031, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 78650 invoked from network); 9 Feb 2006 03:38:27 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m3.grp.scd.yahoo.com with QMQP; 9 Feb 2006 03:38:27 -0000\r\nReceived: from unknown (HELO chilco.textdrive.com) (207.7.108.242)\n  by mta5.grp.scd.yahoo.com with SMTP; 9 Feb 2006 03:38:27 -0000\r\nReceived: from [172.17.198.244] (unknown [208.255.117.67])\n\tby chilco.textdrive.com (Postfix) with ESMTP id C774BDC296\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  9 Feb 2006 03:39:12 +0000 (UTC)\r\nMessage-ID: &lt;43EAB929.2060900@...&gt;\r\nDate: Wed, 08 Feb 2006 22:38:17 -0500\r\nUser-Agent: Thunderbird 1.5 (Macintosh/20051201)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;dsbnjr+3lci@...&gt;\r\nIn-Reply-To: &lt;dsbnjr+3lci@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] testing private methods in Struts Actions ?\r\nX-Yahoo-Group-Post: member; u=127224993; y=HigjOt_DUDx-XqxD5jp4i566nk2391pLEdzLg_MB40BzFE8\r\nX-Yahoo-Profile: nails762\r\n\r\nfrank zou wrote:\n\n&gt; The issues really confused me. Testing gurus, please give me a hand.\n&gt; Thanks.\n\nWhat do you want to test here?\n\n1. How well your business logic integrates with Struts (reading form \nbeans, populating error messages, that kind of thing..)\n\nor\n\n2. Your business logic itself\n\nEither way, putting the business logic directly into the Struts Action \ncreates a problem; therefore, create a separate class for your business \nlogic and have the Struts Action invoke it. It looks somethign like this:\n\npublic ActionForward execute(ActionMapping mapping, ActionForm form,\n                   HttpServletRequest request,\n                   HttpServletResponse response)\n       {\n\n             createEventLog(request);\n\n             handleSessionAndToken(request);\n\n             doBusinessLogic(new BusinessLogicImpl(...));\n             ...\n             clearUserRelatedCookies(siteId, response);\n\n             String returnUrl = createReturnUrl(mapping, request);\n             request.setAttribute(LOGIN_RETURN_URL, returnUrl);\n             return mapping.findForward(PAGE_SUCCESS);\n       }\n\npublic void doBusinessLogic(BusinessLogic logic) {\n     logic.execute();\n}\n\nNow the interface BusinessLogic represents your transaction script. The \nimplementation BusinessLogicImpl does the production work. You can test \nthe business logic on its own by instantiating whatever you need: action \nform objects, request objects, whatever. You can test the integration \nwith Struts by faking/mocking the business logic (Google &quot;jmock&quot;).\n\nThe entire technique probably requires 10 pages to describe with \nexamples, so I won&#39;t be doing that here. :)\n\nGood luck.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.info\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 16019, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 16030, 
+    "contentTrasformed": false, 
+    "postDate": "1139456297", 
+    "canDelete": false, 
+    "nextInTopic": 16037, 
+    "prevInTopic": 16019, 
+    "headers": {
+        "inReplyToHeader": "PGRzYm5qciszbGNpQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQzRUFCOTI5LjIwNjA5MDBAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGRzYm5qciszbGNpQGVHcm91cHMuY29tPg=="
+    }
+}

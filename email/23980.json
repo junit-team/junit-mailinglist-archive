@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 23981, 
+    "senderId": "sa-irvvhH64fPkc6ykJgfz6WViaaYB09bv7dskzKZ4pO_Yljsh95O83s0LY64WmGZGJTWOx2X6gTR36y2ZeT430D", 
+    "systemMessage": false, 
+    "subject": "Re: Tests starting before Logback initialisation complete when run in parallel", 
+    "from": "&quot;hkaipe&quot; &lt;hkaipe@...&gt;", 
+    "authorName": "hkaipe", 
+    "msgSnippet": "Such global, one-time, setup / tear-down is outside the scope of JUnit, according to me. You should turn to your test-running tool on this one, i.e.", 
+    "msgId": 23980, 
+    "profile": "hkaipe", 
+    "topicId": 23967, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 478409128, 
+    "messageBody": "<div id=\"ygrps-yiv-603694013\">Such &quot;global, one-time, setup / tear-down&quot; is outside the scope of JUnit, according to me. You should turn to your test-running tool on this one, i.e. Surefire.<br/>\n<br/>\nSurefire is your tool to organize which tests to run when and how. JUnit is glue between Surefire and the JUnit test-classes.<br/>\n<br/>\nAbout your problem I think you have put yourself in a corner by trying to run all tests in parallel in the same JVM. Even if you could use &quot;global, one-time, setup / tear-down&quot; you still put very strict limits on what your test-classes can safely do and I simply don&#39;t think it is worth it.<br/>\n<br/>\nI strongly advice you to rethink here and configure Surefire with forkMode=&quot;perthread&quot;, so that parallel test-executions take place in separate JVM-processes.<br/>\n<br/>\ncheers /Henrik<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Brett Delle Grazie &lt;bdellegrazie@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Hi,<br/>\n&gt; <br/>\n&gt; I&#39;m using JUnit 4.10 with Maven 3.0.4, Surefire 2.12.3, JDK 1.6.0_35<br/>\n&gt; on Windows 7<br/>\n&gt; Surefire is configured with parallel=methods and threadCount=10<br/>\n&gt; For logging, I&#39;m using SLF4J to Logback, initialised by default method<br/>\n&gt; (i.e. configuration file logback-test.xml is on the test classpath)<br/>\n&gt; <br/>\n&gt; I have an order of initialisation problem in that:<br/>\n&gt; (1) Some unit tests test classes that use commons-logging (and logback<br/>\n&gt; via jcl-slf4j) but are ending up with<br/>\n&gt; Null loggers.<br/>\n&gt; (2) jcl-slf4j is not initialised _until_ those classes are called.<br/>\n&gt; <br/>\n&gt; If I disable parallelism the code works correctly, implying an order<br/>\n&gt; of initialisation issue.<br/>\n&gt; <br/>\n&gt; According to the most recent FAQ on Junit.org (Section 5, #3) I could<br/>\n&gt; use @BeforeClass and @AfterClass at the class<br/>\n&gt; level but I&#39;m talking about at the global level, something that needs<br/>\n&gt; to be executed even if only a single test is run.<br/>\n&gt; <br/>\n&gt; What is the correct method to add global, one-time, setup / tear-down<br/>\n&gt; hooks? In this case they would need to execute and<br/>\n&gt; complete (i.e. blocking) before any parallel tests are run.<br/>\n&gt; Is it simplest to override the Runner and initialise the logging in code there?<br/>\n&gt; <br/>\n&gt; Thanks,<br/>\n&gt; <br/>\n&gt; Best Regards,<br/>\n&gt; <br/>\n&gt; Brett<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23979, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1346953106", 
+    "canDelete": false, 
+    "nextInTopic": 23981, 
+    "prevInTopic": 23979, 
+    "headers": {
+        "inReplyToHeader": "PENBQ0xEMD02eERHZ3B4RWFiK00yaFlDRnlEd3VDVVNnLXF5YS1MQ1lxanhjOU9abXpKQUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PGsyYW4yaStqaWNnQGVHcm91cHMuY29tPg=="
+    }
+}

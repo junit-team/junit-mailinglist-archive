@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 747, 
+    "senderId": "ZRZllgCvDCNrhmUyAe0y33i8j5MG1QYLmREoWb0n5MuWlcwkEXduGWeYR3onbkuuIvG7gCfteAVyFsKZEsCYMJcqFiXB8A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Implementing JUnit AFTER development has started...", 
+    "from": "&quot;Chas Schley&quot; &lt;chas@...&gt;", 
+    "authorName": "Chas Schley", 
+    "msgSnippet": "It sounds to me like your prevalent coding practice is that each class has a constructor and several public instance methods that act on the constructed ", 
+    "msgId": 746, 
+    "topicId": 729, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-693141582\">It sounds to me like your prevalent coding practice is that each class has a<br/>\nconstructor and several public instance methods that act on the constructed<br/>\nobject.<br/>\n<br/>\nIf you have more than just the default constructor (public MyClass() { }),<br/>\nthen you should have several tests for each constructor in the class under<br/>\ntest (vary the inputs).  If you have to, you can use the newly constructed<br/>\nobjects in subsequent tests, but try to avoid doing that since it would<br/>\ncause otherwise independent tests to depend on each other.<br/>\n<br/>\nYou can usually test static methods without constructing the object under<br/>\ntest.<br/>\n<br/>\nTo test instance methods, you need an instance of the class on which the<br/>\nmethods are defined.  To solve this, I implemented a test case (i.e., a<br/>\nclass that extends TestCase) that initializes default instances of each<br/>\nobject in our object layer and provides factory methods for that default<br/>\ninstance.  All of our test cases extend that class.  This way, each test<br/>\nautomatically has access to an instance of the class under test.<br/>\nNon-intrusive tests (accesors) simply use the default instance of the class<br/>\nprovided by the test case superclass.  Intrusive tests (mutators) fetch a<br/>\nnew instance from the factory in the superclass, mutate it as needed and run<br/>\ntheir test assertion.  You could also push the object cloning code into the<br/>\nproduct classes if you think it might be useful there (we did).  The bulk of<br/>\nour tests for instance methods no longer need to construct an instance of<br/>\nthe class under test before running their test.<br/>\n<br/>\nUsing this methodology, your generic database setup is done once at the<br/>\noutset of your AllTests suite and shared amongst all of your test cases.<br/>\n<br/>\nAlso consider using mock objects to simulate the class under test.  You<br/>\nmight save yourself mounds of test-specific database setup.<br/>\n<br/>\nCheers,<br/>\n<br/>\n_chas_<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; From: &quot;Jason Trip&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jason_trip@...\">jason_trip@...</a>&gt;<br/>\n&gt; To: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\n&gt; Sent: Monday, March 19, 2001 1:07 PM<br/>\n&gt; Subject: RE: [junit] Re: Implementing JUnit AFTER development has<br/>\n </span></blockquote>started...<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n<br/>\n&gt; You are right about the ugliness of testing existing classes.  If I try to<br/>\n&gt; make one Junit test for one of our existing classes, I end up either (a)<br/>\n&gt; putting a lot of code in the setup() method that gets used by only some of<br/>\n&gt; the test methods or (b) not using the setup() and teardown() at all since<br/>\n&gt; the data setup is completely different for each method to test. Plus there<br/>\n&gt; is other problems with not being familiar with the class and the large<br/>\n&gt; amounts of database setup that has to occur.<br/>\n&gt;<br/>\n&gt; Is the intention of each Junit test to test one CLASS?  And if so, should<br/>\n&gt; each method in a Junit class correspond to a test of one public method in<br/>\n&gt; the class it is testing?  I think this is the case, but our existing code<br/>\n&gt; does not lend itself easily to this.  So I take it that (a.) all classes<br/>\n&gt; should be designed so that they can be unit tested with ONE testcase (b.)<br/>\n&gt; where all the code in the setup() and teardown() are useful for each of<br/>\n </span></blockquote>the<br/>\n<blockquote><span title=\"ireply\"> &gt; test methods in the class and (c.) there should be ONE test method<br/>\n&gt; corresponding to each public method in the class being tested?<br/>\n&gt;<br/>\n&gt; Assuming the above is true, how would I test the following:  If I have one<br/>\n&gt; test method for the constructor, and one test method for each of the<br/>\n </span></blockquote>methods<br/>\n<blockquote><span title=\"ireply\"> &gt; that act on that constructed object, the setup() and teardown() code<br/>\n </span></blockquote>becomes<br/>\n<blockquote><span title=\"ireply\"> &gt; really ugly because I need to setup data (requires A LOT of database<br/>\n </span></blockquote>setup)<br/>\n<blockquote><span title=\"ireply\"> &gt; for the constructor and I need to use the constructor method itself for<br/>\n </span></blockquote>the<br/>\n<blockquote><span title=\"qreply\"> &gt; setup() to test the other methods.<br/>\n&gt; ...I think the answer is that I should not test that constructor in that<br/>\n&gt; unit test, and instead I should have a completely different unit test for<br/>\n&gt; the creation of the object (it would be a unit test of a Factory object)? </span></blockquote></div>", 
+    "prevInTime": 745, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "985044403", 
+    "canDelete": false, 
+    "nextInTopic": 750, 
+    "prevInTopic": 745, 
+    "headers": {
+        "messageIdInHeader": "PDAxNDcwMWMwYjBjYyQwZWU2YWYzMCQ2NDY2NjQwYUB6aGFucmEuY29tPg==", 
+        "referencesHeader": "PE5FQkJKRUNQRk1MSE9CQkJLTkxLR0VPQUNFQUEuamFzb25fdHJpcEBjcm9zc2NvbW1lcmNlLmNvbT4="
+    }
+}

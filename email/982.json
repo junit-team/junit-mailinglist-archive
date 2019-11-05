@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 983, 
+    "senderId": "_VsTNjep3NnXFZjj5H3EVb5rIA-mcS6xTRFlprx9VPqzTzt_giZG4QS4CF7k8C2vOLs_NDY5bhce0kjiSCZGJjyJP6O-2mABZ5M", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] need help with suite.addTest() method", 
+    "from": "&quot;Scott Eade&quot; &lt;seade@...&gt;", 
+    "authorName": "Scott Eade", 
+    "msgSnippet": "James, If you want to run all of the methods in a class whose name begins with test you can go: suite.addTest(new TestSuite(TestBidsReadyTable.class)); This", 
+    "msgId": 982, 
+    "topicId": 981, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-511684627\">James,<br/>\n<br/>\nIf you want to run all of the methods in a class whose name begins with &quot;test&quot;<br/>\nyou can go:<br/>\n<br/>\n    suite.addTest(new TestSuite(TestBidsReadyTable.class));<br/>\n<br/>\nThis way you only need one line of code per test class.<br/>\n<br/>\nThis is the way I do it because we don&#39;t have bunches of new test classes<br/>\nbeing created all of the time.<br/>\n<br/>\nOthers may provide a pointer to some code that will search for all class<br/>\nnames that end in &quot;Test&quot; and construct a test suite from the result.  This<br/>\nmay be more useful if you live in a more dynamic environment than I do.<br/>\n<br/>\nCheers,<br/>\n<br/>\nScott<br/>\n-----------------------------------<br/>\nScott Eade<br/>\nBackstage Technologies Pty. Ltd.<br/>\nEmail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:seade@...\">seade@...</a><br/>\nPhone 02 9716 4090<br/>\nMobile: 0403 278 908<br/>\n<br/>\n<blockquote><span title=\"qreply\"> ----- Original Message ----- <br/>\nFrom: &quot;James Sinnamon&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:sinnamon@...\">sinnamon@...</a>&gt;<br/>\nTo: &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\nSent: Thursday, April 19, 2001 1:56 PM<br/>\nSubject: [junit] need help with suite.addTest() method<br/>\n<br/>\n<br/>\n&gt; Could someone spare a few moments to  show me a way to<br/>\n&gt; reduce the code in the   &#39;public static Test suite()&#39;  method,<br/>\n&gt; below,  so that there is only<br/>\n&gt; one statement for each class which I am testing?<br/>\n&gt; <br/>\n&gt; I have tried to follow examples from some of the<br/>\n&gt; documentation but have not had very much luck.<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; -----------code follows-------<br/>\n&gt; <br/>\n&gt; package au.edu.usq.sci.multipi.util;<br/>\n&gt; <br/>\n&gt; import junit.framework.*;<br/>\n&gt; import junit.extensions.*;<br/>\n&gt; //import junit.extensions.TestSetup;<br/>\n&gt; <br/>\n&gt; public class TestUtils extends TestCase {<br/>\n&gt;   public TestUtils(String testName) {<br/>\n&gt;     super(testName);<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;   public static Test suite() {<br/>\n&gt;     TestSuite suite = new TestSuite();<br/>\n&gt; <br/>\n&gt;     suite.addTest(new TestBidsReadyTable(&quot;testConstructor&quot;));<br/>\n&gt;     suite.addTest(new TestBidsReadyTable(&quot;testSetAmReady&quot;));<br/>\n&gt;     suite.addTest(new TestBidsReadyTable(&quot;testNoneReady&quot;));<br/>\n&gt;     suite.addTest(new TestBidsReadyTable(&quot;testAmLastInLine&quot;));<br/>\n&gt;     suite.addTest(new TestBidsReadyTable(&quot;testNextLastInLine&quot;));<br/>\n&gt; <br/>\n&gt;     suite.addTest(new TestBidsMsgBoard(&quot;testConstructor&quot;));<br/>\n&gt;     suite.addTest(new TestBidsMsgBoard(&quot;testSetReset&quot;));<br/>\n&gt;     suite.addTest(new TestBidsMsgBoard(&quot;testMessaging&quot;));<br/>\n&gt; <br/>\n&gt;     /* etc */<br/>\n&gt; <br/>\n&gt; <br/>\n&gt;      suite.addTest(new TestAgent(&quot;testImmediateSUCCESS&quot;));<br/>\n&gt;      suite.addTest(new TestAgent(&quot;testWILL_RETRY&quot;));<br/>\n&gt;      suite.addTest(new TestAgent(&quot;testAllBidsToTRYAGAIN&quot;));<br/>\n&gt;      suite.addTest(new TestAgent(&quot;testSUCCESSandRETRY&quot;));<br/>\n&gt;      suite.addTest(new TestAgent(&quot;testFINISHING&quot;));<br/>\n&gt;      suite.addTest(new TestAgent(&quot;testOneSuccessfulBidOnly&quot;));<br/>\n&gt; <br/>\n&gt;      suite.addTest(new TestBidRecord(&quot;testConstructor&quot;));<br/>\n&gt;      suite.addTest(new TestBidRecord(&quot;testSetAndGet&quot;));<br/>\n&gt; <br/>\n&gt;      TestSetup wrapper = new TestSetup(suite) {<br/>\n&gt; <br/>\n&gt;       public void setUp () {<br/>\n&gt;         // oneTimeSetUp(); }<br/>\n&gt;     };<br/>\n&gt;     return wrapper;<br/>\n&gt;   }<br/>\n&gt;   public static void main(String[] args) {<br/>\n&gt;     String[] testCaseName = {TestUtils.class.getName()};<br/>\n&gt;     junit.textui.TestRunner.main(testCaseName);<br/>\n&gt;    }<br/>\n&gt; }<br/>\n&gt; -----------code ends ------------<br/>\n&gt; <br/>\n&gt; TIA<br/>\n&gt; <br/>\n&gt; James<br/>\n&gt; <br/>\n&gt; --<br/>\n&gt; James Sinnamon  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:sinnamon@...\">sinnamon@...</a><br/>\n&gt; <br/>\n&gt; ph 07 46315566,  0412 319669<br/>\n&gt; PO Box 517 Darling Heights QLD 4350<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 981, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987654331", 
+    "canDelete": false, 
+    "nextInTopic": 983, 
+    "prevInTopic": 981, 
+    "headers": {
+        "messageIdInHeader": "PDAxZGMwMWMwYzg4OCRjNWNiYTkyMCQwMTAwMDAwMUBzY29vYnkwMD4=", 
+        "referencesHeader": "PDNBREU2MUUwLkNFQTI1ODRCQHVzcS5lZHUuYXU+"
+    }
+}

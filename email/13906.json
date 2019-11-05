@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 13907, 
+    "senderId": "e6jscuLXMQqGcrpHyJveArKonGY1CpB-Ow5tYxt-KCqhBjzzy335ev7MyU9aMVl4Z8AfSzkSpQ-z1pv-EdOU_ZjBt7P6mlo8a6T5", 
+    "systemMessage": false, 
+    "subject": "Re: Integrating JUnit and ANT build", 
+    "from": "Clark I Anderson &lt;anderci@...&gt;", 
+    "authorName": "Clark I Anderson", 
+    "msgSnippet": "You are correct.  I made your recommended simplifications and it still works! I am working in a Windows environment and set environmental variables: set", 
+    "msgId": 13906, 
+    "profile": "ciagetjob", 
+    "topicId": 13865, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 124170489, 
+    "messageBody": "<div id=\"ygrps-yiv-1959262990\">You are correct.  I made your recommended simplifications and it still <br/>\nworks!<br/>\n<br/>\nI am working in a Windows environment and set environmental variables:<br/>\n<br/>\nset ANT_HOME=D:&#92;JAVADevEnv&#92;Tools&#92;apache-ant-1.6.2<br/>\nset JAVA_HOME=D:/JAVADevEnv/SDKs/j2sdk-1_4_2_04-windows-i586<br/>\n<br/>\nset <br/>\nPath=C:&#92;WINNT&#92;system32;C:&#92;WINNT;C:&#92;WINNT&#92;System32&#92;Wbem;D:&#92;JAVADevEnv&#92;SDKs&#92;j2sdk-1_4_2_04-windows-i586&#92;bin;%ANT_HOME%&#92;bin<br/>\n<br/>\n<br/>\nThe build file that is working for me is:<br/>\n<br/>\n&lt;?xml version=&quot;1.0&quot;?&gt;<br/>\n&lt;project name=&quot;JunitDemoWithTests2&quot; default=&quot;deploy&quot; &gt;<br/>\n  \t&lt;property name=&quot;HOME&quot; value=&quot;D:/JAVADevEnv/Source&quot; /&gt;<br/>\n  \t&lt;property name=&quot;SDKS_HOME&quot; value=&quot;D:/JAVADevEnv/SDKs&quot; /&gt;<br/>\n  \t&lt;property name=&quot;CVSROOT&quot; value=&quot;D:/JAVADevEnv/CVS&quot; /&gt;<br/>\n  \t&lt;property name=&quot;TOOLS_HOME&quot; value=&quot;D:/JAVADevEnv/Tools&quot; /&gt;<br/>\n  \t&lt;property name=&quot;ANT_HOME&quot; <br/>\nvalue=&quot;D:/JAVADevEnv/Tools/apache-ant-1.6.2&quot; /&gt;<br/>\n  \t&lt;property name=&quot;JUNIT_HOME&quot; <br/>\nvalue=&quot;D:/JAVADevEnv/Tools/JUnit/junit3.8.1&quot; /&gt;<br/>\n  \t&lt;property name=&quot;CATALINA_HOME&quot; <br/>\nvalue=&quot;D:/JAVADevEnv/Tools/jakarta-tomcat-5.0.25&quot; /&gt;<br/>\n  \t&lt;property name=&quot;HTTPUNIT_HOME&quot; <br/>\nvalue=&quot;D:/JAVADevEnv/Tools/HTTPUnit/httpunit-1.6&quot; /&gt;<br/>\n  \t&lt;property name=&quot;MYSQL_HOME&quot; value=&quot;D:/JAVADevEnv/Tools/mysql&quot; /&gt;<br/>\n<br/>\n    &lt;target name=&quot;init&quot;&gt;<br/>\n  \t&lt;mkdir dir=&quot;build/classes&quot; /&gt;<br/>\n  \t&lt;mkdir dir=&quot;dist&quot; /&gt;<br/>\n      &lt;echo&gt;init complete!&lt;/echo&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\n    &lt;target name=&quot;test-init&quot;&gt;<br/>\n  \t&lt;mkdir dir=&quot;test/classes&quot; /&gt;<br/>\n      &lt;echo&gt;test-init complete!&lt;/echo&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\n    &lt;target name=&quot;compile&quot; depends=&quot;init,test-init&quot;&gt;<br/>\n      &lt;javac fork=&quot;yes&quot; srcdir=&quot;src&quot; destdir=&quot;build/classes&quot; &gt;<br/>\n      &lt;/javac&gt;<br/>\n      &lt;echo&gt;compilation complete!&lt;/echo&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\n    &lt;target name=&quot;test-compile&quot; depends=&quot;test-init,compile&quot;&gt;<br/>\n      &lt;javac fork=&quot;yes&quot; srcdir=&quot;TestSrc&quot; includes=&quot;**/*.java&quot; <br/>\ndestdir=&quot;test/classes&quot; &gt;<br/>\n        &lt;classpath&gt;<br/>\n  \t    &lt;pathelement location=&quot;${JUNIT_HOME}/junit.jar&quot; /&gt;<br/>\n          &lt;pathelement location=&quot;build/classes&quot; /&gt;<br/>\n          &lt;pathelement location=&quot;test/classes&quot; /&gt;<br/>\n        &lt;/classpath&gt;<br/>\n      &lt;/javac&gt;<br/>\n      &lt;echo&gt;JUnit Test-compile complete!&lt;/echo&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\n    &lt;target name=&quot;unit-test&quot; depends=&quot;test-compile&quot;&gt;<br/>\n      &lt;junit printsummary=&quot;true&quot; haltonfailure=&quot;true&quot; &gt;<br/>\n        &lt;classpath&gt;<br/>\n          &lt;pathelement path=&quot;build/classes&quot; /&gt;<br/>\n          &lt;pathelement path=&quot;test/classes&quot; /&gt;<br/>\n        &lt;/classpath&gt;<br/>\n        &lt;batchtest fork=&quot;yes&quot; &gt;<br/>\n          &lt;formatter type=&quot;plain&quot; usefile=&quot;false&quot; /&gt;<br/>\n          &lt;fileset dir=&quot;test/classes&quot;&gt;<br/>\n            &lt;include name=&quot;AllTests.class&quot; /&gt;<br/>\n            &lt;include name=&quot;SimpleFractionTest.class&quot; /&gt;<br/>\n          &lt;/fileset&gt;<br/>\n        &lt;/batchtest&gt;<br/>\n      &lt;/junit&gt;<br/>\n      &lt;echo&gt;junit-run complete!&lt;/echo&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\n    &lt;target name=&quot;deploy&quot; depends=&quot;compile,test-compile,unit-test,doc&quot;&gt;<br/>\n      &lt;jar destfile=&quot;dist/project.jar&quot; basedir=&quot;build/classes&quot; /&gt;<br/>\n      &lt;echo&gt;deploy complete!&lt;/echo&gt;<br/>\n    &lt;/target&gt;<br/>\n&lt;/project&gt;<br/>\n<br/>\n<br/>\n                 Clark Anderson</div>", 
+    "prevInTime": 13905, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1118718765", 
+    "canDelete": false, 
+    "nextInTopic": 13911, 
+    "prevInTopic": 13905, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDUwNjEzMjExMDUxLkwxNDYzM0BuZXQuaW5kcmEuY29tPg=="
+    }
+}

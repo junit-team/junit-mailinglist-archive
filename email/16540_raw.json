@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 16541, 
+    "senderId": "2PxMkSoC39qRVLyPUYG4kVaEs1lXvqVK0zO0vxdFxkdnm0eHGjSccUPNh5rvLRwygq0L4h4OuQmm2Hfl3FTioOTQ3MMgcK1xokhqeQ", 
+    "systemMessage": false, 
+    "subject": "Newbie question - Testing Applets", 
+    "from": "&quot;Anna Skawinska&quot; &lt;elfeczka@...&gt;", 
+    "authorName": "Anna Skawinska", 
+    "msgSnippet": "Hi guys, The reason I started to learn JUnit and Java in general is that I ve just begun my internship and I m going to write unit tests for an existing", 
+    "msgId": 16540, 
+    "rawEmail": "Return-Path: &lt;elfeczka@...&gt;\r\nX-Sender: elfeczka@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 25085 invoked from network); 20 Apr 2006 13:07:36 -0000\r\nReceived: from unknown (66.218.67.34)\n  by m25.grp.scd.yahoo.com with QMQP; 20 Apr 2006 13:07:36 -0000\r\nReceived: from unknown (HELO n30a.bullet.scd.yahoo.com) (209.73.160.88)\n  by mta8.grp.scd.yahoo.com with SMTP; 20 Apr 2006 13:07:36 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.4] by n30.bullet.scd.yahoo.com with NNFMP; 20 Apr 2006 13:04:54 -0000\r\nReceived: from [66.218.66.89] by t4.bullet.scd.yahoo.com with NNFMP; 20 Apr 2006 13:04:54 -0000\r\nDate: Thu, 20 Apr 2006 13:04:54 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;e280tm+asm6@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Anna Skawinska&quot; &lt;elfeczka@...&gt;\r\nSubject: Newbie question - Testing Applets\r\nX-Yahoo-Group-Post: member; u=108913337; y=P0fS-MLsA9fTOxvOemJ70TvvBzl2WO59mPhr_8MvaEUviMw\r\nX-Yahoo-Profile: elfeczka\r\n\r\nHi guys,\n\nThe reason I started to learn JUnit and Java in general is that I=\r\n&#39;ve\njust begun my internship and I&#39;m going to write unit tests for an\nexist=\r\ning application, developed by &quot;real&quot; programmers :)\n\nThe application I&#39;m go=\r\ning to work on first is a Java applet, so I&#39;ve\nfocused on finding out how t=\r\no use JUnit to test them. Having done some\nexperiments, I&#39;ve tried to find =\r\nsome sample projects to show me if I\njust do it the right way, but unfortun=\r\nately I haven&#39;t found much.\n\nThat&#39;s why I&#39;d be extremely grateful if someon=\r\ne will just take a look\nat what I&#39;ve written and tell me if I have the righ=\r\nt idea of using\nJUnit to test applet-based applications and if I&#39;ll be able=\r\n to test\nreal, functional applets this way in the future.\n\nThank you,\nAnna\n=\r\n\n\n//-----------------------------------------------------------\n//  AppletC=\r\nlass.java - simple applet from &quot;Thinking in Java&quot;\n//-----------------------=\r\n------------------------------------\nimport javax.swing.*;\n\npublic class Ap=\r\npletClass extends JApplet {\n\tpublic void init() {\n        getContentPane().=\r\nadd(new JLabel(&quot;Applet!&quot;));\n\t}\n}\n\n\n//--------------------------------------=\r\n---------------------\n//  AppletClassTest.java - what I&#39;ve written\n//------=\r\n-----------------------------------------------------\n\nimport javax.swing.J=\r\nApplet;\nimport junit.framework.JUnit4TestAdapter;\n// (and so on...)\n\n\npubli=\r\nc class AppletClassTest {\n\tJApplet applet;\n\tJFrame frame;\n\t\n\t@Before public=\r\n void before(){\n\t\tapplet =3D new AppletClass();\n        \n         frame =3D=\r\n new JFrame(&quot;AppletClass!&quot;);\n        // To close the application:\n        f=\r\nrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.getConte=\r\nntPane().add(applet);\n        frame.setSize(100,50);\n        \n        apple=\r\nt.init();\n        applet.start();\n        \n\t}\n\t\n\t@After public void after()=\r\n{\n\t\tapplet.stop();\n\t\tapplet.destroy();\n\t}\n\t\n\t@Test public void appletNotNul=\r\nl(){\n\t\tAssert.assertNotNull(&quot;Hey, the applet reference is null!&quot;, applet);\t=\r\n\t\n\t}\n\t\n\t@Test public void frameContentPaneIncludesApplet(){\n\t\tComponent[] t=\r\nbl =3D frame.getContentPane().getComponents();\t\n\t\tboolean result =3D false;=\r\n\n\t\t\n\t\t//search for the applet\n\t\tfor (int i=3D0; i&lt;tbl.length; i++)\n\t\t\tif ( =\r\ntbl[i].equals(applet) ) {\n\t\t\t\tresult=3Dtrue;\n\t\t\t\tbreak;\n\t\t\t}\n\t\tAssert.asser=\r\ntEquals(true, result);\t\t\n\t}\n\t\n\t@Test public void appletComponentsCountOK(){=\r\n\t\t\n\t\tAssert.assertEquals(1,applet.getContentPane().getComponentCount());\t\t\n=\r\n\t}\n\t\n    public static junit.framework.Test suite() {\n    \t\n    \treturn new=\r\n JUnit4TestAdapter(AppletClassTest.class);\n    }\t\n}\n\n\n\n\n", 
+    "profile": "elfeczka", 
+    "topicId": 16540, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 108913337, 
+    "prevInTime": 16539, 
+    "contentTrasformed": false, 
+    "postDate": "1145538294", 
+    "canDelete": false, 
+    "nextInTopic": 16542, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGUyODB0bSthc202QGVHcm91cHMuY29tPg=="
+    }
+}

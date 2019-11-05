@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 11859, 
+    "senderId": "pMNxcKewsIYZYrGxq1G9ZaA1-5pabbtIRN_wtU_FCTfFYlOdBYbaTUKgJ3fvafVcmWfaRtKELbZvwrSeq60LSKdBrY8Cl0QcsMU", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] help", 
+    "from": "Andrew Forward &lt;aforward@...&gt;", 
+    "authorName": "Andrew Forward", 
+    "msgSnippet": "To test private methods or member variables, you can look to JUnitX (some examples are available at http://www.extreme-java.de/junitx/). Following this email", 
+    "msgId": 11858, 
+    "rawEmail": "Return-Path: &lt;aforward@...&gt;\r\nX-Sender: aforward@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 98658 invoked from network); 26 Aug 2004 14:51:06 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m24.grp.scd.yahoo.com with QMQP; 26 Aug 2004 14:51:06 -0000\r\nReceived: from unknown (HELO mproxy.gmail.com) (64.233.170.195)\n  by mta3.grp.scd.yahoo.com with SMTP; 26 Aug 2004 14:51:05 -0000\r\nReceived: by mproxy.gmail.com with SMTP id 75so136472rnl\n        for &lt;junit@yahoogroups.com&gt;; Thu, 26 Aug 2004 07:50:56 -0700 (PDT)\r\nReceived: by 10.38.92.30 with SMTP id p30mr2492658rnb;\n        Thu, 26 Aug 2004 07:38:41 -0700 (PDT)\r\nReceived: by 10.38.86.38 with HTTP; Thu, 26 Aug 2004 07:38:40 -0700 (PDT)\r\nMessage-ID: &lt;1e4ffc35040826073868accf38@...&gt;\r\nDate: Thu, 26 Aug 2004 10:38:40 -0400\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;!~!UENERkVCMDkAAQACAAAAAAAAAAAAAAAAABgAAAAAAAAAF6YuS1+t5kGU26LRPHyS88KAAAAQAAAA+/pvSGVPm0+glwpaNVZTyAEAAAAA@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nReferences: &lt;!~!UENERkVCMDkAAQACAAAAAAAAAAAAAAAAABgAAAAAAAAAF6YuS1+t5kGU26LRPHyS88KAAAAQAAAA+/pvSGVPm0+glwpaNVZTyAEAAAAA@...&gt;\r\nX-eGroups-Remote-IP: 64.233.170.195\r\nFrom: Andrew Forward &lt;aforward@...&gt;\r\nReply-To: Andrew Forward &lt;aforward@...&gt;\r\nSubject: Re: [junit] help\r\nX-Yahoo-Group-Post: member; u=190547346\r\nX-Yahoo-Profile: andrewforward1978\r\n\r\nTo test private methods or member variables, you can look to JUnitX\n(some examples are available at http://www.extreme-java.de/junitx/).\n\nFollowing this email is an uncompiled example of how you might test\nthe above code using JUnitX.\n\nNow, taking design into consideration - the need to test private stuff\nis often seen as being a code smell (just google &#39;testing private\nmethods code smell&#39;).  In essence, if your private stuff is doing\nthings that requires explicit testing - then maybe it is really trying\nto become its own class (with its own set of tests) to which your\nexisting class can use (and use confidently as there are ample tests\ndemonstrating its proper functionality).\n\nandrew f\n\n``````````````````````````````````\npackage example;\n\nimport junit.framework.*;\nimport junitx.framework.*;\n\npublic class SampleTest extends PrivateTestCase\n{\n  public SampleTest (string name)\n  {\n   super(name);\n  }\n\n  public void testChange()\n  {\n    Object myObject = newInstance (&quot;example.Sample&quot;, NOARGS);\n    Object performChange = invokeWithKey (myObject, &quot;change&quot;, NOARGS);\n    \n    assertEquals (10, getInt(myObject, &quot;x&quot;));\n\n  }\n\n}\n\n``````````````````````````````````\n\n\n\nOn Thu, 26 Aug 2004 22:41:18 +0900, jae.woo.lee &lt;jae.woo.lee@...&gt; wrote:\n&gt; \n&gt; I think you can add a getter method for &#39;x&#39; and check the value using\n&gt; assertEquals() method.\n&gt; For example,\n&gt; class Sample {\n&gt; ....\n&gt;         public int getX() {\n&gt;                 return x;\n&gt;         }\n&gt; }\n&gt; \n&gt; and in the Test Class, add the following Method\n&gt; \n&gt; public void testChangeX() {\n&gt;         Sample s = new Sample();\n&gt;         s.change();\n&gt;         assertEquals(10, s.getX());\n&gt; }\n&gt; \n&gt; Now, the Test done!!\n&gt; \n&gt; - Jaewoo\n&gt; \n&gt; -----Original Message-----\n&gt; From: santu nand [mailto:sknanda9@...]\n&gt; Sent: Wednesday, August 25, 2004 8:07 PM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] help\n&gt; \n&gt; can anyone tell me how to test a a public datamember which returns\n&gt; nothing and  its all acting upon private data members only.\n&gt; \n&gt; For ex:\n&gt; \n&gt; class sample\n&gt; \n&gt; {\n&gt; \n&gt;       private int x;\n&gt; \n&gt;      public void change()\n&gt; \n&gt;      {\n&gt; \n&gt;            x=10;\n&gt; \n&gt;      }\n&gt; \n&gt; }\n&gt; \n&gt; Now is it possible to test this change method???\n&gt; \n&gt; -Santanu\n&gt; \n&gt; ---------------------------------\n&gt;   Yahoo! Messenger - Communicate instantly...&quot;Ping&quot; your friends today!\n&gt; Download Messenger Now\n&gt; \n&gt; [Non-text portions of this message have been removed]\n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n\n\n-- \naforward\n\n", 
+    "profile": "andrewforward1978", 
+    "topicId": 11852, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 190547346, 
+    "prevInTime": 11857, 
+    "contentTrasformed": false, 
+    "postDate": "1093531120", 
+    "canDelete": false, 
+    "nextInTopic": 11859, 
+    "prevInTopic": 11857, 
+    "headers": {
+        "inReplyToHeader": "PCF+IVVFTkVSa1ZDTURrQUFRQUNBQUFBQUFBQUFBQUFBQUFBQUJnQUFBQUFBQUFBRjZZdVMxK3Q1a0dVMjZMUlBIeVM4OEtBQUFBUUFBQUErL3B2U0dWUG0wK2dsd3BhTlZaVHlBRUFBQUFBQHNhbXN1bmcuY29tPg==", 
+        "messageIdInHeader": "PDFlNGZmYzM1MDQwODI2MDczODY4YWNjZjM4QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PCF+IVVFTkVSa1ZDTURrQUFRQUNBQUFBQUFBQUFBQUFBQUFBQUJnQUFBQUFBQUFBRjZZdVMxK3Q1a0dVMjZMUlBIeVM4OEtBQUFBUUFBQUErL3B2U0dWUG0wK2dsd3BhTlZaVHlBRUFBQUFBQHNhbXN1bmcuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 2568, 
+    "postDate": "999692144", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Steven Morgan &lt;xerafin@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "7BXOJAbl7dMSu0dQNiaWKDkXm1VkvkcyJcPpqddCfZ4v4KqmsDFlrjbD9cY-tyRJxe2QdtcGvTrmTKgiAcyC5Rn6d_x4NRrU", 
+    "nextInTime": 2569, 
+    "userId": 0, 
+    "prevInTime": 2567, 
+    "prevInTopic": 0, 
+    "headers": {
+        "inReplyToHeader": "PDk5OTY4NTU2MS4zMDguNDAwOS5sMTBAeWFob29ncm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDEwOTA1MTIxNTQ0LjE1NzA3LnFtYWlsQHdlYjExNTAzLm1haWwueWFob28uY29tPg=="
+    }, 
+    "authorName": "Steven Morgan", 
+    "numMessagesInTopic": 1, 
+    "msgSnippet": "... JTS ... required . ... database ... Actually, in the terminology of transaction services, nested transactions *are* subtransactions.  What was being", 
+    "contentTrasformed": false, 
+    "msgId": 2568, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;xerafin@...&gt;\r\nX-Sender: xerafin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_2); 5 Sep 2001 12:17:08 -0000\r\nReceived: (qmail 21852 invoked from network); 5 Sep 2001 12:16:07 -0000\r\nReceived: from unknown (10.1.10.26)\n  by l10.egroups.com with QMQP; 5 Sep 2001 12:16:07 -0000\r\nReceived: from unknown (HELO web11503.mail.yahoo.com) (216.136.172.35)\n  by mta1 with SMTP; 5 Sep 2001 12:16:07 -0000\r\nMessage-ID: &lt;20010905121544.15707.qmail@...&gt;\r\nReceived: from [143.61.15.253] by web11503.mail.yahoo.com via HTTP; Wed, 05 Sep 2001 05:15:44 PDT\r\nDate: Wed, 5 Sep 2001 05:15:44 -0700 (PDT)\r\nSubject: sub == nested, a matter of semantics\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;999685561.308.4009.l10@yahoogroups.com&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Steven Morgan &lt;xerafin@...&gt;\r\n\r\n&gt; &gt; OTS subtransactions are very different from top-level transactions.\n\n&gt; As i&#39;ve dived into several specification documents\n&gt; (not comments about them), i&#39;ve discovered that OTS doesn&#39;t support \n&gt; directly nested transaction but only subtransaction (as you said). And\nJTS \n&gt; is based upon OTS. So it explains the &quot;nested transactions not\nrequired&quot;.\n&gt; About EJB 2.0 spec, it is written : &quot;no nested transactions supported&quot;. \n&gt; Authors explain that they want EJB spec to be implemented on any\ndatabase\n&gt; system. They add that EJB spec could support nested transactions if \n&gt; databases support them...\n\nActually, in the terminology of transaction services, nested transactions\n*are* subtransactions.  What was being discussed earlier was a way to have\nresources commit (that is, visible) for testing purposes but still have\nthem uncommit in the end.  This is really an issue of transaction\nisolation, which determines who is allowed to see changes at different\nstages in the lifetime of a transaction.  Isolation is an\nimplementation-specific characteristic.  Perhaps if you check your\ndatabase docs, you can find an isolation level that will allow you to test\nthe way you were hoping.  It won&#39;t be portable, but it could work.\n\nThe reason OTS does not require nested/sub- transactions is because it was\ndesigned by a committee of transaction manager (database) vendors and most\ndatabases do not support nested/sub- transactions.  Committee specs tend\nto be all-inclusive because they have to have broad support to be adopted\n(which, for example, is why the conference in Durban is having problems,\nbut that is definitely way off-topic).\n\nIf you really want to see a hole in the EJB spec, check out the optional\ninterposit coordinator implementation suggested by OTS.  I developed a\ntransaction manager that used interposits which was later used by our EJB\ncontainer.  The practical result is this:  do not make transactional\nremote calls during the beforeCompletion() call in a Synchronization.  The\nstate of a transaction is local, not global, and resources registered at\none node can be polled before synchronizations&#39; beforeCompletion() are\ncalled in another node.\n\nThe EJB spec, of course, makes no mention of this situation.  On the plus\nside, I have not seen another implementation that uses the suggested\ninterposit implementation, so my warning can be largely ignored.\n\n-Steve  :)\n\n=====\nSteve Morgan       xerafin@...   http://profiles.yahoo.com/xerafin\n\n__________________________________________________\nDo You Yahoo!?\nGet email alerts & NEW webcam video instant messaging with Yahoo! Messenger\nhttp://im.yahoo.com\n\n", 
+    "subject": "sub == nested, a matter of semantics"
+}

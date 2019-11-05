@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 21361, 
+    "senderId": "RuSPBjJgC6I0GO1cgS9WQyQ8K-epg9VEnHTlul-kxp2OZ5f3Tbh0wRY61gu2OY3nCVXVKVVrZ_AiZLKPpuNULFxr", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Conditionally running tests", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "yme0987654321, You can use assumptions in 4.5 and afterward to ignore entire classes: public class BigLongTest { @BeforeClass public static void", 
+    "msgId": 21360, 
+    "profile": "dsaff", 
+    "topicId": 21356, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-1342995247\">yme0987654321,<br/>\n<br/>\nYou can use assumptions in 4.5 and afterward to ignore entire classes:<br/>\n<br/>\npublic class BigLongTest {<br/>\n   @BeforeClass public static void isRunningAppropriate() {<br/>\n     assumeTrue(runningBigLongTests());<br/>\n   }<br/>\n<br/>\n   @Test...<br/>\n}<br/>\n<br/>\nDoes that work?<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Mon, Feb 16, 2009 at 10:54 PM, yme0987654321 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:yme0987654321@...\">yme0987654321@...</a>&gt;wrote:<br/>\n<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; I&#39;ve tried looking around the group but I haven&#39;t seen an answer to<br/>\n&gt; this. I&#39;m trying to set up a group of tests that runs only under<br/>\n&gt; certain circumstances. Because they are database tests, they have<br/>\n&gt; expensive setup and teardown procedures (via DBUnit), so they are<br/>\n&gt; segregated to run separately. The way to get that done seems to be via<br/>\n&gt; a separate runner, so I hacked up a class that looks like this:<br/>\n&gt; (Inspiration from here:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://schuchert.wikispaces.com/CustomJunit4RunnerJUnit4_4\">http://schuchert.wikispaces.com/CustomJunit4RunnerJUnit4_4</a> but that<br/>\n&gt; example no longer applies to the 4.5 API):<br/>\n&gt;<br/>\n&gt; public class SlowTestRunner extends Runner {<br/>\n&gt;<br/>\n&gt;    private Runner runner;<br/>\n&gt;    private Class&lt;?&gt; klass;<br/>\n&gt;<br/>\n&gt;    public SlowTestRunner(Class&lt;?&gt; klass, RunnerBuilder builder)<br/>\n&gt; throws Throwable {<br/>\n&gt;        this.klass = klass;<br/>\n&gt;        if (Boolean.getBoolean(&quot;RunSlowTests&quot;)) {<br/>\n&gt;            runner = getAppropriateRunner(builder);<br/>\n&gt;        } else {<br/>\n&gt;            runner = new IgnoredClassRunner(klass);<br/>\n&gt;        }<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    private Runner getAppropriateRunner(RunnerBuilder builder) {<br/>\n&gt;        List&lt;RunnerBuilder&gt; builders = Arrays.asList(<br/>\n&gt;                new IgnoredBuilder(),<br/>\n&gt;                new AnnotatedBuilder(builder),<br/>\n&gt;                new SuiteMethodBuilder(),<br/>\n&gt;                new JUnit3Builder(),<br/>\n&gt;                new JUnit4Builder());<br/>\n&gt;<br/>\n&gt;        for (RunnerBuilder each : builders) {<br/>\n&gt;            Runner runner = each.safeRunnerForClass(klass);<br/>\n&gt;            if (runner != null && runner.getClass() != this.getClass())<br/>\n&gt;                return runner;<br/>\n&gt;        }<br/>\n&gt;        //this is actually never going to happen, at least in the<br/>\n&gt; current implementation because the JUnit4Builder is the Builder of<br/>\n&gt; last resort.<br/>\n&gt;        return new ErrorReportingRunner(klass, new<br/>\n&gt; InitializationError(&quot;Unable to find suitable runner to delegate for &quot;<br/>\n&gt; + klass.getName()));<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    public Description getDescription() {<br/>\n&gt;        return runner.getDescription();<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    public void run(RunNotifier notifier) {<br/>\n&gt;        runner.run(notifier);<br/>\n&gt;    }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; The method getAppropriateRunner is basically a copy/paste from<br/>\n&gt; AllDefaultPossibilitiesBuilder. I had to copy paste because the<br/>\n&gt; protected method forced a return of an AnnotatedBuilder, instead of<br/>\n&gt; just a RunnerBuilder, so overriding wasn&#39;t working well. Note the case<br/>\n&gt; here is that I&#39;m not sure if the class is a JUnit3 or 4 class, and I<br/>\n&gt; want to support both with one runner.<br/>\n&gt;<br/>\n&gt; At first I tried to just do a runnerForClass on builder passed to the<br/>\n&gt; constructor, but that causes an infinite loop, because the class has<br/>\n&gt; the RunWith annotation on it that references the very same Runner.<br/>\n&gt;<br/>\n&gt; Am I correct that the API isn&#39;t naturally supporting what I am trying<br/>\n&gt; to do, or is there another way to accomplish this?<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------------------<br/>\n&gt;<br/>\n&gt; Yahoo! Groups Links<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 21359, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1234883984", 
+    "canDelete": false, 
+    "nextInTopic": 21361, 
+    "prevInTopic": 21359, 
+    "headers": {
+        "inReplyToHeader": "PGduZGNkbSttYWw0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwMjE3MDcxOWdmZTBjNzlmb2IyNjE2NzJiMjNkNDc2M2NAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGduZGNkbSttYWw0QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 15459, 
+    "senderId": "zsMeEi6j1qs24PLunsPDyjwaAzcOICUW_g1tvg0XU7iArTItvgTkFB85lPncJ3GvD9x3j_-vQ-sYtXMkxJxRR9rB4ZQpDvBXn0UX5YtuHQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] coverage testing", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Sure: 100% line/branch coverage is impossible to achieve. Even if it were possible, it s not worth the effort. Example: JDBC driver throws SQLException,", 
+    "msgId": 15458, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 11632 invoked from network); 17 Nov 2005 01:45:45 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m26.grp.scd.yahoo.com with QMQP; 17 Nov 2005 01:45:45 -0000\r\nReceived: from unknown (HELO smtp104.rog.mail.re2.yahoo.com) (206.190.36.82)\n  by mta3.grp.scd.yahoo.com with SMTP; 17 Nov 2005 01:45:45 -0000\r\nReceived: (qmail 99610 invoked from network); 17 Nov 2005 01:45:29 -0000\r\nReceived: from unknown (HELO ?192.168.1.222?) (srainsberger5790@...@208.255.117.67 with plain)\n  by smtp104.rog.mail.re2.yahoo.com with SMTP; 17 Nov 2005 01:45:28 -0000\r\nMessage-ID: &lt;437BE0B9.1090206@...&gt;\r\nDate: Wed, 16 Nov 2005 20:45:29 -0500\r\nUser-Agent: Thunderbird 1.5 (Macintosh/20051025)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;OF4F0E75D9.1476385D-ON652570BB.0020DA82-652570BB.00212AB7@...&gt;\r\nIn-Reply-To: &lt;OF4F0E75D9.1476385D-ON652570BB.0020DA82-652570BB.00212AB7@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] coverage testing\r\nX-Yahoo-Group-Post: member; u=127224993; y=j-DcJw3cgNZ7v_yJ-izbulaQWQ9kFlYGOUuMNnw5EMV8lWs\r\nX-Yahoo-Profile: nails762\r\n\r\nsachin.dholakia@... wrote:\n\n&gt; I am on the other side of the shore and believe in Code coverage and so\n&gt; very interested in knowing why you feel that 100% code coverage isn&#39;t a\n&gt; requirement for code check in?  Can you please share your thoughts?\n\nSure: 100% line/branch coverage is impossible to achieve. Even if it \nwere possible, it&#39;s not worth the effort. Example:\n\nJDBC driver throws SQLException, which is checked. In my code, I have to \ndo this:\n\ntry {\n     useJdbcDriver();\n}\ncatch (SQLException e) {\n     // What to do here?\n}\n\nWell, my default checked exception handler is this:\n\ntry {\n     useJdbcDriver();\n}\ncatch (SQLException wrapped) {\n     throw new RuntimeException(\n         &quot;Something went wrong when I used the database&quot;, wrapped);\n}\n\nThere are two problems with this:\n\n1. It takes an obscene amount of effort to simulate (or recreate) the \nconditions under which the JDBC driver throws an SQLException.\n\nThe vast, vast majority of the time, I don&#39;t handle those exceptions \nanyway, but rather pass them up the chain. To avoid coupling myself to \nmy caller, I turn the checked exception into an unchecked one.\n\n2. Java /forces/ me to duplicate that exception handler everywhere \nthroughout my code, although I /could/ get a little better with\n\n     ExceptionHandler.shush(\n         &quot;Something went wrong when I used the database&quot;, shushed);\n\nStill, I have to duplicate /that/ everywhere, but I certainly don&#39;t need \nto test it everywhere I use it. The only thing that changes is the \nexplanation message, and I never write code that depends on that text in \nany meaningful way.\n\nBoth of these make it unusually expensive to test-drive this code, \ncompared to the benefit I get from test-driving it. As a result, I have \njudged that it&#39;s not worth the effort, so I don&#39;t do it.\n\nI hope that helps.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.info\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 15403, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 15457, 
+    "contentTrasformed": false, 
+    "postDate": "1132191929", 
+    "canDelete": false, 
+    "nextInTopic": 15459, 
+    "prevInTopic": 15456, 
+    "headers": {
+        "inReplyToHeader": "PE9GNEYwRTc1RDkuMTQ3NjM4NUQtT042NTI1NzBCQi4wMDIwREE4Mi02NTI1NzBCQi4wMDIxMkFCN0B0Y3MuY29tPg==", 
+        "messageIdInHeader": "PDQzN0JFMEI5LjEwOTAyMDZAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PE9GNEYwRTc1RDkuMTQ3NjM4NUQtT042NTI1NzBCQi4wMDIwREE4Mi02NTI1NzBCQi4wMDIxMkFCN0B0Y3MuY29tPg=="
+    }
+}

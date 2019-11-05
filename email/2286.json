@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 2287, 
+    "senderId": "qWRwDC2ks4hT9DvIVjSy0AR81UZfQis_VBeKb9onqsq3j0EBMdwgrvr5SFFlCFicNbUCKR3JWwajqKYHxBfrEijRTPjHsQ3PjY5icW-CmL_eK1D41Q", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] TestCase#setUp", 
+    "from": "&quot;Kelso, JP Phil (5502)&quot; &lt;kelsojp@...&gt;", 
+    "authorName": "Kelso, JP Phil (5502)", 
+    "msgSnippet": "This should help.  This example performs a one-time setup of mock data files before all tests run and a one-time teardown after all tests are run.  This is in", 
+    "msgId": 2286, 
+    "topicId": 2283, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1935950709\">This should help.  This example performs a one-time setup of mock data files<br/>\nbefore all tests run and a one-time teardown after all tests are run.  This<br/>\nis in my AllTests class.  Here&#39;s what I did (I don&#39;t remember where I found<br/>\nthis tip):<br/>\n<br/>\n/**<br/>\n * &#39;wrapper&#39; wraps the test suite into a TestSetup object which overrides<br/>\nthe<br/>\n * setUp() and tearDown() methods.  This is a technique for use with JUnit<br/>\nthat<br/>\n * wraps all of the tests with a one-time setup and teardown activity.<br/>\nJUnit<br/>\n * will run setUp() and tearDown() before and after each individual unit<br/>\ntest<br/>\n * which is what I DON&#39;T want to do here.  I just want to build the fake<br/>\ndata<br/>\n * files once to be used by any and all tests.<br/>\n */<br/>\npublic static Test suite ( ) {<br/>\n\tTestSuite suite= new TestSuite(&quot;All UnitTestDemo Application<br/>\nTests&quot;);<br/>\n\tsuite.addTest( new TestSuite(TestTeam.class) );<br/>\n/* add other testsuites to suite here */<br/>\n\tTestSetup wrapper = new TestSetup( suite ) {<br/>\n\t\tpublic String dirpath = &quot;&quot;;<br/>\n\t\tpublic void setUp() {<br/>\n\t\t\tdirpath = FileBroker.getDirPath();<br/>\n\t\t\tFileBroker.setDirectoryPath( &quot;C:&#92;&#92;temp&#92;&#92;&quot; );<br/>\n\t\t\tBuildDataFiles();<br/>\n\t\t}<br/>\n\t\tpublic void tearDown() {<br/>\n\t\t\tRemoveDataFiles();<br/>\n\t\t\tFileBroker.setDirectoryPath( dirpath );<br/>\n\t\t}<br/>\n\t}; <br/>\n\treturn wrapper;<br/>\n}<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; ----------<br/>\n&gt; From: \tShane Duan[SMTP:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:sduan@...\">sduan@...</a>]<br/>\n&gt; Reply To: \t<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Sent: \tTuesday, August 07, 2001 3:15 PM<br/>\n&gt; To: \t<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: \tRe: [junit] TestCase#setUp<br/>\n&gt; <br/>\n&gt; Oh...No...<br/>\n&gt; <br/>\n&gt; My setUp() method cleans up all the temporary directories so that the<br/>\n&gt; directories are clean during the test.  I cannot tell you how much I<br/>\n&gt; appreciate that it is called automatically before every test.<br/>\n&gt; <br/>\n&gt; If you want to do some one time setup, I think there were some posts<br/>\n&gt; regarding that.  Do a search in the archive and you should find what you<br/>\n&gt; need.<br/>\n&gt; <br/>\n&gt; Mike Duffy wrote:<br/>\n&gt; <br/>\n&gt; &gt; When a class is added to a test suite and that test suite is run, it<br/>\n&gt; &gt; seems strange to me that the method TestCase#setUp runs every time a<br/>\n&gt; &gt; test method runs.  So if you have twenty test methods in a class and<br/>\n&gt; &gt; you add that class to a test suite, the method setUp runs twenty<br/>\n&gt; &gt; times.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Shouldn&#39;t the method setUp be run just once for all the methods in a<br/>\n&gt; &gt; class?  Is there some default setting that I missed?<br/>\n&gt; &gt;<br/>\n&gt; &gt; __________________________________________________<br/>\n&gt; &gt; Do You Yahoo!?<br/>\n&gt; &gt; Make international calls for as low as $.04/minute with Yahoo! Messenger<br/>\n&gt; &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://phonecard.yahoo.com/\">http://phonecard.yahoo.com/</a><br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; To unsubscribe from this group, send an email to:<br/>\n&gt; &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Your use of Yahoo! Groups is subject to<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a> <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 2285, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "997216665", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 2285, 
+    "headers": {
+        "messageIdInHeader": "PDIxNjgxMUM2RDRFQkQzMTE4RjYyMDA1MDhCMEVBNTY4MDJDMTQ0ODFAZ3ZsZXhjaDMuZ3ZsLmVzeXMuY29tPg=="
+    }
+}

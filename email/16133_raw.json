@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 16134, 
+    "senderId": "dM0ndmL804QgyuWigMoyvlmtiYuQUBQjWWH59nhoWuSPeF7gyb0xmhsEnpPabd8yXylQMIHBJGmb3tXEAEwkY6xWFKKMsny609gmBXJdkW0oXpY_hCA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] What makes a class &quot;testable&quot;?", 
+    "from": "&quot;Simon Chappell&quot; &lt;simonpeterchappell@...&gt;", 
+    "authorName": "Simon Chappell", 
+    "msgSnippet": "Interesting. I suspect that many of us just store the JUnit tests in their own directory to uniquely identify them, but if that isn t an option, your approach", 
+    "msgId": 16133, 
+    "rawEmail": "Return-Path: &lt;simonpeterchappell@...&gt;\r\nX-Sender: simonpeterchappell@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 58766 invoked from network); 18 Feb 2006 01:51:56 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m29.grp.scd.yahoo.com with QMQP; 18 Feb 2006 01:51:56 -0000\r\nReceived: from unknown (HELO zproxy.gmail.com) (64.233.162.204)\n  by mta9.grp.scd.yahoo.com with SMTP; 18 Feb 2006 01:51:56 -0000\r\nReceived: by zproxy.gmail.com with SMTP id n29so528233nzf\n        for &lt;junit@yahoogroups.com&gt;; Fri, 17 Feb 2006 17:51:55 -0800 (PST)\r\nReceived: by 10.36.158.10 with SMTP id g10mr2802287nze;\n        Fri, 17 Feb 2006 17:51:55 -0800 (PST)\r\nReceived: by 10.36.157.6 with HTTP; Fri, 17 Feb 2006 17:51:55 -0800 (PST)\r\nMessage-ID: &lt;8ed733900602171751r4ba6a481ja2dfc729ac98fc54@...&gt;\r\nDate: Fri, 17 Feb 2006 19:51:55 -0600\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;dsvplv$uk7$1@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Disposition: inline\r\nReferences: &lt;dsvplv$uk7$1@...&gt;\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Simon Chappell&quot; &lt;simonpeterchappell@...&gt;\r\nSubject: Re: [junit] What makes a class &quot;testable&quot;?\r\nX-Yahoo-Group-Post: member; u=211142374; y=BQYY72StpOHAOjYtq0-MtRMU5SgFAcRvWgEKBgGavgR60_6WSw\r\nX-Yahoo-Profile: spchappell\r\n\r\nInteresting. I suspect that many of us just store the JUnit tests in\ntheir =\r\nown directory to uniquely identify them, but if that isn&#39;t an\noption, your =\r\napproach sounds like it would work.\n\nJust a couple of thoughts.\n\n3. This wo=\r\nuld ignore almost all of my tests. I don&#39;t use the suite()\nfunctionality if=\r\n I don&#39;t have to.\n\n7. The single String arg constructor has not been a requ=\r\nirement since\nthe release of 3.8.1 and almost none of my tests have one.\n\nS=\r\nimon\n\nOn 2/15/06, Ian Pilcher &lt;i.pilcher@...&gt; wrote:\n&gt; In this cont=\r\next, &quot;testable&quot; means a class that a TestRunner won&#39;t barf\n&gt; on.\n&gt;\n&gt; I am w=\r\nriting an Ant selector:\n&gt;\n&gt;     http://ant.apache.org/manual/CoreTypes/sele=\r\nctors.html\n&gt;\n&gt; It&#39;s purpose is to identify the classes which should be &quot;run=\r\n&quot; by an Ant\n&gt; JUnit task:\n&gt;\n&gt;     &lt;target name=3D&quot;test-run&quot; depends=3D&quot;test=\r\n-build&quot;&gt;\n&gt;       &lt;junit&gt;\n&gt;         &lt;batchtest&gt;\n&gt;           &lt;fileset dir=3D&quot;=\r\ntest/bin&quot;&gt;&lt;junitselector/&gt;&lt;/fileset&gt;\n&gt;         &lt;/batchtest&gt;\n&gt;       &lt;/junit=\r\n&gt;\n&gt;     &lt;/target&gt;\n&gt;\n&gt; This will allow me to write a a generic testing targe=\r\nt, without\n&gt; constraining the names of my test classes.\n&gt;\n&gt; In order to do =\r\nthis properly, I need a precise definition of what makes\n&gt; a class &quot;testabl=\r\ne&quot; (in the above sense).  Here&#39;s the algorithm that I&#39;ve\n&gt; come up with:\n&gt;\n=\r\n&gt;     1.  Is the class public?\n&gt;           *  Yes - go to step 2\n&gt;         =\r\n  *  No - NOT testable - DONE\n&gt;\n&gt;     2.  Is the class an interface?\n&gt;     =\r\n      *  Yes - NOT testable - DONE\n&gt;           *  No - go to step 3\n&gt;\n&gt;    =\r\n 3.  Does the class have a &quot;suite method&quot; --\n&gt;         public static Test s=\r\nuite()?\n&gt;           * Yes - TESTABLE - DONE\n&gt;           * No - go to step 4=\r\n\n&gt;\n&gt;     4.  Is the class abstract?\n&gt;           * Yes - NOT testable - DONE=\r\n\n&gt;           * No - go to step 5\n&gt;\n&gt;     5.  Does the class implement junit=\r\n.framework.Test?\n&gt;           *  Yes - go to step 6\n&gt;           *  No - NOT =\r\ntestable - DONE\n&gt;\n&gt;     6.  Does the class have a public default constructo=\r\nr --\n&gt;         public &lt;init&gt;()?\n&gt;           * Yes - TESTABLE - DONE\n&gt;      =\r\n     * No - go to step 7\n&gt;\n&gt;     7.  Does the class have a public string co=\r\nnstructor --\n&gt;         public &lt;init&gt;(String)?\n&gt;           * Yes - TESTABLE =\r\n- DONE\n&gt;           * No - NOT testable - DONE\n&gt;\n&gt; Thoughts?\n&gt;\n&gt; Thanks!\n&gt;\n&gt;=\r\n --\n&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n&gt; =\r\nIan Pilcher                                        i.pilcher@...\n&gt; =\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n&gt;\n&gt;\n&gt;\n&gt;\n=\r\n&gt;\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n\n\n--\nwww.simonpeter.org\nuab.blogspo=\r\nt.com\n\n", 
+    "profile": "spchappell", 
+    "topicId": 16116, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 211142374, 
+    "prevInTime": 16132, 
+    "contentTrasformed": false, 
+    "postDate": "1140227515", 
+    "canDelete": false, 
+    "nextInTopic": 16135, 
+    "prevInTopic": 16130, 
+    "headers": {
+        "inReplyToHeader": "PGRzdnBsdiR1azckMUBzZWEuZ21hbmUub3JnPg==", 
+        "messageIdInHeader": "PDhlZDczMzkwMDYwMjE3MTc1MXI0YmE2YTQ4MWphMmRmYzcyOWFjOThmYzU0QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGRzdnBsdiR1azckMUBzZWEuZ21hbmUub3JnPg=="
+    }
+}

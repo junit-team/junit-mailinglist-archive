@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 6961, 
+    "senderId": "_YTzPQdCAi7vT8-OPcxULUW0TwIUiYjP36awFbZ-Tvq2BxtNpDOWgAMqNUAfNXf3vq2QJwcqoA-xiCUSEEfmrqx_8DXfiE_SxPb8nWFe", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] one-time setup", 
+    "from": "Eric Armstrong &lt;eric.armstrong@...&gt;", 
+    "authorName": "Eric Armstrong", 
+    "msgSnippet": "The TestCase is actually exercising a program, so the setup looks like this: public class ReadAndCompareTests extends TestCase { CommentMerge commentMerge; ", 
+    "msgId": 6960, 
+    "rawEmail": "Return-Path: &lt;eric.armstrong@...&gt;\r\nReceived: (qmail 87851 invoked from network); 16 Feb 2003 01:56:30 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m10.grp.scd.yahoo.com with QMQP; 16 Feb 2003 01:56:30 -0000\r\nReceived: from unknown (HELO n2.grp.scd.yahoo.com) (66.218.66.75)\n  by mta1.grp.scd.yahoo.com with SMTP; 16 Feb 2003 01:56:30 -0000\r\nX-eGroups-Return: eric.armstrong@...\r\nReceived: from [66.218.67.170] by n2.grp.scd.yahoo.com with NNFMP; 16 Feb 2003 01:56:30 -0000\r\nX-Sender: eric.armstrong@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 15 Feb 2003 23:27:45 -0000\r\nReceived: (qmail 21445 invoked from network); 15 Feb 2003 23:27:45 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m8.grp.scd.yahoo.com with QMQP; 15 Feb 2003 23:27:45 -0000\r\nReceived: from unknown (HELO patan.sun.com) (192.18.98.43)\n  by mta3.grp.scd.yahoo.com with SMTP; 15 Feb 2003 23:27:45 -0000\r\nReceived: from ha1sca-mail1.SFBay.Sun.COM ([129.145.155.51])\n\tby patan.sun.com (8.9.3+Sun/8.9.3) with ESMTP id QAA22657\n\tfor &lt;junit@yahoogroups.com&gt;; Sat, 15 Feb 2003 16:27:44 -0700 (MST)\r\nReceived: from sun.com (d-usca14-129-126 [129.145.129.126])\n\tby ha1sca-mail1.SFBay.Sun.COM (8.11.6+Sun/8.10.2/ENSMAIL,v2.1p1) with ESMTP id h1FNRih03914\n\tfor &lt;junit@yahoogroups.com&gt;; Sat, 15 Feb 2003 15:27:44 -0800 (PST)\r\nMessage-ID: &lt;3E4ECCF0.89418919@...&gt;\r\nDate: Sat, 15 Feb 2003 15:27:44 -0800\r\nX-Mailer: Mozilla 4.8 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] one-time setup\r\nReferences: &lt;3E4AE479.F3E1D459@...&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Eric Armstrong &lt;eric.armstrong@...&gt;\r\nX-Yahoo-Group-Post: member; u=78994084\r\nX-Yahoo-Profile: ericsilverlight\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 16 Feb 2003 01:56:29 -0000\r\n\r\nThe TestCase is actually exercising a program,\nso the setup looks like this:\n\npublic class ReadAndCompareTests\n  extends TestCase\n{\n  CommentMerge commentMerge;\n\n  StringWriter testWriter;\n\n  public ReadAndCompareTests(String name) {\n    super(name);\n  }\n\n  public CommentMerge createInstance()\n    throws Exception\n {\n    return new CommentMerge();\n  }\n\n  protected void setUp() throws Exception {\n    super.setUp();\n    commentMerge = createInstance();\n  }\n\n  protected void tearDown() throws Exception {\n    commentMerge = null;\n    super.tearDown();\n  }\n\nWhen running this test, a number of errors are generated. The\napp&#39;s error-report is then compared to a saved error report.\nThere is a match, and the test succeeds.\n  public void test4_HierarchyCompare() throws Exception {\n    commentMerge.execute(\n      &quot;-specpath test/specSrc &quot; +\n      &quot;-codePath test/codeSrc &quot; +\n      &quot;test/specSrc/AnonClass.java &quot; +\n      &quot;-subpackages smallpkg &quot; +\n      &quot;-checkOnly &quot;\n    );\n    String result = testWriter.getBuffer() + &quot;&quot;;\n\n    DocumentBuffer docBuffer =\n       nio.readDocument(expected+&quot;4_compareWithError.txt&quot;);\n    String expect = docBuffer.getCharBuffer()+&quot;&quot;;\n    assertEquals(&quot;Hierarchy compare&quot;, expect, result);\n  }\n\nThe next test then fails in unexpected fashion, because the\nErrorHandler object has an &quot;error found&quot; flag set.\n  public void test2_CodeRead() throws Exception {\n     commentMerge.execute(\n      &quot;-specpath test/specSrc &quot; +\n      &quot;-codePath test/codeSrc &quot; +\n      &quot;test/specSrc/AnonClass.java &quot; +\n      &quot;-subpackages smallpkg &quot; +\n      &quot;-echoCode -lax&quot;\n    );\n    String result = testWriter.getBuffer() + &quot;&quot;;\n    ....\n\n(The app dies with &quot;invalid program option&quot;, because after\nexamining the options -- which in this case are correct --\nthe program checks to see whether and error has been found.\nWith a clean, new ErrorHandler, the error flag is clear. (The\ntest ran perfectly until the one ahead of it was added. The\ndebugger then showed that the error flag was set when\nrunning the code.)\n\nTo solve the problem, I added this method, and invoked it at\nthe beginning of each test method:\n  protected void init() {\n    commentMerge.errorHandler = new CommentMergeErrorHandler();\n    testWriter = new StringWriter();\n    commentMerge.setWriter(testWriter);\n  }\n\nThe tests are now working, but it looks to me like setup() isn&#39;t being\nrun for each test method.\n\n\n\n\n", 
+    "profile": "ericsilverlight", 
+    "topicId": 6946, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78994084, 
+    "prevInTime": 6959, 
+    "contentTrasformed": false, 
+    "postDate": "1045351664", 
+    "canDelete": false, 
+    "nextInTopic": 6964, 
+    "prevInTopic": 6958, 
+    "headers": {
+        "messageIdInHeader": "PDNFNEVDQ0YwLjg5NDE4OTE5QHN1bi5jb20+", 
+        "referencesHeader": "PDNFNEFFNDc5LkYzRTFENDU5QHN1bi5jb20+"
+    }
+}

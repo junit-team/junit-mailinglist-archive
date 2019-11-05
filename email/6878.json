@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 6879, 
+    "senderId": "AyyCIChVMGKKQfNRA-npl3sz6oHoTv0nB5HEq96onLl0PTDojZVOKS1wfGT-Mmf1S479STmi6WlQlEmtKZ79cQivwEaWV-IU7-YRUh0JUWJBEOqT", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Dynamically generating test methods?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Here s my solution: ========== 8", 
+    "msgId": 6878, 
+    "profile": "nails762", 
+    "topicId": 6867, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-241202596\">Here&#39;s my solution:<br/>\n<br/>\n========== 8&lt; =============<br/>\npackage junit.xml;<br/>\n<br/>\nimport java.io.File;<br/>\n<br/>\nimport javax.xml.parsers.DocumentBuilderFactory;<br/>\nimport javax.xml.transform.TransformerException;<br/>\n<br/>\nimport junit.framework.Test;<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\n<br/>\nimport org.apache.xpath.XPathAPI;<br/>\nimport org.w3c.dom.Attr;<br/>\nimport org.w3c.dom.Document;<br/>\nimport org.w3c.dom.Element;<br/>\nimport org.w3c.dom.NamedNodeMap;<br/>\nimport org.w3c.dom.Node;<br/>\nimport org.w3c.dom.NodeList;<br/>\n<br/>\n/**<br/>\n * Represents a TestCase defined by an XML element:<br/>\n * <br/>\n * &lt;pre&gt;<br/>\n * &lt;test source=&quot;documentToCheck.xml&quot;&gt;<br/>\n *     &lt;assert-exists xpath=&quot;expectedXpath1&quot; /&gt;<br/>\n *     &lt;assert-exists xpath=&quot;expectedXpath2&quot; /&gt;<br/>\n *     &lt;assert-exists xpath=&quot;expectedXpath3&quot; /&gt;<br/>\n * &lt;/test&gt;<br/>\n * &lt;/pre&gt;<br/>\n * <br/>\n * &lt;p&gt;Creates a TestSuite from the system property<br/>\n * &lt;code&gt;xml.test.file&lt;/code&gt;: an XML document with<br/>\n * root element &lt;code&gt;&lt;tests&gt;&lt;/code&gt;<br/>\n * <br/>\n * @author J. B. Rainsberger<br/>\n */<br/>\npublic class XmlTestCase extends TestCase {<br/>\n\tprivate final File sourceFile;<br/>\n\tprivate final String[] expectedXpaths;<br/>\n<br/>\n\tpublic XmlTestCase(final File sourceFile, final String[]<br/>\nexpectedXpaths) {<br/>\n\t\tsuper(&quot;XML test &#39;&quot; + sourceFile + &quot;&#39;&quot;);<br/>\n\t\tthis.sourceFile = sourceFile;<br/>\n\t\tthis.expectedXpaths = expectedXpaths;<br/>\n\t}<br/>\n<br/>\n\tpublic static Test suite() {<br/>\n\t\tfinal TestSuite suite = new TestSuite();<br/>\n<br/>\n\t\tfinal String testFileName =<br/>\n\t\t\tSystem.getProperty(&quot;xml.test.file&quot;, &quot;tests.xml&quot;);<br/>\n<br/>\n\t\ttry {<br/>\n\t\t\tfinal Document document =<br/>\n\t\t\t\tDocumentBuilderFactory<br/>\n\t\t\t\t\t.newInstance()<br/>\n\t\t\t\t\t.newDocumentBuilder()<br/>\n\t\t\t\t\t.parse(<br/>\n\t\t\t\t\ttestFileName);<br/>\n<br/>\n\t\t\tfinal NodeList testNodes =<br/>\n\t\t\t\tXPathAPI.selectNodeList(document, &quot;/tests/test&quot;);<br/>\n\t\t\tfor (int i = 0; i &lt; testNodes.getLength(); i++) {<br/>\n\t\t\t\tfinal Node eachTestNode = testNodes.item(i);<br/>\n\t\t\t\tsuite.addTest(makeXmlTest(eachTestNode));<br/>\n\t\t\t}<br/>\n<br/>\n\t\t} catch (final Exception e) {<br/>\n\t\t\te.printStackTrace();<br/>\n\t\t}<br/>\n<br/>\n\t\treturn suite;<br/>\n\t}<br/>\n<br/>\n\tprivate static XmlTestCase makeXmlTest(final Node eachTestNode)<br/>\n\t\tthrows TransformerException {<br/>\n<br/>\n\t\tfinal String sourceFileName = getAttributeValue(eachTestNode,<br/>\n&quot;source&quot;);<br/>\n<br/>\n\t\tfinal NodeList assertExistsNodes =<br/>\n\t\t\tXPathAPI.selectNodeList(eachTestNode, &quot;assert-exists&quot;);<br/>\n\t\tfinal String[] expectedXpaths =<br/>\n\t\t\tnew String[assertExistsNodes.getLength()];<br/>\n\t\tfor (int j = 0; j &lt; assertExistsNodes.getLength(); j++) {<br/>\n\t\t\tfinal Node eachAssertExistsNode = assertExistsNodes.item(j);<br/>\n\t\t\texpectedXpaths[j] =<br/>\n\t\t\t\tgetAttributeValue(eachAssertExistsNode, &quot;xpath&quot;);<br/>\n\t\t}<br/>\n<br/>\n\t\treturn new XmlTestCase(new File(sourceFileName), expectedXpaths);<br/>\n\t}<br/>\n<br/>\n\tprivate static String getAttributeValue(<br/>\n\t\tfinal Node eachTestNode,<br/>\n\t\tfinal String attributeName) {<br/>\n<br/>\n\t\tfinal NamedNodeMap attributes = eachTestNode.getAttributes();<br/>\n\t\tfinal String sourceFileName =<br/>\n\t\t\t((Attr) attributes.getNamedItem(attributeName)).getValue();<br/>\n\t\treturn sourceFileName;<br/>\n\t}<br/>\n<br/>\n\tprotected void runTest() throws Throwable {<br/>\n<br/>\n\t\tfinal Document document =<br/>\n\t\t\tDocumentBuilderFactory.newInstance().newDocumentBuilder().parse(<br/>\n\t\t\t\tsourceFile);<br/>\n\t\tfor (int i = 0; i &lt; expectedXpaths.length; i++) {<br/>\n\t\t\tString eachExpectedXpath = expectedXpaths[i];<br/>\n\t\t\tfinal NodeList nodes =<br/>\n\t\t\t\tXPathAPI.selectNodeList(document, eachExpectedXpath);<br/>\n\t\t\tassertTrue(<br/>\n\t\t\t\t&quot;Could not find XPath &#39;&quot; + eachExpectedXpath + &quot;&#39;&quot;,<br/>\n\t\t\t\tnodes.getLength() &gt; 0);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n}<br/>\n========== 8&lt; =============<br/>\n<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603<br/>\nAll correspondence (c) 2002 Diaspar Software Services.<br/>\nIf you want to use it, just ask; don&#39;t steal.</div>", 
+    "prevInTime": 6877, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1044421347", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 6877, 
+    "headers": {
+        "inReplyToHeader": "PDBENzQ0Nzc1ODU4QUQ0MTFBRjU0MDA1MDhCQUYzMUVBMDcyN0EzQURAZXhjaGFuZ2UyLnFycy5jb20+", 
+        "messageIdInHeader": "PDIwMDMwMjA1MDAwMjI3MDQ5OS4wMjcyNkY5NkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDBENzQ0Nzc1ODU4QUQ0MTFBRjU0MDA1MDhCQUYzMUVBMDcyN0EzQURAZXhjaGFuZ2UyLnFycy5jb20+"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 18175, 
+    "senderId": "CfbWMe3cvFdpSqQA2_gqx7FAMTLl59vzdENsw680QID_5LNItBQS8809pLa1c52cFXF1-ZgFTgIEsnOlR_WER8O2QnGYJ889M1CfvIkGG9aq", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] JUnit 3.8.1 with JDK 1.1.8", 
+    "from": "&quot;Jochen Hiller&quot; &lt;jo.hiller@...&gt;", 
+    "authorName": "Jochen Hiller", 
+    "msgSnippet": "Hi Leslie, thats a real historical question ,-) I do not have an JDK 1.1.8 available, to do any testing. But, I did a port of JUnit 3.8.1 for a very small", 
+    "msgId": 18174, 
+    "profile": "jochen.hiller", 
+    "topicId": 18171, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 275093002, 
+    "messageBody": "<div id=\"ygrps-yiv-1354339871\">Hi Leslie,<br/>\n<br/>\nthats a real historical question ,-)<br/>\n<br/>\nI do not have an JDK 1.1.8 available, to do any testing. But, I did a port<br/>\nof JUnit 3.8.1 for a very small virtual machine, called leJOS [1]. I called<br/>\nthis port leJOSUnit [2], which is OpenSouce, you can download to have a look<br/>\ninside. leJOS is based on -target 1.1 byte code, so a Í am definitely sure,<br/>\nthat leJOSUnit is running on JDK 1.1.<br/>\n<br/>\nThe main thing to be done was avoid any Java reflection. I do not known,<br/>\nsince when all the required reflection capabilities for JUnit 3.8.1 have<br/>\nbeen intoduced in J2SE.<br/>\n<br/>\nIn leJOSUnit, the mechanism to setup a TestCase is very simple. Lets see an<br/>\nexample for a TestCase:<br/>\n<br/>\npublic class OneTest extends TestCase {<br/>\n    public OneTest(String name) {<br/>\n        super(name);<br/>\n    }<br/>\n    public static Test suite() {<br/>\n        TestSuite suite = new TestSuite();<br/>\n        suite.addTest(new OneTest(&quot;testOne&quot;));<br/>\n        suite.addTest(new OneTest(&quot;testTwo&quot;));<br/>\n        return suite;<br/>\n    }<br/>\n    protected void runTest() throws Throwable {<br/>\n        if (&quot;testOne&quot;.equals(getName())) {<br/>\n            testOne();<br/>\n        } else if (&quot;testTwo&quot;.equals(getName())) {<br/>\n            testTwo();<br/>\n        } else {<br/>\n            fail();<br/>\n        }<br/>\n    }<br/>\n    public void testOne() {<br/>\n        // ...<br/>\n    }<br/>\n    public void testTwo() {<br/>\n        // ...<br/>\n    }<br/>\n}<br/>\n<br/>\nSo, the basic idea is to implement the runTest() and dispatch with a static<br/>\napproach. A TestSuite can be implemented the known way:<br/>\n<br/>\npublic class AllTests {<br/>\n    public static void main(String[] args) {<br/>\n        // put here a runner for your embedded platform, or a<br/>\njunit.textui.runner when a console is available<br/>\n        // ... lejosunit.rcxui.TestRunner.main(suite());<br/>\n    }<br/>\n<br/>\n    public static Test suite() {<br/>\n        TestSuite suite = new TestSuite();<br/>\n        suite.addTest(OneTest.suite());<br/>\n        suite.addTest(TwoTest.suite());<br/>\n        return suite;<br/>\n    }<br/>\n}<br/>\n<br/>\nThis is only a hint for which direction to look for. What kind of error do<br/>\nyou have ? Did you try to run the JUnit test suite against itself ?<br/>\n<br/>\nBye, Jochen<br/>\n<br/>\n[1] <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.lejos.org\">http://www.lejos.org</a><br/>\n[2] <a rel=\"nofollow\" target=\"_blank\" href=\"http://lejosunit.sourceforge.net\">http://lejosunit.sourceforge.net</a><br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 10/20/06, lchapman123 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:leslie.chapman@...\">leslie.chapman@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;   Has anyone had success running JUnit 3.8.1 with JDK 1.1.8? I am<br/>\n&gt; trying (unsuccessfully) to run the two together on an embedded<br/>\n&gt; platform to no avail. I would like to rule out that it is an<br/>\n&gt; incompatibility between the two distributions.<br/>\n&gt;<br/>\n&gt; Thank you!<br/>\n&gt;<br/>\n&gt;  <br/>\n&gt;<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 18173, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1161364449", 
+    "canDelete": false, 
+    "nextInTopic": 18175, 
+    "prevInTopic": 18171, 
+    "headers": {
+        "inReplyToHeader": "PGVoYXEyaitzbWlxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDU0NTczNWVjMDYxMDIwMTAxNHY3ZDNmMjlhZm8yMTJjZjQwZTVjYWJiODVhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVoYXEyaitzbWlxQGVHcm91cHMuY29tPg=="
+    }
+}

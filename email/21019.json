@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 21020, 
+    "senderId": "eEcIoKfNqZc5brXv65SUKwUMIgiH7LKx0ZYjzrrKAhUvZfRJi7g4koIUW9PWckmFNAjnD6Zi9wuAHhjtl9LZcgbZpK-b77W1nLqw1JrNegTo8dkJ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Parameterized and Theories overlaps", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "... I m not sure that there is a misunderstanding here but just to make sure: While what you wrote is technically true I think it simplifies the theory a bit.", 
+    "msgId": 21019, 
+    "profile": "j0hlrogge", 
+    "topicId": 20365, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-225241099\"><blockquote><span title=\"ireply\">&gt; Thanks for the clear responses. What i see is that a theory is a<br/>\n&gt; (parametrized) test inside out; you don&#39;t specify what will work but you<br/>\n&gt; leave out what should not be tested (iow assumptions by leaving out the data<br/>\n&gt; for these cases).<br/>\n<br/>\n </span></blockquote>I&#39;m not sure that there is a misunderstanding here but just to make sure:<br/>\n<br/>\nWhile what you wrote is technically true I think it simplifies the<br/>\ntheory a bit. I would consider a long list of assumptions in a theory<br/>\na smell, perhaps named: &quot;assmumptions is the mother of all screw ups&quot;<br/>\n:). I almost fell into the trap of using assumptions to filter the<br/>\n&quot;desired&quot; datapoints to the &quot;correct&quot; theory but that would be a<br/>\nviolation of the idea, the idea is that the datapoints I have<br/>\nspecified and all other datapoints I (or an automatic tool) can come<br/>\nup with should pass. I think that there is a subtle difference here<br/>\nbetween data driven tests and theories, data driven tests are merely a<br/>\nconvenient way to create lots of specific examples while theories aim<br/>\nat the abstraction, the definition of the truth in this system.<br/>\n<br/>\nIf a lot of assumptions are a smell, then what are our weapons against<br/>\nthem? I found that declaring types help here and it pays off<br/>\ninstantly. For instance, if I represent name as a String and phone<br/>\nnumber as a String and it is important to my theories to differentiate<br/>\nbetween the two I could ether:<br/>\n<br/>\nAssume that any string with numbers in it is a phone number and that<br/>\nanything that is not a phone number is a name.<br/>\nOr, I could declare the type Name and the type PhoneNumber.<br/>\n<br/>\nIn this case I would prefer a type.<br/>\n<br/>\nIf I was intersted in defining what a long distance call is I could<br/>\nwrite that as a theory:<br/>\n<br/>\n @Theory<br/>\npublic void makeLongDistanceCall(PhoneNumber from, PhoneNumber to) {<br/>\n     assumeThat(from.areaCode, is(not(equalTo(to.areaCode)));<br/>\n     Call call = new Call(from, to);<br/>\n     assertTrue(call.isLongDistance());<br/>\n}<br/>\n<br/>\nI probably screwed up both the domain and the design but I hope my<br/>\nidea of what an assumptions role in a theory is and how theories are<br/>\ndifferent than data-driven tests in spite of them both being driven by<br/>\ndata.<br/>\nI also hope that in the case the domain is screwed up it should be<br/>\nperfectly clear from the above theory to anyone who knows the domain.<br/>\nFinally, I hope this helps someone :)<br/>\n/J</div>", 
+    "prevInTime": 21018, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1224762126", 
+    "canDelete": false, 
+    "nextInTopic": 21027, 
+    "prevInTopic": 21000, 
+    "headers": {
+        "inReplyToHeader": "PDIwMTA5NTYwLnBvc3RAdGFsay5uYWJibGUuY29tPg==", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDgxMDIzMDQ0Mm01NGM5YTUyN2wyNzMzNmRlMzgzOTFjZTdjQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGZyOGZ2MSs4MHJrQGVHcm91cHMuY29tPiA8MjAwMjk5MTYucG9zdEB0YWxrLm5hYmJsZS5jb20+CSA8YjllZTVlNDEwODEwMTkxNTM0aTRkOTIxNmY0Z2VkZDU5OGIxZDUyN2NjMjVAbWFpbC5nbWFpbC5jb20+CSA8NGY3ZGE2YjkwODEwMjAxMDM4eTE2ZTE3YjhhdDQ2MzUwNDNkNDdlZWFiZTZAbWFpbC5nbWFpbC5jb20+CSA8MDAyOTAxYzkzMmU2JDI3N2YyMjgwJDY0MDFhOGMwQGZlcnJhcmk+CSA8MjAxMDk1NjAucG9zdEB0YWxrLm5hYmJsZS5jb20+"
+    }
+}

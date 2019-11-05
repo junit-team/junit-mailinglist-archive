@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 14051, 
+    "senderId": "51Sv-gEBhu3n6IJNl_22vv06LgsiymzLpbPLLXFaOSmxxzeS-nxCDxxXMsg9kKms9uZRiZcB9gHtT_9ayR4Gnhetnsyg1VuM78s", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing API where order in which methods are invoked matters", 
+    "from": "Chris Dollin &lt;kers@...&gt;", 
+    "authorName": "Chris Dollin", 
+    "msgSnippet": "... Yes, the methods in your test class are not (necessarily) called in any particular order. This is a feature. Each test method should be unrelated to the", 
+    "msgId": 14050, 
+    "profile": "anover_alias", 
+    "topicId": 14044, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 88056088, 
+    "messageBody": "<div id=\"ygrps-yiv-1594461383\">On Friday 24 June 2005 13:24, arnabgupta2000 wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hello,<br/>\n&gt;<br/>\n&gt; I am new to JUnit and in need for a solution. I have written a<br/>\n&gt; library<br/>\n&gt; of which I need to test one class. The methods exposed by this class<br/>\n&gt; cannot be called randomly but by following some rules. For example,<br/>\n&gt; there is a method &quot;Connect&quot; which must be invoked before any other<br/>\n&gt; method is called. There are additional calls that are related. For<br/>\n&gt; example &quot;ChangeHeaders&quot; makes temporary change to some data (after<br/>\n&gt; some business logic verification), however this must be followed by a<br/>\n&gt; call to &quot;SaveChanges&quot; to persist this data. Whatever I have read<br/>\n&gt; about<br/>\n&gt; JUnit seems to indicate that the test methods in my test class can be<br/>\n&gt; called in any order by the JUnit framework. Is there any way (a<br/>\n&gt; pattern) to get around this issue ? Thanks much in advance..<br/>\n<br/>\n </span></blockquote>Yes, the methods in your test class are not (necessarily) called<br/>\nin any particular order. This is a feature. Each test method should<br/>\nbe unrelated to the others - otherwise it&#39;s too hard to eg move<br/>\nthem around for greater expressivity, call only the failing when<br/>\nwhen you want to isolate a problem, &co.<br/>\n<br/>\nThere are at least two things you can do:<br/>\n<br/>\n(a) Ensure that each test uses its own object (easy) and that it<br/>\n    runs the piece of lifecycle you&#39;re interested in to <br/>\n    completion.<br/>\n<br/>\n(b) Refactor so that this object-state dependency is reduced<br/>\n    (preferably to zero).<br/>\n<br/>\nFor (b) I&#39;d start by fixing the `connect` problem: if nothing<br/>\ncan be done withotu a connection, I&#39;d have a more factory-like<br/>\nobject with a `connect` method; calling this delivers a connected<br/>\nobject.<br/>\n<br/>\nFor Change/Save, I&#39;d just have the test do the Change and then<br/>\nthe Save in the same testXXX() method.<br/>\n<br/>\n-- <br/>\nChris &quot;electric hedgehog&quot; Dollin<br/>\nIt&#39;s called *extreme* programming, not *stupid* programming.</div>", 
+    "prevInTime": 14049, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1119948770", 
+    "canDelete": false, 
+    "nextInTopic": 14055, 
+    "prevInTopic": 14044, 
+    "headers": {
+        "inReplyToHeader": "PGQ5Z3UxaCs1NW1kQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDUwNjI4MDk1Mi41MDQ5OC5rZXJzQGhwbGIuaHBsLmhwLmNvbT4=", 
+        "referencesHeader": "PGQ5Z3UxaCs1NW1kQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 74, 
+    "nextInTime": 15939, 
+    "senderId": "_c-X0HUaz3d7ckrRlbcQNGlPU1fYq5AKjLqC91yLcBDS8l-BcXrwrk1Tu8RkrMLSk5plxBazZnPL6Y-dzgBA6g-HKdzMmQTw_jq_qM-9hQ", 
+    "systemMessage": false, 
+    "subject": "Re: Pluggable Selector considered harmful? (Re: [junit] Re: Observations from a production use of JUnit4)", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Really? How does Adapter do this? Specifically, I was working in an area where there were a number of rule methods, like boolean isReadyToStart(); boolean", 
+    "msgId": 15938, 
+    "profile": "nails762", 
+    "topicId": 15891, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-817190317\">Jason Rogers wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I have often found that there are other ways around using reflection in<br/>\n&gt; Java.  The Adaptor pattern for instance is a simple way of implementing<br/>\n&gt; the Pluggable Selector.  It will respond to refactorings, it doesn&#39;t add<br/>\n&gt; much complexity, and it&#39;s efficient.<br/>\n<br/>\n </span></blockquote>Really? How does Adapter do this? Specifically, I was working in an area <br/>\nwhere there were a number of rule methods, like<br/>\n<br/>\n     boolean isReadyToStart();<br/>\n     boolean isX();<br/>\n     boolean isY();<br/>\n<br/>\nand there was one big method that essentially did this:<br/>\n<br/>\n     if (isReadyToStart() && isX() && isY() && ... ) {<br/>\n         doTheCoolThing();<br/>\n     }<br/>\n<br/>\nNow there /is/ an obvious refactoring here, to use &quot;inject&quot; which might <br/>\nnow be part of Commons Collections, but which I ended up implementing <br/>\nsome time ago.<br/>\n<br/>\n     create a Predicate for each rule and add it to a rules Set<br/>\n<br/>\n     Inject inject = new Inject(false) {<br/>\n         public boolean result;<br/>\n<br/>\n         public Inject(boolean startValue) {<br/>\n             this.result = startValue;<br/>\n         }<br/>\n<br/>\n         public void process(Object input) {<br/>\n             Predicate each = (Predicate) input;<br/>\n             result = result && each.evaluate();<br/>\n         }<br/>\n     }<br/>\n<br/>\n<br/>\n     CollectionUtils.forEachDo(rules, inject);<br/>\n<br/>\n     if (inject.result) {<br/>\n         doTheCoolThing();<br/>\n     }<br/>\n<br/>\nThis is better: to add a new rule requires only adding a Predicate to <br/>\nthe rules Set, but that probably means adding the boolean method, then <br/>\nwrapping it in a Predicate, or worse, littering the codebase with a <br/>\nbunch of top-level Predicate implementations that I can&#39;t read together <br/>\nat a glance. (They&#39;re often one-line methods, anyway!) I prefer to <br/>\ndiscover all the rules and use them. For this, I do what JUnit does: use <br/>\na naming convention and collect all the rules into a ruleset and run <br/>\nthem with the Inject closure. When I showed some well-known and <br/>\nwell-meaning agilistas this, they uniformly thought I was nuts. Since <br/>\nthey all use xUnit, I find that surprising.<br/>\n<br/>\nGranted, in JDK 5.0 I would use annotations instead of reflection, but I <br/>\ndon&#39;t plan to work much in JDK 5.0. If I wanted to write C++, I&#39;d write C++.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 15937, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1138933229", 
+    "canDelete": false, 
+    "nextInTopic": 15939, 
+    "prevInTopic": 15937, 
+    "headers": {
+        "inReplyToHeader": "PDQzRTIwOTU5LjcwMzA2MDVAZmFzdC1tYWlsLm9yZz4=", 
+        "messageIdInHeader": "PDQzRTJCREVELjgwNDA5MDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGRycXQ5Mis1cWxuQGVHcm91cHMuY29tPiA8NDNFMThENkYuNjA1MDMwMkByb2dlcnMuY29tPiA8NDNFMjA5NTkuNzAzMDYwNUBmYXN0LW1haWwub3JnPg=="
+    }
+}

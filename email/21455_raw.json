@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21456, 
+    "senderId": "7h-rnQsKOtmbRgr26laehJbsJ14cPId6wlHvFd-B2rkq6VJVVwH4h4SO6xIu-diNDJWA4SHSu2xNWIFCdHPaBO8KroOW6jrm8nJjGr7xGJA", 
+    "systemMessage": true, 
+    "subject": "Applying a Filter with the Suite runner", 
+    "from": "Jean-Philippe Daigle &lt;jpdaigle@...&gt;", 
+    "authorName": "Jean-Philippe Daigle", 
+    "msgSnippet": "Hello all, After years of joy with JUnit 3, we re starting to look at JUnit 4 to take advantage of Filters. We re looking to incrementally start tagging our", 
+    "msgId": 21455, 
+    "rawEmail": "Return-Path: &lt;jpdaigle@...&gt;\r\nReceived: (qmail 84360 invoked from network); 28 Mar 2009 02:55:45 -0000\r\nReceived: from unknown (69.147.108.202)\n  by m2.grp.sp2.yahoo.com with QMQP; 28 Mar 2009 02:55:45 -0000\r\nReceived: from unknown (HELO n31a.bullet.sp1.yahoo.com) (209.131.38.208)\n  by mta3.grp.re1.yahoo.com with SMTP; 28 Mar 2009 02:55:44 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1238208944; bh=9F4rRdgPCfN9g1gHBEMnjEQlGU0DMLs0RCSV0WcVVSA=; h=Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:MIME-Version:X-Received:In-Reply-To:References:Date:Message-ID:To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:X-eGroups-Msg-Info:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:Sender:X-Yahoo-Newman-Property:X-eGroups-Approved-By:X-eGroups-Auth; b=amsQLLRE1qrKYP8hsDVe4n4H7T7Cg/+V0bhM25ahrwmTxeFMONz+9YBFhZfguJQtVXFDv+0iIZCACICBCneYavk4NhL3bzloPnZuZf/zmRofZcNleGkbC+DN+yDDNSO2\r\nReceived: from [69.147.65.172] by n31.bullet.sp1.yahoo.com with NNFMP; 28 Mar 2009 02:55:44 -0000\r\nReceived: from [98.137.34.184] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 28 Mar 2009 02:55:44 -0000\r\nX-Sender: jpdaigle@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 15998 invoked from network); 27 Mar 2009 22:54:09 -0000\r\nX-Received: from unknown (69.147.108.200)\n  by m1.grp.re1.yahoo.com with QMQP; 27 Mar 2009 22:54:09 -0000\r\nX-Received: from unknown (HELO yw-out-1718.google.com) (74.125.46.154)\n  by mta1.grp.re1.yahoo.com with SMTP; 27 Mar 2009 22:54:09 -0000\r\nX-Received: by yw-out-1718.google.com with SMTP id 4so752267ywq.32\n        for &lt;junit@yahoogroups.com&gt;; Fri, 27 Mar 2009 15:54:09 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.150.227.9 with SMTP id z9mr4685599ybg.211.1238194449278; Fri, \n\t27 Mar 2009 15:54:09 -0700 (PDT)\r\nIn-Reply-To: &lt;28e8f74b0903271550h780fd30ya668db6429d80284@...&gt;\r\nReferences: &lt;28e8f74b0903271550h780fd30ya668db6429d80284@...&gt;\r\nDate: Fri, 27 Mar 2009 18:54:09 -0400\r\nMessage-ID: &lt;28e8f74b0903271554t554d7a94wf36d779dad38cb3e@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Jean-Philippe Daigle &lt;jpdaigle@...&gt;\r\nSubject: Applying a Filter with the Suite runner\r\nX-Yahoo-Group-Post: member; u=393721112; y=pK3qO-IY_tTGzFfGciK88aQd10jYZOYUV-IiZ1UPiJJZNOPFKDl7kyomEsGC\r\nX-Yahoo-Profile: daiglejeanphilippe\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: shanemingins &lt;shane.mingins@...&gt; via web; 28 Mar 2009 02:55:43 -0000\r\n\r\nHello all,\n\nAfter years of joy with JUnit 3, we&#39;re starting to look at JUnit 4 to\ntake advantage of Filters. We&#39;re looking to incrementally start\ntagging our hundreds of test methods with attributes to control\nwhether they&#39;re run or not, and provide a Filter implementation to do\nthe selection logic.\n\nI haven&#39;t found much documentation on using the\norg.junit.runner.manipulation.Filter class; it seems to be very much\nsomething applied to a Runner or Request instance, not a property of\nthe test suite itself.\n\nSince we have a large investment in organizing tests using a number of\nclasses exposing a suite() method (JUnit3), it seems I want to use the\nJUnit4TestAdapter class, but once instantiated from within a suite()\nmethod, calling setFilter() on it has no effect. It seems that I need\nto convince the runner itself (which could be Eclipse, Ant, etc...) to\ncall filter(), so unless there&#39;s something I&#39;m misunderstanding, I\ncan&#39;t go down this path.\n\nA second approach that seems like it would work would be to use an\n@RunsWith annotation to set the org.junit.runners.Suite runner to run\na suite crafted to replicate the organization we&#39;re doing today with\nsuite() methods. I&#39;ve been able to apply a Filter from within my own\nRunner implementation (subclassing BlockJUnit4ClassRunner), but I\ncan&#39;t see a way to apply a Filter if I&#39;m using the Suite runner.\n\nAny ideas?\n\nJean-Philippe\nOttawa, Canada\n\n", 
+    "profile": "daiglejeanphilippe", 
+    "topicId": 21455, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 393721112, 
+    "prevInTime": 21454, 
+    "contentTrasformed": false, 
+    "postDate": "1238194449", 
+    "canDelete": false, 
+    "nextInTopic": 21469, 
+    "prevInTopic": 0, 
+    "headers": {
+        "inReplyToHeader": "PDI4ZThmNzRiMDkwMzI3MTU1MGg3ODBmZDMweWE2NjhkYjY0MjlkODAyODRAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDI4ZThmNzRiMDkwMzI3MTU1NHQ1NTRkN2E5NHdmMzZkNzc5ZGFkMzhjYjNlQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDI4ZThmNzRiMDkwMzI3MTU1MGg3ODBmZDMweWE2NjhkYjY0MjlkODAyODRAbWFpbC5nbWFpbC5jb20+"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 14980, 
+    "senderId": "UcO8OEiwzOJjZMTDazmAXZGsCFp3qVFhta-UgtugTX-q335g-CO9vJBgW2tFhbWyya1xBAf0ZWMnmx7tvsQDcm2jPJ514gsI", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] JUnit4: TestListener questions", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "... 1. The first argument is the test object. I assume that it will be useful, if only to print with toString(). I don t have any examples where it is used,", 
+    "msgId": 14979, 
+    "profile": "kentlbeck", 
+    "topicId": 14969, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-69754102\"><blockquote><span title=\"ireply\">&gt; -----Original Message-----<br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On <br/>\n&gt; Behalf Of Elliotte Rusty Harold<br/>\n&gt; Sent: Tuesday, September 27, 2005 7:54 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] JUnit4: TestListener questions<br/>\n&gt; <br/>\n&gt; I&#39;m implementing a sample TestListener. I&#39;ve encountered a number of <br/>\n&gt; unclear points I wanted to ask about. Here&#39;s the interface:<br/>\n&gt; <br/>\n&gt; package org.junit.runner;<br/>\n&gt; <br/>\n&gt; import java.lang.reflect.Method;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; public interface TestListener {<br/>\n&gt; <br/>\n&gt; \tvoid testRunStarted(int testCount);<br/>\n&gt; \t<br/>\n&gt; \tvoid testRunFinished(Runner runner); //TODO: Something <br/>\n&gt; is wrong here... <br/>\n&gt; Should take an event anyway<br/>\n&gt; \t<br/>\n&gt; \tvoid testStarted(Object test, String name);<br/>\n&gt; <br/>\n&gt; \tvoid testFinished(Object test, String name);<br/>\n&gt; <br/>\n&gt; \tvoid testFailure(Failure failure);<br/>\n&gt; <br/>\n&gt; \tvoid testIgnored(Method method);<br/>\n&gt; <br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; 1. What is the first argument passed to the testStarted and <br/>\n&gt; testFinished <br/>\n&gt; class? I assume this is the actual test object which in JUnit 4 can <br/>\n&gt; extend any class. Is it really helpful to pass this given <br/>\n&gt; that it&#39;s only <br/>\n&gt; an object of unspecified type and in practice may have any type?<br/>\n&gt; <br/>\n&gt; 2. Why does testIgnored() get a Method when testFailure gets <br/>\n&gt; a Failure? <br/>\n&gt; Should there be an Ignored class? Or should testFailure take a method <br/>\n&gt; instead? These two feel out of sync.<br/>\n&gt; <br/>\n&gt; 3. Does testFinished always bracket testStarted? i.e. does <br/>\n&gt; testFailure/testIgnored go in between started and finished or does it <br/>\n&gt; replace testFinished?<br/>\n<br/>\n </span></blockquote>1. The first argument is the test object. I assume that it will be useful,<br/>\nif only to print with toString(). I don&#39;t have any examples where it is<br/>\nused, though, which makes me suspicious.<br/>\n<br/>\n2. If a test is marked @Ignored, we don&#39;t create the test object at all.<br/>\nHowever, we need a way to report the class and method that is being ignored.<br/>\nMethod is a handy collector of those two pieces of information.<br/>\n<br/>\n3. testFinished() is always called.<br/>\n<br/>\nWe would like to move TestListener to an Event object style:<br/>\n  interface TestListener {<br/>\n    notify(TestEvent event);<br/>\n  }<br/>\n<br/>\nOr something like that. This makes it easier to extend TestListener in the<br/>\nfuture (changes won&#39;t break existing code) at the expense of readability<br/>\n(case logic in listener implemetations).<br/>\n<br/>\nSincerely yours,<br/>\n<br/>\nKent Beck<br/>\nThree Rivers Institute</div>", 
+    "prevInTime": 14978, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1127851572", 
+    "canDelete": false, 
+    "nextInTopic": 14981, 
+    "prevInTopic": 14969, 
+    "headers": {
+        "inReplyToHeader": "PDQzMzk1RDA4LjkwMjA3QG1ldGFsYWIudW5jLmVkdT4=", 
+        "messageIdInHeader": "PEUxRUtMaVQtMDAwOEd2LUJyQHNtdHBhdXRoMDMubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4="
+    }
+}

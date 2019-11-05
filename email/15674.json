@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 15675, 
+    "senderId": "CrQxW7wDM7ov-4orXgph5KHfxZbs_EgEq_fjq8i_34ZG7ABbDt26DicT-VMi6rZNeTUOFamokTdDPNqar5C21rY", 
+    "systemMessage": true, 
+    "subject": "overriding a method executed in the constructor: dont&#39;t work.", 
+    "from": "&quot;tusc72&quot; &lt;tusc72@...&gt;", 
+    "authorName": "tusc72", 
+    "msgSnippet": "Hi, I have a class that loads data from a file in it s constructor. To easy test this class, I delegate the loading to a method, initData(). It s works well,", 
+    "msgId": 15674, 
+    "profile": "tusc72", 
+    "topicId": 15674, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 248238137, 
+    "messageBody": "<div id=\"ygrps-yiv-593124318\">Hi, I have a class that loads data from a file in it&#39;s constructor. To easy test this class, I delegate the loading to a method, initData(). It&#39;s works well, until I want to play with params:<br/>\n<br/>\nC:&#92;&gt;more CommandTest.java<br/>\nimport junit.framework.TestCase;<br/>\n<br/>\nclass Command {<br/>\n        private String data;<br/>\n        public Command() {<br/>\n                this.data = initData();<br/>\n        }<br/>\n        public String initData() {<br/>\n                return &quot;data from file&quot;;<br/>\n        }<br/>\n        public String execute() {<br/>\n                return &quot;execute with [&quot;+data+&quot;]&quot;;<br/>\n        }<br/>\n}<br/>\n<br/>\npublic class CommandTest extends TestCase {<br/>\n        // mocks for Command.initData()<br/>\n        public Command makeMockDataWithParam(final String param) {<br/>\n                return new Command() {<br/>\n                        public String initData() {<br/>\n                                return param;<br/>\n                        }};<br/>\n        }<br/>\n        public static Command makeHardCodedMockData() {<br/>\n                return new Command() {<br/>\n                        public String initData() {<br/>\n                                return &quot;hard coded mock data&quot;;<br/>\n                        }};<br/>\n        }<br/>\n        // tests for Command.initData()<br/>\n        public void testInitData() {<br/>\n                assertEquals(&quot;data from file&quot;,new Command().initData());<br/>\n        }<br/>\n        public void testInitData_hardCodedMockData() {<br/>\n                assertEquals(&quot;hard coded mock data&quot;,<br/>\n                        makeHardCodedMockData().initData());<br/>\n        }<br/>\n        public void testInitData_mockDataAsParam() {<br/>\n                final String param = &quot;mock data as param&quot;;<br/>\n               <br/>\nassertEquals(param,makeMockDataWithParam(param).initData());<br/>\n        }<br/>\n        // tests for Command.execute()<br/>\n        public void testExecute() {<br/>\n                assertEquals(&quot;execute with [data from file]&quot;,<br/>\n                        new Command().execute());<br/>\n        }<br/>\n        public void testExcute_hardCodedMockData() {<br/>\n                assertEquals(&quot;execute with [hard coded mock data]&quot;,<br/>\n                        makeHardCodedMockData().execute());<br/>\n        }<br/>\n        public void testExecute_mockDataAsParam() {<br/>\n                final String param = &quot;mock data as param&quot;;<br/>\n                assertEquals(&quot;execute with [&quot;+param+&quot;]&quot;,<br/>\n                        makeMockDataWithParam(param).execute());<br/>\n        }<br/>\n}<br/>\n<br/>\nC:&#92;&gt;javac -classpath junit.jar CommandTest.java<br/>\n<br/>\nC:&#92;&gt;java -cp .;junit.jar junit.textui.TestRunner CommandTest<br/>\n......F<br/>\nTime: 0<br/>\nThere was 1 failure:<br/>\n1)<br/>\ntestExecute_mockDataAsParam(CommandTest)junit.framework.ComparisonFailure:<br/>\nexpected:&lt;...mock data as param...&gt; but was:&lt;...null...&gt;<br/>\n        at CommandTest.testExecute_mockDataAsParam(CommandTest.java:53)<br/>\n        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br/>\n        at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)<br/>\n        at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)<br/>\n<br/>\nFAILURES!!!<br/>\nTests run: 6,  Failures: 1,  Errors: 0<br/>\n<br/>\nDon&#39;t understand why testExecute_mockDataAsParam() fails,<br/>\nwhereas testInitData_mockDataAsParam() don&#39;t. Can anyone<br/>\nexplain me ? How can I correctly mocke a property in the constructor ?<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 15673, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1134136505", 
+    "canDelete": false, 
+    "nextInTopic": 15676, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGRuYzJicCtqOXJiQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 125, 
+    "nextInTime": 14705, 
+    "senderId": "PIeqEdo0_h8wJRTTy9SP6U9_u4gggQk7t-qTQKVqgC2vVvKeqpFdApC_wsxa01sXiK1SUl9gvZ7JMkwATXMpWbRJ_EOzGIFitbRUANh0OMJ9In8", 
+    "systemMessage": false, 
+    "subject": "Re: How to test private methods in a class.", 
+    "from": "&quot;Jim Cakalic&quot; &lt;james.p.cakalic@...&gt;", 
+    "authorName": "Jim Cakalic", 
+    "msgSnippet": "... private ... find that ... Sounds more like speculative design and/or rearranging the chairs without any clear immediate benefit. Ron Jeffries C#", 
+    "msgId": 14704, 
+    "rawEmail": "Return-Path: &lt;james.p.cakalic@...&gt;\r\nX-Sender: james.p.cakalic@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 42582 invoked from network); 6 Sep 2005 17:27:38 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m34.grp.scd.yahoo.com with QMQP; 6 Sep 2005 17:27:38 -0000\r\nReceived: from unknown (HELO n7a.bulk.scd.yahoo.com) (66.94.237.41)\n  by mta6.grp.scd.yahoo.com with SMTP; 6 Sep 2005 17:27:37 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.1] by n7.bulk.scd.yahoo.com with NNFMP; 06 Sep 2005 17:27:36 -0000\r\nReceived: from [66.218.66.72] by mailer1.bulk.scd.yahoo.com with NNFMP; 06 Sep 2005 17:27:36 -0000\r\nDate: Tue, 06 Sep 2005 17:27:36 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;dfkji8+i57o@...&gt;\r\nIn-Reply-To: &lt;003601c5b300$d8c7ecc0$7064a8c0@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2190\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Jim Cakalic&quot; &lt;james.p.cakalic@...&gt;\r\nSubject: Re: How to test private methods in a class.\r\nX-Yahoo-Group-Post: member; u=226509834; y=u8gJzmsPbPY25vmPwmGJgXQtgtOKAtteDUwv9o6VMcrTPZShK-k\r\nX-Yahoo-Profile: jim_cakalic\r\n\r\n--- In junit@yahoogroups.com, &quot;Ilja Preuss&quot; &lt;preuss@d...&gt; wrote:\n&gt; \n&gt; A public method is the core responsibility of a class. If we extract a\n&gt; private method, that private method basically provides a service to the\n&gt; public method.\n&gt; \n&gt; It&#39;s true that we can remove duplication in a class by extracting\nprivate\n&gt; methods. Often, though, if we introduce the right abstraction, we\nfind that\n&gt; the service provided can suddenly be used by other classes, too.\n&gt; \n&gt; Does that sound reasonable?\n&gt; \n\nSounds more like speculative design and/or rearranging the chairs\nwithout any clear immediate benefit. \n\nRon Jeffries C# implementation (or one of them) of the Bowling Game\nproblem contains several private methods:\n\n    private int PinCount(int pinPosition) {\n        return (int) rolls[pinPosition];\n    }\n    \n    private bool Strike(int rollIndex) {\n        return PinCount(rollIndex) == 10;\n    }\n    \n    private bool Spare(int rollIndex) {\n        return PinCount(rollIndex) + PinCount(rollIndex+1) == 10;\n    }\n    \n    private int FrameSize(int rollIndex) {\n        if (Strike(rollIndex)) return 1;\n        return 2;\n    }\n    \nIgnoring the constructor of the class, there appear to be two public\nmethods and four private methods. Here&#39;s his Score method:\n\n    public int Score() {\n        int rollIndex = 0;\n        int total = 0;\n        for (int frame = 0; frame &lt; 10; frame++, rollIndex +=\nFrameSize(rollIndex)){\n            if ( Strike(rollIndex) ) {\n                total += 10 + PinCount(rollIndex+1) +\nPinCount(rollIndex+2);\n            } else if ( Spare(rollIndex) ) {\n                total += 10 + PinCount(rollIndex+2);\n            } else {\n                total += PinCount(rollIndex) + PinCount(rollIndex+1);\n            }\n      }\n      return total;\n    }\n    \nI&#39;d probably choose to refactor even further, adding at least one if\nnot more private methods to, in Ron&#39;s words, &quot;improve expressiveness&quot;.\nBut limiting it to just what is here, I&#39;m curious how you&#39;d choose to\nrefactor this, what tests you would need to add, a comparison of the\namount of code and number of classes a developer would have to sift\nthrough to understand the this vs. your ideal implementation.\n\nJim\n\n\n\n", 
+    "profile": "jim_cakalic", 
+    "topicId": 14490, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 226509834, 
+    "prevInTime": 14703, 
+    "contentTrasformed": false, 
+    "postDate": "1126027656", 
+    "canDelete": false, 
+    "nextInTopic": 14707, 
+    "prevInTopic": 14703, 
+    "headers": {
+        "inReplyToHeader": "PDAwMzYwMWM1YjMwMCRkOGM3ZWNjMCQ3MDY0YThjMEBkaXN5Lm5ldD4=", 
+        "messageIdInHeader": "PGRma2ppOCtpNTdvQGVHcm91cHMuY29tPg=="
+    }
+}

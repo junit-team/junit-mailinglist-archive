@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 22423, 
+    "senderId": "qkfIBVh0r3v0Qd-KwCL8ef3XqO4_zyP7XxJksbxcJSRj_pvl-6fhKwwF8-ted7hQ_8eJZPcLmADJfEXghTkYiuil8athhw54kRLfLA", 
+    "systemMessage": false, 
+    "subject": "Re: SureFire Plugin: &quot;parallel&quot; attribute", 
+    "from": "&quot;krosenvold&quot; &lt;kristian@...&gt;", 
+    "authorName": "krosenvold", 
+    "msgSnippet": "... Well I ll be 100% correct here, it does not fire one thread per test. It  makes one CachedThreadPool per test class, and schedules runnables on it.", 
+    "msgId": 22422, 
+    "rawEmail": "Return-Path: &lt;kristian@...&gt;\r\nX-Sender: kristian@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 70647 invoked from network); 15 Feb 2010 08:27:51 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m12.grp.re1.yahoo.com with QMQP; 15 Feb 2010 08:27:51 -0000\r\nX-Received: from unknown (HELO n39b.bullet.mail.sp1.yahoo.com) (66.163.168.153)\n  by mta2.grp.sp2.yahoo.com with SMTP; 15 Feb 2010 08:27:51 -0000\r\nX-Received: from [69.147.65.172] by n39.bullet.mail.sp1.yahoo.com with NNFMP; 15 Feb 2010 08:22:18 -0000\r\nX-Received: from [98.137.34.33] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 15 Feb 2010 08:22:18 -0000\r\nDate: Mon, 15 Feb 2010 08:22:18 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;hlb07q+glps@...&gt;\r\nIn-Reply-To: &lt;5FBB334C-0B13-43C2-A918-72D325F95D20@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;krosenvold&quot; &lt;kristian@...&gt;\r\nSubject: Re: SureFire Plugin: &quot;parallel&quot; attribute\r\nX-Yahoo-Group-Post: member; u=403861045; y=3Gw3mHNHJTOoPfrFBXE7Sj3JaCHxWJxgOLpi74U3iND11wNlhQ\r\nX-Yahoo-Profile: krosenvold\r\n\r\n&gt;&gt; Also, Just out of curiosity, what happens thread count wise when you are=\r\nn&#39;t using ConfigurableParallelComputer, does it literally fire up a thread =\r\nper test?\n&gt; Yes, in &quot;methods&quot; mode it&#39;s one thread per test method. Classes=\r\n mode is one per class. Both is, well, both. In my 10+ years as test-infect=\r\ned, I have really never ever had a use-case where this kind of solution wou=\r\nld be appropriate (maybe some kind of really slow database with unlimited c=\r\nheap connections). With thousands of test classes you come to a grinding ha=\r\nlt with any of these options.\n\nWell I&#39;ll be 100% correct here, it does not =\r\nfire one thread per test. It  makes one CachedThreadPool per test class, an=\r\nd schedules runnables on it. Unfortunately the CachedThreadPool is not desi=\r\ngned to be used this way, and it needs to be shut down properly or each ins=\r\ntance will stay around for 60 seconds consuming more resources. So if you h=\r\nave 500 tests with 5 methods each in one module you&#39;ll have a maximum of 25=\r\n00 threads running in 500 instances of CachedThreadPool; and currently thos=\r\ne 2500 threads will stay around for a minute.\n\nThis is actually a lot less =\r\nefficient than just doing new Thread(runnable).start(), which is also a bit=\r\n crazy. \n\nBut there&#39;s no point in bashing the default implementation; it&#39;s =\r\nextensible and user-modifyable - which is really the important thing. Actua=\r\nlly, I suppose at some point in time Kent/David make up their mind about ho=\r\nw to solve issue 18. I&#39;ve spent quite a lot of time refining the CPC and th=\r\ney&#39;re more than welcome to supplement/replace ParallelComputer with my impl=\r\nementation. Just remember to vote for issue 18 ;)\n\n\n&gt; [DF] When you add box=\r\nes, each one runs a separate selenium rc server? How do you distribute the =\r\ntests to them?\n\nYes, 1 rc instance per box.  We just use maven properties i=\r\nn pom.xml like this;\n\n    &lt;properties&gt;\n        &lt;selenium.rc.server&gt;localhos=\r\nt&lt;/selenium.rc.server&gt;\n        &lt;selenium.rc.serverPort&gt;4444&lt;/selenium.rc.se=\r\nrverPort&gt;\n        &lt;selenium.browser&gt;*firefox&lt;/selenium.browser&gt;\n    &lt;/prope=\r\nrties&gt;\n\nThese are &quot;sensible default values&quot; in our environment and we just =\r\ninvoke maven with overriding values on our build box:\n\nmvn -Dselenium.rc.se=\r\nrver=3Dfirstrcbox.com -Dselenium.browser=3D*opera install\n\nThe we just have=\r\n a number of automatic builds that are triggered by commit hooks. \n\nI know =\r\nit&#39;s not very glorious, but it works really well in the trenches. \n\nKristia=\r\nn\n\n\n\n", 
+    "profile": "krosenvold", 
+    "topicId": 22403, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 403861045, 
+    "prevInTime": 22421, 
+    "contentTrasformed": false, 
+    "postDate": "1266222138", 
+    "canDelete": false, 
+    "nextInTopic": 22424, 
+    "prevInTopic": 22421, 
+    "headers": {
+        "inReplyToHeader": "PDVGQkIzMzRDLTBCMTMtNDNDMi1BOTE4LTcyRDMyNUY5NUQyMEBkb3VnbGFzZmVyZ3Vzb24udXM+", 
+        "messageIdInHeader": "PGhsYjA3cStnbHBzQGVHcm91cHMuY29tPg=="
+    }
+}

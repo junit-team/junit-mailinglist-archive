@@ -1,0 +1,29 @@
+{
+    "topicId": 1775, 
+    "postDate": "994702066", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Sw2ydwH3O2f4ry5IZnpdGWEIQ05yptH0FE54g6BF8by9xAbiYjXAlkIqMEp7MpgvjRZKMYSr_d3ms1mbIvkz33IM-3p1njbqH7TUMHPy", 
+    "nextInTime": 1846, 
+    "userId": 0, 
+    "prevInTime": 1844, 
+    "prevInTopic": 1821, 
+    "headers": {
+        "messageIdInHeader": "PE9FMTZwa056UFpySWt5UHpHTnMwMDAwNWYyY0Bob3RtYWlsLmNvbT4=", 
+        "referencesHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2MTI4QGV4Y2g+"
+    }, 
+    "authorName": "Mathieu Gervais", 
+    "numMessagesInTopic": 8, 
+    "msgSnippet": "... From: Jason Rogers To: junit@yahoogroups.com ... (whose ... load ... No. I skip over them. Can be done with project name or package name. See below.", 
+    "contentTrasformed": false, 
+    "msgId": 1845, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;egoine_@...&gt;\r\nX-Sender: egoine_@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_2_0); 10 Jul 2001 17:36:11 -0000\r\nReceived: (qmail 30761 invoked from network); 10 Jul 2001 17:35:38 -0000\r\nReceived: from unknown (10.1.10.26) by l9.egroups.com with QMQP; 10 Jul 2001 17:35:38 -0000\r\nReceived: from unknown (HELO hotmail.com) (216.33.236.120) by mta1 with SMTP; 10 Jul 2001 17:35:38 -0000\r\nReceived: from mail pickup service by hotmail.com with Microsoft SMTPSVC; Mon, 9 Jul 2001 11:08:42 -0700\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;87EE6B21C624D511B72400104BCF1EB01F6128@exch&gt;\r\nSubject: Re: [junit] Usage of JUnit with VAfJ\r\nDate: Mon, 9 Jul 2001 14:07:46 -0400\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.50.4133.2400\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nMessage-ID: &lt;OE16pkNzPZrIkyPzGNs00005f2c@...&gt;\r\nX-OriginalArrivalTime: 09 Jul 2001 18:08:42.0202 (UTC) FILETIME=[2FC183A0:01C108A2]\r\nFrom: &quot;Mathieu Gervais&quot; &lt;egoine_@...&gt;\r\n\r\n----- Original Message -----\nFrom: Jason Rogers\nTo: &#39;junit@yahoogroups.com&#39;\n   &gt; &gt; &gt;One of the disadvantages to this is that it makes it a\n   &gt; &gt; little harder to\n   &gt; &gt; have\n   &gt; &gt; &gt;that solitary project that will be responsible to run [...]\n   &gt; &gt; I&#39;m not sure I understand your point. Can you explain?\n\n&gt;A difference of style here.  We have all of our individual tests compiled\n&gt;into some TestSuite.  We then include all of those test suites into the\n&gt;AllTests package in the AllTests project.  Our buildSuite() method becomes\n&gt;just a few lines of code, referencing all of the other project suites\n(whose\n&gt;buildSuite() methods are also short and sweet, including only the classes\n&gt;for that package).  But it seems you have stepped around this by\n&gt;programmatically loading every test case in the workspace.  Do you also\nload\n&gt;the JUnit test cases (e.g. MoneyTest)?\n\nNo. I skip over them. Can be done with project name or package name. See\nbelow. Again, TSTTCPW.\n\nCode of collectTests():\ncom.ibm.ivj.util.base.Workspace workspace =\ncom.ibm.ivj.util.base.ToolEnv.connectToWorkspace();\n com.ibm.ivj.util.base.Type testCaseType =\nworkspace.loadedTypeNamed(&quot;junit.framework.TestCase&quot;);\n com.ibm.ivj.util.base.Type testCases[] = testCaseType.getAllSubtypes();\n int i = 0;\n while (i &lt; testCases.length) {\n  if (testCases[i].getName().indexOf(&quot;$&quot;) == -1) { //skip over inner classes\n   if (testCases[i].getQualifiedName().indexOf(&quot;junit&quot;) != 0) { //skip junit\ntests.\n    try {  [...]\n\n &gt;   &gt; I  use the VAJ toolapi to extract automatically all tests\n &gt;   &gt; to be run (see\n &gt;   &gt; below code. Not perfect code, but it&#39;s TSTTCPW). They can\n &gt;   &gt; easily be packaged\n &gt;   &gt; in another JAR if needed (with ant for example).\n&gt;How do you do this outside of VAJ using the Tools API?\n\nThe code i&#39;ve sent generates a normal AllTest class usable outside VAJ.\n\n&gt;  &gt; collectTests() will find every TestCase subclass in the\n&gt;    &gt; workspace. I have a\n&gt;    &gt; ant script that loads the latest release stuff before\n&gt;    &gt; running this.\n&gt;When you say &quot;loads&quot;, you mean it loads into VAJ?\n\nYes. Ant as optionnal tasks for this (VAJLoad, see\nhttp://jakarta.apache.org/ant/manual/Integration/VAJAntTool.html)\nI written a small modification to load the &quot;latest&quot; stuff since we are using\nrolling project baselines. (i.e. open editions)\n\n&gt;    &gt; mention is that it&#39;s very easy to keep versions in sync\n&gt;    &gt; (tests & code). If\n&gt;    &gt; you have two projects, you can end up runnning old tests\n&gt;    &gt; on newer classes,\n&gt;We don&#39;t encounter this problem since the tests projects map one-to-one\nwith\n&gt;the production code projects, as well as the packages within them.  I guess\n&gt;I dont&#39; quite comprehend how this could happen.\n\nI tought that if one has the following structure :\nProject A v1, package B v1 , class C v1\n\nProject TA v1 package TB v1 package T v1, test class TC v1\n\nNow you work on class C, and adjust the tests of class TC, but then you\nforget to version&release TC, or TB or the tester gets the latest release\ncontent for project A but not for project TA. Don&#39;t you end up running test\ncase v1 against code version 2?\n\n\nmathieu\n\n", 
+    "subject": "Re: [junit] Usage of JUnit with VAfJ"
+}

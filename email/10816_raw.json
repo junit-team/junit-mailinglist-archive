@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 10817, 
+    "senderId": "Ket-qY2mVHJAqRuyXo7vB1eGq7zjEVH4bJbuTgkOTtCGFFfmUK9Rm2ylU11WJtgsYFPaV0RrKizbBLwhDgLbbAyDdK8", 
+    "systemMessage": false, 
+    "subject": "confused about database dependent tests", 
+    "from": "&quot;mbil_99&quot; &lt;mbil_99@...&gt;", 
+    "authorName": "mbil_99", 
+    "msgSnippet": "Hi! Being very new to unit testing and TestDrivenDevelopment, Im having a conceptual problem (mental block) putting things together (and might get cleared up", 
+    "msgId": 10816, 
+    "rawEmail": "Return-Path: &lt;mbil_99@...&gt;\r\nReceived: (qmail 84757 invoked from network); 9 Apr 2004 16:27:02 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m24.grp.scd.yahoo.com with QMQP; 9 Apr 2004 16:27:02 -0000\r\nReceived: from unknown (HELO n34.grp.scd.yahoo.com) (66.218.66.102)\n  by mta1.grp.scd.yahoo.com with SMTP; 9 Apr 2004 16:27:02 -0000\r\nX-eGroups-Return: mbil_99@...\r\nReceived: from [66.218.67.154] by n34.grp.scd.yahoo.com with NNFMP; 09 Apr 2004 16:26:58 -0000\r\nX-Sender: mbil_99@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 13981 invoked from network); 8 Apr 2004 21:33:40 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m3.grp.scd.yahoo.com with QMQP; 8 Apr 2004 21:33:40 -0000\r\nReceived: from unknown (HELO n38.grp.scd.yahoo.com) (66.218.66.106)\n  by mta4.grp.scd.yahoo.com with SMTP; 8 Apr 2004 21:33:39 -0000\r\nReceived: from [66.218.67.152] by n38.grp.scd.yahoo.com with NNFMP; 08 Apr 2004 21:33:39 -0000\r\nDate: Thu, 08 Apr 2004 21:33:38 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;c54gfi+3lvp@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2657\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.106\r\nFrom: &quot;mbil_99&quot; &lt;mbil_99@...&gt;\r\nSubject: confused about database dependent tests\r\nX-Yahoo-Group-Post: member; u=103489341\r\nX-Yahoo-Profile: mbil_99\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 09 Apr 2004 16:26:58 -0000\r\nX-eGroups-Remote-IP: 66.218.66.102\r\n\r\nHi! Being very new to unit testing and TestDrivenDevelopment, Im\nhaving a conceptual problem (mental block) putting things together\n(and might get cleared up by my just writing this out, in which case\nyou won&#39;t be reading this ;-). Im hoping someone can hand hold me\nthrough my problem:\n\nThe business domain problem Im trying to solve is simple:\nIf &quot;Customer&quot;&#39;s last &quot;Order&quot; was greater than $100,\n    then record the fact that they are eligible to receive a gift\n    with their next order.\n\nSo I start out with a new class, say GiftManager and start out with 2\ntests:\n\n/* is a Customer eligible to get a Gift? */\npublic void testGiftEligibility() {\n    GiftManager GM = new GiftManager();\n    Customer customer = new Customer(&quot;joe@...&quot;);\n    assertTrue(GM.eligibleForGift(customer));\n}\n\n/* add Gift to customer */\npublic void testAddGift() {\n    GiftManager GM = new GiftManager();\n    Customer customer = new Customer(&quot;joe@...&quot;);\n    GM.addGift(customer);\n    assertTrue(customer.getGift());\n}\n\nSo for the first test to succeed we need a &quot;Customer&quot; joe@...\nand that customer needs to have associated with it &quot;Order&quot;s where the\nlast order was greater than $100. Now since you can&#39;t tie this test\nto an actual customer (the test would fail and pass over time\ndepending on customers last order), here is where you would use Mock\nobjects to create a fake customer with mock orders where last order is\ngreater than $100. All well and good.\n\nBut what do I do about test 2? Here is where my head is all muddled\nand I don&#39;t know what I want:\n\nSo Im coding this new requirement where I want to record if some\ncustomer has a gift associated with them or not.\nIm doing test first development, I&#39;ve coded the interface I want to\nuse in the test, and the whole point of testing this is to rest\nassured that I can &quot;addGift()&quot; to a customer correctly, in other words\nI want to rest assured that I&#39;ve __implemented__ &quot;addGift()&quot; correctly.\n\nI decide Im going to create a new table in the database something as\nsimple as customer_gift which has a customer_id and a gift_id\nand addGift( customer ) will create a Gift object and then create a\nrecord in this table with the respective customer_id and associated\ngift_id.\nSo addGift() will write to the database and\ncustomer.getGift() will be implemented to read the said data from the\ndatabase.\nSo what do I do here, create a fake Customer in the production db?\n(Ideally have a test db where this isn&#39;t a problem?) Maybe create a\nfake customer on test setup and then clean it out during teardown? If\nmy test breaks I may be littering fake data in the real db.\nWhats the strategy to use here?\nHelp!\n\n\nthanks,\nmbil\n\n\n\n", 
+    "profile": "mbil_99", 
+    "topicId": 10816, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 103489341, 
+    "prevInTime": 10815, 
+    "contentTrasformed": false, 
+    "postDate": "1081460018", 
+    "canDelete": false, 
+    "nextInTopic": 10823, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGM1NGdmaSszbHZwQGVHcm91cHMuY29tPg=="
+    }
+}

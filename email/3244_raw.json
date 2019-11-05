@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 3245, 
+    "senderId": "q1yeZ8UnhjSZqlyCoZb0NUQ2wlhnHKBDbPosMsO1neoVbHK1o1gzU8xxDJg_XKnIQYWhE80", 
+    "systemMessage": false, 
+    "subject": "Re: Shared data between test methods in a testcase", 
+    "from": "csmall@...", 
+    "authorName": "csmall@isd.net", 
+    "msgSnippet": "This code below makes sense, but doesn t it require that all of the methods called in the oneTimeSetUp() and oneTimeTearDown() methods are all static?  I have", 
+    "msgId": 3244, 
+    "rawEmail": "Return-Path: &lt;csmall@...&gt;\r\nX-Sender: csmall@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_0_1); 12 Nov 2001 23:58:58 -0000\r\nReceived: (qmail 47467 invoked from network); 12 Nov 2001 23:58:58 -0000\r\nReceived: from unknown (216.115.97.167)\n  by m10.grp.snv.yahoo.com with QMQP; 12 Nov 2001 23:58:58 -0000\r\nReceived: from unknown (HELO n9.groups.yahoo.com) (216.115.96.59)\n  by mta1.grp.snv.yahoo.com with SMTP; 12 Nov 2001 23:58:59 -0000\r\nX-eGroups-Return: csmall@...\r\nReceived: from [10.1.4.65] by n9.groups.yahoo.com with NNFMP; 12 Nov 2001 23:58:59 -0000\r\nDate: Mon, 12 Nov 2001 23:58:57 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Shared data between test methods in a testcase\r\nMessage-ID: &lt;9spno1+cj0f@...&gt;\r\nIn-Reply-To: &lt;F111uT1FM1JOMyQlmLF000076b6@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1333\r\nX-Mailer: eGroups Message Poster\r\nFrom: csmall@...\r\nX-Yahoo-Profile: jacksonalex\r\n\r\n\nThis code below makes sense, but doesn&#39;t it require that all of the \nmethods called in the oneTimeSetUp() and oneTimeTearDown() methods \nare all static?  I have many methods that I need to call in \noneTimeSetUp() and oneTimeTearDown() that are not static.  Any \nsuggestions?\n\nthanks,\nchad.\n\n&gt;&gt;&gt;&gt;&gt;\nthere is one way to do a one time setup and tearDown in a test \nclass,here is how:\n\npublic class TestOne extends TestCase\n\n{\n\n public static void oneTimeSetUp()\n    {\n        System.out.println(&quot;test set up &quot;);\n    }\n\npublic static void oneTimeTearDown()\n    {\n        System.out.println(&quot;test tear down &quot;);\n    }\n\n    public void test1()\n    {\n        System.out.println(&quot;test1&quot;);\n    }\n\n    public void test2()\n    {\n        System.out.println(&quot;test2&quot;);\n    }\n    public static Test suite()\n    {\n        TestSuite suite= new TestSuite(TestOne.class);\n\n        TestSetup wrapper= new TestSetup(suite)\n        {\n            public void setUp()\n            {\n                oneTimeSetUp();\n            }\n            public void tearDown()\n            {\n                oneTimeTearDown()\n\n            }\n        };\n        return wrapper;\n\n     }\n\nrun this class you can see setup is done in the first order,and \nteardown is the last one.\n\nand if you specify the order to exe the test case,you can share data \nas you want.\n&gt;&gt;\n\nEllen\n\n\n\n\n\n", 
+    "profile": "jacksonalex", 
+    "topicId": 2374, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "prevInTime": 3243, 
+    "contentTrasformed": false, 
+    "postDate": "1005609537", 
+    "canDelete": false, 
+    "nextInTopic": 3245, 
+    "prevInTopic": 2389, 
+    "headers": {
+        "inReplyToHeader": "PEYxMTF1VDFGTTFKT015UWxtTEYwMDAwNzZiNkBob3RtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PDlzcG5vMStjajBmQGVHcm91cHMuY29tPg=="
+    }
+}

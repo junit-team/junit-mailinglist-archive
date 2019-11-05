@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 2443, 
+    "senderId": "NV5_LRkbKFrK-VdMPoc64vLMcGc3zW6Xgi24cYdYdqVoX87PJvUmC73yQGD84SWtLmSA1Zic7ssEW707u6TJIHGenm4NrFix9KySe8Jw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] code works with textui, but not with swingui/awtui", 
+    "from": "Mark Meyers &lt;markm@...&gt;", 
+    "authorName": "Mark Meyers", 
+    "msgSnippet": "if suiteMethod is not static, as you expect, invoke(null, ...) will throw a nullpointer exception. Assert that fact first with: ", 
+    "msgId": 2442, 
+    "topicId": 2417, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1522414056\">if suiteMethod is not static, as you expect, invoke(null, ...) will throw a<br/>\nnullpointer exception.<br/>\nAssert that fact first with:<br/>\nModifier.isStatic(suiteMethod.getModifiers())<br/>\njust after line 45, I would suggest<br/>\n<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: Alain RAVET [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:aravet@...\">aravet@...</a>]<br/>\nSent: woensdag 22 augustus 2001 14:20<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: RE: [junit] code works with textui, but not with swingui/awtui<br/>\n<br/>\n<br/>\n-----Message d&#39;origine-----<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt; Can you run under debug mode and find what exactly is throwing the null?<br/>\n<br/>\n </span></blockquote>It all happens in line 53 ( see code of getTest() below)<br/>\nI have run it in debug mode, but afaik it looks fine.<br/>\n<br/>\n-------------------------------------------------------------<br/>\njava.lang.NullPointerException<br/>\n-------------------------------------------------------------<br/>\n   java.lang.NullPointerException<br/>\n\tat java.lang.reflect.Method.invoke(Native Method)<br/>\n\tat junit.runner.BaseTestRunner.getTest(BaseTestRunner.java:53)<br/>\n\tat junit.awtui.TestRunner.runSuite(TestRunner.java:393)<br/>\n\tat junit.awtui.TestRunner.start(TestRunner.java:474)<br/>\n\tat junit.awtui.TestRunner.main(TestRunner.java:315)<br/>\n\tat junit.awtui.TestRunner.run(TestRunner.java:320)<br/>\n\tat cirb_httpTest.tele.project.statmrbc.AllTests.main      <br/>\n<br/>\n------------------------------------------------------------<br/>\njunit.runner.BaseTestRunner.getTest()<br/>\n------------------------------------------------------------<br/>\n<br/>\n\tpublic Test getTest(String suiteClassName) {<br/>\n\t\tif (suiteClassName.length() &lt;= 0) {<br/>\n\t\t\tclearStatus();<br/>\n\t\t\treturn null;<br/>\n\t\t}<br/>\n\t\tClass testClass= null;<br/>\n\t\ttry {<br/>\n\t\t\ttestClass= loadSuiteClass(suiteClassName);<br/>\n\t\t} catch (ClassNotFoundException e) {<br/>\n\t\t\tString clazz= e.getMessage();<br/>\n\t\t\tif (clazz == null) <br/>\n\t\t\t\tclazz= suiteClassName;<br/>\n\t\t\trunFailed(&quot;Class not found &#92;&quot;&quot;+clazz+&quot;&#92;&quot;&quot;);<br/>\n\t\t\treturn null;<br/>\n\t\t} catch(Exception e) {<br/>\n\t\t\trunFailed(&quot;Error: &quot;+e.toString());<br/>\n\t\t\treturn null;<br/>\n\t\t}<br/>\n\t\tMethod suiteMethod= null;<br/>\n\t\ttry {<br/>\n\t\t\tsuiteMethod= testClass.getMethod(SUITE_METHODNAME,<br/>\nnew Class[0]);<br/>\n\t \t} catch(Exception e) {<br/>\n\t \t\t// try to extract a test suite automatically<br/>\n\t\t\tclearStatus();\t\t\t<br/>\n\t\t\treturn new TestSuite(testClass);<br/>\n\t\t}<br/>\n\t\tTest test= null;<br/>\n\t\ttry {<br/>\n line 53 &gt;&gt;&gt;&gt;\t\ttest= (Test)suiteMethod.invoke(null, new Class[0]);<br/>\n// static method<br/>\n\t\t\tif (test == null)<br/>\n\t\t\t\treturn test;<br/>\n\t\t} <br/>\n\t\tcatch (InvocationTargetException e) {<br/>\n\t\t\trunFailed(&quot;Failed to invoke suite():&quot; +<br/>\ne.getTargetException().toString());<br/>\n\t\t\treturn null;<br/>\n\t\t}<br/>\n\t\tcatch (IllegalAccessException e) {<br/>\n\t\t\trunFailed(&quot;Failed to invoke suite():&quot; +<br/>\ne.toString());<br/>\n\t\t\treturn null;<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tclearStatus();<br/>\n\t\treturn test;<br/>\n\t}<br/>\n<br/>\nThis mail has been checked by exiscan.<br/>\nTo be safe, please scan the mail attachements with your local virus scanner<br/>\n!<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n <br/>\n<br/>\nYour use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 2441, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "998484288", 
+    "canDelete": false, 
+    "nextInTopic": 2444, 
+    "prevInTopic": 2440, 
+    "headers": {
+        "messageIdInHeader": "PEM0NTBEOTY2NjRDQkQzMTE4MkI2MDBBMEM5NzY2OEIxMzA2OTdDQENBU0UwNTI+"
+    }
+}

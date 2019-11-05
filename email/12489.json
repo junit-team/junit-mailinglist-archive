@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 12490, 
+    "senderId": "5UMDwK10_e4yo2c6Xgw21-JJ5Ck-3W2kS8l9ke2NLm1WCs30pECbeVIOeZxudZWfyovu4AvMcwxzaR9wqlokDY0jwle_ijfqYjC-8QGhSQ", 
+    "systemMessage": false, 
+    "subject": "Gathering tests together into a large suite", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... There s no reason you can t do this: * Use Ant * Use GSBase s RecursiveTestSuite * Use JUnit-addons s DirectorySuiteBuilder * Create a custom suite method", 
+    "msgId": 12489, 
+    "profile": "nails762", 
+    "topicId": 12458, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1495706478\">gfisher365 wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Thanks for your reply. You are right that some of my code is redundant<br/>\n&gt; as presently shown. I was just trying to illustrate a point. I&#39;ve got<br/>\n&gt; quite a few other test cases and I would like to run all of them<br/>\n&gt; together as a single test suite rather than as a series of standalone<br/>\n&gt; test cases.<br/>\n<br/>\n </span></blockquote>There&#39;s no reason you can&#39;t do this:<br/>\n<br/>\n  * Use Ant<br/>\n  * Use GSBase&#39;s RecursiveTestSuite<br/>\n  * Use JUnit-addons&#39;s DirectorySuiteBuilder<br/>\n  * Create a custom suite method and add other suites to it (the <br/>\n&quot;AllTests&quot; pattern)<br/>\n<br/>\npublic static Test suite() {<br/>\n     TestSuite suite = new TestSuite(&quot;All My Tests&quot;);<br/>\n     suite.addTestSuite(TestClass1.class);    // extract test*() methods<br/>\n     suite.addTest(TestClass2.suite());       // use custom suite()<br/>\n     return suite;<br/>\n}<br/>\n<br/>\nAny of these work perfectly. Put the above method in any class (not <br/>\nnecessarily a subclass of TestCase -- that&#39;s not needed), then do<br/>\n<br/>\n     java -cp &lt;your classpath&gt; &lt;your favorite test runner&gt; &lt;your <br/>\nAllTests class&gt;<br/>\n<br/>\nThat&#39;ll do it.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Thus, <br/>\n&gt; <br/>\n&gt; 1. junit.swingui.TestRunner.run(InfoRequestStoreTest.class) is fine.<br/>\n&gt; <br/>\n&gt; 2. junit.swingui.TestRunner.run(suite()) is not fine.<br/>\n&gt; <br/>\n&gt; In the first example I&#39;m passing a TestCase to TestRunner.run(). In<br/>\n&gt; the second example I&#39;m passing a TestSuite. Both TestCase and<br/>\n&gt; TestSuite implement the Test interface. However, TestSuite cannot be<br/>\n&gt; cast to Test.<br/>\n<br/>\n </span></blockquote>This statement is false, so I have to assume that you mean something <br/>\nelse. TestSuite implements Test, so clearly, this assignment works:<br/>\n<br/>\n     TestSuite suite = new TestSuite();<br/>\n     ...<br/>\n     Test test = suite;<br/>\n<br/>\nSo what did you mean to write here?<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; What puzzles me is that this failure to cast occurs in<br/>\n&gt; junit.swingui.TestRunner.run() and junit.awtui.TestRunner.run() but<br/>\n&gt; not in junit.textui.TestRunner.run().<br/>\n<br/>\n </span></blockquote>If you&#39;re talking about a ClassCastException, then read the FAQ or <br/>\nchapter 8 of _JUnit Recipes_. My guess is that your production class <br/>\nInfoRequestStore relies on some third-party software that doesn&#39;t like <br/>\nto be reloaded by JUnit&#39;s class loader. /That/ is what you might put in <br/>\nthe excluded.properties file.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;ve read older messages at this site and it seems this is not an<br/>\n&gt; unusual problem. The only difference that I can see is that they got<br/>\n&gt; their code to compile but then encountered ClassCastException at<br/>\n&gt; runtime. Whereas in my case I don&#39;t get as far as running the code<br/>\n&gt; because this potential runtime exception is being picked up earlier<br/>\n&gt; during compilation.<br/>\n<br/>\n </span></blockquote>I don&#39;t understand this statement, either, because runtime exceptions <br/>\nare not picked up during compilation, whatever &quot;picked up&quot; means. <br/>\nExceptions only occur when code executes.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; The recommended solution is to edit the excluded.properties file. In<br/>\n&gt; my case I&#39;ve added a new entry - excluded.9=test.* where &#39;test&#39; is my<br/>\n&gt; package name. This has had no effect and I wonder if I&#39;m doing the<br/>\n&gt; right thing.<br/>\n<br/>\n </span></blockquote>That is rarely necessary for test code; usually only for third party <br/>\ncode, such as JDBC drivers, that don&#39;t react well when reloaded. See the <br/>\nabove. I bet it&#39;s something your InfoRequestStore depends on. To test <br/>\nthis, comment out the declaration of that variable from your tests and <br/>\ntry running them.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a><br/>\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing</div>", 
+    "prevInTime": 12488, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1103219892", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12472, 
+    "headers": {
+        "inReplyToHeader": "PGNwanRpdCtudmM1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxQzFDQ0I0LjgwNzAwMDdAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNwanRpdCtudmM1QGVHcm91cHMuY29tPg=="
+    }
+}

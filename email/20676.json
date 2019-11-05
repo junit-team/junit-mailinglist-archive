@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 20677, 
+    "senderId": "3GKNhzZOIeSTRBIs4hiL-XwZ4BCW1NEFUZP-oqVWAgGbItQJKITL_OTgsFFieBWVSjslCuNSc0A6k8eKwpwe4SlB0Yx4zxp5", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit 3 suite setup tear down", 
+    "from": "David Beidle &lt;dabeidle@...&gt;", 
+    "authorName": "David Beidle", 
+    "msgSnippet": "Lars, It seems like the obvious suggestion is missing from this thread (or I at least missed it)... Since you re using JUnit 3, have you tried the TestSetup", 
+    "msgId": 20676, 
+    "profile": "akamaligroup", 
+    "topicId": 20668, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 69753388, 
+    "messageBody": "<div id=\"ygrps-yiv-770209523\">Lars,<br/>\n<br/>\nIt seems like the obvious suggestion is missing from this thread (or I  <br/>\nat least missed it)...<br/>\n<br/>\nSince you&#39;re using JUnit 3, have you tried the TestSetup decorator  <br/>\navailable in that version to provide one-time suite setUp and tearDown  <br/>\nmethods. For example:<br/>\n<br/>\n<br/>\n     public static Test suite(Class testClass) {<br/>\n         TestSetup suite = new junit.extensions.TestSetup(new  <br/>\nTestSuite(testClass)) {<br/>\n             protected void setUp() {<br/>\n                 // set up at the start o suite execution<br/>\n             }<br/>\n             protected void tearDown() {<br/>\n                 // tear down at the end of suite execution<br/>\n             }<br/>\n         };<br/>\n<br/>\n         return suite;<br/>\n     }<br/>\n<br/>\nI&#39;ve used this technique in a variety of scenarios to perform one-time  <br/>\ninitialization for a suite. I&#39;ve used it in test case base classes to  <br/>\nprovide similar behavior across derivative classes. In the example  <br/>\nabove, I used TestSetup as an anonymous class, but you could extend it  <br/>\nor just add additional methods to provide the behavior needed.<br/>\n<br/>\n-Dave Beidle<br/>\n  The aKamali Group, Inc.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Jul 10, 2008, at 8:37 AM, Joakim Ohlrogge wrote:<br/>\n<br/>\n&gt; It sounds from your description that you are using JUnit 3.8.x ? In<br/>\n&gt; that case it should not be too difficult to do by subclassing<br/>\n&gt; TestSuite. The problem is that your test will not work if you run them<br/>\n&gt; outside the suite (unless you cater for that in some clever way).<br/>\n&gt;<br/>\n&gt; Subclassing TestSuite in principle (have not tested this but the<br/>\n&gt; correct answer should be similar enough)<br/>\n&gt;<br/>\n&gt; NetworkTestSuite extends TestSuite {<br/>\n&gt; public run(TestResult result) {<br/>\n&gt; startNetwork();<br/>\n&gt; super.run(result);<br/>\n&gt; stopNetwork();<br/>\n&gt; }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; Then you can just use NetworkTestSuite in place of TestSuite in the<br/>\n&gt; root of the tests that need a running network (or whatever it was that<br/>\n&gt; you wanted like this:<br/>\n&gt;<br/>\n&gt; public static Test suite() {<br/>\n&gt;<br/>\n&gt; TestSuite suite= new NetworkTestSuite();<br/>\n&gt;<br/>\n&gt; suite.addTest(MoneyTest.class);<br/>\n&gt;<br/>\n&gt; return suite;<br/>\n&gt;<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; I hope this helps.<br/>\n&gt; /J<br/>\n&gt;<br/>\n&gt; On Wed, Jul 9, 2008 at 8:53 AM, lars &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:lars.carlsson@...\">lars.carlsson@...</a>&gt;  <br/>\n&gt; wrote:<br/>\n&gt; &gt; Hi<br/>\n&gt; &gt; At my company we have alot of automated test cases and in all our<br/>\n&gt; &gt; suite we have a setup testcase and a teardown test case where we  <br/>\n&gt; setup<br/>\n&gt; &gt; network connection that takes some time and can not be done in  <br/>\n&gt; every TC. ,<br/>\n&gt; &gt; But i think that there should exist a suite setup and a teardown and<br/>\n&gt; &gt; not be in a setup/teardown TC.<br/>\n&gt; &gt; Are there any why of doing this or how could i best be solve this by<br/>\n&gt; &gt; extending TestSuite?<br/>\n&gt; &gt;<br/>\n&gt; &gt; Regards Lars<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt;<br/>\n&gt; -- <br/>\n&gt; -----------------------------------------------------<br/>\n&gt; Joakim Ohlrogge<br/>\n&gt; Agical AB<br/>\n&gt; Västerlånggatan 79, 2 tr<br/>\n&gt; 111 29 Stockholm, SWEDEN<br/>\n&gt;<br/>\n&gt; Mobile: +46-708-754004<br/>\n&gt; Blog: johlrogge.wordpress.com<br/>\n&gt; E-mail: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joakim.ohlrogge@...\">joakim.ohlrogge@...</a><br/>\n&gt;<br/>\n&gt; <br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 20675, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1215705119", 
+    "canDelete": false, 
+    "nextInTopic": 20680, 
+    "prevInTopic": 20675, 
+    "headers": {
+        "inReplyToHeader": "PGI5ZWU1ZTQxMDgwNzEwMDczN3Y1MWU3NmJkeDYyNzc5OWEzYmY3YTNhZjRAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PEEwNDAwQzQwLUQxMEQtNDdBRS04NTNDLUNDNERBOEMyMTc5RUBpbmRyYS5jb20+", 
+        "referencesHeader": "PGc1MW44ZStmdTRyQGVHcm91cHMuY29tPiA8YjllZTVlNDEwODA3MTAwNzM3djUxZTc2YmR4NjI3Nzk5YTNiZjdhM2FmNEBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

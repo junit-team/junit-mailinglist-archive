@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 15720, 
+    "senderId": "1Qku5lMgk-1HU-s-VqX1etcUfSLRmst21Kztk029M2btntF0On4t7hUvnQk2UmomZO112zdfDck8uKVbiFiFGx6p522ZW3eiizlJByUZGjoIOg", 
+    "systemMessage": true, 
+    "subject": "Re: Auto-generating AllTests.java for each package?", 
+    "from": "&quot;daniel.brolund&quot; &lt;daniel.brolund@...&gt;", 
+    "authorName": "daniel.brolund", 
+    "msgSnippet": "Hello! We have a slightly different approach to solve the problem: In the Java mock framework rMock (available at http://rmock.sf.net) there is a", 
+    "msgId": 15719, 
+    "rawEmail": "Return-Path: &lt;daniel.brolund@...&gt;\r\nReceived: (qmail 915 invoked from network); 21 Dec 2005 21:48:13 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m33.grp.scd.yahoo.com with QMQP; 21 Dec 2005 21:48:13 -0000\r\nReceived: from unknown (HELO n4a.bullet.dcn.yahoo.com) (216.155.203.224)\n  by mta3.grp.scd.yahoo.com with SMTP; 21 Dec 2005 21:48:13 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [216.155.201.64] by n4.bullet.dcn.yahoo.com with NNFMP; 21 Dec 2005 21:47:47 -0000\r\nReceived: from [66.218.69.4] by mailer1.bullet.dcn.yahoo.com with NNFMP; 21 Dec 2005 21:47:47 -0000\r\nReceived: from [66.218.66.84] by mailer4.bullet.scd.yahoo.com with NNFMP; 21 Dec 2005 21:47:47 -0000\r\nX-Sender: daniel.brolund@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 38915 invoked from network); 21 Dec 2005 14:33:48 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m35.grp.scd.yahoo.com with QMQP; 21 Dec 2005 14:33:48 -0000\r\nReceived: from unknown (HELO n3a.bullet.scd.yahoo.com) (66.94.237.37)\n  by mta5.grp.scd.yahoo.com with SMTP; 21 Dec 2005 14:33:48 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.66.59] by n3.bullet.scd.yahoo.com with NNFMP; 21 Dec 2005 14:32:59 -0000\r\nReceived: from [66.218.66.91] by mailer8.bullet.scd.yahoo.com with NNFMP; 21 Dec 2005 14:32:59 -0000\r\nDate: Wed, 21 Dec 2005 14:32:59 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;dobp2r+g0pe@...&gt;\r\nIn-Reply-To: &lt;43A2E950.6070901@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;daniel.brolund&quot; &lt;daniel.brolund@...&gt;\r\nSubject: Re: Auto-generating AllTests.java for each package?\r\nX-Yahoo-Group-Post: member; u=251966505; y=1g5QMx7Uc9LZeQzg_7i9I-Y8xA1gsBmHYnwhmM-lF2kqfyOjfNOEe6s\r\nX-Yahoo-Profile: daniel.brolund\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 21 Dec 2005 21:47:47 -0000\r\n\r\nHello!\nWe have a slightly different approach to solve the problem:\nIn the J=\r\nava mock framework rMock (available at http://rmock.sf.net)\nthere is a &quot;sta=\r\nndalone-feature&quot; we call &quot;Dynamic Suites&quot;, with which\nyou build your test s=\r\nuite programmatically. E.g. an\nall-classes-in-the-project-path looks like t=\r\nhis:\n\npublic class AllTests extends DynamicTestSuite {\n  public static Test=\r\n suite() {\n    return new AllTests();\n  }\n  \n  public AllTests() {\n    supe=\r\nr(&quot;All tests&quot;);\n  }\n\n  protected void setupSuite() {\n    forEach(\n        i=\r\ns.clazz.assignableTo(TestCase.class)\n        .and(is.not(is.clazz.abstr()))=\r\n\n        .and(is.not(is.clazz.name(is.containing(&quot;$&quot;))))\n    )\n    .in(allC=\r\nlasses())\n    .perform(addAllToSuite);\n  }\n}  \n\nThis reads:\n&quot;For each item\n=\r\nin the allClasses() iterator\nthat \nis assignable to TestCase\nand \nis not ab=\r\nstract\nand \nwhere the class name doesn&#39;t contain the &quot;$&quot; string\nadd the ite=\r\nm to the suite&quot;\n\n\nRight now this approach has met our needs (run all tests =\r\nin a\nproject), but yours seem to require a different iterator provider than=\r\n\nallClasses(), e.g. allClassesInThisPackageRecursively() or\nallClassesInThi=\r\nsPackage().\n\nIf you need such an iterator or some other feature, please add=\r\n a\nfeature request at \nhttp://sourceforge.net/tracker/?group_id=3D139732&at=\r\nid=3D744309\nWe ususally release once a week, and user requests get highest =\r\npriority.\n\nYou can read more about dynamic suites on:\nhttp://rmock.sourcefo=\r\nrge.net/dynamicsuites.html\n\nCheers\nDaniel  \n\nhttp://www.agical.com\n\n--- In =\r\njunit@yahoogroups.com, jason r tibbetts &lt;tibbettj@v...&gt; wrote:\n&gt;\n&gt; I&#39;ve bee=\r\nn on an XDoclet kick lately, and I&#39;m considering writing a \n&gt; custom XDocle=\r\nt task that will automatically generate an AllTests class \n&gt; for each packa=\r\nge. Has anyone already done this, or is there a similar, \n&gt; non-XDoclet sol=\r\nution? It can be easily done by any scripting language, \n&gt; but I have an ul=\r\nterior motive to using XDoclet--I&#39;m looking for a\nsimple \n&gt; example to use =\r\nin tutorials and presentations.\n&gt;\n\n\n\n\n\n\n\n", 
+    "profile": "daniel.brolund", 
+    "topicId": 15707, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 251966505, 
+    "prevInTime": 15718, 
+    "contentTrasformed": false, 
+    "postDate": "1135175579", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15717, 
+    "headers": {
+        "inReplyToHeader": "PDQzQTJFOTUwLjYwNzA5MDFAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PGRvYnAycitnMHBlQGVHcm91cHMuY29tPg=="
+    }
+}

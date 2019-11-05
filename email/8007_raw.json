@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8008, 
+    "senderId": "XapRqKRUo_DVLyX33Q97rT10CxDH23kKpMyhdq9EPPU1eMqUfk9vOr0lYkIIAkgEP3QN7qW1Wvn-W2nj2Fs-L62zMFK8FWMC2KSk330aOg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does Static Invocation call setUp()/tearDown()?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... JUnit does this: setUp try { runTest } finally { tearDown } Whatever runTest does is a test . If you call five methods inside runTest, that s one test,", 
+    "msgId": 8007, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 9 May 2003 17:01:19 -0000\r\nReceived: (qmail 10685 invoked from network); 9 May 2003 17:01:19 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 9 May 2003 17:01:19 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta3.grp.scd.yahoo.com with SMTP; 9 May 2003 17:01:18 -0000\r\nReceived: from quincy ([24.103.238.50])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030509170117.HFPQ4557.fep02-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Fri, 9 May 2003 13:01:17 -0400\r\nMessage-ID: &lt;200305091301120711.0099C871@...&gt;\r\nIn-Reply-To: &lt;3EBB142E.1080808@...&gt;\r\nReferences: &lt;3EBB142E.1080808@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Fri, 09 May 2003 13:01:12 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Does Static Invocation call setUp()/tearDown()?\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.103.238.50] using ID &lt;jbrains@...&gt; at Fri, 9 May 2003 13:01:17 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt;So said quikdraw@... on 2003-05-08 --------------------=\r\n\n&gt;Howdy Folks,\n&gt;\n&gt;While I typically use dynamic invocation and TestSuite(s)=\r\n\n&gt;to define (and therefore invoke) my JUnit tests, I was under\n&gt;the impress=\r\nion from both the JUnit JavaDoc and from memory\n&gt;(as faulty as that can be.=\r\n.. &lt;sigh&gt;) that setUp() and tearDown()\n&gt;are called using both approaches.\n&gt;=\r\n\n&gt;However a question came up recently that if you specify the\n&gt;tests by ove=\r\nrriding the runTest() method as below (static\n&gt;invocation), that setUp() an=\r\nd tearDown() do not get called\n&gt;for every method, but only get called once.=\r\n\n&gt;\n&gt;protected void setUp()\n&gt;{\n&gt;    System.out.println(&quot;setUp()&quot;);\n&gt;}\n&gt;\n&gt;pro=\r\ntected void tearDown()\n&gt;{\n&gt;    System.out.println(&quot;tearDown()&quot;);\n&gt;}\n&gt;\n&gt;publ=\r\nic static void main(String[] args)\n&gt;{\n&gt;    TestCase tc =3D new MyTest(&quot;Test=\r\ning runTest()&quot;)\n&gt;    {\n&gt;       public void runTest()\n&gt;       {\n&gt;           =\r\n//--- These just print their name like setUp().\n&gt;           testDoOneThing(=\r\n);\n&gt;           testDoSomethingElse();\n&gt;       }\n&gt;    };\n&gt;    tc.run();\n&gt;}\n\n=\r\nJUnit does this:\n\nsetUp\ntry {\n    runTest\n}\nfinally {\n    tearDown\n}\n\nWhate=\r\nver runTest does is a &quot;test&quot;. If you call five methods inside runTest, that=\r\n&#39;s one test, even if you wanted it to be five.\n\n&gt;1) Am I doing something so=\r\n obviously wrong that I cannot see it?\n&gt;    (This is always possible! &lt;G&gt;)\n=\r\n\nIf you want setUp and tearDown to be called before and after each &quot;test&quot; m=\r\nethod, then you cannot override runTest to call them both. Create a TestSui=\r\nte.\n\n&gt;2) Do both static and dynamic invocation call setUp()/tearDown\n&gt;    b=\r\nefore/after each test?\n\nNot sure what you mean here, but as long as you don=\r\n&#39;t override runTest, then yes.\n\n&gt;3) Is it because I am not going through a =\r\nTestRunner? If so, how\n&gt;    would I modify the example to specify which tes=\r\nts, and then\n&gt;    invoke the TestRunner? By using TestSuite.addTest(&quot;testNa=\r\nme&quot;)?\n\nCreate a TestSuite rather than a TestCase.\n\nTake care.\n\n\nJ. B. Rains=\r\nberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that peop=\r\nle understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n=\r\n\n", 
+    "profile": "nails762", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 8006, 
+    "contentTrasformed": false, 
+    "postDate": "1052499672", 
+    "canDelete": false, 
+    "nextInTopic": 8008, 
+    "prevInTopic": 8005, 
+    "headers": {
+        "inReplyToHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNTA5MTMwMTEyMDcxMS4wMDk5Qzg3MUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4="
+    }
+}

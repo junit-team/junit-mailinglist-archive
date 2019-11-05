@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 9282, 
+    "senderId": "4I_wmCArg9KiM04xemrqB7CmbRToHX00orxf4vnHG3gCbYOeO_Cl4zTZTJedvllFt6brY7wKhxcgNw56uOGqg516iF8I8mcQypAGG3oU1Q", 
+    "systemMessage": false, 
+    "subject": "Re: Domain specific question", 
+    "from": "Paul Christmann &lt;java-junit@...&gt;", 
+    "authorName": "Paul Christmann", 
+    "msgSnippet": "... As has already been answered elsewhere, but I ll echo because I ve used it in my projects: Can the setup data.  I ve done it in either of two ways", 
+    "msgId": 9281, 
+    "topicId": 9274, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106325759, 
+    "messageBody": "<div id=\"ygrps-yiv-1568854502\">Venkatesh Prasad Ranganath wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; In simple words, if a chunk of logic embedded in a class requires large pieces of information to be setup, then how would one <br/>\n&gt; use JUnit or any unit testing framework in such cases?  <br/>\n<br/>\n </span></blockquote>As has already been answered elsewhere, but I&#39;ll echo because I&#39;ve used <br/>\nit in my projects: &quot;Can&quot; the setup data.  I&#39;ve done it in either of two <br/>\nways (Assume that Class B depends on the output of Class A):<br/>\na) Use a Mock object for class A that will respond to method invokations <br/>\nin ways that my test code will script - programmatically tell an <br/>\ninstance of A what it already did, rather than asking it to do something.<br/>\nb) Use an external representation (i.e., a File) that contains some real <br/>\noutput generated from an earlier step (of course, this doesn&#39;t make <br/>\nsense in all scenarios).  After you&#39;ve tested and verified A, serialize <br/>\nits results.  Keep those results along with your test code.  For Testing <br/>\nB, deserialize those results.<br/>\n<br/>\nEither way, you can test B using expected A output, not actual A output. <br/>\n  You don&#39;t need to run A to test B.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Even more, when instances of such classes go through state changes <br/>\n&gt; depending on interaction with other objects how do you instrument the test and run the test?<br/>\n<br/>\n </span></blockquote>This is the question that prompted me to reply.  I&#39;m currently fighting <br/>\na similar scenario that I am finding hard to test with JUnit.  I do not, <br/>\nthough, think that is a fault with JUnit (or TDD, though I&#39;m not sure <br/>\nthats relevant).  If there is a fault, I think its in my system design. <br/>\n  (Not sure yet, though).  It might just be that some things are harder <br/>\nto test than others.  And while I agree with Joe&#39;s premise about testing <br/>\nnot being &quot;hard&quot;, instead its just &quot;long&quot;, I do think some things are <br/>\nharder than others.<br/>\n<br/>\nHere&#39;s a rough sketch of what I&#39;m trying to build: a class that goes <br/>\nthrough state changes depending on interactions with other objects (and <br/>\nJB, I&#39;m still parsing your note on that topic from the tdd list).<br/>\n<br/>\nClass Under Test: ConnectionManager.  It sends bytes to a server (via <br/>\nHTTP).  If the server is unavailable, it stores the bytes for later <br/>\nsubmission and tells listeners about the unavailability.<br/>\n<br/>\nMy class has a method, getResponse(byte[]) which I&#39;m interested in <br/>\ntesting.  In particular, I want to make sure that the right things <br/>\nhappen when the HTTP server is unavailable.  So I&#39;ve ended up with <br/>\nextensive use of Mocks in my test case code:<br/>\na) A mock HTTP server that I configure to return a 404 error.<br/>\nb) A mock disk storage class that I configure to expect some bytes.<br/>\nc) A mock listener that I configure to expect a notification callback.<br/>\n<br/>\nI configure my ConnectionManager to use these mocks, then I issue my <br/>\ngetResponse call in the test code.  Then I verify that all of the mocks <br/>\nwere called as expected.  In the end, there is actually nothing to test <br/>\nwith the ConnectionManager itself.  The *only* thing I&#39;m testing is its <br/>\ninteraction with the other objects that I provided.<br/>\n<br/>\nIts a strategy that allows me to test one single object that relies on <br/>\nothers to do its work.  Its hard testing, and its some of the wort test <br/>\ncases that I have in my suite -- they are starting to look just like <br/>\nscripting language code (mock.doThis, mock.doThat, ...).  But:<br/>\na) The fact that its hard is not JUnits fault.  Its because I have a <br/>\nclass that is doing hard things.  So either I need to find ways to <br/>\nfurther refactor this class, or live with the fact that its hard.<br/>\nb) JUnit (and other tools) actually *enable* me to test this class in <br/>\nisolation.<br/>\n<br/>\nSo, I&#39;ll readily acknowledge that (from my experience) what you are <br/>\nasking about can be hard to do.  But its certainly possible.  And also <br/>\nin my experience, when testing something is hard, it often (but not <br/>\nalways) indicates that the class under test might need to be refactored <br/>\ninto something simpler.<br/>\n<br/>\n-- <br/>\nPC<br/>\n<br/>\nPaul Christmann<br/>\nPrior Artisans, LLC<br/>\nmailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:paul@...\">paul@...</a><br/>\n504-587-9072</div>", 
+    "prevInTime": 9280, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1062774237", 
+    "canDelete": false, 
+    "nextInTopic": 9285, 
+    "prevInTopic": 9280, 
+    "headers": {
+        "inReplyToHeader": "PGJqODAzZSRuMTkkMUBzZWEuZ21hbmUub3JnPg==", 
+        "messageIdInHeader": "PGJqYThqOCRlbzQkMUBzZWEuZ21hbmUub3JnPg==", 
+        "referencesHeader": "PGJqODAzZSRuMTkkMUBzZWEuZ21hbmUub3JnPg=="
+    }
+}

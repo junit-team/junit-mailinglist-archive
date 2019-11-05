@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 3426, 
+    "senderId": "3SD-S9ioY9TEfAKGaQKGivlEwHfA3j-ly_ERwyjYHdpSVMbrPAYYx5RkrheTMGajcgi3HWpjRrIt", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does the tear down of fixtures get fired if my test spawns a thread?", 
+    "from": "&lt;evought@...&gt;", 
+    "authorName": "evought@qlue.com", 
+    "msgSnippet": "I would imagine you have a race condition. teardown() is running because your testcase has finished (even though your thread is still running.). What is probly", 
+    "msgId": 3425, 
+    "profile": "eric_vought", 
+    "topicId": 3423, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1015214843\">I would imagine you have a race condition. teardown() is running because<br/>\nyour testcase has finished (even though your thread is still running.).<br/>\nWhat is probly happening is that the call to dl.lock() in your test method<br/>\nhappens before the call in your subthread. This, of course, succeeds<br/>\nimmediately and returns. When/if your thread gets to the dl.lock() call,<br/>\nit blocks because the lock is already held. Your testcase method returns<br/>\nand teardown is run().<br/>\n<br/>\nLook in the archives for earlier posts by me regarding testing threaded<br/>\ncode for some ways you can protect yourself from this kind of thing. You<br/>\nhave to be very certain that everything is going to run in the right<br/>\nsequence.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Mon, 3 Dec 2001 <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:ks558@...\">ks558@...</a> wrote:<br/>\n<br/>\n&gt; I have a test fixture that appears to be calling the tear down method<br/>\n&gt; as soon as my test method creates and spawns a thread.  This causes<br/>\n&gt; my test to fail.  Is this the desired effects of the test fixtures<br/>\n&gt; setup and tear down?  I thought setup was called before the method<br/>\n&gt; and tear down was called upon finishing the method?<br/>\n&gt;<br/>\n&gt; Here is what I do:<br/>\n&gt; package suncertify.test;<br/>\n&gt;<br/>\n&gt; /**<br/>\n&gt;  * TestDatabase<br/>\n&gt;  */<br/>\n&gt; import junit.framework.*;<br/>\n&gt; import suncertify.db.*;<br/>\n&gt; import java.util.*;<br/>\n&gt;<br/>\n&gt; public class TestDatabase extends TestCase<br/>\n&gt; {<br/>\n&gt;   public static Data d1 = null;<br/>\n&gt;   private static boolean isClient1Finished = false;<br/>\n&gt;   protected void setUp(){<br/>\n&gt;     isClient1Finished = false;<br/>\n&gt;     try {<br/>\n&gt;       System.err.println(&quot;Initialized dbase&quot;);<br/>\n&gt;       d1 =  new Data(&quot;./build/db.db&quot;);<br/>\n&gt;     } catch (Exception exc){<br/>\n&gt;       exc.printStackTrace();<br/>\n&gt;     }<br/>\n&gt;   }<br/>\n&gt;   protected void tearDown(){<br/>\n&gt;     d1 = null;<br/>\n&gt;     System.err.println(&quot;undid dbase...&quot;);<br/>\n&gt;   }<br/>\n&gt;<br/>\n&gt;   public void testConcurrentUsers(){<br/>\n&gt;     try {<br/>\n&gt;       isClient1Finished = false;<br/>\n&gt;      if(d1==null) TestCase.fail(&quot;Database is null in the beginning,<br/>\n&gt; but don&#39;t know why&quot;);<br/>\n&gt;<br/>\n&gt;       // client2 gets lock.<br/>\n&gt;       new Thread(new Runnable(){<br/>\n&gt;         public void run(){<br/>\n&gt;           try {<br/>\n&gt;             System.err.println(&quot;In second client...&quot;);<br/>\n&gt;             if(d1==null) TestCase.fail(&quot;Database is null, but don&#39;t<br/>\n&gt; know why&quot;);<br/>\n&gt;             d1.lock(1);<br/>\n&gt;             Thread.sleep(1000);<br/>\n&gt;             d1.unlock(1);<br/>\n&gt;             isClient1Finished = true;<br/>\n&gt;           } catch (Exception exc){<br/>\n&gt;             exc.printStackTrace();<br/>\n&gt;             TestCase.fail(&quot;Second Client failed due to unexpected<br/>\n&gt; exception.&quot;);<br/>\n&gt;           }<br/>\n&gt;         }<br/>\n&gt;       }).start();<br/>\n&gt;       // client1 gets lock<br/>\n&gt;       d1.lock(1);<br/>\n&gt;       TestCase.assertTrue(isClient1Finished);<br/>\n&gt;     } catch (Exception e){<br/>\n&gt;       e.printStackTrace();<br/>\n&gt;       TestCase.fail(&quot;Test Concurrent Users failed for unknown<br/>\n&gt; reason.&quot;);<br/>\n&gt;     }<br/>\n&gt;   }<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; I get the following output:<br/>\n&gt; Initialized dbase<br/>\n&gt; undid dbase...<br/>\n&gt; In second client...<br/>\n&gt; junit.framework.AssertionFailedError: Database is null, but don&#39;t<br/>\n&gt; know why<br/>\n&gt;     at junit.framework.Assert.fail(Assert.java:51)<br/>\n&gt;     at suncertify.test.TestDatabase$1.run(TestDatabase.java:82)<br/>\n&gt;     at java.lang.Thread.run(Thread.java:484)<br/>\n&gt;<br/>\n&gt; Any help would be appreciated...<br/>\n&gt;<br/>\n&gt; -brent fisher<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n<br/>\n-- <br/>\nEric Vought<br/>\nChief Technical Officer - QLUE Consulting, Inc.<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:evought@...\">evought@...</a> toll-free: 888-771-3538  RTP area: 919-816-9901 </span></blockquote></div>", 
+    "prevInTime": 3424, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1007404938", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 3423, 
+    "headers": {
+        "inReplyToHeader": "PDl1Z2MyaCtoMzJ2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMzAuMDExMjAzMTMzNzUwMC4xMTgxNi0xMDAwMDBAYnJhaW4ucWx1ZS1sYW4+"
+    }
+}

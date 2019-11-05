@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 1842, 
+    "senderId": "mPh04Ys7ndRT5M-al1zbZKK9s8QasLcSnHAn5d0zOqZvgYVnyZVnFNI8Es817G21_1B2Tl1vvcyYnkYLZBxN1hZbVn4", 
+    "systemMessage": false, 
+    "subject": "Re: method dependency", 
+    "from": "Keith Ray &lt;keith.ray@...&gt;", 
+    "authorName": "Keith Ray", 
+    "msgSnippet": "... This could be a place for non-JUnit assertions in your code. [I subscribe to the Heresy that XP can be enhanced by design-by-contract, using assertions in", 
+    "msgId": 1841, 
+    "topicId": 1823, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1277669484\">\n<html>\n<head>\n \n \n<title>Re: method dependency</title>\n</head>\n \n\n<p><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; In my class, I have methods A(),B(), C(), where A() must </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; be called before B(), B() before C(). I have individual </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; test cases for each method. In order to run the tests in </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; the specified order, I must arrange the actual methods in </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; the appropriate order. I know this is not a good thing, </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; so how do I avoid it? I really hate to lump them into one </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; testcase. </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; Thanks,</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp; &gt; Scott</font>\n</p>\n\n<p><font SIZE=\"2\">This could be a place for non-JUnit assertions in your code. [I subscribe to the Heresy that XP can be enhanced by design-by-contract, using assertions in addition to unit testing.]</font></p>\n\n<p><font SIZE=\"2\">boolean aWasCalled = false;</font>\n<br><font SIZE=\"2\">boolean bWasCalled = false;</font>\n<br><font SIZE=\"2\">boolean cWasCalled = false;</font>\n</p>\n\n<p><font SIZE=\"2\">void a()</font>\n<br><font SIZE=\"2\">{</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; Assert.isFalse( bWasCalled );</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; Assert.isFalse( cWasCalled );</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; aWasCalled = true;</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; ....</font>\n<br><font SIZE=\"2\">}</font>\n</p>\n\n<p><font SIZE=\"2\">void b()</font>\n<br><font SIZE=\"2\">{</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; Assert.isTrue( aWasCalled );</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; Assert.isFalse( cWasCalled );</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; bWasCalled = true;</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; ....</font>\n<br><font SIZE=\"2\">}</font>\n</p>\n\n<p><font SIZE=\"2\">void c()</font>\n<br><font SIZE=\"2\">{</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; Assert.isTrue( aWasCalled );</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; Assert.isTrue( bWasCalled );</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp; ....</font>\n<br><font SIZE=\"2\">}</font>\n</p>\n\n<p><font SIZE=\"2\">Now your code communicates that a() must be called before b(), which must be called before c(). This also tests the unit tests, in that your non-JUnit Assert class methods should throw an unchecked exception if b() is called before a(), or c() is called before b() and a().</font></p>\n\n<p><font SIZE=\"2\">While people are calling this a &#39;code smell&#39;, does the following smell? </font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp;&nbsp; a() means &quot;open file&quot;</font>\n<br><font SIZE=\"2\">&nbsp;&nbsp;&nbsp;&nbsp; b() means &quot;write to file&quot;</font>\n<br><font SIZE=\"2\">&nbsp;and c() means &quot;close file&quot;.</font>\n</p>\n\n<p><font SIZE=\"2\">However, since the three methods apparently work together, they probably should be tested together.</font>\n</p>\n\n \n</html></div>", 
+    "prevInTime": 1840, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "994780490", 
+    "canDelete": false, 
+    "nextInTopic": 1842, 
+    "prevInTopic": 1827, 
+    "headers": {
+        "messageIdInHeader": "PEQ5RjZCOURBQkE0Q0FFNEI5Mjg1MDI1MkM1MjM4M0FCMDEwMUY3NkZAZXgtZW5nLWNvcnA+"
+    }
+}

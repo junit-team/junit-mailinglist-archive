@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 22768, 
+    "senderId": "JmxXSVMlQL1KvbwKGW1kbMN4OK0FRwXhzlejZGTq7scbEn51c5M5FVe4uWROv9of3_4UHeYD9sBKtr3PlA", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Large, hierarchical, randomized test suites: how to not\t run out of memory?", 
+    "from": "allamistakeo18@...", 
+    "authorName": "allamistakeo18@mac.com", 
+    "msgSnippet": "I ve thought twice about your initial suggestion to use Theories and DataPoints. Conceptually, this is the functionality that I am looking for. But I don t", 
+    "msgId": 22767, 
+    "topicId": 22741, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 449575965, 
+    "messageBody": "<div id=\"ygrps-yiv-967965991\">I&#39;ve thought twice about your initial suggestion to use Theories and DataPoints. Conceptually, this is the functionality that I am looking for. But I don&#39;t want to have to instantiate all DataPoints at once. So, I figured out a simple hack: the DataPoints should be fake data points. The only thing that matters is their number. Then, the real (expensive) data points should be instantiated one by one in the @Before method. This looks like the following: <br/>\n<br/>\n@RunWith(Theories.class)<br/>\npublic class TestClass {<br/>\n<br/>\n\t@DataPoints<br/>\n\tpublic static int[] runs () {<br/>\n\t\treturn new int [1000];<br/>\n\t}<br/>\n<br/>\n\t@Before<br/>\n\tpublic void setUp() {<br/>\n\t\t// Instantiate the random data points<br/>\n\t}<br/>\n<br/>\n\t@After<br/>\n\tpublic void tearDown() {<br/>\n\t\t// Free resources<br/>\n\t}<br/>\n<br/>\n\t@Theory<br/>\n\tpublic void testMethod(int unused) {<br/>\n\t\t// Run the test<br/>\n\t}<br/>\n}<br/>\n<br/>\nHowever, there are still 3 issues with this approach: <br/>\n<br/>\n1) If TestClass contains multiple Theories, they are all run the same number of times (1000). I don&#39;t see how one could easily enforce a specific number of runs for each Theory. <br/>\n<br/>\n2) JUnit still reports the method testMethod as one entity, instead of breaking it down into 1000 runs, and terminates after the very first failed run. I&#39;d like to have a more detailed report. <br/>\n<br/>\n3) I am struggling with what appears to be a bug in JUnit when testMethod takes in other (real) data points. Then, regardless of their types, JUnit attempts to feed them with elements of the &quot;runs&quot; array of DataPoints. For instance: <br/>\n<br/>\n@RunWith(Theories.class)<br/>\npublic class TestClass {<br/>\n<br/>\n\t@DataPoints<br/>\n\tpublic static int[] runs () {<br/>\n\t\treturn new int [1000];<br/>\n\t}<br/>\n<br/>\n\t@DataPoint<br/>\n\tpublic static Class class = TestClass.class;<br/>\n<br/>\n\t@Theory<br/>\n\tpublic void testMethod(int unused, Class used) {<br/>\n\t\tSystem.out.println(used.getName());<br/>\n\t}<br/>\n}<br/>\n<br/>\nThis test fails because JUnit attempts to substitute &quot;used&quot; with runs[0]: <br/>\n<br/>\norg.junit.experimental.theories.internal.ParameterizedAssertionError: testMethod(runs[0], runs[0])<br/>\n<br/>\nWhy is JUnit doing this? I&#39;m seeing this with both JUnit 4.5 and 4.8.1. <br/>\n<br/>\nThanks again for your help <br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 22766, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1276448280", 
+    "canDelete": false, 
+    "nextInTopic": 22772, 
+    "prevInTopic": 22760, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGlrRzhEZXVLa1RnMW4waWh2SU14bHBkR2tKUFYzNEJRSFYwM1hDTUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PDUyNTU4NzFELUM2NDQtNEMwOC05MkYxLUQwQ0Y3NDIzODA2OUBtYWMuY29tPg==", 
+        "referencesHeader": "PDBDMTk3RUM0LTM3QzgtNDM3NS05MjM1LTkzQzU0MjI5REM5OEBtYWMuY29tPiA8QUFOTGtUaWtHOERldUtrVGcxbjBpaHZJTXhscGRHa0pQVjM0QlFIVjAzWENNQG1haWwuZ21haWwuY29tPg=="
+    }
+}

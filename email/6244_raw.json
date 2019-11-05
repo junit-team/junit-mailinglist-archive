@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 6245, 
+    "senderId": "XOS4gKyu_kTQsbBYEC-n1-wrFX63deneqMbeSvASgjykFs-k1ch1CTYJPJuMCvjqRY_atqvJv3w5S-KKoul2gsfnpgszEEngBpCXvr1-5idUc35tvXE2-p8TxocGVkA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Testing a blocking method", 
+    "from": "&quot;Strebel, Dr. Oliver&quot; &lt;Oliver.Strebel@...&gt;", 
+    "authorName": "Strebel, Dr. Oliver", 
+    "msgSnippet": "Hi Herbert! Just a rough idea: call reply = bus.request(-10); in a separate thread. Control the thread within your Unit test. If the thread doesn t complete", 
+    "msgId": 6244, 
+    "rawEmail": "Return-Path: &lt;Oliver.Strebel@...&gt;\r\nX-Sender: Oliver.Strebel@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 20 Nov 2002 17:01:07 -0000\r\nReceived: (qmail 4866 invoked from network); 20 Nov 2002 17:01:06 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m9.grp.scd.yahoo.com with QMQP; 20 Nov 2002 17:01:06 -0000\r\nReceived: from unknown (HELO purveyor6.dresdnerbank.de) (193.194.7.52)\n  by mta3.grp.scd.yahoo.com with SMTP; 20 Nov 2002 17:01:06 -0000\r\nReceived: from ffz00egp.wwz0me.mail.dresdner.net (unverified) by purveyor6.dresdnerbank.de\n (Content Technologies SMTPRS 4.2.5) with ESMTP id &lt;T5eaf04fb90c1c20734167@...&gt; for &lt;junit@yahoogroups.com&gt;;\n Wed, 20 Nov 2002 18:01:05 +0100\r\nReceived: by ffz00egp.wwz0me.mail.dresdner.net with Internet Mail Service (5.5.2653.19)\n\tid &lt;VAATA981&gt;; Wed, 20 Nov 2002 18:01:04 +0100\r\nMessage-ID: &lt;945A65BD3EBAD511B6BA00508B6FA6C81708F2@FFZ00ZAD&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Testing a blocking method\r\nDate: Wed, 20 Nov 2002 18:00:56 +0100\r\nReturn-Receipt-To: &quot;Strebel, Dr. Oliver&quot;\n\t &lt;Oliver.Strebel@...&gt;\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: &quot;Strebel, Dr. Oliver&quot; &lt;Oliver.Strebel@...&gt;\r\nX-Yahoo-Group-Post: member; u=26983931\r\nX-Yahoo-Profile: strebel17\r\n\r\nHi Herbert!\n\nJust a rough idea: call \n\nreply =3D bus.request(-10); \n\nin a s=\r\neparate thread. Control the thread within your Unit test. \nIf the thread do=\r\nesn&#39;t complete within a timeout intervall, kill it\nand throw an exception.\n=\r\n\nMit freundlichem Gru=DFe\n\nDr. Oliver Strebel\n\nCC RCO Treasury Control\nTige=\r\nr Project\n \nThe opinions herein are my own and do not necessarily reflect t=\r\nhose of\nDresdner Bank AG. \n\n-----Original Message-----\nFrom: herbert.helmst=\r\nreit@...\n[mailto:herbert.helmstreit@...]\nSent: Mittwo=\r\nch, 20. November 2002 17:28\nTo: junit@yahoogroups.com\nSubject: [junit] Test=\r\ning a blocking method\n\n\nHello everybody\n\nWe have a method called String req=\r\nuest(long timeout)\nThis method returns after timeout milliseconds with null=\r\n result (bad case)\nor after short time with a result. (good case)\n\nWe found=\r\n that negative values for timeout are another reason for a failure.\nThey ar=\r\ne treated like maxlong - abs(timeout), causing the method to block.\nIn this=\r\n case an Exception should be thrown.\nHow can I produce a failure with jUnit=\r\n, if the Exception is not thrown?\nI tried it like this:\n\n...\ntry\n{\n      Sy=\r\nstem.out.println(&quot;*** Request w. -10 &quot;);\n      reply =3D bus.request(-10);\n=\r\n      fail(&quot;negative timeout was used.&quot;);\n}\ncatch (Exception expect)\n{\n    =\r\n  System.out.println(&quot;Detected bad argument &quot;+expect);\n}\nassertNull(reply);=\r\n\n...\n\nJUnit hangs in the request method with a green bar until the year 250=\r\n0 or\nso.\nHow can I bring it to fail?\n\nThank you for any tips!\n\nHerbert\n\n=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n Dipl.-Phys. Herbert He=\r\nlmstreit\n Systema GmbH\n Schikanederstr. 2b - Posthof\n D - 93053 Regensburg\n=\r\n Tel.: ++941/78 39 2-36\n Fax.: ++941/78 39 2-72\n e-mail: herbert.helmstreit=\r\n@...\n http://www.systemagmbh.de\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D\n\n\n\n\n\n\nTo unsubscribe from this group, send an emai=\r\nl to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is sub=\r\nject to http://docs.yahoo.com/info/terms/ \n\n\n", 
+    "profile": "strebel17", 
+    "topicId": 6242, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 26983931, 
+    "prevInTime": 6243, 
+    "contentTrasformed": false, 
+    "postDate": "1037811656", 
+    "canDelete": false, 
+    "nextInTopic": 6245, 
+    "prevInTopic": 6243, 
+    "headers": {
+        "messageIdInHeader": "PDk0NUE2NUJEM0VCQUQ1MTFCNkJBMDA1MDhCNkZBNkM4MTcwOEYyQEZGWjAwWkFEPg=="
+    }
+}

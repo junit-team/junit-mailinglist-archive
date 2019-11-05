@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 15, 
+    "nextInTime": 24149, 
+    "senderId": "taQf36SMUEeLuzIY5fKoJBDNHcAzUiBXOEgfTid6cPsEA-cEoqlzMI_gU1WWHEQuEfq4DvlGHeoGbDR23g5cNNkJlw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Custom MethodSorter", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Sorry to skip back to the top question. As many people point out, if you re doing this because test B only operates as expected if test A runs first, don t do", 
+    "msgId": 24148, 
+    "rawEmail": "Return-Path: &lt;saff@...&gt;\r\nX-Sender: saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 73008 invoked from network); 6 Dec 2012 15:40:40 -0000\r\nX-Received: from unknown (98.137.35.162)\n  by m14.grp.sp2.yahoo.com with QMQP; 6 Dec 2012 15:40:40 -0000\r\nX-Received: from unknown (HELO mail-ie0-f169.google.com) (209.85.223.169)\n  by mta6.grp.sp2.yahoo.com with SMTP; 6 Dec 2012 15:40:40 -0000\r\nX-Received: by mail-ie0-f169.google.com with SMTP id c14so10003070ieb.28\n        for &lt;junit@yahoogroups.com&gt;; Thu, 06 Dec 2012 07:40:39 -0800 (PST)\r\nX-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\n        d=google.com; s=20120113;\n        h=mime-version:in-reply-to:references:from:date:message-id:subject:to\n         :content-type:x-gm-message-state;\n        bh=uRfcjYv50sop+dydeywvseMwFOn1TpXv/+O1rq1pPIo=;\n        b=PByuYZk1bH41RoreaEhXteuoGvwPvBSe+JJWoW0NgOm8zXshkx/Xhzd7GT7qsZLCJz\n         NR0mk1FgzO9wLDrwmu05N2sW/DYASEgiSxaJsyy3YNtGcNS4IY5BLXRf2uwDr2jBzlKl\n         nyi96mIgcQQUMOmcEFRrUvhCGS+AFmFEYNJWJ60ZeBEd2tXQHyTj89x4j4cbd9rxyRqG\n         eu9vS0ffrkjzRys/zHw1WlvVrfC367QW5fQA3lOJfsQa1bmWd8coh43QamCNn48R52t6\n         /YKOZr1EX3ZWe+LnZ0GVLqrmz8vwWaZmDbdcQV/BTl04XshL34FrlSNGlb9NqjWc9cpK\n         2b7g==\r\nX-Received: by 10.50.0.168 with SMTP id 8mr1870423igf.36.1354808439797; Thu, 06\n Dec 2012 07:40:39 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.231.250.132 with HTTP; Thu, 6 Dec 2012 07:40:19 -0800 (PST)\r\nIn-Reply-To: &lt;CAHJmSV_C=HwYYtZMAYT5q9Oko=6m-gvVTZMi9nyBosTDrvQ=3g@...&gt;\r\nReferences: &lt;CAHJmSV_C=HwYYtZMAYT5q9Oko=6m-gvVTZMi9nyBosTDrvQ=3g@...&gt;\r\nDate: Thu, 6 Dec 2012 10:40:19 -0500\r\nMessage-ID: &lt;CALrw-PzcyoAh+EnbMVTteyyF3zFC9=u0=mMNh=AToqbkAxTOEQ@...&gt;\r\nTo: junit@yahoogroups.com\r\nX-Gm-Message-State: ALoCoQmflbB4mKTMFxNH97lEzUWFF9mABlFwZIxLfGynrRsclOg/rznhhi0JQb2DoTTi/WlbjuaJ9I1sPjjs3dKKTx3KylGhtyeMbqHumlMCKcZGbpRo50E6a5hpkwV08gG2lp9YHV13CP2GfN/r6je826qVrgVTLCuGxDLAYdTNf0YqmndOcYDlLMRD4GSwR6mgf0kULoP8\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;saff@...&gt;\r\nSubject: Re: [junit] Custom MethodSorter\r\nX-Yahoo-Group-Post: member; u=525765722; y=EaTh8iMWrlK310CIFEjQJKjOzehtMSeLpoyu1ApSOsXBvv07fXHsAEuq9cHjHKIVAWOFnsO9RiroNA8\r\nX-Yahoo-Profile: saffatgoogle\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nSorry to skip back to the top question.\n\nAs many people point out, if you&#39;r=\r\ne doing this because test B only operates\nas expected if test A runs first,=\r\n don&#39;t do that.  There are lots of ways to\navoid that, and I&#39;m happy to tal=\r\nk about it.\n\nOn the other hand, if the reason you&#39;re doing this is to order=\r\n independent\ntests in a way that puts fast or often-failing tests near the =\r\nbeginning of\na run in order to enhance feedback time, I totally understand =\r\nwhat you&#39;re\ngoing for, so let&#39;s pretend that&#39;s why you want to do it.\n\nDon&#39;=\r\nt use MethodSorter.  It&#39;s at a lower implementation level than you\nlikely w=\r\nant.\n\nInstead, write a custom runner:\n\npublic class Sorted extends Runner {=\r\n\n  final Runner mDelegate;\n\n  public SortedRunner(Class&lt;?&gt; testClass) {\n   =\r\n mDelegate =3D createDelegate(testClass);\n    mDelegate.sort(createSorter(t=\r\nestClass));\n  }\n\n  public Description getDescription() {\n     return mDeleg=\r\nate.getDescription():\n  }\n\n  public void run(RunNotifier notifier) {\n     m=\r\nDelegate.run(notifier);\n  }\n\n  // ...\n}\n\nNow, you just have to define creat=\r\neDelegate(...) and createSorter(...).\n For a fully general solution, you co=\r\nuld make new annotations, to enable:\n\n@RunWith(Sorted.class)\n@SortedRunWith=\r\n(JUnit4.class)\npublic class MyTest {\n  @Sorter public static final Sorter m=\r\nySorter =3D new MyCustomSorter();\n}\n\nIf you (or anyone listening) wanted to=\r\n take a go at making a pull request\nto add something like that to the core,=\r\n I think it would be useful.\n\nHowever, to just get your job done, you might=\r\n go ahead and hard-code the\nparticular Runner and Sorter that you want.\n\nGo=\r\nod luck,\n\n   David\n\nOn Wed, Dec 5, 2012 at 7:27 AM, Eirik Lygre &lt;eirik.lygr=\r\ne@...&gt; wrote:\n\n&gt; **\n&gt;\n&gt;\n&gt; I&#39;m looking at creating my own MethodSorter=\r\n. Is there documentation on how\n&gt; to do that, and is it even possible?\n&gt;\n&gt; =\r\n--\n&gt; Eirik\n&gt;\n&gt; There is no high like a tango high\n&gt; There is no low like a =\r\ntango low\n&gt;\n&gt; [Non-text portions of this message have been removed]\n&gt;\n&gt;  \n&gt;=\r\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "saffatgoogle", 
+    "topicId": 24135, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 525765722, 
+    "prevInTime": 24147, 
+    "contentTrasformed": false, 
+    "postDate": "1354808419", 
+    "canDelete": false, 
+    "nextInTopic": 24149, 
+    "prevInTopic": 24147, 
+    "headers": {
+        "inReplyToHeader": "PENBSEptU1ZfQz1Id1lZdFpNQVlUNXE5T2tvPTZtLWd2VlRaTWk5bnlCb3NURHJ2UT0zZ0BtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBTHJ3LVB6Y3lvQWgrRW5iTVZUdGV5eUYzekZDOT11MD1tTU5oPUFUb3Fia0F4VE9FUUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBSEptU1ZfQz1Id1lZdFpNQVlUNXE5T2tvPTZtLWd2VlRaTWk5bnlCb3NURHJ2UT0zZ0BtYWlsLmdtYWlsLmNvbT4="
+    }
+}

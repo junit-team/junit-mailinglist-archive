@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10587, 
+    "senderId": "JO6tjBQczTG4nvq6hIRB2HS_TXX5Jdt0jT47sR-NdoMtxAedLd8wy8SN5zSAvWIDR55TmlCQTGyLdK1nFTYMfuxwfN_JLwtKN1WxJIHnPQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Can&#39;t add an object to a TestSuite?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I think you are reimplementing JUnit. You are trying to use a Parameterized Test Case: a test case whose fixture is assigned by the outside, rather than on", 
+    "msgId": 10586, 
+    "profile": "nails762", 
+    "topicId": 10580, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-372506308\">natemc47 wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; JB,<br/>\n&gt; <br/>\n&gt; Thanks for your quick reply.  Unfortunately, I get the same error when I <br/>\n&gt; change new <br/>\n&gt; FooTest() to FooTest.suite().  I&#39;m using JUnit 3.8.1 if that matters. <br/>\n&gt;  <br/>\n&gt; After a peek at the JUnit source, I think we need a completely different <br/>\n&gt; Test <br/>\n&gt; implementation for this so we can write <br/>\n&gt;  <br/>\n&gt;     public static final class BarTest extends ObjectTestSuite { ... } <br/>\n&gt;  <br/>\n&gt; Here&#39;s a first draft below.  Though far from complete, it works for my <br/>\n&gt; trivial <br/>\n&gt; example.  What do you think? <br/>\n<br/>\n </span></blockquote>I think you are reimplementing JUnit.<br/>\n<br/>\nYou are trying to use a Parameterized Test Case: a test case whose <br/>\nfixture is assigned by the outside, rather than on the inside. The <br/>\nstandard pattern for that is as follows.<br/>\n<br/>\n1. Add a constructor taking your fixture data.<br/>\n2. Have the new constructor invoke super(testName), where testName is <br/>\neither a parameter of the new constructor or a name that you compute on <br/>\nthe spot.<br/>\n3. Add a suite() method that provides the fixture data for each test.<br/>\n4. Override runTest() to implement the one and only one test for each <br/>\nrow of fixture data.<br/>\n<br/>\nIf you need more than one test for each fixture row, then the solution <br/>\nis more complicated. Use FIT instead, or wait for my book.<br/>\n<br/>\nGoing back to your code, do this (+ add line, - remove line):<br/>\n<br/>\n<blockquote><span title=\"ireply\">  &gt;  &gt; &gt; import junit.framework.Test;<br/>\n &gt;  &gt; &gt; import junit.framework.TestCase;<br/>\n &gt;  &gt; &gt; import junit.framework.TestSuite;<br/>\n &gt;  &gt; &gt; import junit.textui.TestRunner;<br/>\n &gt;  &gt; &gt;<br/>\n &gt;  &gt; &gt; public class FooTest extends TestCase {<br/>\n &gt;  &gt; &gt;     public static void main(final String[] args) {<br/>\n </span></blockquote>+              TestRunner.run(FooTest.suite());<br/>\n-              TestRunner.run(new FooTest());<br/>\n<blockquote><span title=\"ireply\">  &gt;  &gt; &gt;     }<br/>\n &gt;  &gt; &gt;<br/>\n &gt;  &gt; &gt;     public static Test suite() {<br/>\n &gt;  &gt; &gt;         final TestSuite suite = new TestSuite();<br/>\n &gt;  &gt; &gt;         suite.addTest(new BarTest(5));<br/>\n &gt;  &gt; &gt;         return suite;<br/>\n &gt;  &gt; &gt;     }<br/>\n &gt;  &gt; &gt;<br/>\n &gt;  &gt; &gt;     public static final class BarTest extends TestCase {<br/>\n &gt;  &gt; &gt;         public BarTest(final String testName, final int x) {<br/>\n </span></blockquote>+                  super(testName);<br/>\n                    this.x = x;<br/>\n                }<br/>\n<br/>\n-              public void testBar() { System.out.println(x); }<br/>\n+              protected void runTest() {<br/>\n                    // Implement test here<br/>\n                }<br/>\n<br/>\n<blockquote><span title=\"ireply\">  &gt;  &gt; &gt;         private final int x;<br/>\n &gt;  &gt; &gt;     }<br/>\n &gt;  &gt; &gt; }<br/>\n<br/>\n </span></blockquote>Explanation: at runtime no one is setting the test method name, so it is <br/>\nnull. Then the test runner tries to invoke the test method named &quot;null&quot; <br/>\n(or the null method -- it&#39;s one or the other) and it fails as you saw.<br/>\n<br/>\nI think you can agree that the above changes are much less obtrusive <br/>\nthan reimplementing the automatic test collecting scheme for JUnit&#39;s <br/>\ntest runners.<br/>\n<br/>\nAs I said earlier, if you have more data-driven suites like this, then <br/>\nuse FIT or FitNesse for testing instead. No law says FIT is just for <br/>\nCustomer Tests.<br/>\n-- <br/>\nJ. B. Rainsberger,<br/>\nDiaspar Software Services<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com\">http://www.diasparsoftware.com</a> :: +1 416 791-8603<br/>\nLet&#39;s write software that people understand</div>", 
+    "prevInTime": 10585, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1078345445", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10585, 
+    "headers": {
+        "inReplyToHeader": "PGMyNTc3Nitwcm5uQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwNDYzRUU1LjYwNzA1MDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGMyNTc3Nitwcm5uQGVHcm91cHMuY29tPg=="
+    }
+}

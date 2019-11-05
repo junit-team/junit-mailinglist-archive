@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 19284, 
+    "senderId": "WJE9NTLQ58TfIGm6vbcQu5YNWxVSqYowi7ZrTcEurS4vPldhgIQnQ6_M17kyXwwSBQg5KiRkWsMbaQQgffTImpfAxyJ81XlR5iP4lIdoAeJXqg", 
+    "systemMessage": false, 
+    "subject": "Re: Custom suites with filter", 
+    "from": "&quot;matthiasluebken&quot; &lt;matthias.luebken@...&gt;", 
+    "authorName": "matthiasluebken", 
+    "msgSnippet": "Hi David, hi Johannes after fooling around with some JUnit and ClasspathSuite (thanks Johannes) I implemented my own Suite. I just thought there might be a ", 
+    "msgId": 19283, 
+    "profile": "matthiasluebken", 
+    "topicId": 19276, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 77212083, 
+    "messageBody": "<div id=\"ygrps-yiv-712436150\">Hi David, hi Johannes<br/>\n<br/>\nafter fooling around with some JUnit and ClasspathSuite (thanks<br/>\nJohannes) I implemented my own Suite. I just thought there might be a<br/>\nmore standard way to use filters.<br/>\n<br/>\nThanks for your replies.<br/>\n<br/>\nMatthias<br/>\n----<br/>\nMy implementation:<br/>\nA CategorySuite that filters all TestSuites containing the appropriate<br/>\ncategory.<br/>\n<br/>\nA Suite with just Unit-Tests would be:<br/>\n@RunCategory(&quot;unit&quot;)<br/>\n@SuiteClasses( { MyTest.class })<br/>\n@RunWith(CategorySuite.class)<br/>\npublic class UnitTests {<br/>\n}<br/>\n<br/>\nThe CategorySuite extends Suite from Junit:<br/>\npublic class CategorySuite extends Suite {<br/>\n    <br/>\n    @Retention(RetentionPolicy.RUNTIME)<br/>\n    @Target(ElementType.TYPE)<br/>\n    public @interface RunCategory {<br/>\n<br/>\n        /** The category name. */<br/>\n        String value();<br/>\n    }<br/>\n<br/>\n    /**<br/>\n     * Internal use only.<br/>\n     */<br/>\n    public CategorySuite(Class&lt;?&gt; klass) throws InitializationError {<br/>\n        super(klass);<br/>\n        <br/>\n        try {<br/>\n            filter(new CategoryFilter(getCategory(klass)));<br/>\n        } catch (NoTestsRemainException e) {<br/>\n            //No Test? No Filter.<br/>\n        }<br/>\n    }<br/>\n<br/>\n    private static String getCategory(Class&lt;?&gt; klass) throws<br/>\nInitializationError {<br/>\n        RunCategory category = klass.getAnnotation(RunCategory.class);<br/>\n        if (category == null)<br/>\n            throw new InitializationError(String.format(&quot;class &#39;%s&#39;<br/>\nmust have a RunCategory annotation&quot;,<br/>\n                    klass.getName()));<br/>\n        return category.value();<br/>\n    }<br/>\n}</div>", 
+    "prevInTime": 19282, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1176449112", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19282, 
+    "headers": {
+        "inReplyToHeader": "PGV2a3Y4NCs3ZDNzQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGV2bmI4bytlcDhhQGVHcm91cHMuY29tPg=="
+    }
+}

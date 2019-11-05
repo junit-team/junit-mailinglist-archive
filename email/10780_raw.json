@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 10781, 
+    "senderId": "5tvbb2CM-wKaqgTV2BFuCn_ZQLbjPJrnPohbJCnlFXOT5kxj2e8arWWR3VHjw5qGBP37UgAG_X0JfdlDF3wLMavuO03uoD_1SIs", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Best practice - should I fake, or depend on real world objects?", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "Short answer: do both? I think the more real approach would be preferable, for the reasons you describe.  I can see your point about how ugly the test code", 
+    "msgId": 10780, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nReceived: (qmail 78022 invoked from network); 6 Apr 2004 04:20:40 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m5.grp.scd.yahoo.com with QMQP; 6 Apr 2004 04:20:39 -0000\r\nReceived: from unknown (HELO n9.grp.scd.yahoo.com) (66.218.66.93)\n  by mta5.grp.scd.yahoo.com with SMTP; 6 Apr 2004 04:20:39 -0000\r\nX-eGroups-Return: zipwow@...\r\nReceived: from [66.218.67.148] by n9.grp.scd.yahoo.com with NNFMP; 06 Apr 2004 04:19:45 -0000\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 43603 invoked from network); 5 Apr 2004 17:28:07 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m10.grp.scd.yahoo.com with QMQP; 5 Apr 2004 17:28:07 -0000\r\nReceived: from unknown (HELO web60305.mail.yahoo.com) (216.109.118.116)\n  by mta3.grp.scd.yahoo.com with SMTP; 5 Apr 2004 17:28:07 -0000\r\nMessage-ID: &lt;20040405172756.69511.qmail@...&gt;\r\nReceived: from [207.14.29.3] by web60305.mail.yahoo.com via HTTP; Mon, 05 Apr 2004 10:27:56 PDT\r\nDate: Mon, 5 Apr 2004 10:27:56 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;E5C79049D461D311B83100062950B54A0127C464@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-Remote-IP: 216.109.118.116\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nSubject: Re: [junit] Best practice - should I fake, or depend on real world objects?\r\nX-Yahoo-Group-Post: member; u=82914509\r\nX-Yahoo-Profile: zipwow\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 06 Apr 2004 04:19:43 -0000\r\nX-eGroups-Remote-IP: 66.218.66.93\r\n\r\nShort answer: do both?\n\nI think the &quot;more real&quot; approach would be preferable, for the reasons\nyou describe.  I can see your point about how ugly the test code is\nlooking, and how unhelpful the serialization string is to reading the\ntest code.\n\nI think you could blend the two approaches with a testing-only &quot;mock&quot;\nsubclass that adds some setter methods.  The subclass would not change\nthe constructor or any public methods. This would allow you to write\nunit test code like:\n\npublic void nameTest() {\n    A a = newCreate(&quot;3492342,0,0,,,2,3,4,29394020&quot;);\n    a.setName(NAME);\n    testObj.doSOmething();\n    \n    assert(&quot;testObj did wrong thing&quot;,testObj.getName(),NAME);\n}\n\nFor the purposes of your application, the object&#39;s still immutable. \nThe subclass exists only in your testing codebase.  Your test setup\ncode isn&#39;t running concurrently with the unit under test, so threading\nissues aren&#39;t a problem.  You may have to make the fields of the\noriginal object protected rather than private, but I think that&#39;s a\nsmall price to pay.\n\nYou can then make yourself some &quot;basic&quot; classes accessible through some\nkind of fixture, to make the above test look more like:\n\npublic void nameTest() {\n    A a = getBasicThingForTheUISubsys();\n    a.setName(NAME);\n    .\n    .\n    .\n}\n\nThis lets the reader see that this test is just like the *other* test\nthat uses the basicThingForTheUISubsys() except it&#39;s looking at the\nname.\n\nThis is all just from the hip, let me know what you think.\n\n-Kevin Klinemeier\n\n\n__________________________________\nDo you Yahoo!?\nYahoo! Small Business $15K Web Design Giveaway \nhttp://promotions.yahoo.com/design_giveaway/\n\n\n", 
+    "profile": "zipwow", 
+    "topicId": 10756, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "prevInTime": 10779, 
+    "contentTrasformed": false, 
+    "postDate": "1081186076", 
+    "canDelete": false, 
+    "nextInTopic": 10790, 
+    "prevInTopic": 10756, 
+    "headers": {
+        "inReplyToHeader": "PEU1Qzc5MDQ5RDQ2MUQzMTFCODMxMDAwNjI5NTBCNTRBMDEyN0M0NjRAbnQtc3RvYy0wLnNicz4=", 
+        "messageIdInHeader": "PDIwMDQwNDA1MTcyNzU2LjY5NTExLnFtYWlsQHdlYjYwMzA1Lm1haWwueWFob28uY29tPg=="
+    }
+}

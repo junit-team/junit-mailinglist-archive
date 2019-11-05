@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 5948, 
+    "senderId": "RjI92ee_St_VO6LqKERXj1BT5VeGhn_rg-xkuLlszwQsSWswauOLcKFGOXuyerwmlurvM6kjAJp_yY-cyce3-DgzaD_UBsrn3qxZGg", 
+    "systemMessage": false, 
+    "subject": "Reporting ActiveSuite results", 
+    "from": "&quot;David Vydra&quot; &lt;yahoogroups@...&gt;", 
+    "authorName": "David Vydra", 
+    "msgSnippet": "We have written a testing tool based on the junit framework and are having trouble extending it to support our needs. We rely heavily on TestSuites for our", 
+    "msgId": 5947, 
+    "rawEmail": "Return-Path: &lt;yahoogroups@...&gt;\r\nX-Sender: yahoogroups@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_0); 5 Oct 2002 04:23:40 -0000\r\nReceived: (qmail 27645 invoked from network); 5 Oct 2002 04:23:39 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m5.grp.scd.yahoo.com with QMQP; 5 Oct 2002 04:23:39 -0000\r\nReceived: from unknown (HELO n21.grp.scd.yahoo.com) (66.218.66.77)\n  by mta3.grp.scd.yahoo.com with SMTP; 5 Oct 2002 04:23:39 -0000\r\nReceived: from [66.218.67.136] by n21.grp.scd.yahoo.com with NNFMP; 05 Oct 2002 04:23:39 -0000\r\nDate: Sat, 05 Oct 2002 04:23:38 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Reporting ActiveSuite results\r\nMessage-ID: &lt;anlpga+h0t3@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2099\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;David Vydra&quot; &lt;yahoogroups@...&gt;\r\nX-Yahoo-Group-Post: member; u=119409200\r\nX-Yahoo-Profile: dvydra2\r\n\r\nWe have written a testing tool based on the junit framework and are \nhaving trouble extending it to support our needs. We rely heavily on \nTestSuites for our test reporting and the current version of \njunit.framework does not allow for accurate test reporting when \nmultiple suites reference the same TestCase class. My current dilemma \nhas to do with running the ActiveSuite decorator.\n\nUpon examining swingui I found the following method in \njunit.swingui.TestTreeModel:\n**\n* Tests if the node is a TestSuite.\n*/\nTestSuite isTestSuite(Object node) {\nif (node instanceof TestSuite) \nreturn (TestSuite)node;\nif (node instanceof TestDecorator) { \nTest baseTest= ((TestDecorator)node).getTest(); \nreturn isTestSuite(baseTest); \n} \nreturn null;\n}\n\nWhat I would like to see is a model where the TestListener interface \nrecognised the start and end of each suite and each Test instance \nknows which suite it belongs to so we can report accurate results \neven when running multiple threads.\n\n\nBelow is sample code to illustrate my point. Try running in swingui \nor Eclipse runner.\n\npackage xpunit.misc.test;\n\nimport junit.extensions.ActiveTestSuite;\nimport junit.extensions.RepeatedTest;\nimport junit.framework.Test;\nimport junit.framework.TestCase;\nimport junit.framework.TestSuite;\n\npublic class ActiveRepeatedSuiteTest extends TestCase {\n\tstatic boolean oscillator = false;\n\tpublic ActiveRepeatedSuiteTest(String name) {\n\t\tsuper(name);\n\t}\n\t\n\tpublic void testMultipleFailures() throws Exception {\n\t\tif(oscillator) {\n\t\t\toscillator=false;\n\t\t\tfail(&quot;oscillator is true&quot;);\n\t\t}\n\t\telse oscillator=true;\n\t}\n\t\n\tstatic public Test suite() {\n\t\tActiveTestSuite s = new ActiveTestSuite(&quot;Active \nSuite&quot;);\n\t\tTestSuite s1 = new TestSuite(&quot;s1&quot;);\n\t\ts1.addTestSuite(ActiveRepeatedSuiteTest.class);\n\t\tTestSuite s2 = new TestSuite(&quot;s2&quot;);\n\t\ts2.addTestSuite(ActiveRepeatedSuiteTest.class);\n\t\tTestSuite s3 = new TestSuite(&quot;s3&quot;);\n\t\ts3.addTestSuite(ActiveRepeatedSuiteTest.class);\n\t\t\n\t\ts.addTest(s1);\n\t\ts.addTest(s2);\n\t\ts.addTest(s3);\n\t\t\n\t\treturn new RepeatedTest(s,3);\n\t} \n\n}\n\nRegards,\nDavid Vydra\nPlumtree Software Tools Team\n\n\n\n", 
+    "profile": "dvydra2", 
+    "topicId": 5947, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 119409200, 
+    "prevInTime": 5946, 
+    "contentTrasformed": false, 
+    "postDate": "1033791818", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFubHBnYStoMHQzQGVHcm91cHMuY29tPg=="
+    }
+}

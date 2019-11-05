@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 56, 
+    "nextInTime": 6259, 
+    "senderId": "MPrHZtli1YZ_V-ORbAXN4qoW7ZZ8TyJkG5lsahgJqa4WRj52B5ldvQoppINcTjRWQmHndUNWaOZMjHRjrugMlpJmTvKRkQY", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Looking for some &quot;Best Practices&quot;", 
+    "from": "Erik Hanson &lt;ehanson@...&gt;", 
+    "authorName": "Erik Hanson", 
+    "msgSnippet": "... You may want to consider staying away from putting any logic in the database (i.e. PL/SQL). We have a lot of business logic in our database and it makes", 
+    "msgId": 6258, 
+    "profile": "hanson_erik", 
+    "topicId": 6227, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 22694767, 
+    "messageBody": "<div id=\"ygrps-yiv-569925656\">On Tue, 19 Nov 2002, Chermside, Michael wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Some are less obvious, but I&#39;m still clear on what to do. For instance,<br/>\n&gt; writing tests that include the database are often QUITE difficult. Not<br/>\n&gt; everyone has a copy of Oracle; we can&#39;t just erase tables willy-nilly<br/>\n&gt; to set up for each test; etc. So I will use mock objects (hopefully<br/>\n&gt; starting from those at www.mockobjects.com) to simulate the connection,<br/>\n&gt; and other &quot;external&quot; data sources/sinks.<br/>\n<br/>\n </span></blockquote>You may want to consider staying away from putting any logic in the<br/>\ndatabase (i.e. PL/SQL). We have a lot of business logic in our database<br/>\nand it makes testing difficult because mocking the database would require<br/>\nre-implementing the logic in Java.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; QUESTION 1:<br/>\n&gt;    Where do my JUnit unit tests go?<br/>\n&gt;<br/>\n&gt;    I see 3 likely answers... (a) make each an inner class of the<br/>\n&gt;    class being tested, (b) for every class &quot;Foo&quot; have a class called<br/>\n&gt;    &quot;TestFoo&quot; in the same package, or (c) have a separate (but parallel<br/>\n&gt;    hierarchy of classes... SOURCE/com/pkg/Foo.java is tested by<br/>\n&gt;    TEST/com/pkg/TestFoo.java.<br/>\n&gt;<br/>\n&gt;    I lean towards (c) because it makes it easy to build the &quot;real&quot; code<br/>\n&gt;    and the &quot;test&quot; code separately, and omit the &quot;test&quot; code from<br/>\n&gt;    production deployment. Are there other significant issues here?<br/>\n<br/>\n </span></blockquote>I use (b) and (c) on different projects. I like (b) better because it&#39;s a<br/>\nlot easier to find a test (it&#39;s right there in the same directory as the<br/>\ncode). We prefix our tests with &quot;_&quot; and suffix them with &quot;Test&quot; to make<br/>\nthem easier to find (so a test for the String class would be<br/>\n&quot;_StringTest&quot;).<br/>\n<br/>\nWe deploy the test cases along with the production code because it&#39;s easy<br/>\nand we have no reason not to. But it wouldn&#39;t be too hard to jar up<br/>\neverything that doesn&#39;t start with &quot;_&quot;.<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; QUESTION 2:<br/>\n&gt;    How do I automatically build the suite of all tests?<br/>\n<br/>\n </span></blockquote>We coded up a TestSuite that finds all the tests in the project (which is<br/>\npretty fast because they all start with &quot;_&quot; so we don&#39;t have to use<br/>\n&quot;instanceof&quot; to figure out if they are tests or not) and executes them.<br/>\n<br/>\nWe also threw in some fun options like only running tests in certain<br/>\npackages and running the tests in order of their execution speed (we have<br/>\nsome really slow tests, which I know is bad, but there&#39;s not too much we<br/>\ncan do about it).<br/>\n<br/>\nIt can also run just those tests that have been compiled in the last 10<br/>\nminutes plus tests for any classes that have been compiled in the last 10<br/>\nminutes. (So if you modify method A.foo() and class B calls A.foo(), then<br/>\n_ATest and _BTest will be executed.) This is to get around the problem of<br/>\nour test suite being really slow, which is something that I want to fix<br/>\nbut cannot (for non-technical reasons).<br/>\n<br/>\n<br/>\nAlso, our development environment, IntelliJ IDEA, allows us to select a<br/>\ndirectory or package and run all the tests it finds.<br/>\n<br/>\nIDEA also has the very handy ability to run all the test methods in the<br/>\ntest case that you are currently editing, or just the test method that the<br/>\ntext cursor is currently in. (And it will run them in the debugger too if<br/>\nyou like. So debugging a test case is as simple as putting a breakpoint in<br/>\nthe test method, putting the text cursor in that method, and then hitting<br/>\nthe keyboard shortcut for debug.)<br/>\n<br/>\n<br/>\nErik</div>", 
+    "prevInTime": 6257, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1037993996", 
+    "canDelete": false, 
+    "nextInTopic": 6259, 
+    "prevInTopic": 6254, 
+    "headers": {
+        "inReplyToHeader": "PDkwMkExRTcxMEZFQUI3NDA5NjZFQzk5MUMzQTM4QTg5MDNDMzVCMTRASU5HREVYQ0hBTkdFQzEuaW5nZGlyZWN0LmNvbT4=", 
+        "messageIdInHeader": "PFBpbmUuTkVCLjQuNDQuMDIxMTIyMTEyMzQ0MC4yODM3Ni0xMDAwMDBAc25hcmYubXVuZ2UuY29tPg=="
+    }
+}

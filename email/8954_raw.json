@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 106, 
+    "nextInTime": 8955, 
+    "senderId": "NI7rrhMfnyP3nl0ucTFkE4kn-4sJO5xLy9RFKVk2r8Ysm8ulV2YtBoOWXq9Vv4h1UUg6a_PpgY0M43_cUgQYJq23uyOrD2pdOPFv", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TestCase Dependency Hierarchy", 
+    "from": "David Boyer &lt;mangr3n@...&gt;", 
+    "authorName": "David Boyer", 
+    "msgSnippet": "... Umm,  your welcome?  :) ... Yes, In my opinion that would constitute a mock.  What you described if I understand correctly is, to save in some fashion", 
+    "msgId": 8954, 
+    "rawEmail": "Return-Path: &lt;mangr3n@...&gt;\r\nX-Sender: mangr3n@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 40409 invoked from network); 1 Aug 2003 15:32:40 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m1.grp.scd.yahoo.com with QMQP; 1 Aug 2003 15:32:40 -0000\r\nReceived: from unknown (HELO mail.chipware.com) (66.160.47.7)\n  by mta1.grp.scd.yahoo.com with SMTP; 1 Aug 2003 15:32:40 -0000\r\nReceived: from teamdekade.com (orion.chipware.com [172.16.8.48])\n\tby mail.chipware.com (8.9.3/8.9.3) with ESMTP id LAA18266\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 1 Aug 2003 11:32:38 -0400\r\nMessage-ID: &lt;3F2A8817.2000006@...&gt;\r\nDate: Fri, 01 Aug 2003 11:32:39 -0400\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.4b) Gecko/20030416 Thunderbird/0.1a\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] TestCase Dependency Hierarchy\r\nReferences: &lt;007e01c357cb$1d56c7f0$2878160a@...&gt; &lt;1059742497.2163.85.camel@localhost&gt; &lt;200308021121480678.00560C8C@...&gt;\r\nIn-Reply-To: &lt;200308021121480678.00560C8C@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: David Boyer &lt;mangr3n@...&gt;\r\nX-Yahoo-Group-Post: member; u=138345974\r\nX-Yahoo-Profile: mangr3n\r\n\r\nJ. B. Rainsberger wrote:\n\n&gt;&gt;So said David Boyer on 2003-08-01 --------------------\n&gt;&gt;On Thu, 2003-07-31 at 21:20, Adam Jack wrote:\n&gt;&gt;\n&gt;&gt;    \n&gt;&gt;\n&gt;&gt;&gt;Ok, another example. I have a class that walks a classpath and generates\n&gt;&gt;&gt;listener events on things found, I test that. I have a class that listens to\n&gt;&gt;&gt;      \n&gt;&gt;&gt;\n&gt;&gt;&gt;such events to &quot;find&quot; things that match a certain criterion, I test that. If\n&gt;&gt;&gt;      \n&gt;&gt;&gt;\n&gt;&gt;&gt;the first class fails to send events, then I ought not blame (or dig into)\n&gt;&gt;&gt;      \n&gt;&gt;&gt;\n&gt;&gt;&gt;the second for not finding anything. The tests are (I believe) unit tests of\n&gt;&gt;&gt;      \n&gt;&gt;&gt;\n&gt;&gt;&gt;each, without duplication.\n&gt;&gt;&gt;      \n&gt;&gt;&gt;\n&gt;&gt;Ok, here,  The first class, the classpath walker, is fine.  However, the\n&gt;&gt;second class should use a mockobject version of the classpathwalker. \n&gt;&gt;ClasspathWalker should be an interface.  This way you can test your own\n&gt;&gt;reaction to fake events.  Ones which you control and aren&#39;t dependent on\n&gt;&gt;the classpath walker OR ON THE CLASSES IN THE PATH.\n&gt;&gt;    \n&gt;&gt;\n&gt;\n&gt;This is where I disagree with the use of mocks. I have to thank you, David, for putting this example in the spotlight.\n&gt;\nUmm,  your welcome?  :)\n\n&gt;\n&gt;The second test may be better if it depends on the data from the classpath walker, rather than a mock classpath walker. Presumably the mock classpath walker will be implemented to hardcode specified classpath walking data, anyway. I propose to extract the classpath walking data, then, and pass it to the second object, rather than mocking a classpath walker.\n&gt;\n&gt;Thoughts?\n&gt;\n\nYes, In my opinion that would constitute a mock.  What you described if \nI understand correctly is, to save in some fashion  results from the \nclasspath walker.  I understand you to mean to save that data 1 time, \nnot each time the classpath walker test is run.  I would then write a \nmock of the classpath walker which would always use this same data. \n\nIn my opinion doing it with the classpath walker fails to isolate the \ncause of the bug.\n\nIF I find that that during acceptance  testing with the ClasspathWalker \nconnected to the ClasspathWalkerEventListener some exceptional condition \nshows up.  That becomes a new test, using newly mocked data. \n\nI&#39;m all for finding efficient ways to mock data, but I wouldn&#39;t move \naway from  mocking, simply because my tests missed some bugs.\nYour description is if I understand correctly the cause of Adam&#39;s issue, \nand, IMO, the reason MockObjects came up in the first place.\n\n&gt;\n&gt;PS: If you do this, then the tests become 100% isolated as a side effect of avoiding extra code.\n&gt;\n&gt;  \n&gt;\nIf I do what?  Save the data and feed it to the Listener?  The feeding \nof the Listener is, IMO, best implemented through MockObjects.  EasyMock \ncould easily be customized to set up parameters scripted behavior from \nxml files.\n\n&gt;J. B. Rainsberger,\n&gt;President, Diaspar Software Services\n&gt;Let&#39;s write software that people understand.\n&gt;http://www.diasparsoftware.com/\n&gt;telephone: +1 416 791-8603\n&gt;\n&gt;\n&gt;\n&gt;To unsubscribe from this group, send an email to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt; \n&gt;\n&gt;Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n&gt;\n&gt;\n&gt;  \n&gt;\n\n\n\n", 
+    "profile": "mangr3n", 
+    "topicId": 8807, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 138345974, 
+    "prevInTime": 8953, 
+    "contentTrasformed": false, 
+    "postDate": "1059751959", 
+    "canDelete": false, 
+    "nextInTopic": 8955, 
+    "prevInTopic": 8953, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwODAyMTEyMTQ4MDY3OC4wMDU2MEM4Q0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDNGMkE4ODE3LjIwMDAwMDZAdGVhbWRla2FkZS5jb20+", 
+        "referencesHeader": "PDAwN2UwMWMzNTdjYiQxZDU2YzdmMCQyODc4MTYwYUBzeWJhc2UuY29tPiA8MTA1OTc0MjQ5Ny4yMTYzLjg1LmNhbWVsQGxvY2FsaG9zdD4gPDIwMDMwODAyMTEyMTQ4MDY3OC4wMDU2MEM4Q0Bzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4="
+    }
+}

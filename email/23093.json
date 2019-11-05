@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 23094, 
+    "senderId": "5VLywyVc21huz9tWXLV_16fFaUOrlW0p0X66XF0IwG5d0H8xm3eGkH7k2l_4-MXU0U_V2BpHKmnOJBi1dUF1qursSqBxexCNGhFlAt8ZevuXQILCggGDjg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] execute all tests in a jar", 
+    "from": "Lothar Kimmeringer &lt;maillists_job@...&gt;", 
+    "authorName": "Lothar Kimmeringer", 
+    "msgSnippet": "... I don t know, but you might try out Ant where there is a junit-Task: ", 
+    "msgId": 23093, 
+    "profile": "kimmerin_job", 
+    "topicId": 23091, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 120492285, 
+    "messageBody": "<div id=\"ygrps-yiv-2018136667\">Am 30.11.2010 22:03, schrieb xdzgor:<br/>\n<blockquote><span title=\"ireply\"> &gt;  <br/>\n&gt; <br/>\n&gt; (1) To run JUnit tests from the command-prompt, I can use JUnitCore.<br/>\n&gt; I have to specify each test class I wish to run. Is it possible<br/>\n&gt; to specify a jar file, which JUnitCore will inspect for all available<br/>\n&gt; test classes, and execute them?<br/>\n<br/>\n </span></blockquote>I don&#39;t know, but you might try out Ant where there is a junit-Task:<br/>\n    &lt;target name=&quot;junit&quot; depends=&quot;preparetests,buildjar&quot; description=&quot;Tests all junit-tests that can be found&quot;&gt;<br/>\n        &lt;junit maxmemory=&quot;1024m&quot; jvm=&quot;${junit.jvm.cmd}&quot; printsummary=&quot;true&quot; fork=&quot;yes&quot; dir=&quot;${basedir}&quot;&gt;<br/>\n          &lt;jvmarg value=&quot;-Djava.library.path=${junit.java.library.path}&quot;/&gt;<br/>\n          &lt;classpath location=&quot;${dest.base}/testresult/coverage/instrumented&quot; /&gt;<br/>\n          &lt;classpath refid=&quot;junitclasspath&quot;/&gt;<br/>\n          &lt;formatter type=&quot;xml&quot; /&gt;<br/>\n          &lt;batchtest todir=&quot;${dest.base}/testresult/xml&quot;&gt;<br/>\n            &lt;fileset dir=&quot;${dest.base}/classes&quot;&gt;<br/>\n              &lt;exclude name=&quot;some/package/that/isnt/tested/*&quot;/&gt;<br/>\n              &lt;exclude name=&quot;**/__Test_*$*&quot; /&gt;<br/>\n              &lt;include name=&quot;**/__Test_*.class&quot; /&gt;<br/>\n            &lt;/fileset&gt;<br/>\n          &lt;/batchtest&gt;<br/>\n        &lt;/junit&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\nThis is searching for all testcases in a directory but it might<br/>\nalso work with Jar-files.<br/>\n<br/>\nWith that and<br/>\n<br/>\n    &lt;target name=&quot;junitreport-html-excl-coverage&quot; depends=&quot;junit&quot; description=&quot;Creates html-based reports from tests&quot;&gt;<br/>\n        &lt;junitreport todir=&quot;${dest.base}/testresult/html&quot;&gt;<br/>\n          &lt;fileset dir=&quot;${dest.base}/testresult/xml&quot;&gt;<br/>\n            &lt;include name=&quot;TEST-*.xml&quot;/&gt;<br/>\n          &lt;/fileset&gt;<br/>\n          &lt;report format=&quot;frames&quot; todir=&quot;${dest.base}/testresult/html&quot;/&gt;<br/>\n        &lt;/junitreport&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\nyou end up with a nice Javadoc-like result of all tests. See<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://ant.apache.org/manual/Tasks/junit.html\">http://ant.apache.org/manual/Tasks/junit.html</a><br/>\nand<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://ant.apache.org/manual/Tasks/junitreport.html\">http://ant.apache.org/manual/Tasks/junitreport.html</a><br/>\nfor more details.<br/>\n<br/>\n<br/>\nRegards, Lothar</div>", 
+    "prevInTime": 23092, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1291189157", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 23092, 
+    "headers": {
+        "inReplyToHeader": "PGlkM29xZytkazJtQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRDRjVGQkE1LjQwOTA5MDZAa2ltbWVyaW5nZXIuZGU+", 
+        "referencesHeader": "PGlkM29xZytkazJtQGVHcm91cHMuY29tPg=="
+    }
+}

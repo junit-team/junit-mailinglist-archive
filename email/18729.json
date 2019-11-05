@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 18730, 
+    "senderId": "48lVEtjLWCm2YFsjvViwIbo9Vm6LAaL_Z5Xfo0p2x3xNy1rqWV5vvHAguM5WbTwC1OlBZGawkIHxjUSIzd_RBu-3SWMwyyn_fMIKULrSrg", 
+    "systemMessage": false, 
+    "subject": "Re: Custom Runner Delegation", 
+    "from": "&quot;gabrielcooper&quot; &lt;gabriel.cooper@...&gt;", 
+    "authorName": "gabrielcooper", 
+    "msgSnippet": "... parents? ... I probably could have come up with a slightly shorter example by shortening NameAwareTestClassRunner, but ... it s pretty darn short as it is", 
+    "msgId": 18729, 
+    "profile": "gabrielcooper", 
+    "topicId": 18695, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 294114387, 
+    "messageBody": "<div id=\"ygrps-yiv-1539821336\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;David Saff&quot; &lt;saff@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Gabriel,<br/>\n&gt; <br/>\n&gt; On 1/10/07, gabrielcooper &lt;gabriel.cooper@...&gt; wrote:<br/>\n&gt; &gt; What runner should it use if none is specified in the subclass? The<br/>\n&gt; &gt; default &quot;TestClassRunner&quot; or the parent class&#39;s &quot;MyCustomRunner&quot;?<br/>\n&gt; &gt;<br/>\n&gt; &gt; Currently it uses the default runner rather than its parents&#39; custom<br/>\n&gt; &gt; one. Would it make sense to have runners be inherited from their<br/>\n </span></blockquote>parents?<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; Yes, it would, and the current implementation should--there&#39;s even a<br/>\n&gt; passing test that says it does.  Hmm...<br/>\n&gt; <br/>\n&gt; Could you simplify and post a failing test to help us figure out the<br/>\n&gt; problem you&#39;re having?  Thanks,<br/>\n&gt; <br/>\n&gt;    David Saff<br/>\n&gt;<br/>\n<br/>\n </span></blockquote>I probably could have come up with a slightly shorter example by<br/>\nshortening NameAwareTestClassRunner, but ... it&#39;s pretty darn short as<br/>\nit is and actually serves a purpose, so I left it at a whopping 54 lines. <br/>\n<br/>\nThe gist here is that Bar, superclass to Foo, specifies a custom<br/>\nrunner (NameAware). An @Test verifies that the Listener really is<br/>\nworking here. <br/>\n<br/>\nThen inside Foo, we have the same @Test. Per previous conversation<br/>\nhere, in theory it should run correctly here as well, but does not.<br/>\nThe Listener is not, well, listening.<br/>\n<br/>\n// Foo.java<br/>\nimport static junit.framework.Assert.assertEquals;<br/>\n<br/>\nimport org.junit.Test;<br/>\n<br/>\npublic class Foo extends Bar {<br/>\n\t@Test<br/>\n\tpublic void testName() {<br/>\n\t\t// fails<br/>\n\t\tassertEquals(&quot;testName&quot;,example);<br/>\n\t}<br/>\n}<br/>\n<br/>\n// Bar.java<br/>\nimport static junit.framework.Assert.assertEquals;<br/>\nimport org.junit.Before;<br/>\nimport org.junit.Test;<br/>\nimport org.junit.runner.RunWith;<br/>\n<br/>\n@RunWith(NameAwareTestClassRunner.class)<br/>\npublic class Bar {<br/>\n\tString example;<br/>\n<br/>\n\t@Before<br/>\n\tpublic void setUp() {<br/>\n\t\texample = NameAwareTestClassRunner.getTestName();<br/>\n\t}<br/>\n<br/>\n\t@Test<br/>\n\tpublic void testName() {<br/>\n\t\t// succeeds<br/>\n\t\tassertEquals(&quot;testName&quot;,example);<br/>\n\t}<br/>\n}<br/>\n<br/>\n// NameAwareTesetClassRunner.java<br/>\nimport org.junit.internal.runners.InitializationError;<br/>\nimport org.junit.internal.runners.TestClassRunner;<br/>\nimport org.junit.runner.Description;<br/>\nimport org.junit.runner.notification.RunListener;<br/>\nimport org.junit.runner.notification.RunNotifier;<br/>\n<br/>\npublic class NameAwareTestClassRunner extends TestClassRunner {<br/>\n\tpublic NameAwareTestClassRunner(Class&lt;?&gt; klass) throws<br/>\nInitializationError {<br/>\n\t\tsuper(klass);<br/>\n\t}<br/>\n<br/>\n\tprivate static String testName;<br/>\n\t<br/>\n\tprotected static String getName() {<br/>\n\t\treturn testName;<br/>\n\t}<br/>\n\t<br/>\n\tprotected static void setName(final String name) {<br/>\n\t\ttestName = name;<br/>\n\t}<br/>\n\t<br/>\n\tprotected static String getTestName() {<br/>\n\t\tif (testName == null)<br/>\n\t\t\treturn null;<br/>\n\t\t<br/>\n\t\tint last = testName.indexOf(&#39;(&#39;);<br/>\n\t\tif (last &lt; 0)<br/>\n\t\t\tlast = testName.length() + 1;<br/>\n\t\treturn testName.substring(0, last);<br/>\n\t}<br/>\n\t<br/>\n\tprivate static class NameListener extends RunListener {<br/>\n\t\t/** Record start of tests, not suites */<br/>\n\t\tpublic void testStarted(Description description) throws Exception {<br/>\n\t\t\tSystem.err.println(&quot; STARTED: &quot; + description.getDisplayName());<br/>\n\t\t\tsetName(description.isTest() ? description.getDisplayName() : null);<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tpublic void testFinished(Description description) throws Exception {<br/>\n<br/>\n\t\t\tSystem.err.println(&quot;FINISHED: &quot; + description.getDisplayName());<br/>\n\t\t\tif (getName() != null)<br/>\n\t\t\t\tif (getName().equals(description.getDisplayName()))<br/>\n\t\t\t\t\tsetName(null);<br/>\n\t\t\t\telse<br/>\n\t\t\t\t\tthrow new Exception(&quot;DAMMIT! - test name mismatch&quot;);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic void run(final RunNotifier notifier) {<br/>\n\t\tnotifier.addListener(new NameListener());<br/>\n\t\tsuper.run(notifier);<br/>\n\t}<br/>\n}</div>", 
+    "prevInTime": 18728, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1168614620", 
+    "canDelete": false, 
+    "nextInTopic": 18740, 
+    "prevInTopic": 18708, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwMTExMDgyNnQ3NTA4NzIxMW42NjhlOGJhMTAzMGMwYjdlQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGVvODhjcytwYW5yQGVHcm91cHMuY29tPg=="
+    }
+}

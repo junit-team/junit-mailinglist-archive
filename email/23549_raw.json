@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 23550, 
+    "senderId": "2V7dlVwPbmp9PEHJB-Wt5JdgfrMFP81Zcy_ZMbiFznlwdcQOzB4RTFHPAEbENWjVx2GgOlURQOrBFtTjaPKlraIW", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How could i get a Testname / Test status in JUnit", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "murali, There is currently no even moderately easy way* to put something in a suite class that will cause a Rule to be applied to every method in every", 
+    "msgId": 23549, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 93721 invoked from network); 8 Aug 2011 18:32:16 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m4.grp.sp2.yahoo.com with QMQP; 8 Aug 2011 18:32:16 -0000\r\nX-Received: from unknown (HELO mail-gw0-f41.google.com) (74.125.83.41)\n  by mta2.grp.sp2.yahoo.com with SMTP; 8 Aug 2011 18:32:16 -0000\r\nX-Received: by gwaa20 with SMTP id a20so1569681gwa.14\n        for &lt;junit@yahoogroups.com&gt;; Mon, 08 Aug 2011 11:32:16 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.142.195.11 with SMTP id s11mr2679506wff.131.1312828336054;\n Mon, 08 Aug 2011 11:32:16 -0700 (PDT)\r\nX-Received: by 10.68.46.199 with HTTP; Mon, 8 Aug 2011 11:32:15 -0700 (PDT)\r\nIn-Reply-To: &lt;j1l8c0+ttjo@...&gt;\r\nReferences: &lt;j1l8c0+ttjo@...&gt;\r\nDate: Mon, 8 Aug 2011 14:32:15 -0400\r\nX-Google-Sender-Auth: 1-GD5eJlzO9_1s-mpB7tlbk_82g\r\nMessage-ID: &lt;CACj8BuNCB53hbXWx4XZ5+5p0HvrweL+ZevMMD_ADZuuNdSL-MQ@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] How could i get a Testname / Test status in JUnit\r\nX-Yahoo-Group-Post: member; u=341876227; y=6U6wdx-7ywD1wVYoJdmr5h0vYz16MKeD89jpbH8K74o\r\nX-Yahoo-Profile: dsaff\r\n\r\nmurali,\n\nThere is currently no even moderately easy way* to put something i=\r\nn a\nsuite class that will cause a Rule to be applied to every method in\neve=\r\nry contained test class, which is what you appear to be doing.  If\nyou&#39;re u=\r\nsing JUnitCore, you should be able to use\nJUnitCore.addRunListener to get w=\r\nhat you want, though.  Let me know if\nI&#39;ve understood the problem right.\n\n =\r\n  David Saff\n\n* However, there is a way that you can write a subclass of Su=\r\nite that\n_does_ enable this kind of functionality.  If someone wanted to wr=\r\nite\nsuch a subclass, and submit it as a project in junit.contrib, I&#39;d\nwelco=\r\nme it...\n\n\nOn Sun, Aug 7, 2011 at 1:38 AM, murali_appunu &lt;murali_appunu@yah=\r\noo.co.in&gt; wrote:\n&gt; I am new to JUnit . I am working on the ways to get a ou=\r\ntput like\n&gt;\n&gt; classname / function name / status / description.\n&gt;\n&gt; I figur=\r\ned that there is no other way to get success test name other than Framework=\r\nMethod using Rule. Is it possible to set a Rule to a suite which s running =\r\nwith the help of JUnitCore/textui.Thx in advance.!!\n&gt;\n&gt; Edit:- I tried test=\r\nwatchman with Junit 4.9b2 but executing suites is not working for me. Any h=\r\nelp would be appreciated.\n&gt;\n&gt; ----------\n&gt;\n&gt; =A0 =A0@RunWith(Suite.class)\n&gt;=\r\n =A0 =A0@SuiteClasses({testclass1.class, testclass2.class})\n&gt; =A0 =A0public=\r\n class junitCheck {\n&gt; =A0 =A0 =A0 =A0 private static String watchedLog;\n&gt;\n&gt;=\r\n =A0 =A0 =A0 =A0 @Rule\n&gt; =A0 =A0 =A0 =A0 public MethodRule watchman=3D new =\r\nTestWatchman() {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 @Override\n&gt; =A0 =A0 =A0 =\r\n=A0 =A0 =A0 =A0 =A0 public void failed(Throwable e, FrameworkMethod method)=\r\n {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 watchedLog+=3D method.=\r\ngetName() + &quot; &quot; + e.getClass().getSimpleName()\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =\r\n=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 + &quot;&#92;n&quot;;\n&gt; =A0 =A0 =\r\n=A0 =A0 =A0 =A0 =A0 =A0 }\n&gt;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 @Override\n&gt; =\r\n=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 public void succeeded(FrameworkMethod metho=\r\nd) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 watchedLog+=3D metho=\r\nd.getName() + &quot; &quot; + &quot;success!&#92;n&quot;;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }\n&gt; =A0=\r\n =A0 =A0 =A0 };\n&gt;\n&gt; =A0 =A0}\n&gt;\n&gt; ----------\n&gt;\n&gt; =A0 =A0public class testcla=\r\nss1 {\n&gt;\n&gt; =A0 =A0 =A0 =A0@Test\n&gt; =A0 =A0 =A0 =A0public void add()\n&gt; =A0 =A0=\r\n =A0 =A0{\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0Assert.assertEquals(4,2+3);\n&gt; =\r\n=A0 =A0 =A0 =A0}\n&gt; =A0 =A0}\n&gt;\n&gt;\n&gt; ----------\n&gt;\n&gt; =A0 =A0public class testcl=\r\nass2 {\n&gt;\n&gt;\n&gt; =A0 =A0 =A0 =A0@Test\n&gt; =A0 =A0 =A0 =A0public void add1()\n&gt; =A0=\r\n =A0 =A0 =A0{\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0Assert.assertEquals(4,2+2);\n=\r\n&gt; =A0 =A0 =A0 =A0}\n&gt; =A0 =A0}\n&gt;\n&gt; ----------\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; ----------------=\r\n--------------------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23548, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23548, 
+    "contentTrasformed": false, 
+    "postDate": "1312828335", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 23548, 
+    "headers": {
+        "inReplyToHeader": "PGoxbDhjMCt0dGpvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBQ2o4QnVOQ0I1M2hiWFd4NFhaNSs1cDBIdnJ3ZUwrWmV2TU1EX0FEWnV1TmRTTC1NUUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGoxbDhjMCt0dGpvQGVHcm91cHMuY29tPg=="
+    }
+}

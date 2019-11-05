@@ -1,0 +1,29 @@
+{
+    "topicId": 2353, 
+    "postDate": "997901269", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Thach Nguyen &lt;thach@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "VOnQf_9xhRtyfdNfBtCRqX41RSh3TYXjXjHZ4KIkWQw-wltUzS68xB9e1WnT_cAJt8tYOE6h1OgrUzQmLC1QRQ9FYyMX", 
+    "nextInTime": 2382, 
+    "userId": 0, 
+    "prevInTime": 2380, 
+    "prevInTopic": 2364, 
+    "headers": {
+        "inReplyToHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2Mjk0QGV4Y2g+", 
+        "messageIdInHeader": "PDQuMy4yLjcuMi4yMDAxMDgxNTExMjMyNC4wMWY2ODAwOEBtYWlsc2otdjE+"
+    }, 
+    "authorName": "Thach Nguyen", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "Thanks everyone. These are perfectly fine solutions. The only trouble for me was that I wanted the suite to have an opportunity to track its test case runs and", 
+    "contentTrasformed": false, 
+    "msgId": 2381, 
+    "nextInTopic": 2385, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;thach@...&gt;\r\nX-Sender: thach@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_1); 15 Aug 2001 18:44:55 -0000\r\nReceived: (qmail 54874 invoked from network); 15 Aug 2001 18:43:49 -0000\r\nReceived: from unknown (10.1.10.27)\n  by l7.egroups.com with QMQP; 15 Aug 2001 18:43:49 -0000\r\nReceived: from unknown (HELO adobe.com) (192.150.11.2)\n  by mta2 with SMTP; 15 Aug 2001 18:43:49 -0000\r\nReceived: from inner-relay-2.corp.adobe.com ([153.32.1.52])\n\tby adobe.com (1.0.0/8.11.4) with ESMTP id f7FIhSh18136\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 15 Aug 2001 11:43:28 -0700 (PDT)\r\nReceived: from mailsj-v1.corp.adobe.com (mailsj-dev.corp.adobe.com [153.32.1.192])\n\tby inner-relay-2.corp.adobe.com (8.11.4/8.11.4) with ESMTP id f7FIhRb21453\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 15 Aug 2001 11:43:27 -0700 (PDT)\r\nReceived: from D52TXD01.adobe.com ([153.32.144.163]) by\n          mailsj-v1.corp.adobe.com (Netscape Messaging Server 4.15 v1 Jul\n          11 2001 16:32:57) with ESMTP id GI4HCP00.7LE for\n          &lt;junit@yahoogroups.com&gt;; Wed, 15 Aug 2001 11:43:37 -0700 \r\nMessage-Id: &lt;4.3.2.7.2.20010815112324.01f68008@mailsj-v1&gt;\r\nX-Sender: thach@mailsj-v1\r\nX-Mailer: QUALCOMM Windows Eudora Version 4.3.2\r\nDate: Wed, 15 Aug 2001 11:47:49 -0700\r\nTo: junit@yahoogroups.com\r\nSubject: RE: [junit] Recover from test hangs\r\nIn-Reply-To: &lt;87EE6B21C624D511B72400104BCF1EB01F6294@exch&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;; format=flowed\r\nFrom: Thach Nguyen &lt;thach@...&gt;\r\n\r\nThanks everyone.\n\nThese are perfectly fine solutions. The only trouble for me was that I wanted\nthe suite to have an opportunity to track its test case runs and recover,\nautomatically. I may have a suite consisting of up to 20 or so test cases\nand may be wrapped in a test harness class to run all suites.\n\nI also toy with the tracking of threads for these runs and ended up with the\nfollowing solution (not quite content with it yet but works):\n\n1) Created a synchronized test manager class\n     and have it read a timeLimit property from a prop file (just for \nconvenience)\n2) It spawns a thread for a Runnable class to handle TestRunner.run(suite)\n     then starts the count down\n3) When the run() finishes, I flag a testComplete=true flag and notify() the\n     manager class that the test run is done\n4) Back in the manager class, if the time elapsed and not testComplete then\n     I assume a test run fault. Kill the thread and throw exception \n(ThreadDeath\n     error is also thrown from this class).\n     Otherwise, a wait(timeLimit) gets the notification and testComplete=true\n     implies the test completed successfully.\n\nSince I use the Thread.stop()-deprecated to kill the spawning thread, I am not\ncontent of this solution, at the very least.\n\nThe quest continues..\n\nAgain, thanks for your advices.\nThach Nguyen\n\nAt 08:28 AM 8/15/2001 -0400, you wrote:\n&gt;Sorry everyone.  I attached the tail.exe to the previous post and that\n&gt;caused some folks&#39; email and virus clients to skip a beat.  If anyone is\n&gt;interested in the tail program (freeware) let me know and I will put it in\n&gt;the files section of the group.  For those who don&#39;t know what tail is...\n&gt;This is a windows port of the standard UNIX tail that allows you to monitor\n&gt;the end of a file as it is being written.  It is useful for log files or\n&gt;debug files.  You can also download it from\n&gt;&lt;http://www.rhazes.com/cgi-bin/Utilitiy_0.asp&gt;\n&gt;\n&gt;-Jason\n&gt;\n&gt;     &gt; -----Original Message-----\n&gt;     &gt; From: Jason Rogers [mailto:jason.rogers@...]\n&gt;     &gt; Sent: Wednesday, August 15, 2001 8:19 AM\n&gt;     &gt; To: &#39;junit@yahoogroups.com&#39;\n&gt;     &gt; Subject: RE: [junit] Recover from test hangs\n&gt;     &gt;\n&gt;     &gt;\n&gt;     &gt; Which JDK are you using?  You could also use the\n&gt;     &gt; -Xrunhprof option (I think\n&gt;     &gt; it is only available 1.2.x +).  Use the attached tail.exe\n&gt;     &gt; to tail the file.\n&gt;     &gt; See\n&gt;     &gt; &lt;http://java.sun.com/products/jdk/1.2/docs/guide/jvmpi/jvm\n&gt;     &gt; pi.html#hprof&gt;\n&gt;     &gt; for how to interpret -Xrunhprof, but basically you are looking for\n&gt;     &gt; ThreadStarts that don&#39;t have an associated ThreadEnd.\n&gt;     &gt; This will tell you\n&gt;     &gt; where possible hangs are happening.\n&gt;     &gt;\n&gt;     &gt; -Jason\n\n\n", 
+    "subject": "RE: [junit] Recover from test hangs"
+}

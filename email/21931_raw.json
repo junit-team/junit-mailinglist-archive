@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 21932, 
+    "senderId": "tP0U1aIhlVBHTK502ICiqlqn1APgSmGINpSvGwoDa9kNnLXEmKHNdZMxGqRwOYSKNsIzWtHkc-S9uZahNfESJxOA_9OvAenH_bn6kERr4rXgoq3exhPO", 
+    "systemMessage": true, 
+    "subject": "TemporaryFolder not usable inside setUp() method", 
+    "from": "&quot;Bogdan&quot; &lt;bogdan.mocanu.notifications@...&gt;", 
+    "authorName": "Bogdan", 
+    "msgSnippet": "Hello, I am using JUnit 4.7 and used the new Rules mechanism, with TempFolder. What I needed was to have a temporary folder where the CUT could create some", 
+    "msgId": 21931, 
+    "rawEmail": "Return-Path: &lt;bogdan.mocanu.notifications@...&gt;\r\nReceived: (qmail 37457 invoked from network); 18 Sep 2009 21:00:07 -0000\r\nReceived: from unknown (98.137.34.44)\n  by m8.grp.re1.yahoo.com with QMQP; 18 Sep 2009 21:00:07 -0000\r\nReceived: from unknown (HELO n6-vm6.bullet.mail.sp2.yahoo.com) (67.195.135.102)\n  by mta1.grp.sp2.yahoo.com with SMTP; 18 Sep 2009 21:00:07 -0000\r\nDKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoogroups.com; s=lima; t=1253307600; bh=6QX/uw9W8FkHl3A5nFuvvxgsKDxZJDG/TM3EAjONGb8=; h=Received:Received:Received:X-Sender:X-Apparently-To:X-Received:X-Received:X-Received:X-Received:X-Received:Date:To:Message-ID:User-Agent:MIME-Version:Content-Type:Content-Transfer-Encoding:X-Mailer:X-Yahoo-Newman-Property:X-Originating-IP:X-eGroups-Msg-Info:X-Yahoo-Post-IP:From:Subject:X-Yahoo-Group-Post:X-Yahoo-Profile:X-YGroups-SubInfo:Sender:X-eGroups-Approved-By:X-eGroups-Auth; b=GIa6IozdQWbfBXHIAXhMYm7I2TdDEcKh9mGZAeMcmtkHAv3EvKWRIQ1njHNNCXiLiGKujetZEk5oMngRkvACopiO+eZ9rVO04jBpXPoNYlsJUGyW0e+yUx+pIp1Wbquh\r\nReceived: from [67.195.134.239] by n6.bullet.mail.sp2.yahoo.com with NNFMP; 18 Sep 2009 21:00:00 -0000\r\nReceived: from [69.147.65.150] by t4.bullet.mail.sp2.yahoo.com with NNFMP; 18 Sep 2009 21:00:00 -0000\r\nReceived: from [98.137.34.32] by t7.bullet.mail.sp1.yahoo.com with NNFMP; 18 Sep 2009 21:00:00 -0000\r\nX-Sender: bogdan.mocanu.notifications@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 45983 invoked from network); 18 Sep 2009 13:48:04 -0000\r\nX-Received: from unknown (69.147.108.201)\n  by m5.grp.sp2.yahoo.com with QMQP; 18 Sep 2009 13:48:04 -0000\r\nX-Received: from unknown (HELO n44d.bullet.mail.sp1.yahoo.com) (66.163.169.158)\n  by mta2.grp.re1.yahoo.com with SMTP; 18 Sep 2009 13:48:04 -0000\r\nX-Received: from [69.147.65.172] by n44.bullet.mail.sp1.yahoo.com with NNFMP; 18 Sep 2009 13:47:50 -0000\r\nX-Received: from [98.137.34.32] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 18 Sep 2009 13:47:50 -0000\r\nDate: Fri, 18 Sep 2009 13:47:49 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;h90325+4hn7@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nFrom: &quot;Bogdan&quot; &lt;bogdan.mocanu.notifications@...&gt;\r\nSubject: TemporaryFolder not usable inside setUp() method\r\nX-Yahoo-Group-Post: member; u=414734247; y=a5WtTYfbkYULVuGy1IzyqTE7jnK5puL1bn9equDtKRX8toZvdINWDaW8Pg\r\nX-Yahoo-Profile: bogdanmocanu2011\r\nX-YGroups-SubInfo: t=0;f=272;g=Y5RZa94mMYLwUYhCdES2xlinjNCCrxfXfqPnlXdpdCm5hkxvRYplzB4WVnDGySpXcVQ;\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 18 Sep 2009 20:59:59 -0000\r\n\r\nHello,\n\nI am using JUnit 4.7 and used the new Rules mechanism, with TempFol=\r\nder. What I needed was to have a temporary folder where the CUT could creat=\r\ne some folders, that I can then check and assert on them.\n\nThe problem that=\r\n I encountered is that TempFolder is initialized only AFTER my setup method=\r\n, therefore making it unusable in the set up of the test.\n\nHere is my code:=\r\n\n\n-----------------------------------------------------\npublic class MyClas=\r\nsTest {\n  @Rule\n  public TemporaryFolder testFolder =3D new TemporaryFolder=\r\n();\n\n  @Before\n  public void setUp() {\n    // here testFolder has not been =\r\ncreated\n    // testFolder.getRoot() is null\n  }\n\n  @Test\n  public void test=\r\nSomething() {\n    // here tempFolder is initialized\n    // testFolder.getRo=\r\not() is not-null, and points to a temp folder\n  }\n}\n-----------------------=\r\n------------------------------\n\nIs this ok and intended? For me would be mu=\r\nch more logical to have the TemporaryFolder prepared when the setUp() metho=\r\nd is invoked, so that I can then set up my mockups and my objects with this=\r\n test folder. Otherwise, I have to place some set up code at the beginning =\r\nof each test method, which basically invalidates the reason for text fixtur=\r\nes.\n\nWhat do you think?\n\nRegards,\nBogdan Mocanu\n\n\n", 
+    "profile": "bogdanmocanu2011", 
+    "topicId": 21931, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 414734247, 
+    "prevInTime": 21930, 
+    "contentTrasformed": false, 
+    "postDate": "1253281669", 
+    "canDelete": false, 
+    "nextInTopic": 21933, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGg5MDMyNSs0aG43QGVHcm91cHMuY29tPg=="
+    }
+}

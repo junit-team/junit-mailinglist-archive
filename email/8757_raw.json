@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 8758, 
+    "senderId": "1l2nd01j6h_pOUa3qLn8w5TP_dtjFcC51lejkspN0NzvwrYqyDd_aYMm96vtCXE-rjfCP8FGmHpcU0byNDODIAF4BKhY_9LNN02rsS2Ui1M", 
+    "systemMessage": false, 
+    "subject": "Re: client-server simulation in separate JVM&#39;s using Junit", 
+    "from": "&quot;korosh_afshar&quot; &lt;korosh_afshar@...&gt;", 
+    "authorName": "korosh_afshar", 
+    "msgSnippet": "thanks for response. this is pretty much the solution I have now.  The problem I have with this is that I lose control of my test case and have to manipulate", 
+    "msgId": 8757, 
+    "rawEmail": "Return-Path: &lt;korosh_afshar@...&gt;\r\nX-Sender: korosh_afshar@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 65955 invoked from network); 23 Jul 2003 14:48:27 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m2.grp.scd.yahoo.com with QMQP; 23 Jul 2003 14:48:27 -0000\r\nReceived: from unknown (HELO n17.grp.scd.yahoo.com) (66.218.66.72)\n  by mta1.grp.scd.yahoo.com with SMTP; 23 Jul 2003 14:48:25 -0000\r\nReceived: from [66.218.67.190] by n17.grp.scd.yahoo.com with NNFMP; 23 Jul 2003 14:48:20 -0000\r\nDate: Wed, 23 Jul 2003 14:48:17 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: client-server simulation in separate JVM&#39;s using Junit\r\nMessage-ID: &lt;bfm77h+8kjn@...&gt;\r\nIn-Reply-To: &lt;bflsin+l27u@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 3060\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;korosh_afshar&quot; &lt;korosh_afshar@...&gt;\r\nX-Yahoo-Group-Post: member; u=80285661\r\nX-Yahoo-Profile: korosh_afshar\r\n\r\n\nthanks for response.\n\nthis is pretty much the solution I have now.  The problem I have with \nthis is that I lose control of my test case and have to manipulate the \nant build script to change the number of clients I want to spawn, \nwhere as being able to do this in the main Test case I have control \nover exactly how many clients I want to spawn based on configurable \nparameters from a junit property file.\n\nso far this is what I am doing.\n\n\n--- In junit@yahoogroups.com, &quot;Leonardo Abreu de Barros&quot; &lt;leobarros@e.\n..&gt; wrote:\n&gt; Hello,\n&gt; \n&gt; I&#39;m not sure if I understand what exactly is your problem, but it \n&gt; seems that you have exactly the same requirement I do. I need to \n&gt; start a server, on a separate JVM, start a client, run a suite of \n&gt; tests and then shutdown down them all.\n&gt; \n&gt; I achieved this using both the &lt;parallel&gt; task and the &quot;fork&quot; \n&gt; attribute of the &lt;java&gt; task. Following is the code I&#39;m using, \nplease \n&gt; consider if it can be of any help.\n&gt; \n&gt; &lt;target name=&quot;junit&quot; depends=&quot;compile&quot;&gt;\n&gt;   &lt;parallel&gt;\n&gt;     &lt;sequential&gt;\n&gt;       &lt;echo&gt; # Starting Server...&lt;/echo&gt;\n&gt;       &lt;java dir=&quot;${SERVER_DIR}&quot; classname=&quot;mypackage.MyServer&quot; \n&gt; fork=&quot;yes&quot;&gt;\n&gt;         &lt;jvmarg value=&quot;-server&quot;/&gt;\n&gt;         &lt;classpath refid=&quot;server.classpath&quot;/&gt;\n&gt;       &lt;/java&gt;\n&gt;     &lt;/sequential&gt;\n&gt;     &lt;sequential&gt;\n&gt;       &lt;!-- Waits for the server listener to be up --&gt;\n&gt;       &lt;waitfor maxwait=&quot;5&quot; maxwaitunit=&quot;second&quot;&gt;\n&gt; \t&lt;socket server=&quot;${server}&quot; port=&quot;${rmiport}&quot;/&gt;\n&gt;       &lt;/waitfor&gt;\n&gt;       &lt;junit printsummary=&quot;on&quot; fork=&quot;false&quot; haltonfailure=&quot;false&quot;  \n&gt; failureproperty=&quot;tests.failed&quot; showoutput=&quot;true&quot;&gt;\n&gt;         &lt;classpath refid=&quot;project.classpath&quot;/&gt;\n&gt; \t&lt;formatter type=&quot;brief&quot; usefile=&quot;false&quot;/&gt;\n&gt; \t&lt;test name=&quot;${testfile}&quot;/&gt;\n&gt;       &lt;/junit&gt;\n&gt;       &lt;fail if=&quot;tests.failed&quot;&gt;\n&gt;         *****************************\n&gt; \tOne or more tests failed. Check output...\n&gt;         *****************************\n&gt;       &lt;/fail&gt;\n&gt;       &lt;echo&gt;Testes completed.&lt;/echo&gt;\n&gt;     &lt;/sequential&gt;\n&gt;   &lt;/parallel&gt;\n&gt; &lt;/target&gt;\n&gt; \n&gt; Take care,\n&gt; Leonardo Barros\n&gt; \n&gt; --- In junit@yahoogroups.com, &quot;korosh_afshar&quot; &lt;korosh_afshar@y...&gt; \n&gt; wrote:\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; Hi,\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; I have a need to spawn a server and multiple clients in different \n&gt; VM&#39;s \n&gt; &gt; because of singleton use of a library that each client uses which \n&gt; &gt; limits me to this solution.   Server starts, then clients each \n&gt; start \n&gt; &gt; and interact with the server and make assertions on the response \n&gt; from \n&gt; &gt; server.\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; I know about Ant with parallel task or batch job.  I know about \n&gt; &gt; ActiveTestSuite and JUnitPref but they seems to run tests in \n&gt; different \n&gt; &gt; threads but same JVM.\n&gt; &gt; \n&gt; &gt; I&#39;d like to do this from ONE TestCase since that seems like a \nnicer \n&gt; &gt; solution than Ant parallel task.  e.g my TestClientServer  would \n&gt; spawn \n&gt; &gt; a server in a different VM and also spawn as many clients as I \nwant \n&gt; &gt; each in its own VM and then once all client(s) test methods are \n&gt; done, \n&gt; &gt; the TestClientServer tears down.\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; Is there a way to do this.\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; thanks\n\n\n", 
+    "profile": "korosh_afshar", 
+    "topicId": 8717, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 80285661, 
+    "prevInTime": 8756, 
+    "contentTrasformed": false, 
+    "postDate": "1058971697", 
+    "canDelete": false, 
+    "nextInTopic": 8758, 
+    "prevInTopic": 8747, 
+    "headers": {
+        "inReplyToHeader": "PGJmbHNpbitsMjd1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGJmbTc3aCs4a2puQGVHcm91cHMuY29tPg=="
+    }
+}

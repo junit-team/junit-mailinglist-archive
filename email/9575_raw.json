@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 40, 
+    "nextInTime": 9576, 
+    "senderId": "QXVZPiZHVWWxMyJZfWfUlBFX37vYvn01IJG6gAjIvdUOOoQXfz-qf2ejXzBhuRRgyD3FcXQQxGyee6nxPZ1Ra4lk3FrDdmrKBcmcMcd4Wg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Recursive TestRunner", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Rakesh wrote:  ... OK. This is totally different from repeating test cases . It appears to me that you want to execute some setup code once, execute ", 
+    "msgId": 9575, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 71733 invoked from network); 30 Sep 2003 18:13:10 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m10.grp.scd.yahoo.com with QMQP; 30 Sep 2003 18:13:10 -0000\r\nReceived: from unknown (HELO fep04-mail.bloor.is.net.cable.rogers.com) (66.185.86.74)\n  by mta5.grp.scd.yahoo.com with SMTP; 30 Sep 2003 18:13:09 -0000\r\nReceived: from rogers.com ([24.156.43.226])\n          by fep04-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030930181225.ELKM504611.fep04-mail.bloor.is.net.cable.rogers.com@...&gt;\n          for &lt;junit@yahoogroups.com&gt;; Tue, 30 Sep 2003 14:12:25 -0400\r\nMessage-ID: &lt;3F79C782.4090505@...&gt;\r\nDate: Tue, 30 Sep 2003 14:12:18 -0400\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.5b) Gecko/20030901 Thunderbird/0.2\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Recursive TestRunner\r\nReferences: &lt;001901c38779$c85322b0$4ae22a0f@nt2674&gt;\r\nIn-Reply-To: &lt;001901c38779$c85322b0$4ae22a0f@nt2674&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep04-mail.bloor.is.net.cable.rogers.com from [24.156.43.226] using ID &lt;jbrains@...&gt; at Tue, 30 Sep 2003 14:12:25 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nRakesh wrote:\n\n&lt;snip /&gt;\n\n&gt; So it will execute all the TestCases, and the setUp() and tearDown()\n&gt; function makes sure that the fixture\n&gt; is not executing every time a TestCase is called.\n&gt; So I have initialization of my application only once, and all the\n&gt; TestCases run in the same environment.\n\nOK. This is totally different from &quot;repeating test cases&quot;.\n\nIt appears to me that you want to execute some setup code once, execute \nan entire TestSuite, then execute some teardown code once. Is that correct?\n\nIf it is, then look at TestSetup and the JUnit FAQ. Google keyworks: \nJUnit FAQ TestSetup.\n\n&gt; Now I want to be able to run the same TestSuite again and again, till I\n&gt; myself don&#39;t stop the application.\n&gt; I looked into the RepeatedTestCase class, but couldn&#39;t get it working\n&gt; for me in my required manner.\n&gt; Can you give me some pointers on how to use RepeatedTestCase class\n&gt; As I am not quite clear on that, and couldn&#39;t find documentation on\n&gt; this.\n\nMy above comment is not quite right, then.\n\nYou want to do this:\n1. Start JVM.\n2. Execute one-time setup code.\n3. Execute your TestSuite many times.\n4. Tear down the JVM.\n\nThe solution you need depends on how you run your tests.\n\nIf you want to use the text-based test runner, you&#39;re out of luck. Each \ninvocation of the text-based test runner runs in its own JVM, so if you \nwant to do one-time setup of data in the JVM and execute a suite n \ntimes, that won&#39;t happen. If your one-time setup is for something \noutside the JVM, then you essentially have to remember to do the setup \nand teardown as needed.\n\nIf you can use the Swing-based test runner, there is hope. Override the \nmethod terminate() to invoke your one-time tear down code before the \ntest runner terminates. Wrap starting the test runner in your own main() \nmethod that performs your one-time setup first. Here is the code.\n\npublic class EnvironmentSetupRunner {\n     public static void main(String[] args) throws Exception {\n         oneTimeEnvironmentSetUp();\n\n         new TestRunner() {\n             public void terminate() {\n                 oneTimeEnvironmentTearDown();\n                 super.terminate();\n             }\n         }\n         .start(\n             new String[] { AnotherSetGlobalDataTest.class.getName()});\n\n     }\n\n     private static void oneTimeEnvironmentTearDown() {\n         System.out.println(&quot;Teardown&quot;);\n     }\n\n     private static void oneTimeEnvironmentSetUp() {\n         System.out.println(&quot;Setup&quot;);\n     }\n}\n\nNeat little trick, and it&#39;s going in my book. :)\n-- \nJ. B. Rainsberger,\nDiaspar Software Services\nhttp://www.diasparsoftware.com :: +1 416 791-8603\nLet&#39;s write software that people understand\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 9399, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 9574, 
+    "contentTrasformed": false, 
+    "postDate": "1064945538", 
+    "canDelete": false, 
+    "nextInTopic": 9576, 
+    "prevInTopic": 9573, 
+    "headers": {
+        "inReplyToHeader": "PDAwMTkwMWMzODc3OSRjODUzMjJiMCQ0YWUyMmEwZkBudDI2NzQ+", 
+        "messageIdInHeader": "PDNGNzlDNzgyLjQwOTA1MDVAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDAwMTkwMWMzODc3OSRjODUzMjJiMCQ0YWUyMmEwZkBudDI2NzQ+"
+    }
+}

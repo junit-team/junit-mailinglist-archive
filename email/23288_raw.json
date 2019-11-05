@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 23289, 
+    "senderId": "QrPgoDDasMFV4Qes656nAkzPgBzS-ocpx6hkiXUVKVAUH0iP4ETHR3sumwiu3ftQb4bFGUZ32qCCrVW8iKK2gUMEYfbT_qyaUPNmQywWUrkF4F5nykmUhZIHkaQ", 
+    "systemMessage": false, 
+    "subject": "Re: Automatic parallel- (aka regression-) testing in JUnit", 
+    "from": "&quot;julianbutnotassange&quot; &lt;julianbutnotassange@...&gt;", 
+    "authorName": "julianbutnotassange", 
+    "msgSnippet": "Apologies, I just realised that I used 3 different identifiers for the same thing: myOutput, output, myObject Obviously the code does not compile :) Cheers, ", 
+    "msgId": 23288, 
+    "rawEmail": "Return-Path: &lt;julianbutnotassange@...&gt;\r\nReceived: (qmail 5607 invoked by uid 7800); 23 Feb 2011 09:51:43 -0000\r\nX-Sender: julianbutnotassange@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 6714 invoked from network); 23 Feb 2011 09:45:22 -0000\r\nX-Received: from unknown (66.196.94.106)\n  by m12.grp.re1.yahoo.com with QMQP; 23 Feb 2011 09:45:22 -0000\r\nX-Received: from unknown (HELO n40b.bullet.mail.sp1.yahoo.com) (66.163.168.154)\n  by mta2.grp.re1.yahoo.com with SMTP; 23 Feb 2011 09:45:22 -0000\r\nX-Received: from [69.147.65.172] by n40.bullet.mail.sp1.yahoo.com with NNFMP; 23 Feb 2011 09:45:22 -0000\r\nX-Received: from [98.137.34.36] by t14.bullet.mail.sp1.yahoo.com with NNFMP; 23 Feb 2011 09:45:22 -0000\r\nDate: Wed, 23 Feb 2011 09:45:21 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;ik2kvh+e1b0@...&gt;\r\nIn-Reply-To: &lt;ik2537+sjh9@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nFrom: &quot;julianbutnotassange&quot; &lt;julianbutnotassange@...&gt;\r\nSubject: Re: Automatic parallel- (aka regression-) testing in JUnit\r\nX-Yahoo-Group-Post: member; u=476316842; y=97rvXwmYyOTj_Fl7pofLTbYlS9mvJeKB5pCj8pl7Rsftsj62olIaoa1uBDKSfw\r\nX-Yahoo-Profile: julianbutnotassange\r\nX-eGroups-Approved-By: mark_l_salter &lt;marksalter@...&gt; via email; 23 Feb 2011 09:51:43 -0000\r\n\r\nApologies, I just realised that I used 3 different identifiers for the same=\r\n thing: myOutput, output, myObject\n\nObviously the code does not compile :)\n=\r\n\nCheers,\nJulian\n\n--- In junit@yahoogroups.com, &quot;julianbutnotassange&quot; &lt;julia=\r\nnbutnotassange@...&gt; wrote:\n&gt;\n&gt; Hi there,\n&gt; \n&gt; I hope this is the right grou=\r\np to ask.\n&gt; Terminology in the literature is a bit all over the place so pl=\r\nease be patient and let me try to clarify. (I&#39;m also coming from a differen=\r\nt language.)\n&gt; \n&gt; What I&#39;m about to describe could potentially be done cont=\r\ninuously, but it is drifting away from Unit testing into Integration/Story =\r\ntesting that I would do e.g. every day, or every week.\n&gt; Say I have a metho=\r\nd that outputs an object of type MyClass.\n&gt; I have a version of this method=\r\n in production, and I know it outputs an acceptable object.\n&gt; When I have a=\r\n release candidate, I would like to calculate the object with the new code =\r\nand compare against the object calculated with the production code, ideally=\r\n according to a user-defined tolerance for floats.\n&gt; \n&gt; Let&#39;s say I have an=\r\n integration test which simply calculates the value and performs some intri=\r\nnsic tests on the output.\n&gt; I would imagine that with some generic, recursi=\r\nve reflection and persistence it would be possible to extend JUnit so that =\r\nI can just add one line to my integration test, so that\n&gt; \n&gt; 1. if the test=\r\n is run in &quot;integration mode&quot;, that line is ignored\n&gt; 2. if the test is run=\r\n in &quot;regression_base mode&quot; against production, it persists the output value=\r\n (expected) somewhere\n&gt; 3. if the test is run in &quot;regression_compare&quot; mode,=\r\n it loads back the expected and automatically and generically compares it a=\r\ngainst the actual that I already have in memory at that point\n&gt; \n&gt; and this=\r\n would work for an arbitrary object of an arbitrary type, without requiring=\r\n the test writer to write anything else. Something like this\n&gt; \n&gt; public cl=\r\nass MyClassTest extends RegressionTest {\n&gt;   @Test\n&gt;   public void myIntegr=\r\nationTest() {\n&gt;     MyClass myOutput =3D Whatever.StoryTest();\n&gt; \n&gt;     // =\r\nThis is a standard assertion, part of the story test.\n&gt;     // It always ge=\r\nts executed.\n&gt;     assertTrue(&quot;A reasonable amount&quot;, output.GetAmount() &lt; 5=\r\n0);\n&gt; \n&gt;     // This does something different depending on what &quot;mode&quot; the =\r\ntest is running in.\n&gt;     // The last argument is the tolerance for float c=\r\nomparisons\n&gt;     assertNoRegression(&quot;Regression-testing myOutput&quot;, myObject=\r\n, 10e-2);\n&gt;   }\n&gt; }\n&gt; \n&gt; Do you think this can be achieved in Java? Perhaps=\r\n something has already been done?\n&gt; \n&gt; Thank you\n&gt;\n\n\n\n", 
+    "profile": "julianbutnotassange", 
+    "topicId": 23287, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 476316842, 
+    "prevInTime": 23287, 
+    "contentTrasformed": false, 
+    "postDate": "1298454321", 
+    "canDelete": false, 
+    "nextInTopic": 23292, 
+    "prevInTopic": 23287, 
+    "headers": {
+        "inReplyToHeader": "PGlrMjUzNytzamg5QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGlrMmt2aCtlMWIwQGVHcm91cHMuY29tPg=="
+    }
+}

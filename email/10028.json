@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 10029, 
+    "senderId": "uG1R1wHGKEbjxPXOeCtN9zZKtq2BHUbVh78pRNliKXd8mPTVA3uBaIYGakmMr6FYkDhN_ZkqneUT-bCXR9LPla7KE7LF97_C58pj4Scpc_uXKc61TEKOXg", 
+    "systemMessage": false, 
+    "subject": "答复: [junit] junit test for inter\tfaces", 
+    "from": "=?utf-8?B?5rGq5pil54eV?= &lt;neilwang@...&gt;", 
+    "authorName": "汪春燕", 
+    "msgSnippet": "The better way I think is creating an abstract TestCase class,there you should make the setup and tearDown method final, and implement all the test method, but", 
+    "msgId": 10028, 
+    "profile": "ncywang2003", 
+    "topicId": 10028, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 166557506, 
+    "messageBody": "<div id=\"ygrps-yiv-1594330237\">The better way I think is creating an abstract TestCase class,there you should make the setup and tearDown method final, and implement all the test method, but the target object/class you will test should be got by an abstract method, such as, YourInterface getIntance(). you should extend this abstract class for each class&#39;s testcase implemented the interface, the only thing you should do in the subclass implementing the getInstance method, in this method you should return an instance of the concrete class.\r<br/>\n \r<br/>\nfor example:\r<br/>\n \r<br/>\ninterface YourInterface {\r<br/>\n    String methodOne();\r<br/>\n    String methodTwo();     \r<br/>\n}\r<br/>\n \r<br/>\n \r<br/>\npublic class FirstImpl implements  YourInterface{\r<br/>\n    \r<br/>\n}\r<br/>\n \r<br/>\npublic class SecondImpl implements YourInterface{\r<br/>\n \r<br/>\n}\r<br/>\n\r<br/>\n \r<br/>\nabstract class YourInterfaceTest extends TestCase{\r<br/>\n    private YourInterface _target = null;\r<br/>\n \r<br/>\n \r<br/>\n    abstract YourInterface getInstance();\r<br/>\n \r<br/>\n    protected final void setUp() throws Exception{\r<br/>\n             //TODO:prepare test data\r<br/>\n \r<br/>\n             _target = getInstance();\r<br/>\n    }\r<br/>\n \r<br/>\n    protected final void tearDown() throws Exception{\r<br/>\n             //TODO:clear all test data\r<br/>\n    }\r<br/>\n \r<br/>\n    public void testMethodOne(){\r<br/>\n        //TODO:concrete test code\r<br/>\n        //     String actValue = _target.methodOne();\r<br/>\n    }\r<br/>\n \r<br/>\n \r<br/>\n    public void testMethodTwo(){\r<br/>\n       //TODO:concrete test code \r<br/>\n        //     String actValue = _target.methodTwo();\r<br/>\n    }\r<br/>\n}   \r<br/>\n \r<br/>\n \r<br/>\n \r<br/>\nfor each implement&#39;s testcase,the only thing you should do is extending YourInterfaceTest and implementing the getInstance() method,for example:\r<br/>\n \r<br/>\n  public class FirstImplTest extends YourInterfaceTest{\r<br/>\n     public final YourInterface getInstance(){\r<br/>\n          return new FirstImpl():\r<br/>\n     }        \r<br/>\n  }\r<br/>\n\r<br/>\n \r<br/>\n  public class SecondImplTest extends YourInterfaceTest{ \r<br/>\n     public final YourInterface getInstance(){\r<br/>\n          return new Secondmpl():\r<br/>\n     }        \r<br/>\n  }\r<br/>\n \r<br/>\n \r<br/>\n\r<br/>\n-----原始邮件-----\r<br/>\n发件人: Stefan Lischke [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:lischke@...\">lischke@...</a>]\r<br/>\n发送时间: 2003年12月1日 20:39\r<br/>\n收件人: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>\r<br/>\n主题: [junit] junit test for interfaces\r<br/>\n\r<br/>\n\r<br/>\nhi there,\r<br/>\n\r<br/>\nI have a well defined API and a bunch of different implementations of \r<br/>\nthis API. I want to make some jUnit Tests for the API using the \r<br/>\ninterfaces, so that all implementations could be verified against this \r<br/>\nAPI Junit Test.\r<br/>\n\r<br/>\nWhat is the standard way to do this?\r<br/>\nHow can i minimize the adaption work for every different implementation.\r<br/>\nIs there a way of just testing against the interfaces and maybe just \r<br/>\nderrivate one Main class for every implementation.\r<br/>\n\r<br/>\nthanx in advance\r<br/>\n\r<br/>\n\r<br/>\n\r<br/>\n\r<br/>\nYahoo! Groups Sponsor\t\r<br/>\n\r<br/>\nADVERTISEMENT\r<br/>\n &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://rd.yahoo.com/SIG=12cuduhku/M=267637.4116732.5333197.1261774/D=egroupweb/S=1705006905:HM/EXP=1070387660/A=1853619/R=0/*http://www.netflix.com/Default?mqso=60178356&partid=4116732\">http://rd.yahoo.com/SIG=12cuduhku/M=267637.4116732.5333197.1261774/D=egroupweb/S=1705006905:HM/EXP=1070387660/A=1853619/R=0/*http://www.netflix.com/Default?mqso=60178356&partid=4116732</a>&gt; click here\t\r<br/>\n  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://us.adserver.yahoo.com/l?M=267637.4116732.5333197.1261774/D=egroupmail/S=:HM/A=1853619/rand=543217627\">http://us.adserver.yahoo.com/l?M=267637.4116732.5333197.1261774/D=egroupmail/S=:HM/A=1853619/rand=543217627</a>&gt; \t\r<br/>\n\r<br/>\nTo unsubscribe from this group, send an email to:\r<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a>\r<br/>\n\r<br/>\n\r<br/>\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a>&gt; . \r<br/>\n\r<br/>\n\r<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 10027, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1070328472", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDlBNkYxRTlBQTE5NTdBNDBCMDA3QUEwNzhBN0NFMjQxM0FFMjJDQG1haWxzZXJ2ZXIuZXJwLWNoaW5hLmNvbT4="
+    }
+}

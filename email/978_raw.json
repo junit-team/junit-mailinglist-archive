@@ -1,0 +1,28 @@
+{
+    "topicId": 978, 
+    "postDate": "987610040", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Uwe Schuster&quot; &lt;uwe.schuster@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "6ArAQoo9WB6DQ4BEKsK8cGs5fi2xujZvyRyJUlylYlz5GCxi8VlgLUeCv9CPVmUympkeUlKUh6nuoDwbLrId40o4PG3BSv50CDvz26xkv117tWI62g", 
+    "nextInTime": 979, 
+    "userId": 0, 
+    "prevInTime": 977, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDlia2Uzbyt2dWhxQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Uwe Schuster", 
+    "numMessagesInTopic": 1, 
+    "msgSnippet": "Hello, I m new to JUnit and this group. However I read some articles on JUnit in general and some of the discussions about the order of tests. The common", 
+    "contentTrasformed": false, 
+    "msgId": 978, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;uwe.schuster@...&gt;\r\nX-Sender: uwe.schuster@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 18 Apr 2001 16:07:26 -0000\r\nReceived: (qmail 27581 invoked from network); 18 Apr 2001 16:07:23 -0000\r\nReceived: from unknown (10.1.10.26) by l7.egroups.com with QMQP; 18 Apr 2001 16:07:23 -0000\r\nReceived: from unknown (HELO hm.egroups.com) (10.1.10.45) by mta1 with SMTP; 18 Apr 2001 16:07:23 -0000\r\nX-eGroups-Return: uwe.schuster@...\r\nReceived: from [10.1.10.113] by hm.egroups.com with NNFMP; 18 Apr 2001 16:07:22 -0000\r\nDate: Wed, 18 Apr 2001 16:07:20 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Order of tests with databases\r\nMessage-ID: &lt;9bke3o+vuhq@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2757\r\nX-Mailer: eGroups Message Poster\r\nFrom: &quot;Uwe Schuster&quot; &lt;uwe.schuster@...&gt;\r\n\r\nHello,\n\nI&#39;m new to JUnit and this group. However I read some articles on \nJUnit in general and some of the discussions about the order of \ntests. The common conclusions and recommendations are:\n- Avoid dependencies between tests\n- If dependencies are necessary however, group these tests in a \nsingle test case and use a suite method to force the order of \nexecution\n- The execution order of tests in a suite is in fact the order tests \nwere added, although this behaviour results from an implementation \ndetail, not from JUnit&#39;s specification.\n\nHowever the following situation might be quite common, especially in \ndatabase environments:\n- To test a special function of a class, a large set of (persistent?)\nobjects must be created, which takes substantial time\n- Some test case X needs a SetUp that is exactly the same as the \nresult of another test case Y&#39;s setUp plus some or all of Y&#39;s test \nmethods\n- There is no possibility of redesigning the application code because \nthe classes in test are partially &quot;legacy code&quot;, strongly interwoven \nand not heavily tested - this is why we need to write a new test \nsuite for them...\n\nThe discussions do not provide a solution or recommendation for this.\nSo to me in this environment the best solution seems to be to let \none test case Y use a backup of the database that was taken after the \nother test X has (successfully!) run.\nHaving each test build the complex initialization (even if refactored \ninto some initialization classes) is bad because it makes the tests \nrun too long - it is diffcult enough to get some developers write and \nuse tests, but if they always wait 10 minutes for a test to complete, \nthey will not use it a second time...\nThe backup and restore method might have the advantage that restoring \nthe database to that state the developer&#39; test needs is quite fast, \nso that the code-test-improve-test cycle might become less annoying \nto the developer.\nI am thinking of implementing a framework (as an extension to JUnit) \nthat allows a test case X to define a prerequisite test case Y by \nname. If a backup exists for Y (that is: Y was already run \nsuccessfully before) the backup gets restored and X may quickly \nexecute. If no backup exists, first Y gets run, a backup is taken and \nthen X is run (and maybe a backup is taken again).\nMoreover to minimize the run time of a complete test suite of the \nwhole system, even the database could be reused without the need to \ndelete and recreate it after each single test run.\n\nIs this idea bad only because it hurts JUnit&#39;s ideology, is it bad \nbecause a solution already exists (where??), is it bad for other \nreasons or is it even a good idea :-) ?\n\nWaiting for your comments,\nUwe Schuster,\nHealy Hudson AG\nhttp://www.healy-hudson.com/\n\n\n", 
+    "subject": "Order of tests with databases"
+}

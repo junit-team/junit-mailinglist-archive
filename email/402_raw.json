@@ -1,0 +1,29 @@
+{
+    "topicId": 401, 
+    "postDate": "981560458", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "lrb3000@...", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "6egzYyq4fDp3Asbb1fC5wGgV1MSBECtynRzp2geHvKCbRcIXMbLCzUr--G9JQVweVuME9laUQbwJ0Q", 
+    "nextInTime": 403, 
+    "userId": 0, 
+    "prevInTime": 401, 
+    "prevInTopic": 401, 
+    "headers": {
+        "inReplyToHeader": "PDk1cnBxZitjcnRwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDk1cnFhYSs0NDJsQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "lrb3000@hotmail.com", 
+    "numMessagesInTopic": 9, 
+    "msgSnippet": "Sorry but I left out a line of code when i posted the orig message. The corrected code is below Context initial = new InitialContext(); Thanks for the help ", 
+    "contentTrasformed": false, 
+    "msgId": 402, 
+    "nextInTopic": 403, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;lrb3000@...&gt;\r\nX-Sender: lrb3000@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_3); 7 Feb 2001 15:41:02 -0000\r\nReceived: (qmail 85504 invoked from network); 7 Feb 2001 15:41:01 -0000\r\nReceived: from unknown (10.1.10.26) by l10.egroups.com with QMQP; 7 Feb 2001 15:41:01 -0000\r\nReceived: from unknown (HELO hh.egroups.com) (10.1.10.40) by mta1 with SMTP; 7 Feb 2001 15:41:01 -0000\r\nX-eGroups-Return: lrb3000@...\r\nReceived: from [10.1.10.119] by hh.egroups.com with NNFMP; 07 Feb 2001 15:40:59 -0000\r\nDate: Wed, 07 Feb 2001 15:40:58 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: Help on testing EJBs\r\nMessage-ID: &lt;95rqaa+442l@...&gt;\r\nIn-Reply-To: &lt;95rpqf+crtp@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2463\r\nX-Mailer: eGroups Message Poster\r\nFrom: lrb3000@...\r\n\r\nSorry but I left out a line of code when i posted the orig message. \nThe corrected code is below\n&quot;Context initial = new InitialContext();&quot;\n\nThanks for the help\nLuis\n\n&gt; -------BEGIN CODE-----------\n&gt; \n&gt; package com.reta.af.viewfinder.test;\n&gt; \n&gt; import junit.framework.*;\n&gt; import com.reta.af.eventhandler.*;\n&gt; import com.reta.af.viewfinder.*;\n&gt; import com.reta.af.common.viewfinder.*;\n&gt; \n&gt; import javax.naming.Context;\n&gt; import javax.naming.InitialContext;\n&gt; import javax.rmi.PortableRemoteObject;\n&gt; \n&gt; public class ViewFinderTest extends TestCase \n&gt; {\n&gt;     protected ViewFinderRemote vfr;\n&gt;     \n&gt;     public ViewFinderTest(String name)\n&gt;     {\n&gt;     \tsuper(name);\n&gt;     }\n&gt;     \n&gt;     public static void main (String[] args)\n&gt;     {\n&gt;     \tjunit.textui.TestRunner.run (suite());\n&gt;     }\n&gt;     \n&gt;     protected void setUp() throws Exception\n&gt;     {\n&gt; \ttry\n&gt; \t{\n                Context initial = new InitialContext(p);\n&gt; \t\tObject objref = initial.lookup(&quot;ViewFinder&quot;);\n&gt; \t\tViewFinderHome home = (ViewFinderHome)\n&gt; PortableRemoteObject.narrow(objref, ViewFinderHome.class);\n&gt; \t        this.vfr = home.create();\n&gt; \t}\n&gt; \tcatch (Exception ex2 )\n&gt;         {\n&gt;         \tSystem.out.println(ex2.getMessage());\n&gt;         }\n&gt; \t\n&gt;     }\n&gt; \n&gt; \t\n&gt;     public static Test suite()\n&gt;     {\n&gt; \treturn new TestSuite(ViewFinderTest.class);\n&gt;     }\n&gt;     \n&gt;     public void testGetView() throws Exception\n&gt;     {\n&gt;        \n&gt;         try\n&gt;         {\n&gt;             \n&gt;             //Set the test attributes    \n&gt;             ViewFinder viewFinderObj = new ViewFinder();\n&gt;             viewFinderObj.setTaskname(&quot;com.reta.pmwb.start.TLogin&quot;);\n&gt;             viewFinderObj.setAudience(new Integer(1));\n&gt; \t    viewFinderObj.setChannel(&quot;H&quot;);\n&gt; \t\n&gt; \t    //Instantiate Return Value\n&gt; \t    View retView = new View();\n&gt; \t\t\n&gt; \t    //Instantiate Expected Value and Set Attributes\n&gt; \t    View expView = new View();\n&gt; \t    expView.setUrl(&quot;/loginSuccess.jsp&quot;);\n&gt; \t    expView.setStylesheet(&quot;style.css&quot;);\n&gt;     \t\t\n&gt; \t    try\n&gt;     \t    {\t\n&gt;                 retView = this.vfr.getView(viewFinderObj);\n&gt;             }\n&gt;        \n&gt;             catch (java.rmi.RemoteException x)\n&gt;             {\n&gt;                 // do something here\n&gt;             }\n&gt;             \n&gt;             //Compare expected and return values\n&gt;            //** good code: assertEquals(expView, retView);\n&gt;               fail(&quot;This is a manual fail&quot;);\n&gt;         \t    \n&gt; \t}\n&gt; \t\t\n&gt; \tcatch (Exception ex)\n&gt; \t{\n&gt; \t}\n&gt;     \n&gt;     }\n&gt; \n&gt; }\n\n\n", 
+    "subject": "Re: Help on testing EJBs"
+}

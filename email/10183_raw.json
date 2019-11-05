@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 10184, 
+    "senderId": "xQ1pc6yCeOJqL47mEOz2woI1EBWNZLFbX_0HHo34xk7A8r6HdARw9HMDX5dbcFILP_MqUq75v9yv5pyUFB_SuomKJIHbDfTkaQv2q6IRN6y4uGQ8rAQRdip1gwanqznC", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Can i do a assertion inside the setUp() method.", 
+    "from": "=?iso-8859-1?q?Karthikeyan=20D?= &lt;karthikeyand@...&gt;", 
+    "authorName": "Karthikeyan D", 
+    "msgSnippet": "Hi , Instead i tried with a simple sample as below, //------------------------ package junit.samples; import junit.framework.*; import java.util.*; public", 
+    "msgId": 10183, 
+    "rawEmail": "Return-Path: &lt;karthikeyand@...&gt;\r\nReceived: (qmail 40714 invoked by uid 7800); 12 Jan 2004 15:17:58 -0000\r\nX-Sender: karthikeyand@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 83564 invoked from network); 12 Jan 2004 06:10:20 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m8.grp.scd.yahoo.com with QMQP; 12 Jan 2004 06:10:20 -0000\r\nReceived: from unknown (HELO web11704.mail.yahoo.com) (216.136.172.70)\n  by mta3.grp.scd.yahoo.com with SMTP; 12 Jan 2004 06:10:20 -0000\r\nMessage-ID: &lt;20040112061020.59094.qmail@...&gt;\r\nReceived: from [148.87.1.171] by web11704.mail.yahoo.com via HTTP; Mon, 12 Jan 2004 06:10:20 GMT\r\nDate: Mon, 12 Jan 2004 06:10:20 +0000 (GMT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;20040112141531.8FB7.SHINOBU@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nX-eGroups-Remote-IP: 216.136.172.70\r\nFrom: =?iso-8859-1?q?Karthikeyan=20D?= &lt;karthikeyand@...&gt;\r\nSubject: Re: [junit] Re: Can i do a assertion inside the setUp() method.\r\nX-Yahoo-Group-Post: member; u=128736679\r\nX-Yahoo-Profile: karthikeyand\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 12 Jan 2004 15:17:58 -0000\r\n\r\nHi ,\n  Instead i tried with a simple sample as below,\n\n//------------------------\npackage junit.samples;\nimport junit.framework.*;\nimport java.util.*;\n\npublic class modelTest extends TestCase{\n\n\n    private Collection _collection;\n\n    public modelTest(String name) {\n        super(name);\n    }\n\n    protected void setUp() {\n        _collection = new ArrayList();\n        _collection = null;\n        assertNotNull(&quot;Collection null in my setupmethod\n&quot;,_collection);\n    }\n\n    protected void tearDown() {\n        _collection.clear();\n    }\n\n    public void testEmptyCollection() {\n//        assertTrue(_collection.isEmpty());\n    }\n\n    public void testOneItemCollection() {\n        _collection.add(&quot;itemA&quot;);\n//        assertEquals(1, _collection.size());\n    }\n\n\n}\n//----------------\n  Note in the above i commented the assertions inside my test methods\nare commented. When i run the test , i get the below resut,\n\n.F.F\nTime: 0\nThere were 2 failures:\n1)\ntestEmptyCollection(junit.samples.modelTest)junit.framework.AssertionFailedEr\nror: Collection null in my setupmethod\n        at junit.samples.modelTest.setUp(modelTest.java:17)\n2)\ntestOneItemCollection(junit.samples.modelTest)junit.framework.AssertionFailed\nError: Collection null in my setupmethod\n        at junit.samples.modelTest.setUp(modelTest.java:17)\n\nFAILURES!!!\nTests run: 2,  Failures: 2,  Errors: 0\n\n Does the above mean that , the assertion in setUp() method is not\nconsidered as a test ? And also the test methods which does not have\nany code is also considered as failed . Any explanation for this. Or\nits not a advised practise to use assertion inside setup ?\n\n\n --- Shinobu Kawai &lt;shinobu@...&gt; wrote: &gt; \n&gt; Hi karthikeyand,\n&gt; \n&gt; \n&gt; &gt;    When i do a ejb lookup inside the setUp() method of my testcase\n&gt; , \n&gt; &gt; can i add a assertion to verify whether the lookup returns a not\n&gt; null \n&gt; &gt; value. And also can i add a fail in the catch block of the lookup \n&gt; &gt; code . For eg., can i have it like in the code below..\n&gt; Just try it! JUnit will give you the answer. ;-)\n&gt; \n&gt; protected void setUp throws Exception {\n&gt; &gt; try{\n&gt; &gt;    nctx = new InitialContext();\n&gt; &gt;    hrHome = (HrRemoteHome)PortableRemoteObject.narrow(nctx.lookup\n&gt; &gt;       (hrBean), HrRemoteHome.class);\n&gt; &gt;    assertNotNull(&quot;CostCntProjectClient:setup() -&gt; Hr home lookup\n&gt; returned null&quot;, hrHome);\n&gt; &gt;    \n&gt; &gt;    hrRemote =\n&gt; (HrRemote)PortableRemoteObject.narrow(hrHome.create(),\n&gt; HrRemote.class);\n&gt; &gt;    assertNotNull(&quot;CostCntProjectClient:setup() -&gt; Hr remote lookup \n&gt; &gt;       returned null&quot;,hrRemote);\n&gt; &gt; } catch(CreateException e){\n&gt; &gt;    fail(&quot;CostCntProjectClient:setup() -&gt; CreateExceotion\n&gt; &quot;+e.getMessage());\n&gt; &gt; }catch(NamingException e) {\n&gt; &gt;    fail(&quot;CostCntProjectClient:setup() -&gt; NamingExceotion\n&gt; &quot;+e.getMessage());\n&gt; &gt; }\n&gt; }\n&gt; \n&gt; # Or are you asking if it is good practice?\n&gt; \n&gt; \n&gt; Good luck!\n&gt; \n&gt; -- \n&gt; Shinobu Kawai &lt;shinobu@..., shinobu@...&gt;\n&gt; \n&gt; \n&gt; \n&gt;  \n\n=====\nRegards,\nKarthikeyan D\n\n________________________________________________________________________\nYahoo! Messenger - Communicate instantly...&quot;Ping&quot; \nyour friends today! Download Messenger Now \nhttp://uk.messenger.yahoo.com/download/index.html\n\n", 
+    "profile": "karthikeyand", 
+    "topicId": 10178, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 128736679, 
+    "prevInTime": 10182, 
+    "contentTrasformed": false, 
+    "postDate": "1073887820", 
+    "canDelete": false, 
+    "nextInTopic": 10185, 
+    "prevInTopic": 10182, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwMTEyMTQxNTMxLjhGQjcuU0hJTk9CVUBpZWVlLm9yZz4=", 
+        "messageIdInHeader": "PDIwMDQwMTEyMDYxMDIwLjU5MDk0LnFtYWlsQHdlYjExNzA0Lm1haWwueWFob28uY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 7863, 
+    "senderId": "JczKEQIMhioJaviNK1e-tHK9FXaiC3w_kuRVJfKF4iHytvCIb12LI9NCk5r28hxc21evMr5iqQHubjBL7g26FQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing JDialog", 
+    "from": "Yunas &lt;mailych@...&gt;", 
+    "authorName": "Yunas", 
+    "msgSnippet": "Hi, Thanks for the information.Both the tip works. I went by 2 ,since i wont need to modify my Orignal class. Yoonus ... ", 
+    "msgId": 7862, 
+    "rawEmail": "Return-Path: &lt;mailych@...&gt;\r\nReceived: (qmail 68264 invoked by uid 7800); 25 Apr 2003 17:51:39 -0000\r\nX-Sender: mailych@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 25 Apr 2003 08:38:19 -0000\r\nReceived: (qmail 62406 invoked from network); 25 Apr 2003 08:38:19 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m15.grp.scd.yahoo.com with QMQP; 25 Apr 2003 08:38:19 -0000\r\nReceived: from unknown (HELO web12808.mail.yahoo.com) (216.136.174.43)\n  by mta3.grp.scd.yahoo.com with SMTP; 25 Apr 2003 08:38:19 -0000\r\nMessage-ID: &lt;20030425083819.95795.qmail@...&gt;\r\nReceived: from [203.145.186.2] by web12808.mail.yahoo.com via HTTP; Fri, 25 Apr 2003 01:38:19 PDT\r\nDate: Fri, 25 Apr 2003 01:38:19 -0700 (PDT)\r\nSubject: Re: [junit] Testing JDialog\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;003501c30a2c$e3ebb520$fe78a8c0@haibach&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Yunas &lt;mailych@...&gt;\r\nX-Yahoo-Group-Post: member; u=36185889\r\nX-Yahoo-Profile: mailych\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 25 Apr 2003 17:51:38 -0000\r\n\r\nHi,\n\nThanks for the information.Both the tip works.\n\nI went by 2 ,since i wont need to modify my Orignal\nclass.\n\nYoonus\n--- Johannes Link &lt;john.link@...&gt; wrote:\n&gt; I guess you made the dialog modal. There&#39;s a flag\n&gt; for that in the JDialog\n&gt; constructor.\n&gt; \n&gt; There are two approaches I have used in that\n&gt; situation:\n&gt; 1. Provide a constructor which opens the dialog in\n&gt; non-modal mode just for\n&gt; testing purposes.\n&gt; \n&gt; 2. Open the dialog in another thread than the\n&gt; testing thread:\n&gt; private void openDialogInOtherThread() {\n&gt;     Runnable runnable = new Runnable() {\n&gt;         public void run() {\n&gt;                 dialog.show(); // =\n&gt; dialog.setVisible(true)\n&gt;         }\n&gt;     };\n&gt;     new Thread(runnable).start();\n&gt;     waitForDialogOpen();\n&gt; }\n&gt; private void waitForDialogOpen() {\n&gt;     while (!dialog.isShowing()) {\n&gt;         try {\n&gt;             Thread.sleep(10);\n&gt;         } catch (InterruptedException e) {\n&gt;         }\n&gt;     }\n&gt; }\n&gt; \n&gt; \n&gt; Now you can perform your tests on dialog as you\n&gt; wish. Don&#39;t forget to call\n&gt; dialog.dispose() in tearDown.\n&gt; \n&gt; Hope that helps,\n&gt; Johannes\n&gt; \n&gt; ----- Original Message -----\n&gt; From: &quot;mailych&quot; mailych@...\n&gt; \n&gt; &gt; I have a class(MyClass) which extends JDialog.It\n&gt; contains few buttons\n&gt; &gt; and a textfield.On pressing the button,the\n&gt; corresponding text isd\n&gt; &gt; isplayed in the TextFiled.\n&gt; &gt;\n&gt; &gt; MyClass is made visible only from the calling\n&gt; class\n&gt; &gt;\n&gt; &gt; Now i need test it using JUnit.\n&gt; &gt;\n&gt; &gt; Following is the abstract of test code.\n&gt; &gt;\n&gt; &gt; 1 MyClass myclass = new MyClass(title);\n&gt; &gt;\n&gt; &gt; 2 AbstractButtonTester btnTester = new\n&gt; AbstractButtonTester();\n&gt; &gt;\n&gt; &gt; 3 System.out.println(&quot;Before visible&quot;);\n&gt; &gt;\n&gt; &gt; 4 btnTester.actionDelay(DELAY*2);\n&gt; &gt;\n&gt; &gt; 5 myclass.setVisible(true);\n&gt; &gt;\n&gt; &gt; 6 btnTester.actionDelay(DELAY*2);\n&gt; &gt;\n&gt; &gt; 7 System.out.println(&quot;After visible&quot;);\n&gt; &gt;\n&gt; &gt; 8 // Get a KeyboardFocusManager\n&gt; &gt; 9 KeyboardFocusManager focusManager =\n&gt; &gt;\n&gt;\nKeyboardFocusManager.getCurrentKeyboardFocusManager();\n&gt; &gt;\n&gt; &gt; 10 // New GUI shown should not be null and\n&gt; supposed to be MyClass\n&gt; &gt;\n&gt; &gt; 11 Assert.assertNotNull(&quot;Class should not be\n&gt; null&quot;,\n&gt; &gt; focusManager.getCurrentFocusCycleRoot());\n&gt; &gt;\n&gt; &gt; 12 Assert.assertEquals(&quot;MyClass should be shown&quot;,\n&gt; MyClass.class,\n&gt; &gt;\n&gt; focusManager.getCurrentFocusCycleRoot().getClass());\n&gt; &gt;\n&gt; &gt;\n&gt; &gt; Now the problem is the code doesnt continue after\n&gt; line number:5,it\n&gt; &gt; prints &quot;Before visible&quot; . Only once i close my\n&gt; dialog box, it\n&gt; &gt; prints &quot;After visible&quot;\n&gt; &gt;\n&gt; &gt; But if MyClass extends JFrame,the code continues\n&gt; as expected.\n&gt; &gt;\n&gt; &gt; Is this a bug??Can anybody suggest a work\n&gt; around(except making\n&gt; &gt; MyClass extending JFrame)\n&gt; &gt;\n&gt; \n&gt; \n&gt; ------------------------ Yahoo! Groups Sponsor\n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;  \n&gt; \n&gt; Your use of Yahoo! Groups is subject to\n&gt; http://docs.yahoo.com/info/terms/ \n&gt; \n&gt; \n\n\n__________________________________________________\nDo you Yahoo!?\nThe New Yahoo! Search - Faster. Easier. Bingo\nhttp://search.yahoo.com\n\n", 
+    "profile": "mailych", 
+    "topicId": 7821, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 36185889, 
+    "prevInTime": 7861, 
+    "contentTrasformed": false, 
+    "postDate": "1051259899", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 7836, 
+    "headers": {
+        "inReplyToHeader": "PDAwMzUwMWMzMGEyYyRlM2ViYjUyMCRmZTc4YThjMEBoYWliYWNoPg==", 
+        "messageIdInHeader": "PDIwMDMwNDI1MDgzODE5Ljk1Nzk1LnFtYWlsQHdlYjEyODA4Lm1haWwueWFob28uY29tPg=="
+    }
+}

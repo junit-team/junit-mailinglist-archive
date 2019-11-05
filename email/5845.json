@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 5846, 
+    "senderId": "LxD2jzXItJCKacJ9cLP6LjLYaYQ4KajrCxHaP8CXYJP3Jw2vhshoAsdRbtXqA4bI7XMZt_yE5InHEmcXGPiLVJXgzVWeWYvHIXrSdCT_Dzae0Yg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Dynamically creating a test case for an XML document", 
+    "from": "&quot;Vladimir Bossicard&quot; &lt;vbossica@...&gt;", 
+    "authorName": "Vladimir Bossicard", 
+    "msgSnippet": "To solve the problem you have to understand that the framework creates an\nobject for each TestCase test method.  The idea is then to store information\nabout", 
+    "msgId": 5845, 
+    "profile": "vbossica", 
+    "topicId": 5841, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112965394, 
+    "messageBody": "<div id=\"ygrps-yiv-1295684931\">To solve the problem you have to understand that the framework creates an<br/>\nobject for each TestCase &#39;test&#39; method.  The idea is then to store information<br/>\nabout the file to execute while creating the TestCase instance (in the suite()<br/>\nmethod).<br/>\n<br/>\nOne template can be:<br/>\n<br/>\nimport junit.framework.Test;<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\n<br/>\npublic class BatchTest<br/>\n        extends TestCase {<br/>\n<br/>\n    String filename;<br/>\n<br/>\n    public BatchTest( String name,<br/>\n                      String filename ) {<br/>\n        super( name );<br/>\n        this.filename = filename;<br/>\n    }<br/>\n<br/>\n    public static Test suite() {<br/>\n        TestSuite suite = new TestSuite();<br/>\n        for ( int i = 0; i &lt; 10; i++ ) {<br/>\n            suite.addTest( new BatchTest( &quot;testExecute&quot;, &quot;filename&quot; + i ));<br/>\n        }<br/>\n        return suite;<br/>\n    }<br/>\n<br/>\n    public void testExecute() {<br/>\n        System.out.println( &quot;executing: &quot; + filename );<br/>\n    }<br/>\n<br/>\n}<br/>\n<br/>\nNow every test is executed independently from the other and you will have (in<br/>\nthis case) 10 different tests executed.<br/>\n<br/>\nNote that you cannot use the reflection but need to call BatchTest.suite()<br/>\nexplicitely.<br/>\n<br/>\nIs it what you wanted?<br/>\n<br/>\n-Vladimir<br/>\n\r<br/>\n--<br/>\nVladimir Bossicard<br/>\nwww.bossicard.com</div>", 
+    "prevInTime": 5844, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1032893223", 
+    "canDelete": false, 
+    "nextInTopic": 5852, 
+    "prevInTopic": 5841, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDIwOTI0MTE0NzA1Ljg0LmgwMDIuYzAwMy53bUBtYWlsLnRlbG9jaXR5LmNvbS5jcml0aWNhbHBhdGgubmV0Pg=="
+    }
+}

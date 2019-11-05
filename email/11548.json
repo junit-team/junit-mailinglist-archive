@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 11549, 
+    "senderId": "5HoeQfQ2lZb078HW_U9pi6UC4bjX2w0qnh_A6ehkUla0LcerLfr-M85xeWJhSD07B9LtEYta5WpvaySuZV7VEq4fd0X0kAUH-rM", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Mock objects...", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "What took me about 10 tries to get through my head was this:  Mock implementations don t have to do any of the work of the components they replace. I often", 
+    "msgId": 11548, 
+    "profile": "zipwow", 
+    "topicId": 11542, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "messageBody": "<div id=\"ygrps-yiv-49333186\">What took me about 10 tries to get through my head was this:  Mock<br/>\nimplementations don&#39;t have to do any of the work of the components they<br/>\nreplace.<br/>\n<br/>\nI often start with an &quot;empty&quot; mock that does nothing, kind of like some<br/>\nof the UI adaptor classes.  They do nothing when called, and anything<br/>\nwith a return type either returns null or just fails outright.  Then<br/>\n(in typical XP style), I write just enough or just the right sort of<br/>\nMockObject to get done what I need.<br/>\n<br/>\nSo, if I were testing something that should write to a<br/>\nJournalDataStore, I&#39;d write this mock:<br/>\n<br/>\nMockJournalDataStore extends JournalDataStore {<br/>\n    List addedMessages = new ArrayList();<br/>\n<br/>\n    public void addMessage(JournalEntry entry) {<br/>\n        addedMessages.add(entry);<br/>\n    }<br/>\n<br/>\n    /** New method for mock implementation */<br/>\n    public List getAddedMessages() {<br/>\n        return addedMessages();<br/>\n    }<br/>\n}<br/>\n<br/>\nUsing that, I&#39;d make assertions about the number and value of added<br/>\nmessages.  Notice the new method -- your interface doesn&#39;t have (and<br/>\nprobably doesn&#39;t need) a way to return *all* messages.<br/>\n<br/>\nIn particular to your example, I&#39;d drop all the logic of dates and<br/>\nsorted maps.  That looks like practically implementing an in-memory<br/>\nJournalDataStore, which isn&#39;t what you want to do.  <br/>\n<br/>\nSo what do you need?  If you&#39;re testing something that is sending<br/>\ndates, you probably want to do two things:<br/>\n<br/>\n1. Validate the dates passed to the JournalDataStore <br/>\n<br/>\n2. Test the behavior of your class when it gets zero, one, or many<br/>\nresults back from the getDateRange(..) method.  Perhaps other types of<br/>\nresults are interesting (a note from your mother, a note from your<br/>\nboss, whatever)<br/>\n<br/>\nWith those things in mind, try this mock implementation of the<br/>\ngetDateRange(..) method:<br/>\n<br/>\npublic SortedSet getDateRange(Date start, Date end) {<br/>\n    //record the params submitted, but ignore them<br/>\n    startDates.add(start);<br/>\n    endDates.add(end);<br/>\n<br/>\n    return dateRange;<br/>\n}<br/>\n<br/>\n/** new method for mock implementation.  Defines the date range to be<br/>\n  * returned by getDateRange()<br/>\n  */<br/>\npublic void setDateRange(SortedSet dateRange) {<br/>\n    this.dateRange = dateRange;<br/>\n}<br/>\n<br/>\npublic List getSubmittedStartDates() {return startDates;}<br/>\npublic List getSubmittedEndDates() {return endDates;}<br/>\n<br/>\nThis mock implementation looks a lot more like a bean that allows you<br/>\nto set values to be returned, and a lot less like an in-memory<br/>\nimplementation of the JournalDataStore.  I don&#39;t work with sorted sets<br/>\nterribly often, either.  Thus for my own abilities, this<br/>\nimplementation&#39;s a lot less likely to have a bug, too.<br/>\n<br/>\nLastly, since your tests set up the SortedSet it wants your unit under<br/>\ntest to receive, the state of the MockObject when the test runs is much<br/>\nclearer.<br/>\n<br/>\nHope this helps,<br/>\n<br/>\nKevin Klinemeier<br/>\n<br/>\n--- cypherfox &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cypherfox@...\">cypherfox@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Sure, the most recent example of this to me, was this class:<br/>\n&gt;   <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.vixen.com/code/JournalHash.java\">http://www.vixen.com/code/JournalHash.java</a><br/>\n&gt; implementing<br/>\n&gt;   <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.vixen.com/code/JournalDataStore.java\">http://www.vixen.com/code/JournalDataStore.java</a><br/>\n&gt; <br/>\n&gt; One of the things that isn&#39;t even in there, is the concept of<br/>\n&gt; &#39;get most recent &#39;n&#39; entries&#39;, because that would require me<br/>\n&gt; to walk backwards through the TreeMap, or add a *third*<br/>\n&gt; representation of the same data, as a linked list or something.<br/>\n&gt; <br/>\n&gt; I found it frustrating to have to do this much work for what<br/>\n&gt; was really just a testing class.  It DID let me put off doing<br/>\n&gt; the JDBC code until later, however.  Thankfully it was a<br/>\n&gt; &#39;generic&#39; enough interface that the code didn&#39;t change<br/>\n&gt; noticably when doing the actual DB storage code.<br/>\n&gt; <br/>\n&gt; --  Morgan Schweers<br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n<br/>\n<br/>\n\t\t<br/>\n </span></blockquote>__________________________________<br/>\nDo you Yahoo!?<br/>\nYahoo! Mail - Helps protect you from nasty viruses.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://promotions.yahoo.com/new_mail\">http://promotions.yahoo.com/new_mail</a></div>", 
+    "prevInTime": 11547, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1090013239", 
+    "canDelete": false, 
+    "nextInTopic": 11549, 
+    "prevInTopic": 11547, 
+    "headers": {
+        "inReplyToHeader": "PGNkOWVhdCttaHZvQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDQwNzE2MjEyNzIwLjYzMjk2LnFtYWlsQHdlYjYwMzA3Lm1haWwueWFob28uY29tPg=="
+    }
+}

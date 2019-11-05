@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 2656, 
+    "senderId": "g8P6_7iS3xwGtmGNTP996gOVAyKjDCAwEtXdrP0T7Dxv9K4AEyBx6pqkUrbHiR6rxMHl0Z4HLrx_1AIp2OkSOOTUxREP9zwQjAW_3-FPvIa4BHQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Ant + JUnit + mail server question", 
+    "from": "&quot;Jason Rogers&quot; &lt;jason.rogers@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "Paul, I don t recall that dixie has a way of reporting to you that it is running, however, it seems likely that you could write an Ant task to look through the", 
+    "msgId": 2655, 
+    "topicId": 2652, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1889161620\">Paul,<br/>\n<br/>\nI don&#39;t recall that dixie has a way of reporting to you that it is running,<br/>\nhowever, it seems likely that you could write an Ant task to look through<br/>\nthe &quot;innards&quot; of dixie to determine this.<br/>\n<br/>\nAs far as starting dixie, all you need to do is invoke it from Ant using the<br/>\n&lt;exec/&gt; or &lt;apply/&gt; on some start-up script (.bat, .sh, etc.) or, since it&#39;s<br/>\na Java mail server, use the &lt;java/&gt; task with the fork=&quot;yes&quot; attribute.<br/>\n<br/>\nExample of the Java task:<br/>\n<br/>\n&lt;target name=&quot;isDixieStarted&quot; depends=&quot;init&quot;&gt;<br/>\n[...insert magic here...]<br/>\n&lt;/target&gt;<br/>\n<br/>\n&lt;target name=&quot;startdixie&quot; depends&quot;isDixieStarted&quot;&gt;<br/>\n  &lt;java classname=&quot;dixiemail.dixie&quot;<br/>\n        fork=&quot;yes&quot;<br/>\n        dir=&quot;${directory.in.which.you.want.dixiemail.run}&quot;<br/>\n        maxmemory=&quot;${maximum.memory.to.allocate.to.new.jvm.for.dixiemail}&quot; &gt;<br/>\n    &lt;classpath&gt;<br/>\n      &lt;pathelement location=&quot;${dixie.jar}&quot;/&gt;<br/>\n      &lt;pathelement path=&quot;${java.class.path}&quot;/&gt;<br/>\n    &lt;/classpath&gt;<br/>\n  &lt;/java&gt;<br/>\n&lt;/target&gt;<br/>\n<br/>\nThen run your tests, making the target for testing dependent on<br/>\n&quot;startdixie&quot;.<br/>\n<br/>\nHTH.<br/>\n-Jason<br/>\n<br/>\n<blockquote><span title=\"ireply\">     &gt; I&#39;ve made a (simple) build.xml for Ant that builds my application<br/>\n    &gt; and runs JUnit for the test part.<br/>\n    &gt; <br/>\n    &gt; However, when I run my tests, I need to have a mail server (dixie)<br/>\n    &gt; running on that machine to ensure that mail messages can <br/>\n    &gt; be sent and<br/>\n    &gt; received correctly. (Granted, one could debate these are <br/>\n    &gt; functional<br/>\n    &gt; tests, but that&#39;s beside the point).<br/>\n    &gt; <br/>\n    &gt; Can any one shed any light on how I can A) start up the <br/>\n    &gt; mail server<br/>\n    &gt; prior to running the test part of the build, and B) how to verify<br/>\n    &gt; that the server is still running, when a test is started?<br/>\n    &gt; <br/>\n    &gt; Once running, I usually leave the mail server running all <br/>\n    &gt; the time,<br/>\n    &gt; but sometimes I forget to start it and then run my tests and some<br/>\n    &gt; of the tests fail. Hence the desire to start the server <br/>\n    &gt; and test if<br/>\n    &gt; the server is still running as part of the Ant build.<br/>\n    &gt; <br/>\n    &gt; Later, I&#39;d like to setup CruiseControl (once I figure it <br/>\n    &gt; out...) to<br/>\n    &gt; do a nightly build and test of the software. I&#39;ve just started<br/>\n    &gt; playing with Ant, CVS, CruiseControl, TomCat, etc. and <br/>\n    &gt; there&#39;s alot<br/>\n    &gt; to absorb, so any suggestions would be very appreciated!<br/>\n    &gt; <br/>\n    &gt; <br/>\n    &gt; PCM (Paul Michali)<br/>\n    &gt; <br/>\n    &gt; Carrier Voice Gateway Business Unit (CVGBU)<br/>\n    &gt; Cisco Systems, Inc.<br/>\n    &gt; 250 Apollo Drive<br/>\n    &gt; Chelmsford, MA 01824<br/>\n    &gt; <br/>\n    &gt; Phone : (800) 572-6771 x 45817  (978) 244-5817 [direct]<br/>\n    &gt; Paging: (800) 365-4578 [voice]  <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:pcm@...\">pcm@...</a> [email page]<br/>\n    &gt; <br/>\n    &gt; ------------------------ Yahoo! Groups Sponsor <br/>\n    &gt; ---------------------~--&gt;<br/>\n    &gt; Secure your servers with 128-bit SSL encryption! Grab <br/>\n    &gt; your copy of VeriSign&#39;s FREE Guide: &quot;Securing Your Web <br/>\n    &gt; Site for Business.&quot; Get it Now!<br/>\n    &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/n7RbFC/zhwCAA/yigFAA/NhFolB/TM\">http://us.click.yahoo.com/n7RbFC/zhwCAA/yigFAA/NhFolB/TM</a><br/>\n    &gt; ----------------------------------------------------------<br/>\n    &gt; -----------~-&gt;<br/>\n    &gt; <br/>\n    &gt; To unsubscribe from this group, send an email to:<br/>\n    &gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n    &gt;  <br/>\n    &gt; <br/>\n    &gt; Your use of Yahoo! Groups is subject to <br/>\n </span></blockquote><a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 2654, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1000386672", 
+    "canDelete": false, 
+    "nextInTopic": 2717, 
+    "prevInTopic": 2652, 
+    "headers": {
+        "messageIdInHeader": "PDg3RUU2QjIxQzYyNEQ1MTFCNzI0MDAxMDRCQ0YxRUIwMUY2MzVFQGV4Y2g+"
+    }
+}

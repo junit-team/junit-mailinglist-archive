@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21392, 
+    "senderId": "wDzNAybdu3_CIgR2DCY5EbbUv-LYRqkLuvM2TQmq6z4olaVczSh8Wy9f6hDEBsXmSEB5h0-ePPF-K1J4u2Rkx5BtxmX-Azc", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit with Selenium-RC how to", 
+    "from": "Fredrik Wendt &lt;fredrik@...&gt;", 
+    "authorName": "Fredrik Wendt", 
+    "msgSnippet": "... Disclaimer: No JUnit, no Selenium-RC used in the solution below. What we did is to put all Selenium tests (HTML source) in a separate web-app, bundled with", 
+    "msgId": 21391, 
+    "rawEmail": "Return-Path: &lt;fredrik@...&gt;\r\nX-Sender: fredrik@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 3897 invoked from network); 24 Feb 2009 10:19:53 -0000\r\nX-Received: from unknown (66.218.67.94)\n  by m44.grp.scd.yahoo.com with QMQP; 24 Feb 2009 10:19:53 -0000\r\nX-Received: from unknown (HELO csmtp3.b-one.net) (195.47.247.213)\n  by mta15.grp.scd.yahoo.com with SMTP; 24 Feb 2009 10:19:53 -0000\r\nX-Received: from [10.10.10.108] (jira.jeppesensystems.com [193.12.210.240])\n\tby csmtp3.b-one.net (Postfix) with ESMTP id B13D02410822\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 24 Feb 2009 11:19:52 +0100 (CET)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;gnmavh+l88h@...&gt;\r\nReferences: &lt;gnmavh+l88h@...&gt;\r\nDate: Tue, 24 Feb 2009 11:19:51 +0100\r\nMessage-Id: &lt;1235470792.8725.58.camel@aspire&gt;\r\nMime-Version: 1.0\r\nX-Mailer: Evolution 2.24.2 \r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Fredrik Wendt &lt;fredrik@...&gt;\r\nSubject: Re: [junit] JUnit with Selenium-RC how to\r\nX-Yahoo-Group-Post: member; u=337462199; y=_PsdTU2DjFEvQGxKeKdUqVraI-8uic83ibcbQNw5IT5SQXtVkvFGWg\r\nX-Yahoo-Profile: fredrik.wendt\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\nOn fre, 2009-02-20 at 13:25 +0000, majkic@... wrote:\n&gt; Hi guys,\n&gt; I need to create automated acceptance tests. Selenium seems to be\n&gt; nice, since it allows someone without much (or none at all)\n&gt; programming experience, as our Product Owner to create those tests\n&gt; with Firefox Selenium IDE plug-in.\n&gt; \n&gt; But time has come to integrate those tests to other JUnit tests, so\n&gt; these can be run on CI server.\n\nDisclaimer: No JUnit, no Selenium-RC used in the solution below.\n\nWhat we did is to put all Selenium tests (HTML source) in a separate\nweb-app, bundled with Selenium Core and an index.jsp that starts the\ntest automatically when called by a browser. (We also mangled Selenium\nCore to let a USERNAME and PASSWORD Selenium variables be set and\npresent in all tests - mangled means five lines of javascript code.)\n\n\nTo have it run in a CI environment ... I wrote two applications:\n\na) a simple app called &quot;test agent&quot; that can take two commands over\nXML-RPC:\na1) start a browser pointing it at a certain URL (pointing to the\nindex.jsp file mentioned above, also telling the browser where the\nselenium result should be posted)\na2) stop a browser\n\nb) A web-app called &quot;test conductor&quot; that \nb1) keeps track of test agents\nb2) aggregate results returned from browsers\nb3) register test new test runs and launch them when test agents become\nidle\n\nThis works well and having the test files in HTML (with human readable\nID values on all elements the test interacts with) makes it useful for\nmanual testing as well. Since the web-app with test can be deployed on a\ndevelopers machine, a developer can also ask the test conductor to run a\ntest off the developer&#39;s machine (and start debugging server side).\n\nThere&#39;s no JUnit integration. We just added a simple script on our CI\nenvironment (Hudson) that after each successful build of the full\nsoftware stack does:\ni) download the build artifacts, deploy them to a test server\nii) register a new test run with web-app b mentioned above\niii) waits for b to return a fail/success\niv) undeploys the artifacts from step i\n\n\nThis was all setup one year ago - the client I worked for wasn&#39;t sure\nwhat Selenium could do or if they wanted to invest time using it. Having\nthe test written/saved in human readable HTML was a good selling point -\nif they decided to not go with Selenium then the tests could still be\nused &quot;as is&quot;.\n\nSince then:\nSelenium 1.0 still hasn&#39;t been released.\nThere&#39;s still no Selenium Driver that can use HTML files as source.\n3000+ runs completed.\nWe run test agents for FF2, FF3, IE7, Safari on Mac.\n\nParts of the test agent and test conductor is BSD-licensed, some parts\nwhere developed for the client (and I think they&#39;ll be happy to share\nunder BSD-ish license).\n\n/ Fredrik\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "fredrik.wendt", 
+    "topicId": 21383, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 337462199, 
+    "prevInTime": 21390, 
+    "contentTrasformed": false, 
+    "postDate": "1235470791", 
+    "canDelete": false, 
+    "nextInTopic": 21392, 
+    "prevInTopic": 21389, 
+    "headers": {
+        "inReplyToHeader": "PGdubWF2aCtsODhoQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDEyMzU0NzA3OTIuODcyNS41OC5jYW1lbEBhc3BpcmU+", 
+        "referencesHeader": "PGdubWF2aCtsODhoQGVHcm91cHMuY29tPg=="
+    }
+}

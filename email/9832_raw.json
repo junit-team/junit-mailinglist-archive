@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 9833, 
+    "senderId": "9hUTGxJOQcLoz0Byc8G_Eo4-Vv1xKgGdL2yQRmImsBDXpJ8ZtI4Q9EpruTuHnAULvWHqD5IJWM0DABUVhPrA7NkRZ6VU3Yc3SMLMrA", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] performance testing", 
+    "from": "&quot;Morten Grum, PH-Consult&quot; &lt;mg@...&gt;", 
+    "authorName": "Morten Grum, PH-Consult", 
+    "msgSnippet": "Hi Nathan We ve integrated some of our performance profiling into our JUnit tests. Many of the performance profilers have a consol version. In our case we re ", 
+    "msgId": 9832, 
+    "rawEmail": "Return-Path: &lt;mg@...&gt;\r\nX-Sender: mg@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 78864 invoked from network); 11 Nov 2003 11:01:11 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m14.grp.scd.yahoo.com with QMQP; 11 Nov 2003 11:01:11 -0000\r\nReceived: from unknown (HELO pfepb.post.tele.dk) (193.162.153.3)\n  by mta2.grp.scd.yahoo.com with SMTP; 11 Nov 2003 11:01:10 -0000\r\nReceived: from MG (cpe.atm0-0-0-1421001.0x503f86ce.bynxx5.customer.tele.dk [80.63.134.206])\n\tby pfepb.post.tele.dk (Postfix) with SMTP id 579F65EE2F4\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 11 Nov 2003 12:01:09 +0100 (CET)\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] performance testing\r\nDate: Tue, 11 Nov 2003 11:57:29 +0100\r\nMessage-ID: &lt;FEEAIFIMLHLKAJCEPONHIEMACJAA.mg@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\nIn-Reply-To: &lt;3FAF51A2.3080005@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200\r\nImportance: Normal\r\nFrom: &quot;Morten Grum, PH-Consult&quot; &lt;mg@...&gt;\r\nReply-To: &lt;mg@...&gt;\r\nX-Yahoo-Group-Post: member; u=11862826\r\nX-Yahoo-Profile: morten3grum\r\n\r\nHi Nathan\n\nWe&#39;ve integrated some of our performance profiling into our JUnit tests.\nMany of the performance profilers have a consol version. In our case we&#39;re\nusing JProbe which we call via ant like this:\n\n    &lt;target name=&quot;performance&quot; depends=&quot;testdirectories&quot;&gt;\n        &lt;exec dir=&quot;C:/Program Files/JProbe Suite 4.0.2/bin&quot;\n            executable=&quot;C:/Program Files/JProbe Suite\n4.0.2/bin/jplauncher.exe&quot;&gt;\n                &lt;arg value=&quot;-jp_input=${jprobe.performancetest}&quot; /&gt;\n        &lt;/exec&gt;\n    &lt;/target&gt;\n\nWe have the jplauncher (JProbe&#39;s console version) run the tests directly\nusing mains placed in the TestCase themselves(so not via JUnits test\nrunnner). All our unit tests extend OurAbstractTestCase which in turn\nextends Junits TestCase. In OurAbstractTestCase we have implemented a method\nthat prompts JProbe to take and save performance and memory snapshots. This\nmethod we call at key points within our tests.\n\n    protected static void createPerformanceSnapshot(String snapShotName) {\n        createMemorySnapshot(snapShotName);\n        createProfilingShapshot(snapShotName);\n        System.gc();\n    }\n\n    private static void createMemorySnapshot(String snapShotName) {\n        JPHeapAPI.getInstance().save(snapShotName);\n        JPHeapAPI.getInstance().clear();\n    }\n\n    private static void createProfilingShapshot(String snapShotName) {\n        JPPerformanceAPI.getInstance().save(snapShotName);\n        JPPerformanceAPI.getInstance().clear();\n    }\n\nThis way we can look at CPU times, which methods are &quot;now&quot; slowing it all\ndown and which methods are creating all those objects that get the carbage\ncollector running all the time. We have to actually start-up JProbe and\nload, plot and compare the snapshots of intrest to get value out of this. We\ndo this integration of Junit tests and profiling mainly on test that\nrepresent &quot;Use Cases&quot; and not that much on the small &quot;Unit Tests&quot;.\n\nWe do also at places use a simple stopwatch as proposed in on of the\nintroductory chapters of Sun&#39;s &quot;Java Platform Performance, Strategies and\nTactics&quot; by Steve Wilson and Jeff Kesselman (view full book and code samples\nat http://java.sun.com/docs/books/performance/). The advantage of using a\nsimple stopwatch is that it can just run with your tests whenever they run.\nRunning through the profiler is generally much slower and not that suitable\nfor all tests.\n\nAnd then don&#39;t forget, JUnit actually does actually time each test! So a\nrough performance test is already given there.\n\nHope this impression of one way to do it is of use to you.\n\nMorten\n\n\n&gt; -----Original Message-----\n&gt; From: Nathan Coast [mailto:nathan@...]\n&gt; Sent: 10. november 2003 09:52\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] performance testing\n&gt;\n&gt;\n&gt; Hi,\n&gt;\n&gt; Is anyone doing performance testing with junit or a junit\n&gt; extension?  I&#39;ve\n&gt; looked at JUnitPerf and I don&#39;t think it has the functionality I\n&gt; need.  I&#39;d like\n&gt; to record the time taken to execute individual junit tests.  The\n&gt; idea is that it\n&gt; should then be possible identify when code changes occurred that caused a\n&gt; significant drop in performance.\n&gt;\n&gt; thanks\n&gt; Nathan\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "profile": "morten3grum", 
+    "topicId": 9829, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 11862826, 
+    "prevInTime": 9831, 
+    "contentTrasformed": false, 
+    "postDate": "1068548249", 
+    "canDelete": false, 
+    "nextInTopic": 9833, 
+    "prevInTopic": 9829, 
+    "headers": {
+        "inReplyToHeader": "PDNGQUY1MUEyLjMwODAwMDVAY29kZWN6YXIuY29tPg==", 
+        "messageIdInHeader": "PEZFRUFJRklNTEhMS0FKQ0VQT05ISUVNQUNKQUEubWdAcGhjLmRrPg=="
+    }
+}

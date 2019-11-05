@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 21280, 
+    "senderId": "rUJOS49lADcTsSRiIU0WLXa5sQL0EA8--kZRa0UTUjS5X97Novd42zcJOL3MYUcuofnUOZgqVRrP8_tB_4RsDUQcUgsfsRjPkR2KrHDszw", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Wrapping external tests within JUnit 4", 
+    "from": "&quot;Arnaud Bailly&quot; &lt;arnaud.oqube@...&gt;", 
+    "authorName": "Arnaud Bailly", 
+    "msgSnippet": "Hello, Following this list s advices, I have rewritten my forme JUnit3 tests using JUnit 4. What I did was creating a subclass of Paramaterized with a special", 
+    "msgId": 21279, 
+    "profile": "arnaud.baillly", 
+    "topicId": 21199, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 371972262, 
+    "messageBody": "<div id=\"ygrps-yiv-1753946638\">Hello,<br/>\nFollowing this list&#39;s advices, I have rewritten my forme JUnit3 tests<br/>\nusing JUnit 4. What I did was creating a subclass of Paramaterized<br/>\nwith a special annotation and a method load() that actually runs the<br/>\nHtmlUnit tests, constructs the results and returns a collection of<br/>\nJQTest that can later be used as parameters with Parameterized<br/>\nannotaion.<br/>\n<br/>\nThe abridged runner code is:<br/>\n<br/>\npublic class JQUnitRunner extends Parameterized {<br/>\n<br/>\n  private static String testPagePath;<br/>\n<br/>\n  @Retention(RetentionPolicy.RUNTIME)<br/>\n  public static @interface Page {<br/>\n<br/>\n    String value();<br/>\n<br/>\n  }<br/>\n<br/>\n  public JQUnitRunner(Class&lt;?&gt; clazz) throws Exception {<br/>\n    super(clazz);<br/>\n  }<br/>\n<br/>\n  public static class JQTest { ... }<br/>\n<br/>\n  private static HtmlUnitDriver driver;<br/>\n  private static final String basedir = System.getProperty(&quot;basedir&quot;, &quot;.&quot;);<br/>\n<br/>\n  public static List&lt;JQTest[]&gt; load(Class&lt;?&gt; clazz) { ... }<br/>\n<br/>\n}<br/>\n<br/>\nIt is used by test class instances using the following idiom:<br/>\n<br/>\n@RunWith(JQUnitRunner.class)<br/>\n@...(&quot;test-etatflash&quot;)<br/>\npublic class EtatFlashTest {<br/>\n<br/>\n  private JQTest jqTest;<br/>\n<br/>\n  @Parameters<br/>\n  public static Collection&lt;JQTest[]&gt; jqtests() {<br/>\n    return JQUnitRunner.load(EtatFlashTest.class);<br/>\n  }<br/>\n<br/>\n  public EtatFlashTest(JQTest test) {<br/>\n    this.jqTest = test;<br/>\n  }<br/>\n<br/>\n  @Test<br/>\n  public void test() {<br/>\n    jqTest.assertPass();<br/>\n  }<br/>\n}<br/>\n<br/>\nI am not entirely satisfied with this, as there is still boilerplate<br/>\ncode in the test classes. I would have liked to override the following<br/>\nmethod from Parameterized but it is private:<br/>\n<br/>\n\tprivate List&lt;Object[]&gt; getParametersList(TestClass klass)<br/>\n<br/>\nOverriding would have allowed to remove entirely the jqtests method<br/>\nfrom test classes.<br/>\n<br/>\nregards<br/>\n<br/>\nArnaud Bailly</div>", 
+    "prevInTime": 21278, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1231766279", 
+    "canDelete": false, 
+    "nextInTopic": 21280, 
+    "prevInTopic": 21216, 
+    "headers": {
+        "inReplyToHeader": "PGZmN2NhYzBjMDgxMjE3MTEyNnYzNjJhOTU0OW9lZjI3Y2E0ZWIwNTU5M2VlQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGZmN2NhYzBjMDkwMTEyMDUxN3QyYjVkYmQ3N3QyNjZhNDE0OThmZjI4MWJAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGdpNjFlbCtiMGVyQGVHcm91cHMuY29tPgkgPDRmN2RhNmI5MDgxMjE1MTgzNG81Y2QxN2I1M3AxZTUzZGQxZDkyYTI5ZTc2QG1haWwuZ21haWwuY29tPgkgPGZmN2NhYzBjMDgxMjE2MDgwOG81YmQ2NTg4M241NTA5OTk5NDVjYzg2NjBlQG1haWwuZ21haWwuY29tPgkgPDRmN2RhNmI5MDgxMjE3MDk1NmgzNTdhNTI4MGdmNWQ5OGMxMjIwZTgyZDhmQG1haWwuZ21haWwuY29tPgkgPGZmN2NhYzBjMDgxMjE3MTEyNnYzNjJhOTU0OW9lZjI3Y2E0ZWIwNTU5M2VlQG1haWwuZ21haWwuY29tPg=="
+    }
+}

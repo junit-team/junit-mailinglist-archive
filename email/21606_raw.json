@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 21607, 
+    "senderId": "6zzKd9u0EK3IUqeZN8RtaQ0jCfQOrSFQbi8Q3gvC1cVmSoqkRl9T07V59ZvCRmRFMVJb6eCx4HgE_2nXDR1hjfC3", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Dynamically adding test classes at test-time", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Miles, I think that we ran into a real expectation mismatch when we called one of the key extension classes in JUnit 4 Runner .  Write your own Runner makes", 
+    "msgId": 21606, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 88681 invoked from network); 14 May 2009 13:11:29 -0000\r\nX-Received: from unknown (69.147.108.200)\n  by m3.grp.sp2.yahoo.com with QMQP; 14 May 2009 13:11:29 -0000\r\nX-Received: from unknown (HELO mail-fx0-f177.google.com) (209.85.220.177)\n  by mta1.grp.re1.yahoo.com with SMTP; 14 May 2009 13:11:29 -0000\r\nX-Received: by fxm25 with SMTP id 25so1334596fxm.10\n        for &lt;junit@yahoogroups.com&gt;; Thu, 14 May 2009 06:10:11 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.239.160.67 with SMTP id b3mr141503hbd.23.1242306611407; Thu, \n\t14 May 2009 06:10:11 -0700 (PDT)\r\nIn-Reply-To: &lt;fddffe460905130926t63ac508dod7b12c76566b1769@...&gt;\r\nReferences: &lt;gud8sj+rhbd@...&gt; &lt;gueaj5+7dn0@...&gt;\n\t &lt;fddffe460905130926t63ac508dod7b12c76566b1769@...&gt;\r\nDate: Thu, 14 May 2009 09:10:11 -0400\r\nX-Google-Sender-Auth: fdb7c8b5f7c5ff0d\r\nMessage-ID: &lt;4f7da6b90905140610x3f51c394sc039a9a22ac98ae2@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Re: Dynamically adding test classes at test-time\r\nX-Yahoo-Group-Post: member; u=341876227; y=U9DgUcX5bOnsQJHnIEuIZArQp8YrnZCXV5enSUzVnG0\r\nX-Yahoo-Profile: dsaff\r\n\r\nMiles,\n\nI think that we ran into a real expectation mismatch when we called=\r\n\none of the key extension classes in JUnit 4 &quot;Runner&quot;.  &quot;Write your own\nRun=\r\nner&quot; makes it sound as if you&#39;re being asked to rewrite something\nlike Ecli=\r\npse&#39;s entire launching infrastructure, when, in truth, it&#39;s\nprobably on the=\r\n same level of complexity as a TestNG factory.\n\nThat said, you do need to h=\r\nave committed to the names and total number\nof tests you&#39;re going to run be=\r\nfore any test case is run.  Do the\nclasses have to be generated in a test c=\r\nase, or can a pre-running step\ncompute them all, and a test case can assert=\r\n that they are all there?\n\nThanks,\n\n   David Saff\n\nOn Wed, May 13, 2009 at =\r\n12:26 PM, Miles Parker &lt;milesparker@...&gt; wrote:\n&gt; Thanks Johannes,\n&gt;\n=\r\n&gt; It&#39;s pretty straightforward in its own way. I need to execute an arbitrar=\r\ny\n&gt; set of test methods (using @test annotations) against a known -- but no=\r\nt yet\n&gt; existent at JUnit launch time -- set of classes. Those classes are =\r\ngenerated\n&gt; and compiled in a previous test case within same session and th=\r\nen need to be\n&gt; loaded dynamically. Ideally, I would present the name of cl=\r\nasses as Strings;\n&gt; I understand that JUnit has a way to do this dynamicall=\r\ny for method names\n&gt; but I can&#39;t find a similar feature for class names -- =\r\neverything I&#39;ve tried\n&gt; ends up forcing me to have an explicit compiled ref=\r\nerence at test harness\n&gt; launch time.\n&gt;\n&gt; And of course I&#39;d really like not=\r\n to have to write my own runner\n&gt; implementation. ;) In TestNG I can do thi=\r\ns with factories but our build\n&gt; environment currently only supports JUnit.=\r\n\n&gt;\n&gt; Miles\n&gt;\n&gt; On Wed, May 13, 2009 at 4:23 AM, Johannes Link &lt;jl@johannesl=\r\nink.net&gt; wrote:\n&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt; I guess your own runner implementation to use wi=\r\nth @RunWith could do the\n&gt;&gt; trick. To offer more concrete advice I need mor=\r\ne concrete requirements ;-)\n&gt;&gt;\n&gt;&gt; Johannes\n&gt;&gt;\n&gt;&gt;\n&gt;&gt; --- In junit@yahoogroup=\r\ns.com &lt;junit%40yahoogroups.com&gt;, &quot;Miles Parker&quot;\n&gt;&gt; &lt;milesparker@...&gt; wrote:=\r\n\n&gt;&gt; &gt;\n&gt;&gt; &gt; After doing a fair amount of research, I just can&#39;t seem to find=\r\n a\n&gt;&gt; &gt; viable way to test classes that are loaded during test-time. For\n&gt;&gt;=\r\n &gt; example, my use case is launching some tests from an Eclipse plugin\n&gt;&gt; &gt;=\r\n test for code-generated classes.\n&gt;&gt; &gt;\n&gt;&gt; &gt; This situation is actually more=\r\n difficult under JUnit4 because of\n&gt;&gt; &gt; reliance on annotations. I can&#39;t fi=\r\nnd a path that doesn&#39;t require\n&gt;&gt; &gt; class names to exist at compile time. A=\r\nm I missing something?\n&gt;&gt; &gt;\n&gt;&gt;\n&gt;&gt;\n&gt;&gt;\n&gt;\n&gt;\n&gt; [Non-text portions of this messa=\r\nge have been removed]\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yaho=\r\no! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21594, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21605, 
+    "contentTrasformed": false, 
+    "postDate": "1242306611", 
+    "canDelete": false, 
+    "nextInTopic": 21610, 
+    "prevInTopic": 21601, 
+    "headers": {
+        "inReplyToHeader": "PGZkZGZmZTQ2MDkwNTEzMDkyNnQ2M2FjNTA4ZG9kN2IxMmM3NjU2NmIxNzY5QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNTE0MDYxMHgzZjUxYzM5NHNjMDM5YTlhMjJhYzk4YWUyQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGd1ZDhzaityaGJkQGVHcm91cHMuY29tPiA8Z3VlYWo1KzdkbjBAZUdyb3Vwcy5jb20+CSA8ZmRkZmZlNDYwOTA1MTMwOTI2dDYzYWM1MDhkb2Q3YjEyYzc2NTY2YjE3NjlAbWFpbC5nbWFpbC5jb20+"
+    }
+}

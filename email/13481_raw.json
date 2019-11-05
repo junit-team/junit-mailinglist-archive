@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 13482, 
+    "senderId": "hgeG66whZPHpbxRB7BTdhiTZbDRu2NHpKKBaHgnqgciIK23M6ivTUe_4IU64teS0TBqub82lfdwyTVZI-waRKJoPHkFsCqmebhp036OeS_w", 
+    "systemMessage": true, 
+    "subject": "RE: [junit] mock the RMI server interface", 
+    "from": "&quot;Jim McMaster&quot; &lt;jim.mcmaster@...&gt;", 
+    "authorName": "Jim McMaster", 
+    "msgSnippet": "... Hash: SHA1 From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of krishna krishna Sent: Wednesday, May 11, 2005 2:17 AM To:", 
+    "msgId": 13481, 
+    "rawEmail": "Return-Path: &lt;jim.mcmaster@...&gt;\r\nReceived: (qmail 50612 invoked from network); 11 May 2005 18:10:44 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m25.grp.scd.yahoo.com with QMQP; 11 May 2005 18:10:44 -0000\r\nReceived: from unknown (HELO n25.bulk.scd.yahoo.com) (66.94.237.54)\n  by mta1.grp.scd.yahoo.com with SMTP; 11 May 2005 18:10:44 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [66.218.69.5] by n25.bulk.scd.yahoo.com with NNFMP; 11 May 2005 18:10:08 -0000\r\nReceived: from [66.218.66.68] by mailer5.bulk.scd.yahoo.com with NNFMP; 11 May 2005 18:10:08 -0000\r\nX-Sender: jim.mcmaster@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 14785 invoked from network); 11 May 2005 17:54:31 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m28.grp.scd.yahoo.com with QMQP; 11 May 2005 17:54:31 -0000\r\nReceived: from unknown (HELO rwcrmhc14.comcast.net) (216.148.227.89)\n  by mta6.grp.scd.yahoo.com with SMTP; 11 May 2005 17:54:31 -0000\r\nReceived: from jimnotebook (unknown[64.78.237.253])\n          by comcast.net (rwcrmhc14) with SMTP\n          id &lt;2005051117541901400do7m7e&gt;; Wed, 11 May 2005 17:54:20 +0000\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 11 May 2005 11:54:17 -0600\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.6353\r\nIn-Reply-To: &lt;20050511081634.62993.qmail@...&gt;\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2527\r\nThread-Index: AcVWQsmYwBCPLwzfQBGtV0hO5cWNQAABjRoQ\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;Jim McMaster&quot; &lt;jim.mcmaster@...&gt;\r\nSubject: RE: [junit] mock the RMI server interface\r\nX-Yahoo-Group-Post: member; u=158179354\r\nX-Yahoo-Profile: mcmaster_tatanka\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 11 May 2005 18:10:05 -0000\r\n\r\n \n-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n\n\tFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf\nOf krishna krishna\n\tSent: Wednesday, May 11, 2005 2:17 AM\n\tTo: junit@yahoogroups.com\n\tSubject: [junit] mock the RMI server interface\n\t\n\t\n&gt; \thello david\n&gt; \tcan u pl write some thing more about this&quot;mock the RMI server\n&gt; interface&quot;. iam a student from sweden. iam also supposed to &gt; test\n&gt; the RMI interface. \t\n&gt; \tand also can anybody tell how can i club junit with Jcreator.\n&gt; \t( kindly forgive me if iam asking dumb questions)\n&gt; \t\n&gt; \tthanks\n&gt; \tkrishna\n&gt; \t\n&gt; \tDavid Whyte &lt;david.whyte@...&gt; wrote:\n&gt; \t&gt; \n&gt; \t&gt; I would suggest you mock the RMI server interface.  You\n&gt; shouldn&#39;t \t&gt; need to test the operation of the server itself.\n&gt; \t&gt; \n&gt; \t\n&gt; \tHmmm...yeah.  I just want to check that I am sending everything\n&gt; across \tcorrectly, such as serialized objects, and no local\n&gt; references, that \tkind of stuff.\n&gt; \t\nDavid was replying to me there, so I will jump in...\n\nMock Objects are a powerful method for breaking dependencies between\nmodules.  Often, these dependencies are barriers to effectively\ntesting.  Basically, in this case, you would write an object that\nimplements the RMI interface, accepts the same method calls and\nreturns the same results.  Then, instead of passing your code a\nreference to the real RMI server, you pass it a reference to your\nmock.  Then, you are in control of the interaction.  You can respond\nfaster, avoid setting up unnecessary resources, and can verify\neverything gets called properly.\n\nThere are lots of resources at http://www.mockobjects.com to help you\nget started.  There are papers, links to other packages, and\ncollections of downloadable mocks.\n\nWriting mocks can be tedious, but there are several packages that\nautomatically generate them.  I like EasyMock\n(http://www.easymock.org).  To use this, you create a MockControl\nobject by passing in an interface&#39;s class object, then use the\nMockControl to generate the mock object instance.  The object\ninitially is in &quot;record&quot; mode, in which you define calls on the mock,\nand expected return values.  Then you set &quot;replay&quot; mode and call your\ncode.  At the end, you call verify to assert that all expected calls\nwere received, even in the correct order if you care about that.\n\nAs for integrating junit into JDeveloper, I have never used the\nproduct, so have nothing to contribute.\n\nGood luck.\n\n- -- \nJim McMaster\nmailto:jim.mcmaster@...\n\n\n-----BEGIN PGP SIGNATURE-----\nVersion: PGP 8.1\n\niQA/AwUBQoJGyGaP5l7/atSJEQI4OQCeNElWlM9psGn2aTdue5b25ClCxDIAoOvG\n7NyZ0GKNXDm7iuX/3STtMkRi\n=lXIw\n-----END PGP SIGNATURE-----\n\n\n\n\n", 
+    "profile": "mcmaster_tatanka", 
+    "topicId": 13445, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 158179354, 
+    "prevInTime": 13480, 
+    "contentTrasformed": false, 
+    "postDate": "1115834057", 
+    "canDelete": false, 
+    "nextInTopic": 13499, 
+    "prevInTopic": 13473, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTExMDgxNjM0LjYyOTkzLnFtYWlsQHdlYjUwMjAzLm1haWwueWFob28uY29tPg=="
+    }
+}

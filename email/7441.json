@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 7442, 
+    "senderId": "cqOl0kfR6vPDTVHq0yFi-KeipQzcDNaqUaOmvvqI1gUsBEjJiA0XI--XDBCl4adMaEDCxVFSJYnFWOOPXR1P20S3ZXb9en2yOXA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Factory adaptor approach", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "... what ... The idea of this, and its not reflected in the example code, is that the factory configures itself (via a properties file or just inherent ", 
+    "msgId": 7441, 
+    "profile": "zipwow", 
+    "topicId": 7358, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "messageBody": "<div id=\"ygrps-yiv-1214523174\">--- Jeff Nielsen &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jeff.nielsen@...\">jeff.nielsen@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Why all of the use of static methods?  Statics are globals, as far as<br/>\n&gt; the VM is concerned, and you can run into problems not knowing what <br/>\n&gt; code last set the state.  Unless every client that uses the factory <br/>\n&gt; explicitly configures the factory before using it, you don&#39;t know<br/>\n </span></blockquote>what <br/>\n<blockquote><span title=\"ireply\"> &gt; you&#39;re getting.<br/>\n<br/>\n </span></blockquote>The idea of this, and its not reflected in the example code, is that<br/>\nthe factory configures itself (via a properties file or just inherent<br/>\nknowledge about the operation), and is instantiated only once.  I&#39;ll<br/>\nagree that rather than just making the methods static, it should<br/>\nprovide a static getInstance(..) class, and the users should call<br/>\nmethods on that.  By and large, the factory doesn&#39;t hold any state.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; For example, &quot;production&quot; code can use the default factory<br/>\n&gt; constructor.<br/>\n&gt; <br/>\n&gt;     myFactory = new Factory()<br/>\n&gt;     thing = myFactory.createThing()<br/>\n&gt; <br/>\n&gt; Test code can pass in arguments to the constructor.<br/>\n&gt; <br/>\n&gt;     new Factory(false)    OR<br/>\n&gt;     new Factory(overrideThing)    OR<br/>\n&gt;     new Factory().setOverrideThing(overrideThing)<br/>\n<br/>\n </span></blockquote>I&#39;m apparently mis-stating the problem.  There isn&#39;t any difference<br/>\nbetween &#39;production code&#39; and &#39;testing code&#39;.  The same code runs in<br/>\ntow environments: production and test.  Consider the following method:<br/>\n<br/>\npublic User lookupUser(String name) {<br/>\n    ConnectionFactory conFactory = new ConnectionFactory();<br/>\n    User foundUser = conFactory.getConnection().doUserLookup(name);<br/>\n}<br/>\n<br/>\nThe ConnectionFactory class (its not this simple in reality) looks for<br/>\nsome configuration files that provide information like the JDBC URL,<br/>\nthe hostname of the database, etc.  This all works fine, and it avoids<br/>\nhaving to pass the factory around in every constructor ever known to<br/>\nman.<br/>\n<br/>\nBut how can you test it without relying on the database?  Without the<br/>\napproach I described, I don&#39;t think you can.  Your test code&#39;s new<br/>\ninstances with different params don&#39;t have any effect on the instances<br/>\ncreated in the method.  So, the approach I&#39;m leaning towards is<br/>\nchanging the factory creation from above to:<br/>\n   <br/>\n    ConnectionFactory conFactory = ConnectionFactory.getInstance();<br/>\n<br/>\nIn this way, the test code can use a TestAdaptor class like I described<br/>\nin my earlier mail to create a whole different Factory that, for<br/>\nexample, only throws UserNotFoundException or returns null or whatever<br/>\nit ought to do when the user isn&#39;t found (a case clearly not well<br/>\nhandled by the method).<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; You can even subclass a factory to behave in a different way, which<br/>\n&gt; is something else you can&#39;t do with statics.  <br/>\n&gt; As far as how to get a factory to the class that needs to use it, you<br/>\n<br/>\n&gt; can pass it in at construction time, <br/>\n<br/>\n </span></blockquote>Ah, this is the heart of the question.  This and a couple other classes<br/>\nare used too broadly to be passed in to each method.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; or set it as an argument, <br/>\n<br/>\n </span></blockquote>again, too common, it would have to be in nearly every method,<br/>\nincluding a few that don&#39;t otherwise need it except to shuttle the<br/>\nfactory object along.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; or override the factory creation method in the class under test<br/>\n<br/>\n </span></blockquote>This is what I&#39;m talking about.  If its just the constructor, you can&#39;t<br/>\ndo that.  If its a static initializer, you can&#39;t override that either. <br/>\nSo you need some way to change the behavior of a static class when it<br/>\nis running in a test environment.<br/>\n<br/>\nThe point that the Factory should be implemented as a (possibly lazy)<br/>\nstatic initializer (not a constructor!) rather than all static methods<br/>\nis accurate, and is actually what my &#39;real&#39; code does.<br/>\n<br/>\nI think that, with the one change to the Factory approach, I&#39;m liking<br/>\nthis approach.  Having a single static getInstance() method also<br/>\nalleviates the &quot;insiduous cooperation&quot; of test and production code<br/>\nanother poster pointed out.<br/>\n<br/>\n-Kevin<br/>\n<br/>\n__________________________________________________<br/>\nDo you Yahoo!?<br/>\nYahoo! Tax Center - File online, calculators, forms, and more<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://tax.yahoo.com\">http://tax.yahoo.com</a></div>", 
+    "prevInTime": 7440, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049303944", 
+    "canDelete": false, 
+    "nextInTopic": 7442, 
+    "prevInTopic": 7416, 
+    "headers": {
+        "inReplyToHeader": "PDA2MTEwMWMyZjkyMCRhYjVjMmU1MCRlNzA1MDAwYUBqbmllbHNlbjI+", 
+        "messageIdInHeader": "PDIwMDMwNDAyMTcxOTA0LjQ3MzExLnFtYWlsQHdlYjgwNDAzLm1haWwueWFob28uY29tPg=="
+    }
+}

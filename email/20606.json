@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 31, 
+    "nextInTime": 20607, 
+    "senderId": "rr_dukQNYjQoXWoPfP8hp8XCaUE4Qp4Kyl2KIotADIaUMOCeMw01gS99EHja1UjEYy_N5_ACodVIW0MezOnHOj-cdNWwcdG1", 
+    "systemMessage": false, 
+    "subject": "Re: 4.5 release candidate", 
+    "from": "&quot;nat_pryce&quot; &lt;nat.pryce@...&gt;", 
+    "authorName": "nat_pryce", 
+    "msgSnippet": "One other uncertainty I had with the new API.  BlockJUnit4TestRunner has two constructors, one which takes a TestClass and one which takes a Class delegates to", 
+    "msgId": 20606, 
+    "profile": "nat_pryce", 
+    "topicId": 20585, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "messageBody": "<div id=\"ygrps-yiv-978319671\">One other uncertainty I had with the new API.  BlockJUnit4TestRunner<br/>\nhas two constructors, one which takes a TestClass and one which takes<br/>\na Class delegates to the former.  <br/>\n<br/>\nWhy two? <br/>\n<br/>\nWhich should I override for my subclass?  That is, which does the<br/>\nframework use to create a test-runner?<br/>\n<br/>\n--Nat<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;Kent Beck&quot; &lt;kentb@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Nat,<br/>\n&gt;  <br/>\n&gt; I&#39;m glad the new format worked better for you. BlockJUnit4TestRunner<br/>\nand its<br/>\n&gt; supporting cast are intended to be published in the next release.<br/>\nHowever,<br/>\n&gt; they are new enough that we wanted to verify their efficacy and give<br/>\n&gt; ourselves a chance to refine them before many people used them.<br/>\n&gt;  <br/>\n&gt; Point well taken on the redundancy of deprecation and moving the<br/>\nclasses.<br/>\n&gt; We&#39;ll move them back before releasing. We will compile the final release<br/>\n&gt; with Java 5 as well.<br/>\n&gt;  <br/>\n&gt; Thank you very much for the feedback.<br/>\n&gt;  <br/>\n&gt; Regards,<br/>\n&gt;  <br/>\n&gt; Kent Beck<br/>\n&gt; Three Rivers Institute<br/>\n&gt; <br/>\n&gt;   _____  <br/>\n&gt; <br/>\n&gt; From: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\n&gt; nat_pryce<br/>\n&gt; Sent: Thursday, June 19, 2008 3:16 AM<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] Re: 4.5 release candidate<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; I&#39;ve ported the jMock runner over to the new structure. Here are some<br/>\n&gt; comments on the experience.<br/>\n&gt; <br/>\n&gt; I extended BlockJUnit4ClassRunner and override the invoke(...) method<br/>\n&gt; to verify the mock objects after the test has run, but before tear-down.<br/>\n&gt; <br/>\n&gt; This way reduces the amount of code in the custom runner. I also<br/>\n&gt; didn&#39;t have to duplicate existing functionality because the invoke<br/>\n&gt; method let me hook in at the right point.<br/>\n&gt; <br/>\n&gt; However, I still had to use classes in the org.junit.internal package,<br/>\n&gt; which feels wrong. Have I missed the right way of doing this?<br/>\n&gt; <br/>\n&gt; Other niggles...<br/>\n&gt; <br/>\n&gt; - The classes are compiled for Java 6 only, but only seem to need<br/>\n&gt; language features from 5 and above. Can the release be compiled for<br/>\n&gt; Java 5?<br/>\n&gt; <br/>\n&gt; - The JUnit 4.4 classes have been deprecated *and* moved to another<br/>\n&gt; package, which breaks any code that used them. There&#39;s no point in<br/>\n&gt; doing both. Either break backward compatability or keep backward<br/>\n&gt; compatability and deprecate the classes. I&#39;d prefer the latter, since<br/>\n&gt; it will allow me to do a jMock with new features supporting both JUnit<br/>\n&gt; 4.4 and 4.5 and then release a version that brings support forward to<br/>\n&gt; 4.5 onwards.<br/>\n&gt; <br/>\n&gt; Cheers,<br/>\n&gt; --Nat.<br/>\n&gt; <br/>\n&gt; --- In junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com, &quot;Nat<br/>\nPryce&quot;<br/>\n&gt; &lt;nat.pryce@&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; JUnit 4.5 breaks jMock 2 because the TestMethod class has been moved<br/>\n&gt; &gt; to a different package.<br/>\n&gt; &gt; <br/>\n&gt; &gt; It&#39;s our fault for subclassing JUnit4ClassRunner, but it would be nice<br/>\n&gt; &gt; if JUnit4ClassRunner did not change at all in this release.<br/>\n&gt; &gt; <br/>\n&gt; &gt; --Nat<br/>\n&gt; &gt; <br/>\n&gt; &gt; 2008/6/16 Kent Beck &lt;kentb@&gt;:<br/>\n&gt; &gt; &gt; All,<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Following our discussions last week, we have incorporated the old<br/>\n&gt; &gt; &gt; JUnit4ClassRunner into 4.5. (The new runner is called<br/>\n&gt; BlockJUnit4ClassRunner<br/>\n&gt; &gt; &gt; because it is organized as a &quot;block&quot; of &quot;statements&quot; instead of<br/>\nnested<br/>\n&gt; &gt; &gt; procedures). Those of you who have written custom runners, we&#39;d<br/>\n&gt; appreciate<br/>\n&gt; &gt; &gt; it if you could try out the release candidate to make sure it<br/>\n&gt; supports your<br/>\n&gt; &gt; &gt; existing runners.<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Next up, release notes and then out the door!<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Whew!<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Kent Beck<br/>\n&gt; &gt; &gt; Three Rivers Institute<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 20605, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1213889588", 
+    "canDelete": false, 
+    "nextInTopic": 20613, 
+    "prevInTopic": 20605, 
+    "headers": {
+        "inReplyToHeader": "PDAxOTkwMWM4ZDIxZSQ2OTVjYTQzMCQ0MDAwYThjMEBrZW50c3BhdmlsaW9uPg==", 
+        "messageIdInHeader": "PGczZHU3bCtxdXM2QGVHcm91cHMuY29tPg=="
+    }
+}

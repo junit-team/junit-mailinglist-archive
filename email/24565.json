@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 24566, 
+    "senderId": "hg38NzoFIzgl2Ia4jLmIGEen3pzbli6rgNdzNqUY17iaQmBL51bkfYBNc2m4YavwXeXe_Q5w11jFF8iLlw0hIcIofNv2F-sxQA", 
+    "systemMessage": false, 
+    "subject": "Side effects between test cases", 
+    "from": "Tobias Werth &lt;Tobias.Werth@...&gt;", 
+    "authorName": "Tobias Werth", 
+    "msgSnippet": "Hi, I wanted to discuss two side effects between multiple JUnit test methods: a) timing issues If a test method runs into a timeout, the executing thread is ", 
+    "msgId": 24565, 
+    "topicId": 24565, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 563320903, 
+    "messageBody": "<div id=\"ygrps-yiv-1047504332\">Hi,<br/>\n<br/>\nI wanted to discuss two side effects between multiple JUnit test<br/>\nmethods:<br/>\n<br/>\na) timing issues<br/>\nIf a test method runs into a timeout, the executing thread is<br/>\ninterrupted (but not stopped). Hence, if it executes an infinite loop,<br/>\nit will still occupy some of your resources after this test failed.<br/>\n<br/>\nFor an example, see [1]. The helper method is executed either once or<br/>\ninfinite often in a loop. If executed once, it runs approx. 100ms on my<br/>\nmachine. If executed in a loop, JUnit&#39;s runtime is approx. 600ms times<br/>\nfor a single parameterized run.<br/>\nExecuting 10 infinite loops first and then 10 single helper calls<br/>\nresults in more than 10 timeouts (which is set to 500ms). You may have<br/>\nto increase NUM_RUNS on your machine to reproduce.<br/>\n<br/>\n<br/>\nb) memory issues<br/>\nIt&#39;s easy to construct cases from the above insight (threads may keep<br/>\nrunning in case of a timeout) with side effects on memory which lead to<br/>\nan OutOfMemoryError.<br/>\nEven when threads do not keep running, and one test allocates many<br/>\nobjects, the garbage collector may kick in during the execution of the<br/>\nnext test method. This may result in an timeout that is not caused by<br/>\nthe code under test but by the previous massive object allocation.<br/>\n<br/>\n<br/>\nI know that&#39;s almost impossible to stop Java threads. I also assume that<br/>\nboth side effects are well known.<br/>\n<br/>\nSo what&#39;s the best practice to reduce or even avoid these side effects<br/>\nwhen writing JUnit test methods?<br/>\n<br/>\nCheers,<br/>\nTobi<br/>\n<br/>\n--<br/>\n1: <a rel=\"nofollow\" target=\"_blank\" href=\"https://gist.github.com/meisterT/97db378abea366036f36\">https://gist.github.com/meisterT/97db378abea366036f36</a></div>", 
+    "prevInTime": 24564, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1406234972", 
+    "canDelete": false, 
+    "nextInTopic": 24566, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMTQwNzI0MjA0OTMyLkdDMjMwOTZAZmF1aTIwZS5pbmZvcm1hdGlrLnVuaS1lcmxhbmdlbi5kZT4="
+    }
+}

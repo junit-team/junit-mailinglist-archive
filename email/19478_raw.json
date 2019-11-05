@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 19479, 
+    "senderId": "macyE9WNP3lRqsJEZ8sDcWSAM6MnDRL98PpA948mTUTXPlm1kJn2ddftr7nf32xQepuBXUytdjG19EPRBRB_W7fcPFq5y-iXP24VWZ3ARXSE6oE", 
+    "systemMessage": false, 
+    "subject": "The problem when I use MockStrutsTestCase.", 
+    "from": "=?iso-8859-1?B?zfXB6Luq?= &lt;hut@...&gt;", 
+    "authorName": "ÍõÁè»ª", 
+    "msgSnippet": "Hi, All, Prediction: Struts, Ibatis. The structure of table siteconfig: Column: SiteID, ItemName,ItemValue,LastModifiedTime. The item named item1 s value is 1", 
+    "msgId": 19478, 
+    "rawEmail": "Return-Path: &lt;hut@...&gt;\r\nReceived: (qmail 1729 invoked by uid 7800); 19 Jun 2007 13:32:57 -0000\r\nX-Sender: hut@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 85807 invoked from network); 19 Jun 2007 08:52:38 -0000\r\nReceived: from unknown (66.218.67.36)\n  by m45.grp.scd.yahoo.com with QMQP; 19 Jun 2007 08:52:38 -0000\r\nReceived: from unknown (HELO n31c.bullet.sp1.yahoo.com) (209.131.38.210)\n  by mta10.grp.scd.yahoo.com with SMTP; 19 Jun 2007 08:52:38 -0000\r\nReceived: from [216.252.122.216] by n31.bullet.sp1.yahoo.com with NNFMP; 19 Jun 2007 08:51:42 -0000\r\nReceived: from [209.73.164.86] by t1.bullet.sp1.yahoo.com with NNFMP; 19 Jun 2007 08:51:42 -0000\r\nReceived: from [66.218.66.85] by t8.bullet.scd.yahoo.com with NNFMP; 19 Jun 2007 08:51:42 -0000\r\nDate: Tue, 19 Jun 2007 08:51:40 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;f585es+mr9l@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:6:0:0\r\nFrom: =?iso-8859-1?B?zfXB6Luq?= &lt;hut@...&gt;\r\nSubject: The problem when I use MockStrutsTestCase.\r\nX-Yahoo-Group-Post: member; u=300426891; y=lyLV_G69cRHEdIX77vD-1Oc8f2A1-x9id8oj96pGWyf7DZDm065SFmsv\r\nX-Yahoo-Profile: wanglinghua2008\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: ddoss_2006 &lt;didoss@...&gt; via email; 19 Jun 2007 13:32:57 -0000\r\n\r\nHi, All,\n\nPrediction: Struts, Ibatis.\n\nThe structure of table siteconfig:\n\nColumn: SiteID, ItemName,ItemValue,LastModifiedTime.\n\nThe item named item1&#39; s value is 1 by default in database.\n\n\nTo avoid to update database directly, we are manage to implement all\nchanges/configuration in a transaction.\nIf we try to configure a specific condition for our test case, we just\ndo.\n\n            a. Start a transation.\n\n            b. Execute some sqls.\n\n            c. Rollback the transation.\n\nThen we can meet our requests without any actual changes of database.\n\nBut I met a problem during using MockStrutsTestCase!\n\nMy test class extends MockStrutsTestCase,  what I have done is :\n\n------------------------------------------------------------------------&#92;\n------------------------------------------------------------------------&#92;\n-------------------\n        ...\n        private SiteConfig siteConfig;\n         private SiteConfigDao siteConfigDao = ...\n\n        public void setUp() throws Exception {\n                     super.setUp();\n                     wbxDaoManager.startTransaction();\n                    long siteid = this.getUTConfig().getSiteId();\n\n                     // Get site configuration for a specified site\n                     siteConfig =\nBizFactory.getSiteMgr().getSiteConfig(siteid);\n        }\n\n        /**\n      * @throws Exception Exception\n      */\n        public void mytest() throws Exception {\n                     // Execute a sql to update item named item1. =\n&quot;update siteconfig set itemvalue=&#39;1&#39; where siteid=** and\nitemvalue=&#39;item1&#39; &quot;\n                // Change the itemvalue named item1 to 0.\n                   \nsiteConfigDao.setConfigItem(this.getUTConfig().getSiteId(),\n&quot;item1&quot;,&quot;0&quot;);\n\n                     setRequestPathInfo(&quot;/queue&quot;);\n                 actionPerform();\n                     verifyForward(&quot;notsupportitem1&quot;);\n        }\n\n\n        /**\n      *@throws Exception Exception\n      */\n     public void tearDown() throws Exception {\n         super.tearDown();\n\n         // RollBack Transaction\n         wbxDaoManager.rollbackTransaction();\n\n         // Release Transaction.\n         wbxDaoManager.releaseTransaction();\n     }\n\nactionPerform() method will guide to struts action that &#39;/queue&#39; path\npoint to, but in this action,\n\nWhen I try to get siteconfig object as :\n\nSiteConfig siteConfig = BizFactory.getSiteMgr().getSiteConfig(siteid);\nsiteConfig.getItem1(); // MainTain the unchange value : 1.\n\nIt seems that my started transaction have lost, any idea?\n\nThanks for your patient.\n\nRegards & Thanks,\n\n-Hut\n\n\n\n\n\n\n\n\n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "wanglinghua2008", 
+    "topicId": 19478, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 300426891, 
+    "prevInTime": 19477, 
+    "contentTrasformed": false, 
+    "postDate": "1182243100", 
+    "canDelete": false, 
+    "nextInTopic": 19482, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGY1ODVlcyttcjlsQGVHcm91cHMuY29tPg=="
+    }
+}

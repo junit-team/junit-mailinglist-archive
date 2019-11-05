@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 15187, 
+    "senderId": "Y-FL_-JwDGW9JWv9A5XRs15PcRkrNh8Rp7hH9PrgWRX1xnSxS3EgImIrcKIOk4hOH-j5LxX97ajarzJ7VvU-slvBMko", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Test Names for Parameterized Tests", 
+    "from": "Eugene Kuleshov &lt;eu@...&gt;", 
+    "authorName": "Eugene Kuleshov", 
+    "msgSnippet": "... I wish your statement would be true. Unfortunately it only work for statically bound test cases. If tests are returned from the suite method that is adding", 
+    "msgId": 15186, 
+    "rawEmail": "Return-Path: &lt;eu@...&gt;\r\nX-Sender: eu@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 12592 invoked from network); 18 Oct 2005 15:11:14 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m27.grp.scd.yahoo.com with QMQP; 18 Oct 2005 15:11:14 -0000\r\nReceived: from unknown (HELO god.md.pp.ru) (64.56.237.27)\n  by mta5.grp.scd.yahoo.com with SMTP; 18 Oct 2005 15:11:14 -0000\r\nReceived: from [192.168.168.10] (helo=[177.129.248.119])\n\tby god.md.pp.ru with esmtpsa (TLSv1:AES256-SHA:256)\n\t (Exim 4.50 #1)\n\tid 1ERt6d-00013m-8W\n\tfor junit@yahoogroups.com; Tue, 18 Oct 2005 11:10:24 -0400\r\nMessage-ID: &lt;4355105D.6050204@...&gt;\r\nDate: Tue, 18 Oct 2005 11:10:21 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;e912e9460510170638h1df0fad9x70417eedd8a23fff@...&gt;\t &lt;dj0r95+4vdc@...&gt; &lt;e912e9460510171657v117d7391k4a56134597306810@...&gt;\r\nIn-Reply-To: &lt;e912e9460510171657v117d7391k4a56134597306810@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-Spam-Score: -5.9 (-----)\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: Eugene Kuleshov &lt;eu@...&gt;\r\nSubject: Re: [junit] Re: Test Names for Parameterized Tests\r\nX-Yahoo-Group-Post: member; u=150395705; y=kLV9cl-tCGBA4WffDQhjMqOTDVsglyJKNa7q1poXdVlTgUNA\r\nX-Yahoo-Profile: ekuleshov\r\n\r\nRobert Watkins wrote:\n\n&gt;&gt;Yes, I think that every test needs a meaningful name.  Technically,\n&gt;&gt;a &quot;moniker.&quot;  Given the name/moniker of a failing test, it should be\n&gt;&gt;possible to automatically recreate and rerun just that test.  That is,\n&gt;&gt;from &quot;testThis(3 of 10)&quot; or &quot;testThis(5,&#39;hello&#39;,true)&quot;, it should be\n&gt;&gt;possible to construct and run a test instance equivalent to the\n&gt;&gt;original.  (And I&#39;m saying &quot;should&quot; in the sense of, &quot;The tool would\n&gt;&gt;be most useful if it did things this way.&quot;)\n&gt; \n&gt; \n&gt; Well... in most GUI JUnit runners (like the ones inside IDEs), you can\n&gt; just click on the failing test and re-run it directly. This is\n&gt; possible because JUnit uses seperate instances per test (mild dig at\n&gt; Cedric) - as such, a moniker isn&#39;t strictly necessary (though it\n&gt; wouldn&#39;t hurt).\n\n   I wish your statement would be true. Unfortunately it only work for \nstatically bound test cases. If tests are returned from the suite \nmethod that is adding them dynamically (e.g. from external config or \ncaptured data) in my knowledge none of the IDE would allow to restart \nspecific test case and you&#39;ll have to run the whole suite.\n\n   Here is the test case code to illustrate what I actually mean bu \ndynamic test suite:\n\npublic class RegressionTest extends TestCase {\n\n     public static TestSuite suite() {\n         TestSuite suite = new TestSuite(RegressionTest.class.getName());\n         for( int i = 0; i &lt; 100; i++) {\n             suite.addTest( new RegressionTest( Math.random()));\n         }\n         return suite;\n     }\n\n\n     private final double param;\n\n     public RegressionTest(double param) {\n         super( &quot;testParam&quot;);\n         this.param = param;\n     }\n\n     public void testParam() throws Exception {\n         assertTrue( param&gt;0.5d);\n     }\n\n     public String getName() {\n         return super.getName()+&quot; &quot;+param;\n     }\n\n}\n\n   Note the getName() method hack suggested by Erich Gamma to make \nEclipse&#39;s JUnit runner show actual test params.\n\n   I&#39;ve proposed to make possible to restart specific test case in \nEclipse&#39;s JUnit runner, but wasn&#39;t able to convince Erich that this is \nanyhow important for the community. Too bad, because in my current \nproject over 90% of test cases using this approach (data are collected \nfrom various sources including manually crafted test cases, test cases \nfrom the bug reports, etc).\n\n   This functionality is about to be replaced by parameterized tests \nin JUnit4. Though I&#39;d like to see how the junit runner would be able \nto capture params for each specific test and also provide a readable \ntest case name. Note that these params could be objects and toString() \nmay not always the best way for this.\n\n   Also note that in a current JUnit4 API to rerun test cases you can \nonly use parm set number but generally not the param values.\n\n   regards,\n   Eugene\n\n\n", 
+    "profile": "ekuleshov", 
+    "topicId": 15110, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150395705, 
+    "prevInTime": 15185, 
+    "contentTrasformed": false, 
+    "postDate": "1129648221", 
+    "canDelete": false, 
+    "nextInTopic": 15187, 
+    "prevInTopic": 15185, 
+    "headers": {
+        "inReplyToHeader": "PGU5MTJlOTQ2MDUxMDE3MTY1N3YxMTdkNzM5MWs0YTU2MTM0NTk3MzA2ODEwQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQzNTUxMDVELjYwNTAyMDRAbWQucHAucnU+", 
+        "referencesHeader": "PGU5MTJlOTQ2MDUxMDE3MDYzOGgxZGYwZmFkOXg3MDQxN2VlZGQ4YTIzZmZmQG1haWwuZ21haWwuY29tPgkgPGRqMHI5NSs0dmRjQGVHcm91cHMuY29tPiA8ZTkxMmU5NDYwNTEwMTcxNjU3djExN2Q3MzkxazRhNTYxMzQ1OTczMDY4MTBAbWFpbC5nbWFpbC5jb20+"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 861, 
+    "postDate": "986208718", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Vitezslav Stejskal &lt;vitezslav.stejskal@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "BB0xth7G_9YBrcMju4bvJgfa665Jx3VkBipPSlBWMPFb61VMW9Adl8gGBfqYBuIxGuL1_oY0WaUPFEUGxTO7AbWaFtVSVI6zX_J9Rjc8-zbE9RIaC5f6nrjNLJU", 
+    "nextInTime": 863, 
+    "userId": 0, 
+    "prevInTime": 861, 
+    "prevInTopic": 861, 
+    "headers": {
+        "messageIdInHeader": "PDNBQzg1OUNFLkI3QkUzNEVFQGN6ZWNoLnN1bi5jb20+", 
+        "referencesHeader": "PDNBQzg1NUY0LjgwMTAyMDRAaTMuaW5mb3JtYXRpay5yd3RoLWFhY2hlbi5kZT4="
+    }, 
+    "authorName": "Vitezslav Stejskal", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "... Simply rename your test methods so they don t start with *test* word, this will prevent them to be executed by TestRunner. ... This is a fundamental thing", 
+    "contentTrasformed": false, 
+    "msgId": 862, 
+    "nextInTopic": 863, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;vitezslav.stejskal@...&gt;\r\nX-Sender: vitezslav.stejskal@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_0_1); 2 Apr 2001 10:52:01 -0000\r\nReceived: (qmail 54746 invoked from network); 2 Apr 2001 10:52:00 -0000\r\nReceived: from unknown (10.1.10.26) by l10.egroups.com with QMQP; 2 Apr 2001 10:52:00 -0000\r\nReceived: from unknown (HELO mercury.Sun.COM) (192.9.25.1) by mta1 with SMTP; 2 Apr 2001 10:52:00 -0000\r\nReceived: from sunpraha.Czech.Sun.COM ([129.156.76.4]) by mercury.Sun.COM (8.9.3+Sun/8.9.3) with ESMTP id DAA19332 for &lt;junit@yahoogroups.com&gt;; Mon, 2 Apr 2001 03:51:58 -0700 (PDT)\r\nReceived: from czech.sun.com (vstejskal [129.156.75.101]) by sunpraha.Czech.Sun.COM (8.9.3+Sun/8.9.3/ENSMAIL,v2.1p1) with ESMTP id MAA15883 for &lt;junit@yahoogroups.com&gt;; Mon, 2 Apr 2001 12:51:53 +0200 (CEST)\r\nMessage-ID: &lt;3AC859CE.B7BE34EE@...&gt;\r\nDate: Mon, 02 Apr 2001 12:51:58 +0200\r\nOrganization: SUN Microsystems Czech s.r.o.\r\nX-Mailer: Mozilla 4.76 [en] (Windows NT 5.0; U)\r\nX-Accept-Language: cs,en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Ordered execution of test cases\r\nReferences: &lt;3AC855F4.8010204@...-aachen.de&gt;\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Vitezslav Stejskal &lt;vitezslav.stejskal@...&gt;\r\n\r\n\n\nBoris Boehlen wrote:\n\n&gt; Hello,\n&gt;\n&gt; I&#39;d like to execute my test within a test cases in a predefined order\n&gt; because each test cases needs results created by the first one. It is\n&gt; also very important that each test is executed exactly once. An example\n&gt; for this is something like:\n&gt;\n&gt;    1.) Create database\n&gt;    2.) Create tables\n&gt;    3.) Fill tables\n&gt;    4.) Delete some tables\n&gt;    5.) Check contents of tables\n&gt;\n&gt; All these steps should be execute in a single test case in a definite\n&gt; order. At the moment I have my own &quot;runTest&quot; method defined in my test\n&gt; case which execute the methods &quot;testCreateDatbase&quot; and so on in the\n&gt; desired order. The signature of the test methods is like &quot;public void\n&gt; testXXX()&quot; the &quot;runTest&quot; methods is defined as &quot;public void runTest()&quot;.\n&gt;\n&gt; When I start the TestRunner provided by Ant first the method &quot;runTest&quot;\n&gt; is executed (which is OK). But then the other methods are executed in an\n&gt; arbritrary order (I suppose). How can I change this behaviour?\n&gt;\n\nSimply rename your test methods so they don&#39;t start with *test* word, this\nwill prevent them to be executed by TestRunner.\n\n&gt;\n&gt; BTW, I&#39;d like to define a test suite in which different test cases are\n&gt; executed in a predefined order. How can I achieve this or is this the\n&gt; default behaviour in a test suite?\n&gt;\n\nThis is a fundamental thing of JUnit test suites, that all test cases are\nindependent, for each one the new instance of test class is created\nand than the test is performed. You can&#39;t (and shouldn&#39;t) rely on the\norder in which tests are launched.\n\nYou may found useful to use a test decorator (e.g. the\njunit.extensions.TestSetup class),\nwhich does the setUp and tearDown activities for bunch of test cases\n(e.g. establish database connection).\n\nDependent actions should be written within one test case. There was\na discussion on this mailing list few weeks ago (look for the thread [junit]\nOrder of Tests).\nI am sorry I don&#39;t know if there is some archive of this mailing list :-),\nbut if you will not be able to find this disscussion, I can\nre-send you those emails.\n\n\nVita\n\n&gt;\n&gt; Regards\n&gt;         Boris Boehlen\n&gt;\n&gt; --\n&gt; Dipl.-Inform. Boris Boehlen\n&gt; RWTH Aachen - Department of Computer Science III\n&gt; Ahornstrasse 55, 52074 Aachen, Germany\n&gt;\n&gt; email: boris@...-aachen.de\n&gt; phone: +49 (2 41) 80 21 315    fax:   +49 (2 41) 88 88 218\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n\n--\nVitezslav Stejskal, Software engineer\n\nSUN Microsystems Czech s.r.o.\ne-mail: vitezslav.stejskal@...\ntel:    +420 2 3300-9232\n\n\n\n", 
+    "subject": "Re: [junit] Ordered execution of test cases"
+}

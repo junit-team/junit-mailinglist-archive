@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 22928, 
+    "senderId": "_XkpmrlDgZoiuND081tn7IhbFFeSknuHjWMVI10RHOe076TxqSvyYu6w_hZ8unfW5wC5SZo8rxXl3-F_OaT4RcEcp0PYkJLpBrbPldSf1Jxs", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Future of JUnit & Hamcrest", 
+    "from": "Stefan Bodewig &lt;stefan.bodewig@...&gt;", 
+    "authorName": "Stefan Bodewig", 
+    "msgSnippet": "... I remember XMLUnit s tests were one affected, see  and the thread that lead to it as well as ", 
+    "msgId": 22927, 
+    "rawEmail": "Return-Path: &lt;stefan.bodewig@...&gt;\r\nX-Sender: stefan.bodewig@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 77121 invoked from network); 7 Sep 2010 15:12:49 -0000\r\nX-Received: from unknown (66.196.94.106)\n  by m15.grp.re1.yahoo.com with QMQP; 7 Sep 2010 15:12:49 -0000\r\nX-Received: from unknown (HELO samaflost.de) (88.84.128.168)\n  by mta2.grp.re1.yahoo.com with SMTP; 7 Sep 2010 15:12:49 -0000\r\nX-Received: from localhost (localhost.localdomain [127.0.0.1])\n\tby samaflost.de (Postfix) with ESMTP id 518D128985D1\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  7 Sep 2010 17:12:48 +0200 (CEST)\r\nX-Received: from samaflost.de ([127.0.0.1])\n\tby localhost (v35516.1blu.de [127.0.0.1]) (amavisd-new, port 10024)\n\twith ESMTP id BfDgeC-r4ffT for &lt;junit@yahoogroups.com&gt;;\n\tTue,  7 Sep 2010 17:12:46 +0200 (CEST)\r\nX-Received: by samaflost.de (Postfix, from userid 1000)\n\tid 6D59728985D2; Tue,  7 Sep 2010 17:12:46 +0200 (CEST)\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;i4f2eu+57fj@...&gt;\n\t&lt;AANLkTi=9jfsg=W9pUycOAckvZQbNvcGo-GUp2SgCTWo8@...&gt;\n\t&lt;AANLkTimJ7ycXK+SqrEJv==Vgsr3ros-ypG0tnkhy9JKC@...&gt;\n\t&lt;AANLkTik9qOPKxUcHyfDhVatkjvnH7P27Z2PnXRHw=fur@...&gt;\r\nX-Draft-From: (&quot;nnfolder:mail.junit&quot; 27123)\r\nDate: Tue, 07 Sep 2010 17:12:46 +0200\r\nIn-Reply-To: &lt;AANLkTik9qOPKxUcHyfDhVatkjvnH7P27Z2PnXRHw=fur@...&gt;\n\t(David Saff&#39;s message of &quot;Tue, 7 Sep 2010 10:04:47 -0400&quot;)\r\nMessage-ID: &lt;87fwxlk2oh.fsf@...&gt;\r\nUser-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.2 (gnu/linux)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: Stefan Bodewig &lt;stefan.bodewig@...&gt;\r\nSubject: Re: [junit] Future of JUnit & Hamcrest\r\nX-Yahoo-Group-Post: member; u=180464851; y=N2mG6EZrMKfPboyrq2q1ruF3JHmhI_q2Kwq3AbWbUU25Ws0\r\nX-Yahoo-Profile: sbodewig\r\n\r\nOn 2010-09-07, David Saff wrote:\n\n&gt; 2010/9/6 Alexandru Popescu =E2=98=80 &lt;t=\r\nhe.mindstorm.mailinglist@...&gt;:\n\n&gt;&gt; I know this is a bit late, but I w=\r\nas wondering if you have some pointers to\n&gt;&gt; the API/type changes that woul=\r\nd lead to this issue? I&#39;d really like to be\n&gt;&gt; able to use the latest versi=\r\non of hamcrest with junit (and I don&#39;t have a\n&gt;&gt; large test case suite to w=\r\norry about it).\n\n&gt; I may be able to dig up the thread later today.  I&#39;ll tr=\r\ny.\n\nI remember XMLUnit&#39;s tests were one affected, see\n&lt;http://github.com/Ke=\r\nntBeck/junit/issues/issue/9&gt; and the thread that\nlead to it as well as\n&lt;htt=\r\np://sourceforge.net/mailarchive/message.php?msg_name=3D20090531082343.B4FAA=\r\nAB40C1%40vmgump.apache.org&gt;\n\nIf you take svn revision 342 of XMLUnit it won=\r\n&#39;t compile with Hamcrest\n1.2 but with Hamcrest 1.1.  To see what I had to c=\r\nhange to make things\nwork with Hamcrest 1.2:\n&lt;http://xmlunit.svn.sourceforg=\r\ne.net/viewvc/xmlunit?view=3Drevision&revision=3D343&gt;\n\nBasically I had code =\r\nlike\n\nSource s =3D ... code creating an instance of the Source interface ..=\r\n.\nassertThat(s, is(DOMSource.class))\n\nand this is what happened\n\n    [javac=\r\n] /srv/gump/public/workspace/xmlunit/src/tests/java-core/net/sf/xmlunit/bui=\r\nlder/InputTest.java:48: cannot find symbol\n    [javac] symbol  : method ass=\r\nertThat(javax.xml.transform.Source,org.hamcrest.Matcher&lt;capture#983 of ? su=\r\nper javax.xml.transform.dom.DOMSource&gt;)\n    [javac] location: class net.sf.=\r\nxmlunit.builder.InputTest\n    [javac]         assertThat(s, is(DOMSource.cl=\r\nass));\n\nin Hamcrest 1.1 the is method in question was\n\n   public static Mat=\r\ncher&lt;Object&gt; is(Class&lt;?&gt; type)\n\nin 1.2 it became\n\n   public static &lt;T&gt; Matc=\r\nher&lt;? super T&gt; is(Class&lt;T&gt; type)\n\nTogether with\n\n   public static &lt;T&gt; void =\r\nassertThat(T actual, Matcher&lt;T&gt; matcher)\n\njavac&#39;s type inferencer is runnin=\r\ng into trouble.\n\nThe changed code in XMLUnit now uses \n\nassertThat(s, insta=\r\nnceOf(DOMSource.class));\n\nwhich was \n\n  public static Matcher&lt;Object&gt; insta=\r\nnceOf(Class&lt;?&gt; type)\n\nin Hamcrest 1.1 and became \n\n  public static &lt;T&gt; Matc=\r\nher&lt;T&gt; instanceOf(Class&lt;?&gt; type)\n\nThe problem with the is() method is that =\r\nit assumes a relation between\nthe class and the object you want to match at=\r\n compile time while the\ninstanceOf doesn&#39;t assume anything like this.\n\nWith=\r\n Hamcrest 1.2 you get a compile time error for\n\n  assertThat(&quot;foo&quot;, is(Inte=\r\nger.class))\n\nand with 1.1 you get a failed assertion.\n\nNot sure if this is =\r\nthe problem David had in mind.\n\nStefan\n\n", 
+    "profile": "sbodewig", 
+    "topicId": 22867, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 180464851, 
+    "prevInTime": 22926, 
+    "contentTrasformed": false, 
+    "postDate": "1283872366", 
+    "canDelete": false, 
+    "nextInTopic": 22928, 
+    "prevInTopic": 22924, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGlrOXFPUEt4VWNIeWZEaFZhdGtqdm5IN1AyN1oyUG5YUkh3PWZ1ckBtYWlsLmdtYWlsLmNvbT4JKERhdmlkIFNhZmYncyBtZXNzYWdlIG9mICJUdWUsIDcgU2VwIDIwMTAgMTA6MDQ6NDcgLTA0MDAiKQ==", 
+        "messageIdInHeader": "PDg3Znd4bGsyb2guZnNmQHYzNTUxNi4xYmx1LmRlPg==", 
+        "referencesHeader": "PGk0ZjJldSs1N2ZqQGVHcm91cHMuY29tPgk8QUFOTGtUaT05amZzZz1XOXBVeWNPQWNrdlpRYk52Y0dvLUdVcDJTZ0NUV284QG1haWwuZ21haWwuY29tPgk8QUFOTGtUaW1KN3ljWEsrU3FyRUp2PT1WZ3NyM3Jvcy15cEcwdG5raHk5SktDQG1haWwuZ21haWwuY29tPgk8QUFOTGtUaWs5cU9QS3hVY0h5ZkRoVmF0a2p2bkg3UDI3WjJQblhSSHc9ZnVyQG1haWwuZ21haWwuY29tPg=="
+    }
+}

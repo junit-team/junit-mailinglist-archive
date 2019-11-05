@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3017, 
+    "senderId": "ue8aDMrpZvnsmqJUUUUPvtnJB8OkE8aEPPD1nqZ6JJS6Kx0DRkiCFdGPZzgsohUaxavJYElhZWHFWi3HMAd9ms_E4_eTQ1zc2ldZf8cwOeD5-7s", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Problems with WL transactions and JUnit", 
+    "from": "Laurent Duperval &lt;lduperval@...&gt;", 
+    "authorName": "Laurent Duperval", 
+    "msgSnippet": "... /** * Insert the method s description here. * Creation date: (9/19/2001 12:04:44 PM) */ synchronized private void rollbackTransaction() { if (this.userTX", 
+    "msgId": 3016, 
+    "profile": "lduperval", 
+    "topicId": 3014, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1468036463\">On 19 Oct, Mike Clark wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Perhaps a look at the TransactionTestCase.setUp() would help, as this<br/>\n&gt; seems to be the differentiator.<br/>\n&gt; <br/>\n<br/>\n </span></blockquote>/**<br/>\n * Insert the method&#39;s description here.<br/>\n * Creation date: (9/19/2001 12:04:44 PM)<br/>\n */<br/>\n synchronized private void rollbackTransaction() {<br/>\n    if (this.userTX != null) {<br/>\n\t    LOG.debug(&quot;About to rollback transaction&quot;);<br/>\n        try {<br/>\n            this.userTX.rollback();<br/>\n        } catch (javax.transaction.SystemException e) {<br/>\n            LOG.error(&quot;Can not rollback transaction&quot;, e);<br/>\n        } catch (IllegalStateException e) {<br/>\n\t        // It probably was already rolled back<br/>\n\t        LOG.info(&quot;Can not rollback transaction&quot;, e);<br/>\n        } finally {<br/>\n            this.userTX = null;<br/>\n        }<br/>\n    } else {<br/>\n\t    LOG.error(&quot;Can not rollback transaction as it is null&quot;);<br/>\n    }<br/>\n<br/>\n}<br/>\n/**<br/>\n * Insert the method&#39;s description here.<br/>\n * Creation date: (9/19/2001 11:58:42 AM)<br/>\n * @return javax.transaction.UserTransaction<br/>\n */<br/>\n protected void setUp() {<br/>\n\t// We may have to rollback a pre-existing Transaction<br/>\n\tif (this.userTX != null) {<br/>\n\t\trollbackTransaction();<br/>\n\t}<br/>\n<br/>\n\t// Get a new transaction<br/>\n\ttry {<br/>\n\t\tthis.userTX = common.util.EjbUtil.getUserTransaction();<br/>\n\t} catch (javax.naming.NamingException e) {<br/>\n\t\tLOG.error(&quot;Can not get UserTransaction for UnitTests&quot;, e);<br/>\n\t}<br/>\n<br/>\n\t// Start it<br/>\n\tif (this.userTX != null) {<br/>\n\t\ttry {<br/>\n\t\t\tthis.userTX.begin();<br/>\n\t\t} catch (javax.transaction.NotSupportedException ex) {<br/>\n\t\t\tLOG.error(&quot;Can not start UserTransaction&quot;, ex);<br/>\n\t\t} catch (javax.transaction.SystemException ex) {<br/>\n\t\t\tLOG.error(&quot;Can not start UserTransaction&quot;, ex);<br/>\n\t\t}<br/>\n\t} else {<br/>\n\t\tLOG.error(&quot;Can not start UserTransaction as it is null&quot;);<br/>\n\t}<br/>\n}<br/>\n/**<br/>\n * Insert the method&#39;s description here.<br/>\n * Creation date: (9/19/2001 12:38:47 PM)<br/>\n */<br/>\nprotected void tearDown() {<br/>\n\tthis.rollbackTransaction();<br/>\n}<br/>\n<br/>\nand this creates the transaction:<br/>\n<br/>\npublic static UserTransaction getUserTransaction() throws NamingException {<br/>\n    UserTransaction tx = null;<br/>\n<br/>\n    try {<br/>\n        Context ctx = getInitialContext();<br/>\n        tx = (UserTransaction) ctx.lookup(&quot;javax.transaction.UserTransaction&quot;);<br/>\n    } catch (NamingException ex) {<br/>\n        LOG.error(&quot;Naming Exception while obtaining User Transaction&quot;, ex);<br/>\n        throw ex;<br/>\n    }<br/>\n    <br/>\n    return tx;<br/>\n}<br/>\n<br/>\n<br/>\nL<br/>\n<br/>\n-- <br/>\nLaurent Duperval &lt;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:lduperval@...\">lduperval@...</a>&gt;<br/>\n<br/>\nL&#39;affaire est dans le sac qui est lui-même dans la poche.<br/>\n                                             -Achille Talon</div>", 
+    "prevInTime": 3015, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1003517364", 
+    "canDelete": false, 
+    "nextInTopic": 3019, 
+    "prevInTopic": 3015, 
+    "headers": {
+        "inReplyToHeader": "PDNCRDA3MEI4LkJCOTYxMDlCQGNsYXJrd2FyZS5jb20+", 
+        "messageIdInHeader": "PDIwMDExMDE5MTg1MzQ0LkU1QjJFNDY4OEFAbGVuYXJkLm1pY3JvY2VsbGk1LmNvbT4="
+    }
+}

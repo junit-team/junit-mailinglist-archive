@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 6585, 
+    "senderId": "1ym8zR5rpI1HzosQXTUfODiAscl6UVZ5N1VOf9BTZZ6TBansnXY-mEh3392WPVXH_Siw7SVvL1xQbQmZSnjRCE3yl_1bK1dRxmvu_0rRhwHGN4g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] junit and ant", 
+    "from": "&quot;ravi_chaddha&quot; &lt;ravi_chaddha@...&gt;", 
+    "authorName": "ravi_chaddha", 
+    "msgSnippet": "Hi Veena, The  .class file is not placed at the location dir= ${test} mentioned in    &lt;fileset dir= ${test} includes= **/*Test.class /&gt; Take care that", 
+    "msgId": 6584, 
+    "rawEmail": "Return-Path: &lt;ravi_chaddha@...&gt;\r\nReceived: (qmail 93297 invoked from network); 2 Jan 2003 13:14:15 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m13.grp.scd.yahoo.com with QMQP; 2 Jan 2003 13:14:15 -0000\r\nReceived: from unknown (HELO n10.grp.scd.yahoo.com) (66.218.66.65)\n  by mta3.grp.scd.yahoo.com with SMTP; 2 Jan 2003 13:14:15 -0000\r\nX-eGroups-Return: ravi_chaddha@...\r\nReceived: from [66.218.67.138] by n10.grp.scd.yahoo.com with NNFMP; 02 Jan 2003 13:14:15 -0000\r\nX-Sender: ravi_chaddha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_0); 2 Jan 2003 04:24:51 -0000\r\nReceived: (qmail 45982 invoked from network); 2 Jan 2003 04:24:50 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m9.grp.scd.yahoo.com with QMQP; 2 Jan 2003 04:24:50 -0000\r\nReceived: from unknown (HELO WS0005.indiatimes.com) (203.199.93.15)\n  by mta3.grp.scd.yahoo.com with SMTP; 2 Jan 2003 04:24:51 -0000\r\nReceived: from 192.168.57.15 (a1 [192.168.57.21])\n\tby WS0005.indiatimes.com (8.9.3/8.9.3) with SMTP id JAA18157\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 2 Jan 2003 09:45:30 +0530\r\nMessage-Id: &lt;200301020415.JAA18157@...&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: Re: [junit] junit and ant\r\nDate: Thu, 02 Jan 2003 09:52:33 +0530\r\nX-URL: http://indiatimes.com\r\nMIME-Version: 1.0\r\nFrom: &quot;ravi_chaddha&quot; &lt;ravi_chaddha@...&gt;\r\nReply-To: &quot;ravi_chaddha&quot;&lt;ravi_chaddha@...&gt;\r\nX-Yahoo-Group-Post: member; u=130183527\r\nX-Yahoo-Profile: yourloveravi\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 02 Jan 2003 13:14:13 -0000\r\n\r\nHi Veena,\n\n\nThe  .class file is not placed at the location dir=&quot;${test}&quot; mentioned in    &lt;fileset dir=&quot;${test}&quot; includes=&quot;**/*Test.class&quot;/&gt;\n\n\nTake care that they are at specified path.\n\n\nregards,\n\n\nRavi\n\n\n\n\njunit@yahoogroups.com wrote: \n\nHi,\n\nplease look at my code\n\npackage test;\nimport junit.framework.TestCase;\npublic class GopalTest extends TestCase\n{\n      public GopalTest (String name)\n      {\n            super(name);\n      }\n      public void testSomething()\n      {\n            assertTrue(8 == (4 * 2));\n      }\n\n      public void testSomething1()\n      {\n            assertTrue(4 == (2 * 2));\n      }\n}\n\nand my build file\n&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n&lt;project basedir=&quot;.&quot; default=&quot;run-junit&quot; name=&quot;TdsTest&quot;&gt;\n  &lt;property name=&quot;test&quot; location=&quot;test&quot;/&gt;\n      &lt;target name=&quot;run-junit&quot; description=&quot;junit-run&quot; &gt;\n            &lt;junit printsummary=&quot;true&quot; haltonfailure=&quot;false&quot;&gt;\n                  &lt;formatter type=&quot;brief&quot; usefile=&quot;true&quot;/&gt;\n                  &lt;batchtest fork=&quot;true&quot; todir=&quot;${test}&quot;&gt;\n                        &lt;fileset dir=&quot;${test}&quot; \nincludes=&quot;**/*Test.class&quot;/&gt;\n                  &lt;/batchtest&gt;\n            &lt;/junit&gt; \n      &lt;/target&gt;\n&lt;/project&gt;\n\nand the o/p\n\nestsuite: GopalTest\nTests run: 1, Failures: 0, Errors: 1, Time elapsed: 0 sec\n\nNull Test:       Caused an ERROR\nGopalTest\njava.lang.ClassNotFoundException: GopalTest\n      at java.net.URLClassLoader$1.run(URLClassLoader.java:200)\n      at java.security.AccessController.doPrivileged(Native Method)\n      at java.net.URLClassLoader.findClass(URLClassLoader.java:188)\n      at java.lang.ClassLoader.loadClass(ClassLoader.java:299)\n      at sun.misc.Launcher$AppClassLoader.loadClass\n(Launcher.java:286)\n      at java.lang.ClassLoader.loadClass(ClassLoader.java:255)\n      at java.lang.ClassLoader.loadClassInternal\n(ClassLoader.java:315)\n      at java.lang.Class.forName0(Native Method)\n      at java.lang.Class.forName(Class.java:120)\n\nwhat is the reason for it please reply.\n\nthanks\nveena\n\n\n\n\n\n\n\n\n\n\n\nYahoo! Groups Sponsor\n\n\n\n\n\nADVERTISEMENT\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. \n\nGet Your Private, Free E-mail from Indiatimes at  http://email.indiatimes.com\nBuy the best in Movies at http://www.videos.indiatimes.com\nNow bid just 7 Days in Advance and get Huge Discounts on Indian Airlines Flights. So log on to  http://indianairlines.indiatimes.com and Bid Now !\n\n\n[Non-text portions of this message have been removed]\n\n\n\n", 
+    "profile": "yourloveravi", 
+    "topicId": 6578, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 130183527, 
+    "prevInTime": 6583, 
+    "contentTrasformed": false, 
+    "postDate": "1041481353", 
+    "canDelete": false, 
+    "nextInTopic": 6585, 
+    "prevInTopic": 6583, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDMwMTAyMDQxNS5KQUExODE1N0BXUzAwMDUuaW5kaWF0aW1lcy5jb20+"
+    }
+}

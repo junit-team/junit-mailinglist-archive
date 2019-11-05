@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 64, 
+    "nextInTime": 15822, 
+    "senderId": "jO4RhOVWJZL_RpxVh1nX79vLN1vzxiCfbw9dcVgMOLB743CI2MznBdgxzzOImWxTLjwADSMqyyLg9Ghl-hry8g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] running out of memory", 
+    "from": "David Saff &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... Let s assume that the problem here is this: JUnit 3, by requiring test cases to all be in memory before any running happens, could be used fairly memory", 
+    "msgId": 15821, 
+    "profile": "dsaff", 
+    "topicId": 15770, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-75920771\">Cédric Beust ♔ wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; On 1/19/06, Robert Lucente &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rlucente@...\">rlucente@...</a>&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; Googled and found <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.w3.org/DOM/Test/Documents/DOMTSBuild.html.\">http://www.w3.org/DOM/Test/Documents/DOMTSBuild.html.</a><br/>\n&gt; &gt;<br/>\n&gt; &gt; The above states, &quot;If you get a out of memory error (very likely if you<br/>\n&gt; &gt; build the DOM Level 3 Core tests)&quot;. It then recommends &quot;set<br/>\n&gt; &gt; ANT_OPTS=-Xmx512M&quot;. Request that people share how they solved their &quot;out<br/>\n&gt; &gt; of<br/>\n&gt; &gt; memory&quot; issue.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; FYI, we did this in TestNG by allowing @Factories to return either test<br/>\n&gt; classes or iterators. In the latter case, the iterators are walked one<br/>\n&gt; element at a time, the yielded elements are considered as test classes (or<br/>\n&gt; further iterators) and run, and then we move on to the next element.<br/>\n<br/>\n </span></blockquote>Let&#39;s assume that the problem here is this: JUnit 3, by requiring test <br/>\ncases to all be in memory before any running happens, could be used <br/>\nfairly memory effectively, but only if:<br/>\n<br/>\n1) All large TestCase fields were only initialized in setUp<br/>\n2) All large TestCase fields were set back to null in tearDown<br/>\n<br/>\nOtherwise, no test cases or fields could be garbage collected, and <br/>\nmemory usage climbs steadily up as tests are executed.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; Some of our users are creating thousands of tests and they were <br/>\n&gt; running out<br/>\n&gt; of memory without this feature. It&#39;s marginal, but when you need it, you<br/>\n&gt; really need it.<br/>\n<br/>\n </span></blockquote>In JUnit 4, test fixture objects are created right before execution, and <br/>\nno references to test fixture objects are maintained by the framework, <br/>\nso that only the currently running test needs to be on the heap. I have <br/>\nreason to believe that this will solve the problem you describe above, <br/>\nand I&#39;m anxious for people who have had that problem to confirm or <br/>\nrefute this hope.<br/>\n<br/>\nI&#39;m a little confused by the TestNG description above. Are you saying <br/>\nthat you saved memory by lazily classloading? Loading lots of classes <br/>\ncan be a memory drain--all Java programs have this issue--but I had <br/>\nassumed that the goal was reducing the amount of data, not classes, in <br/>\nmemory.<br/>\n<br/>\nThanks,<br/>\n<br/>\nDavid Saff</div>", 
+    "prevInTime": 15820, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1137782440", 
+    "canDelete": false, 
+    "nextInTopic": 15822, 
+    "prevInTopic": 15820, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYwMTIwMDYwNWk3OWVhODk5Y3FiMzdhY2MwNTZiMDQ2MTY3QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQzRDEyRUE4LjMwNTA1MDNAbWl0LmVkdT4=", 
+        "referencesHeader": "PDQzRDA0NzEzLjYwMzAwMDZAcm9nZXJzLmNvbT4JIDxHTkVGTExDQ0ZESkZJT0hCSktDRUdFQkVET0FBLnJsdWNlbnRlQHBpcGVsaW5lLmNvbT4gPGI4NmI2YTljMDYwMTIwMDYwNWk3OWVhODk5Y3FiMzdhY2MwNTZiMDQ2MTY3QG1haWwuZ29vZ2xlLmNvbT4="
+    }
+}

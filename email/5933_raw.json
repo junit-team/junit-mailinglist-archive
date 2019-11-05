@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 5934, 
+    "senderId": "gy409FpvBVcTpMa0FKHj26mmsQx065O-VCHwlIoviJWwW3F09JqUTSxEz6gxdL2PPNwKY9x02g-N4C8tue06Bah6INIlV127cPJZPFV0AcE", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Reg: Finding Time taken for every Test case in Test suite.", 
+    "from": "&quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "The framework doesn t currently support that.  Among others, this has been a requirement for many of the projects I  have worked on. Typically what I do is", 
+    "msgId": 5933, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_1_4); 3 Oct 2002 17:58:59 -0000\r\nReceived: (qmail 76271 invoked from network); 3 Oct 2002 17:58:59 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m1.grp.scd.yahoo.com with QMQP; 3 Oct 2002 17:58:59 -0000\r\nReceived: from unknown (HELO www.fastmail.fm) (209.61.183.86)\n  by mta1.grp.scd.yahoo.com with SMTP; 3 Oct 2002 17:58:59 -0000\r\nReceived: from www.fastmail.fm (localhost [127.0.0.1])\n\tby localhost.localdomain (Postfix) with ESMTP id F15F76DB92\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  3 Oct 2002 12:58:53 -0500 (CDT)\r\nX-Epoch: 1033667934\r\nX-Sasl-enc: SjyGdupmEy/ePePZ23239A\r\nReceived: from RHINO (host-21.subnet-156.med.umich.edu [141.214.156.21])\n\tby www.fastmail.fm (Postfix) with ESMTP id 93B636DCE7\n\tfor &lt;junit@yahoogroups.com&gt;; Thu,  3 Oct 2002 12:58:53 -0500 (CDT)\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Reg: Finding Time taken for every Test case in Test suite.\r\nDate: Thu, 3 Oct 2002 13:59:30 -0400\r\nMessage-ID: &lt;000301c26b06$9fa2fd30$159cd68d@RHINO&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;Windows-1252&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook, Build 10.0.2627\r\nX-MIMEOLE: Produced By Microsoft MimeOLE V5.50.4133.2400\r\nImportance: Normal\r\nIn-Reply-To: &lt;20021003045303.23781.qmail@...&gt;\r\nFrom: &quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;\r\nX-Yahoo-Group-Post: member; u=109352929\r\nX-Yahoo-Profile: jacaetev\r\n\r\nThe framework doesn&#39;t currently support that.  Among others, this has\nbeen a requirement for many of the projects I  have worked on.\nTypically what I do is time each &quot;test case&quot; execution -- that is the\ntotal time it takes for setUp, testXXX, and tearDown to run.\n\nHere are two ways (not the only ways) to accomplish that.  You can\nextend TestCase and override runBare(), and then have all of the test\ncases in your code base extend your timing test case.  You could write\ntiming statements into the actual framework (it&#39;s OpenSource, so you\nwon&#39;t be violating any laws).\n\nI prefer the former to the latter.  Here is an example:\n\npublic class TimingTestCase extends TestCase {\n\tprivate static final String TEAR_DOWN = &quot;tearDown&quot;;\n\tprivate static final String SET_UP = &quot;setUp&quot;;\n\tprivate static final String RUN_TEST = &quot;&quot;;\n\n\tpublic TimingTestCase (String name) {\n\t\tsuper(name);\n\t}\n    \n\tpublic void runBare() throws Throwable {\n\t\tstartTiming();\n\t\tsetUp();\n\t\tendTiming();\n\t\tcollectStats(SET_UP);\n\t\ttry {\n\t\t\tstartTiming();\n\t\t\ttry {\n\t                runTest();\n      \t      } catch (Throwable t) {\n            \t    endTiming();\n            \t    collectStats(RUN_TEST);\n                \t    throw t;\n            \t}\n\t\t\tendTiming();\n\t\t\tcollectStats(RUN_TEST);\n\t\t} finally {\n\t\t\tstartTiming();\n\t\t\ttearDown();\n\t\t\tendTiming();\n\t\t\tcollectStats(TEAR_DOWN);\n\t\t}\n\t}\n}\n\nI realize that the inner try{}catch{}&#39;s endTiming and collectStats is\nredundant to the outer try{}catch{}&#39;s, but that&#39;s a matter of\nexplicitness in my code.  I don&#39;t care for ambiguity.\n\n=jason\n[:question | ^One] \n-----Original Message-----\nFrom: Anantha Lakshmi [mailto:ananthalakshmi_mca@...] \nSent: Thursday, October 03, 2002 12:53 AM\nTo: junit@yahoogroups.com\nSubject: [junit] Reg: Finding Time taken for every Test case in Test\nsuite.\n\n\nHi,\nI am using JUnit for unit testing my software written\nin Java. I&#39;ve created a TestSuite, which contains\nsequence of Tests. I want to find out the &quot;Time Taken\nfor each Test case in a Test suite&quot; while running the\nTest Suite.\n\nWhen i use, \njunit.textui.TestRunner.run(suite());\n\nIt displays the total time taken to successfully run\nthe whole suite. How can i find out the Time for each\nTests in a Test Suite? Help me!\n\nThanks,\nAnanthalakshmi.H\n\n__________________________________________________\nDo you Yahoo!?\nNew DSL Internet Access from SBC & Yahoo!\nhttp://sbc.yahoo.com\n\n\nYahoo! Groups Sponsor\nADVERTISEMENT\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n\n\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service. \n\n---\nOutgoing mail is certified Virus Free.\nChecked by AVG anti-virus system (http://www.grisoft.com).\nVersion: 6.0.384 / Virus Database: 216 - Release Date: 8/21/2002\n \n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 5932, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 5932, 
+    "contentTrasformed": false, 
+    "postDate": "1033667970", 
+    "canDelete": false, 
+    "nextInTopic": 5938, 
+    "prevInTopic": 5932, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIxMDAzMDQ1MzAzLjIzNzgxLnFtYWlsQHdlYjk2MDQubWFpbC55YWhvby5jb20+", 
+        "messageIdInHeader": "PDAwMDMwMWMyNmIwNiQ5ZmEyZmQzMCQxNTljZDY4ZEBSSElOTz4="
+    }
+}

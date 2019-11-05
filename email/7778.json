@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7779, 
+    "senderId": "7S7YybjIV30TZ1TBhQpYrP9FIAB8E15e8eqWk9P6NdXomMZM_xCJkRNAXXsGKfUax4ILkf2FrKiW_tS-5b3TkSdsgePhTYA2JXK4le-Rjg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] A test to verify that an event is generated", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "That s an interesting approach. It s slightly different from what I would do. Why a MockService? Is the service not the thing you re testing? I always get", 
+    "msgId": 7778, 
+    "profile": "nails762", 
+    "topicId": 7751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1107587714\">That&#39;s an interesting approach. It&#39;s slightly different from what I would do.<br/>\n<br/>\nWhy a MockService? Is the service not the thing you&#39;re testing? I always get nervous when I have to mock the thing I&#39;m testing. Since you&#39;re testing the event source, I would recommend rewriting this test so that the event source you test is an actual event source, and not some subclass (however trivial) of it.<br/>\n<br/>\nDoes it matter in this particular situation? Likely not. Would it matter in some other, similar situation? It may. I would take the opportunity to learn something about your design.<br/>\n<br/>\nFor example: factor out the event source from the abstract class, then test the event source on its own.<br/>\n<br/>\nAlso, here is a code sample from what I meant. Perhaps it will work for you.<br/>\n<br/>\npublic void testEventFired() {<br/>\n    EventSource eventSource = new EventSource();<br/>\n    SpyEventListener spyEventListener = new SpyEventListener();<br/>\n    eventSource.addEventListener(spyEventListener);<br/>\n<br/>\n    eventSource.methodThatFiresEvent();<br/>\n<br/>\n    ExpectedEvent expectedEvent = new ExpectedEvent();<br/>\n    assertEquals(Collections.singletonList(expectedEvent),<br/>\n                 spyEventListener.getEventsFired());<br/>\n}<br/>\n<br/>\nSpyEventListener...<br/>\n    List getEventsFired() { ... }<br/>\n<br/>\nAny better for you? Take care.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;So said Kris Henderson on 4/17/2003 --------------------<br/>\n&gt;&gt; From: J. B. Rainsberger [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:jbrains@...\">jbrains@...</a>] <br/>\n&gt;&gt; Q: Is threading required to verify generating the event? <br/>\n&gt;&gt; Avoiding it would be better.<br/>\n&gt;<br/>\n&gt;That&#39;s kind of what I was thinking but I was having a hard time figuring<br/>\n&gt;out how to do it.<br/>\n&gt;<br/>\n&gt;Thankyou Vladimir, Manuel, and J.B.  I rewrote my test taking your<br/>\n&gt;suggestions into account and my test is much more elegant now.<br/>\n&gt;<br/>\n&gt;Here&#39;s what my test looks like after I rewrote it:<br/>\n&gt;<br/>\n&gt;    public void testEvents()<br/>\n&gt;    {<br/>\n&gt;        final DeviceDescriptor device = new<br/>\n&gt;DeviceDescriptor(DeviceType.PRINTER, &quot;Name&quot;, &quot;Address&quot;);<br/>\n&gt;<br/>\n&gt;        class MockService extends AbstractDeviceListService<br/>\n&gt;        {<br/>\n&gt;            public MockService()<br/>\n&gt;            {<br/>\n&gt;            }        <br/>\n&gt;        }<br/>\n&gt;<br/>\n&gt;        class MockListener implements DeviceListListener<br/>\n&gt;        {<br/>\n&gt;            public int addCount = 0;<br/>\n&gt;            public int removeCount = 0;<br/>\n&gt;            <br/>\n&gt;            public void deviceAdded(DeviceListEvent event)<br/>\n&gt;            {<br/>\n&gt;                addCount += 1;<br/>\n&gt;                assertEquals(event.getDevice(), device);<br/>\n&gt;            }<br/>\n&gt;            public void deviceRemoved(DeviceListEvent event)<br/>\n&gt;            {<br/>\n&gt;                removeCount += 1;<br/>\n&gt;                assertEquals(event.getDevice(), device);<br/>\n&gt;            }<br/>\n&gt;        }<br/>\n&gt;        <br/>\n&gt;        MockService service = new MockService();<br/>\n&gt;        MockListener listener = new MockListener();<br/>\n&gt;<br/>\n&gt;        service.addDeviceListListener(listener);<br/>\n&gt;<br/>\n&gt;        service.addDevice(device);<br/>\n&gt;        assertEquals(listener.addCount, 1);<br/>\n&gt;<br/>\n&gt;        service.removeDevice(device, 0);<br/>\n&gt;        assertEquals(listener.removeCount, 1);<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;Kris<br/>\n&gt;<br/>\n&gt;Yahoo! Groups Sponsor<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;To unsubscribe from this group, send an email to:<br/>\n&gt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt;Your use of Yahoo! Groups is subject to the Yahoo! Terms of Service.<br/>\n </span></blockquote>J. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 7777, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1050690680", 
+    "canDelete": false, 
+    "nextInTopic": 7779, 
+    "prevInTopic": 7775, 
+    "headers": {
+        "inReplyToHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJBQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4=", 
+        "messageIdInHeader": "PDIwMDMwNDE4MTQzMTIwMDYxNS4wMDJCMDg4MUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEJBQFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4="
+    }
+}

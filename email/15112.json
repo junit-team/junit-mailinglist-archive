@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 15113, 
+    "senderId": "6gVQs-Uzhd4jiKOfdTLCIBMbEX66syLjXbobnZUyOzzGFyPdizgm9rC4Cq1x3KXCvhE1Nm3c2jWN7umLYDKxDdAPgD7ELF5IwFEywbZmCnZWgIfZLiWhpQrFxEOzVEx_3a26", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TestNG 4 and Data Providers", 
+    "from": "=?UTF-8?Q?C=C3=A9dric_Beust_=E2=99=94_?= &lt;cbeust@...&gt;", 
+    "authorName": "Cédric Beust ♔", 
+    "msgSnippet": "Hi Elliotte, ... For simplicity. But I understand the need for lazy initializations, and it s also a feature that has been requested for the creation of test", 
+    "msgId": 15112, 
+    "profile": "cbeust", 
+    "topicId": 15110, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "messageBody": "<div id=\"ygrps-yiv-783024680\">Hi Elliotte,<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 10/12/05, Elliotte Harold &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:elharo@...\">elharo@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt; Cédric Beust ♔ wrote:<br/>\n&gt;<br/>\n&gt; &gt; // This method will provide data to any test method that declares that<br/>\n&gt; its<br/>\n&gt; &gt; Data Provider<br/>\n&gt; &gt; // is named &quot;test1&quot;<br/>\n&gt; &gt; @DataProvider(name = &quot;test1&quot;)<br/>\n&gt; &gt; public Object[][] createData1() {<br/>\n&gt; &gt; return new Object[][] {<br/>\n&gt; &gt; new Object[] { &quot;Cedric&quot;, new Integer(36) },<br/>\n&gt; &gt; new Object[] { &quot;Anne&quot;, new Integer(37)},<br/>\n&gt; &gt; };<br/>\n&gt; &gt; }<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; On the plus side, this approach is really, really simple. I&#39;m having<br/>\n&gt; trouble following all the JUnit 4 parameterized discussions simply<br/>\n&gt; because I don&#39;t feel comfortable with Java 5 annotations and generics<br/>\n&gt; yet. I just haven&#39;t worked enough with these java 5 features that they<br/>\n&gt; come to me naturally. By contrast, I can read this and see exactly what<br/>\n&gt; it&#39;s doing. Good.<br/>\n&gt;<br/>\n&gt; On the minus side, I think this might be too simple. It seems to require<br/>\n&gt; all the test parameters to be initialized up front. If the parameters or<br/>\n&gt; their initialization code is large or expensive, this could be a<br/>\n&gt; problem. I would prefer the parameters to be lazily initialized before<br/>\n&gt; each test and torn down after each test. This could be done if this<br/>\n&gt; method returned an Iterator rather than a static array. Any reason it<br/>\n&gt; wasn&#39;t done this way?<br/>\n<br/>\n<br/>\nFor simplicity.<br/>\n<br/>\nBut I understand the need for lazy initializations, and it&#39;s also a feature<br/>\nthat has been requested for the creation of test classes themselves, which<br/>\nTestNG doesn&#39;t support either (just like JUnit, TestNG creates all the test<br/>\nclasses upfront and then invoke the test methods on them, which doesn&#39;t work<br/>\nwell in the cases you outlined).<br/>\n<br/>\nFor that reason, I have indeed been considering an iterator factory for test<br/>\nclasses as well, which I proposed a few months ago in this thread:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://forums.opensymphony.com/thread.jspa?threadID=1685&tstart=60\">http://forums.opensymphony.com/thread.jspa?threadID=1685&tstart=60</a><br/>\n<br/>\nI reproduced the proposal below so you don&#39;t have to read the entire thread.<br/>\n<br/>\nI am still thinking of implementing it at some point, along with Data<br/>\nProvider iterators, but it does require some re-design in our code base and<br/>\nthe demand hasn&#39;t been too strong so far (you&#39;re not the first one to<br/>\nrequest it, though).<br/>\n<br/>\n--<br/>\nCédric<br/>\n<br/>\nOkay, I think I see where you are getting at. You want continuation<br/>\nfactories :-)<br/>\n<br/>\nYou are correct that right now, it&#39;s a two-step process:<br/>\n<br/>\n- All the factories are invoked and create all the test instances<br/>\n- TestNG runs on all the created instances<br/>\n<br/>\nwhich is potentially a problem if these instances consume a lot of<br/>\nresources.<br/>\n<br/>\nYour factory iterator suggestion makes sense to me.<br/>\n<br/>\nWe could have a new kind of factory that returns an iterator:<br/>\n<br/>\n@Factory<br/>\npublic Iterator createTests() { ... }<br/>\n<br/>\nand TestNG would basically do the following:<br/>\n<br/>\nIterator it = factory.createTests();<br/>\nwhile (it.hasNext()) {<br/>\nObject testInstance = it.next();<br/>\ninvoke TestNG on this testInstance<br/>\n}<br/>\n<br/>\nThen it&#39;s up to you to make sure that your test instances are only created<br/>\nwhen needed.<br/>\n<br/>\nHow does this sound?<br/>\n<br/>\n--<br/>\nCédric<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://beust.com/weblog\">http://beust.com/weblog</a><br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed] </span></blockquote></div>", 
+    "prevInTime": 15111, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1129125215", 
+    "canDelete": false, 
+    "nextInTopic": 15113, 
+    "prevInTopic": 15111, 
+    "headers": {
+        "inReplyToHeader": "PDQzNEQwNjhELjYwMjA1MDhAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "messageIdInHeader": "PGI4NmI2YTljMDUxMDEyMDY1M3U0MGUwY2I1ZnU0ZmNjNjdiMzM3YmY3Njc4QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "referencesHeader": "PGI4NmI2YTljMDUxMDExMTEyN3M0ZTBmOTc2M3M0NGU0MDg5ZjY0NDdkNTI3QG1haWwuZ29vZ2xlLmNvbT4JIDw0MzREMDY4RC42MDIwNTA4QG1ldGFsYWIudW5jLmVkdT4="
+    }
+}

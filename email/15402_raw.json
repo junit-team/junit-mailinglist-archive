@@ -1,0 +1,30 @@
+{
+    "topicId": 15399, 
+    "postDate": "1131898368", 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Elliotte Rusty Harold&quot; &lt;elharo@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "WJFVlSkjeE-e2QZqunqEAXDFVJ_TAKLLqdKC1xLKWUxO8dHqicTFCIAaG0gn3UEDjAJP6Yi278IbPxNpos0CM-bOoxcGufsBhVJY1kUVF501lvc9Q3iI", 
+    "nextInTime": 15403, 
+    "userId": 12653864, 
+    "prevInTime": 15401, 
+    "prevInTopic": 15401, 
+    "headers": {
+        "inReplyToHeader": "PDM4MzE4LjIwNy4xOTAuMC4xMS4xMTMxODk3NTE4LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4=", 
+        "messageIdInHeader": "PDEyNjExLjIwNy4xOTAuMC4xMS4xMTMxODk4MzY4LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4=", 
+        "referencesHeader": "PDMzMzE2LjIwNy4xOTAuMC4xMS4xMTMxODkxMzc5LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4gICAgICAgPFBpbmUuTE5YLjQuNTguMDUxMTEzMTczODA1MC40ODMzQHNiei0zMC5jcy5IZWxzaW5raS5GST4gICAgPDM4MzE4LjIwNy4xOTAuMC4xMS4xMTMxODk3NTE4LnNxdWlycmVsQHNlY3VyZS5pYmlibGlvLm9yZz4="
+    }, 
+    "authorName": "Elliotte Rusty Harold", 
+    "numMessagesInTopic": 32, 
+    "msgSnippet": "I finally figured out the magic piece I was missing. One also has to pass the name of the test method (not the class but the method) to the superclass", 
+    "contentTrasformed": false, 
+    "msgId": 15402, 
+    "nextInTopic": 15407, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;elharo@...&gt;\r\nX-Sender: elharo@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 9360 invoked from network); 13 Nov 2005 16:13:29 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m34.grp.scd.yahoo.com with QMQP; 13 Nov 2005 16:13:29 -0000\r\nReceived: from unknown (HELO metalab.unc.edu) (152.2.210.112)\n  by mta3.grp.scd.yahoo.com with SMTP; 13 Nov 2005 16:13:28 -0000\r\nReceived: from secure.ibiblio.org (unknown [192.168.210.46])\n\tby metalab.unc.edu (Postfix) with ESMTP id 0C1B548040\n\tfor &lt;junit@yahoogroups.com&gt;; Sun, 13 Nov 2005 11:12:48 -0500 (EST)\r\nReceived: from 207.190.0.11\n        (SquirrelMail authenticated user elharo)\n        by secure.ibiblio.org with HTTP;\n        Sun, 13 Nov 2005 11:12:48 -0500 (EST)\r\nMessage-ID: &lt;12611.207.190.0.11.1131898368.squirrel@...&gt;\r\nIn-Reply-To: &lt;38318.207.190.0.11.1131897518.squirrel@...&gt;\r\nReferences: &lt;33316.207.190.0.11.1131891379.squirrel@...&gt;   \n    &lt;Pine.LNX.4.58.0511131738050.4833@...&gt;\n    &lt;38318.207.190.0.11.1131897518.squirrel@...&gt;\r\nDate: Sun, 13 Nov 2005 11:12:48 -0500 (EST)\r\nTo: junit@yahoogroups.com\r\nUser-Agent: SquirrelMail/1.4.4\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;charset=iso-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nX-Priority: 3 (Normal)\r\nImportance: Normal\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Elliotte Rusty Harold&quot; &lt;elharo@...&gt;\r\nSubject: Re: [junit] Parameterized test case pattern (+ a note on JUnit 4)\r\nX-Yahoo-Group-Post: member; u=12653864; y=bupIVEwev6qnr5o4HBsm-EieK3zkl-7bJAwtoDyLWi3A16SI\r\n\r\nI finally figured out the magic piece I was missing. One also has to pass\nthe name of the test method (not the class but the method) to the\nsuperclass constructor like so:\n\n    public DataDrivenTest(int i) {\n        super(&quot;testFoo&quot;);\n        this.i = i;\n    }\n\nI had to dig into the JUnit source code to debug this.\n\nThis taught me something about the code base that may be worth addressing\nfor JUnit 4. JUnit appears to use regular JUnit assert and fail methods to\ncheck preconditions on its own methods. For example,\n\n\tprotected void runTest() throws Throwable {\n\t\tassertNotNull(fName);\n\t\tMethod runMethod= null;\n\t\ttry {\n\t\t\t// use getMethod to get all public inherited\n\t\t\t// methods. getDeclaredMethods returns all\n\t\t\t// methods of this class but excludes the\n\t\t\t// inherited ones.\n\t\t\trunMethod= getClass().getMethod(fName, null);\n\t\t} catch (NoSuchMethodException e) {\n\t\t\tfail(&quot;Method &#92;&quot;&quot;+fName+&quot;&#92;&quot; not found&quot;);\n\t\t}\n\t\tif (!Modifier.isPublic(runMethod.getModifiers())) {\n\t\t\tfail(&quot;Method &#92;&quot;&quot;+fName+&quot;&#92;&quot; should be public&quot;);\n\t\t}\n\n\nThe problem with this is that when the precondition does fail, it looks a\nlot like a regular test failure. I think JUnit should be refactored not to\ndo this. assertFOO and fail should be reserved for test cases alone. For\nexample this code could easily be written as\n\n\tprotected void runTest() throws Throwable {\n\t\tif (fName == null) {\n                   throw new NullPointerException(&quot;Method name was null&quot;);\n                }\n\t\tMethod runMethod= null;\n\t\ttry {\n\t\t\t// use getMethod to get all public inherited\n\t\t\t// methods. getDeclaredMethods returns all\n\t\t\t// methods of this class but excludes the\n\t\t\t// inherited ones.\n\t\t\trunMethod= getClass().getMethod(fName, null);\n\t\t} catch (NoSuchMethodException e) {\n\t\t\tthrow e;\n\t\t}\n\t\tif (!Modifier.isPublic(runMethod.getModifiers())) {\n\t\t\tfail(&quot;Method &#92;&quot;&quot;+fName+&quot;&#92;&quot; should be public&quot;);\n\t\t}\n\nI think if I&#39;d gotten NullPointerExceptions and NoSuchMethodExceptions\ninstead of the AssertionFailedErrors I did get, then I would have figured\nthis problem out days ago.\n\n\n\n\n", 
+    "subject": "Re: [junit] Parameterized test case pattern (+ a note on JUnit 4)"
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 12752, 
+    "senderId": "d5nsy5obU5iXKHSu_IpBfXlU5pmuR3hA9PKPQ8uSIr5EnRCD6ehLjSBWtLhuhs1VFWDzS0bGZ3wdneB6y75DLQWq_WpTfEaQDcU", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] testing collections", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "Simple, snide answer:  Test your expectations of the results. You mention that the method in question makes some validations.  After calling the setter, make", 
+    "msgId": 12751, 
+    "profile": "zipwow", 
+    "topicId": 12741, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 198331568, 
+    "messageBody": "<div id=\"ygrps-yiv-1267562698\">Simple, snide answer:  Test your expectations of the results.<br/>\n<br/>\nYou mention that the method in question makes some validations.  After<br/>\ncalling the setter, make your assertions about the exceptions, error<br/>\ncodes, or whatever it is you&#39;re returning if the validation fails. <br/>\nYou may have known that part already.<br/>\n<br/>\nSo how do you test the objects created when validation passes?  You&#39;ve<br/>\ngot black-box and white-box approaches.  I prefer black-box as a first<br/>\ntry, but that&#39;s mostly because I write the tests first, so the code is<br/>\nreally more of an empty box :P<br/>\n<br/>\nTo do this black-box-style, look to the other access points to your<br/>\nclass.  You mention that the private collection is full of<br/>\nInternetAddress objects.  Does your class communicate these to a mail<br/>\nbroker object?  Can you pass in a mock implementation of that object<br/>\nthat records what it&#39;s been told?  Here&#39;s a pseudocode example:<br/>\n<br/>\nMockCommunicationsBroker broker = new MockCommunicationsBroker();<br/>\nMailSender mailSender = new MailSender(broker); //class under test --<br/>\ngiven the mock broker<br/>\n<br/>\nCollection goodValues = getGoodValues();//however you get your test data<br/>\nmailSender.setRecipients(goodValues);<br/>\nmailSender.send();  //presumably interacts with the broker<br/>\n<br/>\nCollection generatedRecipients = broker.getRecipients();<br/>\nassertEquals(&quot;Wrong recipients&quot;,expectedValues,generatedRecipients); <br/>\n//hand converted expected values that match the input to the setter<br/>\n<br/>\nA white-box approach would be to make your private collection<br/>\nprotected or use reflection and a lax security profile to &quot;reach<br/>\ninside&quot; and access them directly.  Not as useful for refactoring, and<br/>\na little less &quot;pure&quot;, but easier to implement.<br/>\n<br/>\n-Kevin<br/>\n<br/>\nOn Wed, 26 Jan 2005 14:39:00 -0500, Soaring Eagle<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:comfortable.numb@...\">comfortable.numb@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; Hello,<br/>\n&gt; <br/>\n&gt; Please bear with me if this is an old oft answered question.<br/>\n&gt; <br/>\n&gt; I have a void method which takes in a java.util.Collection parameter -<br/>\n&gt; filled with Strings, performs some validations and sets a private<br/>\n&gt; member that is also a collection - filled with<br/>\n&gt; javax.mail.InternetAddress. How do I test this setter method through<br/>\n&gt; JUnit?<br/>\n&gt; <br/>\n&gt; -Eagle<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 12750, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1106785110", 
+    "canDelete": false, 
+    "nextInTopic": 12752, 
+    "prevInTopic": 12748, 
+    "headers": {
+        "inReplyToHeader": "PDMxNzdkMjU1MDUwMTI2MTEzOWRmYWExNGRAbWFpbC5nbWFpbC5jb20+", 
+        "messageIdInHeader": "PDRmZmYwNjRmMDUwMTI2MTYxODUzOTM4M2U1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDMxNzdkMjU1MDUwMTI2MTEzOWRmYWExNGRAbWFpbC5nbWFpbC5jb20+"
+    }
+}

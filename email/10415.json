@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 10416, 
+    "senderId": "pQPAY0o4h5NptQXYjNOCWTfWiRNLWiZ7l0roy65odZB4iAQ8Y_GmrFMbSb99ru8Fc6NTt06sxYxOrD4Jpg50TCa9_1HpQss1hXfHVGUuLeOeQyCwoEm8", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] database migration: tests organisation", 
+    "from": "Bauduin Raphael &lt;raphael.bauduin@...&gt;", 
+    "authorName": "Bauduin Raphael", 
+    "msgSnippet": "... As there is no junit infrastructure, I started with a solution as follows: My main method looks like: int maxId = 100; while (maxId ", 
+    "msgId": 10415, 
+    "topicId": 10334, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109309043, 
+    "messageBody": "<div id=\"ygrps-yiv-692641336\">On Wed, Feb 04, 2004 at 12:22:17PM -0500, J. B. Rainsberger wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; <br/>\n&gt; Bauduin Raphael wrote:<br/>\n&gt; <br/>\n&gt; &gt; On Mon, Feb 02, 2004 at 01:24:59PM -0500, J. B. Rainsberger wrote:<br/>\n&gt; &gt;  &gt;<br/>\n&gt; &gt;  &gt; Bauduin Raphael wrote:<br/>\n&gt; &gt;  &gt;<br/>\n&gt; &gt;  &gt; &lt;snip /&gt;<br/>\n&gt; &gt;  &gt; &gt; My question about the organisation of the tests is that I feel like all<br/>\n&gt; &gt;  &gt; &gt; tests are first added to the suite, and are run only after all tests<br/>\n&gt; &gt;  &gt; &gt; have been added. Am I wrong on that?<br/>\n&gt; &gt;  &gt;<br/>\n&gt; &gt;  &gt; No: you are correct. First, JUnit adds all the tests, then executes them.<br/>\n&gt; &gt;  &gt;<br/>\n&gt; &gt; <br/>\n&gt; &gt; Would there be a way to test the customers 100 by 100, freeing the memory<br/>\n&gt; &gt; each time?<br/>\n&gt; <br/>\n&gt; You would have to build a test suite, execute it, then build another, <br/>\n&gt; then execute that one.<br/>\n<br/>\n </span></blockquote>As there is no junit infrastructure, I started with a solution as<br/>\nfollows:<br/>\n<br/>\nMy main method looks like:<br/>\n<br/>\n<br/>\n        int maxId = 100;<br/>\n        while (maxId &lt; 9000)<br/>\n        {<br/>\n            junit.textui.TestRunner.run(suite(maxId));<br/>\n            maxId += 100;                                    <br/>\n            HibernateConnections.session.clear();<br/>\n            HibernateConnections.sessionPg.clear();<br/>\n<br/>\n        }<br/>\n<br/>\nmy suite method looks like:<br/>\n<br/>\n        TestSuite suite= new TestSuite();<br/>\n        suite.addTest(CustomersTest.suite(maxId));<br/>\n        return suite;  <br/>\n<br/>\nAnd my CustomersTest.suite(int maxId) looks like:<br/>\n<br/>\n            Iterator iterator = session.iterate(&quot;from Customer where customerid &lt; &quot;+maxId + &quot;and customerid &gt; &quot; + (maxId-100));<br/>\n            int i = 0;<br/>\n            custdb.hibernate.Customer customerPg;<br/>\n            while (iterator.hasNext())<br/>\n            {  <br/>\n                customerSuite.addTest(....)<br/>\n            }<br/>\n<br/>\n<br/>\nThis way I effectively get the tests executed completely separated.<br/>\nWhat I&#39;ll look for now is that all results are put in the same object.<br/>\nNow, after 100 customers have been tested, I get the report printed. I&#39;d like to <br/>\nget it after all tests have passed (when getting out of the while(maxId&lt;9000)).<br/>\n<br/>\n<br/>\nI&#39;ll post if I find the solution, but help is welcome on that problem ;-)<br/>\n<br/>\nRaph</div>", 
+    "prevInTime": 10414, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1075919398", 
+    "canDelete": false, 
+    "nextInTopic": 10417, 
+    "prevInTopic": 10406, 
+    "headers": {
+        "inReplyToHeader": "PDQwMjEyQTQ5LjgwOTA2MDdAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDQwMjA0MTgyOTU3LkdBMTczNDlAcmFwaGFlbD4=", 
+        "referencesHeader": "PDIwMDQwMTI5MTEzOTE1LkdBNTI3MEByYXBoYWVsPiA8NDAxOTkyQjcuNDA4MDMwM0Byb2dlcnMuY29tPiA8MjAwNDAxMzAxMjAwMDIuR0ExMzMzNkByYXBoYWVsPiA8NDAxRTk1RkIuODA3MDIwN0Byb2dlcnMuY29tPiA8MjAwNDAyMDQxMzM4NTguR0ExNTI4QHJhcGhhZWw+IDw0MDIxMkE0OS44MDkwNjA3QHJvZ2Vycy5jb20+"
+    }
+}

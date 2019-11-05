@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 11653, 
+    "senderId": "zOQGS9O_ADuu8PofocBJAvGKcW6hQ4k3sG64FDoANV0wQe78I4AZkg04-mfGJot9LKtinwFH2ke23EJe0LBB3fsrSCMKoG_NKfPSox31VzFc8r-4", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Message texts", 
+    "from": "&quot;James P. Gunderson&quot; &lt;jgunders@...&gt;", 
+    "authorName": "James P. Gunderson", 
+    "msgSnippet": "Sure, In an earlier post Eric suggested: assertTrue( Name field should be valid after entering correct first and last name , nameField.IsValid()); We would", 
+    "msgId": 11652, 
+    "rawEmail": "Return-Path: &lt;jgunders@...&gt;\r\nReceived: (qmail 98704 invoked from network); 24 Jul 2004 13:32:58 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m25.grp.scd.yahoo.com with QMQP; 24 Jul 2004 13:32:58 -0000\r\nReceived: from unknown (HELO n8.grp.scd.yahoo.com) (66.218.66.92)\n  by mta3.grp.scd.yahoo.com with SMTP; 24 Jul 2004 13:32:58 -0000\r\nReceived: from [66.218.67.156] by n8.grp.scd.yahoo.com with NNFMP; 24 Jul 2004 13:32:54 -0000\r\nX-Sender: jgunders@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 30340 invoked from network); 23 Jul 2004 22:59:24 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m24.grp.scd.yahoo.com with QMQP; 23 Jul 2004 22:59:24 -0000\r\nReceived: from unknown (HELO mpls-qmqp-03.inet.qwest.net) (63.231.195.114)\n  by mta4.grp.scd.yahoo.com with SMTP; 23 Jul 2004 22:59:24 -0000\r\nReceived: (qmail 43552 invoked by uid 0); 23 Jul 2004 22:28:37 -0000\r\nReceived: from mpls-pop-14.inet.qwest.net (63.231.195.14)\n  by mpls-qmqp-03.inet.qwest.net with QMQP; 23 Jul 2004 22:28:37 -0000\r\nReceived: from 168-103-202-149.dnvr.qwest.net (HELO gamma-two.com) (168.103.202.149)\n  by mpls-pop-14.inet.qwest.net with SMTP; 23 Jul 2004 22:59:24 -0000\r\nDate: Fri, 23 Jul 2004 16:58:25 -0600\r\nMessage-ID: &lt;41019811.7090504@...&gt;\r\nTo: junit@yahoogroups.com\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nReferences: &lt;4101554D.9090209@...&gt; &lt;4101832F.7040503@...&gt;\r\nIn-Reply-To: &lt;4101832F.7040503@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 63.231.195.114\r\nFrom: &quot;James P. Gunderson&quot; &lt;jgunders@...&gt;\r\nSubject: Re: [junit] Message texts\r\nX-Yahoo-Group-Post: member; u=193138280\r\nX-Yahoo-Profile: jpg3u\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 24 Jul 2004 13:32:53 -0000\r\nX-eGroups-Remote-IP: 66.218.66.92\r\n\r\nSure,\n   \n    In an earlier post Eric suggested:\n\nassertTrue(&quot;Name field should be valid after entering correct first \nand last name&quot;, nameField.IsValid());\n\nWe would probably cut it to:\nassertTrue(&quot;E: Valid Name Field, G: invalid!&quot;, nameField.IsValid());\n\nWe would rely on the name of the test case to tell us that this was the test of the name entry method.\n\nThere was an earlier suggestion of\nassertNotNull(&quot;Joe has a name&quot;, joe.getName());\n\nwe would use:\n\nassertNotNull(&quot;E: valid name object, G: null&quot;, joe.getName());\n\nOur approach is to regularize the output so that we can focus on the cause of the failure rather than deciphering a number of different types of messages.  As you point out, this format works well for assertEquals() although we tend to use a lot of assertTrue.\n\nBy standardizing our testcase format, and specifying a defined expected result, and loading the actual, this also allows us to reduce many of the asserts to\n\nassertEquals(&quot;E: &quot; + expected + &quot; G: &quot; + actual, expected, actual);\n\nof course the same test could be \n\nassertTrue(&quot;E: &quot; + expected + &quot; G: &quot; + actual, expected == actual);\nor \nassertTrue(&quot;E: &quot; + expected + &quot; G: &quot; + actual, expected.equals(actual));\n\ndepending on the data type.\n\nSince we don&#39;t have to think much about the format it allows us to build the tests fairly quickly.\n\n\nLike any attempt to have a regular format, it can lead to inefficiencies. But we generally feel that the tradeoff is worth it. It also makes it much easier to bring someone new up to speed - they can worry less about the syntax of the failure message and more about the content.\n\n\nLike I said, we are pretty un-sophisticated, but it seems to work for us.\n\n\nJim\n\n\n\nJ. B. Rainsberger wrote:\n\n&gt;James P. Gunderson wrote:\n&gt;\n&gt;  \n&gt;\n&gt;&gt;We use a slightly more naive approach for the messages associated with\n&gt;&gt;failed assertions. We display an Expected: XXX got: YYY  construction.\n&gt;&gt;    \n&gt;&gt;\n&gt;\n&gt;Even for assertions that don&#39;t use assertEquals()? That&#39;s interesting. \n&gt;Can you give us an example of this?\n&gt;\n&gt;Thanks.\n&gt;  \n&gt;\n\n-- \nJames P. Gunderson, Ph.D.                Intelligent Systems Architect\njgunders@...                   Gamma Two, Inc.\nwww.gamma-two.com             \t\t 303.778.7400\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nSometimes it looks real good on paper, but when you actually try\nto build it, it just doesn&#39;t work.\n-- anonymous engineer on a Charlottesville road construction\n\tproject, October 2001\n\n\n\n\n\n", 
+    "profile": "jpg3u", 
+    "topicId": 11623, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 193138280, 
+    "prevInTime": 11651, 
+    "contentTrasformed": false, 
+    "postDate": "1090623505", 
+    "canDelete": false, 
+    "nextInTopic": 11654, 
+    "prevInTopic": 11651, 
+    "headers": {
+        "inReplyToHeader": "PDQxMDE4MzJGLjcwNDA1MDNAcm9nZXJzLmNvbT4=", 
+        "messageIdInHeader": "PDQxMDE5ODExLjcwOTA1MDRAZ2FtbWEtdHdvLmNvbT4=", 
+        "referencesHeader": "PDQxMDE1NTRELjkwOTAyMDlAZ2FtbWEtdHdvLmNvbT4gPDQxMDE4MzJGLjcwNDA1MDNAcm9nZXJzLmNvbT4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 15472, 
+    "senderId": "fjPUIXQxIQ4-KyghUg9d-_g2hfT5iWRINsvrSf96Nc8qMWNt2Xx6I9B49Go9dQnJo-_DM4Coj8b6cE40nrnlSXk2kX5RPA", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Re: PrivilegedAccessor Object Array Cannot Contain &quot;null&quot; Value?", 
+    "from": "Jim Yingst &lt;jryingst@...&gt;", 
+    "authorName": "Jim Yingst", 
+    "msgSnippet": "Kris: PrivilegedAccessor.invokeMethod() derives the method parameter types from the values - there s simply no way to do this if a value is null. However you", 
+    "msgId": 15471, 
+    "profile": "jryingst", 
+    "topicId": 15443, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 7800376, 
+    "messageBody": "<div id=\"ygrps-yiv-767959054\">Kris:<br/>\n<br/>\nPrivilegedAccessor.invokeMethod() derives the method parameter types<br/>\nfrom the values - there&#39;s simply no way to do this if a value is null. <br/>\nHowever you should be able to do something like this:<br/>\n<br/>\nMethod m = PrivilegedAccessor.getMethod(child, &quot;myMethod&quot;, <br/>\n        new Class[] {Integer.class, String.class});<br/>\nm.invoke(someInstance, new Object[] {null, &quot;hello&quot;});<br/>\n<br/>\n- Jim Yingst<br/>\n<br/>\n--- krispyjala &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:krispyjala@...\">krispyjala@...</a>&gt; wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi J.B.,<br/>\n&gt;    Because I want to test what happens if I pass in a null into my <br/>\n&gt; method.  My method does certain business logic and I want to test <br/>\n&gt; that it handles null properly.  So, in reality if the method&#39;s not <br/>\n&gt; private, I would be able to call this:<br/>\n&gt; <br/>\n&gt; String abc = &quot;hello&quot;;<br/>\n&gt; myMethod(null,abc);<br/>\n&gt; <br/>\n&gt; so I want to see whether of myMethod throws the correct exception.<br/>\n&gt; <br/>\n&gt; When using PrivilegedAccessor.invokeMethod, then, I need to pass the <br/>\n&gt; two parameters of null and abc as an Object array for its third <br/>\n&gt; argument.  Does that make sense?<br/>\n&gt; <br/>\n&gt; Thanks,<br/>\n&gt; Kris.<br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;J. B. Rainsberger&quot; &lt;jbrains@r...&gt; <br/>\n&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; krispyjala wrote:<br/>\n&gt; &gt; &gt; Hello,<br/>\n&gt; &gt; &gt;    I&#39;m running into this problem where the PrivilegedAccessor <br/>\n&gt; cannot<br/>\n&gt; &gt; &gt; find the method when using invokeMethod() if the Object array<br/>\n&gt; &gt; &gt; contains a null value.<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; Ex:<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; PrivilegedAccessor.invokeMethod(Class.class,&quot;myMethod&quot;,new Object<br/>\n&gt; []<br/>\n&gt; &gt; &gt; {null,arg1});<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; I think the problem lies in the fact that underneath, <br/>\n&gt; invokeMethod&#39;s<br/>\n&gt; &gt; &gt; calling getMethod which calls another getMethod, which ultimately<br/>\n&gt; &gt; &gt; calls java.lang.getDeclaredMethod() which only accepts an array<br/>\n&gt; of<br/>\n&gt; &gt; &gt; classes.  Since null is not a class, it throws an exception and <br/>\n&gt; thus<br/>\n&gt; &gt; &gt; the private method is declared not found.  Am I right?  Or am I<br/>\n&gt; &gt; &gt; missing something?<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; When I replaced the null with a valid object, it was able to find<br/>\n&gt; <br/>\n&gt; the<br/>\n&gt; &gt; &gt; private method fine.  Is this a bug, or is this something that I<br/>\n&gt; &gt; &gt; shouldn&#39;t be doing (setting null as an element in the Object <br/>\n&gt; array?).<br/>\n&gt; &gt; <br/>\n&gt; &gt; In general, arrays can hold null values; but in this particular <br/>\n&gt; case, <br/>\n&gt; &gt; what is the null meant to signify? Why are you trying to pass null?<br/>\n&gt; &gt; -- <br/>\n&gt; &gt; J. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\n&gt; &gt; Your guide to software craftsmanship<br/>\n&gt; &gt; JUnit Recipes: Practical Methods for Programmer Testing<br/>\n&gt; &gt; 2005 Gordon Pask Award for contribution Agile Software Practice<br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; ------------------------ Yahoo! Groups Sponsor<br/>\n&gt; --------------------~--&gt; <br/>\n&gt; Get fast access to your favorite Yahoo! Groups. Make Yahoo! your home<br/>\n&gt; page<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/dpRU5A/wUILAA/yQLSAA/5cFolB/TM\">http://us.click.yahoo.com/dpRU5A/wUILAA/yQLSAA/5cFolB/TM</a><br/>\n&gt;<br/>\n </span></blockquote>--------------------------------------------------------------------~-&gt;<br/>\n<blockquote><span title=\"qreply\"> &gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt;  <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 15470, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1132163334", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 15457, 
+    "headers": {
+        "inReplyToHeader": "PGRsZm1pZStuM29vQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDUxMTE2MTc0ODU0LjUzMzYwLnFtYWlsQHdlYjUyODE1Lm1haWwueWFob28uY29tPg=="
+    }
+}

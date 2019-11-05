@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 11444, 
+    "senderId": "Q-32rnYGGJstu67zZ44ynjZ-02vh_1VY_bnwbVv5VN_5mPvbcD8ffX-KPiQ5hXZ2tjVXGjpguq0hyozn4Y4NPq86OpPRu0LQs8lVtEA", 
+    "systemMessage": false, 
+    "subject": "Returned WebPages", 
+    "from": "&quot;Chip Dunning&quot; &lt;cdunning@...&gt;", 
+    "authorName": "Chip Dunning", 
+    "msgSnippet": "I am adding testing capability to a program that currently has nothing, thus I am starting with the most fragile sections and working my way out. Two of these", 
+    "msgId": 11443, 
+    "rawEmail": "Return-Path: &lt;cdunning@...&gt;\r\nX-Sender: cdunning@...\r\nX-Apparently-To: JUnit@yahoogroups.com\r\nReceived: (qmail 46535 invoked from network); 13 Jul 2004 13:42:06 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m6.grp.scd.yahoo.com with QMQP; 13 Jul 2004 13:42:06 -0000\r\nReceived: from unknown (HELO citation.charlson.local) (216.54.198.99)\n  by mta6.grp.scd.yahoo.com with SMTP; 13 Jul 2004 13:42:06 -0000\r\nX-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0\r\ncontent-class: urn:content-classes:message\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nDate: Tue, 13 Jul 2004 09:40:28 -0400\r\nMessage-ID: &lt;B060B45D33A5DF47929059538CD0180A0622DB@...&gt;\r\nX-MS-Has-Attach: \r\nX-MS-TNEF-Correlator: \r\nThread-Topic: Returned WebPages\r\nThread-Index: AcRo3vXTlJd6sO3kRpGPuIVUbEKY+g==\r\nTo: &quot;JUnit ML (E-mail)&quot; &lt;JUnit@yahoogroups.com&gt;\r\nX-eGroups-Remote-IP: 216.54.198.99\r\nFrom: &quot;Chip Dunning&quot; &lt;cdunning@...&gt;\r\nSubject: Returned WebPages\r\nX-Yahoo-Group-Post: member; u=146967878\r\nX-Yahoo-Profile: chipdunning\r\n\r\nI am adding testing capability to a program that currently has nothing, thu=\r\ns I am starting with the most fragile sections and working my way out. Two =\r\nof these sections involve accessing a Web Server and a series of Web Servic=\r\nes that may or may not be running when I am testing - each of these also ac=\r\ncess other resources that may not be running (data stream and a SQL databas=\r\ne respectively).\n\nI thought HttpUnit would work, but that seems more geared=\r\n to testing web pages - not testing Java code that reads web pages. What I =\r\nwant to do is build up a set SOAP page that my calls will act upon, thus I =\r\ncan create good and bad SOAP returns and test them - even mangled SOAP head=\r\ners and test that it does the right thing when this happens (and given comm=\r\nunication capabilities in the places this software will be deployed this wi=\r\nll happen quite often).\n\nAs an example of testing the balanceCheck function=\r\n I need to build up a XML file with a given balance result, let the code re=\r\nad it, then test that everything happened correctly.\n\nCode snippet at the b=\r\nottom of email.\n\nAny ideas on how best to skin this cat?\n\n\nChip\n-----\n&quot;The =\r\nreason the mainstream is thought of as a stream is because it&#39;s so shallow&quot;=\r\n --George Carlin\n\n\n\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D[ code snippet ]=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=\r\n=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D\n\npublic long agentBalance(Agent agent, in=\r\nt channel) throws WagerSystemException {\n  cmdAgentBalance cmd =3D new cmdA=\r\ngentBalance(agent.getID(), channel);\n  cmd.setInfo(kiosk, toteServerName, n=\r\new Date());\n  BettingSession session =3D BettingSession.getInstance();\n\n  l=\r\nong surchargeBalance =3D 0;\n  long finalBalance =3D 0;\n  try {\n    rspAgent=\r\nBalance rsp =3D (rspAgentBalance) cmd.sendCommand(toteServerURL);\n\n    if (=\r\nrsp.isError()) {\n      String msg =3D rsp.getErrorMsg();\n      String code =\r\n=3D rsp.getErrorCode();\n      if (code.equalsIgnoreCase(&quot;NOCONFIRM&quot;)) {\n   =\r\n     throw new WagerSystemException(&quot;&quot; + AGENTBALANCE_NOCONFIRM);\n\n      } =\r\nelse if (code.equalsIgnoreCase(&quot;TOTEERROR&quot;)) {\n        throw new WagerSyste=\r\nmException(msg);\n\n      } else {\n        throw new WagerSystemException(&quot;&quot; =\r\n+ AGENTBALANCE_NOTAVAILABLE);\n      }\n\n    } else {\n      int sessionID =3D=\r\n agent.getSessionID();\n      setAgentBalanceCmd agentBalance =3D new setAge=\r\nntBalanceCmd(rsp.getAmount(), new Integer sessionID));\n      getAgentBalanc=\r\neResponse response =3D (getAgentBalanceResponse) agentBalance.callWebServic=\r\ne(new Integer(0));\n\n      if (response !=3D null) {\n        surchargeBalanc=\r\ne =3D response.getSurchargeBalance();\n      }\n      session.setToteBalance(=\r\n -rsp.getAmount());\n      finalBalance =3D -rsp.getAmount() + surchargeBala=\r\nnce;\n    }\n\n  } catch (FileNotFoundException ex2) {\n    ex2.printStackTrace=\r\n();\n    finalBalance =3D 0;\n    throw new WagerSystemException(&quot;&quot; + AGENTBA=\r\nLANCE_NOTAVAILABLE);\n\n  } catch (IOException ex1) {\n    ex1.printStackTrace=\r\n();\n    finalBalance =3D 0;\n    throw new WagerSystemException(&quot;&quot; + AGENTBA=\r\nLANCE_NOSERVICE);\n\n  } catch (UnexpectedResponseException ex3) {\n    ex3.pr=\r\nintStackTrace();\n    finalBalance =3D 0;\n    throw new WagerSystemException=\r\n(&quot;&quot; + AGENTBALANCE_NOTAVAILABLE);\n  }\n\n  return finalBalance;\n} \n\n", 
+    "profile": "chipdunning", 
+    "topicId": 11443, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 146967878, 
+    "prevInTime": 11442, 
+    "contentTrasformed": false, 
+    "postDate": "1089726028", 
+    "canDelete": false, 
+    "nextInTopic": 11455, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PEIwNjBCNDVEMzNBNURGNDc5MjkwNTk1MzhDRDAxODBBMDYyMkRCQGNpdGF0aW9uLmNoYXJsc29uLmxvY2FsPg=="
+    }
+}

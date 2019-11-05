@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 10492, 
+    "senderId": "kY8BgSuFeSp7rRGLhZ55Xam4VsJrnLFGfyf5f42Aw4l7odTugjngpQzOd44S0vQmVDuAPtKHHj2pHbWS3_RqsRP_n6U6rmRJj7N9GgVw6uMY7vT-ivIX", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Problems testing an InputStream", 
+    "from": "&quot;Stirling, Scott&quot; &lt;scott.stirling@...&gt;", 
+    "authorName": "Stirling, Scott", 
+    "msgSnippet": "... Where in the jar is the XML file?  In the jar root?  Or in the package of the class that s retrieving it?  If in the root of the jar, prepend a / to the", 
+    "msgId": 10491, 
+    "profile": "stirlingdev", 
+    "topicId": 10290, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150177187, 
+    "messageBody": "<div id=\"ygrps-yiv-2110489361\"><blockquote><span title=\"ireply\">&gt; From: Craig Duncan [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:leftymiata@...\">leftymiata@...</a>]<br/>\n&gt; <br/>\n&gt; My scenario is that I have an xml file that is inside a jar.  When I<br/>\n&gt; run the unit test inside Eclipse the file is found and the tests run<br/>\n&gt; fine.  I even tried removing the jar from Eclipse&#39;s build path to make<br/>\n&gt; sure it was not finding the file in some other location.  The test<br/>\n&gt; failed without the jar in the path, so I am pretty sure the unit test<br/>\n&gt; is finding the file in the jar.<br/>\n<br/>\n </span></blockquote>Where in the jar is the XML file?  In the jar root?  Or in the package of the class that&#39;s retrieving it?  If in the root of the jar, prepend a &quot;/&quot; to the resource name.  If it&#39;s packaged in the package directory, don&#39;t.<br/>\n <br/>\n<blockquote><span title=\"ireply\"> &gt; Now, when I run the unit tests from ANT I get a NullPointerException<br/>\n&gt; because the InputStream is Null.  I double checked the classpath that<br/>\n&gt; is printed out when the unit test runs and the jar file that contains<br/>\n&gt; the xml file is on the classpath.<br/>\n&gt; <br/>\n&gt; Here is the code I am using to read in the xml file.  It is pretty<br/>\n&gt; much the same as the original poster.<br/>\n&gt; <br/>\n&gt; // Get our sample input file.<br/>\n&gt; InputStream is = <br/>\n&gt; Class.class.getResourceAsStream(&quot;/RunPOEngineTest.xml&quot;);<br/>\n&gt; InputStreamReader sr = new InputStreamReader(is);<br/>\n<br/>\n </span></blockquote>Why are you doing Class.class.getResourceAsStream()?  This will resolve the resource relative to the classloader that the java.lang.Class class is in, which may or may not be the same as the loader your resource is in, depending on the classloader hierarchy of the containing application (e.g.., Eclipse, JUnit, Ant) and how your jar is loaded.  If everything is all in a standalone main() app and everything is in the system classpath, then using Class.getResourceAsStream() should work, but, in general and especially in J2EE apps, that&#39;s not a portable way to do it.<br/>\n<br/>\nAs someone else began to say:<br/>\n<br/>\n1. Foo.class.getResourceAsStream(&quot;...&quot;); or this.getClass().getResourceAsStream(&quot;...&quot;);<br/>\n<br/>\nThis will look for the resource in the same classloader hierarchy as the class calling getResourceAsStream().  getSystemResourceAsStream() shouldn&#39;t ever need to be called if you call getResource/AsStream() because the system classloader will call it under the covers if necessary without you doing anything.<br/>\n<br/>\n2. Thread.currentThread().getContextClassLoader().getResourceAsStream(&quot;...&quot;);<br/>\n<br/>\nThis fallback will work for when the calling class and the resource are in a classloader not in the normal classloader search hierarchy (hope I explained that right).  I&#39;ve used it when I had a system level class (loaded in the system or other high level classloader) that provided a util method for finding resources in potentially any classloader.  In order for the system level class to find resources in lower level classloaders, such as a web app classloader, you have to get the current thread (normally a thread spawned by the app server for handling web requests and loading web app classes), get its classloader and retrieve the resource from there.  This is a fallback since the higher level classloaders should get searched first.<br/>\n<br/>\nScott Stirling<br/>\nWorkscape, Inc.<br/>\n<br/>\n***********************************************************************<br/>\nThis message is intended only for the use of the intended recipient and<br/>\nmay contain information that is PRIVILEGED and/or CONFIDENTIAL.  If you<br/>\nare not the intended recipient, you are hereby notified that any use,<br/>\ndissemination, disclosure or copying of this communication is strictly<br/>\nprohibited.  If you have received this communication in error, please<br/>\ndestroy all copies of this message and its attachments and notify us<br/>\nimmediately.<br/>\n***********************************************************************</div>", 
+    "prevInTime": 10490, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1077037147", 
+    "canDelete": false, 
+    "nextInTopic": 10496, 
+    "prevInTopic": 10489, 
+    "headers": {
+        "messageIdInHeader": "PDcyMDY4Mjk4Q0Q5OTEwNEFBRURFMkZERjg5QUMxNjBENEM0QzhDQGF2YW50aS5jb3JwLndvcmtzY2FwZS5uZXQ+"
+    }
+}

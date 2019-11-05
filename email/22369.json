@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 22370, 
+    "senderId": "5SQgs-S0weA0Sbuq-R3_1n5dNU9OaOEsSICIsh25SpOicF2oM8n7Fer4UiRLmAEcwAHT-sTm-e7NcSSYrYjmwWqlATVT8vWy_lbESw", 
+    "systemMessage": false, 
+    "subject": "Re: Using JUnit 4 to drive a test DSL", 
+    "from": "&quot;krosenvold&quot; &lt;kristian@...&gt;", 
+    "authorName": "krosenvold", 
+    "msgSnippet": "Is NodeTest actually a test class ? I think you may be victim of a hotly debated issue in surefire, where surefire by default assumes every class ending with", 
+    "msgId": 22369, 
+    "profile": "krosenvold", 
+    "topicId": 22366, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 403861045, 
+    "messageBody": "<div id=\"ygrps-yiv-1057683133\">Is NodeTest actually a test class ? I think you may be victim of a hotly debated issue in surefire, where surefire by default assumes every class ending with &quot;Test&quot; is a test-case.<br/>\n<br/>\nKristian<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Edson Tirelli &lt;ed.tirelli@...&gt; wrote:<br/>\n&gt;<br/>\n&gt;   Hi all,<br/>\n&gt; <br/>\n&gt;   Facing a problem a could not find an answer for yet.<br/>\n&gt; <br/>\n&gt;   We use JUnit as the testing framework for Drools (<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jboss.org/drools/)\">http://www.jboss.org/drools/)</a>. It happens, though, that some of the internal<br/>\n&gt; low level stuff are really hard to test using pure java code, so, we created<br/>\n&gt; a DSL to define some of our low level tests. Example here (but it does not<br/>\n&gt; really matter for the problem at hand):<br/>\n&gt; <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://anonsvn.jboss.org/repos/labs/labs/jbossrules/branches/true_modify_20100104/drools-core/src/test/resources/org/drools/reteoo/test/AccumulateNodeAssertRetractTest.nodeTestCase\">http://anonsvn.jboss.org/repos/labs/labs/jbossrules/branches/true_modify_20100104/drools-core/src/test/resources/org/drools/reteoo/test/AccumulateNodeAssertRetractTest.nodeTestCase</a><br/>\n&gt; <br/>\n&gt;    The DSL follows a simplified test structure, similar to previous JUnit<br/>\n&gt; versions, i.e., each file is a test case that might have a setup and<br/>\n&gt; teardown sections, plus a bunch of tests. Simple and works fine for us.<br/>\n&gt; <br/>\n&gt;    Now, since we use JUnit to drive all our tests, I would like to use junit<br/>\n&gt; to drive these DSL test cases as well during our build (maven), to keep all<br/>\n&gt; reports, etc integrated. So, I created a test runner class:<br/>\n&gt; <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://anonsvn.jboss.org/repos/labs/labs/jbossrules/branches/true_modify_20100104/drools-core/src/test/java/org/drools/reteoo/test/JUnitNodeTestRunner.java\">http://anonsvn.jboss.org/repos/labs/labs/jbossrules/branches/true_modify_20100104/drools-core/src/test/java/org/drools/reteoo/test/JUnitNodeTestRunner.java</a><br/>\n&gt; <br/>\n&gt;    And then I created a bootstrap class (not sure if there is a way to avoid<br/>\n&gt; having the bootstrap class):<br/>\n&gt; <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://anonsvn.jboss.org/repos/labs/labs/jbossrules/branches/true_modify_20100104/drools-core/src/test/java/org/drools/reteoo/test/NodeTestsSuite.java\">http://anonsvn.jboss.org/repos/labs/labs/jbossrules/branches/true_modify_20100104/drools-core/src/test/java/org/drools/reteoo/test/NodeTestsSuite.java</a><br/>\n&gt; <br/>\n&gt;    As you can see, the bootstrap class has the annotation:<br/>\n&gt; @RunWith(JUnitNodeTestRunner.class)<br/>\n&gt; <br/>\n&gt;    Now, when I right click that class and choose &quot;Run as... JUnit test case&quot;<br/>\n&gt; in eclipse, the class loads and executes all tests defined in our dsl test<br/>\n&gt; files without any problem. It shows all tests with success/error messages in<br/>\n&gt; the eclipse junit view, etc. BUT, when I run the tests from our maven build,<br/>\n&gt; I get the following error:<br/>\n&gt; <br/>\n&gt; Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.005 sec<br/>\n&gt; &lt;&lt;&lt; FAILURE!<br/>\n&gt; initializationError(org.drools.reteoo.test.dsl.NodeTest)  Time elapsed: 0<br/>\n&gt; sec  &lt;&lt;&lt; ERROR!<br/>\n&gt; java.lang.IllegalArgumentException: Test class can only have one constructor<br/>\n&gt;         at org.junit.runners.model.TestClass.&lt;init&gt;(TestClass.java:32)<br/>\n&gt;         at org.junit.runners.ParentRunner.&lt;init&gt;(ParentRunner.java:54)<br/>\n&gt; ...<br/>\n&gt; <br/>\n&gt;    I am at a loss right now, so any insights on how to fix that (or even if<br/>\n&gt; we are using the wrong approach here) are most appreciated.<br/>\n&gt; <br/>\n&gt;    Thanks,<br/>\n&gt;       Edson<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt;  Edson Tirelli<br/>\n&gt;  JBoss Drools Core Development<br/>\n&gt;  JBoss by Red Hat @ www.jboss.com<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 22368, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1265440739", 
+    "canDelete": false, 
+    "nextInTopic": 22370, 
+    "prevInTopic": 22368, 
+    "headers": {
+        "inReplyToHeader": "PGU2ZGQ1YmEzMTAwMjA1MTMwOHkxYThlY2MyZmw2MGUzZTViMDQxOTZmNWMxQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGhrajU1Mys1dTQ0QGVHcm91cHMuY29tPg=="
+    }
+}

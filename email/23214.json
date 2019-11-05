@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 23215, 
+    "senderId": "xgEfb5Ptk9QEgelQxNguGiYCxloUy5ptTPjuib2B4o_52bqCdbe4NqMT-DGUz73dn7FQTkkRSL9dyedpXfg7Vl8kXlzqIvI", 
+    "systemMessage": true, 
+    "subject": "Re: How to make JUnit work with own test format", 
+    "from": "&quot;Dominik Dorn&quot; &lt;dorn@...&gt;", 
+    "authorName": "Dominik Dorn", 
+    "msgSnippet": "Hello David, thanks for your reply. I ve managed to successfully implement the runner and get our existing tests working. I ve packaged the extension up", 
+    "msgId": 23214, 
+    "profile": "domdorn", 
+    "topicId": 23200, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 474618683, 
+    "messageBody": "<div id=\"ygrps-yiv-285712908\">Hello David,<br/>\n<br/>\nthanks for your reply. <br/>\n<br/>\nI&#39;ve managed to successfully implement the runner and get our<br/>\nexisting tests working. <br/>\n<br/>\nI&#39;ve packaged the extension up through maven and included it in our new projects. <br/>\nTo get the tests in the new project executed, I need to create an almost empty class, like this<br/>\n<br/>\npackage com.caucho.quercus.lib.filter;<br/>\n<br/>\nimport com.caucho.quercus.junit.QuercusRunner;<br/>\nimport org.junit.runner.RunWith;<br/>\n<br/>\n<br/>\n@RunWith(QuercusRunner.class)<br/>\npublic class FilterTest {<br/>\n}<br/>\n<br/>\nIs there a way I can automatically execute a fake test with this runner in every project that includes my jar? So that users don&#39;t have to create such a dummy test. Like specifying it in META-INF/some-file so that JUnit picks it up automatically? <br/>\n<br/>\n<br/>\nThanks a lot,<br/>\nDominik<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Dominik,<br/>\n&gt; <br/>\n&gt; You should definitely be able to do this.  The extension point you<br/>\n&gt; want is likely ParentRunner.  I imagine you&#39;d override getChildren to<br/>\n&gt; return a list of filenames, describeChild to return the filename (or<br/>\n&gt; perhaps the title?), and runChild to parse and run your test.<br/>\n&gt; <br/>\n&gt; I hope this helps.<br/>\n&gt; <br/>\n&gt;    David Saff<br/>\n&gt; <br/>\n&gt; On Wed, Jan 26, 2011 at 7:53 PM, Dominik Dorn &lt;dorn@...&gt; wrote:<br/>\n&gt; &gt; Hi,<br/>\n&gt; &gt;<br/>\n&gt; &gt; I&#39;m working on Quercus, a PHP implementation in Java.<br/>\n&gt; &gt;<br/>\n&gt; &gt; To test our implementation, we have a huge amount of tests.<br/>\n&gt; &gt; Each test is contained in a text file someName.qa which is a<br/>\n&gt; &gt; sort-of XML file.<br/>\n&gt; &gt;<br/>\n&gt; &gt; These tests are currently run through a self-made test-runner.<br/>\n&gt; &gt;<br/>\n&gt; &gt; I would like to replace this custom test-runner with a JUnit-extension, so that I&#39;m able to include our test files in a maven build and let them be run through junit (and all the nice junit plugins for IDEs).<br/>\n&gt; &gt;<br/>\n&gt; &gt; our test layout currently looks like the following<br/>\n&gt; &gt;<br/>\n&gt; &gt; module/<br/>\n&gt; &gt; module/module.xml &lt;- a file containing ranges for test-sections<br/>\n&gt; &gt; module/0001.qa &lt;- a single testcase<br/>\n&gt; &gt;<br/>\n&gt; &gt; Please tell me, if the following assumption is correct:<br/>\n&gt; &gt;<br/>\n&gt; &gt; I think to accomplish what I want, I need to create a special implementation of<br/>\n&gt; &gt; ï¿½- org.junit.runners.Runner<br/>\n&gt; &gt; and/or of<br/>\n&gt; &gt; ï¿½- org.junit.runners.model.TestClass<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; A test basically looks like this:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;title&gt;DOM: extension_loaded()&lt;/title&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;php out=&#39;stdout&#39; compile=&#39;false&#39;&gt;<br/>\n&gt; &gt; &lt;?php<br/>\n&gt; &gt; echo extension_loaded(&quot;dom&quot;) ? &quot;DOM loaded&quot; : &quot;DOM NOT loaded&quot;;<br/>\n&gt; &gt; echo &quot;&#92;n&quot;;<br/>\n&gt; &gt; ?&gt;<br/>\n&gt; &gt; &lt;/php&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;compare file=&#39;/stdout&#39; escape&gt;<br/>\n&gt; &gt; DOM loaded<br/>\n&gt; &gt;<br/>\n&gt; &gt; &lt;/compare&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; So we&#39;re running the content inside the &lt;php..&gt; block and do a string comparison line by line with the &lt;compare&gt; block.<br/>\n&gt; &gt;<br/>\n&gt; &gt; I know, thats not best practice, but currently I just need to know if it is possible to run such tests with JUnit (by extending it?) or not.<br/>\n&gt; &gt;<br/>\n&gt; &gt; The ideal (end-)scenario would be, that we just put our test files into the<br/>\n&gt; &gt; /src/test/qa folder of a maven module, add our junit-extension artifact to the project and junit would then pickup the files and run them as tests.<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; Thanks for your help.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Dominik<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; ------------------------------------<br/>\n&gt; &gt;<br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23213, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1296143629", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 23210, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGltQzNWLStKOHhqQU4xdTdOaC1HK1NzVDJuVXJXQmJKTEhaaldDYUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PGloczRlZCs1dXA2QGVHcm91cHMuY29tPg=="
+    }
+}

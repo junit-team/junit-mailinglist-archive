@@ -1,0 +1,28 @@
+{
+    "topicId": 24565, 
+    "postDate": "1406234972", 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "from": "Tobias Werth &lt;Tobias.Werth@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "pYjPz8VtL7aCqHbX1d71f6OWC_ub834MfoPeAmfZb9Vb_QEZo7zTaN03hbgv7aLTBNmTxjdLL1X5Ia1HZJ0FXis2-CQvQn2UOA", 
+    "nextInTime": 24566, 
+    "userId": 563320903, 
+    "prevInTime": 24564, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMTQwNzI0MjA0OTMyLkdDMjMwOTZAZmF1aTIwZS5pbmZvcm1hdGlrLnVuaS1lcmxhbmdlbi5kZT4="
+    }, 
+    "authorName": "Tobias Werth", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "Hi, I wanted to discuss two side effects between multiple JUnit test methods: a) timing issues If a test method runs into a timeout, the executing thread is ", 
+    "contentTrasformed": false, 
+    "msgId": 24565, 
+    "nextInTopic": 24566, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;werth@...-erlangen.de&gt;\r\nReceived: (qmail 22465 invoked by uid 7800); 24 Jul 2014 20:58:48 -0000\r\nX-Sender: werth@...-erlangen.de\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 13354 invoked by uid 102); 24 Jul 2014 20:49:33 -0000\r\nX-Received: from unknown (HELO mtaq6.grp.bf1.yahoo.com) (10.193.84.37)\n  by m10.grp.bf1.yahoo.com with SMTP; 24 Jul 2014 20:49:33 -0000\r\nX-Received: (qmail 9602 invoked from network); 24 Jul 2014 20:49:33 -0000\r\nX-Received: from unknown (HELO faui45.informatik.uni-erlangen.de) (98.139.245.164)\n  by mtaq6.grp.bf1.yahoo.com with SMTP; 24 Jul 2014 20:49:33 -0000\r\nX-Received: from faui250.informatik.uni-erlangen.de (faui25a.informatik.uni-erlangen.de [131.188.32.41])\n\t(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))\n\t(No client certificate requested)\n\tby faui45.informatik.uni-erlangen.de (Postfix) with ESMTPS id C2ACB746A6D\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 24 Jul 2014 22:49:32 +0200 (CEST)\r\nX-Received: from faui20e.informatik.uni-erlangen.de (faui20e.informatik.uni-erlangen.de [131.188.32.34])\n\t(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))\n\t(Client did not present a certificate)\n\tby faui250.informatik.uni-erlangen.de (Postfix) with ESMTPS id A39372B02A7\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 24 Jul 2014 22:49:32 +0200 (CEST)\r\nX-Received: from faui20e.informatik.uni-erlangen.de (localhost [127.0.0.1])\n\tby faui20e.informatik.uni-erlangen.de (8.14.4/8.1.6-FAU) with ESMTP id s6OKnWiX013014\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 24 Jul 2014 22:49:32 +0200\r\nX-Received: (from werth@localhost)\n\tby faui20e.informatik.uni-erlangen.de (8.14.4/8.14.4/Submit) id s6OKnWDC013004\n\tfor junit@yahoogroups.com; Thu, 24 Jul 2014 22:49:32 +0200\r\nDate: Thu, 24 Jul 2014 22:49:32 +0200\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;20140724204932.GC23096@...-erlangen.de&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.5.20 (2009-06-14)\r\nX-Virus-Scanned: clamav-milter 0.98.1 at faui45\r\nX-Virus-Status: Clean\r\nX-eGroups-Msg-Info: 1:6:0:0:0\r\nSubject: Side effects between test cases\r\nX-Yahoo-Group-Post: member; u=563320903\r\nX-Original-From: Tobias Werth &lt;Tobias.Werth@...&gt;\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 24 Jul 2014 20:58:48 -0000\r\nFrom: Tobias Werth &lt;Tobias.Werth@...&gt;\r\n\r\nHi,\n\nI wanted to discuss two side effects between multiple JUnit test\nmethods:\n\na) timing issues\nIf a test method runs into a timeout, the executing thread is\ninterrupted (but not stopped). Hence, if it executes an infinite loop,\nit will still occupy some of your resources after this test failed.\n\nFor an example, see [1]. The helper method is executed either once or\ninfinite often in a loop. If executed once, it runs approx. 100ms on my\nmachine. If executed in a loop, JUnit&#39;s runtime is approx. 600ms times\nfor a single parameterized run.\nExecuting 10 infinite loops first and then 10 single helper calls\nresults in more than 10 timeouts (which is set to 500ms). You may have\nto increase NUM_RUNS on your machine to reproduce.\n\n\nb) memory issues\nIt&#39;s easy to construct cases from the above insight (threads may keep\nrunning in case of a timeout) with side effects on memory which lead to\nan OutOfMemoryError.\nEven when threads do not keep running, and one test allocates many\nobjects, the garbage collector may kick in during the execution of the\nnext test method. This may result in an timeout that is not caused by\nthe code under test but by the previous massive object allocation.\n\n\nI know that&#39;s almost impossible to stop Java threads. I also assume that\nboth side effects are well known.\n\nSo what&#39;s the best practice to reduce or even avoid these side effects\nwhen writing JUnit test methods?\n\nCheers,\nTobi\n\n--\n1: https://gist.github.com/meisterT/97db378abea366036f36\n\n\n", 
+    "subject": "Side effects between test cases"
+}

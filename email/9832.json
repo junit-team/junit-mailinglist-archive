@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 9833, 
+    "senderId": "2IbBTxF_1pFrCITV2S2VxwzKSTLlfeMYMQNTKAQS60Lin1_vmLmcvZb5wno8cUDzWGXVTlzSAsLQ-Idl1Qi_DsXRK0OKjun9kQNYNw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] performance testing", 
+    "from": "&quot;Morten Grum, PH-Consult&quot; &lt;mg@...&gt;", 
+    "authorName": "Morten Grum, PH-Consult", 
+    "msgSnippet": "Hi Nathan We ve integrated some of our performance profiling into our JUnit tests. Many of the performance profilers have a consol version. In our case we re ", 
+    "msgId": 9832, 
+    "profile": "morten3grum", 
+    "topicId": 9829, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 11862826, 
+    "messageBody": "<div id=\"ygrps-yiv-42818640\">Hi Nathan<br/>\n<br/>\nWe&#39;ve integrated some of our performance profiling into our JUnit tests.<br/>\nMany of the performance profilers have a consol version. In our case we&#39;re<br/>\nusing JProbe which we call via ant like this:<br/>\n<br/>\n    &lt;target name=&quot;performance&quot; depends=&quot;testdirectories&quot;&gt;<br/>\n        &lt;exec dir=&quot;C:/Program Files/JProbe Suite 4.0.2/bin&quot;<br/>\n            executable=&quot;C:/Program Files/JProbe Suite<br/>\n4.0.2/bin/jplauncher.exe&quot;&gt;<br/>\n                &lt;arg value=&quot;-jp_input=${jprobe.performancetest}&quot; /&gt;<br/>\n        &lt;/exec&gt;<br/>\n    &lt;/target&gt;<br/>\n<br/>\nWe have the jplauncher (JProbe&#39;s console version) run the tests directly<br/>\nusing mains placed in the TestCase themselves(so not via JUnits test<br/>\nrunnner). All our unit tests extend OurAbstractTestCase which in turn<br/>\nextends Junits TestCase. In OurAbstractTestCase we have implemented a method<br/>\nthat prompts JProbe to take and save performance and memory snapshots. This<br/>\nmethod we call at key points within our tests.<br/>\n<br/>\n    protected static void createPerformanceSnapshot(String snapShotName) {<br/>\n        createMemorySnapshot(snapShotName);<br/>\n        createProfilingShapshot(snapShotName);<br/>\n        System.gc();<br/>\n    }<br/>\n<br/>\n    private static void createMemorySnapshot(String snapShotName) {<br/>\n        JPHeapAPI.getInstance().save(snapShotName);<br/>\n        JPHeapAPI.getInstance().clear();<br/>\n    }<br/>\n<br/>\n    private static void createProfilingShapshot(String snapShotName) {<br/>\n        JPPerformanceAPI.getInstance().save(snapShotName);<br/>\n        JPPerformanceAPI.getInstance().clear();<br/>\n    }<br/>\n<br/>\nThis way we can look at CPU times, which methods are &quot;now&quot; slowing it all<br/>\ndown and which methods are creating all those objects that get the carbage<br/>\ncollector running all the time. We have to actually start-up JProbe and<br/>\nload, plot and compare the snapshots of intrest to get value out of this. We<br/>\ndo this integration of Junit tests and profiling mainly on test that<br/>\nrepresent &quot;Use Cases&quot; and not that much on the small &quot;Unit Tests&quot;.<br/>\n<br/>\nWe do also at places use a simple stopwatch as proposed in on of the<br/>\nintroductory chapters of Sun&#39;s &quot;Java Platform Performance, Strategies and<br/>\nTactics&quot; by Steve Wilson and Jeff Kesselman (view full book and code samples<br/>\nat <a rel=\"nofollow\" target=\"_blank\" href=\"http://java.sun.com/docs/books/performance/)\">http://java.sun.com/docs/books/performance/)</a>. The advantage of using a<br/>\nsimple stopwatch is that it can just run with your tests whenever they run.<br/>\nRunning through the profiler is generally much slower and not that suitable<br/>\nfor all tests.<br/>\n<br/>\nAnd then don&#39;t forget, JUnit actually does actually time each test! So a<br/>\nrough performance test is already given there.<br/>\n<br/>\nHope this impression of one way to do it is of use to you.<br/>\n<br/>\nMorten<br/>\n<br/>\n<br/>\n<blockquote><span title=\"qreply\"> &gt; -----Original Message-----<br/>\n&gt; From: Nathan Coast [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:nathan@...\">nathan@...</a>]<br/>\n&gt; Sent: 10. november 2003 09:52<br/>\n&gt; To: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n&gt; Subject: [junit] performance testing<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Hi,<br/>\n&gt;<br/>\n&gt; Is anyone doing performance testing with junit or a junit<br/>\n&gt; extension?  I&#39;ve<br/>\n&gt; looked at JUnitPerf and I don&#39;t think it has the functionality I<br/>\n&gt; need.  I&#39;d like<br/>\n&gt; to record the time taken to execute individual junit tests.  The<br/>\n&gt; idea is that it<br/>\n&gt; should then be possible identify when code changes occurred that caused a<br/>\n&gt; significant drop in performance.<br/>\n&gt;<br/>\n&gt; thanks<br/>\n&gt; Nathan<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 9831, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1068548249", 
+    "canDelete": false, 
+    "nextInTopic": 9833, 
+    "prevInTopic": 9829, 
+    "headers": {
+        "inReplyToHeader": "PDNGQUY1MUEyLjMwODAwMDVAY29kZWN6YXIuY29tPg==", 
+        "messageIdInHeader": "PEZFRUFJRklNTEhMS0FKQ0VQT05ISUVNQUNKQUEubWdAcGhjLmRrPg=="
+    }
+}

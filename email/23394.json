@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 23395, 
+    "senderId": "uDQnIrckp-GxmB-FCA5vS64v9itieAW7HeiptofYd2TBSzzjln1HQNj5ePYU2JEysvrXNYbWn9T8eSRb1M62FxnlJvSJwtIC", 
+    "systemMessage": false, 
+    "subject": "Re: Report &quot;to implement&quot; tests.", 
+    "from": "&quot;lars.vonk&quot; &lt;lars.vonk@...&gt;", 
+    "authorName": "lars.vonk", 
+    "msgSnippet": "Hi, Thanks for the pointers everyone. I will look into it. I like Bill s suggestion. Since this concept is becoming more popular imho it would be nice if it is", 
+    "msgId": 23394, 
+    "profile": "lars.vonk", 
+    "topicId": 23389, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 396444660, 
+    "messageBody": "<div id=\"ygrps-yiv-819131059\">Hi,<br/>\n<br/>\nThanks for the pointers everyone. I will look into it. I like Bill&#39;s suggestion.<br/>\nSince this concept is becoming more popular imho it would be nice if it is supported by junit.<br/>\n<br/>\nLars<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Bill Venners &lt;bill@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; Hi David,<br/>\n&gt; <br/>\n&gt; I usually see this concept called &quot;pending&quot; in other test frameworks. It is<br/>\n&gt; a useful concept, especially when testing in a BDD style. People like to<br/>\n&gt; sometimes &quot;flesh out their ideas&quot; by writing descriptive test names for<br/>\n&gt; which neither the test code nor the code under test as yet exists. I do<br/>\n&gt; support pending tests in ScalaTest, and when running through JUnit call them<br/>\n&gt; ignored tests. That&#39;s the closest thing to pending already understood by<br/>\n&gt; tools that integrate with JUnit. So if you add something called pending, you<br/>\n&gt; could still possibly report it as an ignored test. To see an example, look<br/>\n&gt; on line 80 of RunNotifierReporter:<br/>\n&gt; <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://code.google.com/p/scalatest/source/browse/trunk/src/main/scala/org/scalatest/junit/RunNotifierReporter.scala\">http://code.google.com/p/scalatest/source/browse/trunk/src/main/scala/org/scalatest/junit/RunNotifierReporter.scala</a><br/>\n&gt; <br/>\n&gt; Basically I do this:<br/>\n&gt; <br/>\n&gt; // Closest thing we can do with pending is report an ignored test<br/>\n&gt;       case TestPending(ordinal, suiteName, suiteClassName, testName,<br/>\n&gt; formatter, payload, threadName, timeStamp) =&gt;<br/>\n&gt; <br/>\n&gt; runNotifier.fireTestIgnored(Description.createSuiteDescription(testDescriptionName(suiteName,<br/>\n&gt; suiteClassName, testName)))<br/>\n&gt; <br/>\n&gt; So what you could do as a JUnit enhancement is for a pending test call<br/>\n&gt; fireTestIgnored with perhaps a subclass of Description called<br/>\n&gt; PendingDescription. So existing tools would still understand it is a<br/>\n&gt; Description, but newer versions could detect it is a PendingDescription and<br/>\n&gt; act accordingly. Or just add some state to Description that old tools would<br/>\n&gt; ignore and new ones could use to differentiate pending tests from ignored<br/>\n&gt; ones. Something like that would allow you to add the new functionality in a<br/>\n&gt; backwards compatible way.<br/>\n&gt; <br/>\n&gt; In ScalaTest, for example, I could later change the code above so it sends<br/>\n&gt; such a PendingDescription notification (though it would be a good long time<br/>\n&gt; before I did that because I wouldn&#39;t want to force people to upgrade their<br/>\n&gt; JUnit for a good while.)<br/>\n&gt; <br/>\n&gt; Bill<br/>\n&gt; <br/>\n&gt; On Sat, Apr 16, 2011 at 1:13 PM, David Saff &lt;david@...&gt; wrote:<br/>\n&gt; <br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; My current feeling is that the best thing to do is to somehow allow<br/>\n&gt; &gt; custom categories of test results. I&#39;m very reluctant to increase the<br/>\n&gt; &gt; number of built-in result categories, since such a change is one of<br/>\n&gt; &gt; the most likely to break, or at least be under-implemented, in IDEs<br/>\n&gt; &gt; and build frameworks.<br/>\n&gt; &gt;<br/>\n&gt; &gt; I&#39;m open to ideas about the best way to do this.<br/>\n&gt; &gt;<br/>\n&gt; &gt; David<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; On Thu, Apr 14, 2011 at 3:26 PM, lars.vonk &lt;lars.vonk@...&gt; wrote:<br/>\n&gt; &gt; &gt; Hi,<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; I would like to see progress in (acceptance) tests not yet implemented. I<br/>\n&gt; &gt; want these reported differently than normal failures. Is there a way in<br/>\n&gt; &gt; JUnit to distinct between expected failing tests and &quot;normal&quot; failing tests?<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; So in a report I would like to see something like:<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Tests: 42<br/>\n&gt; &gt; &gt; Failures:0<br/>\n&gt; &gt; &gt; Errors: 0<br/>\n&gt; &gt; &gt; Ignored: 0<br/>\n&gt; &gt; &gt; To implement: 12<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Regards, Lars<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; ------------------------------------<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt; &gt;<br/>\n&gt; &gt;  <br/>\n&gt; &gt;<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; -- <br/>\n&gt; Bill Venners<br/>\n&gt; Artima, Inc.<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.artima.com\">http://www.artima.com</a><br/>\n&gt; <br/>\n&gt; <br/>\n&gt; [Non-text portions of this message have been removed]<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 23393, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1303195194", 
+    "canDelete": false, 
+    "nextInTopic": 23395, 
+    "prevInTopic": 23393, 
+    "headers": {
+        "inReplyToHeader": "PEJBTkxrVGlub3BTSlZMcml0LTlpYjluVzlOOFYxM1dmYmZRQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGlvamFucStlNjI5QGVHcm91cHMuY29tPg=="
+    }
+}

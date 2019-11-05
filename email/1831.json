@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 1832, 
+    "senderId": "Sz6HK7YsW1nUm1NLLJ5eQBDtVmfyVyKj9-rJ_KnxZvQ6ArWbPw55PRqtPjw8n6-PPDxuzj3zjS7gTA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] System.exit", 
+    "from": "rainsber@...", 
+    "authorName": "rainsber@ca.ibm.com", 
+    "msgSnippet": "Hm. A silly refactoring, but it d work. public class Exiter { // singleton. Define getInstance() : Exiter. public void exit(int code) { System.exit(code); } } ", 
+    "msgId": 1831, 
+    "topicId": 1830, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-392700179\">Hm. A silly refactoring, but it&#39;d work.<br/>\n<br/>\npublic class Exiter {<br/>\n    // singleton. Define getInstance() : Exiter.<br/>\n    public void exit(int code) {<br/>\n        System.exit(code);<br/>\n    }<br/>\n}<br/>\n<br/>\npublic class MyClass {<br/>\n    private Exiter exiter;<br/>\n    // Add &quot;Exiter&quot; parameter to constructor.<br/>\n    public MyClass(Exiter anExiter, ...) {<br/>\n        exiter = anExiter;<br/>\n        ...<br/>\n    }<br/>\n    ...<br/>\n    public void exitingMethod() {<br/>\n        ...<br/>\n        exiter.exit(0);    // Instead of System.exit(0)<br/>\n        ...<br/>\n    }<br/>\n}<br/>\n<br/>\nNow the production code passes the real Exiter into MyClass, but the test<br/>\ncode passes in a MockExiter that simply indicates whether exit() was<br/>\ncalled.<br/>\n<br/>\npublic class MockExiter extends Exiter {<br/>\n    int exitCode;<br/>\n    public void exit(int code) {<br/>\n        exitCode = code;<br/>\n    }<br/>\n    public boolean verify(int expectedExitCode) {<br/>\n        return (exitCode == expectedExitCode);<br/>\n    }<br/>\n}<br/>\n<br/>\nNow your test:<br/>\n<br/>\npublic void testMyClass() {<br/>\n    MockExiter mockExiter = new MockExiter();<br/>\n    MyClass myClass = new MyClass(mockExiter);<br/>\n    myClass.exitingMethod();<br/>\n    assertTrue(mockExiter.verify(0));<br/>\n}<br/>\n<br/>\nNot knowing anything else about your situation, this looks like an OK<br/>\nstrategy.<br/>\n<br/>\nJ. B. Rainsberger  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rainsber@...\">rainsber@...</a>&gt;<br/>\nCommerce Suite Accelerator: Rule Services, IBM Toronto Lab<br/>\n8200 Warden Av, Office A3-735 [A3/FNB/8200/MKM]<br/>\nMarkham ON   L6G 1C7<br/>\n905 413-2501 (969-2501)<br/>\n<br/>\n<br/>\nMike Lépine &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mike.lepine@...\">mike.lepine@...</a>&gt; on 07/09/2001 17:17:50<br/>\n<br/>\nPlease respond to <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n<br/>\nTo:   &quot;Junit&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\ncc:<br/>\nSubject:  [junit] System.exit<br/>\n<br/>\n<br/>\n<br/>\nI&#39;ve come across a method that I would like to write a test for but it<br/>\ncalls<br/>\nSystem.exit within its definition. Is there any way that a test can be<br/>\nwritten for this situation?<br/>\n<br/>\n- Mike<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n<br/>\n<br/>\nYour use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 1830, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "994713798", 
+    "canDelete": false, 
+    "nextInTopic": 1832, 
+    "prevInTopic": 1830, 
+    "headers": {
+        "messageIdInHeader": "PE9GM0I0NTFBRTMuNkJBNzFCNTktT044NTI1NkE4NC4wMDc1MEM5RUB0b3JvbGFiLmlibS5jb20+"
+    }
+}

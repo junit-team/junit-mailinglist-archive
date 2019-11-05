@@ -1,0 +1,29 @@
+{
+    "topicId": 566, 
+    "postDate": "983380218", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Qcn_8q9A3KJ3lotwW7XgD3Psbrp3TqoTf1ac6SmLQ_4YZ9RI5-kBP3OzRMNggptskMZCJpksX53xHj3O4T7l-2k", 
+    "nextInTime": 571, 
+    "userId": 0, 
+    "prevInTime": 569, 
+    "prevInTopic": 566, 
+    "headers": {
+        "inReplyToHeader": "PERQRU5MT0VLRkxITEFDTUdEQkVGTUVOTkNDQUEuYWtyaWdlckB0cmllbmUuY29tPg==", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwMjI4MTEwMTQ0MC4xNDIwNS0xMDAwMDBAam9pLmFyYXZveC5jb20+"
+    }, 
+    "authorName": "Joi Ellis", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "... I tend to build components, and test those components and their models. I haven t been writing unit tests for the final UI display as of late, the class", 
+    "contentTrasformed": false, 
+    "msgId": 570, 
+    "nextInTopic": 571, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;joi@...&gt;\r\nX-Sender: joi@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_4); 28 Feb 2001 17:15:38 -0000\r\nReceived: (qmail 70584 invoked from network); 28 Feb 2001 17:15:07 -0000\r\nReceived: from unknown (10.1.10.142) by l7.egroups.com with QMQP; 28 Feb 2001 17:15:07 -0000\r\nReceived: from unknown (HELO mail.aravox.com) (209.46.41.67) by mta3 with SMTP; 28 Feb 2001 18:16:11 -0000\r\nReceived: from linux.aravox.com (mail-gw.aravox.com [209.46.41.66]) by mail.aravox.com (Postfix) with ESMTP id 7D2B65430 for &lt;junit@yahoogroups.com&gt;; Wed, 28 Feb 2001 11:15:06 -0600 (CST)\r\nReceived: from joi-10.aravox.com (IDENT:joi@... [10.0.0.28]) by linux.aravox.com (8.9.3/8.9.3) with ESMTP id LAA26416 for &lt;junit@yahoogroups.com&gt;; Wed, 28 Feb 2001 11:10:18 -0600\r\nDate: Wed, 28 Feb 2001 11:10:18 -0600 (CST)\r\nTo: JUnit &lt;junit@yahoogroups.com&gt;\r\nSubject: Re: [junit] using JUnit for UI testing?\r\nIn-Reply-To: &lt;DPENLOEKFLHLACMGDBEFMENNCCAA.akriger@...&gt;\r\nMessage-ID: &lt;Pine.LNX.4.21.0102281101440.14205-100000@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: Joi Ellis &lt;joi@...&gt;\r\n\r\nOn Wed, 28 Feb 2001, Andy Kriger wrote:\n\n&gt; Is anyone out there using JUnit for UI testing? Can you describe the\n&gt; framework you have created to accomplish this? At a certain point UI test\n&gt; requires eyes on the product but how much have you been able to test up to\n&gt; that point?\n\nI tend to build components, and test those components and their models.\nI haven&#39;t been writing unit tests for the final UI display as of late,\nthe class library behind the UI has its own unit tests.  (I&#39;m writing\nwizards using a wizard library.)\n\nFor the components, I have a selection of methods which trigger swing\nmethods, ie things like:\n\n  /**\n   * @param  button\n   */\n  public static void safeDoClick( final JButton button ) {\n    try {\n      SwingUtilities.invokeAndWait(\n        new Runnable() {\n          /**\n           *  Main processing method for the AllTests object\n           */\n          public void run() {\n            button.doClick();\n          }\n        }\n           );\n    } catch ( Exception ex ) {\n      ex.printStackTrace();\n    }\n  }\n\nsince my #1 self-induced-brain-fart is to call doClick on a button\nthat&#39;s already visible.\n\nI have these for setText(), doClick(), (Jlist) setSelectedIndex(),\nrequestFocus(), getText() so far.\n\nI use the above to programmatically exercise a UI component and verify\nfunction by inspecting the results in the model.  I also have some\nhooks that allow my tests to add addtional event listeners and check\nthat the component generated the correct type and number of a specific\nevent.\n\nI have rarely found it necessary to actually test the UI if I&#39;m already\ntesting the model.  Once case I do test is where a component takes\na parameter which defines something about the UI, ie horizontal\nvs vertical layout.  I&#39;ll write a test which checks that the result\nfollows the parameter.  I&#39;ll also test that a component&#39;s actual size\nwhen visible stays within predefined limits.\n\n\n-- \nJoi Ellis                    Software Engineer\nAravox Technologies          joi@..., gyles19@...\n\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I\nreally like about Linux is that it has Microsoft worried.  Anything\nthat kicks a monopoly in the pants has got to be good for something.\n           - Chris Johnson\n\n\n", 
+    "subject": "Re: [junit] using JUnit for UI testing?"
+}

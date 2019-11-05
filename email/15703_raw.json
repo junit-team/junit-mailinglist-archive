@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 15704, 
+    "senderId": "55IjIjQbVH3LDyoaVEMYfUDmJ9hQdfmF7Z8FH--W_Nei76Pa-tGzEGMmQSpGGbAzWkG601DISIwXi-Te_4bkWIbxWsbZSTuMeGfxutr5Lw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Class.getClassLoader().getResourceAsStream() fails in GUI test runners?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... What type is this ? Foo? Try this: foo = new Foo(Foo.class, some/path ) Once you do this 3 times, refactor to a named constructor: foo =", 
+    "msgId": 15703, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 23144 invoked from network); 16 Dec 2005 04:12:46 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m24.grp.scd.yahoo.com with QMQP; 16 Dec 2005 04:12:46 -0000\r\nReceived: from unknown (HELO smtp104.rog.mail.re2.yahoo.com) (206.190.36.82)\n  by mta6.grp.scd.yahoo.com with SMTP; 16 Dec 2005 04:12:46 -0000\r\nReceived: (qmail 13743 invoked from network); 16 Dec 2005 04:12:28 -0000\r\nReceived: from unknown (HELO ?192.168.3.67?) (srainsberger5790@...@208.255.117.67 with plain)\n  by smtp104.rog.mail.re2.yahoo.com with SMTP; 16 Dec 2005 04:12:28 -0000\r\nMessage-ID: &lt;43A23EAE.9040102@...&gt;\r\nDate: Thu, 15 Dec 2005 23:12:30 -0500\r\nUser-Agent: Thunderbird 1.5 (Macintosh/20051025)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;43A1876A.1050603@...&gt;\r\nIn-Reply-To: &lt;43A1876A.1050603@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Class.getClassLoader().getResourceAsStream() fails in\n GUI test runners?\r\nX-Yahoo-Group-Post: member; u=127224993; y=3_94xJ87AwYBWaBnoBaXoHLSjc0-08DOjdecbEp3mabW8Gs\r\nX-Yahoo-Profile: nails762\r\n\r\njason r tibbetts wrote:\n&gt; I&#39;m trying to test a class that loads a properties file in a special\n&gt; way. Because this class can be used in servlets (where\n&gt; this.getClass().getResourceAsStream() doesn&#39;t work, because of\n&gt; classloader issues) as well as in ordinary contexts, it takes a Class\n&gt; argument in its constructor. This Class&#39;s class loader is used to get\n&gt; the resource, as in\n&gt; \n&gt;    public Foo(Class cls, String propFilePath) {\n&gt;      ClassLoader loader = cls.getClassLoader();\n&gt;      InputStream in = loader.getResourceAsStream(propFilePath);\n&gt;    }\n&gt; \n&gt; It&#39;s usually sufficient for the caller to simply pass in\n&gt; this.getClass(). It&#39;s sufficient enough for the TestCase that tests it,\n&gt; anyway, /except/ when the test is run in the GUI TestRunner, or in code\n&gt; coverage tools like jcoverage and EMMA. In all three cases, the tests\n&gt; fail because the loader.getResourceAsStream() call returns null. The\n&gt; TestCase&#39;s setUp() constructs the Foo by passing in the TestCase&#39;s own\n&gt; class, as in:\n&gt; \n&gt;    foo = new Foo(this.getClass(), &quot;some/path&quot;);\n&gt; \n&gt; Other tests that load properties (in the usual way, via\n&gt; this.getClass.getResourceAsStream()) work just fine in all scenarios.\n&gt; \n&gt; I&#39;ve read the JUnit FAQ, mailing list archives, J.B.&#39;s book, the\n&gt; jcoverage and EMMA docs, etc., all to no avail. I know that the JUnit\n&gt; GUI test runners do use a custom classloader, but the custom\n&gt; functionality in that classloader don&#39;t appear to be relevant here. Nor\n&gt; do I want to add Foo&#39;s package to the excluded.properties, because\n&gt; that&#39;s a package that I&#39;m actively testing.\n\nWhat type is &#39;this&#39;? Foo? Try this:\n\nfoo = new Foo(Foo.class, &quot;some/path&quot;)\n\nOnce you do this 3 times, refactor to a named constructor:\n\nfoo = Foo.forPath(&quot;some/path&quot;);\n\nstatic Foo forPath(String path) {\n     return new Foo(Foo.class, path);\n}\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.info\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 15698, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 15702, 
+    "contentTrasformed": false, 
+    "postDate": "1134706350", 
+    "canDelete": false, 
+    "nextInTopic": 15705, 
+    "prevInTopic": 15698, 
+    "headers": {
+        "inReplyToHeader": "PDQzQTE4NzZBLjEwNTA2MDNAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDQzQTIzRUFFLjkwNDAxMDJAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDQzQTE4NzZBLjEwNTA2MDNAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

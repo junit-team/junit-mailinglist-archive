@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18132, 
+    "senderId": "uc2xOCsTzQJsUiU8v29fHsb6DbnpFOIU3YqW5AQ7cIAHemJqVCKQTamYIqKxxcUuBP3WR3J_IBJx5v8BCjvUEKmzVqTL2ABHjNK2e9Qa6Q", 
+    "systemMessage": true, 
+    "subject": "Testing Static block, members, class with JUnit", 
+    "from": "&quot;mcdonald6692&quot; &lt;bill.mcdonald@...&gt;", 
+    "authorName": "mcdonald6692", 
+    "msgSnippet": "I don t have a lot of experience with JUnit, so please keep this in mind when you respond. BACKGROUND: I have a class under test that uses a static block to", 
+    "msgId": 18131, 
+    "rawEmail": "Return-Path: &lt;bill.mcdonald@...&gt;\r\nReceived: (qmail 54987 invoked from network); 12 Oct 2006 22:18:18 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m41.grp.scd.yahoo.com with QMQP; 12 Oct 2006 22:18:18 -0000\r\nReceived: from unknown (HELO n18c.bullet.sp1.yahoo.com) (69.147.64.129)\n  by mta5.grp.scd.yahoo.com with SMTP; 12 Oct 2006 22:18:18 -0000\r\nReceived: from [66.94.237.57] by n18.bullet.sp1.yahoo.com with NNFMP; 12 Oct 2006 22:15:51 -0000\r\nReceived: from [66.218.69.1] by s1.bullet.scd.yahoo.com with NNFMP; 12 Oct 2006 22:15:51 -0000\r\nReceived: from [66.218.66.68] by t1.bullet.scd.yahoo.com with NNFMP; 12 Oct 2006 22:15:51 -0000\r\nX-Sender: bill.mcdonald@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 42323 invoked from network); 12 Oct 2006 18:38:31 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m27.grp.scd.yahoo.com with QMQP; 12 Oct 2006 18:38:31 -0000\r\nReceived: from unknown (HELO n12a.bullet.sc5.yahoo.com) (66.163.187.155)\n  by mta1.grp.scd.yahoo.com with SMTP; 12 Oct 2006 18:38:31 -0000\r\nReceived: from [66.163.187.120] by n12.bullet.sc5.yahoo.com with NNFMP; 12 Oct 2006 18:36:55 -0000\r\nReceived: from [66.218.69.6] by t1.bullet.sc5.yahoo.com with NNFMP; 12 Oct 2006 18:36:20 -0000\r\nReceived: from [66.218.66.76] by t6.bullet.scd.yahoo.com with NNFMP; 12 Oct 2006 18:36:20 -0000\r\nDate: Thu, 12 Oct 2006 18:36:20 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;egm1v4+oos7@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;mcdonald6692&quot; &lt;bill.mcdonald@...&gt;\r\nSubject: Testing Static block, members, class with JUnit\r\nX-Yahoo-Group-Post: member; u=285803759; y=2ZlNiF7i9K14C4mcAjXzkxqAHqt9Qwut1wp8UFSiydDb9X357O6S\r\nX-Yahoo-Profile: mcdonald6692\r\nX-eGroups-Approved-By: spchappell &lt;simonpeterchappell@...&gt; via web; 12 Oct 2006 22:15:51 -0000\r\n\r\nI don&#39;t have a lot of experience with JUnit, so please keep this in \nmind w=\r\nhen you respond.\n\nBACKGROUND:\n\nI have a class under test that uses a static=\r\n block to initialize a \nstatic member.  It serves as a lookup table.\n\npubli=\r\nc class StateAbbrev {\n  // static list of all the abbreviations.\n  private =\r\nstatic List accronyms =3D new ArrayList();  \n\n  private String text =3D &quot;&quot;;=\r\n\n\n/*\n * HERE&#39;S MY STATIC BLOCK...\n */\n  static {\n    DataSource ds =3D Data=\r\nSource.getInstance();\n    List strings =3D ds.getAccronyms();\n    for (Iter=\r\nator i =3D strings.iterator(); i.hasNext(); )\n      accronyms.add(new State=\r\nAbbrev((String)i.next()) );\n  }\n\n  public static StateAbbrev lookup(String =\r\nletters)\n  {\n    for (Iterator i =3D accronyms.iterator(); i.hasNext(); )\n =\r\n   {\n      StateAbbrev abbrev (StateAbbrev) i.next();\n      String accronym=\r\n =3D abbrev.getText();\n      if (accronym.equals(letters))\n        return a=\r\nbbrev;\n    }\n    return null;\n  }\n\n  public String getText()\n  {\n    return=\r\n this.text;\n  }\n}\n\npublic class TestStateAbbrev extends TestClass\n{\n\n  publ=\r\nic void setUp() throws Exception\n  {\n    // Initialize DataSource to connec=\r\nt to database.\n    ctx.bind(&quot;datasourcepath&quot;, ds);\n  }\n\n  //\n  // TESTS...\n=\r\n  //\n\n  public testLookupAZ()\n  {\n    assertNotNull(StateAbbrev.lookup(&quot;AZ&quot;=\r\n));\n  }\n\n  public testLookupXX()\n  {\n    assertNull(StateAbbrev.lookup(&quot;XX&quot;=\r\n));\n  }\n\n  public testLookupFail()\n  {\n    // break ds connection to make i=\r\nt fail. \n    ctx.unbind(&quot;datasourcepath&quot;);\n\n    assertNotNull(StateAbbrev.l=\r\nookup(&quot;AZ));\n\n    // reset ds so that other tests work correctly.\n    ctx.b=\r\nind(&quot;datasourcepath&quot;, ds);\n  }\n}\n\nQUESTION:\n\nThe problem is that if the tes=\r\ntLookupFail() method is the first one \nto load class StateAbbrev, then Stat=\r\neAbbrev.accronyms.size() will \nequal 0.  When the other tests are run, they=\r\n will not work since \nStateAbbrev.accronyms is static and is already loaded=\r\n and initialized \nto an empty list.  This brings up the general question, &quot;=\r\nHow do you \ntest static blocks, classes and data-members?&quot; (I know the exam=\r\nple is \nrather simplistic, but hopefully it doesn&#39;t distract from my \nquest=\r\nion).\n\nCan I unload the class so that its loaded again and the static block=\r\n \ninitializes the member correctly?  I didn&#39;t want to have to move the \ntes=\r\ntLookupFail() test outside of TestStateAbbrev either.  \n\n\n\n\n\n\n", 
+    "profile": "mcdonald6692", 
+    "topicId": 18131, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 285803759, 
+    "prevInTime": 18130, 
+    "contentTrasformed": false, 
+    "postDate": "1160678180", 
+    "canDelete": false, 
+    "nextInTopic": 18132, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPg=="
+    }
+}

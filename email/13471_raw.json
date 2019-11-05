@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 11, 
+    "nextInTime": 13472, 
+    "senderId": "L_VWAG1IphbZqJELG-LSKl1P8RUPmrgYDabwYG7u2Ik7mqHEtvukLe97u2MM3Js2H_WN3Zq9K7TS4SdUD1bpbGELBfrppHjQ3uS9J4k6", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Individual tests ok, problem in a suite", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... And to follow these up, the way I have tracked this down (if it isn t apparent who is setting what) is to comment out all other tests in the suite and then", 
+    "msgId": 13471, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 40665 invoked from network); 11 May 2005 13:18:59 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m23.grp.scd.yahoo.com with QMQP; 11 May 2005 13:18:59 -0000\r\nReceived: from unknown (HELO out1.smtp.messagingengine.com) (66.111.4.25)\n  by mta1.grp.scd.yahoo.com with SMTP; 11 May 2005 13:18:58 -0000\r\nReceived: from frontend3.messagingengine.com (frontend3.internal [10.202.2.152])\n\tby frontend1.messagingengine.com (Postfix) with ESMTP id 9F17FC8E256\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 11 May 2005 09:18:26 -0400 (EDT)\r\nX-Sasl-enc: eCR4ywyJ2cxoTUjIbVXIRCL+isabKGYI0rsQJyzBmjlY 1115817506\r\nReceived: from [10.5.5.37] (unknown [12.3.62.1])\n\tby frontend3.messagingengine.com (Postfix) with ESMTP id 97608AE\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 11 May 2005 09:18:26 -0400 (EDT)\r\nMessage-ID: &lt;42820582.6020206@...&gt;\r\nDate: Wed, 11 May 2005 09:15:46 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;5C6FDF20AA4CF34EBB7D8AB22708E9E729A511@...&gt;\r\nIn-Reply-To: &lt;5C6FDF20AA4CF34EBB7D8AB22708E9E729A511@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Jason Rogers &lt;jacaetevha@...&gt;\r\nSubject: Re: [junit] Individual tests ok, problem in a suite\r\nX-Yahoo-Group-Post: member; u=109352929\r\nX-Yahoo-Profile: jacaetev\r\n\r\nJonathan Oddy wrote:\n\n&gt; Similar to JB&#39;s response - you haven&#39;t got some (hidden) static data\n&gt; somewhere that is being set (and not reset) between tests?  Periodically\n&gt; in some legacy code I get bitten by this: tests all run fine in\n&gt; isolation and at package level but then when I run the whole\n&gt; application&#39;s set something(s) &quot;fail&quot; for some unknown reason.  In my\n&gt; case invariably its some static data (or a rogue &quot;singleton&quot;) that&#39;s the\n&gt; root cause.\n&gt;\n&gt;\n&gt;\n&gt; Jonathan\n&gt;\n&gt;\n&gt;\n&gt; ________________________________\n&gt;\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of\n&gt; J. B. Rainsberger\n&gt; Sent: 11 May 2005 01:54\n&gt; To: junit@yahoogroups.com\n&gt; Subject: Re: [junit] Individual tests ok, problem in a suite\n&gt;\n&gt;\n&gt;\n&gt; keirstead_james wrote:\n&gt; &gt; Hi,\n&gt; &gt;\n&gt; &gt; I&#39;ve got a weird situation and can&#39;t figure out how to debug it.\n&gt; &gt; Perhaps someone has some advice?\n&gt; &gt;\n&gt; &gt; I have a class called HouseholdTest.  If I run this test by itself,\n&gt; &gt; it&#39;s ok.\n&gt; &gt;\n&gt; &gt; I also have a class suite called AgentsTestSuite which contains the\n&gt; &gt; HouseholdTest.  If I run this test, I get errors on one or two of the\n&gt; &gt; methods; i.e rerunning the test over and over again sometimes gives\n&gt; &gt; one error and sometimes two (always on the same methods).  If I use\n&gt; &gt; Rerun failed tests - Failures first, the test is ok in all\n&gt; &gt; circumstances.\n&gt; &gt;\n&gt; &gt; AgentsTestSuite is inside another suite called ModelTest.  Running\n&gt; &gt; this throws up errors on the same methods as above, plus another in a\n&gt; &gt; different test suite (which again is ok by itself). Rerunning failed\n&gt; &gt; tests first clears one of the methods in the HouseholdTest but that&#39;s\n&gt; &gt; it.\n&gt; &gt;\n&gt; &gt; What is going on here?  I&#39;ve spent quite a while debugging it but\n&gt; &gt; can&#39;t seem to figure out where the snag is.  Has anyone else\n&gt; &gt; encountered something like this?\n&gt;\n&gt; I imagine your HouseholdTest tests use some external resource (file\n&gt; system, database, something). If so, then something else in your\n&gt; AgentsTestSuite is putting that external resource in a state that your\n&gt; HouseholdTest tests doesn&#39;t expect. Clean that up, if you can.\n&gt;\n&gt; If that&#39;s not it, then I would need more specifics to get any further.\n&gt; -- \n&gt; J. B. (Joe) Rainsberger\n&gt; Diaspar Software Services\n&gt; http://www.diasparsoftware.com\n&gt; Author, JUnit Recipes: Practical Methods for Programmer Testing\n\nAnd to follow these up, the way I have tracked this down (if it isn&#39;t \napparent who is setting what) is to comment out all other tests in the \nsuite and then add them back one at a time until the error surfaces.\n\n-- \nJason Rogers\n\n&quot;I am crucified with Christ: nevertheless I live; yet not I,\nbut Christ liveth in me: and the life which I now live in\nthe flesh I live by the faith of the Son of God, who loved\nme, and gave himself for me.&quot;\n    Galatians 2:20\n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 13456, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 13470, 
+    "contentTrasformed": false, 
+    "postDate": "1115817346", 
+    "canDelete": false, 
+    "nextInTopic": 13472, 
+    "prevInTopic": 13470, 
+    "headers": {
+        "inReplyToHeader": "PDVDNkZERjIwQUE0Q0YzNEVCQjdEOEFCMjI3MDhFOUU3MjlBNTExQHN0b2MtZGMxLnNwLnNlcnZpY2Vwb3dlci5jb20+", 
+        "messageIdInHeader": "PDQyODIwNTgyLjYwMjAyMDZAZmFzdC1tYWlsLm9yZz4=", 
+        "referencesHeader": "PDVDNkZERjIwQUE0Q0YzNEVCQjdEOEFCMjI3MDhFOUU3MjlBNTExQHN0b2MtZGMxLnNwLnNlcnZpY2Vwb3dlci5jb20+"
+    }
+}

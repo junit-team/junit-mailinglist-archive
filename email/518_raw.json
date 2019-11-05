@@ -1,0 +1,29 @@
+{
+    "topicId": 508, 
+    "postDate": "982784967", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "cli-glKHWjcv1vpE1pxTISZ0vkXNVKh-LknYyPRiD7bAEhbwJxoTcMlLEEbm2zopCSaQwcmj5w3yEMNVu4JCQ7Y", 
+    "nextInTime": 519, 
+    "userId": 0, 
+    "prevInTime": 517, 
+    "prevInTopic": 508, 
+    "headers": {
+        "inReplyToHeader": "PDQwRTI3Q0I4MEZGNkQ0MTE5MTVCMDAwOEM3NENDRTJDMDgzQzBDQGV4Y2hhbmdlLnRjbG91ZC5uZXQ+", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwMjIxMTM0NDMwMC4yNDg0MS0xMDAwMDBAam9pLmFyYXZveC5jb20+"
+    }, 
+    "authorName": "Joi Ellis", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "... I do this all the time.  The trick is to ensure your tests are thread safe.  Typically when I have trouble with something in the debugger, it s because", 
+    "contentTrasformed": false, 
+    "msgId": 518, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;joi@...&gt;\r\nX-Sender: joi@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_0_4); 21 Feb 2001 19:50:04 -0000\r\nReceived: (qmail 36323 invoked from network); 21 Feb 2001 19:50:02 -0000\r\nReceived: from unknown (10.1.10.27) by l7.egroups.com with QMQP; 21 Feb 2001 19:50:02 -0000\r\nReceived: from unknown (HELO mail.aravox.com) (209.46.41.67) by mta2 with SMTP; 21 Feb 2001 19:50:01 -0000\r\nReceived: from linux.aravox.com (mail-gw.aravox.com [209.46.41.66]) by mail.aravox.com (Postfix) with ESMTP id 114B05431 for &lt;junit@yahoogroups.com&gt;; Wed, 21 Feb 2001 13:50:01 -0600 (CST)\r\nReceived: from joi-10.aravox.com (IDENT:joi@... [10.0.0.28]) by linux.aravox.com (8.9.3/8.9.3) with ESMTP id NAA07144 for &lt;junit@yahoogroups.com&gt;; Wed, 21 Feb 2001 13:49:28 -0600\r\nDate: Wed, 21 Feb 2001 13:49:27 -0600 (CST)\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: Re: [junit] Stepping through code\r\nIn-Reply-To: &lt;40E27CB80FF6D411915B0008C74CCE2C083C0C@...&gt;\r\nMessage-ID: &lt;Pine.LNX.4.21.0102211344300.24841-100000@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: TEXT/PLAIN; charset=US-ASCII\r\nFrom: Joi Ellis &lt;joi@...&gt;\r\n\r\nOn Wed, 21 Feb 2001, Bob Krygowski wrote:\n\n&gt; Does anyone know if you can step through your code while running JUnit\n&gt; tests?  I have been using JBuilder 4 and have only successfully been able to\n&gt; hit break points in the main method (which just ends up taking you to\n&gt; underlying JUnit code).  In debugging I would like to be able to step\n&gt; through the individual tests and step into the actual class that is being\n&gt; tested to see what is going on.\n&gt; \n&gt; Any thoughts?\n\nI do this all the time.  The trick is to ensure your tests are thread \nsafe.  Typically when I have trouble with something in the debugger,\nit&#39;s because I&#39;ve molested a visible swing component from my main test\nthread instead of the swing event thread.\n\nI&#39;ve collected a number of methods to make this easier.\n\nOn my AllTests.java file I have:\n\n  /**\n   * Safely call doClick() on the specified JButton.\n   * @param button The button to doClick().\n   */\n  public static void safeDoClick(final JButton button) {\n    try {\n      SwingUtilities.invokeAndWait(\n        new Runnable() {\n          /**\n           *  Main processing method for the AllTests object\n           */\n          public void run() {\n            button.doClick();\n          }\n        }\n      );\n    }\n    catch (Exception ex) {\n      ex.printStackTrace();\n    }\n  }\n\nI use this within tests like so:\n\n//    foo.setWatched( buttonOne ); // not thread safe, dummy!\n    AllTests.safeDoClick( buttonOne );\n\n-- \nJoi Ellis                    Software Engineer\nAravox Technologies          joi@..., gyles19@...\n\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I\nreally like about Linux is that it has Microsoft worried.  Anything\nthat kicks a monopoly in the pants has got to be good for something.\n           - Chris Johnson\n\n\n", 
+    "subject": "Re: [junit] Stepping through code"
+}

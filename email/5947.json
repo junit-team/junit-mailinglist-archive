@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 1, 
+    "nextInTime": 5948, 
+    "senderId": "PsttL01wcsX_qpjVY8BfYvYokzc1YGixALEouJKl0cNiUgs6nJu-jSm1yoUTky0T1geaLx7PmwsPpd3xMdrDCaTT04F3IsbISJsb5A", 
+    "systemMessage": false, 
+    "subject": "Reporting ActiveSuite results", 
+    "from": "&quot;David Vydra&quot; &lt;yahoogroups@...&gt;", 
+    "authorName": "David Vydra", 
+    "msgSnippet": "We have written a testing tool based on the junit framework and are having trouble extending it to support our needs. We rely heavily on TestSuites for our", 
+    "msgId": 5947, 
+    "profile": "dvydra2", 
+    "topicId": 5947, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 119409200, 
+    "messageBody": "<div id=\"ygrps-yiv-2103523154\">We have written a testing tool based on the junit framework and are <br/>\nhaving trouble extending it to support our needs. We rely heavily on <br/>\nTestSuites for our test reporting and the current version of <br/>\njunit.framework does not allow for accurate test reporting when <br/>\nmultiple suites reference the same TestCase class. My current dilemma <br/>\nhas to do with running the ActiveSuite decorator.<br/>\n<br/>\nUpon examining swingui I found the following method in <br/>\njunit.swingui.TestTreeModel:<br/>\n**<br/>\n* Tests if the node is a TestSuite.<br/>\n*/<br/>\nTestSuite isTestSuite(Object node) {<br/>\nif (node instanceof TestSuite) <br/>\nreturn (TestSuite)node;<br/>\nif (node instanceof TestDecorator) { <br/>\nTest baseTest= ((TestDecorator)node).getTest(); <br/>\nreturn isTestSuite(baseTest); <br/>\n} <br/>\nreturn null;<br/>\n}<br/>\n<br/>\nWhat I would like to see is a model where the TestListener interface <br/>\nrecognised the start and end of each suite and each Test instance <br/>\nknows which suite it belongs to so we can report accurate results <br/>\neven when running multiple threads.<br/>\n<br/>\n<br/>\nBelow is sample code to illustrate my point. Try running in swingui <br/>\nor Eclipse runner.<br/>\n<br/>\npackage xpunit.misc.test;<br/>\n<br/>\nimport junit.extensions.ActiveTestSuite;<br/>\nimport junit.extensions.RepeatedTest;<br/>\nimport junit.framework.Test;<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.framework.TestSuite;<br/>\n<br/>\npublic class ActiveRepeatedSuiteTest extends TestCase {<br/>\n\tstatic boolean oscillator = false;<br/>\n\tpublic ActiveRepeatedSuiteTest(String name) {<br/>\n\t\tsuper(name);<br/>\n\t}<br/>\n\t<br/>\n\tpublic void testMultipleFailures() throws Exception {<br/>\n\t\tif(oscillator) {<br/>\n\t\t\toscillator=false;<br/>\n\t\t\tfail(&quot;oscillator is true&quot;);<br/>\n\t\t}<br/>\n\t\telse oscillator=true;<br/>\n\t}<br/>\n\t<br/>\n\tstatic public Test suite() {<br/>\n\t\tActiveTestSuite s = new ActiveTestSuite(&quot;Active <br/>\nSuite&quot;);<br/>\n\t\tTestSuite s1 = new TestSuite(&quot;s1&quot;);<br/>\n\t\ts1.addTestSuite(ActiveRepeatedSuiteTest.class);<br/>\n\t\tTestSuite s2 = new TestSuite(&quot;s2&quot;);<br/>\n\t\ts2.addTestSuite(ActiveRepeatedSuiteTest.class);<br/>\n\t\tTestSuite s3 = new TestSuite(&quot;s3&quot;);<br/>\n\t\ts3.addTestSuite(ActiveRepeatedSuiteTest.class);<br/>\n\t\t<br/>\n\t\ts.addTest(s1);<br/>\n\t\ts.addTest(s2);<br/>\n\t\ts.addTest(s3);<br/>\n\t\t<br/>\n\t\treturn new RepeatedTest(s,3);<br/>\n\t} <br/>\n<br/>\n}<br/>\n<br/>\nRegards,<br/>\nDavid Vydra<br/>\nPlumtree Software Tools Team</div>", 
+    "prevInTime": 5946, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1033791818", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGFubHBnYStoMHQzQGVHcm91cHMuY29tPg=="
+    }
+}

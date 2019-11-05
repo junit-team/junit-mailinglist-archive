@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 4960, 
+    "senderId": "rN21vZNXa_lVg1__nkMEcqkN_0CdL5Y7H8ugj0U2n3KIGjI-qOZ6e5H1NjDoDqlmJDE_IIdDTSjulZ08o6dYSGxsfAFnFpkg6OPVUCZQHAOPDJX_", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Question", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I assume you want to run many tests at one time. The normal way is to create a class that collects the TestCase classes together: public class AllTests { ", 
+    "msgId": 4959, 
+    "profile": "nails762", 
+    "topicId": 4955, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "messageBody": "<div id=\"ygrps-yiv-490862887\"><blockquote><span title=\"ireply\">&gt; Hi everybody,<br/>\n&gt; I&#39;ve written a TestCase for one class.<br/>\n&gt; Is there a way to test another class with this test?<br/>\n&gt; The problem is: it is impossible to pass second one as parameter to &quot;Test<br/>\n&gt; suite()&quot; method (as it is static and passing will give one result: <br/>\n&gt; last class will be tested twice). Changing test is not really good <br/>\n&gt; (as there will be some more classes that I would like to test with <br/>\n&gt; TestCase).<br/>\n<br/>\n </span></blockquote>I assume you want to run many tests at one time. The normal way is to create <br/>\na class that collects the TestCase classes together:<br/>\n<br/>\npublic class AllTests {<br/>\n    public static Test suite() {<br/>\n        final TestSuite suite = new TestSuite();<br/>\n        <br/>\n        suite.addTestSuite( MyFirstTestCase.class );<br/>\n        suite.addTestSuite( MySecondTestCase.class );<br/>\n        <br/>\n        return suite;<br/>\n    }<br/>\n}<br/>\n<br/>\nNow run AllTests instead of the two test cases separately.<br/>\n<br/>\nNotice these things:<br/>\n<br/>\n1. AllTests does not extend TestCase. It is not necessary.<br/>\n2. If MyFirstTestCase has special test setup and declares its own suite() <br/>\nmethod, you must change this line to:<br/>\n<br/>\nsuite.addTest( MyFirstTestCase.suite() );<br/>\n<br/>\nThis is common when a test case uses a test-decorator extension from <br/>\njunit.extensions.*.<br/>\n<br/>\nI hope this helps.<br/>\n<br/>\nAlso: you should use test case classes to group similar tests together. There <br/>\nis no rule to say &quot;One test case class per production code class.&quot; Group the <br/>\ntests together in a way that you will be able to understand later when you <br/>\nread the tests.<br/>\n<br/>\n--<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 4958, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1021307551", 
+    "canDelete": false, 
+    "nextInTopic": 9300, 
+    "prevInTopic": 4955, 
+    "headers": {
+        "inReplyToHeader": "PEUxNzdEdTItMDAwQ3prLTAwQGY5Lm1haWwucnU+", 
+        "messageIdInHeader": "PDIwMDIwNTEzMTAzMjMxLk03NzI2M0BkaWFzcGFyc29mdHdhcmUuY29tPg==", 
+        "referencesHeader": "PEUxNzdEdTItMDAwQ3prLTAwQGY5Lm1haWwucnU+"
+    }
+}

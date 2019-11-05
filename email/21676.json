@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21677, 
+    "senderId": "fENj3lZ_tJUkolmhxFRf7mZ5n_uvgHyI_tb22wnidEZ9haMGaZ-sqvT-Ws-AT9M2oBd8Wq9pqCbt_kXhmFqP3Mfy3LB6OA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Change generic signature of assert that", 
+    "from": "Nat Pryce &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "... Because the wildcard bounds are the wrong way round.  Matcher makes sense, Matcher does not. Consider the following silly", 
+    "msgId": 21676, 
+    "profile": "nat_pryce", 
+    "topicId": 21666, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "messageBody": "<div id=\"ygrps-yiv-620017593\">2009/5/22 yme0987654321 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:yme0987654321@...\">yme0987654321@...</a>&gt;:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;m curious if you know of a reason that<br/>\n&gt;<br/>\n&gt; public static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; matcher)<br/>\n&gt;<br/>\n&gt; is wrong. Does it break something that you know of?<br/>\n<br/>\n<br/>\n </span></blockquote>Because the wildcard bounds are the wrong way round.  Matcher&lt;? super<br/>\nT&gt; makes sense, Matcher&lt;? extends T&gt; does not.<br/>\n<br/>\nConsider the following silly inheritance hierarchy:<br/>\n<br/>\n  Object &lt;- Fruit &lt;- {Banana, Apple}<br/>\n<br/>\nA Matcher&lt;Fruit&gt; represents some property of the Fruit type that<br/>\napplies to *all* fruit. I should be able to use it to match against<br/>\nboth Bananas and Apples.  In that case, T is bound to Banana, Fruit is<br/>\na supertype of Banana, so the matcher satisfies the wildcard Matcher&lt;?<br/>\nsuper Banana&gt;.<br/>\n<br/>\nIf I have a Fruit reference, I don&#39;t know what kind of Fruit it points<br/>\nto.  If the matcher wildcard was &lt;? extends T&gt; it would allow me pass<br/>\nthe fruit to a Matcher&lt;Apple&gt; even when the fruit was actually a<br/>\nBanana.  If I know a-priori that the Fruit really is an Apple, it is<br/>\ngood practice to explicitly downcast the reference.  The test will<br/>\nfail with an obvious exception if my assumption is wrong.<br/>\n<br/>\nBut I think David is right.  We will probably have to get rid of the<br/>\ngenerics from assertThat altogether because the Java type system is<br/>\nbroken.<br/>\n<br/>\n--Nat.</div>", 
+    "prevInTime": 21675, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1243079370", 
+    "canDelete": false, 
+    "nextInTopic": 21677, 
+    "prevInTopic": 21675, 
+    "headers": {
+        "inReplyToHeader": "PGd2NnFxYit0MGtwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDE3ZmE1M2QwOTA1MjMwNDQ5cTJmNDUwNzBlZzIxMThiN2E3MWYwYWJiZWVAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDRmN2RhNmI5MDkwNTIyMTEwMnU3ZDA3MmVhMnlkMGRiMGIwNDNmMjY0MTFiQG1haWwuZ21haWwuY29tPgkgPGd2NnFxYit0MGtwQGVHcm91cHMuY29tPg=="
+    }
+}

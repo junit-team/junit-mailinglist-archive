@@ -1,0 +1,30 @@
+{
+    "topicId": 5949, 
+    "postDate": "1033952018", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "xV9-Ion-ld9-HGbEmciXQfMoV8FndjH_zWBu80M3r032PSyTOhUXaCf6dMhdkz8LNUF8qk9FRtGMiZ6vfEANa-zCn_KPZGM_DGCGUYy6S6g", 
+    "nextInTime": 5951, 
+    "userId": 114327599, 
+    "prevInTime": 5949, 
+    "prevInTopic": 5949, 
+    "headers": {
+        "inReplyToHeader": "PGFubzFvNitlbmRxQGVHcm91cHMuY29tPjsgZnJvbSBqeWFob29ncm91cHNAZXJnb3RlY2guY29tIG9uIFN1biwgT2N0IDA2LCAyMDAyIGF0IDEyOjU2OjM4QU0gLTAwMDA=", 
+        "messageIdInHeader": "PDIwMDIxMDA2MTg1MzM4LkE3NjVAdGliaWEuYW1vdGxwYWEuYm9ndXM+", 
+        "referencesHeader": "PGFubzFvNitlbmRxQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Steven Taschuk", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "Quoth cdtmp: [...] ... [...] ... [...] I think I d handle something like this by implementing an abstraction which sends the messages, and at testing time ", 
+    "contentTrasformed": false, 
+    "msgId": 5950, 
+    "nextInTopic": 5952, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;staschuk@...&gt;\r\nReceived: (qmail 73279 invoked from network); 7 Oct 2002 02:23:53 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m1.grp.scd.yahoo.com with QMQP; 7 Oct 2002 02:23:53 -0000\r\nReceived: from unknown (HELO n27.grp.scd.yahoo.com) (66.218.66.83)\n  by mta1.grp.scd.yahoo.com with SMTP; 7 Oct 2002 02:23:53 -0000\r\nX-eGroups-Return: staschuk@...\r\nReceived: from [66.218.66.143] by n27.grp.scd.yahoo.com with NNFMP; 07 Oct 2002 02:23:53 -0000\r\nX-Sender: staschuk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_0); 7 Oct 2002 00:50:46 -0000\r\nReceived: (qmail 15767 invoked from network); 7 Oct 2002 00:50:46 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m11.grp.scd.yahoo.com with QMQP; 7 Oct 2002 00:50:46 -0000\r\nReceived: from unknown (HELO tibia.amotlpaa.bogus) (161.184.200.128)\n  by mta1.grp.scd.yahoo.com with SMTP; 7 Oct 2002 00:50:45 -0000\r\nReceived: (qmail 944 invoked by uid 100); 7 Oct 2002 00:53:38 -0000\r\nDate: Sun, 6 Oct 2002 18:53:38 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Unrelated effects - newbie ignorance\r\nMessage-ID: &lt;20021006185338.A765@...&gt;\r\nReferences: &lt;ano1o6+endq@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.2.5i\r\nIn-Reply-To: &lt;ano1o6+endq@...&gt;; from jyahoogroups@... on Sun, Oct 06, 2002 at 12:56:38AM -0000\r\nFrom: Steven Taschuk &lt;staschuk@...&gt;\r\nX-Yahoo-Group-Post: member; u=114327599\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 07 Oct 2002 02:23:52 -0000\r\n\r\nQuoth cdtmp:\n  [...]\n&gt; I have an situation where the effect of a method is to send (or not to\n&gt; send) a message through either a serial port, socket or similar.\n  [...]\n&gt;  It&#39;s not actually _what_ is sent, since that can be tested, but it&#39;s\n&gt; that the correct sequence of messages was requested to be sent (based,\n&gt; in this case, on string identifiers).\n&gt; \n&gt; My problem is that the state of the object after the call is the same\n&gt; as before the call, or at least the sending of the message is not, and\n&gt; cannot easily be indicated in the state of the object without changing\n&gt; the runtime behavior of the object.\n&gt; \n&gt; I hope all this makes sense.  I&#39;d appreciate any suggestions.\n  [...]\n\nI think I&#39;d handle something like this by implementing an\nabstraction which sends the messages, and at testing time\nsubstituting an object which collects the messages for\nverification.\n\nAn example.  Suppose Foo.sendMessages( String ) is supposed to\nscan the String and send message A when two consecutive characters\nare the same, but message B when two consecutive characters are\ndifferent.  Thus the call\n\tfoo.sendMessages( &quot;011100&quot; );\nshould produce the message sequence B A A B A.\n\nThen I&#39;d write something like\n\n\tpublic interface MessageHandler {\n\t\tvoid sendMessageA();\n\t\tvoid sendMessageB();\n\t}\n\n\tpublic class Foo {\n\t\tprivate final MessageHandler handler;\n\t\tpublic Foo( MessageHandler handler ) {\n\t\t\tthis.handler = handler;\n\t\t}\n\t\tpublic void sendMessages( String chars ) {\n\t\t\t// scan chars and invoke handler.sendMessage[A|B]\n\t\t}\n\t}\n\nIn real life the implementation of MessageHandler writes these\nmessages to an OutputStream or whatever.  For testing purposes, a\nmock implementation collects them for verification:\n\n\tclass MockMessageHandler implements MessageHandler {\n\t\tprivate StringBuffer buf = new StringBuffer();\n\t\tpublic void sendMessageA() {\n\t\t\tbuf.append( &#39;a&#39; );\n\t\t}\n\t\tpublic void sendMessageB() {\n\t\t\tbuf.append( &#39;b&#39; );\n\t\t}\n\t\tString getMessages() {\n\t\t\treturn buf.toString();\n\t\t}\n\t}\n\n\tpublic class FooTest extends TestCase {\n\t\tpublic void testSendMessages() {\n\t\t\tMockMessageHandler handler = new MockMessageHandler();\n\t\t\tnew Foo( handler ).sendMessages( &quot;011100&quot; );\n\t\t\tassertEquals( &quot;baaba&quot;, handler.getMessages() );\n\t\t}\n\t}\n\nIn some applications it would be convenient to have the interface\nMessageHandler anyway; among other things, its presence makes it\neasy to write filters which manipulate the message stream, log the\nmessages sent, etc..\n\nDoes this come close to fitting your needs?\n\n\n", 
+    "subject": "Re: [junit] Unrelated effects - newbie ignorance"
+}

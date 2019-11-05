@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 22962, 
+    "senderId": "XfI2lJiCrKxurCo4sNG2WvdZaDDKYBC25BRyvNYC1t-RrE9rmTndjKlPytoFbPrmbo-2P0HvoQmHoM44Xkz0a-5A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Fwd: Writing a test fixture for a set of many classes", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Konrad, I don t know enough about your design to critique it, yet, but I m familiar with the things that can happen if you try to run all your tests against", 
+    "msgId": 22961, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 57758 invoked from network); 20 Sep 2010 21:18:01 -0000\r\nX-Received: from unknown (66.196.94.107)\n  by m12.grp.re1.yahoo.com with QMQP; 20 Sep 2010 21:18:01 -0000\r\nX-Received: from unknown (HELO mail-gw0-f46.google.com) (74.125.83.46)\n  by mta3.grp.re1.yahoo.com with SMTP; 20 Sep 2010 21:18:01 -0000\r\nX-Received: by gwj17 with SMTP id 17so1927703gwj.33\n        for &lt;junit@yahoogroups.com&gt;; Mon, 20 Sep 2010 14:18:00 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.90.79.14 with SMTP id c14mr6011429agb.209.1285017473627; Mon,\n 20 Sep 2010 14:17:53 -0700 (PDT)\r\nX-Received: by 10.91.53.20 with HTTP; Mon, 20 Sep 2010 14:17:53 -0700 (PDT)\r\nIn-Reply-To: &lt;4C97C847.1050000@...&gt;\r\nReferences: &lt;4C97C847.1050000@...&gt;\r\nDate: Mon, 20 Sep 2010 17:17:53 -0400\r\nX-Google-Sender-Auth: L9DdbXl2rIiiT_8uK6IU-dmPTUs\r\nMessage-ID: &lt;AANLkTinx=KEy_LSe0yxAKjaGAd5WzNX==A1EqZBomwFD@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] Fwd: Writing a test fixture for a set of many classes\r\nX-Yahoo-Group-Post: member; u=341876227; y=cIjiFEE2nkhgWQHn4v-bCcQ_HrwEnxWl2zgY2f3KHKk\r\nX-Yahoo-Profile: dsaff\r\n\r\nKonrad,\n\nI don&#39;t know enough about your design to critique it, yet, but I&#39;m=\r\n\nfamiliar with the things that can happen if you try to run all your\ntests =\r\nagainst One Big Concrete Example, as you seem to be doing.\n\nUsually, in the=\r\nse cases, I recommend that a developer try to\ncustom-build their data in ea=\r\nch test, using only what they need.  For\nexample, although a single lecture=\r\nr, single class, and two rooms isn&#39;t\nenough to test every available case, i=\r\nt&#39;s probably enough to feed to a\nsimple room-assignment test, etc.\n\nIn this=\r\n case, if I find myself making the same chain of calls over and\nover, I som=\r\netimes write convenient factory methods in my test class,\nso my tests can l=\r\nook like:\n\n@Test public void scheduleRoom() {\n   Scenario s =3D scenario(le=\r\ncturer(&quot;Smith&quot;),\n                      schoolClass(&quot;Algebra: requires 50 se=\r\nats&quot;),\n                      rooms(&quot;Smith Hall 100: 50 seats&quot;, &quot;Smith Hall\n=\r\n102: 20 seats&quot;))\n   assertEquals(&quot;Smith Hall 102&quot;, s.getAssignments().getRo=\r\nom(&quot;Algebra&quot;))\n}\n\nGood luck,\n\n   David Saff\n\nOn Mon, Sep 20, 2010 at 4:47 P=\r\nM, Konrad Reiche &lt;home@...&gt; wrote:\n&gt; =A0Hey everyone!\n&gt;\n&gt; I am cu=\r\nrrently developing a course scheduler for universites in Java. My\n&gt; team an=\r\nd me chose test driven development, espcially for the scheduler\n&gt; itself. I=\r\n am using JUnit. For nearly every class there has to be JUnit\n&gt; test class.=\r\n The database schema has become quiet big. Not everything is\n&gt; needed for t=\r\nhe OR-mapped classes in the scheduler. In the end there are\n&gt; still 14 clas=\r\nses.\n&gt;\n&gt; As the scheduler has to be highly configurable, we need classes li=\r\nke:\n&gt; courses, lecturers, students, features, rooms, roomRequiredFeatures,\n=\r\n&gt; timeSlot, lecturerPrefferredTimeSlots, and so on. I wanted to use the\n&gt; @=\r\nBefore annotations to create fixtures (instantiated test objects to\n&gt; test)=\r\n. These test objects reflect one example of a data set from the\n&gt; database.=\r\n\n&gt;\n&gt; As a matter of fact, the 14 classess are not very detailed: maybe 3-4\n=\r\n&gt; fields. The problem arises as they are bound really tight to each other.\n=\r\n&gt; THis results in 220 lines code of instanation in the @Before method\n&gt; whi=\r\nch is way to much. A common way to deal with this is to write\n&gt; mockups, wh=\r\nich simulate the test objects behaviour. But as the classes\n&gt; are very simp=\r\nle there is no way to simulate them.\n&gt;\n&gt; I am a little bit desperate becaus=\r\ne I have the feeling our design is\n&gt; flawed. Are there any suggesstions or =\r\ncourse of actions for this case?\n&gt;\n&gt; I hope I made myself clear,\n&gt;\n&gt; Best r=\r\negards!\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Links\n=\r\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 22959, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 22960, 
+    "contentTrasformed": false, 
+    "postDate": "1285017473", 
+    "canDelete": false, 
+    "nextInTopic": 22963, 
+    "prevInTopic": 22959, 
+    "headers": {
+        "inReplyToHeader": "PDRDOTdDODQ3LjEwNTAwMDBAcGF0aGV0aGljLmNvbT4=", 
+        "messageIdInHeader": "PEFBTkxrVGlueD1LRXlfTFNlMHl4QUtqYUdBZDVXek5YPT1BMUVxWkJvbXdGREBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PDRDOTdDODQ3LjEwNTAwMDBAcGF0aGV0aGljLmNvbT4="
+    }
+}

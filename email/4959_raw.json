@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 4960, 
+    "senderId": "Ranv1S-oy2gdMwh7vp2dC209nemmYajkBijeivWKEw4ToaSS4I7I5bAQAuL8xVyBxhB4lc9RI5jRSddzw6hCPDPunjMQLnFURGGRQJkREBDIdoLV", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Question", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I assume you want to run many tests at one time. The normal way is to create a class that collects the TestCase classes together: public class AllTests { ", 
+    "msgId": 4959, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 13 May 2002 16:32:33 -0000\r\nReceived: (qmail 18954 invoked from network); 13 May 2002 16:32:33 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m6.grp.scd.yahoo.com with QMQP; 13 May 2002 16:32:33 -0000\r\nReceived: from unknown (HELO bx2.blacksun.ca) (139.142.202.214)\n  by mta2.grp.scd.yahoo.com with SMTP; 13 May 2002 16:32:33 -0000\r\nReceived: from www.diasparsoftware.com (localhost [127.0.0.1])\n\tby localhost (8.10.2/8.10.2) with ESMTP id g4DGWV111403\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 13 May 2002 10:32:31 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Question\r\nDate: Mon, 13 May 2002 10:32:31 -0600\r\nMessage-Id: &lt;20020513103231.M77263@...&gt;\r\nIn-Reply-To: &lt;E177Du2-000Czk-00@...&gt;\r\nReferences: &lt;E177Du2-000Czk-00@...&gt;\r\nX-Mailer: Open WebMail 1.63 20020409\r\nX-OriginatingIP: 207.61.57.100 (diasparsoft@...)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=iso-8859-1\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt; Hi everybody,\n&gt; I&#39;ve written a TestCase for one class.\n&gt; Is there a way to test another class with this test?\n&gt; The problem is: it is impossible to pass second one as parameter to &quot;Test\n&gt; suite()&quot; method (as it is static and passing will give one result: \n&gt; last class will be tested twice). Changing test is not really good \n&gt; (as there will be some more classes that I would like to test with \n&gt; TestCase).\n\nI assume you want to run many tests at one time. The normal way is to create \na class that collects the TestCase classes together:\n\npublic class AllTests {\n    public static Test suite() {\n        final TestSuite suite = new TestSuite();\n        \n        suite.addTestSuite( MyFirstTestCase.class );\n        suite.addTestSuite( MySecondTestCase.class );\n        \n        return suite;\n    }\n}\n\nNow run AllTests instead of the two test cases separately.\n\nNotice these things:\n\n1. AllTests does not extend TestCase. It is not necessary.\n2. If MyFirstTestCase has special test setup and declares its own suite() \nmethod, you must change this line to:\n\nsuite.addTest( MyFirstTestCase.suite() );\n\nThis is common when a test case uses a test-decorator extension from \njunit.extensions.*.\n\nI hope this helps.\n\nAlso: you should use test case classes to group similar tests together. There \nis no rule to say &quot;One test case class per production code class.&quot; Group the \ntests together in a way that you will be able to understand later when you \nread the tests.\n\n--\nJ. B. Rainsberger,\nPresident, Diaspar Software Services\nLet&#39;s write software that people understand.\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n", 
+    "profile": "nails762", 
+    "topicId": 4955, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 4958, 
+    "contentTrasformed": false, 
+    "postDate": "1021307551", 
+    "canDelete": false, 
+    "nextInTopic": 9300, 
+    "prevInTopic": 4955, 
+    "headers": {
+        "inReplyToHeader": "PEUxNzdEdTItMDAwQ3prLTAwQGY5Lm1haWwucnU+", 
+        "messageIdInHeader": "PDIwMDIwNTEzMTAzMjMxLk03NzI2M0BkaWFzcGFyc29mdHdhcmUuY29tPg==", 
+        "referencesHeader": "PEUxNzdEdTItMDAwQ3prLTAwQGY5Lm1haWwucnU+"
+    }
+}

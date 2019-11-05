@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 10413, 
+    "senderId": "OPn0T75a7aNev4LLGHy_aYyGH6QZNntOVRU6AM7s9YGB6GkKsOQKF-Qbex4CxI-3FPaTHCIq2BmzOElE-hh5XSMUpkrhsNpXIQ", 
+    "systemMessage": false, 
+    "subject": "JUnit & Reflection -  test method doesn&#39;t fail cleanly", 
+    "from": "&quot;Oisin Kim&quot; &lt;oisin.kim@...&gt;", 
+    "authorName": "Oisin Kim", 
+    "msgSnippet": "Hi All, I ve searched the archives (& Google) for something like this but didn t find anything so here goes: a test method will run fine if ran by itself in a", 
+    "msgId": 10412, 
+    "rawEmail": "Return-Path: &lt;oisin.kim@...&gt;\r\nReceived: (qmail 9759 invoked from network); 5 Feb 2004 17:34:09 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m1.grp.scd.yahoo.com with QMQP; 5 Feb 2004 17:34:09 -0000\r\nReceived: from unknown (HELO n9.grp.scd.yahoo.com) (66.218.66.93)\n  by mta4.grp.scd.yahoo.com with SMTP; 5 Feb 2004 17:34:09 -0000\r\nX-eGroups-Return: oisin.kim@...\r\nReceived: from [66.218.67.147] by n9.grp.scd.yahoo.com with NNFMP; 05 Feb 2004 17:34:03 -0000\r\nX-Sender: oisin.kim@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 69002 invoked from network); 5 Feb 2004 13:22:25 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m1.grp.scd.yahoo.com with QMQP; 5 Feb 2004 13:22:25 -0000\r\nReceived: from unknown (HELO n8.grp.scd.yahoo.com) (66.218.66.92)\n  by mta1.grp.scd.yahoo.com with SMTP; 5 Feb 2004 13:22:25 -0000\r\nReceived: from [66.218.67.155] by n8.grp.scd.yahoo.com with NNFMP; 05 Feb 2004 13:20:07 -0000\r\nDate: Thu, 05 Feb 2004 13:20:05 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;bvtfu5+uq2c@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 1614\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-eGroups-Remote-IP: 66.218.66.92\r\nFrom: &quot;Oisin Kim&quot; &lt;oisin.kim@...&gt;\r\nSubject: JUnit & Reflection -  test method doesn&#39;t fail cleanly\r\nX-Yahoo-Group-Post: member; u=93528314\r\nX-Yahoo-Profile: oisinkim2000\r\nX-eGroups-Rocket-Track: -10\r\nX-eGroups-Approved-By: vbossica &lt;vladimir@...&gt; via web; 05 Feb 2004 17:34:02 -0000\r\nX-eGroups-Remote-IP: 66.218.66.93\r\n\r\nHi All,\nI&#39;ve searched the archives (& Google) for something like this but\ndidn&#39;t find anything so here goes:\n\na test method will run fine if ran by itself in a plain class which\nextends TestCase, it includes a section like this:\nString expectedExceptionMessage = &quot;someException&quot;;\nString actualExceptionMessage = null;\ntry {\n  SomeClass.someStaticMethod();\n  AssetFail(&quot;Never Should have got here&quot;);\n} catch (Throwable t) {\n  actualExceptionMessage = t.getMessage();\n} \nassertEquals(expectedExceptionMessage, actualExceptionMessage);\n\nwhat happens is that if this snippet is run from a regular test case,\neverything is fine, but if run via reflection like (shown below) it\ngives me something like:\n\n [junit] Testcase: testName took 8.407 sec\n [junit]     Caused an ERROR\n [junit] null\n [junit] java.lang.reflect.InvocationTargetException\n\nThe test method is called as follows :\n\nfinal Method[] methods = this.getClass().getDeclaredMethods();\n  final int size = methods.length;\n  for (int i = 0; i &lt; size; i++) {\n    method = methods[i];\n    if (method.getName().startsWith(&quot;test&quot;)\n      && method.getParameterTypes().length == 0) {\n      this.setUp();\n      try {\n        method.invoke(RunResourcesTest.class, null);\n      } finally {\n        this.tearDown();\n      }\n    }\n  }\n\nIt&#39;s as if the reflected calling of the test method makes the test\nmethod throw a Throwable object which is not &quot;catchable&quot; by the catch\nin the test.\n\nI&#39;ve tried to simplify this as much as possible, I hope I&#39;ve explained\nthings well enough,\n\nFinally, thanks to all who post to this list - I&#39;m learning lots from it!\n\nThanks \noisin\n\n\n\n\n\n\n\n", 
+    "profile": "oisinkim2000", 
+    "topicId": 10412, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 93528314, 
+    "prevInTime": 10411, 
+    "contentTrasformed": false, 
+    "postDate": "1075987205", 
+    "canDelete": false, 
+    "nextInTopic": 10422, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGJ2dGZ1NSt1cTJjQGVHcm91cHMuY29tPg=="
+    }
+}

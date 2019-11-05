@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 27, 
+    "nextInTime": 7396, 
+    "senderId": "TyYXvW29I1O_o2zEyD-x2fjETbvZ0WtpvYYic1NdhK9fhhR9k499eBokmoVbaXi1Ez6hvsuD-jeJuPZCgRP_3qNkqzi_Aw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: JUnit Design?", 
+    "from": "Levi Cook &lt;levicook@...&gt;", 
+    "authorName": "Levi Cook", 
+    "msgSnippet": "... Here s something less speculative... My tearDown method still needed some work. In particular TestCase.countTestCases() didn t do what I (incorrectly)", 
+    "msgId": 7395, 
+    "profile": "lcook53703", 
+    "topicId": 7266, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 72977190, 
+    "messageBody": "<div id=\"ygrps-yiv-2134619960\">On Tuesday, April 1, 2003, at 06:52  PM, Levi Cook wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;<br/>\n&gt; On Wednesday, March 26, 2003, at 12:07  PM, Robert Bateman wrote:<br/>\n&gt;<br/>\n&gt;&gt; I tried this - it doesn&#39;t work :(<br/>\n&gt;<br/>\n&gt; The code snippet I posted was pure speculation.<br/>\n<br/>\n </span></blockquote>Here&#39;s something less speculative...<br/>\n<br/>\nMy tearDown method still needed some work. In particular  <br/>\n&quot;TestCase.countTestCases()&quot; didn&#39;t do what I (incorrectly) thought it  <br/>\nshould. I made a classic JUnit error and confused &quot;TestCase&quot; and  <br/>\n&quot;Test&quot;. Anyway, I ended up writing a one off utility method  <br/>\n&quot;countTestMethods()&quot; that does what I expected & all was well...<br/>\n<br/>\nFor what its worth, this example still isn&#39;t recommended. Its  <br/>\nfunctional & could easily be improved, but it smells bad.<br/>\n<br/>\n-- Levi<br/>\n<br/>\n<br/>\nGoneStatic.java<br/>\n------------------------------------------------------------------------ <br/>\n----------------------------------------------<br/>\n<br/>\nimport java.lang.reflect.Method;<br/>\n<br/>\nimport junit.framework.TestCase;<br/>\nimport junit.swingui.TestRunner;<br/>\n<br/>\n<br/>\npublic final class GoneStatic extends TestCase {<br/>\n<br/>\n\tprivate static Connection myConnection = null;<br/>\n\tprivate static int numTestsRun = 0;<br/>\n<br/>\n\tprotected void setUp() {<br/>\n\t\tif (myConnection == null) {<br/>\n\t\t\tmyConnection = createMyConnection();<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic void testA() {<br/>\n\t}<br/>\n\tpublic void testB() {<br/>\n\t}<br/>\n\tpublic void testC() {<br/>\n\t}<br/>\n<br/>\n\tprotected void tearDown() {<br/>\n\t\tnumTestsRun++;\t\t<br/>\n\t\t<br/>\n\t\t//if (numTestsRun == countTestCases()) {<br/>\n\t\t//                   ^^^^^^^^^^^^^^<br/>\n\t\t// oops, doesn&#39;t do what I expected, my bad<br/>\n\t\t//<br/>\n\t\tif (numTestsRun == countTestMethods()) {<br/>\n\t\t\tmyConnection.close();<br/>\n\t\t\tmyConnection = null;<br/>\n\t\t\tnumTestsRun = 0;<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tprivate Connection createMyConnection() {<br/>\n\t\t// do something &quot;expensive&quot;<br/>\n\t\t// (aka. sleep 10 seconds:)<br/>\n\t\treturn new Connection();<br/>\n\t}<br/>\n\t<br/>\n\tprivate int countTestMethods() {<br/>\n\t\tint count = 0;<br/>\n\t\t<br/>\n\t\tMethod[] methods = getClass().getMethods();<br/>\n\t\t<br/>\n\t\tfor(int i = 0; i &lt; methods.length; i++) {<br/>\n\t\t\tif(methods[i].getName().startsWith(&quot;test&quot;)) {<br/>\n\t\t\t\tcount++;\t\t<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\treturn count;\t\t<br/>\n\t}<br/>\n<br/>\n<br/>\n\tpublic static void main(String[] args) {<br/>\n\t\tTestRunner.run(GoneStatic.class);<br/>\n\t}<br/>\n<br/>\n<br/>\n\tprivate static class Connection {<br/>\n<br/>\n\t\tprivate static Object lock = null;<br/>\n<br/>\n\t\tprivate Connection() {<br/>\n\t\t\tSystem.out.println(&quot;Entered Connection()&quot;);<br/>\n\t\t\tprintState();<br/>\n\t\t\t<br/>\n\t\t\tif (lock != null) {<br/>\n\t\t\t\tthrow new UnsupportedOperationException(&quot;There can only be one!&quot;);<br/>\n\t\t\t}<br/>\n\t\t\telse {<br/>\n\t\t\t\tlock = new Object();<br/>\n\t\t\t}<br/>\n<br/>\n\t\t\ttry {<br/>\n\t\t\t\tThread.sleep(10000);<br/>\n\t\t\t} catch (InterruptedException e) {<br/>\n\t\t\t\tSystem.out.println(&quot;This isn&#39;t supposed to happen :(&quot;);<br/>\n\t\t\t\te.printStackTrace();<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tprivate void close() {<br/>\n\t\t\tSystem.out.println(&quot;Entered Connection.close()&quot;);<br/>\n\t\t\tprintState();<br/>\n\t\t\t<br/>\n\t\t\tif(lock == null) {<br/>\n\t\t\t\tthrow new UnsupportedOperationException(&quot;I&#39;m already closed!&quot;);<br/>\n\t\t\t}<br/>\n\t\t\telse {<br/>\n\t\t\t\tlock = null;<br/>\n\t\t\t}<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\tprivate void printState() {<br/>\n\t\t\tSystem.out.print(this);<br/>\n\t\t\tSystem.out.print(&quot;: lock=&quot;);<br/>\n\t\t\tSystem.out.println(lock);<br/>\n\t\t\tSystem.out.println(&quot;-----------&quot;);<br/>\n\t\t}<br/>\n\t}<br/>\n}<br/>\n<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; -- Levi<br/>\n<br/>\n<br/>\n </span></blockquote>[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 7394, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049251975", 
+    "canDelete": false, 
+    "nextInTopic": 7703, 
+    "prevInTopic": 7385, 
+    "headers": {
+        "inReplyToHeader": "PDY5MkJBNkJCLTY0QTUtMTFENy1CRTE0LTAwMDM5M0FEMjczMkBwYXBham8uY29tPg==", 
+        "messageIdInHeader": "PDM0NDMzNzFBLTY0QjYtMTFENy1CRTE0LTAwMDM5M0FEMjczMkBwYXBham8uY29tPg=="
+    }
+}

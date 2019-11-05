@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14189, 
+    "senderId": "nNSG5ehenk4o1uzsLw7fYGcNbKpj4uPbah1ZYnb9ndqPzZLyam-gTn1-rqK7f4e0dMH3pjggVFvZiz9wQouiKZk0WboUeaJMeET6", 
+    "systemMessage": false, 
+    "subject": "Re: TDD Design advice on an HTTPClient-driven service", 
+    "from": "&quot;Daniel Wellman&quot; &lt;etl_dan@...&gt;", 
+    "authorName": "Daniel Wellman", 
+    "msgSnippet": "I m posting a follow-up discussing a solution I came up with to my question posted earlier, and have a follow up question on configuration testing, which I ll", 
+    "msgId": 14188, 
+    "rawEmail": "Return-Path: &lt;etl_dan@...&gt;\r\nX-Sender: etl_dan@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 50967 invoked from network); 20 Jul 2005 02:22:34 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m32.grp.scd.yahoo.com with QMQP; 20 Jul 2005 02:22:34 -0000\r\nReceived: from unknown (HELO n10.bulk.dcn.yahoo.com) (216.155.201.63)\n  by mta5.grp.scd.yahoo.com with SMTP; 20 Jul 2005 02:22:33 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [216.155.201.64] by n10.bulk.dcn.yahoo.com with NNFMP; 20 Jul 2005 02:22:33 -0000\r\nReceived: from [66.218.69.3] by mailer1.bulk.dcn.yahoo.com with NNFMP; 20 Jul 2005 02:22:33 -0000\r\nReceived: from [66.218.66.85] by mailer3.bulk.scd.yahoo.com with NNFMP; 20 Jul 2005 02:22:33 -0000\r\nDate: Wed, 20 Jul 2005 02:22:32 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;dbkch8+28sr@...&gt;\r\nIn-Reply-To: &lt;db77uu+9gn4@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2806\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;Daniel Wellman&quot; &lt;etl_dan@...&gt;\r\nSubject: Re: TDD Design advice on an HTTPClient-driven service\r\nX-Yahoo-Group-Post: member; u=86431363; y=Gw_5a3EI3TKEohIhOZEONFcwXWr3s-syFg2B2b4pCpb9ew\r\nX-Yahoo-Profile: etl_dan\r\n\r\nI&#39;m posting a follow-up discussing a solution I came up with to my\nquestion posted earlier, and have a follow up question on\nconfiguration testing, which I&#39;ll put at the end:\n\nAfter playing around with some ideas, I finally settled on a design. \nI wanted to make this design easy to test, and test each component\nindependently.  What I ultimately realized was that:\n\n1. Each use case is composed of multiple HTTP requests\n2. Each request contains the same set of steps every time:\n a. Create the request parameters\n b. Execute the HTTP request (here I&#39;m using HTTPClient, but I put it\nbehind an interface so mocking was simpler)\n c. Parse the response code and message and process it\n\nI chose Jakarta Chain for building together a sequence of commands,\nwhere the commands represented each HTTP request.  Then I made the\nHTTP execution step pluggable with a strategy interface for creating\nthe request parameters and a strategy for handling the response.  Each\nuse case will be implemented by a chain of several instances of the\nHttp request command.  In this way, I can:\n\n- Test the Http command logic in one place\n- Test each Create Request Parameter and Process Response strategy in\nisolation (the tests and code end up being very simple!)\n- Test the code that actually executes the HttpClient objects in\nisolation (to confirm I properly use the API release the connection\nand avoid leaks)\n\nSo now I can set up each request involved in a given use case via\ndependency injection just like Spring offers.\n\n\nMy question: \nNow that I&#39;ve tested the individual strategies of each command, and\nthe Http send/receive command itself, the next place I could see\nproblems is if a given request command was incorrectly configured. \nWould you recommend I test the Spring XML config file for this if I&#39;m\nreally worried about it?  I know J.B. recommends this for testing\nStruts configuration in JUnit Recipes.\n\n\nThanks for the advice!\nDan\n\n\n--- In junit@yahoogroups.com, &quot;etl_dan&quot; &lt;etl_dan@y...&gt; wrote:\n&gt; Hi all,\n&gt; \n&gt; I&#39;m facing some design issues and I&#39;ve hit a mental roadblock that&#39;s\n&gt; left me dazed and pondering by the side of the road... (better crashed\n&gt; wondering how to TDD than how to solve a production bug, I suppose!) \n&gt; Any advice is appreciated!\n&gt; \n&gt; I&#39;m building a component which must support a few use cases where a\n&gt; series of HTTP POST messages must be sent, received, and processed to\n&gt; a server.  ...\n&gt; \n&gt; The problem I&#39;m facing is that I can&#39;t figure out at what level to\n&gt; start testing/designing. \n&gt; \n&gt; The top level seems easiest; one method might be something like:\n&gt; \n&gt;   String getWorkDataAsXml(...) throws RuntimeException;\n&gt; \n&gt; where the method ultimately makes four HTTP requests to a server,\n&gt; formats the response and returns, or throws an exception if the server\n&gt; is unavailable.  \n\n\n\n\n\n", 
+    "profile": "etl_dan", 
+    "topicId": 14126, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 86431363, 
+    "prevInTime": 14187, 
+    "contentTrasformed": false, 
+    "postDate": "1121826152", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 14129, 
+    "headers": {
+        "inReplyToHeader": "PGRiNzd1dSs5Z240QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGRia2NoOCsyOHNyQGVHcm91cHMuY29tPg=="
+    }
+}

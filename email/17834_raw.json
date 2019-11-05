@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 17835, 
+    "senderId": "M1NPBTPnLkMcyWw3xvT1_gO3au24DmIfvmXpVxzUmSClSUXJI9m59B2oIqfECZnYleZOGlJy1Q", 
+    "systemMessage": false, 
+    "subject": "@Ignore with date", 
+    "from": "it@...", 
+    "authorName": "it@iljapreuss.de", 
+    "msgSnippet": "Hello, from time to time, we feel the need to temporarily ignore a test case. In Junit 3.x, our team introduced a failAfter(Date) method to remind us from time", 
+    "msgId": 17834, 
+    "rawEmail": "Return-Path: &lt;it@...&gt;\r\nX-Sender: it@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 46708 invoked from network); 6 Sep 2006 14:37:00 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m37.grp.scd.yahoo.com with QMQP; 6 Sep 2006 14:37:00 -0000\r\nReceived: from unknown (HELO moutng.kundenserver.de) (212.227.126.171)\n  by mta9.grp.scd.yahoo.com with SMTP; 6 Sep 2006 14:37:00 -0000\r\nReceived: from [172.23.4.29] (helo=pustefix162.kundenserver.de)\n\tby mrelayeu.kundenserver.de (node=mrelayeu6) with ESMTP (Nemesis),\n\tid 0ML29c-1GKyVn1qgo-0008Pt; Wed, 06 Sep 2006 16:36:19 +0200\r\nMessage-Id: &lt;4537679.89111157553379390.JavaMail.servlet@kundenserver&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-Binford: 6100 (more power)\r\nX-Mailer: Webmail\r\nX-Originating-From: 6672473\r\nX-Routing: DE\r\nX-Message-Id: &lt;6672473$1157553379389172.23.4.2927390832@...-370214293&gt;\r\nX-Received: from pustefix162.kundenserver.de by 213.30.245.34 with HTTP id 6672473 for [junit@yahoogroups.com]; Wed, 6 Sep 2006 16:36:19 CEST\r\nDate: Wed, 06 Sep 2006 16:36:19 +0200\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: it@...\r\nSubject: @Ignore with date\r\nX-Yahoo-Group-Post: member; u=182451331; y=ZC_VlL0NVjPbCce7uHlcKTo4yrXxJTaKsSOL7cp6kzEDNaby\r\nX-Yahoo-Profile: ipreussde\r\n\r\nHello,\n\nfrom time to time, we feel the need to temporarily ignore a test case. In Junit 3.x, our team introduced a failAfter(Date) method to remind us from time to time that there was a testcase ignored.\n\nNow that we are switching to JUnit 4, we&#39;d like to use the Ignore annotation, so I patched it to allow an additional until-Parameter. Below are the additional unit tests for the TestMethodTest:\n\n\tstatic public class IgnoredUntilTest {\n\t\t@Ignore(until=&quot;1/1/3000&quot;) @Test public void withUntilLater() {}\n\t}\n\t\n\t@Test public void ignoreRunnerUntil() {\n\t\tJUnitCore runner= new JUnitCore();\n\t\tResult result= runner.run(IgnoredUntilTest.class);\n\t\tassertEquals(1, result.getIgnoreCount());\n\t}\n\t\n\tstatic public class IgnoredUntilWithTimeTest {\n\t\t@Ignore(until=&quot;1/1/3000 1:00 PM&quot;) @Test public void withUntilLater() {}\n\t}\n\t\n\t@Test public void ignoreRunnerUntilWithTime() {\n\t\tJUnitCore runner= new JUnitCore();\n\t\tResult result= runner.run(IgnoredUntilWithTimeTest.class);\n\t\tassertEquals(1, result.getIgnoreCount());\n\t}\n\t\n\tstatic public class IgnoredUntilBeforeTest {\n\t\t@Ignore(until=&quot;1/1/1900&quot;) @Test public void withUntilBefore() {}\n\t}\n\t\n\t@Test public void doNotIgnoreUntilBefore() {\n\t\tJUnitCore runner= new JUnitCore();\n\t\tResult result= runner.run(IgnoredUntilBeforeTest.class);\n\t\tassertEquals(0, result.getIgnoreCount());\n\t}\n\n\nThe Ignore annotation needs the additional method:\n\npublic @interface Ignore {\n\tString value() default &quot;&quot;; \n\tString until() default &quot;&quot;;\n}\n\nAnd the implementation of the behaviour is in TestIntrospector:\n\n\tpublic boolean isIgnored(Method eachMethod) {\n\t\tIgnore ignoredAnnotation= eachMethod.getAnnotation(Ignore.class);\n\t\tif (ignoredAnnotation == null) {\n\t\t\treturn false;\n\t\t}\n\t\tString until= ignoredAnnotation.until();\n\t\tif (until.length() == 0) {\n\t\t\treturn true;\n\t\t}\n\t\ttry {\n\t\t\treturn DateFormat.getDateTimeInstance(DateFormat.SHORT,\n\t\t\t\t\tDateFormat.SHORT, Locale.ENGLISH).parse(until).after(\n\t\t\t\t\tnew Date());\n\t\t} catch (ParseException e) {\n\t\t\ttry {\n\t\t\t\treturn DateFormat.getDateInstance(DateFormat.SHORT,\n\t\t\t\t\t\tLocale.ENGLISH).parse(until).after(new Date());\n\t\t\t} catch (ParseException e2) {\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\t}\n\n(I guess this could be in need of a little refactoring, sorry... :o )\n\nIf you think it&#39;s a good idea, don&#39;t hesitate to add it to JUnit 4.2... :)\n\nAny other comments would be welcome, too, of course.\n\nCheers, Ilja\n\n", 
+    "profile": "ipreussde", 
+    "topicId": 17834, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 182451331, 
+    "prevInTime": 17833, 
+    "contentTrasformed": false, 
+    "postDate": "1157553379", 
+    "canDelete": false, 
+    "nextInTopic": 18128, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQ1Mzc2NzkuODkxMTExNTc1NTMzNzkzOTAuSmF2YU1haWwuc2VydmxldEBrdW5kZW5zZXJ2ZXI+"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 17, 
+    "nextInTime": 7457, 
+    "senderId": "wppKk3ucTwXrRJmCMhpoEI7LZe3wD1CovY2Bo9lLXRCfODaGLXJUdSAG_ZwK1e7EBt0N4TVHkA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Junit and RMI, please help ...", 
+    "from": "skss2002@...", 
+    "authorName": "skss2002@aol.com", 
+    "msgSnippet": "Hi Levi, Thanks for biting, I thought I was wasting my time in the backwater here ... ... Sorry that I didn t make my question clearer for you, please let me", 
+    "msgId": 7456, 
+    "topicId": 7374, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 107426134, 
+    "messageBody": "<div id=\"ygrps-yiv-647836116\">Hi Levi,<br/>\n<br/>\nThanks for biting, I thought I was wasting my time in the backwater here ...  <br/>\n:)<br/>\n<br/>\nSorry that I didn&#39;t make my question clearer for you, please let me try <br/>\nagain.<br/>\n<br/>\nThe application I am working on is the test assignment for the Java 2 <br/>\nDeveloper Exam.  Although JUnit testing is not required, I thought I would do <br/>\nit for my own good.<br/>\n<br/>\nI was asked to implement a DatabaseServer and DatabaseClient using RMI, and <br/>\nthe remote DatabaseInterface is like:<br/>\n<br/>\npublic Record getRecord(int recno) throws RemoteException;<br/>\npublic void modify(Record newRecord) throws RemoteException;<br/>\npublic void lock(int recno, Object client) throws InterruptedException, <br/>\nRemoteException;<br/>\npublic void unlock(int recno, Object client) throws RemoteException;<br/>\npublic boolean connect(Object client) throws RemoteException;<br/>\npublic void disconnect(Object client) throws RemoteException;<br/>\n<br/>\n*note: Record object encapsulates record number, field names, field widths, <br/>\nand field values.<br/>\n<br/>\nIn the DatabaseClient, statements below are used to access the remote <br/>\ndatabase; clients are expected to call lock(), getRecord(), modify(), <br/>\nunlock() in sequence to maintain database integrity:<br/>\n<br/>\nDatabaseInterface database = (DatabaseInterface) <br/>\nNaming.lookup(databaseServiceName);<br/>\nif (! database.connect(this)) {<br/>\n    System.out.println(&quot;The server is busy, please try again.&quot;);<br/>\n    System.exit(1);<br/>\n}<br/>\ndatabase.lock(1, this); // Locks record number 1<br/>\nRecord record = database.getRecord(1);<br/>\n/*<br/>\n    Here, extracts and modify some field values of record 1, and creates a <br/>\nnew record based on the change ...<br/>\n*/<br/>\ndatabase.modify(newRecord); // Record 1 is now updated<br/>\ndatabase.unlock(1, this);<br/>\ndatabase.disconnect(this);      // The client has finished<br/>\n<br/>\nTo implement my DatabaseServer:<br/>\n<br/>\n1.  When connect() is called: the server puts the client object in a HashSet.<br/>\n2.  lock() is called: the client object and the record number is put in a <br/>\nHashMap, lock() requests to the record by other clients will be blocked until <br/>\nthe first client calls unlock().<br/>\n3.  unlock() is called: the server removes the client/record number entry <br/>\nfrom the HashMap.<br/>\n4.  disconnect() is called: the server removes the client object from the <br/>\nHashSet.<br/>\n<br/>\nTo avoid a crashed client from holding a record lock indefinitely, a server <br/>\nthread is spawned to constantly checking the HashSet entries:<br/>\n<br/>\nif (clientObject != null && clientObject.equals(null)) { <br/>\n    /*<br/>\n        Releases record lock held by the crashed client if any.<br/>\n        Removes the crashed client object from the HashSet.<br/>\n    */<br/>\n}<br/>\n<br/>\nI thought if the client is crashed and his connection is lost, the value that <br/>\nthe object reference &#39;clientObject&#39; points to must be null.  Without access <br/>\nto any network system, I am only able to test this locally:<br/>\n<br/>\n1.  Open a OS window (Windows XP) and run rmiregistry<br/>\n2.  Run DatabaseServer in another OS window<br/>\n3.  Open a third OS window and run DatabaseClient to lock record 1.  Embedded <br/>\nprintln statement in the server shows record 1 has been locked by this <br/>\nclient.<br/>\n4.  Open a fourth OS window and run DatabaseClient again to lock record 1.  <br/>\nThe println statement shows the second client is waiting for record 1.<br/>\n5.  Close the first client&#39;s OS window to kill the client&#39;s process.<br/>\n6.  The println statement shows the second client locks record 1.<br/>\n<br/>\nSo things seem to work fine for 2 clients.  I would like to write a test case <br/>\nto stress test the server with 20 to 30 clients, may be using Runtime.exec() <br/>\nin my test case to open multiple clients windows.  Does this make sense to <br/>\nyou or can it be done with JUnit?<br/>\n<br/>\nAppreciate your comment, thanks.<br/>\n<br/>\nSam<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 7455, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1049326012", 
+    "canDelete": false, 
+    "nextInTopic": 7457, 
+    "prevInTopic": 7396, 
+    "headers": {
+        "messageIdInHeader": "PDE5Ny4xODMyZjI0OC4yYmJjY2JiY0Bhb2wuY29tPg=="
+    }
+}

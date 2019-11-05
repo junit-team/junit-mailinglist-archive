@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 11571, 
+    "senderId": "6ocMUwnLjRI5Sbipxt_7yaXDdRY5I06bBgcoX5OFuvzQ7J8szVnxuIcVVgARIkKAtbfkIQRPgEDhclcQ0OQECMGh", 
+    "systemMessage": false, 
+    "subject": "Re: Is this approach to mock objects too complex?", 
+    "from": "&quot;kk_oop&quot; &lt;kk_oop@...&gt;", 
+    "authorName": "kk_oop", 
+    "msgSnippet": "See response below... ... I discovered my problem.  The article shows in listing 4 that the collaborating object is being created inside one of the containing ", 
+    "msgId": 11570, 
+    "profile": "kk_oop", 
+    "topicId": 11525, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 192309277, 
+    "messageBody": "<div id=\"ygrps-yiv-1161448939\">See response below...<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Jason Rogers &lt;jacaetevha@f...&gt; wrote:<br/>\n&gt; On Friday 16 July 2004 03:59 am, kk_oop wrote:<br/>\n&gt; &gt;  Hi.  I was just reading an article about a novel way of implementing<br/>\n&gt; &gt;  mock objects using an anonymous inner class.   The article is at: <br/>\n&gt; &gt;<br/>\n&gt; &gt;  <a rel=\"nofollow\" target=\"_blank\" href=\"http://www-106.ibm.com/developerworks/library/j-mocktest.html\">http://www-106.ibm.com/developerworks/library/j-mocktest.html</a><br/>\n&gt; <br/>\n&gt; &gt;  I find, though, that when I try to run the sample code in listings 5<br/>\n&gt; &gt;  and 6 through JUnit, I get a null pointer exception.<br/>\n&gt; <br/>\n&gt; Where?<br/>\n<br/>\nI discovered my problem.  The article shows in listing 4 that the<br/>\ncollaborating object is being created inside one of the containing<br/>\nclass&#39; methods (doWithdrawal).<br/>\n<br/>\n  private Status doWithdrawal(Account account, float amount) {<br/>\n    Transaction transaction = createTransaction();<br/>\n    transaction.setSourceAccount(account);<br/>\n    ...<br/>\n<br/>\nIn my code, I need to create the collaborating object in the<br/>\ncontaining class&#39; constructor.  So for some reason, when I call the<br/>\nfactory method from the constructor, I get a null pointer error.  This<br/>\nhappens whether I am in JUnit or just Java.  If I call the factory<br/>\nmethod from a non-constructor method (as in the article), I do not get<br/>\nthe error.  I suppose there is some unstable state in the constructor<br/>\nhierarchy when the factory method is called, but I&#39;m not sure.<br/>\n<br/>\nSo to work around this problem, here&#39;s what I&#39;m doing:<br/>\n<br/>\nI&#39;m putting two inner classes in my test case.  One overrides my<br/>\nfactory method and the other is my mock version of the contained class<br/>\nthat gets returned by the factory method.<br/>\n<br/>\nI&#39;m giving my override class a static attribute of the mock object<br/>\ntype and a static setter for the same type.<br/>\n<br/>\nIn my test method, I first instantiate the mock object and set its<br/>\nstates for my test.  Then I use the static setter to put this object<br/>\nin the override class.<br/>\n<br/>\nNow when the overriden factory method is called, the mock object<br/>\nreference contained in the static attribute will be used.<br/>\n<br/>\nThe code for the container inner class looks like this (this is an<br/>\ninner class in the test case class):<br/>\n<br/>\n    //static class overrides class being tested.<br/>\n    static public class InnerSubContainer extends Container <br/>\n    {<br/>\n        static private ContainedA s_mockContainedA;<br/>\n        static public void setMockContainedA(ContainedA<br/>\n                                               mockContainedA)<br/>\n        {<br/>\n            s_mockContainedA = mockContainedA;<br/>\n        }<br/>\n<br/>\n        //factory method for contained class<br/>\n        protected ContainedA createCA()<br/>\n        {<br/>\n            return s_mockContainedA;<br/>\n        }<br/>\n    } <br/>\n<br/>\nThe test case code looks like this:<br/>\n<br/>\n        ...<br/>\n        //set up mock contained object states for test.<br/>\n        //mock is an inner class in the test case.<br/>\n        mockContainedA = new MockContainedA();       <br/>\n        mockContainedA.setValue(1062);<br/>\n        <br/>\n        <br/>\n        //set mock contained object into class being tested<br/>\n        InnerSubContainer.setMockContainedA(mockContainedA);<br/>\n        <br/>\n        //create instance of class being tested and<br/>\n        //test the class for expected behavior<br/>\n        Container container = new InnerSubContainer();<br/>\n<br/>\n        Assert.assertEquals(&quot;Value not correct.&quot;,<br/>\n                             container.getValue(),1062);<br/>\n        ...<br/>\n<br/>\nI also use the setUp method to initially set the static attribute to<br/>\nnull, just to make sure I don&#39;t reuse state data from a prior test.<br/>\n<br/>\nThis approach enables me to have the factory method in the constructor<br/>\nof the class being tested.<br/>\n<br/>\nPerhaps there is a better way, but this does seem to work.  That being<br/>\nsaid, I welcome and encourage suggestions.<br/>\n<br/>\nThanks!<br/>\n<br/>\nKen </span></blockquote></div>", 
+    "prevInTime": 11569, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1090124411", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 11530, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQwNzE2MTExNy4xOTAyMS5qYXNvbi5yb2dlcnNAcmlza21ldHJpY3MuY29tPg==", 
+        "messageIdInHeader": "PGNkY3RwcitmcWw3QGVHcm91cHMuY29tPg=="
+    }
+}

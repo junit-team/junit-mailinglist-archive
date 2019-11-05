@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 22, 
+    "nextInTime": 4124, 
+    "senderId": "L150g_-3Ke107x_FgILxXH24s55I5dvKkSCXZXzThgircps6O6zFgXb4KMxqA9DJivsXWtguFORoClL4vhX-Jws6BDr-9noi8z44buYFz5Ht7VWzXiA6bQQ33gKqP2grUQ-m0BWi6xQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] byte can be bigger than 127 ...", 
+    "from": "=?iso-8859-1?Q?Magn=FAs_=DE=F3r_Torfason?= &lt;magnus@...&gt;", 
+    "authorName": "Magnús Þór Torfason", 
+    "msgSnippet": "You are getting exactly the results I would have expected.  The test SHOULD fail.  My problem is that it doesn t fail on my systems. ... Windows 2000 java", 
+    "msgId": 4123, 
+    "rawEmail": "Return-Path: &lt;magnus@...&gt;\r\nX-Sender: magnus@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_2); 19 Feb 2002 16:07:12 -0000\r\nReceived: (qmail 20701 invoked from network); 19 Feb 2002 16:07:09 -0000\r\nReceived: from unknown (216.115.97.172)\n  by m6.grp.snv.yahoo.com with QMQP; 19 Feb 2002 16:07:09 -0000\r\nReceived: from unknown (HELO heimsnet.is) (62.145.141.75)\n  by mta2.grp.snv.yahoo.com with SMTP; 19 Feb 2002 16:07:09 -0000\r\nReceived: from [213.220.72.66] (HELO rosa)\n  by heimsnet.is (CommuniGate Pro SMTP 3.4.8)\n  with SMTP id 1454084 for junit@yahoogroups.com; Tue, 19 Feb 2002 16:05:21 +0000\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] byte can be bigger than 127 ...\r\nDate: Tue, 19 Feb 2002 16:07:07 -0000\r\nMessage-ID: &lt;CEEOIHGDOOJOCPHOGCBGIENBFOAA.magnus@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 8bit\r\nX-Priority: 3 (Normal)\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700\r\nImportance: Normal\r\nIn-Reply-To: &lt;3C727362.1090100@...&gt;\r\nFrom: =?iso-8859-1?Q?Magn=FAs_=DE=F3r_Torfason?= &lt;magnus@...&gt;\r\nX-Yahoo-Group-Post: member; u=70214850\r\nX-Yahoo-Profile: mtorfason\r\n\r\nYou are getting exactly the results I would have expected.  The test SHOULD\nfail.  My problem is that it doesn&#39;t fail on my systems.\n\nSorry that I did not specify my system type before:\n\n---------------\nWindows 2000\njava version &quot;1.3.1&quot;\nJava(TM) 2 Runtime Environment, Standard Edition (build 1.3.1-b24)\nJava HotSpot(TM) Client VM (build 1.3.1-b24, mixed mode)\n---------------\n\nAs you see, I am also using version 1.3.1, so I am getting more and more\nfrustrated every second.\n\nIf I receive no confirmation from anyone where the test passes, I will just\ngive this up, and go lock myself up in a padded cell somewhere, since this\nissue is just about driving me crazy ... :-)\n\nRegards,\n\nMagnus\n\n\n&gt; -----Original Message-----\n&gt; From: Berin Loritsch [mailto:bloritsch@...]\n&gt; Sent: 19. febr�ar 2002 15:47\n&gt; To: junit@yahoogroups.com\n&gt; Subject: Re: [junit] byte can be bigger than 127 ...\n&gt;\n&gt;\n&gt; Magn�s ��r Torfason wrote:\n&gt; &gt; I recently ran into a very strange bug that occurs in JUnit.  I have\n&gt; &gt; reported the bug to SUN, but they directed here, since this\n&gt; behaviour does\n&gt; &gt; not occur in a simple standalone class.\n&gt; &gt;\n&gt; &gt; Attached is the unit test that I ran, as well as the output.  Note\n&gt; &gt; especially the third line:\n&gt; &gt;\n&gt; &gt;     Class Byte:  Success means that 128 &gt; 127\n&gt; &gt;\n&gt; &gt; What I have found is that when a byte variable is defined as a class\n&gt; &gt; variable within a unit test and then incremented, it is possible to\n&gt; &gt; increment it out of the range of bytes specified by the language\n&gt; &gt; specification in two aspects:\n&gt; &gt;\n&gt; &gt; 1 - Converting the byte to a string results in the string &quot;128&quot;\n&gt; &gt;\n&gt; &gt; 2 - Comparation states that the byte is larger than Byte.MAX_VALUE\n&gt; &gt;     ( (classByte &gt; Byte.MAX_VALUE) is true )\n&gt; &gt;\n&gt; &gt; As the log shows, this test passes in my setup, and I have tried it on\n&gt; &gt; several computers.  Could someone in the know run this test and\n&gt; see if you\n&gt; &gt; can figure out what is going on, because I am totally lost in this.\n&gt; &gt;\n&gt; &gt; Thanks and regards,\n&gt; &gt;\n&gt; &gt; Magnus Torfason\n&gt; &gt;\n&gt;\n&gt;\n&gt; Here are my results (JDK 1.3.1)\n&gt;\n&gt; .    Local Byte:  Success means that -128 == -128\n&gt; .    Static Byte: Success means that -128 == -128\n&gt; .    Class Byte:  Success means that -128 &gt; 127\n&gt; F.    Class Short: Success means that -32768 &gt; 32767\n&gt; F\n&gt; Time: 0.081\n&gt; There were 2 failures:\n&gt; 1) testByteMaxValue(StrangeByteTest)junit.framework.AssertionFailedError\n&gt;          at StrangeByteTest.testByteMaxValue(StrangeByteTest.java:51)\n&gt; 2) testShortMaxValue(StrangeByteTest)junit.framework.AssertionFailedError\n&gt;          at StrangeByteTest.testShortMaxValue(StrangeByteTest.java:62)\n&gt; FAILURES!!!\n&gt; Tests run: 4,  Failures: 2,  Errors: 0\n&gt;\n&gt; Question:\n&gt;\n&gt; What JDK are you running?  It appears you have some implicit upcasting\n&gt; to a long or something happening.\n&gt;\n&gt;\n&gt; --\n&gt;\n&gt; &quot;They that give up essential liberty to obtain a little temporary safety\n&gt;   deserve neither liberty nor safety.&quot;\n&gt;                  - Benjamin Franklin\n&gt;\n&gt;\n&gt;\n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt; Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/\n&gt;\n&gt;\n\n\n", 
+    "profile": "mtorfason", 
+    "topicId": 4116, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 70214850, 
+    "prevInTime": 4122, 
+    "contentTrasformed": false, 
+    "postDate": "1014134827", 
+    "canDelete": false, 
+    "nextInTopic": 4124, 
+    "prevInTopic": 4122, 
+    "headers": {
+        "inReplyToHeader": "PDNDNzI3MzYyLjEwOTAxMDBAYXBhY2hlLm9yZz4=", 
+        "messageIdInHeader": "PENFRU9JSEdET09KT0NQSE9HQ0JHSUVOQkZPQUEubWFnbnVzQGhhbmR0b2x2dXIuaXM+"
+    }
+}

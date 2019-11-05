@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 994, 
+    "senderId": "MXXJtuSFAhMMJqFObng_zycUyXnxFJwsf61_VBmUf2bMLQlWo72s8PzxwVh4hgf_7UjghpWpBTuUz9HMBo4TJYAe6lNAfCWFdKsi80wo", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] In what order are the test run through...", 
+    "from": "&quot;Howk, Michael&quot; &lt;mhowk@...&gt;", 
+    "authorName": "Howk, Michael", 
+    "msgSnippet": "Here s how we did it. We created a TestSetup decorator to add the required data to the database. Then, each test case can use the data without worrying about", 
+    "msgId": 993, 
+    "topicId": 992, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-2126116885\">Here&#39;s how we did it. We created a TestSetup decorator to add the required<br/>\ndata to the database. Then, each test case can use the data without worrying<br/>\nabout adding it or cleaning it up. The FacadeTestSetup is the TestSetup<br/>\nclass, while FacadeTest contains the individual test cases. In your<br/>\nsituation, you would probably want to add the user in the TestSetup&#39;s<br/>\nsetUp() method, and run the testFindUser() in the actual test cases. You<br/>\nprobably do NOT want to make testFindUser() depend on testAddUser(). You can<br/>\nstill run a separate testAddUser(), but write it so that it cleans up after<br/>\nitself. Good luck!<br/>\n<br/>\nHere&#39;s the FacadeTestSetup:<br/>\n<br/>\npublic class FacadeTestSetup extends TestSetup {<br/>\n    private Connection con;<br/>\n    private long newID[] = {0, 0};<br/>\n<br/>\n    public FacadeTestSetup(Test t) {<br/>\n        super(t);<br/>\n    }<br/>\n<br/>\n    /**<br/>\n     * Adds data to the database for the test cases.<br/>\n     */<br/>\n    protected void setUp() throws Exception {<br/>\n        Statement s = null;<br/>\n<br/>\n        DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());<br/>\n        con = DriverManager.getConnection();<br/>\n<br/>\n        // Add two users to the database<br/>\n        try {<br/>\n            newID[0] = DbUtil.getNextSEQ(&quot;sUserID&quot;, con);<br/>\n            newID[1] = DbUtil.getNextSEQ(&quot;sUserID&quot;, con);<br/>\n<br/>\n            s = con.createStatement();<br/>\n            s.executeUpdate(&quot;INSERT...&quot;);<br/>\n            s.executeUpdate(&quot;INSERT...&quot;);<br/>\n        }<br/>\n        finally {<br/>\n            if (s != null) s.close();<br/>\n        }<br/>\n    }<br/>\n<br/>\n    /**<br/>\n     * Removes the data that we added in setUp() and closes the database<br/>\nconnection.<br/>\n     */<br/>\n    protected void tearDown() throws Exception {<br/>\n        Statement s = null;<br/>\n<br/>\n        try {<br/>\n            s = con.createStatement();<br/>\n            s.executeUpdate(&quot;DELETE...&quot;);<br/>\n        }<br/>\n        finally {<br/>\n            if (s != null) s.close();<br/>\n            if (con != null) con.close();<br/>\n        }<br/>\n    }<br/>\n<br/>\nAnd here&#39;s a part of the FacadeTest (minus the actual test cases):<br/>\n<br/>\npublic class FacadeTest extends TestCase {<br/>\n<br/>\n    public FacadeTest(String name) {<br/>\n        super(name);<br/>\n    }<br/>\n<br/>\n    public static void main(String[] args) throws Exception {<br/>\n        String[] testCaseName = {FacadeTest.class.getName()};<br/>\n        junit.swingui.TestRunner.main(testCaseName);<br/>\n    }<br/>\n<br/>\n    public static junit.framework.Test suite() {<br/>\n        TestSuite newSuite = new TestSuite(FacadeTest.class);<br/>\n        return new FacadeTestSetup(newSuite);<br/>\n    }<br/>\n}<br/>\n<br/>\n-----Original Message-----<br/>\nFrom: Christian van der Leeden [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:leeden@...\">leeden@...</a>]<br/>\nSent: Thursday, April 19, 2001 1:43 PM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: [junit] In what order are the test run through...<br/>\n<br/>\n<br/>\nHi all,<br/>\n<br/>\n\tI&#39;m testing some classes which leave state in the db. This one is<br/>\na user class. So I definitely want to have the test to create the<br/>\nuser before the test to search for the user. AND I&#39;d prefer<br/>\nto set this up with new TestSuite(User.class) instead of<br/>\nadding the methods by hand.<br/>\n<br/>\nIs there a specific ordering of the test runs (or method calls)?<br/>\nIs the solution to add the test cases by hand?<br/>\nsuite.addTest(&quot;testAddUser&quot;);<br/>\nsuite.addTest(&quot;findUser&quot;);<br/>\n<br/>\nCU<br/>\n<br/>\nChristian<br/>\nP.S.: I don&#39;t quite get the TestDecorator and couldn&#39;t find an example.<br/>\n          A hint is highly appreciated :-)<br/>\n<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n <br/>\n<br/>\nYour use of Yahoo! Groups is subject to <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a></div>", 
+    "prevInTime": 992, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "987707161", 
+    "canDelete": false, 
+    "nextInTopic": 994, 
+    "prevInTopic": 992, 
+    "headers": {
+        "messageIdInHeader": "PDU1MkU4MUVGRURBOEQzMTE4QUE3MDA5MDI3REUwNTdCMDE1N0JDRjNARlNDX0VYQ0hBTkdFPg=="
+    }
+}

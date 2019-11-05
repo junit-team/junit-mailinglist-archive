@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 10431, 
+    "senderId": "bsJcSYPAu76Rzn5m1t_RU4wbFpAMpMydp1ElexZniVD6L64UxJI9qZ2O3qpqehy-t-jcSuh4ULqW7UiykWPQeKcTh8GXgXqz4CvrVjJv4IeD", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Complicated Junit Test", 
+    "from": "&quot;Kris Henderson&quot; &lt;khenderson@...&gt;", 
+    "authorName": "Kris Henderson", 
+    "msgSnippet": "... It sounds to me like you re trying to test the whole application at once.  Focus on each individual part and it ll be easier to test.  Your application", 
+    "msgId": 10430, 
+    "profile": "kris_556", 
+    "topicId": 10409, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 90305179, 
+    "messageBody": "<div id=\"ygrps-yiv-1993972258\"><blockquote><span title=\"ireply\">&gt; -----Original Message-----<br/>\n&gt; From: boyfrnd007 [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:boyfrnd007@...\">boyfrnd007@...</a>] <br/>\n&gt; Subject: [junit] Re: Complicated Junit Test<br/>\n&gt; <br/>\n&gt;    Thanks for your help. But the thing is this is application that I <br/>\n&gt; am trying to test and they need something automated to run it. These <br/>\n&gt; microsoft documents can change with date and can remain same for <br/>\n&gt; months. Everytime this document changes, there is a mail in my <br/>\n&gt; mailbox having the document. <br/>\n<br/>\n </span></blockquote>It sounds to me like you&#39;re trying to test the whole application at<br/>\nonce.  Focus on each individual part and it&#39;ll be easier to test.  Your<br/>\napplication basically has two parts, one to detect documents<br/>\n(DocumentFinder) that need to be sent, and another to send the documents<br/>\n(DocumentSender).  You probably shouldn&#39;t worry about verifying that the<br/>\ndocument ended up in your inbox because then you&#39;re testing the<br/>\ninternet, email protocols, and your email client which you really have<br/>\nno control of.  Just verify that the document was sent and that would be<br/>\ngood enough.  You want to make your tests not rely on anything because<br/>\nthat makes them less reliable, for example, if you verify that your<br/>\ndocument is in your inbox you need a working SMTP/POP3 server.  If the<br/>\nserver goes down, then your test will fail.<br/>\n<br/>\nIf DocumentFinder returns a list of documents to be sent you could set<br/>\nup your test something like this:<br/>\n<br/>\nThese examples should be regarded as pseudocode and not real java code.<br/>\n<br/>\ntestDocumentChanged()<br/>\n{<br/>\n\tDocumentFinder finder = new DocumentFinder();<br/>\n<br/>\n\t//some code to change the date of one document.<br/>\n<br/>\n\tfinder.find();<br/>\n<br/>\n\tassertEquals(1, finder.numDocuments());<br/>\n\tassertEquals(&quot;C:&#92;&#92;mydocument.txt&quot;, finder.documentAt(0));<br/>\n}<br/>\n<br/>\nIf you use readers and writers for your DocumentSender, then you can<br/>\nverify that the correct data is being written without actually writing<br/>\nto a socket.  Your test might look something like this.<br/>\n<br/>\ntestSendDocument()<br/>\n{<br/>\n\tString expectedData = ...;<br/>\n<br/>\n\tStringWriter writer = new StringWriter();<br/>\n\tDocumentSender sender(&quot;C:&#92;&#92;mydocument.txt&quot;, writer);<br/>\n\tsender.send();<br/>\n<br/>\n\tassertEquals(expectedData, writer.toString());<br/>\n}<br/>\n<br/>\nKris</div>", 
+    "prevInTime": 10429, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1076020410", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 10426, 
+    "headers": {
+        "messageIdInHeader": "PEY3QjE2RUI4OTg0QjE0NDA5QUNCMDE1RjEzMjZCQjY2MDEyRDdDNEZAQVRMMVZFWEMwMDUudXNkb20wMDQudGNvLnRjPg=="
+    }
+}

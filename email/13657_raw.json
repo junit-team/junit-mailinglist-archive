@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 81, 
+    "nextInTime": 13658, 
+    "senderId": "QuOhbl-CDZ3sgoyf8mNhFpH98gwjezY3vWF0_sEoecw96L1ef4Y1qSUp7J8DQckxzmqKs-wUTC2KBx_gv45fR2M2G3IdVR_hzg", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] use of setUp and tearDown", 
+    "from": "&quot;Cedric Beust&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cedric Beust", 
+    "msgSnippet": "... Oh it will become one, trust me :-) Tests (not just unit tests, all tests) should go as fast as possible.  The faster they go, the more inclined developers", 
+    "msgId": 13657, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 65717 invoked from network); 27 May 2005 15:53:40 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m22.grp.scd.yahoo.com with QMQP; 27 May 2005 15:53:40 -0000\r\nReceived: from unknown (HELO 216-239-45-4.google.com) (216.239.45.4)\n  by mta6.grp.scd.yahoo.com with SMTP; 27 May 2005 15:53:40 -0000\r\nReceived: from cbeustcorp (dhcp-172-24-73-139.corp.google.com [172.24.73.139])\n\tby chris.corp.google.com (8.13.3/8.13.3) with ESMTP id j4RFrcqY003547\n\t(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO)\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 27 May 2005 08:53:38 -0700\r\nMessage-Id: &lt;200505271553.j4RFrcqY003547@...&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Fri, 27 May 2005 08:53:38 -0700\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nIn-Reply-To: &lt;42971579.5000208@...&gt;\r\nThread-Index: AcViuX51wDJht7JNTfOhzSKQklyrRAAGX5Mw\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;Cedric Beust&quot; &lt;cbeust@...&gt;\r\nSubject: RE: [junit] use of setUp and tearDown\r\nX-Yahoo-Group-Post: member; u=199443513; y=mmWkgVYFPoUK6Zvy0yV4NhZrRjHXUPeyrYuO4id-nHCs\r\nX-Yahoo-Profile: cbeust\r\n\r\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n\n&gt; For wha=\r\nt it&#39;s worth I do almost exactly this. However I do \n&gt; reparse on every tes=\r\nt method, and it&#39;s not that big a deal. \n\nOh it will become one, trust me :=\r\n-)\n\nTests (not just unit tests, all tests) should go as fast as possible.  =\r\nThe\nfaster they go, the more inclined developers will be to run them on a\nr=\r\negular basis or, ideally, every time before they commit something.\n\nWhen yo=\r\nur tests start taking a long time, they only get run at night and the\n&quot;fail=\r\nure report/fix/retest&quot; cycle takes increasingly longer, making it\nharder to=\r\n identify new breakages.\n\nWhen I try to optimize the speed of my tests, the=\r\n first thing I do is appy\nthe principle &quot;Don&#39;t Repeat Yourself&quot;.  Not in te=\r\nrms of code, but of\nruntime.  If something only needs to be run once, I mak=\r\ne sure it only gets\nrun once.  Having as much control as possible on this w=\r\nas of paramount\nimportance to me, which is why TestNG extends JUnit&#39;s setUp=\r\n/tearDown\nprinciple to work around test classes, test suites and even test =\r\ngroups.\nThis gives you maximal control on the granularity of your setUp/tea=\r\nrDown\ncycle.\n\nSo my question to you is:  why do you reparse this file on ev=\r\nery test method\nwhen it&#39;s not necessary?  Because JUnit doesn&#39;t give you an=\r\ny\n&quot;setUp/tearDown&quot; method around classes?\n\n&gt; The key is that I do the repar=\r\nse for large files in each test \n&gt; method rather than in setUp or the const=\r\nructor so that those \n&gt; methods that don&#39;t need to parse the file don&#39;t do =\r\nit.\n\nIn this case, I would recommend breaking down your test class in a par=\r\nent\nclass for all the test methods that don&#39;t need this file and a subclass=\r\n for\nall the test methods that do need this file.  Then you can put the rep=\r\narse\nof your file in setUp(), which -- as someone said earlier -- makes the=\r\n\nintent obvious.\n\nLet me stress this point further.\n\nIn JUnit, you have fou=\r\nr ways to initialize / tear down your test, and they\nare *all* equivalent:\n=\r\n\n- At the beginning and end of each test method\n- In setUp()/tearDown()\n- I=\r\nn the constructor\n- At the field declaration level\n\nI find that confusing a=\r\ns hell, so I *strongly* recommend to use\nsetUp/tearDown at the exclusion of=\r\n everything else.  Again, the idea is to\nmake the intent obvious.\n\n-- \nC=E9=\r\ndric\nhttp://beust.com/weblog\n\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 13634, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 13656, 
+    "contentTrasformed": false, 
+    "postDate": "1117209218", 
+    "canDelete": false, 
+    "nextInTopic": 13658, 
+    "prevInTopic": 13655, 
+    "headers": {
+        "inReplyToHeader": "PDQyOTcxNTc5LjUwMDAyMDhAbWV0YWxhYi51bmMuZWR1Pg==", 
+        "messageIdInHeader": "PDIwMDUwNTI3MTU1My5qNFJGcmNxWTAwMzU0N0AyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

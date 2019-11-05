@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 30, 
+    "nextInTime": 8865, 
+    "senderId": "Sq4U17rxT8q6Q6aTWws1YoHmPuxouCUQIPllhgVFdB26UH-OeCcp5wQKrUaNrRzxYn8Xk54Dx8PPbB4ZnZcWN8UvgqawJVhhDTtNDns3eQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to test console output?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I have news for you: setUp() is called for each test. You are creating the extra StringWriter every time, anyway. Don t worry about it. These aren t", 
+    "msgId": 8864, 
+    "profile": "nails762", 
+    "topicId": 8734, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-1962174314\"><blockquote><span title=\"ireply\">&gt;So said jxingtang on 2003-07-30 --------------------<br/>\n&gt;&gt; &gt;A further question for StringWriter manipulation. Since I have to <br/>\n&gt;&gt; &gt;test several methods with console output which share the same <br/>\n&gt;&gt; &gt;StringWriter wrapped in the PrinterWriter. The problem is how to <br/>\n&gt;&gt; &gt;clean up the buffer after one test case. flush() method seems not <br/>\n&gt;&gt; &gt;work as expected.  <br/>\n&gt;&gt; <br/>\n&gt;&gt; Why do you have to share the same StringWriter for each test? Just <br/>\n&gt;create a new one.<br/>\n<br/>\n&gt;I have found a way to solve the problem. I calls the getBuffer()to <br/>\n&gt;get the string buffer from the StringWriter and delete its content.<br/>\n&gt;<br/>\n&gt;The reason for me to share the StringWriter is that I do not want to <br/>\n&gt;construct a new class instance being tested for each method. I only <br/>\n&gt;construct on in setUp(). Here are of my code snippets.<br/>\n<br/>\n </span></blockquote>I have news for you: setUp() is called for each test. You are creating the extra StringWriter every time, anyway.<br/>\n<br/>\nDon&#39;t worry about it. These aren&#39;t performance tests. Just create a new one each time.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;public class MyClass<br/>\n&gt;{<br/>\n&gt;    private PrintWriter MyWriter;<br/>\n&gt;      <br/>\n&gt;    // Constructor for production release<br/>\n&gt;    public MyClass()<br/>\n&gt;    {<br/>\n&gt;        MyWriter = new PrintWriter( System.out );<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    // Constructor for Junit testing      <br/>\n&gt;    public MyClass( PrintWriter pw )<br/>\n&gt;    {<br/>\n&gt;        MyWriter = pw;<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    public void DumpOutput( Vector params )<br/>\n&gt;    {<br/>\n&gt;       // Clip ...<br/>\n&gt;    }<br/>\n&gt;};<br/>\n&gt;<br/>\n&gt;public class MyClassTest extends TestCase<br/>\n&gt;{<br/>\n&gt;    private MyClass MyTestObj = null;<br/>\n&gt;<br/>\n&gt;    private StringWriter StrWriter = null;<br/>\n&gt;<br/>\n&gt;    // Clip ...<br/>\n&gt;<br/>\n&gt;    protected void setUp()<br/>\n&gt;    {<br/>\n&gt;        StrWriter = new StringWriter();<br/>\n&gt;      PrintWriter prWriter = new PrintWriter( StrWriter );<br/>\n&gt;      TestObj = new MyClass( prWriter );<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    public DumpOutputTest()<br/>\n&gt;    {<br/>\n&gt;        Vector testParams = new Vector();<br/>\n&gt;        // Testcase 1<br/>\n&gt;        testParams.addElement( &quot;A&quot; );<br/>\n&gt;        testParams.addElement( &quot;B&quot; );<br/>\n&gt;        testParams.addElement( &quot;C&quot; );<br/>\n&gt;        <br/>\n&gt;        TestObj.DumpOutput( testParams );<br/>\n&gt;<br/>\n&gt;        String outStr = StrWriter.toString();<br/>\n&gt;        <br/>\n&gt;        // Code to evaluate outStr<br/>\n&gt;        // Clip ....  <br/>\n&gt;        <br/>\n&gt;        // Clean buffer of StringWriter<br/>\n&gt;        StringBuffer sbuff = StrWriter.getBuffer();<br/>\n&gt;        sbuff.delete( 0, outStr.length());<br/>\n&gt;<br/>\n&gt;        // Testcase 2 <br/>\n&gt;        testParams.addElement( &quot;X&quot; );<br/>\n&gt;        testParams.addElement( &quot;Y&quot; );<br/>\n&gt;        testParams.addElement( &quot;Z&quot; );<br/>\n&gt;        <br/>\n&gt;        TestObj.DumpOutput( testParams );<br/>\n&gt;<br/>\n&gt;        String outStr = StrWriter.toString();<br/>\n&gt;        <br/>\n&gt;        // Code to evaluate outStr<br/>\n&gt;        // Clip ....  <br/>\n&gt;     }<br/>\n&gt;<br/>\n&gt;     // Clip ...<br/>\n&gt;};<br/>\n&gt;<br/>\n&gt;Please give your valuable comments for my further correction and <br/>\n&gt;improvements.<br/>\n<br/>\n </span></blockquote>Why are you writing multiple tests in a single method? Each test should be its own method. You defeat the point of JUnit by using it this way.<br/>\n<br/>\nTake care.<br/>\n<br/>\n&#39;<br/>\nJ. B. Rainsberger,<br/>\nPresident, Diaspar Software Services<br/>\nLet&#39;s write software that people understand.<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.diasparsoftware.com/\">http://www.diasparsoftware.com/</a><br/>\ntelephone: +1 416 791-8603</div>", 
+    "prevInTime": 8863, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1059671548", 
+    "canDelete": false, 
+    "nextInTopic": 8865, 
+    "prevInTopic": 8862, 
+    "headers": {
+        "inReplyToHeader": "PGJnOG04Yys4ZXM1QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwNzMxMTMxMjI4MDE1NC4wMzc3RkI4REBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGJnOG04Yys4ZXM1QGVHcm91cHMuY29tPg=="
+    }
+}

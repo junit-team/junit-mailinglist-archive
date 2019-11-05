@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 13262, 
+    "senderId": "xN6au6sCQVZyRdsLNOHSPwo3OmxiBz9J5tIW3EdRSdOKwN6ejiFwkBkwC0rzJPodyNLutBHrJUXorR07lT68PzuREPJA0Wb4TM7foGlStv9jnAFyW9zVVxPyzttwKA1SmUeSp8Wg02yR", 
+    "systemMessage": false, 
+    "subject": "Re: How to test this class ?", 
+    "from": "=?iso-8859-1?q?Harald_M._M=FCller?= &lt;harald.m.mueller@...&gt;", 
+    "authorName": "Harald M. Müller", 
+    "msgSnippet": "Well - you did use the System.setIn() as I explained. For the rest, using the pipe mechanism is of course also possible and ok, it is only more work than", 
+    "msgId": 13261, 
+    "profile": "harald_m_mueller", 
+    "topicId": 13253, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 74507428, 
+    "messageBody": "<div id=\"ygrps-yiv-945057289\">Well - you did use the System.setIn() as I explained. For the rest, <br/>\nusing the pipe mechanism is of course also possible and ok, it is <br/>\nonly more work than simply providing a ByteInputStream by the two <br/>\nlines<br/>\n<br/>\n   byte[] withLine = in.getBytes();<br/>\n   System.setIn(new ByteArrayInputStream(withLine));<br/>\n<br/>\n... and off you go, without need of Threads, sleeps, Exceptions, and <br/>\nother things.<br/>\nKeep it simple :-)<br/>\n<br/>\nRegards<br/>\nHarald M. Mueller<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;rubbinio&quot; &lt;rubbinio@y...&gt; wrote:<br/>\n&gt; <br/>\n&gt; Thx Harald for your answer but I managed to find a solution myself<br/>\n&gt; after a loot of seraching on the net and a lot of reading I came up<br/>\n&gt; with my own solution. Here it is in case someone else needs it.<br/>\n&gt; <br/>\n&gt; I basically created a thread which fakes an input and it works <br/>\ngreat.<br/>\n&gt; Here is the code:<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; private class fakeInput extends Thread<br/>\n&gt;     {<br/>\n&gt;         private String in_;<br/>\n&gt;         <br/>\n&gt;         public fakeInput( String in )<br/>\n&gt;         {<br/>\n&gt;             in_ = in;<br/>\n&gt;         }<br/>\n&gt;         <br/>\n&gt;         public void run()<br/>\n&gt;         {<br/>\n&gt;             try <br/>\n&gt;             {<br/>\n&gt;                 <br/>\n&gt;                 PipedInputStream testInPipe = new PipedInputStream<br/>\n();<br/>\n&gt;             \tPipedOutputStream testOutPipe = new PipedOutputStream<br/>\n();<br/>\n&gt;             \ttestInPipe.connect(testOutPipe);<br/>\n&gt;             \tSystem.setIn(testInPipe);<br/>\n&gt;             \tString withline = in_ + &quot;&#92;n&quot;;<br/>\n&gt;                 this.sleep(1000);<br/>\n&gt;                 testOutPipe.write(withline.getBytes(), 0,<br/>\n&gt; withline.length());<br/>\n&gt; <br/>\n&gt;                 <br/>\n&gt;             }<br/>\n&gt;             catch ( Exception e)<br/>\n&gt;             {                <br/>\n&gt;             }<br/>\n&gt;             <br/>\n&gt;             <br/>\n&gt;         }<br/>\n&gt;     }<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, Harald M. Muller <br/>\n&lt;harald.m.mueller@b...&gt;<br/>\n&gt; wrote:<br/>\n&gt; &gt; <br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; I need to test a class in which all the methods read via <br/>\nSystem.in.<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; How can I fake the input so that I can automate my tests ?<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; Any answer will be helpfull ..... I am using JUnit under <br/>\nEclipse.<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; <br/>\n================================================================<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt; class Input {<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; &gt;   static final BufferedReader keyboard = new BufferedReader( <br/>\nnew<br/>\n&gt; &gt; &gt; InputStreamReader(System.in));<br/>\n&gt; &gt; &gt; <br/>\n&gt; &gt; <br/>\n&gt; &gt; Since JDK1.1, there is a method<br/>\n&gt; &gt; \tSystem.setIn(InputStream in)<br/>\n&gt; &gt; Just call this in setUp() to get Input from somewhere else (a<br/>\n&gt; &gt; FileInputStream or a ByteArrayInputStream probably make most <br/>\nsense). If<br/>\n&gt; &gt; you want to be perfect, do the following:<br/>\n&gt; &gt; <br/>\n&gt; &gt; class MyTestCase ... {<br/>\n&gt; &gt;   InputStream originalIn;<br/>\n&gt; &gt;   public void setUp() {<br/>\n&gt; &gt;     originalIn = System.in;<br/>\n&gt; &gt;     System.setIn(....);<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; &gt;   }<br/>\n&gt; &gt;   public void tearDown() {<br/>\n&gt; &gt;     System.setIn(originalIn);<br/>\n&gt; &gt;   }<br/>\n&gt; &gt;   // ...<br/>\n&gt; &gt; }<br/>\n&gt; &gt; <br/>\n&gt; &gt; No need for any fancy refactoring ;-) - but it wouldn&#39;t hurt to <br/>\ndo it!<br/>\n&gt; &gt; <br/>\n&gt; &gt; Regards<br/>\n&gt; &gt; Harald M. Mueller </span></blockquote></div>", 
+    "prevInTime": 13260, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1113121522", 
+    "canDelete": false, 
+    "nextInTopic": 13268, 
+    "prevInTopic": 13259, 
+    "headers": {
+        "inReplyToHeader": "PGQzYTZqaStjN2kwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGQzYW50aSs3OTZ1QGVHcm91cHMuY29tPg=="
+    }
+}

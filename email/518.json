@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 519, 
+    "senderId": "9jT9F6LjWp_MO7ux3gSfo_jCvP6EwcXCCBYi_StNYbRiGH026nEs8E1abM7Htb4ws-Vp0MY4Y1Bl_d2D-88YSTA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Stepping through code", 
+    "from": "Joi Ellis &lt;joi@...&gt;", 
+    "authorName": "Joi Ellis", 
+    "msgSnippet": "... I do this all the time.  The trick is to ensure your tests are thread safe.  Typically when I have trouble with something in the debugger, it s because", 
+    "msgId": 518, 
+    "topicId": 508, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-532351819\">On Wed, 21 Feb 2001, Bob Krygowski wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Does anyone know if you can step through your code while running JUnit<br/>\n&gt; tests?  I have been using JBuilder 4 and have only successfully been able to<br/>\n&gt; hit break points in the main method (which just ends up taking you to<br/>\n&gt; underlying JUnit code).  In debugging I would like to be able to step<br/>\n&gt; through the individual tests and step into the actual class that is being<br/>\n&gt; tested to see what is going on.<br/>\n&gt; <br/>\n&gt; Any thoughts?<br/>\n<br/>\n </span></blockquote>I do this all the time.  The trick is to ensure your tests are thread <br/>\nsafe.  Typically when I have trouble with something in the debugger,<br/>\nit&#39;s because I&#39;ve molested a visible swing component from my main test<br/>\nthread instead of the swing event thread.<br/>\n<br/>\nI&#39;ve collected a number of methods to make this easier.<br/>\n<br/>\nOn my AllTests.java file I have:<br/>\n<br/>\n  /**<br/>\n   * Safely call doClick() on the specified JButton.<br/>\n   * @param button The button to doClick().<br/>\n   */<br/>\n  public static void safeDoClick(final JButton button) {<br/>\n    try {<br/>\n      SwingUtilities.invokeAndWait(<br/>\n        new Runnable() {<br/>\n          /**<br/>\n           *  Main processing method for the AllTests object<br/>\n           */<br/>\n          public void run() {<br/>\n            button.doClick();<br/>\n          }<br/>\n        }<br/>\n      );<br/>\n    }<br/>\n    catch (Exception ex) {<br/>\n      ex.printStackTrace();<br/>\n    }<br/>\n  }<br/>\n<br/>\nI use this within tests like so:<br/>\n<br/>\n//    foo.setWatched( buttonOne ); // not thread safe, dummy!<br/>\n    AllTests.safeDoClick( buttonOne );<br/>\n<br/>\n-- <br/>\nJoi Ellis                    Software Engineer<br/>\nAravox Technologies          <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:joi@...\">joi@...</a>, <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:gyles19@...\">gyles19@...</a><br/>\n<br/>\nNo matter what we think of Linux versus FreeBSD, etc., the one thing I<br/>\nreally like about Linux is that it has Microsoft worried.  Anything<br/>\nthat kicks a monopoly in the pants has got to be good for something.<br/>\n           - Chris Johnson</div>", 
+    "prevInTime": 517, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "982784967", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 508, 
+    "headers": {
+        "inReplyToHeader": "PDQwRTI3Q0I4MEZGNkQ0MTE5MTVCMDAwOEM3NENDRTJDMDgzQzBDQGV4Y2hhbmdlLnRjbG91ZC5uZXQ+", 
+        "messageIdInHeader": "PFBpbmUuTE5YLjQuMjEuMDEwMjIxMTM0NDMwMC4yNDg0MS0xMDAwMDBAam9pLmFyYXZveC5jb20+"
+    }
+}

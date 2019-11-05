@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 15375, 
+    "senderId": "7Y6EN5UeQadb_JMWUzNp4e6yPeTUCOybLEBaphyVnlEHQU4v5tm4f-BG6_fJJM55v0D6tuboSubXQ8LH7BcEnpL2YjGnUdWBgXvaQJeTZHjKdfsW7Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Running Only Testable classes with Ant/JUnit task", 
+    "from": "&quot;Jeff Nielsen&quot; &lt;jeff.nielsen@...&gt;", 
+    "authorName": "Jeff Nielsen", 
+    "msgSnippet": "The solution we have used for years is: - Use a custom SuiteBuilder that allows us to do custom filtering of the compiled .class files (e.g., include all", 
+    "msgId": 15374, 
+    "rawEmail": "Return-Path: &lt;jeff.nielsen@...&gt;\r\nX-Sender: jeff.nielsen@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 23461 invoked from network); 8 Nov 2005 22:47:11 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m30.grp.scd.yahoo.com with QMQP; 8 Nov 2005 22:47:11 -0000\r\nReceived: from unknown (HELO host54a.simplicato.com) (207.99.47.54)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 Nov 2005 22:47:11 -0000\r\nReceived: from localhost (localhost.simplicato.com [127.0.0.1])\n\tby host54a.simplicato.com (Postfix) with ESMTP id 3EA1E6C0847\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  8 Nov 2005 17:46:42 -0500 (EST)\r\nReceived: from host54a.simplicato.com ([127.0.0.1])\n by localhost (host54a.simplicato.com [127.0.0.1]) (amavisd-new, port 10024)\n with ESMTP id 85264-09 for &lt;junit@yahoogroups.com&gt;;\n Tue,  8 Nov 2005 17:46:42 -0500 (EST)\r\nReceived: from dfpub102.digitalfocus.com (dfpub102.digitalfocus.com [65.120.79.2])\n\tby host54a.simplicato.com (Postfix) with SMTP id 000D46C0846\n\tfor &lt;junit@yahoogroups.com&gt;; Tue,  8 Nov 2005 17:46:41 -0500 (EST)\r\nReceived: from laptop100.df.com by dfpub102.digitalfocus.com\n          via smtpd (for host54a.simplicato.com [207.99.47.54]) with SMTP; Tue, 8 Nov 2005 17:44:32 -0500\r\nMessage-ID: &lt;0dc801c5e4b6$4d2a0f30$2e07000a@laptop100&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nReferences: &lt;dkobtj+7acg@...&gt;\r\nDate: Tue, 8 Nov 2005 17:46:47 -0500\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tformat=flowed;\n\tcharset=&quot;iso-8859-1&quot;;\n\treply-type=original\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 6.00.2900.2180\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nX-Virus-Scanned: by amavisd-new at simplicato.com\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Jeff Nielsen&quot; &lt;jeff.nielsen@...&gt;\r\nSubject: Re: [junit] Running Only Testable classes with Ant/JUnit task\r\nX-Yahoo-Group-Post: member; u=65487161; y=KX3gsYR5NETiXkpyrojE_I9eqtIXTgwi0Q9gv817RVXGB5agtF4\r\nX-Yahoo-Profile: jeffreymads\r\n\r\nThe solution we have used for years is:\n\n - Use a custom SuiteBuilder that allows us to do custom filtering of the \ncompiled .class files\n   (e.g., include all non-abstract classes with a certain suffix that extend \nTestSuite)\n\n - Customize the &lt;junitreport&gt; task so that it prepends the test class name \nto the name of each test,\n   for when we need reports (e.g., with Cruise Control)\n\n  - Use the java.textui.TestRunner from a &lt;java&gt; task in place of the \n&lt;junit&gt; task as much as possible.\n   It&#39;s quick, easy, and those little dots are almost as addictive as a \ngreen bar.  :-)\n\nJeff Nielsen\nDigital Focus\nwww.digitalfocus.com\n\n----- Original Message ----- \nFrom: &quot;cliftonccraig&quot; &lt;cliftonccraig@...&gt;\nTo: &lt;junit@yahoogroups.com&gt;\nSent: Monday, November 07, 2005 3:02 PM\nSubject: [junit] Running Only Testable classes with Ant/JUnit task\n\n\n&gt; Hello,\n&gt;\n&gt; This may sound like more of a novice question but I need to know what\n&gt; the best practice is for running all of my tests and ONLY my testable\n&gt; classes with the Ant Junit task. What I mean is this. I tried using\n&gt; the batchtest task which is severely limited. It only does a directory\n&gt; scan over my test source to pick up the test classes. The problem is\n&gt; sometimes I may include abstract classes under that umbrella for\n&gt; conveniece methods and they get picked up too. Also there is no\n&gt; garauntee that the source and class files will be one for one. (Eg.\n&gt; nested classes would go unnoticed as well as source files that\n&gt; don&#39;t/can&#39;t compile to a equivalent named class.) I would feel alot\n&gt; better if I could filter the .class files instead of the source and\n&gt; pull out only the classes that are TESTABLE. That is, classes that\n&gt; begin or end with &quot;Test&quot; and have at least one public no-arg method\n&gt; beginning with &quot;test&quot;.\n&gt;\n&gt; So I plugged in DirectorySuiteBuilder from the junit addons project\n&gt; and added some custom code to accomplish this. My custom code, a class\n&gt; named DirectoryScannerSuiteBuilder, is included below. The problem\n&gt; with that approach, while it is a lot more  accurate, is that the\n&gt; junitreport task now lumps all tests under my custom\n&gt; DirectoryScannerSuiteBuilder class name without separating out the\n&gt; detail. So my question is what would the best approach be? Should I\n&gt; stop being anal and just go with the batchtest approach and stop\n&gt; including abstracts under the test source directory? (Incedentally\n&gt; that&#39;s what I&#39;m resoting to now.) Or is there a more elaborate\n&gt; solution sort of like a best of breed between the two approaches I&#39;ve\n&gt; tried so far?\n&gt;\n&gt; Thanx in advance,\n&gt; Cliff\n&gt;\n\n\n", 
+    "profile": "jeffreymads", 
+    "topicId": 15366, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 65487161, 
+    "prevInTime": 15373, 
+    "contentTrasformed": false, 
+    "postDate": "1131490007", 
+    "canDelete": false, 
+    "nextInTopic": 15376, 
+    "prevInTopic": 15366, 
+    "headers": {
+        "messageIdInHeader": "PDBkYzgwMWM1ZTRiNiQ0ZDJhMGYzMCQyZTA3MDAwYUBsYXB0b3AxMDA+", 
+        "referencesHeader": "PGRrb2J0ais3YWNnQGVHcm91cHMuY29tPg=="
+    }
+}

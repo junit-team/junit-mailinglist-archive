@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 13386, 
+    "senderId": "88AguFBXCaJsJidDjdI8NdKUc2XkMzD4z9jGbRDt1s-SOoMJnLrAau_eDiZupr7MC2di2l2U4BEgn3G-ivF-w44BI4JHZ2GtoQ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] mechanism to maintain session information across testcases?", 
+    "from": "&quot;Cedric Beust&quot; &lt;cbeust@...&gt;", 
+    "authorName": "Cedric Beust", 
+    "msgSnippet": "From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of James Abley ... I m not sure this is a good way to go - you re losing test isolation It", 
+    "msgId": 13385, 
+    "rawEmail": "Return-Path: &lt;cbeust@...&gt;\r\nX-Sender: cbeust@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 56445 invoked from network); 2 May 2005 21:50:58 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m26.grp.scd.yahoo.com with QMQP; 2 May 2005 21:50:58 -0000\r\nReceived: from unknown (HELO 216-239-45-4.google.com) (216.239.45.4)\n  by mta5.grp.scd.yahoo.com with SMTP; 2 May 2005 21:50:57 -0000\r\nReceived: from cbeustcorp (dhcp-172-24-73-139.corp.google.com [172.24.73.139])\n\tby stewie.corp.google.com (8.13.3/8.13.3) with ESMTP id j42LoiW9000650\n\t(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);\n\tMon, 2 May 2005 14:50:44 -0700\r\nMessage-Id: &lt;200505022150.j42LoiW9000650@...&gt;\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nCc: &quot;&#39;Akhil Srinivasan&#39;&quot; &lt;akhilss@...&gt;\r\nDate: Mon, 2 May 2005 14:50:44 -0700\r\nMIME-Version: 1.0\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1441\r\nIn-Reply-To: &lt;23fce8e60505021413212b10c7@...&gt;\r\nThread-Index: AcVPW82a2IVJfUIURO6/7uq/yKTIPgABFnKw\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;Cedric Beust&quot; &lt;cbeust@...&gt;\r\nSubject: RE: [junit] mechanism to maintain session information across testcases?\r\nX-Yahoo-Group-Post: member; u=199443513\r\nX-Yahoo-Profile: cbeust\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n \n\n\n\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf O=\r\nf\nJames Abley\n\nOn 5/2/05, Akhil Srinivasan &lt;akhilss@...&gt; wrote:\n&gt;  HI=\r\n,\n&gt;  I have a situation where junit testcases will act a as a client\n&gt;  sen=\r\nding messages to the server. Based on the message returned my\n&gt;  testcase w=\r\nill pass or fail.\n&gt;  Additionally I have to have multiple testcases that wi=\r\nll send messages\n&gt;  using the same connection. Note that the server maintai=\r\nns a session\n&gt;  information on the client connection. \n&gt;  How do i share th=\r\nis session information(connection + related crap)\n&gt;  across testcases, so t=\r\nhat i can execute a sequence of testcases which\n&gt;  will all use the same co=\r\nnnection. One mechanism i thought of was\n&gt;  extending a testcase that will =\r\ncontain the connection and use it as a\n&gt;  fixture, all testcases will call =\r\nthat as a fixture but how do i shared\n&gt;  the connection from the fixture to=\r\n other testcases which them selves\n&gt;  need to send messages?\n&gt;  Thanks\n&gt;  A=\r\nkhil Srinivasan\n&gt;  \n\nI&#39;m not sure this is a good way to go - you&#39;re losing =\r\ntest isolation \n \n\nIt seems to me test isolation is not desirable in this c=\r\nase because the\nbusiness logic itself relies on dependencies.  It only make=\r\ns sense to test\nthat the server is receiving a message if the server starte=\r\nd in the first\nplace.\n \nConsider the following business logic:\n \n1) Start s=\r\nerver\n2) Create connection pool\n3) Send message\n4) Receiver of message stor=\r\nes values in the DB\n \nIn order to test these four steps, it makes sense to =\r\naccumulate the state of\nthe previous phases so that you don&#39;t have to recre=\r\nate it from scratch.\n \nAs for the cascade effect, JUnit doesn&#39;t allow you t=\r\no differentiate a test\nthat failed because it really failed or because a pr=\r\nevious test on which it\ndepends didn&#39;t complete successfully, which is clea=\r\nrly needed in cases like\nthis.\n \nFor example, imagine that the connection p=\r\nool creation fails, JUnit will\ntell you &quot;1 SUCCESS, 3 FAILURES&quot; while what =\r\nreally happened is &quot;1 SUCCESS, 1\nFAILURE, 2 TESTS NOT RUN&quot;.\n \nAt any rate, =\r\nyou are right, this definitely sounds like acceptance testing,\nnot unit tes=\r\nting, so JUnit is probably not the right tool...\n \n-- \nC=E9dric\n \n\n\n[Non-te=\r\nxt portions of this message have been removed]\n\n\n", 
+    "profile": "cbeust", 
+    "topicId": 13381, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 199443513, 
+    "prevInTime": 13384, 
+    "contentTrasformed": false, 
+    "postDate": "1115070644", 
+    "canDelete": false, 
+    "nextInTopic": 13390, 
+    "prevInTopic": 13383, 
+    "headers": {
+        "inReplyToHeader": "PDIzZmNlOGU2MDUwNTAyMTQxMzIxMmIxMGM3QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDIwMDUwNTAyMjE1MC5qNDJMb2lXOTAwMDY1MEAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

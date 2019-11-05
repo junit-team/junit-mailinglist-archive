@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 4908, 
+    "senderId": "u71lT1uHJh524dScz3cu9vaqtCV_eMlrvVoAJz9HiHrbc_upJOxQcwsysCPmpCrfdRvzV5vSCJrKNQMacho", 
+    "systemMessage": false, 
+    "subject": "Re: JUnit--Tomcat--JDBC DataSource--JNDI", 
+    "from": "&quot;bofar&quot; &lt;sid@...&gt;", 
+    "authorName": "bofar", 
+    "msgSnippet": "... over ... lookup ... connection ... a ... Hi Weimar, I started looking at this problem myself today. Are you are picking up your datasource from", 
+    "msgId": 4907, 
+    "rawEmail": "Return-Path: &lt;sid@...&gt;\r\nReceived: (qmail 53833 invoked from network); 8 May 2002 14:43:27 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 8 May 2002 14:43:27 -0000\r\nReceived: from unknown (HELO n11.grp.scd.yahoo.com) (66.218.66.66)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 May 2002 14:43:26 -0000\r\nX-eGroups-Return: sid@...\r\nReceived: from [66.218.67.154] by n11.grp.scd.yahoo.com with NNFMP; 08 May 2002 14:43:26 -0000\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 08 May 2002 14:43:24 -0000\r\nX-Sender: sid@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_2); 8 May 2002 14:15:56 -0000\r\nReceived: (qmail 18067 invoked from network); 8 May 2002 14:15:55 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m8.grp.scd.yahoo.com with QMQP; 8 May 2002 14:15:55 -0000\r\nReceived: from unknown (HELO n24.grp.scd.yahoo.com) (66.218.66.80)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 May 2002 14:15:54 -0000\r\nReceived: from [66.218.67.157] by n24.grp.scd.yahoo.com with NNFMP; 08 May 2002 14:15:26 -0000\r\nDate: Wed, 08 May 2002 14:15:25 -0000\r\nTo: junit@yahoogroups.com\r\nSubject: Re: JUnit--Tomcat--JDBC DataSource--JNDI\r\nMessage-ID: &lt;abbbtt+hg2h@...&gt;\r\nIn-Reply-To: &lt;a94t8o+f8j7@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2041\r\nX-Mailer: Yahoo Groups Message Poster\r\nFrom: &quot;bofar&quot; &lt;sid@...&gt;\r\nX-Yahoo-Group-Post: member; u=112444660\r\nX-Yahoo-Profile: bofar\r\n\r\n--- In junit@y..., &quot;weimar_wann&quot; &lt;weimar_wann@y...&gt; wrote:\n&gt; I&#39;m not quite sure how to pose my question...gotten in a little \nover \n&gt; my head here. Basically, I am writing unit tests for an application \n&gt; that is running on Tomcat 4.xx. Database connectivity is achieved \n&gt; through the use of a DataSource (configured in Tomcat&#39;s server.xml, \n&gt; web.xml). The actual Java classes that I am testing do a JNDI \nlookup \n&gt; on the DataSource to get a connection to the database. The \nconnection \n&gt; pooling works just fine while running in the Servlet Container, but \n&gt; my problem is testing through JUnit...does anyone know how to test \na \n&gt; connection that needs to be run through Tomcat?\n\nHi Weimar,\n\nI started looking at this problem myself today. Are you are picking \nup your datasource from &quot;javax.naming.InitialContext ()&quot; ?\n\nIf so, the solution is to have different initialization sources\nfor InitialContext, depending on whether the code is running in\nthe Tomcat container, or in a Junit test.\n\nFirst you need a global flag to indicate whether testing is occuring \nor not. Let&#39;s put it in a class called Testing:\n\npublic class Testing {\n\n  private static boolean testing = false;\n\n  public synchronized static void testingOn () {\n     testing = true;\n  }\n\n  public static boolean isTestingOn () {\n     return testing;\n  }\n}\n\nNext, in the testcase that needs the database connectivity, set \ntesting on in the setup method,\n\n  protected void setup () {\n     Testing.testingOn ();\n  }\n\nNow in the code that creates InitialContext(), add the following \nlines,\n\n   InitialContext ctx = new InitialContext ();\n   if (isTestingOn) {\n      DataSource ds = new TestingDataSource ();\n      // Note that dsName should be local dnName used by\n      // this program.\n      ctx.addToEnvironment (&quot;java:comp/env/jdbc/dsName&quot;, ds);\n    }\n    \nThe last thing to do is write the TestingDataSource class that \nimplements the DataSource interface. I&#39;m planning to look at that \nthis afternoon, if you are interested in a copy, let me know.\n\nSid Stuart\n  \n\n\n\n\n\n\n\n", 
+    "profile": "bofar", 
+    "topicId": 4655, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 112444660, 
+    "prevInTime": 4906, 
+    "contentTrasformed": false, 
+    "postDate": "1020867325", 
+    "canDelete": false, 
+    "nextInTopic": 4919, 
+    "prevInTopic": 4662, 
+    "headers": {
+        "inReplyToHeader": "PGE5NHQ4bytmOGo3QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGFiYmJ0dCtoZzJoQGVHcm91cHMuY29tPg=="
+    }
+}

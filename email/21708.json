@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 21709, 
+    "senderId": "PRINRwjnNwOY40aOJHc7w7LHGam-QOP_0nd4DtIt4d3Eev9WwOC9G74PT3CcDg9--JXT2I5Sgl4vxoYWTkO1JYFefX__6EVCLqYIx7e-i85m6IPPpeA4FlizYA", 
+    "systemMessage": true, 
+    "subject": "RE: [junit] Simple JUnit with Annotations not working", 
+    "from": "&quot;Forsberg, Mike&quot; &lt;mike.forsberg@...&gt;", 
+    "authorName": "Forsberg, Mike", 
+    "msgSnippet": "Yeah... migrating to JUnit4 with a bunch of existing JUnit3 tests is troublesome.  However if you ve been using Suites all along it s not that hard. What we ve", 
+    "msgId": 21708, 
+    "profile": "mike.forsberg_gf", 
+    "topicId": 21703, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 392980748, 
+    "messageBody": "<div id=\"ygrps-yiv-354090081\">Yeah... migrating to JUnit4 with a bunch of existing JUnit3 tests is<br/>\ntroublesome.  However if you&#39;ve been using Suites all along it&#39;s not<br/>\nthat hard.<br/>\n<br/>\n <br/>\n<br/>\nWhat we&#39;ve done is collected all of the old JUnit3 Suites into an file<br/>\nnamed OldTestSuite.java.<br/>\n<br/>\n <br/>\n<br/>\nIt looks like this  (left out imports)<br/>\n<br/>\n <br/>\n<br/>\n@RunWith(AllTests.class)<br/>\n<br/>\npublic class OldTestSuite {<br/>\n<br/>\n  public static Test suite() {<br/>\n<br/>\n    TestSuite suite = new TestSuite();<br/>\n<br/>\n    suite.addTest(&lt;ClassName&gt;.suite());<br/>\n<br/>\n    suite.addTest(&lt;ClassName&gt;.suite());<br/>\n<br/>\n     .....<br/>\n<br/>\n    return suite;<br/>\n<br/>\n   }<br/>\n<br/>\n}<br/>\n<br/>\n <br/>\n<br/>\nThen our new JUnit4 test suite looks like this (left out imports)<br/>\n<br/>\n <br/>\n<br/>\n@RunWith(Suite.class)<br/>\n<br/>\n@...({<br/>\n<br/>\n     OldTestSuite.class,<br/>\n<br/>\n     .....<br/>\n<br/>\n})<br/>\n<br/>\npublic class FullTestSuite {<br/>\n<br/>\n//annotations only<br/>\n<br/>\n}<br/>\n<br/>\n <br/>\n<br/>\nI think this is documented a little differently here...<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://junit.sourceforge.net/doc/faq/faq.htm#tests_1\">http://junit.sourceforge.net/doc/faq/faq.htm#tests_1</a> item 4.  But they<br/>\nwork the same... I think.  Please correct me if I&#39;m wrong.<br/>\n<br/>\n <br/>\n<br/>\nBig Mike<br/>\n<br/>\n <br/>\n<br/>\nFrom: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> [mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>] On Behalf Of<br/>\nSuresh Koya<br/>\nSent: Tuesday, June 02, 2009 3:54 PM<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\nSubject: Re: [junit] Simple JUnit with Annotations not working<br/>\n<br/>\n <br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\nThat helped. I set my ant home to 1.7 and it worked. Is these a doc/link<br/>\nwhich mentions how to migrate old JUnit test to the newer syntax.<br/>\n<br/>\nHow can I have a mix of older style (Pre Junit 4.0 Tests) and new style<br/>\n(with annotations) tests in one class. When I run them, it seems to be<br/>\nrunning only the old style tests. I was able to run all of them only by<br/>\nremoving &quot;extends TestCase&quot; and using &quot;@Test&quot; annotation for everything.<br/>\nIs the the only way or are there other ways. <br/>\n<br/>\nregards,<br/>\nSuresh<br/>\n--- On Tue, 6/2/09, Malte Finsterwalder &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:malte@...\">malte@...</a><br/>\n&lt;mailto:malte%40finsterwalder.name&gt; &gt; wrote:<br/>\n<br/>\nFrom: Malte Finsterwalder &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:malte@...\">malte@...</a><br/>\n&lt;mailto:malte%40finsterwalder.name&gt; &gt;<br/>\nSubject: Re: [junit] Simple JUnit with Annotations not working<br/>\nTo: <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a> &lt;mailto:junit%40yahoogroups.com&gt; <br/>\nDate: Tuesday, June 2, 2009, 1:24 PM<br/>\n<br/>\nsurikoya wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; I am trying the new annotations feature of JUnit4.<br/>\n<br/>\n&gt; <br/>\n<br/>\n&gt; Here is the program I am working with. I am using ant 1.6.5 and <br/>\n<br/>\n&gt; copied junit-4.6-RC1. jar to my &lt;ant_home&gt;/lib directory and put it in<br/>\n<br/>\n&gt; the classpath too. When I run the test I get a message which says<br/>\n<br/>\n&gt; &quot;No Tests found in AnnotationsTest&quot; . Did I miss something basic?<br/>\n<br/>\n </span></blockquote>I think that Ant 1.6.5 can&#39;t run JUnit 4 Tests without an Adapter.<br/>\n<br/>\nAnt 1.7.0 is the first JUnit 4-aware release, if I remember correctly.<br/>\n<br/>\nGreetings,<br/>\n<br/>\nMalte<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 21707, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1243984373", 
+    "canDelete": false, 
+    "nextInTopic": 21709, 
+    "prevInTopic": 21707, 
+    "headers": {
+        "inReplyToHeader": "PDk4Njk0MS44OTAzNi5xbUB3ZWI4MDgwMy5tYWlsLm11ZC55YWhvby5jb20+", 
+        "messageIdInHeader": "PEVBMDM3MzA2NDhGN0FBNDRCMzc3NjZBREJERjY4QUUxMDJDMjJGRkJAU0FVU0VYTUIyLmFtZC5jb20+", 
+        "referencesHeader": "PDk4Njk0MS44OTAzNi5xbUB3ZWI4MDgwMy5tYWlsLm11ZC55YWhvby5jb20+"
+    }
+}

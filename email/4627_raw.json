@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 4628, 
+    "senderId": "HEDWN1mNkiFsf__TKgiBsnkJJYJp1NzgO28eFXNgsFXy-J4YOL6pICuSmSLxKauIF1-l40f5ut-HhCICv_5ce7GyM8SiMrL21WP5hPyWCwT9AQh8", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] assertContains? -&gt; junit development question?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Is there something wrong with: assertTrue( str.indexOf(keywordStr) = 0 )? I used to want many, many custom assertions. I now believe it s cleaner simply ", 
+    "msgId": 4627, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_1); 5 Apr 2002 17:51:58 -0000\r\nReceived: (qmail 80862 invoked from network); 5 Apr 2002 17:51:58 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m5.grp.scd.yahoo.com with QMQP; 5 Apr 2002 17:51:58 -0000\r\nReceived: from unknown (HELO ns1.blacksun.ca) (139.142.202.2)\n  by mta3.grp.scd.yahoo.com with SMTP; 5 Apr 2002 17:51:58 -0000\r\nReceived: (from root@localhost)\n\tby ns1.blacksun.ca (8.10.2/8.10.2) id g35Hpvd16367\n\tfor junit@yahoogroups.com; Fri, 5 Apr 2002 11:51:57 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: RE: [junit] assertContains? -&gt; junit development question?\r\nMessage-ID: &lt;1018029117.3cade43d15866@...&gt;\r\nDate: Fri, 05 Apr 2002 11:51:57 -0600 (CST)\r\nReferences: &lt;69E759497FAB8344867803D2E2CEBB4827595A@...&gt;\r\nIn-Reply-To: &lt;69E759497FAB8344867803D2E2CEBB4827595A@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nUser-Agent: IMP/PHP IMAP webmail program 2.2.4\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt; it would create easier-to-read and maintain tests than having to\n&gt; currently \n&gt; do containment checks by writing\n&gt; \n&gt; if(str.indexOf(keywordStr) &lt; 0) {\n&gt; \tfail(&quot;failed.&quot;);\n&gt; }\n\nIs there something wrong with:\n\nassertTrue( str.indexOf(keywordStr) &gt;= 0 )?\n\nI used to want many, many custom assertions. I now believe it&#39;s cleaner simply \nto build a lot of custom methods answering boolean, then using assertTrue() and \nassertFalse(). What changes in your example is the condition, and not the \nassertion mechanism.\n\nYou create your own abstract TestCase class with your custom boolean-logic \nmethods.\n\npublic abstract class MyTestCase extends TestCase {\n    public static boolean containsText(final String string, final String \npattern) {\n        return string.indexOf(pattern) &gt;= 0;\n    }\n    ...\n}\n\n...\n\npublic class SomeTest extends MyTestCase {\n    public void testSomething() {\n        assertTrue(containsText(&quot;Hello&quot;, &quot;el&quot;));\n    }\n}\n\n...\n\nOf course, after enough of this, your code starts to look like procedural \nprogramming code, because what you REALLY want is to extend String, which you \ncan&#39;t do. If you really want to, you can wrap String and provide the extra \nmethods.\n\npublic class MyString {\n    private final String string;\n\n    public MyString(final String aString) {\n        string = aString;\n    }\n\n    public boolean contains(final String pattern) {\n        return string.indexOf(pattern) &gt;= 0;\n    }\n\n    public boolean matchesRegex(final String regex) {\n        // ORO magic...\n    }\n}\n\nIt&#39;s cleaner in one respect and uglier in another.\n\nJ. B. (Joe) Rainsberger\nPresident, Diaspar Software Services\nhttp://www.diasparsoftware.com\nLet&#39;s write software that people understand.\n\n", 
+    "profile": "nails762", 
+    "topicId": 4617, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 4626, 
+    "contentTrasformed": false, 
+    "postDate": "1018029117", 
+    "canDelete": false, 
+    "nextInTopic": 4629, 
+    "prevInTopic": 4626, 
+    "headers": {
+        "inReplyToHeader": "PDY5RTc1OTQ5N0ZBQjgzNDQ4Njc4MDNEMkUyQ0VCQjQ4Mjc1OTVBQGhlbm5lcGluLnJ4aHViLm5ldD4=", 
+        "messageIdInHeader": "PDEwMTgwMjkxMTcuM2NhZGU0M2QxNTg2NkB3ZWJtYWlsLmJsYWNrc3VuLmNhPg==", 
+        "referencesHeader": "PDY5RTc1OTQ5N0ZBQjgzNDQ4Njc4MDNEMkUyQ0VCQjQ4Mjc1OTVBQGhlbm5lcGluLnJ4aHViLm5ldD4="
+    }
+}

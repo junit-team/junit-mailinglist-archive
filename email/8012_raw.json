@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 8013, 
+    "senderId": "j_PYRSqxrVgAs8AGdkoSeoOmKa_n1q-rYXESzHmtdoo4pspELHghAN_JK0iUbhqBhL3Jf4D-ZPEI-Nrfowxzv7O9inmBDUKY-tHu5skXDg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Does Static Invocation call setUp()/tearDown()?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... It must be more useful than that. Why use reflection if you don t need to? Say you want to parameterize a test and create a test suite based on that", 
+    "msgId": 8012, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_6); 9 May 2003 21:28:14 -0000\r\nReceived: (qmail 75417 invoked from network); 9 May 2003 21:28:13 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m14.grp.scd.yahoo.com with QMQP; 9 May 2003 21:28:13 -0000\r\nReceived: from unknown (HELO fep02-mail.bloor.is.net.cable.rogers.com) (66.185.86.72)\n  by mta3.grp.scd.yahoo.com with SMTP; 9 May 2003 21:28:13 -0000\r\nReceived: from quincy ([24.103.238.50])\n          by fep02-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030509212812.JKJK4557.fep02-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Fri, 9 May 2003 17:28:12 -0400\r\nMessage-ID: &lt;200305091728050036.018E1C96@...&gt;\r\nIn-Reply-To: &lt;3EBBE1C4.1080403@...&gt;\r\nReferences: &lt;3EBB142E.1080808@...&gt;\n &lt;3EBB1FF1.3050303@...&gt;\n &lt;200305091301530099.009A6635@...&gt;\n &lt;3EBBE1C4.1080403@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Fri, 09 May 2003 17:28:05 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] Does Static Invocation call setUp()/tearDown()?\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep02-mail.bloor.is.net.cable.rogers.com from [24.103.238.50] using ID &lt;jbrains@...&gt; at Fri, 9 May 2003 17:28:12 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\n&gt;So said Vladimir R. Bossicard on 2003-05-09 --------------------\n&gt;&gt;&gt;I don&#39;=\r\nt see why on earth you would write a test by overwriting runTest, \n&gt;&gt;&gt;but l=\r\net&#39;s take that as an example.\n&gt;&gt; \n&gt;&gt; It&#39;s in Test Infected, Vladimir. Your =\r\nassignment is to re-read the\n&gt;article. :)\n&gt;\n&gt;Wow!  In fact it&#39;s documented.=\r\n  It&#39;s maybe useful when you don&#39;t have \n&gt;reflection (J2ME?) but I must adm=\r\nit that I never used this static way of \n&gt;executing a single test.  Maybe b=\r\necause I have more than one single test \n&gt;to execute :-)\n\nIt must be more u=\r\nseful than that. Why use reflection if you don&#39;t need to?\n\nSay you want to =\r\nparameterize a test and create a test suite based on that parameterized tes=\r\nt that depends on external data or runtime information. In that case, new M=\r\nyTestCase(&quot;myTestMethod&quot;) doesn&#39;t help.\n\nNow you *could* provide an additio=\r\nnal constructor for your TestCase class to create the tests... or simply ov=\r\nerride runTest when you create the TestCase to add to the TestSuite.\n\npubli=\r\nc static Test suite() {\n    TestSuite suite =3D new TestSuite();\n\n    Set d=\r\nataSets =3D getDataSets(somewhereOnTheFileSystem);\n    for (Iterator i =3D =\r\ndataSets.iterator(); i.hasNext(); ) {\n        final DataSet each =3D (DataS=\r\net) i.next();\n        suite.addTest(new MyTestCase(&quot;DataTest&quot; + each.toStri=\r\nng()) {\n            protected void runTest() {\n                // Use &#39;each=\r\n&#39; here.\n            }\n        }\n    }\n    return suite;\n}\n\nThe alternative =\r\nis:\n\npublic static Test suite() {\n    TestSuite suite =3D new TestSuite();\n=\r\n\n    Set dataSets =3D getDataSets(somewhereOnTheFileSystem);\n    for (Itera=\r\ntor i =3D dataSets.iterator(); i.hasNext(); ) {\n        final DataSet each =\r\n=3D (DataSet) i.next();\n        suite.addTest(new MyTestCase(&quot;DataTest&quot; + e=\r\nach.toString(), each);\n    }\n    return suite;\n}\n\nprotected MyTestCase(Stri=\r\nng name, DataSet dataSet) {\n    // initialize stuff...\n}\n\n\nIn the second ch=\r\noice, the test is using global data that is set in one spot and used in ano=\r\nther. With the first choice, the data is used within its scope, or at least=\r\n it looks that way.\n\nI prefer the first.\n\n&gt;Anyway I&#39;m the living proof that=\r\n you don&#39;t have to know this technique \n&gt;to write/execute tests :-)\n\nNot wr=\r\niting very advanced tests, are we now? :) :) :)\n\n\nJ. B. Rainsberger,\nPresid=\r\nent, Diaspar Software Services\nLet&#39;s write software that people understand.=\r\n\nhttp://www.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 7999, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 8011, 
+    "contentTrasformed": false, 
+    "postDate": "1052515685", 
+    "canDelete": false, 
+    "nextInTopic": 8014, 
+    "prevInTopic": 8010, 
+    "headers": {
+        "inReplyToHeader": "PDNFQkJFMUM0LjEwODA0MDNAYm9zc2ljYXJkLmNvbT4=", 
+        "messageIdInHeader": "PDIwMDMwNTA5MTcyODA1MDAzNi4wMThFMUM5NkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDNFQkIxNDJFLjEwODA4MDhAZ3Vuc2xpbmdlcnNvZnR3YXJlLmNvbT4gPDNFQkIxRkYxLjMwNTAzMDNAYm9zc2ljYXJkLmNvbT4gPDIwMDMwNTA5MTMwMTUzMDA5OS4wMDlBNjYzNUBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4gPDNFQkJFMUM0LjEwODA0MDNAYm9zc2ljYXJkLmNvbT4="
+    }
+}

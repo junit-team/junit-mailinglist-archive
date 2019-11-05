@@ -1,0 +1,30 @@
+{
+    "topicId": 5958, 
+    "postDate": "1034117053", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "gOElpPfFVJ3PTQalgYuUmFIJGSDq-WkMyBgldre8HE49HGyPkcIUKWe_h5YRdwwhwt1DNFi74_NoqMlSM2c0Zk4cJbTT7wyv4HjqNsobqkU", 
+    "nextInTime": 5968, 
+    "userId": 114327599, 
+    "prevInTime": 5966, 
+    "prevInTopic": 5964, 
+    "headers": {
+        "inReplyToHeader": "PGFuc2RlaytwdTJvQGVHcm91cHMuY29tPjsgZnJvbSBrdGJhcnJldHRAeWFob28uY29tIG9uIE1vbiwgT2N0IDA3LCAyMDAyIGF0IDA0OjQwOjUyUE0gLTAwMDA=", 
+        "messageIdInHeader": "PDIwMDIxMDA4MTY0NDEzLkExODc0QHRpYmlhLmFtb3RscGFhLmJvZ3VzPg==", 
+        "referencesHeader": "PGFuc2RlaytwdTJvQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Steven Taschuk", 
+    "numMessagesInTopic": 4, 
+    "msgSnippet": "... [...] ... First, have you tried the following?      ", 
+    "contentTrasformed": false, 
+    "msgId": 5967, 
+    "nextInTopic": 5977, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;staschuk@...&gt;\r\nReceived: (qmail 83769 invoked from network); 10 Oct 2002 07:58:21 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m4.grp.scd.yahoo.com with QMQP; 10 Oct 2002 07:58:21 -0000\r\nReceived: from unknown (HELO n22.grp.scd.yahoo.com) (66.218.66.78)\n  by mta2.grp.scd.yahoo.com with SMTP; 10 Oct 2002 07:58:21 -0000\r\nX-eGroups-Return: staschuk@...\r\nReceived: from [66.218.67.147] by n22.grp.scd.yahoo.com with NNFMP; 10 Oct 2002 07:58:21 -0000\r\nX-Sender: staschuk@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_2_0); 8 Oct 2002 22:41:29 -0000\r\nReceived: (qmail 642 invoked from network); 8 Oct 2002 22:41:29 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m13.grp.scd.yahoo.com with QMQP; 8 Oct 2002 22:41:29 -0000\r\nReceived: from unknown (HELO tibia.amotlpaa.bogus) (161.184.202.226)\n  by mta1.grp.scd.yahoo.com with SMTP; 8 Oct 2002 22:41:27 -0000\r\nReceived: (qmail 1894 invoked by uid 100); 8 Oct 2002 22:44:13 -0000\r\nDate: Tue, 8 Oct 2002 16:44:13 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] fork=&quot;no&quot; unexpected behavior\r\nMessage-ID: &lt;20021008164413.A1874@...&gt;\r\nReferences: &lt;ansdek+pu2o@...&gt;\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nContent-Disposition: inline\r\nUser-Agent: Mutt/1.2.5i\r\nIn-Reply-To: &lt;ansdek+pu2o@...&gt;; from ktbarrett@... on Mon, Oct 07, 2002 at 04:40:52PM -0000\r\nFrom: Steven Taschuk &lt;staschuk@...&gt;\r\nX-Yahoo-Group-Post: member; u=114327599\r\nX-eGroups-Approved-By: geektank &lt;emeade@...&gt; via web; 10 Oct 2002 07:58:20 -0000\r\n\r\nQuoth ktbarrett:\n&gt; I am trying to run more than one JUnit test from Ant which shares \n&gt; some static data through the VM. The following is an excerpt from my \n&gt; Ant script.\n  [...]\n&gt; The problem is, the VM seems to fork whether I tell it too or not. My \n&gt; first test (SupplierTest) is creating some static objects, and my \n&gt; second test (ConsumerTest) is trying to use those objects. The \n&gt; problem is that either Ant is creating a new VM or a new ClassLoader \n&gt; so my data is not available.\n&gt; \n&gt; Any ideas?\n\nFirst, have you tried the following?\n\t&lt;target name=&quot;test&quot;&gt;\n\t\t&lt;junit fork=&quot;no&quot;&gt;\n\t\t\t&lt;test name=&quot;SupplierTest&quot;/&gt;\n\t\t\t&lt;test name=&quot;ConsumerTest&quot;/&gt;\n\t\t&lt;/junit&gt;\n\t&lt;/target&gt;\n\nSecond, a quick glance through the Ant 1.4.1 source makes me think\nAnt doesn&#39;t make a new VM if you say fork=&#39;no&#39;, but it does make\nits own ClassLoader regardless.  (Note that the &lt;junit&gt; task\nsupports a nested &lt;classpath&gt; element, so I imagine this is\nnecessary.)  I encourage you to study the source for more\ninformation, or to inquire on the Ant mailing list (which I assume\nto exist).  And you could always write your own Ant task if the\nout-of-the-box behaviour is not what you want.\n\nThird, is it possible your objects are being garbage-collected\nbetween the tests?\n\nFinally, it is usually considered desirable that tests not\ninteract with one another.  It might be best to either (a) unify\nthe two tests to use the same test fixture, or (b) to make the\nlatter test do its own set up so it doesn&#39;t depend on the former\nbeing run.  What&#39;s the motivation for the inter-test dependency?\n\n\n", 
+    "subject": "Re: [junit] fork=&quot;no&quot; unexpected behavior"
+}

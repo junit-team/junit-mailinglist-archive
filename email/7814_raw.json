@@ -1,0 +1,29 @@
+{
+    "topicId": 7748, 
+    "postDate": "1050606861", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Shane Celis &lt;shane@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "JM0615KD0AJHiqtXxN_rwFXsxkGSHAYnyf_j-yCTZtGZjRsTjJedexTeX7hWnV3SJ3-vH-Md2odhx8tBRPNciySIblX4", 
+    "nextInTime": 7815, 
+    "userId": 126846930, 
+    "prevInTime": 7813, 
+    "prevInTopic": 7802, 
+    "headers": {
+        "inReplyToHeader": "PGI3a2VhMytvaDBkQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENCNTBEOTU5LTcxMDgtMTFENy04Q0U1LTAwMzA2NUY5QTgwRUBnbnVmb28ub3JnPg=="
+    }, 
+    "authorName": "Shane Celis", 
+    "numMessagesInTopic": 19, 
+    "msgSnippet": "I believe you re worried that there would be a great deal of duplicate code.  Since every test in JUnit is a method, it s often times easy to convince yourself", 
+    "contentTrasformed": false, 
+    "msgId": 7814, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;shane@...&gt;\r\nReceived: (qmail 18165 invoked from network); 22 Apr 2003 16:57:48 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m4.grp.scd.yahoo.com with QMQP; 22 Apr 2003 16:57:48 -0000\r\nReceived: from unknown (HELO n16.grp.scd.yahoo.com) (66.218.66.71)\n  by mta1.grp.scd.yahoo.com with SMTP; 22 Apr 2003 16:57:48 -0000\r\nX-eGroups-Return: shane@...\r\nReceived: from [66.218.67.128] by n16.grp.scd.yahoo.com with NNFMP; 22 Apr 2003 16:57:23 -0000\r\nX-Sender: shane@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 22 Apr 2003 06:32:23 -0000\r\nReceived: (qmail 81166 invoked from network); 22 Apr 2003 06:32:22 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m5.grp.scd.yahoo.com with QMQP; 22 Apr 2003 06:32:22 -0000\r\nReceived: from unknown (HELO metric.local) (66.218.45.213)\n  by mta2.grp.scd.yahoo.com with SMTP; 22 Apr 2003 06:32:22 -0000\r\nReceived: from gnufoo.org (localhost [127.0.0.1])\n\tby dhcp-usca18-115-222.red.iplanet.com (8.12.9/8.12.6) with ESMTP id h3HJEMSG000913;\n\tThu, 17 Apr 2003 12:14:22 -0700 (PDT)\r\nDate: Thu, 17 Apr 2003 12:14:21 -0700\r\nSubject: Re: [junit] testCreate, testUpdate, testDelete: make one single test out of it?\r\nContent-Type: text/plain; charset=US-ASCII; format=flowed\r\nMime-Version: 1.0 (Apple Message framework v552)\r\nCc: javainsel@...\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;b7kea3+oh0d@...&gt;\r\nMessage-Id: &lt;CB50D959-7108-11D7-8CE5-003065F9A80E@...&gt;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Apple Mail (2.552)\r\nFrom: Shane Celis &lt;shane@...&gt;\r\nX-Yahoo-Group-Post: member; u=126846930\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 22 Apr 2003 16:57:21 -0000\r\n\r\nI believe you&#39;re worried that there would be a great deal of duplicate \ncode.  Since every test in JUnit is a method, it&#39;s often times easy to \nconvince yourself at first that every method is a test.  This is not \nthe case.  Your tests perform 5 atomic operations separate from your \ntests.  They are create, update, delete, exists, result.  These are \nregular methods; they are not tests.  The tests you want are \ncompositions of those operations.\n\n// Your tests\n\npublic void testCreate() {\n\tassertFalse(exists());\n\tcreate();\n\tassertTrue(exists());\n\tdelete();\n}\n\npublic void testUpdate() {\n\tint expected = 1;\n\tcreate();\n\tassertFalse(expected == result());\n\tupdate();\n\tassertTrue(expected == result());\n\tdelete();\n}\n\npublic void testDelete() {\n\tcreate();\n\tassertTrue(exists());\n\tdelete();\n\tassertFalse(exists());\n}\n\nNot every method is a test.\n\n-shane\n\nOn Wednesday, April 16, 2003, at 01:26  PM, javainsel wrote:\n\n&gt; We want to test the creation, update and deletion of an object which\n&gt; is persisted in database.\n&gt;\n&gt; What we now do is to have three test methods for this.\n&gt;\n&gt; In the testCreate method the object is created, checked that he is\n&gt; really created and then it is deleted (we have delete because\n&gt; unfortunately we don&#39;t use Mock Objects).\n&gt;\n&gt; In the testUpdate method we create the object, update it, test the\n&gt; update result and delete the created object.\n&gt;\n&gt; In the testDelete method we create the object so that we can test\n&gt; the deletion of it.\n&gt;\n&gt; As you see, everything is included in the testUpdate method. We\n&gt; duplicate much code in the other two test methods.\n&gt;\n&gt; We write such tests for every domain object so I wonder if we should\n&gt; improve our test class.\n&gt;\n&gt; Would you write 3 or just 1 test method for that example?\n&gt;\n&gt; And would you try to convince senior coworkers who know little about\n&gt; JUnit and dislike TDD?\n\n\n\n", 
+    "subject": "Re: [junit] testCreate, testUpdate, testDelete: make one single test out of it?"
+}

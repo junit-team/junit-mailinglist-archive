@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 16720, 
+    "senderId": "mlm_HnDxmPsIX--opbsTyyeGSeFkqL8IJRKHRNG6oTRzi7_03TwgUne2SisjCoVYYX_qjLqb6NTooKtSb3fe9_tyted0c_Lt", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] [Junit4] Extending jUnit 4 ...", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Dear Mr. Avenger, The (eventually) correct way to support this is to write your own runner and annotate your class with @RunWith(MyTibcoRunner.class). This is", 
+    "msgId": 16719, 
+    "rawEmail": "Return-Path: &lt;kentb@...&gt;\r\nX-Sender: kentb@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 37218 invoked from network); 26 May 2006 04:40:54 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m15.grp.scd.yahoo.com with QMQP; 26 May 2006 04:40:54 -0000\r\nReceived: from unknown (HELO smtpauth07.mail.atl.earthlink.net) (209.86.89.67)\n  by mta9.grp.scd.yahoo.com with SMTP; 26 May 2006 04:40:33 -0000\r\nReceived: from [67.131.9.243] (helo=T42)\n\tby smtpauth07.mail.atl.earthlink.net with asmtp (Exim 4.34)\n\tid 1FjU7j-0002su-Vz\n\tfor junit@yahoogroups.com; Fri, 26 May 2006 00:40:32 -0400\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Thu, 25 May 2006 21:40:27 -0700\r\nMessage-ID: &lt;006001c6807e$84e91420$6401a8c0@T42&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;US-ASCII&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook 11\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2869\r\nThread-Index: AcZ+n2/3MIBPvC5zT+GqPm8tGK00uABhlVPQ\r\nIn-Reply-To: &lt;e4q4s7+6n9c@...&gt;\r\nX-ELNK-Trace: 6d780abf06d998e474bf435c0eb9d478f982a62562c7b8af196e3a97c8fdb18b653041e0df3f7294350badd9bab72f9c350badd9bab72f9c350badd9bab72f9c\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Kent Beck&quot; &lt;kentb@...&gt;\r\nSubject: RE: [junit] [Junit4] Extending jUnit 4 ...\r\nX-Yahoo-Group-Post: member; u=173198504; y=kdw3ufcm-q64SWdT8d0AfDMHIipuEYZgn4ZlzAOqB4-UhWxS\r\nX-Yahoo-Profile: kentlbeck\r\n\r\nDear Mr. Avenger,\n\nThe (eventually) correct way to support this is to write your own runner and\nannotate your class with @RunWith(MyTibcoRunner.class). This is an option at\nthe moment, but the runner classes, although published, are not easy to\nspecialize.\n\nThe least intrusive option is call a utility method inside your test:\n\n@Test public void tibPrepare() {\n  String service= &quot;7500&quot;;\n  prepare(service);\n  try {\n    ...your test...\n  } finally {\n    terminate(service);\n  }\n} \n\nHope this helps.\n\nKent Beck\nThree Rivers Institute\n\n&gt; -----Original Message-----\n&gt; From: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; Behalf Of darkblueavenger\n&gt; Sent: Sunday, May 21, 2006 9:35 AM\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] [Junit4] Extending jUnit 4 ...\n&gt; \n&gt; Hi guys,\n&gt; \n&gt; I wrote an open source extension module for JUnit 3 to test TIBCO\n&gt; Rendezvous (a messaging middleware) and I&#39;m trying to port it \n&gt; to JUnit 4\n&gt; using the annotations.\n&gt; \n&gt; My basic requirement is that a method is called before and \n&gt; another after\n&gt; the execution of any given test method.\n&gt; \n&gt; For example:\n&gt; \n&gt;    @TibPrepare(service = &quot;7500&quot;)\n&gt;    @Test\n&gt;    public void tibPrepare() {\n&gt;      ...\n&gt;    }\n&gt; \n&gt; Where TibPrepare is my annotation. So my question is how do I \n&gt; tell jUnit\n&gt; 4 to invoke such and such a class/method?\n&gt; \n&gt; My initial thought was to extend TestDecorator however my \n&gt; issue is that\n&gt; I want this extension of jUnit to work everywhere, including in IDEs\n&gt; such as Intellij IDEA (the one I&#39;m using, just an example).\n&gt; \n&gt; If I take IntelliJ, they appear to be using \n&gt; junit.textui.TestRunner and\n&gt; have defined their own callbacks (for example:\n&gt; com.intellij.rt.junit4.Junit4TestMethodAdapter.run is called by\n&gt; junit.framework.TestSuite.runTest)\n&gt; \n&gt; So I&#39;m a bit stumped here on how to best implement a jUnit 4 extension\n&gt; that is always invoked whatever the environment (maven, ant, \n&gt; IDE such as\n&gt; IntelliJ or Eclipse).\n&gt; \n&gt; Any help would be appreciated, and I apologize in advance if the\n&gt; question has already been raised before, but I haven&#39;t found such a\n&gt; Topic in this list.\n&gt; \n&gt; Regards,\n&gt; \n&gt; Cedric.\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; [Non-text portions of this message have been removed]\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; ------------------------ Yahoo! Groups Sponsor \n&gt; --------------------~--&gt; \n&gt; Everything you need is one click away.  Make Yahoo! your home \n&gt; page now.\n&gt; http://us.click.yahoo.com/AHchtC/4FxNAA/yQLSAA/5cFolB/TM\n&gt; --------------------------------------------------------------\n&gt; ------~-&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n\n\n", 
+    "profile": "kentlbeck", 
+    "topicId": 16710, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "prevInTime": 16718, 
+    "contentTrasformed": false, 
+    "postDate": "1148618427", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 16710, 
+    "headers": {
+        "inReplyToHeader": "PGU0cTRzNys2bjljQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDAwNjAwMWM2ODA3ZSQ4NGU5MTQyMCQ2NDAxYThjMEBUNDI+"
+    }
+}

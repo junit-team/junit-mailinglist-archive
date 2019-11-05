@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18160, 
+    "senderId": "YBS8GiqfPe285HZU4N0qZpZuzlhBIFHkG0IVqPIH0Lke7jzzeSYES3wjKB2GH2Xqhs2IytggNuOVgz7qGnCiLJ_NGsGg1EcO4tFV0lmf", 
+    "systemMessage": false, 
+    "subject": "Re: Testing Static block, members, class with JUnit", 
+    "from": "&quot;isaachanstar&quot; &lt;isaachanstar@...&gt;", 
+    "authorName": "isaachanstar", 
+    "msgSnippet": "Great static block of code is always boring me, i think u should avoid writing static code, so u ll see writing tests is becoming more easy.", 
+    "msgId": 18159, 
+    "profile": "isaachanstar", 
+    "topicId": 18131, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 242241013, 
+    "messageBody": "<div id=\"ygrps-yiv-1315149571\">Great static block of code is always boring me, i think u should avoid<br/>\nwriting static code, so u&#39;ll see writing tests is becoming more easy.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;mcdonald6692&quot; &lt;bill.mcdonald@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; I don&#39;t have a lot of experience with JUnit, so please keep this in <br/>\n&gt; mind when you respond.<br/>\n&gt; <br/>\n&gt; BACKGROUND:<br/>\n&gt; <br/>\n&gt; I have a class under test that uses a static block to initialize a <br/>\n&gt; static member.  It serves as a lookup table.<br/>\n&gt; <br/>\n&gt; public class StateAbbrev {<br/>\n&gt;   // static list of all the abbreviations.<br/>\n&gt;   private static List accronyms = new ArrayList();  <br/>\n&gt; <br/>\n&gt;   private String text = &quot;&quot;;<br/>\n&gt; <br/>\n&gt; /*<br/>\n&gt;  * HERE&#39;S MY STATIC BLOCK...<br/>\n&gt;  */<br/>\n&gt;   static {<br/>\n&gt;     DataSource ds = DataSource.getInstance();<br/>\n&gt;     List strings = ds.getAccronyms();<br/>\n&gt;     for (Iterator i = strings.iterator(); i.hasNext(); )<br/>\n&gt;       accronyms.add(new StateAbbrev((String)i.next()) );<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   public static StateAbbrev lookup(String letters)<br/>\n&gt;   {<br/>\n&gt;     for (Iterator i = accronyms.iterator(); i.hasNext(); )<br/>\n&gt;     {<br/>\n&gt;       StateAbbrev abbrev (StateAbbrev) i.next();<br/>\n&gt;       String accronym = abbrev.getText();<br/>\n&gt;       if (accronym.equals(letters))<br/>\n&gt;         return abbrev;<br/>\n&gt;     }<br/>\n&gt;     return null;<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   public String getText()<br/>\n&gt;   {<br/>\n&gt;     return this.text;<br/>\n&gt;   }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; public class TestStateAbbrev extends TestClass<br/>\n&gt; {<br/>\n&gt; <br/>\n&gt;   public void setUp() throws Exception<br/>\n&gt;   {<br/>\n&gt;     // Initialize DataSource to connect to database.<br/>\n&gt;     ctx.bind(&quot;datasourcepath&quot;, ds);<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   //<br/>\n&gt;   // TESTS...<br/>\n&gt;   //<br/>\n&gt; <br/>\n&gt;   public testLookupAZ()<br/>\n&gt;   {<br/>\n&gt;     assertNotNull(StateAbbrev.lookup(&quot;AZ&quot;));<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   public testLookupXX()<br/>\n&gt;   {<br/>\n&gt;     assertNull(StateAbbrev.lookup(&quot;XX&quot;));<br/>\n&gt;   }<br/>\n&gt; <br/>\n&gt;   public testLookupFail()<br/>\n&gt;   {<br/>\n&gt;     // break ds connection to make it fail. <br/>\n&gt;     ctx.unbind(&quot;datasourcepath&quot;);<br/>\n&gt; <br/>\n&gt;     assertNotNull(StateAbbrev.lookup(&quot;AZ));<br/>\n&gt; <br/>\n&gt;     // reset ds so that other tests work correctly.<br/>\n&gt;     ctx.bind(&quot;datasourcepath&quot;, ds);<br/>\n&gt;   }<br/>\n&gt; }<br/>\n&gt; <br/>\n&gt; QUESTION:<br/>\n&gt; <br/>\n&gt; The problem is that if the testLookupFail() method is the first one <br/>\n&gt; to load class StateAbbrev, then StateAbbrev.accronyms.size() will <br/>\n&gt; equal 0.  When the other tests are run, they will not work since <br/>\n&gt; StateAbbrev.accronyms is static and is already loaded and initialized <br/>\n&gt; to an empty list.  This brings up the general question, &quot;How do you <br/>\n&gt; test static blocks, classes and data-members?&quot; (I know the example is <br/>\n&gt; rather simplistic, but hopefully it doesn&#39;t distract from my <br/>\n&gt; question).<br/>\n&gt; <br/>\n&gt; Can I unload the class so that its loaded again and the static block <br/>\n&gt; initializes the member correctly?  I didn&#39;t want to have to move the <br/>\n&gt; testLookupFail() test outside of TestStateAbbrev either.<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 18158, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1161216566", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 18134, 
+    "headers": {
+        "inReplyToHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PGVoNmZubSttNHJkQGVHcm91cHMuY29tPg=="
+    }
+}

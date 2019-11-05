@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 17233, 
+    "senderId": "SarEYVY5U6cDSYtXYrUasNGtZWmC8lyucfoIlVMX2BfcSNB7NNlYZjvEEMHr2W8ij91TNYbBBResOkFlSzdA1evQ7BUTb4Cv5hwRZLHRGuFXB0Si", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] OT: Streams / Readers/ Writers or files, what do you use and how do you test?", 
+    "from": "&quot;Joakim Ohlrogge&quot; &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "Hi Cédric, ... I cooked up a small program to get a feeling for the difference. I assumed that the method would be called something like readLines and return", 
+    "msgId": 17232, 
+    "profile": "j0hlrogge", 
+    "topicId": 17215, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "messageBody": "<div id=\"ygrps-yiv-973090543\">Hi Cédric,<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  It&#39;s convenient when you want to do line-oriented filtering (e.g. regexp,<br/>\n&gt;  parsing logs, etc...).  You can always use a BufferedReader + readLine(),<br/>\n&gt;  but it&#39;s still more tedious to write than just having an String[] returned<br/>\n&gt;  from a public method.<br/>\n&gt;<br/>\n&gt;  It&#39;s admittedly not as effective memory-wise, but when you&#39;re dealing with<br/>\n&gt;  text files that are in the tens of k&#39;s, it doesn&#39;t really matter.<br/>\n<br/>\n </span></blockquote>I cooked up a small program to get a feeling for the difference.<br/>\nI assumed that the method would be called something like readLines and<br/>\nreturn a string array. I also assumed that the method would throw an<br/>\nIOException to indicate when there was a problem.<br/>\n<br/>\n\tpublic void processReader(Reader reader) throws IOException {<br/>\n\t\tBufferedReader bufferedReader = new BufferedReader(reader);<br/>\n\t\tString line;<br/>\n\t\t<br/>\n\t\twhile( (line = bufferedReader.readLine()) != null ) {<br/>\n\t\t\tprocessLine(line);<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic void processFile(File file) throws IOException {<br/>\n\t\tString [] lines = file.readLines();<br/>\n\t\tfor(String line : lines) {<br/>\n\t\t\tprocessLine(line);<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n\t<br/>\n\tprivate void processLine(String line) {<br/>\n\t\t// TODO Auto-generated method stub<br/>\n\t}<br/>\n<br/>\n<br/>\nConclusions about the implemengtation:<br/>\n<br/>\nIn the implementation files with the suggested extension or using a<br/>\nbuffered reader is similarily complex.<br/>\n<br/>\nBut there is still one aspect that has not yet been addressed. Using the method:<br/>\n<br/>\n\tpublic void useReader(String name) throws IOException {<br/>\n\t\tReader reader = new FileReader(name);<br/>\n\t\ttry {<br/>\n\t\t\tprocessReader(reader);<br/>\n\t\t}<br/>\n\t\tfinally {<br/>\n\t\t\treader.close();<br/>\n\t\t}<br/>\n\t}<br/>\n\t<br/>\n\tpublic void useFile(String name) throws IOException {<br/>\n\t\tFile file = new File(name);<br/>\n\t\tprocessFile(file);<br/>\n\t}<br/>\n<br/>\n<br/>\nConclusion about usage:<br/>\n<br/>\nIt is more tedious to use a reader since you have to remeber that you<br/>\nshould close it and decide who closes it (I assume readLines takes<br/>\ncare of that in the file example). If you don&#39;t close it you can leak<br/>\nresources.<br/>\n<br/>\nSo I would have to agree with you about tediousness. Summing it all<br/>\nup, implementation, usage, testability, consistency and flexibility I<br/>\nwould still go for the stream option but it is clearer to me now that<br/>\nit is a less obvious choice.<br/>\n<br/>\nI have a nice pattern to deal with streams so that you cannot leak<br/>\nresources but that is a different topic and it would have to be used<br/>\nin a few places to make sense.<br/>\n<br/>\nInteresting...<br/>\n/Joakim Ohlrogge</div>", 
+    "prevInTime": 17231, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1153987372", 
+    "canDelete": false, 
+    "nextInTopic": 17238, 
+    "prevInTopic": 17230, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYwNzI2MTMwMXA3MzJjYTgwOWdjYWYyMTg0N2ZjZDQwYmI4QG1haWwuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PGI5ZWU1ZTQxMDYwNzI3MDEwMnQ1NGI4NzRhY3dlNTYxZGE1NjBhZjdhNzM1QG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGI5ZWU1ZTQxMDYwNzI2MDgxM3EyYjZjYzlhZnI1Y2FkNTgyZmM1YTkwOWQzQG1haWwuZ21haWwuY29tPgkgPGI4NmI2YTljMDYwNzI2MDkzNnA0YjhlOTk5NHU0YzIzNGI4YzE3MjZiOWRmQG1haWwuZ29vZ2xlLmNvbT4JIDxiOWVlNWU0MTA2MDcyNjEyNTZvNzc5YmM5ODN3YjllNDAwYjRlNGJlNGE4YUBtYWlsLmdtYWlsLmNvbT4JIDxiODZiNmE5YzA2MDcyNjEzMDFwNzMyY2E4MDlnY2FmMjE4NDdmY2Q0MGJiOEBtYWlsLmdvb2dsZS5jb20+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12569, 
+    "senderId": "yEoUPprNJrhSHtsxNniaiurQYAQzfz8Jlh10rReebdYHjyGu74a7nS-IfmLEtkaBHk76rgEjpKrNpBo", 
+    "systemMessage": true, 
+    "subject": "Re: JUnit dynamic testing with file modifications", 
+    "from": "areinmeyer@...", 
+    "authorName": "areinmeyer@gmail.com", 
+    "msgSnippet": "... Here s one of the tests for our GetDate module.  The testData object will have various entries, depending on the object being tested. The testData object", 
+    "msgId": 12568, 
+    "rawEmail": "Return-Path: &lt;areinmeyer@...&gt;\r\nReceived: (qmail 36677 invoked from network); 3 Jan 2005 14:11:39 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m14.grp.scd.yahoo.com with QMQP; 3 Jan 2005 14:11:39 -0000\r\nReceived: from unknown (HELO n9a.bulk.scd.yahoo.com) (66.94.237.43)\n  by mta3.grp.scd.yahoo.com with SMTP; 3 Jan 2005 14:11:39 -0000\r\nReceived: from [66.218.69.5] by n9.bulk.scd.yahoo.com with NNFMP; 03 Jan 2005 14:11:35 -0000\r\nReceived: from [66.218.67.165] by mailer5.bulk.scd.yahoo.com with NNFMP; 03 Jan 2005 14:11:35 -0000\r\nX-Sender: areinmeyer@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 10514 invoked from network); 31 Dec 2004 13:18:58 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m11.grp.scd.yahoo.com with QMQP; 31 Dec 2004 13:18:58 -0000\r\nReceived: from unknown (HELO n10a.bulk.scd.yahoo.com) (66.94.237.44)\n  by mta3.grp.scd.yahoo.com with SMTP; 31 Dec 2004 13:18:58 -0000\r\nReceived: from [66.218.69.5] by n10.bulk.scd.yahoo.com with NNFMP; 31 Dec 2004 13:18:58 -0000\r\nReceived: from [66.218.67.132] by mailer5.bulk.scd.yahoo.com with NNFMP; 31 Dec 2004 13:18:57 -0000\r\nDate: Fri, 31 Dec 2004 13:18:54 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;cr3jju+tor6@...&gt;\r\nIn-Reply-To: &lt;OF52090C57.04A12F0B-ON87256F7B.00095602-85256F7B.0009621F@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Length: 2626\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-system\r\nX-eGroups-Remote-IP: 66.94.237.44\r\nFrom: areinmeyer@...\r\nSubject: Re: JUnit dynamic testing with file modifications\r\nX-Yahoo-Group-Post: member; u=209563212\r\nX-Yahoo-Profile: hawkboy113\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 03 Jan 2005 14:11:34 -0000\r\nX-eGroups-Remote-IP: 66.94.237.43\r\n\r\n\n\n--- In junit@yahoogroups.com, Thomas L Roche &lt;tlroche@u...&gt; wrote:\n&gt; Allen Reinmeyer Dec 28, 2004 3:32 PM\n&gt; &gt;&gt; Before development moves along much further, I would like to take\n&gt; &gt;&gt; the test harnesses for each object and remove the hardcoding from\n&gt; &gt;&gt; them. Each test harness should still be able to be run individually\n&gt; &gt;&gt; as it&#39;s own test, but I&#39;m looking to the future as well, when we\n&gt; &gt;&gt; have the potential to do nightly builds and will want to run all of\n&gt; &gt;&gt; the test harnesses as a suite together. This definitely cannot\n&gt; &gt;&gt; happen if any hardcoding exists, but there needs to be some\n&gt; &gt;&gt; external way to pass each object the information specific to it\n&gt; &gt;&gt; only to test. I don&#39;t want to create a properties/configuration\n&gt; &gt;&gt; file for each object, as many of of the objects can re-use the same\n&gt; &gt;&gt; sdf file, logger, and other config files.\n&gt; \n&gt; Mike Clark Thu Dec 30, 2004  9:49 pm\n&gt; &gt; I&#39;d be in a better position to offer advice if I saw example code.\n&gt; \n&gt; True. Meanwhile: how much data gets passed? Could you just use\n&gt; (simple) properties and use, e.g., ant to drive?\n\nHere&#39;s one of the tests for our GetDate module.  The testData object\nwill have various entries, depending on the object being tested. The\ntestData object takes a &quot;key-&gt;value&quot; format and some objects will use\nthe same key name (e.g., &quot;file&quot;) and some are unique to only one\nobject, so I can&#39;t necessarily pass one giant testData that has every\npossible entry, as some objects will try to use every entry in the\ntestData object.  I had thought about properties, but I guess I&#39;m not\nsure how to impliment them on a unit test level as well as then on a\nbuild script.  I want the flexibility of being able to run the unit\ntest individually as well as possibly in a build script as well.  I&#39;m\nfairly new to all of this, as is the company that I&#39;m working for(java\nthat is), so I hope I&#39;m making sense as to what I want.  \n\n    public void testDateTime()\n    {\n        String confFileName = &quot;c:&#92;&#92;nas01&#92;&#92;aev2.conf&quot;;\n        \n        AEv2 aev2 = new AEv2(confFileName);\n        HandyTools.setConfFileName(confFileName);\n        \n        HashMap testData = new HashMap();\n\n        // enter test data here (equivalent of var file entries)\n        int EXPECTED = 0;\n        testData.put(&quot;format&quot;, &quot;mm/dd/yyyy hh:min:ss&quot;);\n\n\t    // initialize module\n\t    GetDate testClass = new GetDate(&quot;&quot;, testData);\n\n\t    // perform action\n\t    int RESULT = testClass.Execute();\n\n\t    // compare results\n\t    Assert.assertTrue( EXPECTED == RESULT );\n\t    java.lang.System.out.println(&quot;Returned Date/Time: [&quot; +\n\t            (String)testData.get(&quot;return&quot;) + &quot;]&quot;);\n\t}\n\n\n\n\n\n\n\n", 
+    "profile": "hawkboy113", 
+    "topicId": 12557, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 209563212, 
+    "prevInTime": 12567, 
+    "contentTrasformed": false, 
+    "postDate": "1104499134", 
+    "canDelete": false, 
+    "nextInTopic": 12576, 
+    "prevInTopic": 12565, 
+    "headers": {
+        "inReplyToHeader": "PE9GNTIwOTBDNTcuMDRBMTJGMEItT044NzI1NkY3Qi4wMDA5NTYwMi04NTI1NkY3Qi4wMDA5NjIxRkB1cy5pYm0uY29tPg==", 
+        "messageIdInHeader": "PGNyM2pqdSt0b3I2QGVHcm91cHMuY29tPg=="
+    }
+}

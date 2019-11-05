@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 16, 
+    "nextInTime": 22928, 
+    "senderId": "7Gbqd_gwOfvQdsQNhIHze78AXN3pwMV3cLYU5Io8c9o0eQD3xivcYvBXiuvKgA3Jk30SHs_CnGx5M7j8_o0zfcQt2rr19SSqSKSxXwIh2IzA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Future of JUnit & Hamcrest", 
+    "from": "Stefan Bodewig &lt;stefan.bodewig@...&gt;", 
+    "authorName": "Stefan Bodewig", 
+    "msgSnippet": "... I remember XMLUnit s tests were one affected, see  and the thread that lead to it as well as ", 
+    "msgId": 22927, 
+    "profile": "sbodewig", 
+    "topicId": 22867, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 180464851, 
+    "messageBody": "<div id=\"ygrps-yiv-545129909\">On 2010-09-07, David Saff wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 2010/9/6 Alexandru Popescu ☀ &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:the.mindstorm.mailinglist@...\">the.mindstorm.mailinglist@...</a>&gt;:<br/>\n<br/>\n&gt;&gt; I know this is a bit late, but I was wondering if you have some pointers to<br/>\n&gt;&gt; the API/type changes that would lead to this issue? I&#39;d really like to be<br/>\n&gt;&gt; able to use the latest version of hamcrest with junit (and I don&#39;t have a<br/>\n&gt;&gt; large test case suite to worry about it).<br/>\n<br/>\n&gt; I may be able to dig up the thread later today.  I&#39;ll try.<br/>\n<br/>\n </span></blockquote>I remember XMLUnit&#39;s tests were one affected, see<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://github.com/KentBeck/junit/issues/issue/9\">http://github.com/KentBeck/junit/issues/issue/9</a>&gt; and the thread that<br/>\nlead to it as well as<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://sourceforge.net/mailarchive/message.php?msg_name=20090531082343.B4FAAAB40C1%40vmgump.apache.org\">http://sourceforge.net/mailarchive/message.php?msg_name=20090531082343.B4FAAAB40C1%40vmgump.apache.org</a>&gt;<br/>\n<br/>\nIf you take svn revision 342 of XMLUnit it won&#39;t compile with Hamcrest<br/>\n1.2 but with Hamcrest 1.1.  To see what I had to change to make things<br/>\nwork with Hamcrest 1.2:<br/>\n&lt;<a rel=\"nofollow\" target=\"_blank\" href=\"http://xmlunit.svn.sourceforge.net/viewvc/xmlunit?view=revision&revision=343\">http://xmlunit.svn.sourceforge.net/viewvc/xmlunit?view=revision&revision=343</a>&gt;<br/>\n<br/>\nBasically I had code like<br/>\n<br/>\nSource s = ... code creating an instance of the Source interface ...<br/>\nassertThat(s, is(DOMSource.class))<br/>\n<br/>\nand this is what happened<br/>\n<br/>\n    [javac] /srv/gump/public/workspace/xmlunit/src/tests/java-core/net/sf/xmlunit/builder/InputTest.java:48: cannot find symbol<br/>\n    [javac] symbol  : method assertThat(javax.xml.transform.Source,org.hamcrest.Matcher&lt;capture#983 of ? super javax.xml.transform.dom.DOMSource&gt;)<br/>\n    [javac] location: class net.sf.xmlunit.builder.InputTest<br/>\n    [javac]         assertThat(s, is(DOMSource.class));<br/>\n<br/>\nin Hamcrest 1.1 the is method in question was<br/>\n<br/>\n   public static Matcher&lt;Object&gt; is(Class&lt;?&gt; type)<br/>\n<br/>\nin 1.2 it became<br/>\n<br/>\n   public static &lt;T&gt; Matcher&lt;? super T&gt; is(Class&lt;T&gt; type)<br/>\n<br/>\nTogether with<br/>\n<br/>\n   public static &lt;T&gt; void assertThat(T actual, Matcher&lt;T&gt; matcher)<br/>\n<br/>\njavac&#39;s type inferencer is running into trouble.<br/>\n<br/>\nThe changed code in XMLUnit now uses <br/>\n<br/>\nassertThat(s, instanceOf(DOMSource.class));<br/>\n<br/>\nwhich was <br/>\n<br/>\n  public static Matcher&lt;Object&gt; instanceOf(Class&lt;?&gt; type)<br/>\n<br/>\nin Hamcrest 1.1 and became <br/>\n<br/>\n  public static &lt;T&gt; Matcher&lt;T&gt; instanceOf(Class&lt;?&gt; type)<br/>\n<br/>\nThe problem with the is() method is that it assumes a relation between<br/>\nthe class and the object you want to match at compile time while the<br/>\ninstanceOf doesn&#39;t assume anything like this.<br/>\n<br/>\nWith Hamcrest 1.2 you get a compile time error for<br/>\n<br/>\n  assertThat(&quot;foo&quot;, is(Integer.class))<br/>\n<br/>\nand with 1.1 you get a failed assertion.<br/>\n<br/>\nNot sure if this is the problem David had in mind.<br/>\n<br/>\nStefan</div>", 
+    "prevInTime": 22926, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1283872366", 
+    "canDelete": false, 
+    "nextInTopic": 22928, 
+    "prevInTopic": 22924, 
+    "headers": {
+        "inReplyToHeader": "PEFBTkxrVGlrOXFPUEt4VWNIeWZEaFZhdGtqdm5IN1AyN1oyUG5YUkh3PWZ1ckBtYWlsLmdtYWlsLmNvbT4JKERhdmlkIFNhZmYncyBtZXNzYWdlIG9mICJUdWUsIDcgU2VwIDIwMTAgMTA6MDQ6NDcgLTA0MDAiKQ==", 
+        "messageIdInHeader": "PDg3Znd4bGsyb2guZnNmQHYzNTUxNi4xYmx1LmRlPg==", 
+        "referencesHeader": "PGk0ZjJldSs1N2ZqQGVHcm91cHMuY29tPgk8QUFOTGtUaT05amZzZz1XOXBVeWNPQWNrdlpRYk52Y0dvLUdVcDJTZ0NUV284QG1haWwuZ21haWwuY29tPgk8QUFOTGtUaW1KN3ljWEsrU3FyRUp2PT1WZ3NyM3Jvcy15cEcwdG5raHk5SktDQG1haWwuZ21haWwuY29tPgk8QUFOTGtUaWs5cU9QS3hVY0h5ZkRoVmF0a2p2bkg3UDI3WjJQblhSSHc9ZnVyQG1haWwuZ21haWwuY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21590, 
+    "senderId": "TjC3rVifKkMuumHG074w0cCgLRa9tcFSGdDE_CGi_WXz7s05Pe2WkcLlkgZRS0AKyOIT2qeALWTKEv6SvCz2C3Y3", 
+    "systemMessage": false, 
+    "subject": "New 4.7 snapshot release: get the name of the current test", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "All, A new snapshot release of JUnit 4.7 is up: https://sourceforge.net/project/showfiles.php?group_id=15278&package_id=226053&release_id=682045 The newest", 
+    "msgId": 21589, 
+    "profile": "dsaff", 
+    "topicId": 21589, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "messageBody": "<div id=\"ygrps-yiv-235443076\">All,<br/>\n<br/>\nA new snapshot release of JUnit 4.7 is up:<br/>\n<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"https://sourceforge.net/project/showfiles.php?group_id=15278&package_id=226053&release_id=682045\">https://sourceforge.net/project/showfiles.php?group_id=15278&package_id=226053&release_id=682045</a><br/>\n<br/>\nThe newest feature in this release is a golden oldie: access to the<br/>\nname of the currently-running test method:<br/>\n<br/>\n\t@RunWith(Interceptors.class)<br/>\n\tpublic class NameInterceptorTest {<br/>\n\t\t@Interceptor public TestName name = new TestName();<br/>\n\t\t<br/>\n\t\t@Test public void testA() {<br/>\n\t\t\tassertEquals(&quot;testA&quot;, name.getMethodName());<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nShare and Enjoy,<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<br/>\nP.S. The entire release notes:<br/>\n<br/>\n## Summary of Changes in version 4.7 ##<br/>\n<br/>\n### Interceptors ###<br/>\n<br/>\n- Interceptors allow very flexible addition or redefinition of the behavior<br/>\n  of each test method in a test class.  For example, this class will<br/>\n  keep a log of each passing and failing test:<br/>\n<br/>\n\t@RunWith(Interceptors.class)<br/>\n\tpublic static class WatchmanTest {<br/>\n\t\tprivate static String watchedLog;<br/>\n<br/>\n\t\t@Interceptor<br/>\n\t\tpublic StatementInterceptor watchman= new TestWatchman() {<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic void failed(Throwable e, FrameworkMethod method) {<br/>\n\t\t\t\twatchedLog+= method.getName() + &quot; &quot;<br/>\n\t\t\t\t\t\t+ e.getClass().getSimpleName() + &quot;&#92;n&quot;;<br/>\n\t\t\t}<br/>\n<br/>\n\t\t\t@Override<br/>\n\t\t\tpublic void succeeded(FrameworkMethod method) {<br/>\n\t\t\t\twatchedLog+= method.getName() + &quot; &quot; + &quot;success!&#92;n&quot;;<br/>\n\t\t\t}<br/>\n\t\t};<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void fails() {<br/>\n\t\t\tfail();<br/>\n\t\t}<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void succeeds() {<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tFor more on this feature, see <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.threeriversinstitute.org/blog/?p=155\">http://www.threeriversinstitute.org/blog/?p=155</a><br/>\n<br/>\n- The TestName Interceptor makes the current test name available<br/>\ninside test methods:<br/>\n<br/>\n\t@RunWith(Interceptors.class)<br/>\n\tpublic class NameInterceptorTest {<br/>\n\t\t@Interceptor public TestName name = new TestName();<br/>\n\t\t<br/>\n\t\t@Test public void testA() {<br/>\n\t\t\tassertEquals(&quot;testA&quot;, name.getMethodName());<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\t@Test public void testB() {<br/>\n\t\t\tassertEquals(&quot;testB&quot;, name.getMethodName());<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n- The Timeout Interceptor applies the same timeout to all test methods<br/>\nin a class:<br/>\n<br/>\n\t@RunWith(Interceptors.class)<br/>\n\tpublic static class HasGlobalTimeout {<br/>\n\t\tpublic static String log;<br/>\n\t\t<br/>\n\t\t@Interceptor public StatementInterceptor globalTimeout = new Timeout(20);<br/>\n\t\t<br/>\n\t\t@Test public void testInfiniteLoop1() {<br/>\n\t\t\tlog+= &quot;ran1&quot;;<br/>\n\t\t\tfor(;;) {}<br/>\n\t\t}<br/>\n\t\t<br/>\n\t\t@Test public void testInfiniteLoop2() {<br/>\n\t\t\tlog+= &quot;ran2&quot;;<br/>\n\t\t\tfor(;;) {}<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n### Timeouts ###<br/>\n- Tests that timeout now show the stack trace of the test thread.<br/>\n<br/>\n### Docs ###<br/>\n- Javadocs now link to online JDK javadocs (bug 2090230)<br/>\n- Parameterized runner javadocs improved (bug 2186792)<br/>\n- Fixed Javadoc code sample for AfterClass (2126279)<br/>\n- Fixed Javadoc for assertArraysEqual(float[], float[])<br/>\n<br/>\n### Bug fixes ###<br/>\n- Fixed: BaseTestRunner.getTest() requires class to extend TestCase (1812200)<br/>\n- Fixed: Suite does not allow for inheritance in annotations (2783118)<br/>\n- Fixed: ParallelComputer skipped tests that took longer than 2 seconds</div>", 
+    "prevInTime": 21588, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1242100479", 
+    "canDelete": false, 
+    "nextInTopic": 21591, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNTExMjA1NHM0ODBlMjFhMm0zYTVlZDg3MWJjNmU2ZDAzQG1haWwuZ21haWwuY29tPg=="
+    }
+}

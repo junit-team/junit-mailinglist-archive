@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 5951, 
+    "senderId": "QR92YV-lTtLhmSYlcG48-jfpypy1wm1ef9Mdzwp4BUhm6vRVtSGQj0Nkqixczx13h2kryX6JQWL1n26-TlsE20dvhEI_sfxdtzbAuVPWOTg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unrelated effects - newbie ignorance", 
+    "from": "Steven Taschuk &lt;staschuk@...&gt;", 
+    "authorName": "Steven Taschuk", 
+    "msgSnippet": "Quoth cdtmp: [...] ... [...] ... [...] I think I d handle something like this by implementing an abstraction which sends the messages, and at testing time ", 
+    "msgId": 5950, 
+    "topicId": 5949, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 114327599, 
+    "messageBody": "<div id=\"ygrps-yiv-245375131\">Quoth cdtmp:<br/>\n  [...]<br/>\n<blockquote><span title=\"ireply\"> &gt; I have an situation where the effect of a method is to send (or not to<br/>\n&gt; send) a message through either a serial port, socket or similar.<br/>\n </span></blockquote>  [...]<br/>\n<blockquote><span title=\"ireply\"> &gt;  It&#39;s not actually _what_ is sent, since that can be tested, but it&#39;s<br/>\n&gt; that the correct sequence of messages was requested to be sent (based,<br/>\n&gt; in this case, on string identifiers).<br/>\n&gt; <br/>\n&gt; My problem is that the state of the object after the call is the same<br/>\n&gt; as before the call, or at least the sending of the message is not, and<br/>\n&gt; cannot easily be indicated in the state of the object without changing<br/>\n&gt; the runtime behavior of the object.<br/>\n&gt; <br/>\n&gt; I hope all this makes sense.  I&#39;d appreciate any suggestions.<br/>\n </span></blockquote>  [...]<br/>\n<br/>\nI think I&#39;d handle something like this by implementing an<br/>\nabstraction which sends the messages, and at testing time<br/>\nsubstituting an object which collects the messages for<br/>\nverification.<br/>\n<br/>\nAn example.  Suppose Foo.sendMessages( String ) is supposed to<br/>\nscan the String and send message A when two consecutive characters<br/>\nare the same, but message B when two consecutive characters are<br/>\ndifferent.  Thus the call<br/>\n\tfoo.sendMessages( &quot;011100&quot; );<br/>\nshould produce the message sequence B A A B A.<br/>\n<br/>\nThen I&#39;d write something like<br/>\n<br/>\n\tpublic interface MessageHandler {<br/>\n\t\tvoid sendMessageA();<br/>\n\t\tvoid sendMessageB();<br/>\n\t}<br/>\n<br/>\n\tpublic class Foo {<br/>\n\t\tprivate final MessageHandler handler;<br/>\n\t\tpublic Foo( MessageHandler handler ) {<br/>\n\t\t\tthis.handler = handler;<br/>\n\t\t}<br/>\n\t\tpublic void sendMessages( String chars ) {<br/>\n\t\t\t// scan chars and invoke handler.sendMessage[A|B]<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nIn real life the implementation of MessageHandler writes these<br/>\nmessages to an OutputStream or whatever.  For testing purposes, a<br/>\nmock implementation collects them for verification:<br/>\n<br/>\n\tclass MockMessageHandler implements MessageHandler {<br/>\n\t\tprivate StringBuffer buf = new StringBuffer();<br/>\n\t\tpublic void sendMessageA() {<br/>\n\t\t\tbuf.append( &#39;a&#39; );<br/>\n\t\t}<br/>\n\t\tpublic void sendMessageB() {<br/>\n\t\t\tbuf.append( &#39;b&#39; );<br/>\n\t\t}<br/>\n\t\tString getMessages() {<br/>\n\t\t\treturn buf.toString();<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic class FooTest extends TestCase {<br/>\n\t\tpublic void testSendMessages() {<br/>\n\t\t\tMockMessageHandler handler = new MockMessageHandler();<br/>\n\t\t\tnew Foo( handler ).sendMessages( &quot;011100&quot; );<br/>\n\t\t\tassertEquals( &quot;baaba&quot;, handler.getMessages() );<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\nIn some applications it would be convenient to have the interface<br/>\nMessageHandler anyway; among other things, its presence makes it<br/>\neasy to write filters which manipulate the message stream, log the<br/>\nmessages sent, etc..<br/>\n<br/>\nDoes this come close to fitting your needs?</div>", 
+    "prevInTime": 5949, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1033952018", 
+    "canDelete": false, 
+    "nextInTopic": 5952, 
+    "prevInTopic": 5949, 
+    "headers": {
+        "inReplyToHeader": "PGFubzFvNitlbmRxQGVHcm91cHMuY29tPjsgZnJvbSBqeWFob29ncm91cHNAZXJnb3RlY2guY29tIG9uIFN1biwgT2N0IDA2LCAyMDAyIGF0IDEyOjU2OjM4QU0gLTAwMDA=", 
+        "messageIdInHeader": "PDIwMDIxMDA2MTg1MzM4LkE3NjVAdGliaWEuYW1vdGxwYWEuYm9ndXM+", 
+        "referencesHeader": "PGFubzFvNitlbmRxQGVHcm91cHMuY29tPg=="
+    }
+}

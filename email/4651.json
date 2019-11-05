@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 4652, 
+    "senderId": "M7JW5N8Sj1WQsdShZzJ_v4a675noVF2HrjR9mTOBqeul-4S8Qxk1f2ot8--CV14bpM7lM8vYg_68FFsYWNgzXJ1hJU9j2LbMjew", 
+    "systemMessage": false, 
+    "subject": "Weired problem using java.beans.XMLEncoder and junit", 
+    "from": "&quot;bteichmann&quot; &lt;bteichmann@...&gt;", 
+    "authorName": "bteichmann", 
+    "msgSnippet": "Hi, I have weired problem using java.beans.XMLDecoder in combination with the junit/runner/excluded.properties patch , which is necessary to avoid the", 
+    "msgId": 4651, 
+    "profile": "bteichmann", 
+    "topicId": 4651, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 70952563, 
+    "messageBody": "<div id=\"ygrps-yiv-307140737\">Hi,<br/>\nI have weired problem using java.beans.XMLDecoder in combination with <br/>\nthe junit/runner/excluded.properties patch , which is necessary to <br/>\navoid the &quot;ClassNotFoundException&quot;-problem with log4J.<br/>\n<br/>\nAfter patching  excluded.properties the &quot;ClassNotFoundException&quot;-<br/>\nproblem with log4J disapeared but instead i got a new problem in my <br/>\nown source. this problem only occured if i run my source with junit.<br/>\n<br/>\n(it does not occure, if i run it with eclipes junit runner or if i <br/>\nrun the source from its main() without junit.)<br/>\n<br/>\nthe code lookes like this:<br/>\n+++++++++<br/>\n  dec =<br/>\n      new java.beans.XMLDecoder( <br/>\n        new BufferedInputStream(new FileInputStream(file)));<br/>\n\t  if (dec == null) throw new UserAgentException(&quot;cound not <br/>\ninstanciate XMLdecoder with filename: &quot;+filename);<br/>\n    Object readObj = dec.readObject();<br/>\n<br/>\n    // the next 7 lines are for debugging purposes    <br/>\n    Class oc = readObj.getClass();<br/>\n    ClassLoader cl1 = oc.getClassLoader();<br/>\n    userAgent = new UserAgentImpl();<br/>\n    ClassLoader cl2 = userAgent.getClass().getClassLoader();<br/>\n    System.out.println(cl1.toString() + &quot;   &quot;+ cl2.toString() <br/>\n       + &quot;&#92;n&quot; + userAgent.getClass().getName()<br/>\n       + &quot;&#92;n&quot; + readObj.getClass().getName());<br/>\n    // this line does not work althought the readObj.class is <br/>\n    // the same as for userAgent<br/>\n    // the line throws a ClassCastException <br/>\n    userAgent = (UserAgentImpl) readObj;<br/>\n       <br/>\n+++++++<br/>\nthe output looks like this:<br/>\n*****<br/>\nsun.misc.Launcher$AppClassLoader@2f6684   <br/>\njunit.runner.TestCaseClassLoader@efe475<br/>\nde.xx.useragent.UserAgentImpl<br/>\nde.xx.useragent.UserAgentImpl<br/>\n*******<br/>\nand altthought the class of readObj and userAgent are the same i got <br/>\na ClassCastException on the last line &quot;userAgent = (UserAgentImpl) <br/>\nreadObj;&quot;<br/>\n<br/>\nonly if i run the test from a main() class in the TestCase i got <br/>\ndifferent classloaders. if i run the TestCase from Eclipses buildin <br/>\njunit support the output looks like this no ClassCastException is <br/>\nthrown:<br/>\n******<br/>\nsun.misc.Launcher$AppClassLoader@2f6684   <br/>\nsun.misc.Launcher$AppClassLoader@2f6684<br/>\nde.multivisual.textlib.useragent.UserAgentImpl<br/>\nde.multivisual.textlib.useragent.UserAgentImpl<br/>\n*******<br/>\n<br/>\nAny Ideas to fix this problem ?<br/>\n<br/>\nBodo</div>", 
+    "prevInTime": 4650, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1018534999", 
+    "canDelete": false, 
+    "nextInTopic": 4653, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PGE5NDY4biszMTJtQGVHcm91cHMuY29tPg=="
+    }
+}

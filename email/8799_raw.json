@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 29, 
+    "nextInTime": 8800, 
+    "senderId": "dYYB0Sq9E2JVk0brADEZgAxFNQ-YqPv2wpyvqO1YCKL7GZJAsQ6nQ0c-eguA1kMJA05Zy3u0KJwUlSSM_Ur2zbY9snwTVyxlQhBH", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to test private member variables?", 
+    "from": "Peter Morgan &lt;pmorgan@...&gt;", 
+    "authorName": "Peter Morgan", 
+    "msgSnippet": "... For that kind behaviour we would use an InvocationHandler which is set on the Imposter. We have tended to build up a library of such handlers, and re-use", 
+    "msgId": 8799, 
+    "rawEmail": "Return-Path: &lt;pmorgan@...&gt;\r\nX-Sender: pmorgan@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 19672 invoked from network); 25 Jul 2003 13:58:12 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m11.grp.scd.yahoo.com with QMQP; 25 Jul 2003 13:58:12 -0000\r\nReceived: from unknown (HELO jcoverage.com) (62.49.225.123)\n  by mta3.grp.scd.yahoo.com with SMTP; 25 Jul 2003 13:58:12 -0000\r\nReceived: from sport.sunninghill.org (sport.sunninghill.org [62.49.225.118])\n\t(authenticated bits=0)\n\tby jcoverage.com (8.12.8/8.12.8) with ESMTP id h6PDwA2J009525\n\t(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO)\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 25 Jul 2003 14:58:11 +0100\r\nSubject: Re: [junit] Re: How to test private member variables?\r\nTo: JUnit Yahoo Group &lt;junit@yahoogroups.com&gt;\r\nIn-Reply-To: &lt;bfra06+9cva@...&gt;\r\nReferences: &lt;bfra06+9cva@...&gt;\r\nContent-Type: text/plain\r\nOrganization: jcoverage ltd\r\nMessage-Id: &lt;1059141630.5755.82.camel@...&gt;\r\nMime-Version: 1.0\r\nX-Mailer: Ximian Evolution 1.2.0 \r\nDate: 25 Jul 2003 15:00:30 +0100\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Peter Morgan &lt;pmorgan@...&gt;\r\nX-Yahoo-Group-Post: member; u=148954645\r\nX-Yahoo-Profile: peter_james_morgan\r\n\r\nOn Fri, 2003-07-25 at 14:06, Dave Astels wrote:\n&gt; Then you have a specification of the interaction in your test... not\n&gt; just the postconditions.\n&gt; \n&gt; How do you test for correct call sequencing?\n\nFor that kind behaviour we would use an InvocationHandler which is set\non the Imposter. We have tended to build up a library of such handlers,\nand re-use them in other tests. I guess that it is similar to the\n&#39;validate()&#39; method at the end of a test with a mock. For example, we\nwould have a FailingTransactionManagerInvocationHandler, in our\n&#39;library&#39; of behaviours, which we can use when we wanted such behaviour:\n\nImposter i=imposterFactory.newImposter(TransactionManager.class);\ni.setInvocationHandler(failingTrans...);\n\nor\n\ni.setInvocationHandler(goodBehaviour...);\n\n&gt; Both approaches have their place.  To me it depends on whether I want\n&gt; to test interaction or results.\n\nSure. We tend to use an InvocationHandler where we require a complex\ninteraction, e.g., a transaction manager which &#39;works&#39; for a while, and\nthen &#39;disappears&#39; from the network.\n\nFor simpler cases, the Imposter automatically records parameter&#39;s\nsupplied, and whether a particular method has been called.\n\n&gt; &gt; We sell a dynamic mock object implementation that works for\n&gt; &gt; non-final classes and interfaces using byte code modification, that \n&gt; &gt; we call &#39;imposter&#39;.\n&gt; \n&gt; Interesting.  Why?  (i.e. why sell and why that approach)\n\nWe use byte-code modification because it means that we can dynamically\ncreate an imposter from any Java interface or class. If the underlying\nclass changes, then the dynamic imposter automatically changes. We have\nwritten source-code based implementations previously, but didn&#39;t like\nthe maintenance overhead of the &#39;test artifacts&#39; (keeping them up to\ndate as the system changed, became an issue for us). So we developed a\nmechanism for creating imposters directly from the original byte-code of\nthe class.\n\nWe also have a substitution technology that can dynamically replace\ncomponents directly in the byte-code with an Imposter. This is\nparticularly useful in &#39;brown-field&#39; developments where it may not be\npossible to refactor (due to political or other such pressure).\n\nWe also have also developed technologies for testing in certain\nprogramming environments, e.g., J2EE, which are difficult to otherwise\nunit test. For example, using byte-code we create a concrete version of\na CMP2.0 abstract EJB, with the CMR and CMP fields being implemented as\nImposters. This means that you can unit-test an EJB without having to\ndeploy it into a container, or have to develop (and maintain) a concrete\nimplementation of the EJB. Using substitution, we can replace the calls\nto &#39;new InitialContext()&#39; directly with an Imposter, meaning that it is\npossible to replace any collaborations with further imposters, again\nwithout having to deploy into a container.\n\nRegards,\nPeter.\n\n-- \nPeter Morgan\njcoverage ltd\n+44 1423 526 426\n\n\n", 
+    "profile": "peter_james_morgan", 
+    "topicId": 8767, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 148954645, 
+    "prevInTime": 8798, 
+    "contentTrasformed": false, 
+    "postDate": "1059141630", 
+    "canDelete": false, 
+    "nextInTopic": 8800, 
+    "prevInTopic": 8797, 
+    "headers": {
+        "inReplyToHeader": "PGJmcmEwNis5Y3ZhQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDEwNTkxNDE2MzAuNTc1NS44Mi5jYW1lbEBzcG9ydC5zdW5uaW5naGlsbC5vcmc+", 
+        "referencesHeader": "PGJmcmEwNis5Y3ZhQGVHcm91cHMuY29tPg=="
+    }
+}

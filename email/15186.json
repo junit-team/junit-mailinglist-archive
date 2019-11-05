@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 55, 
+    "nextInTime": 15187, 
+    "senderId": "a6jo0Bh-KkcLui9T-SxLZU-K521csZbyMno4jMes9mUIOMY8yx8Faz5hgrO4gquW8P9KmW6P80F35CQH3lLdXoi3n-s", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Test Names for Parameterized Tests", 
+    "from": "Eugene Kuleshov &lt;eu@...&gt;", 
+    "authorName": "Eugene Kuleshov", 
+    "msgSnippet": "... I wish your statement would be true. Unfortunately it only work for statically bound test cases. If tests are returned from the suite method that is adding", 
+    "msgId": 15186, 
+    "profile": "ekuleshov", 
+    "topicId": 15110, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 150395705, 
+    "messageBody": "<div id=\"ygrps-yiv-1071385860\">Robert Watkins wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt;Yes, I think that every test needs a meaningful name.  Technically,<br/>\n&gt;&gt;a &quot;moniker.&quot;  Given the name/moniker of a failing test, it should be<br/>\n&gt;&gt;possible to automatically recreate and rerun just that test.  That is,<br/>\n&gt;&gt;from &quot;testThis(3 of 10)&quot; or &quot;testThis(5,&#39;hello&#39;,true)&quot;, it should be<br/>\n&gt;&gt;possible to construct and run a test instance equivalent to the<br/>\n&gt;&gt;original.  (And I&#39;m saying &quot;should&quot; in the sense of, &quot;The tool would<br/>\n&gt;&gt;be most useful if it did things this way.&quot;)<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Well... in most GUI JUnit runners (like the ones inside IDEs), you can<br/>\n&gt; just click on the failing test and re-run it directly. This is<br/>\n&gt; possible because JUnit uses seperate instances per test (mild dig at<br/>\n&gt; Cedric) - as such, a moniker isn&#39;t strictly necessary (though it<br/>\n&gt; wouldn&#39;t hurt).<br/>\n<br/>\n </span></blockquote>   I wish your statement would be true. Unfortunately it only work for <br/>\nstatically bound test cases. If tests are returned from the suite <br/>\nmethod that is adding them dynamically (e.g. from external config or <br/>\ncaptured data) in my knowledge none of the IDE would allow to restart <br/>\nspecific test case and you&#39;ll have to run the whole suite.<br/>\n<br/>\n   Here is the test case code to illustrate what I actually mean bu <br/>\ndynamic test suite:<br/>\n<br/>\npublic class RegressionTest extends TestCase {<br/>\n<br/>\n     public static TestSuite suite() {<br/>\n         TestSuite suite = new TestSuite(RegressionTest.class.getName());<br/>\n         for( int i = 0; i &lt; 100; i++) {<br/>\n             suite.addTest( new RegressionTest( Math.random()));<br/>\n         }<br/>\n         return suite;<br/>\n     }<br/>\n<br/>\n<br/>\n     private final double param;<br/>\n<br/>\n     public RegressionTest(double param) {<br/>\n         super( &quot;testParam&quot;);<br/>\n         this.param = param;<br/>\n     }<br/>\n<br/>\n     public void testParam() throws Exception {<br/>\n         assertTrue( param&gt;0.5d);<br/>\n     }<br/>\n<br/>\n     public String getName() {<br/>\n         return super.getName()+&quot; &quot;+param;<br/>\n     }<br/>\n<br/>\n}<br/>\n<br/>\n   Note the getName() method hack suggested by Erich Gamma to make <br/>\nEclipse&#39;s JUnit runner show actual test params.<br/>\n<br/>\n   I&#39;ve proposed to make possible to restart specific test case in <br/>\nEclipse&#39;s JUnit runner, but wasn&#39;t able to convince Erich that this is <br/>\nanyhow important for the community. Too bad, because in my current <br/>\nproject over 90% of test cases using this approach (data are collected <br/>\nfrom various sources including manually crafted test cases, test cases <br/>\nfrom the bug reports, etc).<br/>\n<br/>\n   This functionality is about to be replaced by parameterized tests <br/>\nin JUnit4. Though I&#39;d like to see how the junit runner would be able <br/>\nto capture params for each specific test and also provide a readable <br/>\ntest case name. Note that these params could be objects and toString() <br/>\nmay not always the best way for this.<br/>\n<br/>\n   Also note that in a current JUnit4 API to rerun test cases you can <br/>\nonly use parm set number but generally not the param values.<br/>\n<br/>\n   regards,<br/>\n   Eugene</div>", 
+    "prevInTime": 15185, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1129648221", 
+    "canDelete": false, 
+    "nextInTopic": 15187, 
+    "prevInTopic": 15185, 
+    "headers": {
+        "inReplyToHeader": "PGU5MTJlOTQ2MDUxMDE3MTY1N3YxMTdkNzM5MWs0YTU2MTM0NTk3MzA2ODEwQG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQzNTUxMDVELjYwNTAyMDRAbWQucHAucnU+", 
+        "referencesHeader": "PGU5MTJlOTQ2MDUxMDE3MDYzOGgxZGYwZmFkOXg3MDQxN2VlZGQ4YTIzZmZmQG1haWwuZ21haWwuY29tPgkgPGRqMHI5NSs0dmRjQGVHcm91cHMuY29tPiA8ZTkxMmU5NDYwNTEwMTcxNjU3djExN2Q3MzkxazRhNTYxMzQ1OTczMDY4MTBAbWFpbC5nbWFpbC5jb20+"
+    }
+}

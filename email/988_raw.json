@@ -1,0 +1,30 @@
+{
+    "topicId": 985, 
+    "postDate": "987681550", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Brian Button &lt;bbutton01@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Vi8RTmcRDqYgrY2jr8L0iyFvRfXth8D02Q0P17qo7zyQSEIRhXJ0ktOhz2_0mtRAPHTZ8OzXZSiFxQHjm9zXbKg2zYu-DjOr04pSOJU", 
+    "nextInTime": 989, 
+    "userId": 0, 
+    "prevInTime": 987, 
+    "prevInTopic": 985, 
+    "headers": {
+        "inReplyToHeader": "UmFsZiBLcmFrb3dza2kncyBtZXNzYWdlIG9mICJUaHUsIDE5IEFwciAyMDAxIDExOjI3OjU2ICswMjAwIg==", 
+        "messageIdInHeader": "PG0zbjE5ZDVjZHQuZnNmQGVhcnRobGluay5uZXQ+", 
+        "referencesHeader": "PDcwMEVBMTdBMTQyQUQzMTE4QTFFMDAwOEM3MjRCQ0I0QjcyQTRFQGFnYmdudHMwMy5hZ2JnLmludHJhbmV0Pg=="
+    }, 
+    "authorName": "Brian Button", 
+    "numMessagesInTopic": 7, 
+    "msgSnippet": "... Hi, Ralf, I think may I know what may be causing this problem. You don t say which version of junit you re using, but I suspect it is not 3.6. I believe", 
+    "contentTrasformed": false, 
+    "msgId": 988, 
+    "nextInTopic": 989, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;bbutton@...&gt;\r\nX-Sender: bbutton@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 19 Apr 2001 12:01:53 -0000\r\nReceived: (qmail 83431 invoked from network); 19 Apr 2001 12:01:53 -0000\r\nReceived: from unknown (10.1.10.26) by l10.egroups.com with QMQP; 19 Apr 2001 12:01:53 -0000\r\nReceived: from unknown (HELO gull.mail.pas.earthlink.net) (207.217.121.85) by mta1 with SMTP; 19 Apr 2001 12:01:53 -0000\r\nReceived: from earthlink.earthlink.net (CC2-236.charter-stl.com [24.217.112.236]) by gull.mail.pas.earthlink.net (EL-8_9_3_3/8.9.3) with ESMTP id FAA16844 for &lt;junit@yahoogroups.com&gt;; Thu, 19 Apr 2001 05:01:54 -0700 (PDT)\r\nReceived: (from bbutton@localhost) by earthlink.earthlink.net (8.9.3/8.9.3) id HAA15380; Thu, 19 Apr 2001 07:00:32 -0500\r\nX-Authentication-Warning: earthlink.net: bbutton set sender to bbutton@... using -f\r\nSender: bbutton@...\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] textui vs swingui\r\nReferences: &lt;700EA17A142AD3118A1E0008C724BCB4B72A4E@...&gt;\r\nDate: 19 Apr 2001 06:59:10 -0500\r\nIn-Reply-To: Ralf Krakowski&#39;s message of &quot;Thu, 19 Apr 2001 11:27:56 +0200&quot;\r\nMessage-ID: &lt;m3n19d5cdt.fsf@...&gt;\r\nLines: 58\r\nUser-Agent: Gnus/5.0807 (Gnus v5.8.7) XEmacs/21.1 (Arches)\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-From: Brian Button &lt;bbutton@...&gt;\r\nFrom: Brian Button &lt;bbutton01@...&gt;\r\n\r\n&gt;&gt;&gt;&gt;&gt; &quot;Ralf&quot; == Ralf Krakowski &lt;ralf.krakowski@...&gt; writes:\n\nHi, Ralf,\n\nI think may I know what may be causing this problem. You don&#39;t say which\nversion of junit you&#39;re using, but I suspect it is not 3.6.\n\nI believe what is happening is that you are seeing the different\nbehaviors associated with the different ClassLoaders used by the\ntextui and swingui front ends. The textui uses the standard system\nClassLoader to create all classes. The swingui gives you the option of \nusing JUnit&#39;s own custom ClassLoader to reload classes that have\nchanged between invocations of the test.\n\nThe ClassCastException you&#39;re seeing could be due attempting to cast\nan object that has been loaded through the custom ClassLoader to a\nreference to an object that was created through a different\nClassLoader. This would cause this exact outcome.\n\nTo fix this, try starting junit with the -noloading flag from the\ncommand line. If this fixes your behavior, then you can continue doing \nthis, but you have to restart junit every time you change your\ncode. Or you can search in the archives for this group for\nexcluded.properties. There have been several messages sent that\ndescribe how to use this file to tell the custom ClassLoader to ignore \ncertain package hierarchies and let the system ClassLoader deal with\nthem. That is probably a better long term solution.\n\nbab\n\n    Ralf&gt;  I have two test that I run with\n    Ralf&gt; junit.textui.TestRunner.run(FooStatelessTest.class);\n\n    &gt;&gt; from my main method.\n    Ralf&gt; The output is like this(which is ok):\n\n    Ralf&gt; .F.  Time: 2,284 There was 1 failure:\n    Ralf&gt; 1) testSayGoodbye(FooStatelessTest) &quot;expected:&lt;Goodbye&gt; but\n    Ralf&gt;    was:&lt;Que&gt;&quot;\n\n    Ralf&gt; FAILURES!!!  Tests run: 2, Failures: 1, Errors: 0\n\n    Ralf&gt; When I run\n    Ralf&gt; junit.swingui.TestRunner.run(FooStatelessTest.class);\n\n    Ralf&gt; I get the following:\n\n    Ralf&gt; java.lang.ClassCastException:\n    Ralf&gt; Any thoughts? Why does it work with one but not the other?\n\n\n\n\n-- \nBrian Button            bbutton@...\nSenior Consultant       Object Mentor, Inc\nSt. Louis, MO\t\thttp://www.objectmentor.com\n\n\n", 
+    "subject": "Re: [junit] textui vs swingui"
+}

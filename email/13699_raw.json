@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 81, 
+    "nextInTime": 13700, 
+    "senderId": "19J036DFTyHlbgSX7Lp8erIKf6fe5JN1F2NHDeZ8FPz-6qB4bygrcCHVAuuTfQFJYc6FM5E9oLK_8nKStCRCH5cTk9xBb4oLJDqq03B-eQ", 
+    "systemMessage": false, 
+    "subject": "Fake or real?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... This is an interesting statement, because I don t think it s true. Unless you are writing Xerces, your code does not parse XML, but it /does/ interpret the", 
+    "msgId": 13699, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 70987 invoked from network); 30 May 2005 19:50:38 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m29.grp.scd.yahoo.com with QMQP; 30 May 2005 19:50:38 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta2.grp.scd.yahoo.com with SMTP; 30 May 2005 19:50:37 -0000\r\nReceived: from unknown (HELO ?192.168.1.112?) (srainsberger5790@69.197.252.38 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 30 May 2005 19:49:36 -0000\r\nMessage-ID: &lt;429B6E67.3020009@...&gt;\r\nDate: Mon, 30 May 2005 15:49:59 -0400\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;200505270448.j4R4mQMZ024870@...&gt;\r\nIn-Reply-To: &lt;200505270448.j4R4mQMZ024870@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Fake or real?\r\nX-Yahoo-Group-Post: member; u=127224993; y=bztHqX35IMDlSucUgGBQcWTE9czHyn07qvzEQyh2t1bqNRs\r\nX-Yahoo-Profile: nails762\r\n\r\nCedric Beust wrote:\n\n&gt;  &gt; If you don&#39;t want to test the XML to object mapping, then why\n&gt;  &gt; bother with XML at all in the test?\n&gt; \n&gt; Because my production code parses this XML, so I want my test to do the\n&gt; same.\n\nThis is an interesting statement, because I don&#39;t think it&#39;s true. \nUnless you are writing Xerces, your code does not parse XML, but it \n/does/ interpret the XML once it has been parsed.\n\nI know it&#39;s easy just to use an XML parser to read the files from disk, \nbut something very interesting happens when you try to write those tests \nwithout actually parsing XML....\n\n&gt;  &gt; Just create a bunch of objects to play with and skip the XML part.\n&gt; \n&gt; And then one day, an XML driver is missing on my production code but my\n&gt; tests are still all happily green because they are using mock objects.\n\nOne test somewhere tries to use the real XML driver. That test will fail.\n\n&gt; Why is it so hard to understand that I want my tests to be as close to my\n&gt; production code as possible?!?\n\nWe understand it, Cedric; we just don&#39;t necessarily do it ourselves. :)\n\n&gt;  &gt; Please give an example where it does affect your test results\n&gt;  &gt; if the setup code runs for each test and where you still\n&gt;  &gt; claim that the tests are independent.\n&gt; \n&gt; How about the example I just gave?\n&gt; \n&gt; Hint:  imagine the XML file is several megabytes big.  It&#39;s not that far\n&gt; fetched, really.\n\nWhy do we need to parse a file that big? I&#39;ll assume a well-known case \nI&#39;ve worked with: I&#39;m using XStream to provide persistence for an \napplication.\n\nWell, in that case, I need these tests:\n\n1. A test or two to verify that I can properly write a simple object \ngraph to XML and read it back using XStream. (Uses XStream and something \nlike StringReader/StringWriter. Notice that there are no mock objects \nhere -- only taking advantage of interface-based dependency.)\n\n2. A few tests for each kind of object I need to read and write to \nXStream, because I need to know that XStream maps properties correctly. \nThese tests are the same as #1, I guess.\n\nThen, after extracting a Repository interface that hides the rest of my \napplication from XStream...\n\n3. Tests for any business logic that requires the Repository, using a \n&quot;recording and verifying test double&quot; version of Repository (commonly \ncalled &quot;mock&quot;) that helps me know that I&#39;m invoking the Repository properly.\n\n4. Contract Tests for the XStream-based implementation of the Repository \nthat mostly make sure that I read XML properly on startup and write XML \nproperly on commit().\n\nI can be very confident that these tests cover me even though the vast \nmajority of them (those in category #3) don&#39;t talk to the XStream-based \nRepository. If any of my end-to-end tests fail, then I know I missed a \nContract Test (#4), but since we integrate every two weeks, I&#39;ll know \nabout that quickly enough.\n\nThe bottom line is that I don&#39;t need to read/write a several MB XML \ndocument for any of these tests. Hm. That&#39;s a Bad Thing. Let&#39;s add a few \nstress tests to #4. I feel better now.\n\nIf you&#39;re going to read/write such a large file, I recommend only doing \nit in Stress Tests.\n\nBut remember, these are only recommendations.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 13634, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 13698, 
+    "contentTrasformed": false, 
+    "postDate": "1117482599", 
+    "canDelete": false, 
+    "nextInTopic": 13700, 
+    "prevInTopic": 13698, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDUwNTI3MDQ0OC5qNFI0bVFNWjAyNDg3MEAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4=", 
+        "messageIdInHeader": "PDQyOUI2RTY3LjMwMjAwMDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDIwMDUwNTI3MDQ0OC5qNFI0bVFNWjAyNDg3MEAyMTYtMjM5LTQ1LTQuZ29vZ2xlLmNvbT4="
+    }
+}

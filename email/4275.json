@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 4276, 
+    "senderId": "K5pWnfVTEK1NcyYM2s0So5vxpaZkI36VtDZRAgW6NKu8vrV1fEfDFZDp9d-4GolH6Y752YKMeTA0zzF3W6Ui-4fimsSpiwvnvHYJ48d6Uw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] about teardown", 
+    "from": "&quot;Ryan P Ripley&quot; &lt;ryan.ripley@...&gt;", 
+    "authorName": "Ryan P Ripley", 
+    "msgSnippet": "Hey Bhanu, Hopefully this helps a bit, my comments are inline with your questions. 1) why actuall teardown() method is required. Teardown() is used to clean", 
+    "msgId": 4275, 
+    "topicId": 4273, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 99502882, 
+    "messageBody": "<div id=\"ygrps-yiv-189252000\">Hey Bhanu,<br/>\n<br/>\nHopefully this helps a bit, my comments are inline with your questions.<br/>\n<br/>\n1) why actuall teardown() method is required.<br/>\n<br/>\nTeardown() is used to &quot;clean up&quot; any objects created in the setup().<br/>\nThese objects are generally called fixtures.<br/>\n<br/>\nExample:<br/>\n\t<br/>\n\tvoid setup() {<br/>\n\t\tClass.forName(&quot;sun.jdbc.odbc.JdbcOdbcDriver&quot;);\t\t<br/>\n\t\tmyDBConnection =<br/>\nDriverManager.getConnection(&quot;jdbc:odbc:YourDB&quot;);<br/>\n\t\tmySqlStatement = myDBConnection.createStatement();<br/>\n\t\tmyResults = mySqlStatement.executeQuery(&quot;select * from<br/>\nfoo&quot;);<br/>\n\t}<br/>\n<br/>\n\tvoid tearDown() {<br/>\n\t\tmyDBConnection.close();<br/>\n\t\tmySqlStatement.close();<br/>\n\t\tmyResults.close();<br/>\n\t}<br/>\n<br/>\nYou are basically just cleaning up objects, note:  this is not only<br/>\nlimited to db connections, this is just an example usage.<br/>\n<br/>\n2) when i call tearDown() method it is making objects as null. though i<br/>\nam not making the objects as null. what is the reason.<br/>\n<br/>\nThis is what tearDown() is for.  Object cleanup.  I&#39;m not sure that I<br/>\nexactly follow the behavior you are seeing...<br/>\n<br/>\n3) how to write a log file if any of them have the code to make the log<br/>\nfile please forword to me.<br/>\n<br/>\nI&#39;m currently working on a logging system for JUNIT using log4j.  The<br/>\nplan is to use this to get the output to a standard log file for metrics<br/>\nreporting.  I&#39;ll keep you posted.<br/>\n<br/>\nHope this helps!<br/>\n<br/>\n\t--Ryan<br/>\n<br/>\nBTW:  Java Tools For Extreme Programming by Hightower and Lesiecki has a<br/>\ngreat introduction to junit, as does the junit site, www.junit.org.<br/>\n<br/>\nGood luck.</div>", 
+    "prevInTime": 4274, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1015423672", 
+    "canDelete": false, 
+    "nextInTopic": 4276, 
+    "prevInTopic": 4273, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDIwMzA2MTEwODA0Lk1WWk8yNzQxOS5tdGExMC5vbmVib3guY29tQG9uZWJveC5jb20+", 
+        "messageIdInHeader": "PDAwMGYwMWMxYzUxOCQ0ZTc5MTY5MCRlNTM3NTlhNUBhMDU1MjAxPg=="
+    }
+}

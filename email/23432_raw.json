@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 23433, 
+    "senderId": "xiMBhDayL4jVhiUhEevi1DbJWm76xm4L0bSxzroOwMK64zGifC6x_a3ZJOcTKtzp_fMQO2gLJwFNcweay9XAq8P9aAS2x9mekGuYWhs53_OK0Q", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] mock javax.naming.InitialContext", 
+    "from": "Joakim Ohlrogge &lt;joakim.ohlrogge@...&gt;", 
+    "authorName": "Joakim Ohlrogge", 
+    "msgSnippet": "I would wrap the context behind my own interface and stub/mock/whatever testdouble technique you prefer that. Then I would add just enough system level tests", 
+    "msgId": 23432, 
+    "rawEmail": "Return-Path: &lt;joakim.ohlrogge@...&gt;\r\nX-Sender: joakim.ohlrogge@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 94882 invoked from network); 2 Jun 2011 21:19:45 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 2 Jun 2011 21:19:45 -0000\r\nX-Received: from unknown (HELO mail-pv0-f172.google.com) (74.125.83.172)\n  by mta2.grp.sp2.yahoo.com with SMTP; 2 Jun 2011 21:19:45 -0000\r\nX-Received: by pvh18 with SMTP id 18so855134pvh.17\n        for &lt;junit@yahoogroups.com&gt;; Thu, 02 Jun 2011 14:19:45 -0700 (PDT)\r\nX-Received: by 10.142.171.15 with SMTP id t15mr168568wfe.442.1307049585147; Thu,\n 02 Jun 2011 14:19:45 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.142.163.7 with HTTP; Thu, 2 Jun 2011 14:19:25 -0700 (PDT)\r\nIn-Reply-To: &lt;is64ha+50n4@...&gt;\r\nReferences: &lt;is64ha+50n4@...&gt;\r\nDate: Thu, 2 Jun 2011 23:19:25 +0200\r\nX-Google-Sender-Auth: -qf8gO32haWozjlgTdXIZqzOf6k\r\nMessage-ID: &lt;BANLkTimo=e1bKhbQaJsENya_ZVtk+-v==Q@...&gt;\r\nTo: junit@yahoogroups.com\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nX-eGroups-From: Joakim Ohlrogge &lt;joakim.ohlrogge@...&gt;\r\nFrom: Joakim Ohlrogge &lt;joakim.ohlrogge@...&gt;\r\nReply-To: joakim.ohlrogge@...\r\nSubject: Re: [junit] mock javax.naming.InitialContext\r\nX-Yahoo-Group-Post: member; u=261856052; y=FnFqwZ5QrU9nlaF3jNbVtp0J_aKlvbq0E2ySY2vvvvKleqeR\r\nX-Yahoo-Profile: j0hlrogge\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nI would wrap the context behind my own interface and stub/mock/whatever\ntes=\r\ntdouble technique you prefer that. Then I would add just enough system\nleve=\r\nl tests to make sure it works with a JNDI context in place and use my\nown i=\r\nnterface in the rest of my code. The instance of my interface would be\ninje=\r\ncted something like this:\n\nServiceFactory services =3D new ServiceFactorySt=\r\nub();\nSomethingIWantToTest subject =3D new SomethingIWantToTest(services);\n=\r\n\nThen you don&#39;t have to worry about JNDI anywhere in our code except of\ncou=\r\nrse in the JNDI service implementation which would look something like\nthe =\r\ncode you provided internally.\n\nWhen it comes to mocking frameworks, unless =\r\nyou are interested in verifying\ninteractions then roll your own stubs. That=\r\n way your stub code will be in\none place and not spread out and duplicated =\r\nall over your tests and become\nan unmaintainable mess of expectations that =\r\nyou don&#39;t really care about\nexcept as a way to make mocks return the proper=\r\n values for invocations that\nhappen to occur in your tests.\nIf on the other=\r\n hand you believe that interactions between roles are\nimportant to verify t=\r\nhen pick a good mock framework like JMock and learn how\nto use it properly.=\r\n I have not read the book yet but I hear good things\nabout Growing Object O=\r\nriented systems. I would assume, given who wrote it,\nthat you will find eve=\r\nrything you need to understand about mock frameworks\nand how to use them pr=\r\noperly and efficiently without making a mess.\n\nI hope this helps some.\nGood=\r\n luck!\n\n\n-----------------------------------------------------\nJoakim Ohlro=\r\ngge\nAgical AB\nV=E4sterl=E5nggatan 79, 2 tr\n111 29 Stockholm, SWEDEN\n\nBlog: =\r\njohlrogge.wordpress.com\nTwitter: @johlrogge\nE-mail: joakim.ohlrogge@agical.=\r\nse\n\n\nOn Wed, Jun 1, 2011 at 9:39 PM, congzb &lt;zhebincong@...&gt; wrote:\n\n&gt;\n=\r\n&gt;\n&gt; Hello,\n&gt;\n&gt; in my source code, including following code:\n&gt;\n&gt; InitialCont=\r\next ctx =3D new InitialContext();\n&gt; ............=3D (...........)ctx.lookup=\r\n(&quot;java:comp/env/service/someservce&quot;);\n&gt;\n&gt; so i wonder, in my junit test cas=\r\ne, how to mock the InitialContext to look\n&gt; up and return a mock service?\n&gt;=\r\n Thanks.\n&gt;\n&gt;  \n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "j0hlrogge", 
+    "topicId": 23430, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 261856052, 
+    "prevInTime": 23431, 
+    "contentTrasformed": false, 
+    "postDate": "1307049565", 
+    "canDelete": false, 
+    "nextInTopic": 23433, 
+    "prevInTopic": 23431, 
+    "headers": {
+        "inReplyToHeader": "PGlzNjRoYSs1MG40QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEJBTkxrVGltbz1lMWJLaGJRYUpzRU55YV9aVnRrKy12PT1RQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGlzNjRoYSs1MG40QGVHcm91cHMuY29tPg=="
+    }
+}

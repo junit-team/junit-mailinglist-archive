@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 46, 
+    "nextInTime": 4840, 
+    "senderId": "WI08WQ9PcpUO_iB4kDK9VZSUoMAYBSmdM9jxNLnNNt8RqpqKXeYAG7hJ5YGXKGUtqDop-Lv15TAJr5w8MJrPlW8P2SXSnbRp-ILlUetP98SpYOYV", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] black box or white box?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... I don t believe they are synonyms. I m sure that everyone will correct me if I m wrong, but a white-box test uses knowledge about the implementation of a ", 
+    "msgId": 4839, 
+    "rawEmail": "Return-Path: &lt;jbr@...&gt;\r\nX-Sender: jbr@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_0_3_1); 2 May 2002 20:23:06 -0000\r\nReceived: (qmail 50817 invoked from network); 2 May 2002 20:23:05 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m9.grp.scd.yahoo.com with QMQP; 2 May 2002 20:23:05 -0000\r\nReceived: from unknown (HELO ns1.blacksun.ca) (139.142.202.2)\n  by mta3.grp.scd.yahoo.com with SMTP; 2 May 2002 20:23:02 -0000\r\nReceived: (from root@localhost)\n\tby ns1.blacksun.ca (8.10.2/8.10.2) id g42KN0Q20283\n\tfor junit@yahoogroups.com; Thu, 2 May 2002 14:23:00 -0600\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] black box or white box?\r\nMessage-ID: &lt;1020370980.3cd1a024bbd54@...&gt;\r\nDate: Thu, 02 May 2002 14:23:00 -0600 (CST)\r\nReferences: &lt;20020501184920.65095.qmail@...&gt; &lt;1020358947.3cd17123a69b0@...&gt; &lt;005701c1f212$a5923480$4334f0d8@dlw2000bad&gt;\r\nIn-Reply-To: &lt;005701c1f212$a5923480$4334f0d8@dlw2000bad&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 8bit\r\nUser-Agent: IMP/PHP IMAP webmail program 2.2.4\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbr@...&gt;\r\nX-Yahoo-Group-Post: member; u=89240252\r\nX-Yahoo-Profile: nails762\r\n\r\nQuoting Brian Denny &lt;brian@...&gt;:\n\n&gt; J.B. Rainsberger wrote:\n&gt; &lt;snip&gt;\n&gt; &gt; JUnit is not a codepath analysis tool; it is a tool for expressing\n&gt; black-box\n&gt; &gt; tests at the class level.\n&gt; &lt;/snip&gt;\n&gt; \n&gt; okay, i&#39;m confused about &quot;black box&quot; and &quot;white box&quot; testing.\n&gt; \n&gt; i&#39;ve heard a couple of people say that JUnit is a tool for &quot;black box&quot;\n&gt; testing (at the class/method/&quot;unit&quot;) level.  i even think Kent Beck\n&gt; said\n&gt; something to that effect in the TDD book.\n&gt; \n&gt; but I think i&#39;ve heard other people refer to &quot;unit testing&quot; and &quot;white\n&gt; box\n&gt; testing&quot; as though they were synonyms.\n\nI don&#39;t believe they are synonyms. I&#39;m sure that everyone will correct me if \nI&#39;m wrong, but a white-box test uses knowledge about the implementation of a \nthing to test the thing. A black-box test only uses observable behavior to test \nthe thing.\n\nTherefore,\n\nIf I test a template method by asserting that it calls four methods in a \ncertain sequence, that&#39;s a white-box test.\n\nIf I merely assert that foo(3) answers 6 and foo(4) answers 12, that&#39;s a black-\nbox test.\n\nGood test suites are composed of black-box tests at the appropriate levels. \nThese test suites are more refactoring-friendly. White-box tests have a \ntendency to get in the way when the production code has to change.\n\n&gt; I&#39;m particularly confused about the following example:\n&gt; \n&gt; Let&#39;s say that I&#39;m testing some code that exercises a database.  So i\n&gt; create\n&gt; a MockStatement and say &quot;ms.setExpectedUpdateCalls(3)&quot;, or something to\n&gt; that\n&gt; effect, and pass it in to my object.\n&gt; \n&gt; In my view, this is tantamount to designing a &quot;probe&quot; which will fit\n&gt; through\n&gt; one of the holes in the box (ie conforms to the public interface),\n&gt; thereby\n&gt; allowing us to snoop on what is happening inside the box.... Now, maybe\n&gt; i&#39;m\n&gt; just misunderstanding the terminology, but my gut tells me that this\n&gt; should\n&gt; not count as &quot;black box&quot; testing.\n\nI see this particular case as a low-cost substitute for a black-box test. The \nblack-box test would probably check that the updates happened as expected in \nthe database. By doing so, the test does not worry about how that happens. In \nthe example you provide, the tester asserts instead that the code tries to \nupdate three tables. The assumption is that they&#39;re the right three tables, I \nguess. This test assumes that SQL interface to the database works as expected, \nsince there&#39;s no point in testing the database.\n\nIs this a white-box or a black-box test? I guess it&#39;s white-box, because it \nassumes that the production code needs to perform three SQL updates, which is \nan assumption about the implementation.\n\nBut, of course, since we&#39;re only testing through the public interface, it&#39;s \nblack-box testing by definition: &quot;Tests that only use observable behavior.&quot; The \npublic interface *is* the observable behavior. (Well, not exactly, but it&#39;s \nless wordy than the exact facts.)\n\nJUnit is probably best used for black-box testing, but we&#39;re all pragmatic \nhere: sometimes a white-box test is the way to go. JUnit lets you do both.\n\nJ. B. (Joe) Rainsberger\nPresident, Diaspar Software Services\nhttp://www.diasparsoftware.com\nLet&#39;s write software that people understand.\n\n", 
+    "profile": "nails762", 
+    "topicId": 4836, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 89240252, 
+    "prevInTime": 4838, 
+    "contentTrasformed": false, 
+    "postDate": "1020370980", 
+    "canDelete": false, 
+    "nextInTopic": 4840, 
+    "prevInTopic": 4837, 
+    "headers": {
+        "inReplyToHeader": "PDAwNTcwMWMxZjIxMiRhNTkyMzQ4MCQ0MzM0ZjBkOEBkbHcyMDAwYmFkPg==", 
+        "messageIdInHeader": "PDEwMjAzNzA5ODAuM2NkMWEwMjRiYmQ1NEB3ZWJtYWlsLmJsYWNrc3VuLmNhPg==", 
+        "referencesHeader": "PDIwMDIwNTAxMTg0OTIwLjY1MDk1LnFtYWlsQHdlYjk1MDQubWFpbC55YWhvby5jb20+IDwxMDIwMzU4OTQ3LjNjZDE3MTIzYTY5YjBAd2VibWFpbC5ibGFja3N1bi5jYT4gPDAwNTcwMWMxZjIxMiRhNTkyMzQ4MCQ0MzM0ZjBkOEBkbHcyMDAwYmFkPg=="
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "topicId": 2726, 
+    "postDate": "1001328374", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Emily Bache &lt;emily.bache@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "Yeh_SoeL7Ecr6zvvRnWBoEf2YJ5GWZk2toR1KcqPPQoXD5Qcbtwr_OAYyBF1YqRexgvQCYnzuOCKY49LfR1ziw8XnwjeNfvwqzyK_3aV4A", 
+    "nextInTime": 2737, 
+    "userId": 0, 
+    "prevInTime": 2735, 
+    "prevInTopic": 2729, 
+    "headers": {
+        "messageIdInHeader": "PDcwMEVBMTdBMTQyQUQzMTE4QTFFMDAwOEM3MjRCQ0I0RUI3OUY2QGFnYmdudHMwMy5hZ2JnLmludHJhbmV0Pg=="
+    }, 
+    "authorName": "Emily Bache", 
+    "numMessagesInTopic": 10, 
+    "msgSnippet": "Hi, I am also a little unsure of how to test multithreaded code, and I hope my question is a bit more specific than the last one :-) I wrote this test case to", 
+    "contentTrasformed": false, 
+    "msgId": 2736, 
+    "nextInTopic": 2737, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;emily.bache@...&gt;\r\nX-Sender: emily.bache@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_3_2_2); 24 Sep 2001 10:51:41 -0000\r\nReceived: (qmail 73541 invoked from network); 24 Sep 2001 10:51:41 -0000\r\nReceived: from unknown (10.1.10.26)\n  by m8.onelist.org with QMQP; 24 Sep 2001 10:51:41 -0000\r\nReceived: from unknown (HELO tops.adera.se) (195.198.74.10)\n  by mta1 with SMTP; 24 Sep 2001 10:51:41 -0000\r\nReceived: from av.adera.se (av.adera.se [192.168.3.24])\n\tby tops.adera.se (Postfix) with SMTP id B3BD34AFAF\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 24 Sep 2001 13:24:49 +0200 (CEST)\r\nReceived: from agbgnts03.agbg.intranet ([192.168.14.22]) by gbgnts03.intranet with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13)\n\tid Q9QRN35J; Mon, 24 Sep 2001 12:56:22 +0200\r\nReceived: by agbgnts03.agbg.intranet with Internet Mail Service (5.5.2653.19)\n\tid &lt;JT5FABV4&gt;; Mon, 24 Sep 2001 12:46:18 +0200\r\nMessage-ID: &lt;700EA17A142AD3118A1E0008C724BCB4EB79F6@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: Multithreaded code\r\nDate: Mon, 24 Sep 2001 12:46:14 +0200\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nContent-Type: text/plain;\n\tcharset=&quot;iso-8859-1&quot;\r\nFrom: Emily Bache &lt;emily.bache@...&gt;\r\n\r\n\nHi,\n\nI am also a little unsure of how to test multithreaded code, and I hope my\nquestion is a bit more specific than the last one :-)\n\nI wrote this test case to test my multithreaded code, and it appears to work\non my platform. (Windows NT, jdk 1.2.2) I am just worried that it only\npasses because the thread scheduling of the JVM implementation I am using\nhappens to work out right. Has anyone else tried to write this kind of test?\nWhat might be a better approach?\n\nThanks!\n\nEmily\n\n----- code in question -------------------\n\npublic class LockManagerTest extends TestCase {\n    private LockManager lockManager = new LockManager();\n    \n    /** \n     * test for the requirement that the obtainLock method on\n     * LockManager must block until the requested lock becomes\n     * available\n     */ \n    public void testBlocks() {\n        final int recordNo = 1;\n        Runnable getsLockFirst = new GetAndHoldLockFor100(recordNo);\n        Runnable getsLockAfterwards = new Runnable() {\n            public void run() {\n                // assert the record is locked when we first ask, but\nbecomes\n                // available (or else the whole test run hangs).\n                assert(lockManager.isRecordLocked(recordNo));\n                int key = lockManager.obtainLock(recordNo);\n            }\n        };\n        Thread one = new Thread(getsLockFirst);\n        Thread two = new Thread(getsLockAfterwards);\n        one.start();\n        two.start();\n        // wait for test to run before returning\n        try {\n            Thread.currentThread().sleep(300); \n        } catch (InterruptedException e) {}\n\n    }\n\n    private class GetAndHoldLockFor100 implements Runnable {\n        private int recordNo;\n        public GetAndHoldLockFor100(int recordNo) {\n            this.recordNo = recordNo;\n        }\n        public void run() {\n                int recordKey = lockManager.obtainLock(recordNo);\n                try {\n                    Thread.currentThread().sleep(100);\n                } catch (InterruptedException e) {}\n                lockManager.releaseLock(recordNo, recordKey);\n            }\n    }\n}\n \n------ end code in question ---------------------------------\n\n", 
+    "subject": "Multithreaded code"
+}

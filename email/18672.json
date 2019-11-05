@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18673, 
+    "senderId": "cGPr2Nq-uDgNfdcsIJHBq2p4thY0CK1ClMC-fZyZlSFhSJag3uurUHZ7LN-xJT4PbrgqVkQ0vNH1lM_RMSDAUfDS", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: how do I use my filter when running from ANT1.7", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... Yes, a customized runner is what you want.  I thought I d posted such a creature sometime in the past, but wasn t able to find it.  Here s some code that", 
+    "msgId": 18672, 
+    "profile": "dsaff", 
+    "topicId": 18647, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-278635448\">On 1/5/07, adass75 &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:adass75@...\">adass75@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I guess I want to be able to apply my filter and yet not run from<br/>\n&gt; the main but using the RunWith option. Is the answer to this a<br/>\n&gt; customized runner where my filter is applied?adass,<br/>\n<br/>\n </span></blockquote>Yes, a customized runner is what you want.  I thought I&#39;d posted such<br/>\na creature sometime in the past, but wasn&#39;t able to find it.  Here&#39;s<br/>\nsome code that should do the trick.  Above is the usage, below is the<br/>\nimplementation.  Share and Enjoy,<br/>\n<br/>\n   David Saff<br/>\n<br/>\n<br/>\n<br/>\npackage filter;<br/>\n<br/>\nimport static org.junit.Assert.*;<br/>\n<br/>\nimport java.lang.annotation.Retention;<br/>\nimport java.lang.annotation.RetentionPolicy;<br/>\n<br/>\nimport org.junit.Test;<br/>\nimport org.junit.runner.Description;<br/>\nimport org.junit.runner.JUnitCore;<br/>\nimport org.junit.runner.Request;<br/>\nimport org.junit.runner.Result;<br/>\nimport org.junit.runner.RunWith;<br/>\nimport org.junit.runner.Runner;<br/>\nimport org.junit.runner.manipulation.Filter;<br/>\nimport org.junit.runner.notification.RunNotifier;<br/>\n<br/>\npublic class FilterTest {<br/>\n\t<br/>\n\t<br/>\n\t// TEST<br/>\n\t<br/>\n\t<br/>\n\tpublic static class AFilter extends PrefixFilter {<br/>\n\t\t@Override<br/>\n\t\tprotected String getPrefix() {<br/>\n\t\t\treturn &quot;a&quot;;<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic static class BFilter extends PrefixFilter {<br/>\n\t\t@Override<br/>\n\t\tprotected String getPrefix() {<br/>\n\t\t\treturn &quot;b&quot;;<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic static class OneAOneB {<br/>\n\t\t@Test<br/>\n\t\tpublic void a1() {<br/>\n<br/>\n\t\t}<br/>\n<br/>\n\t\t@Test<br/>\n\t\tpublic void b1() {<br/>\n<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tpublic static class TwoAsOneB extends OneAOneB {<br/>\n\t\t@Test<br/>\n\t\tpublic void a2() {<br/>\n<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\t@RunWith(FilterRunner.class)<br/>\n\t@FilteredClass(testClass = OneAOneB.class, filterClass = AFilter.class)<br/>\n\tpublic static class OneA {<br/>\n<br/>\n\t}<br/>\n<br/>\n\t@RunWith(FilterRunner.class)<br/>\n\t@FilteredClass(testClass = TwoAsOneB.class, filterClass = AFilter.class)<br/>\n\tpublic static class TwoAs {<br/>\n<br/>\n\t}<br/>\n<br/>\n\t@RunWith(FilterRunner.class)<br/>\n\t@FilteredClass(testClass = TwoAsOneB.class, filterClass = BFilter.class)<br/>\n\tpublic static class OneB {<br/>\n<br/>\n\t}<br/>\n<br/>\n\t@Test<br/>\n\tpublic void filterRunnerWorksOnTwoAs() {<br/>\n\t\tResult result = JUnitCore.runClasses(TwoAs.class);<br/>\n\t\tassertEquals(2, result.getRunCount());<br/>\n\t}<br/>\n<br/>\n\t@Test<br/>\n\tpublic void filterRunnerWorksOnB() {<br/>\n\t\tResult result = JUnitCore.runClasses(OneB.class);<br/>\n\t\tassertEquals(1, result.getRunCount());<br/>\n\t}<br/>\n<br/>\n\t@Test<br/>\n\tpublic void filterRunnerWorksOnA() {<br/>\n\t\tResult result = JUnitCore.runClasses(OneA.class);<br/>\n\t\tassertEquals(1, result.getRunCount());<br/>\n\t}<br/>\n\t<br/>\n<br/>\n\t<br/>\n\t<br/>\n\t// IMPLEMENTATION<br/>\n\t<br/>\n\t<br/>\n\t<br/>\n\t<br/>\n\t@Retention(RetentionPolicy.RUNTIME)<br/>\n\tpublic @interface FilteredClass {<br/>\n<br/>\n\t\tClass&lt;?&gt; testClass();<br/>\n<br/>\n\t\tClass&lt;? extends Filter&gt; filterClass();<br/>\n<br/>\n\t}<br/>\n<br/>\n\tpublic abstract static class PrefixFilter extends Filter {<br/>\n\t\t@Override<br/>\n\t\tpublic String describe() {<br/>\n\t\t\treturn &quot;methods beginning with &quot; + getPrefix();<br/>\n\t\t}<br/>\n<br/>\n\t\t@Override<br/>\n\t\tpublic boolean shouldRun(Description description) {<br/>\n\t\t\treturn (description.getDisplayName().startsWith(getPrefix()));<br/>\n\t\t}<br/>\n<br/>\n\t\tprotected abstract String getPrefix();<br/>\n\t}<br/>\n<br/>\n\tpublic static class FilterRunner extends Runner {<br/>\n\t\tprivate final Runner delegate;<br/>\n<br/>\n\t\tpublic FilterRunner(Class&lt;?&gt; testClass) throws Exception {<br/>\n\t\t\tRequest classRequest = Request.aClass(getTestClass(testClass));<br/>\n\t\t\tFilter filter = getFilter(testClass);<br/>\n\t\t\tdelegate = classRequest.filterWith(filter).getRunner();<br/>\n\t\t}<br/>\n<br/>\n\t\tprivate Class&lt;?&gt; getTestClass(Class&lt;?&gt; testClass) {<br/>\n\t\t\treturn annotation(testClass).testClass();<br/>\n\t\t}<br/>\n<br/>\n\t\tprivate Filter getFilter(Class&lt;?&gt; testClass) throws Exception {<br/>\n\t\t\treturn annotation(testClass).filterClass().newInstance();<br/>\n\t\t}<br/>\n<br/>\n\t\tprivate FilteredClass annotation(Class&lt;?&gt; testClass) {<br/>\n\t\t\treturn testClass.getAnnotation(FilteredClass.class);<br/>\n\t\t}<br/>\n<br/>\n\t\t@Override<br/>\n\t\tpublic Description getDescription() {<br/>\n\t\t\treturn delegate.getDescription();<br/>\n\t\t}<br/>\n<br/>\n\t\t@Override<br/>\n\t\tpublic void run(RunNotifier notifier) {<br/>\n\t\t\tdelegate.run(notifier);<br/>\n\t\t}<br/>\n\t}<br/>\n}</div>", 
+    "prevInTime": 18671, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1168280327", 
+    "canDelete": false, 
+    "nextInTopic": 18682, 
+    "prevInTopic": 18649, 
+    "headers": {
+        "inReplyToHeader": "PGVubGZ0bytobTIxQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwMTA4MTAxOHFmNWQ4NTVhdTUwNTFjNmZkZTI0Nzg0OTFAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGVuajVyNCtvc21pQGVHcm91cHMuY29tPiA8ZW5sZnRvK2htMjFAZUdyb3Vwcy5jb20+"
+    }
+}

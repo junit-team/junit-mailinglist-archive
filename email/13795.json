@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13796, 
+    "senderId": "VBQ6NTv-ou9FpFuOUQXgojG9KvIJVhRlWMyZ2QjeV_AvDt4sHR-QNwybo4W7BrmUQvnQDxM4oCwH7u2laCtUI8VLL1Ol2oEXkd552CtAHwZ4hpjRsQ", 
+    "systemMessage": true, 
+    "subject": "Testing multiple interfaces?", 
+    "from": "jason r tibbetts &lt;tibbettj@...&gt;", 
+    "authorName": "jason r tibbetts", 
+    "msgSnippet": "The pattern of writing an abstract TestCase to test an interface s methods and then subclassing it for each implementation of that interface is", 
+    "msgId": 13795, 
+    "topicId": 13795, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 224061497, 
+    "messageBody": "<div id=\"ygrps-yiv-109209380\">The pattern of writing an abstract TestCase to test an interface&#39;s <br/>\nmethods and then subclassing it for each implementation of that <br/>\ninterface is well-established, e.g.:<br/>\n<br/>\npublic class FooTestBase extends TestCase {<br/>\n   protected Foo foo;<br/>\n<br/>\n   public void testSomeMethod() { ... }<br/>\n}<br/>\n<br/>\npublic class FooSubclassTest extends FooTestBase {<br/>\n   protected void setUp() { foo = new FooSubclass(); }<br/>\n}<br/>\n<br/>\nSo far, so good. But what&#39;s a good way to handle this when the CUT <br/>\nimplements multiple interfaces, each of which has an abstract base test? <br/>\nI want to write something like the following, but I&#39;m looking for better <br/>\nideas:<br/>\n<br/>\npublic class FooBar implements Foo, Bar { ... }<br/>\n<br/>\npublic class BarTestBase extends TestCase {<br/>\n   protected Bar bar;<br/>\n<br/>\n   public void testSomeMethod() { ... }<br/>\n}<br/>\n<br/>\n// does NOT subclass FooTestBase or BarTestBase<br/>\npublic class FooBarTest extends TestCase {<br/>\n   static class FooSubclassTest extends FooTestBase {<br/>\n     protected void setUp() { foo = new FooBar(); }<br/>\n   }<br/>\n<br/>\n   static class BarSubclassTest extends BarTestBase {<br/>\n     protected void setUp() { foo = new FooBar(); }<br/>\n   }<br/>\n<br/>\n   public static Test suite() {<br/>\n      TestSuite suite = new TestSuite(FooBarTest.class);<br/>\n      suite.addTest(new TestSuite(FooSubclassTest.class);  // ?<br/>\n      suite.addTest(new TestSuite(BarSubclassTest.class);  // ?<br/>\n      return suite;<br/>\n   }<br/>\n}<br/>\n<br/>\nConsiderations:<br/>\n* This keeps all of the tests for the FooBar class in a single file.<br/>\n* Because the static inner test classes&#39; names end with &#39;Test&#39;, they&#39;ll <br/>\nbe picked up automatically by an Ant &lt;junit&gt; task that executes anything <br/>\ncalled &#39;*Test.class&#39;, right? If so, then adding them to the FooBarTest&#39;s <br/>\nsuite is redundant.<br/>\n* If the inner classes&#39; names end in &#39;Test&#39;, they must be declared <br/>\nstatic in order to prevent a reflection exception when the JUnit test <br/>\nloader attempts to invoke them, since they&#39;d have to be instantiated <br/>\nwithin an instance of FooBarTest.</div>", 
+    "prevInTime": 13794, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1117720798", 
+    "canDelete": false, 
+    "nextInTopic": 13810, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

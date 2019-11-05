@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 12380, 
+    "senderId": "yBRedB8lKrYOCmEm2N1HIvOyrYjo_6KiYwKYVjUQ4yCJXd-R_cFQg9xKWtE283JEnI9y2Ev8JloXlwj2slVjIw", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] how to generate a single report for all programs test cases", 
+    "from": "&quot;Morten Grum&quot; &lt;mg@...&gt;", 
+    "authorName": "Morten Grum", 
+    "msgSnippet": "Hi Mougli This is what we re doing at it s giving us only one html report.  ", 
+    "msgId": 12379, 
+    "rawEmail": "Return-Path: &lt;mg@...&gt;\r\nX-Sender: mg@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 81797 invoked from network); 24 Nov 2004 10:15:32 -0000\r\nReceived: from unknown (66.218.66.166)\n  by m10.grp.scd.yahoo.com with QMQP; 24 Nov 2004 10:15:32 -0000\r\nReceived: from unknown (HELO pfepa.post.tele.dk) (195.41.46.235)\n  by mta5.grp.scd.yahoo.com with SMTP; 24 Nov 2004 10:15:31 -0000\r\nReceived: from MGJUNI2004 (cpe.atm0-0-0-1421097.0x3ef3e86e.bynxx5.customer.tele.dk [62.243.232.110])\n\tby pfepa.post.tele.dk (Postfix) with ESMTP id BBC4C47FEEA\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 24 Nov 2004 11:15:22 +0100 (CET)\r\nTo: &lt;junit@yahoogroups.com&gt;\r\nDate: Wed, 24 Nov 2004 11:15:24 +0100\r\nOrganization: PH-Consult\r\nMIME-Version: 1.0\r\nContent-Type: text/plain;\n\tcharset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Mailer: Microsoft Office Outlook, Build 11.0.5510\r\nX-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180\r\nThread-Index: AcTRjorzMzoZ3qo2RqOjvw9Ee58CAQAf1EYQ\r\nIn-Reply-To: &lt;20041123053442.40972.qmail@...&gt;\r\nMessage-Id: &lt;20041124101522.BBC4C47FEEA@...&gt;\r\nX-eGroups-Remote-IP: 195.41.46.235\r\nFrom: &quot;Morten Grum&quot; &lt;mg@...&gt;\r\nReply-To: &lt;mg@...&gt;\r\nSubject: RE: [junit] how to generate a single report for all programs test cases\r\nX-Yahoo-Group-Post: member; u=11862826\r\nX-Yahoo-Profile: morten3grum\r\n\r\nHi Mougli \n\nThis is what we&#39;re doing at it&#39;s giving us only one html report.\n\n    &lt;target name=&quot;test&quot; depends=&quot;testdirectories&quot; \n\t\tdescription=&quot;Test with JUnit&quot; &gt;\n        &lt;junit fork=&quot;on&quot; dir=&quot;${build}&quot; showoutput=&quot;true&quot;&gt;\n            &lt;classpath refid=&quot;testlibs&quot; /&gt;\n            &lt;classpath path=&quot;${build.testclasses}&quot; /&gt;\n            &lt;classpath path=&quot;${project.jar}&quot; /&gt;\n            &lt;classpath path=&quot;${resources.jar}&quot; /&gt;\n            &lt;formatter type=&quot;xml&quot; /&gt;\n            &lt;jvmarg line=&quot;-Xmx256m -Xss8192k&quot;/&gt;\n            &lt;sysproperty key=&quot;user.dir&quot; value=&quot;${testrun}&quot;/&gt;\n\n\t\t&lt;batchtest fork=&quot;yes&quot;&gt;\n                &lt;fileset dir=&quot;${tests}&quot;&gt;\n                    &lt;include name=&quot;**/*Test.java&quot;/&gt;\n                &lt;/fileset&gt;\n            &lt;/batchtest&gt;\n\n        &lt;/junit&gt;\n    &lt;/target&gt;\n\n    &lt;target name=&quot;report&quot; depends=&quot;test&quot;\n        description=&quot;Transform test results from xml to html&quot;&gt;\n\n        &lt;!-- Create directories --&gt;\n        &lt;mkdir dir=&quot;${reports.dir}&quot;/&gt;\n\n        &lt;!-- Move the XML output to report directory --&gt;\n        &lt;move todir=&quot;${reports.dir}&quot;&gt;\n            &lt;fileset dir=&quot;.&quot;&gt;\n                &lt;include name=&quot;TEST-*.xml&quot;/&gt;\n            &lt;/fileset&gt;\n        &lt;/move&gt;\n\n        &lt;junitreport todir=&quot;${reports.dir}&quot;&gt;\n            &lt;fileset dir=&quot;${reports.dir}&quot;&gt;\n                &lt;include name=&quot;TEST-*.xml&quot;/&gt;\n            &lt;/fileset&gt;\n            &lt;report format=&quot;noframes&quot; todir=&quot;${reports.dir}&quot;/&gt;\n        &lt;/junitreport&gt;\n    &lt;/target&gt;\n\nHope it kan help you.\n\nMorten\n\n&gt; -----Original Message-----\n&gt; From: g d [mailto:mougli213@...]\n&gt; Sent: 23 November 2004 06:35\n&gt; To: junit@yahoogroups.com\n&gt; Subject: [junit] how to generate a single report for all programs test\n&gt; cases\n&gt; \n&gt; \n&gt; \n&gt; hi friends,\n&gt; \n&gt;   We know that using apache ant and Junit reports we  can generate\n&gt; \n&gt; Html report for single Program(i.e. for eg: SimpleTest.java). similarly we\n&gt; \n&gt; can generate different html report for second program(i.e. for eg:\n&gt; \n&gt; AllTest.java).\n&gt; \n&gt;         But My Problem is that &quot;this two Html reports must come in  a\n&gt; \n&gt; single Html report.&quot; or else we should provide one html report providing\n&gt; \n&gt; links to view different html reports\n&gt; \n&gt; \n&gt; Regards\n&gt; \n&gt; Mougli\n&gt; \n&gt; \n&gt; \n&gt; Yahoo! India Matrimony: Find your life partneronline.\n&gt; \n&gt; [Non-text portions of this message have been removed]\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n\n\n\n\n", 
+    "profile": "morten3grum", 
+    "topicId": 12377, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 11862826, 
+    "prevInTime": 12378, 
+    "contentTrasformed": false, 
+    "postDate": "1101291324", 
+    "canDelete": false, 
+    "nextInTopic": 12380, 
+    "prevInTopic": 12377, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDQxMTIzMDUzNDQyLjQwOTcyLnFtYWlsQHdlYjg1MDQubWFpbC5pbi55YWhvby5jb20+", 
+        "messageIdInHeader": "PDIwMDQxMTI0MTAxNTIyLkJCQzRDNDdGRUVBQHBmZXBhLnBvc3QudGVsZS5kaz4="
+    }
+}

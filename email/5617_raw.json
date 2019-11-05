@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 25, 
+    "nextInTime": 5618, 
+    "senderId": "WeqGDJtuzxejF6D-8WDdpMrODr-1Gg7meeOzbPYt2tikwV3vWb0tvqBBfHaHm5MhYErr2OJRVI7XYsTPS6iVd3_pv-U", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] A Growing Problem", 
+    "from": "Dave Astels &lt;dave@...&gt;", 
+    "authorName": "Dave Astels", 
+    "msgSnippet": "On Tue, 2001-08-21 at 02:03, Parag Shetye wrote: A Growing Problem The typical way of handling test cases in JUnit is to create a class with methods beginning", 
+    "msgId": 5617, 
+    "rawEmail": "Return-Path: &lt;dave@...&gt;\r\nReceived: (qmail 86922 invoked from network); 21 Aug 2002 14:15:02 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m7.grp.scd.yahoo.com with QMQP; 21 Aug 2002 14:15:02 -0000\r\nReceived: from unknown (HELO n27.grp.scd.yahoo.com) (66.218.66.83)\n  by mta2.grp.scd.yahoo.com with SMTP; 21 Aug 2002 14:15:02 -0000\r\nX-eGroups-Return: dave@...\r\nReceived: from [66.218.67.146] by n27.grp.scd.yahoo.com with NNFMP; 21 Aug 2002 14:15:02 -0000\r\nX-Sender: dave@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_1_0_1); 21 Aug 2002 14:01:23 -0000\r\nReceived: (qmail 26026 invoked from network); 21 Aug 2002 14:01:23 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m15.grp.scd.yahoo.com with QMQP; 21 Aug 2002 14:01:23 -0000\r\nReceived: from unknown (HELO simmts3-srv.bellnexxia.net) (206.47.199.12)\n  by mta2.grp.scd.yahoo.com with SMTP; 21 Aug 2002 14:01:23 -0000\r\nReceived: from [10.34.244.19] ([142.177.203.210])\n          by simmts3-srv.bellnexxia.net\n          (InterMail vM.5.01.04.19 201-253-122-122-119-20020516) with ESMTP\n          id &lt;20020821140114.OSWI21175.simmts3-srv.bellnexxia.net@[10.34.244.19]&gt;\n          for &lt;junit@yahoogroups.com&gt;; Wed, 21 Aug 2002 10:01:14 -0400\r\nSubject: Re: [junit] A Growing Problem\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;3B81EBAF.2C9EE31D@...&gt;\r\nReferences: &lt;3B81EBAF.2C9EE31D@...&gt;\r\nX-Mailer: Ximian Evolution 1.0.8.99 \r\nDate: 21 Aug 2002 10:47:42 -0300\r\nMessage-Id: &lt;1029937663.32188.1197.camel@...&gt;\r\nMime-Version: 1.0\r\nFrom: Dave Astels &lt;dave@...&gt;\r\nX-Yahoo-Group-Post: member; u=116713278\r\nX-Yahoo-Profile: astelsd\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Approved-By: clarkware &lt;mike@...&gt; via web; 21 Aug 2002 14:15:01 -0000\r\n\r\nOn Tue, 2001-08-21 at 02:03, Parag Shetye wrote:\n\n    A Growing Problem\n    \n    The typical way of handling test cases in JUnit is to create a class\n    with methods beginning with &quot;test&quot;. For example, we could create the\n    methods testNullAccount() and testEmptyAccount() to handle cases where\n    the account object is null and empty, respectively. \n\nThat is THE way to do it.\n\n    This approach is\n    satisfactory for a few test cases, but what if the number of test cases\n    grows to 50 or even 500?\n\nYou shouldn&#39;t have this many tests in a single TestCase.  You should\nhave many TestCases.  As a guide, I create a new TestCase whenever: a) I\nam going to be driving the development of a new class, or b) I need a\ndifferent fixture (case &quot;a&quot; generally is a specialy case of this\nanyway).\n\n    You might work around this limitation by placing all test cases and\n    assert statements sequentially inside a single method.\n\nBad idea.  You loose a lot of the intent.  The method names should\ncommunicate exactly what is being tested.  Further, the idea to strive\nfor (in theory anyway) is to have a single assert in each method.  That\nkeeps the tests small, focused, and (as a result) understandable.\n\nFurthermore, when you are writing a test, start with the assert (what is\nbeing tested) then build up the structure needed to get to the point\nthat that can be tested (what has to be in place for that to be\ntested).  Refactor into a fixture as require/appropriate.\n\nFinally, read Kent&#39;s book which will be on shelves shortly (drafts are\nin the file area of the TDD yahoo group).  Then read my book which\nshould be on shelves early next year.  If you read German, get Frank\nWestphal&#39;s book on TDD which will be out about then as well (English\ntranslation to follow).  I also encourage you to subscribe (free) to the\nTDD edition of The Coad Letter which I edit/write\n(www.thecoadletter.com)\n\nYou can also take a course on TDD.  I believe Industrial Logic offers a\nTDD workshop (their site seems to be down as I write, so I can&#39;t\nconfirm) and we will be as well.\n\n    This approach\n    suffers from two limitations. The first limitation is the need to\n    replicate the test code for every test case. Even if you have only two\n    or three lines of code per test case, the size of the method will\n    mushroom and become hard to maintain (and read). \n\nThis is a very bad approach.  You loose most of the utility of the\npractice.  All that you are left with are tests.\n\n    See example below (Taken from JavaPro ) -\n\nAn observation.  Whoever wrote this code doesn&#39;t have much experience\nwriting tests (see archive for the code, I&#39;ve snipped it)\n\nHope this helps.\n\nDave\n\n________________________________________________________________________\nDave Astels\n  Coauthor of &quot;A Practical Guide to XP&quot; \n  Editor of the Test-Driven Development Edition of The Coad Letter\n  Presenter at XP2002 of: \n    the &quot;XP For One&quot; tutorial & &quot;Refactoring with UML&quot; paper \nCEO & Master Software Craftsman \n\nAn Agile Software Studio\n\n\n[Non-text portions of this message have been removed]\n\n\n\n", 
+    "profile": "astelsd", 
+    "topicId": 5610, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 116713278, 
+    "prevInTime": 5616, 
+    "contentTrasformed": false, 
+    "postDate": "1029937662", 
+    "canDelete": false, 
+    "nextInTopic": 5618, 
+    "prevInTopic": 5616, 
+    "headers": {
+        "inReplyToHeader": "PDNCODFFQkFGLjJDOUVFMzFEQHNhdnZpb24uY29tPg==", 
+        "messageIdInHeader": "PDEwMjk5Mzc2NjMuMzIxODguMTE5Ny5jYW1lbEBtZXJsaW4uc2FvcnNhLmNvbT4=", 
+        "referencesHeader": "PDNCODFFQkFGLjJDOUVFMzFEQHNhdnZpb24uY29tPg=="
+    }
+}

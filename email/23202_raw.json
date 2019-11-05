@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 23203, 
+    "senderId": "Pzf5k640VTqB04kpL_qiKkcHTkxrUdY7rFKbSYhAKduXvOZt7GKCoQGtejPFK0dUF--Mo3mDqjE4efl3ZGXu4bsi", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How to make JUnit work with own test format", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "Dominik, You should definitely be able to do this.  The extension point you want is likely ParentRunner.  I imagine you d override getChildren to return a list", 
+    "msgId": 23202, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 6044 invoked from network); 27 Jan 2011 01:20:51 -0000\r\nX-Received: from unknown (66.196.94.107)\n  by m11.grp.re1.yahoo.com with QMQP; 27 Jan 2011 01:20:51 -0000\r\nX-Received: from unknown (HELO mail-gy0-f182.google.com) (209.85.160.182)\n  by mta3.grp.re1.yahoo.com with SMTP; 27 Jan 2011 01:20:51 -0000\r\nX-Received: by gyf3 with SMTP id 3so428873gyf.13\n        for &lt;junit@yahoogroups.com&gt;; Wed, 26 Jan 2011 17:20:51 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.90.72.20 with SMTP id u20mr2208295aga.49.1296091250701; Wed,\n 26 Jan 2011 17:20:50 -0800 (PST)\r\nX-Received: by 10.90.80.12 with HTTP; Wed, 26 Jan 2011 17:20:50 -0800 (PST)\r\nIn-Reply-To: &lt;ihqfn6+pqaj@...&gt;\r\nReferences: &lt;ihqfn6+pqaj@...&gt;\r\nDate: Wed, 26 Jan 2011 20:20:50 -0500\r\nX-Google-Sender-Auth: Bg86nrbF7isKhERVuIeJLhZBNuE\r\nMessage-ID: &lt;AANLkTimC3V-+J8xjAN1u7Nh-G+SsT2nUrWBbJLHZjWCa@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] How to make JUnit work with own test format\r\nX-Yahoo-Group-Post: member; u=341876227; y=pNlBsW4sjzzG5TSBn5C9m8ldpES9RSEZcfqlhRXZars\r\nX-Yahoo-Profile: dsaff\r\n\r\nDominik,\n\nYou should definitely be able to do this.  The extension point yo=\r\nu\nwant is likely ParentRunner.  I imagine you&#39;d override getChildren to\nret=\r\nurn a list of filenames, describeChild to return the filename (or\nperhaps t=\r\nhe title?), and runChild to parse and run your test.\n\nI hope this helps.\n\n =\r\n  David Saff\n\nOn Wed, Jan 26, 2011 at 7:53 PM, Dominik Dorn &lt;dorn@...=\r\nm&gt; wrote:\n&gt; Hi,\n&gt;\n&gt; I&#39;m working on Quercus, a PHP implementation in Java.\n&gt;=\r\n\n&gt; To test our implementation, we have a huge amount of tests.\n&gt; Each test =\r\nis contained in a text file someName.qa which is a\n&gt; sort-of XML file.\n&gt;\n&gt; =\r\nThese tests are currently run through a self-made test-runner.\n&gt;\n&gt; I would =\r\nlike to replace this custom test-runner with a JUnit-extension, so that I&#39;m=\r\n able to include our test files in a maven build and let them be run throug=\r\nh junit (and all the nice junit plugins for IDEs).\n&gt;\n&gt; our test layout curr=\r\nently looks like the following\n&gt;\n&gt; module/\n&gt; module/module.xml &lt;- a file co=\r\nntaining ranges for test-sections\n&gt; module/0001.qa &lt;- a single testcase\n&gt;\n&gt;=\r\n Please tell me, if the following assumption is correct:\n&gt;\n&gt; I think to acc=\r\nomplish what I want, I need to create a special implementation of\n&gt; =A0- or=\r\ng.junit.runners.Runner\n&gt; and/or of\n&gt; =A0- org.junit.runners.model.TestClass=\r\n\n&gt;\n&gt;\n&gt; A test basically looks like this:\n&gt;\n&gt; &lt;title&gt;DOM: extension_loaded()=\r\n&lt;/title&gt;\n&gt;\n&gt; &lt;php out=3D&#39;stdout&#39; compile=3D&#39;false&#39;&gt;\n&gt; &lt;?php\n&gt; echo extensio=\r\nn_loaded(&quot;dom&quot;) ? &quot;DOM loaded&quot; : &quot;DOM NOT loaded&quot;;\n&gt; echo &quot;&#92;n&quot;;\n&gt; ?&gt;\n&gt; &lt;/ph=\r\np&gt;\n&gt;\n&gt; &lt;compare file=3D&#39;/stdout&#39; escape&gt;\n&gt; DOM loaded\n&gt;\n&gt; &lt;/compare&gt;\n&gt;\n&gt; So=\r\n we&#39;re running the content inside the &lt;php..&gt; block and do a string compari=\r\nson line by line with the &lt;compare&gt; block.\n&gt;\n&gt; I know, thats not best pract=\r\nice, but currently I just need to know if it is possible to run such tests =\r\nwith JUnit (by extending it?) or not.\n&gt;\n&gt; The ideal (end-)scenario would be=\r\n, that we just put our test files into the\n&gt; /src/test/qa folder of a maven=\r\n module, add our junit-extension artifact to the project and junit would th=\r\nen pickup the files and run them as tests.\n&gt;\n&gt;\n&gt; Thanks for your help.\n&gt;\n&gt; =\r\nDominik\n&gt;\n&gt;\n&gt;\n&gt; ------------------------------------\n&gt;\n&gt; Yahoo! Groups Link=\r\ns\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23200, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23201, 
+    "contentTrasformed": false, 
+    "postDate": "1296091250", 
+    "canDelete": false, 
+    "nextInTopic": 23203, 
+    "prevInTopic": 23200, 
+    "headers": {
+        "inReplyToHeader": "PGlocWZuNitwcWFqQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEFBTkxrVGltQzNWLStKOHhqQU4xdTdOaC1HK1NzVDJuVXJXQmJKTEhaaldDYUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGlocWZuNitwcWFqQGVHcm91cHMuY29tPg=="
+    }
+}

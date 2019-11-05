@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 8181, 
+    "senderId": "wtfaaARoI706TCEJkMkdYmQ-g-Xj7ZKJ2Z_6f1fMF0u0RmMYYbDRBX09E1Yi9GrjYccm9s9IOW9x73AQe3uLTFyERdam4V8Mb9dEPyk", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] LinkageError", 
+    "from": "Mr james asher &lt;thejoker101@...&gt;", 
+    "authorName": "Mr james asher", 
+    "msgSnippet": "I struggled with this exact error forever.  What ended up being the problem for me is that I had two ways of implementing XML parsing.  Try adding the xalan", 
+    "msgId": 8180, 
+    "rawEmail": "Return-Path: &lt;thejoker101@...&gt;\r\nReceived: (qmail 24677 invoked by uid 7800); 23 May 2003 20:50:04 -0000\r\nX-Sender: thejoker101@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 83306 invoked from network); 23 May 2003 20:36:00 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m14.grp.scd.yahoo.com with QMQP; 23 May 2003 20:36:00 -0000\r\nReceived: from unknown (HELO web40614.mail.yahoo.com) (66.218.78.151)\n  by mta3.grp.scd.yahoo.com with SMTP; 23 May 2003 20:35:59 -0000\r\nMessage-ID: &lt;20030523203559.68018.qmail@...&gt;\r\nReceived: from [129.130.221.86] by web40614.mail.yahoo.com via HTTP; Fri, 23 May 2003 13:35:59 PDT\r\nDate: Fri, 23 May 2003 13:35:59 -0700 (PDT)\r\nSubject: Re: [junit] LinkageError\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;baksip+40kh@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nFrom: Mr james asher &lt;thejoker101@...&gt;\r\nX-Yahoo-Group-Post: member; u=123716916\r\nX-Yahoo-Profile: thejoker101\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via email; 23 May 2003 20:50:04 -0000\r\n\r\nI struggled with this exact error forever.  What ended\nup being the problem for me is that I had two ways of\nimplementing XML parsing.  Try adding the \nxalan 2.4.1 jar into your ant/lib directory, you can\nfind it here:\nhttp://www.ibiblio.org/maven/xalan/jars/xalan-2.4.1.jar.\nLet me know if that works for you.\n\nBest regards,\nJames Asher\n\n--- chriskrn1 &lt;chriskrn1@...&gt; wrote:\n&gt; Hi\n&gt; \n&gt; I know this has appeared on the list before, but I\n&gt; am struggling to \n&gt; get it resolved. I am getting the ff exception when\n&gt; I run any ant \n&gt; junit task:\n&gt; \n&gt; BUILD FAILED\n&gt; java.lang.LinkageError: loader constraints violated\n&gt; when linking \n&gt; org/w3c/dom/Document class\n&gt;         at \n&gt;\norg.apache.xerces.jaxp.DocumentBuilderFactoryImpl.newDocumentBuilder(\n&gt; DocumentBuilderFactoryImpl.java:88)\n&gt;         at \n&gt;\norg.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter.\n&gt; getDocumentBuilder(XMLJUnitResultFormatter.java:93)\n&gt;         at \n&gt;\norg.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter.\n&gt; startTestSuite(XMLJUnitResultFormatter.java:138)\n&gt;         at \n&gt;\norg.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.fireStar\n&gt; tTestSuite(JUnitTestRunner.java:433)\n&gt;         at \n&gt;\norg.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUni\n&gt; tTestRunner.java:279)\n&gt;         at \n&gt;\norg.apache.tools.ant.taskdefs.optional.junit.JUnitTask.executeInVM(JU\n&gt; nitTask.java:804)\n&gt; \n&gt; .... etc\n&gt; \n&gt; My ant lib directory has the ff jars in it:\n&gt; ant.jar, junit.jar (v3.7), optional.jar,\n&gt; xercesImpl.jar and xml-\n&gt; apis.jar.\n&gt; \n&gt; I am running ant v1.5.\n&gt; \n&gt; I have edited the excluded.properties file in my\n&gt; junit.jar, and it \n&gt; now looks as follows:\n&gt; \n&gt; excluded.0=sun.*\n&gt; excluded.1=com.sun.*\n&gt; excluded.2=org.omg.*\n&gt; excluded.3=javax.*\n&gt; excluded.4=sunw.*\n&gt; excluded.5=java.*\n&gt; excluded.6=org.w3c.dom.*\n&gt; excluded.7=org.xml.sax.*\n&gt; \n&gt; However, I still get the same error. I have also\n&gt; tried junit3.8.1, \n&gt; with no luck.\n&gt; \n&gt; My ant task looks as follows:\n&gt; \n&gt;   &lt;target name=&quot;testdoowner&quot; depends=&quot;env.is.set&quot;&gt;\n&gt;     &lt;junit printsummary=&quot;withOutAndErr&quot;\n&gt; haltonfailure=&quot;yes&quot;&gt;\n&gt;       &lt;classpath refid=&quot;classpathtest&quot;/&gt;\n&gt;       &lt;formatter type=&quot;xml&quot;/&gt;\n&gt;       &lt;sysproperty key=&quot;test&quot; value=&quot;testdoowner*&quot;/&gt;\n&gt;       &lt;sysproperty key=&quot;runtestsetup&quot;\n&gt; value=&quot;${runtestsetup}&quot;/&gt;\n&gt;       &lt;sysproperty key=&quot;runlm&quot; value=&quot;${runlm}&quot;/&gt;\n&gt;       &lt;sysproperty key=&quot;loadmodule&quot;\n&gt; value=&quot;doowner&quot;/&gt;\n&gt;       &lt;sysproperty key=&quot;${security.auth.property}&quot; \n&gt; value=&quot;${security.auth.property.value}&quot;/&gt;\n&gt;       &lt;test\n&gt; name=&quot;com.tebabank.bp.test.client.TestClient&quot;\n&gt;             haltonfailure=&quot;no&quot;\n&gt; outfile=&quot;testdoowner&quot;/&gt;\n&gt;     &lt;/junit&gt;\n&gt;   &lt;/target&gt;\n&gt; \n&gt; I have struggling with this now for two days, so any\n&gt; help in this \n&gt; regard would be highly appreciated.\n&gt; \n&gt; Regards\n&gt; Chris\n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n&gt; \n\n\n__________________________________\nDo you Yahoo!?\nThe New Yahoo! Search - Faster. Easier. Bingo.\nhttp://search.yahoo.com\n\n", 
+    "profile": "thejoker101", 
+    "topicId": 8168, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 123716916, 
+    "prevInTime": 8179, 
+    "contentTrasformed": false, 
+    "postDate": "1053722159", 
+    "canDelete": false, 
+    "nextInTopic": 8183, 
+    "prevInTopic": 8168, 
+    "headers": {
+        "inReplyToHeader": "PGJha3NpcCs0MGtoQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDMwNTIzMjAzNTU5LjY4MDE4LnFtYWlsQHdlYjQwNjE0Lm1haWwueWFob28uY29tPg=="
+    }
+}

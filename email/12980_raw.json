@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 12981, 
+    "senderId": "5PTDXM8dNWdpLVwBVmBlQHhq584AgMhBcc9zPaDP_8LF3CbvRLex6mZem9srARkLmkAxzHNiD9T1h8vLc4-dQ5mnYOU6ijBBO1DS9dxH", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Approach for testing privately contained list?", 
+    "from": "Harring Figueiredo &lt;harringf@...&gt;", 
+    "authorName": "Harring Figueiredo", 
+    "msgSnippet": "... IMHO, this is a bad approach. You are creating a Class just to wrap the functionality of another class. Later on, if the base class needs to be modified,", 
+    "msgId": 12980, 
+    "rawEmail": "Return-Path: &lt;harringf@...&gt;\r\nX-Sender: harringf@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 58168 invoked from network); 1 Mar 2005 15:26:56 -0000\r\nReceived: from unknown (66.218.66.172)\n  by m20.grp.scd.yahoo.com with QMQP; 1 Mar 2005 15:26:56 -0000\r\nReceived: from unknown (HELO web52005.mail.yahoo.com) (206.190.39.61)\n  by mta4.grp.scd.yahoo.com with SMTP; 1 Mar 2005 15:26:55 -0000\r\nReceived: (qmail 72658 invoked by uid 60001); 1 Mar 2005 15:26:54 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nDomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;\n  s=s1024; d=yahoo.com;\n  b=Ulk1OM8OCzPm0iLtYKZ2DeHeY6iziaE9LZy3bwRsIb3Li448714XTXBaUB7gMzranTSXGV5LPIdJskCF07XFpRAWDXrwfLqWzBnkJCbpH4FURcvL/S47QCKff6is5FaqW8DwJVKV7hPs/t+jN2z5swE/Y+Paa+KE73nO5wBD4ho=  ;\r\nMessage-ID: &lt;20050301152654.72656.qmail@...&gt;\r\nReceived: from [12.8.123.244] by web52005.mail.yahoo.com via HTTP; Tue, 01 Mar 2005 07:26:54 PST\r\nDate: Tue, 1 Mar 2005 07:26:54 -0800 (PST)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;d00qeu+ip9t@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-Remote-IP: 206.190.39.61\r\nFrom: Harring Figueiredo &lt;harringf@...&gt;\r\nSubject: Re: [junit] Approach for testing privately contained list?\r\nX-Yahoo-Group-Post: member; u=124038550\r\nX-Yahoo-Profile: harringf\r\n\r\n\n\n--- kk_oop &lt;kk_oop@...&gt; wrote:\n\n&gt; \n&gt; Hi.\n&gt; \n&gt; In Java, we have a class MyClass that privately contains an ArrayList\n&gt; as an attribute called myList.  We were looking for a way to enable a\n&gt; JUnit test case class to call MyClass methods, then check the state of\n&gt; myList.\n&gt; \n&gt; Here&#39;s a what we are considering:\n&gt; \n&gt; a.  Make a protected method in MyClass called getMyList that returns\n&gt; myList and performs lazy instantiation (it&#39;ll only instantiate myList\n&gt; the first time it is called but will return myList everytime). \n&gt; MyClass should only access myList through this getter.\n&gt; \n&gt; b. Make a test version of MyClass called something like TestMyClass. \n&gt; Give that a public version of the myList attribute called myTestList.\n&gt;  \n&gt; \n&gt; c. Override getMyList so it will use myTestList instead of myList.\n&gt; \n&gt; d. The test case class will instantiate TestMyClass, and call its\n&gt; methods polymorphically through an variable of type MyClass.\n&gt; \n&gt; e.  When the test case wants to check the list values, it will just\n&gt; cast MyClass back to TestMyClass and access the public myTestList.\n&gt; \n&gt; The upside of this is that myList gets to remain private in the\n&gt; production code.  The downside is that we are not actually using\n&gt; myList in the test runs.  My thought was that if myTestList is the\n&gt; same type as myList and the override version of getMyList does exactly\n&gt; the same thing as the production code&#39;s getMyList (except for acting\n&gt; on the test version of myList), this downside becomes negligible.\n&gt; \n&gt; Note that we would define TestMyClass as an inner class of the JUnit\n&gt; test case so it will not have a .java file generated for it.\n&gt; \n&gt; Any thoughts on this approach?  Good?  Bad?  Recommend a different\n&gt; approach?\n&gt; \n&gt; Thanks for any feedback!\n&gt; \n&gt; Ken\n&gt; \n&gt; \n&gt; \n&gt; \n\n\n  IMHO, this is a bad approach. You are creating a Class just to wrap the\nfunctionality of another class. Later on, if the base class needs to be\nmodified, you will have to make sure you _remember_ to modify the class that\nwraps it.\n\n The point of the testing is to check the status of the object you are testing.\ni.e. verify that when you change the status of that object, the object is\n_actually_ being modified.\n\n I am sure you are adding something to the list and later on accessing it,\nright ? If so, you should have a method that adds something to the class and\nlater on access it. Try testing that fuctionnality, and that should be all.\n\nHarring Figueiredo.\n\n\n\t\t\n__________________________________ \nDo you Yahoo!? \nRead only the mail you want - Yahoo! Mail SpamGuard. \nhttp://promotions.yahoo.com/new_mail \n\n", 
+    "profile": "harringf", 
+    "topicId": 12976, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 124038550, 
+    "prevInTime": 12979, 
+    "contentTrasformed": false, 
+    "postDate": "1109690814", 
+    "canDelete": false, 
+    "nextInTopic": 12981, 
+    "prevInTopic": 12976, 
+    "headers": {
+        "inReplyToHeader": "PGQwMHFldStpcDl0QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDIwMDUwMzAxMTUyNjU0LjcyNjU2LnFtYWlsQHdlYjUyMDA1Lm1haWwueWFob28uY29tPg=="
+    }
+}

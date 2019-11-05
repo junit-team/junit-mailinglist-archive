@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 13065, 
+    "senderId": "egNfmm2wNU9pLIrqP7okMNZ0WAFSliQplQ0WozXT8T1918ED8jsCsKYTB2eexV9EEWMuuxGcWLkY7mgh1tppbwjpAICKgbEeRPLWo8Y", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] asserting from a sub-thread", 
+    "from": "Kevin Lawrence &lt;kevin@...&gt;", 
+    "authorName": "Kevin Lawrence", 
+    "msgSnippet": "Make Runnable decorator that catches, remembers and rethrows the Assertion Failure ? Off the top of my head ..... public void testSomething() { // set up stuff", 
+    "msgId": 13064, 
+    "rawEmail": "Return-Path: &lt;kevin@...&gt;\r\nX-Sender: kevin@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 78722 invoked from network); 10 Mar 2005 21:10:47 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m30.grp.scd.yahoo.com with QMQP; 10 Mar 2005 21:10:47 -0000\r\nReceived: from unknown (HELO ylpvm15.prodigy.net) (207.115.57.46)\n  by mta1.grp.scd.yahoo.com with SMTP; 10 Mar 2005 21:10:46 -0000\r\nReceived: from [10.250.100.64] (64-166-72-226.ded.pacbell.net [64.166.72.226] (may be forged))\n\tby ylpvm15.prodigy.net (8.12.10 outbound/8.12.10) with ESMTP id j2AL6Gba016540\n\tfor &lt;junit@yahoogroups.com&gt;; Thu, 10 Mar 2005 16:06:16 -0500\r\nMessage-ID: &lt;4230B7BE.90605@...&gt;\r\nDate: Thu, 10 Mar 2005 13:10:22 -0800\r\nUser-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;74297C5A6F930B4CB40D33BD127E882A349054@...&gt;\r\nIn-Reply-To: &lt;74297C5A6F930B4CB40D33BD127E882A349054@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Kevin Lawrence &lt;kevin@...&gt;\r\nSubject: Re: [junit] asserting from a sub-thread\r\nX-Yahoo-Group-Post: member; u=81949451\r\nX-Yahoo-Profile: kevinwilliamlawrence\r\n\r\nMake Runnable decorator that catches, remembers and rethrows the \nAssertion Failure ?\n\n\nOff the top of my head .....\n\n\npublic void testSomething() {\n   // set up stuff\n\n   RunnableAssertion runnable =\n       new RunnableAssertion(new RealRunnable());\n   Thread thread = new Thread(runnable);\n   thread.start();\n   thread.join();\n\n   runnable.rethrowExceptions();\n\n   // more assertions\n}\n\npublic class RunnableAssertion implements Runnable {\n   Runnable realRunnable;\n   Throwable exception;\n\n   public RunnableAssertion(Runnable runnable) {\n     this.realRunnable = realRunnable;\n   }\n\n   public void run() {\n     try {\n       realRunnable.run();\n     }\n     catch(Throwable t){\n       this.exception = t;\n     }\n   }\n\n   public void reThrowExceptions() throws Throwable {\n     if(exception != null){\n       throw exception;\n     }\n   }\n}\n\n\nBut I would try to avoid relying on the thread in the test :-)\n\n\nBradley, Todd wrote:\n&gt; Using JUnit, is it possible to write a test case that creates multiple\n&gt; threads and then uses assert* methods in those threads?  I know this\n&gt; sounds like a complicated test, but a coworker was wondering how to do\n&gt; this and none of us could think of a good way.\n&gt; \n&gt; When the assert* fails, an exception is thrown in the sub-thread, but it\n&gt; never propagates up to the main (original) thread, of course.  So, the\n&gt; test runner has no idea that assert* failed, and the test case carries\n&gt; on its merry way.\n&gt; \n&gt; Any thoughts on how people generally resolve this sort of problem?  Is\n&gt; the answer to make a simpler test case that doesn&#39;t rely on using an\n&gt; asser* in a separate thread?\n&gt; \n&gt; \n&gt; Todd.\n&gt; ----\n&gt; Todd Bradley - Polycom - QA Lead, Super Secret Project\n&gt; \n&gt; Visit me at my WebOffice for IM and app sharing:\n&gt; http://www.polycomweboffice.com/todd.bradley@... \n&gt; \n&gt; \n&gt;  \n&gt; Yahoo! Groups Links\n&gt; \n&gt; \n&gt; \n&gt;  \n&gt; \n&gt; \n&gt; \n\n", 
+    "profile": "kevinwilliamlawrence", 
+    "topicId": 13063, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 81949451, 
+    "prevInTime": 13063, 
+    "contentTrasformed": false, 
+    "postDate": "1110489022", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 13063, 
+    "headers": {
+        "inReplyToHeader": "PDc0Mjk3QzVBNkY5MzBCNENCNDBEMzNCRDEyN0U4ODJBMzQ5MDU0QFdTVEVYQ0gwMC53ZXN0bWluc3Rlci5wb2x5Y29tLmNvbT4=", 
+        "messageIdInHeader": "PDQyMzBCN0JFLjkwNjA1QGRpYW1vbmQtc2t5LmNvbT4=", 
+        "referencesHeader": "PDc0Mjk3QzVBNkY5MzBCNENCNDBEMzNCRDEyN0U4ODJBMzQ5MDU0QFdTVEVYQ0gwMC53ZXN0bWluc3Rlci5wb2x5Y29tLmNvbT4="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 23408, 
+    "senderId": "qsaLfYSKYVuq2a9w7lkfFMTiQoMGU22IbssyN6_CW179dRHpfwWnzXLNhMwNCPkZ7mImxx2pyTqWVCIPzrxis8nD", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnitMatchers: assert that expected message occurs N times", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "iv, I m really glad that the matchers framework was flexible enough to allow you to define your own matcher in this way.  In general, I would encourage authors", 
+    "msgId": 23407, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 80085 invoked from network); 3 May 2011 01:19:45 -0000\r\nX-Received: from unknown (98.137.34.46)\n  by m7.grp.sp2.yahoo.com with QMQP; 3 May 2011 01:19:45 -0000\r\nX-Received: from unknown (HELO mail-pv0-f176.google.com) (74.125.83.176)\n  by mta3.grp.sp2.yahoo.com with SMTP; 3 May 2011 01:19:45 -0000\r\nX-Received: by pve37 with SMTP id 37so4798700pve.35\n        for &lt;junit@yahoogroups.com&gt;; Mon, 02 May 2011 18:19:45 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.68.57.242 with SMTP id l18mr9236391pbq.30.1304385585603; Mon,\n 02 May 2011 18:19:45 -0700 (PDT)\r\nX-Received: by 10.68.64.133 with HTTP; Mon, 2 May 2011 18:19:45 -0700 (PDT)\r\nIn-Reply-To: &lt;ipllnp+oslp@...&gt;\r\nReferences: &lt;ipllnp+oslp@...&gt;\r\nDate: Mon, 2 May 2011 21:19:45 -0400\r\nX-Google-Sender-Auth: u8zivvMRUKwQ0ww8jKBIw5Si8Io\r\nMessage-ID: &lt;BANLkTin50_k0DJjAk4xuGpwP5trv-LpsHQ@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Re: [junit] JUnitMatchers: assert that expected message occurs N times\r\nX-Yahoo-Group-Post: member; u=341876227; y=RA6rRuy_hBb0HVTpgIp3NZmcQ9pcI4YyKu6lbcYFuN0\r\nX-Yahoo-Profile: dsaff\r\n\r\niv,\n\nI&#39;m really glad that the matchers framework was flexible enough to\nall=\r\now you to define your own matcher in this way.  In general, I would\nencoura=\r\nge authors of new matchers to consider contributing them\ndirectly to the ha=\r\nmcrest project, where they can be used for more\npurposes than just JUnit.  =\r\nThanks,\n\n   David\n\nOn Mon, May 2, 2011 at 3:16 AM, iv.hristov &lt;iv.hristov@y=\r\nahoo.com&gt; wrote:\n&gt; May I suggest adding a static method in JUnitMatchers fo=\r\nr the purpose of asserting that string appears N times.\n&gt;\n&gt; My current case=\r\n of usability is as follows:\n&gt;\n&gt; I am expecting an exception which should c=\r\nontain a certain message N\n&gt; times so I use:\n&gt;\n&gt; expectedException.expectMe=\r\nssage(JUnitMatchers.containsString(&quot;the\n&gt; expected message&quot;));\n&gt;\n&gt; However =\r\nthis does not ensure that the message is present N times, so I\n&gt; have to cr=\r\neate my own matcher:\n&gt;\n&gt; =A0 =A0 =A0 private static class MyStringContains =\r\nextends SubstringMatcher {\n&gt;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 private int matc=\r\nhesTimes;\n&gt;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 public MyStringContains(String st=\r\nring, int matchesTimes) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 sup=\r\ner(string);\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 this.matchesTimes=\r\n =3D matchesTimes;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 }\n&gt;\n&gt; =A0 =A0 =A0 =A0 =A0 =\r\n@Factory\n&gt; =A0 =A0 =A0 =A0 =A0 public static Matcher&lt;String&gt; containsString=\r\n(String substring, int times) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 return new My=\r\nStringContains(substring, times);\n&gt; =A0 =A0 =A0 =A0 =A0 }\n&gt;\n&gt; =A0 =A0 =A0 =\r\n=A0 =A0 =A0 =A0 @Override\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 protected boolean e=\r\nvalSubstringOf(String string) {\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =\r\n=A0 return StringUtils.countMatches(string, substring) =3D=3D matchesTimes;=\r\n\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 }\n&gt;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 @Override\n=\r\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 protected String relationship() {\n&gt; =A0 =A0 =\r\n=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return &quot;containing &quot;+matchesTimes+&quot; tim=\r\nes&quot;;\n&gt; =A0 =A0 =A0 =A0 =A0 =A0 =A0 }\n&gt; =A0 =A0 =A0 }\n&gt;\n&gt; Now I can use:\n&gt;\n&gt;=\r\n\n&gt; expectedException.expectMessage(JUnitMatchers.containsString(&quot;the\n&gt; expe=\r\ncted message&quot;, 5));\n&gt;\n&gt;\n&gt; to check that &quot;the expected message&quot; appears 5 ti=\r\nmes in the exception\n&gt; message body\n&gt;\n&gt;\n&gt;\n&gt;\n&gt;\n&gt; ---------------------------=\r\n---------\n&gt;\n&gt; Yahoo! Groups Links\n&gt;\n&gt;\n&gt;\n&gt;\n\n", 
+    "profile": "dsaff", 
+    "topicId": 23406, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 23406, 
+    "contentTrasformed": false, 
+    "postDate": "1304385585", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 23406, 
+    "headers": {
+        "inReplyToHeader": "PGlwbGxucCtvc2xwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PEJBTkxrVGluNTBfazBESmpBazR4dUdwd1A1dHJ2LUxwc0hRQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGlwbGxucCtvc2xwQGVHcm91cHMuY29tPg=="
+    }
+}

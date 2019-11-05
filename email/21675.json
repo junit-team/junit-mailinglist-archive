@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21676, 
+    "senderId": "cZ7E06mflzW-7JRkJkefEx2Z3JzX18KCKU9maHtJxWfyNzRL0N4qRzlVPmMtDwoy-JREiF9qqX1q6Wz4w-1rkgSsDPJz0Yacb4RMyQ_USNs", 
+    "systemMessage": false, 
+    "subject": "Re: Change generic signature of assert that", 
+    "from": "&quot;yme0987654321&quot; &lt;yme0987654321@...&gt;", 
+    "authorName": "yme0987654321", 
+    "msgSnippet": "I m curious if you know of a language that does do such things well. It seems like the popular ones are moving away from compiler-level type safety all", 
+    "msgId": 21675, 
+    "profile": "yme0987654321", 
+    "topicId": 21666, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 386557907, 
+    "messageBody": "<div id=\"ygrps-yiv-154347979\">I&#39;m curious if you know of a language that does do such things well. It seems like the popular ones are moving away from compiler-level type safety all together.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@...&gt; wrote:<br/>\n&gt;<br/>\n&gt; That much is true.  I think that in the end, we&#39;ll probably be forced<br/>\n&gt; back to the untyped version.  It was a good dream, but Java just<br/>\n&gt; really isn&#39;t functional enough to pretend to do functional things with<br/>\n&gt; it.<br/>\n&gt; <br/>\n&gt;    David Saff<br/>\n&gt; <br/>\n&gt; On Fri, May 22, 2009 at 2:48 PM, yme0987654321 &lt;yme0987654321@...&gt; wrote:<br/>\n&gt; &gt; I&#39;m also curious the motivation for using generics on the assertThat. It seems the only thing it gains is that the parameter to the matcher is the right type for the comparison, but the actual underlying matches method does not look at the generic, so if it wasn&#39;t the right type and generics were not used, the assert would just fail? I&#39;m I reading that right?<br/>\n&gt; &gt;<br/>\n&gt; &gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, &quot;yme0987654321&quot; &lt;yme0987654321@&gt; wrote:<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; hasEntry is part of the Hamcrest library. Here is the signature:<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; public static &lt;K, V&gt; org.hamcrest.Matcher&lt;java.util.Map&lt;K, V&gt;&gt; hasEntry(K key, V value)<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; I&#39;m curious if you know of a reason that<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; public static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; matcher)<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; is wrong. Does it break something that you know of?<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;&gt; --- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@&gt; wrote:<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; On Fri, May 22, 2009 at 1:18 PM, yme0987654321 &lt;yme0987654321@&gt; wrote:<br/>\n&gt; &gt;&gt; &gt; &gt; Consider the following case:<br/>\n&gt; &gt;&gt; &gt; &gt;<br/>\n&gt; &gt;&gt; &gt; &gt; Map&lt;String, Class&lt;? extends Serializable&gt;&gt; result = null;<br/>\n&gt; &gt;&gt; &gt; &gt;<br/>\n&gt; &gt;&gt; &gt; &gt; assertThat(result, hasEntry(&quot;Key&quot;, java.util.Date.class));<br/>\n&gt; &gt;&gt; &gt; &gt;<br/>\n&gt; &gt;&gt; &gt; &gt; This will not compile, but if the method signature of assertThat was changed to:<br/>\n&gt; &gt;&gt; &gt; &gt;<br/>\n&gt; &gt;&gt; &gt; &gt; public static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; matcher)<br/>\n&gt; &gt;&gt; &gt; &gt;<br/>\n&gt; &gt;&gt; &gt; &gt; It would compile.<br/>\n&gt; &gt;&gt; &gt; &gt;<br/>\n&gt; &gt;&gt; &gt; &gt; I would seem that it would be an appropriate change for such cases (unless there is something I don&#39;t understand about the deep implications of Generics).<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; Sigh.<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; Unfortunately, it was all too easy for the hamcrest team, a couple<br/>\n&gt; &gt;&gt; &gt; months ago, to come up with a list of 6 or 7 assertThat statements<br/>\n&gt; &gt;&gt; &gt; that all looked like they should obviously compile or not compile, but<br/>\n&gt; &gt;&gt; &gt; no Java typing that would make them all work.  It does get deep, and<br/>\n&gt; &gt;&gt; &gt; in some cases, compiler-dependent, if I remember correctly.<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; However, we did find that in some cases, the signature of the<br/>\n&gt; &gt;&gt; &gt; _Matcher_ could be improved.  What&#39;s the signature of hasEntry?<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; This is also pushing me to keep on my &quot;Dotmesh&quot; project, which would allow this:<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; assertThat(result.entrySet()).contains(entry(&quot;Key&quot;, Date.class));<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; [if the &quot;entry&quot; factory convenience method were written]<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt; Thanks,<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt; &gt;    David Saff<br/>\n&gt; &gt;&gt; &gt;<br/>\n&gt; &gt;&gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; ------------------------------------<br/>\n&gt; &gt;<br/>\n&gt; &gt; Yahoo! Groups Links<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 21674, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1243020941", 
+    "canDelete": false, 
+    "nextInTopic": 21676, 
+    "prevInTopic": 21674, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDkwNTIyMTE1OHAyMDk3ZDc4YW41NjkwOTQwNGY5MTdmMmU0QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGd2NnVxZCtudjlwQGVHcm91cHMuY29tPg=="
+    }
+}

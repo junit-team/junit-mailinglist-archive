@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 18, 
+    "nextInTime": 14836, 
+    "senderId": "NMviJDaN_xwTg9Ez0NbjrxXdRPxpY_u3RF7Z-4aRmVD-S0-PGigtjwJ93Mkw4o_CZKn0mvAOCuMyrVaRPCuPH_m6KJpmchoAPjQ", 
+    "systemMessage": true, 
+    "subject": "Exception handling by junit", 
+    "from": "&quot;A.J. Bonnema&quot; &lt;abonnema@...&gt;", 
+    "authorName": "A.J. Bonnema", 
+    "msgSnippet": "Hi, I am testing through JUnit a small application, that also accesses a database using jdbc. I have several machines with different types of database, so", 
+    "msgId": 14835, 
+    "profile": "ajbonnema", 
+    "topicId": 14835, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 98636687, 
+    "messageBody": "<div id=\"ygrps-yiv-1509781823\">Hi,<br/>\n<br/>\nI am testing through JUnit a small application, that also accesses a <br/>\ndatabase using jdbc.<br/>\nI have several machines with different types of database, so created the <br/>\nfollowing code to register the jdbc driver.<br/>\n<br/>\n    private DbAccessDriverList() {<br/>\n        drivers = new ArrayList&lt;Driver&gt;();<br/>\n        for(String[] s : strDrivers)<br/>\n            drivers.add(new Driver(s[0], s[1], s[2], s[3], s[4]));<br/>\n       <br/>\n        for(Driver dr : drivers) {<br/>\n            dr.result = register(dr.dbmsName, dr.driverName);<br/>\n        }<br/>\n    }<br/>\n   <br/>\n    private boolean register(String dbmsName, String driverName) {<br/>\n        boolean result = false;<br/>\n        try {<br/>\n            Class.forName(driverName);<br/>\n            log.println(&quot;Successful registration of &#92;&quot;&quot;+dbmsName+&quot;&#92;&quot; <br/>\njdbc driver&quot;);<br/>\n            result = true;<br/>\n        } catch (ClassNotFoundException e) {<br/>\n            log.err(&quot;Unable to register &#92;&quot;&quot;+dbmsName+&quot;&#92;&quot; jdbc driver, <br/>\nClassNotFoundException for &quot; +<br/>\n                    e.getMessage());<br/>\n            result = false;<br/>\n        }<br/>\n        log.println(&quot;driver for &#92;&quot;&quot;+dbmsName+&quot;&#92;&quot; search ended.&quot;);<br/>\n        return result;<br/>\n    }<br/>\n<br/>\nNow, what should happen, is that if a jdbc-driver is missing, the <br/>\nclassnotfound exception is caught, a log error is printed and the <br/>\nprocess continues running none the less.<br/>\nWhat really happens is that my testunit reports an error. The output <br/>\nlooks like this:<br/>\n<br/>\ninit:<br/>\ndeps-jar:<br/>\nCompiling 1 source file to <br/>\n/home/abonnema/projects/java/tierra/trunk/tierra/build/classes<br/>\ncompile:<br/>\ncompile-test-single:<br/>\n1: [DriverList] Successful registration of &quot;mysql&quot; jdbc driver<br/>\n2: [DriverList] driver for &quot;mysql&quot; search ended.<br/>\n1: [DriverList:] Unable to register &quot;postgresql&quot; jdbc driver, <br/>\nClassNotFoundException for org.postgresql.Driver<br/>\n3: [DriverList] driver for &quot;postgresql&quot; search ended.<br/>\nTestsuite: tierra.dbutils.DbAccessTest<br/>\nTests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.054 sec<br/>\n<br/>\n------------- Standard Output ---------------<br/>\n1: [DriverList] Successful registration of &quot;mysql&quot; jdbc driver<br/>\n2: [DriverList] driver for &quot;mysql&quot; search ended.<br/>\n3: [DriverList] driver for &quot;postgresql&quot; search ended.<br/>\n------------- ---------------- ---------------<br/>\n------------- Standard Error -----------------<br/>\n1: [DriverList:] Unable to register &quot;postgresql&quot; jdbc driver, <br/>\nClassNotFoundException for org.postgresql.Driver<br/>\n------------- ---------------- ---------------<br/>\nTestcase: testOpenCloseDb(tierra.dbutils.DbAccessTest):    Caused an ERROR<br/>\njavax/resource/ResourceException<br/>\njava.lang.NoClassDefFoundError: javax/resource/ResourceException<br/>\n        at java.lang.Class.forName0(Native Method)<br/>\n        at java.lang.Class.forName(Class.java:164)<br/>\n        at <br/>\ntierra.dbutils.DbAccessDriverList.register(DbAccessDriverList.java:80)<br/>\n        at <br/>\ntierra.dbutils.DbAccessDriverList.&lt;init&gt;(DbAccessDriverList.java:73)<br/>\n        at <br/>\ntierra.dbutils.DbAccessDriverList.getInstance(DbAccessDriverList.java:53)<br/>\n        at tierra.dbutils.DbAccess.&lt;clinit&gt;(DbAccess.java:55)<br/>\n        at tierra.dbutils.DbAccessTest.testOpenCloseDb(DbAccessTest.java:74)<br/>\n        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br/>\n        at <br/>\nsun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)<br/>\n        at <br/>\nsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)<br/>\n<br/>\n<br/>\nTest tierra.dbutils.DbAccessTest FAILED<br/>\n/home/abonnema/projects/java/tierra/trunk/tierra/nbproject/build-impl.xml:423: <br/>\nSome tests failed; see details above.<br/>\nBUILD FAILED (total time: 0 seconds)<br/>\n<br/>\nWhat I don&#39;t understand is: why does JUnit catch the exception that has <br/>\nalready been caught? Why doesn&#39;t my process just continue?<br/>\n<br/>\nGuus.<br/>\n<br/>\n-- <br/>\nA.J. Bonnema, Leiden The Netherlands,<br/>\nuser #328198 (Linux Counter http://counter.li.org)</div>", 
+    "prevInTime": 14834, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1127033508", 
+    "canDelete": false, 
+    "nextInTopic": 14836, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDQzMkQyQUE0LjQwMTA1MDVAeHM0YWxsLm5sPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 14130, 
+    "senderId": "eAjV6OMjZc5OOvB14H4QdC4CBIL4KVQO63QBpB54a6DbUEKjRyVVpvvdbrFD6hXt0A-7MlkkiQ8pb0NLQFkiYR75ByX1K6EJuVo0CCQ-", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] TDD Design advice on an HTTPClient-driven service", 
+    "from": "Jason Rogers &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "... It seems like you have a few issues/concerns here, but I will tackle this one (since it s the easiest and I have a terrible head cold at the moment). Short", 
+    "msgId": 14129, 
+    "rawEmail": "Return-Path: &lt;jacaetevha@...&gt;\r\nX-Sender: jacaetevha@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 55683 invoked from network); 15 Jul 2005 12:02:25 -0000\r\nReceived: from unknown (66.218.66.218)\n  by m21.grp.scd.yahoo.com with QMQP; 15 Jul 2005 12:02:25 -0000\r\nReceived: from unknown (HELO out3.smtp.messagingengine.com) (66.111.4.27)\n  by mta3.grp.scd.yahoo.com with SMTP; 15 Jul 2005 12:02:25 -0000\r\nReceived: from frontend3.messagingengine.com (frontend3.internal [10.202.2.152])\n\tby frontend1.messagingengine.com (Postfix) with ESMTP id 70454CBCDAC\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 15 Jul 2005 08:01:41 -0400 (EDT)\r\nX-Sasl-enc: 8kb6Pa9fef6BkArivJ8HAAaa4SUv2DNjk9kzktIGUTso 1121428901\r\nReceived: from [192.168.0.2] (pcp04165046pcs.sanarb01.mi.comcast.net [68.41.59.32])\n\tby frontend3.messagingengine.com (Postfix) with ESMTP id 201191E5\n\tfor &lt;junit@yahoogroups.com&gt;; Fri, 15 Jul 2005 08:01:41 -0400 (EDT)\r\nMessage-ID: &lt;42D7A655.3030207@...&gt;\r\nDate: Fri, 15 Jul 2005 08:04:37 -0400\r\nUser-Agent: Mozilla Thunderbird 1.0 (X11/20050111)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;db77uu+9gn4@...&gt;\r\nIn-Reply-To: &lt;db77uu+9gn4@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: Jason Rogers &lt;jacaetevha@...&gt;\r\nSubject: Re: [junit] TDD Design advice on an HTTPClient-driven service\r\nX-Yahoo-Group-Post: member; u=109352929; y=Y9tBxw6uSOMRUauVPN993jy17yyFva2ANqcgSoTXSZo3-10\r\nX-Yahoo-Profile: jacaetev\r\n\r\netl_dan wrote:\n\n&gt;\n&gt; Beyond this I start to get lost.  An HttpClient is a class with no\n&gt; implemented interface, so perhaps I could wrap its core required\n&gt; functionality in an interface without actually exposing the\n&gt; HttpClient, then substitute a mock in for testing? (Such as described\n&gt; in Michael Feathers&#39; book)\n\n\nIt seems like you have a few issues/concerns here, but I will tackle \nthis one (since it&#39;s the easiest and I have a terrible head cold at the \nmoment).\n\nShort answer: I would do just that.  Create an interface that will \nrespond to the Requests (not HTTPRequests) with a Response (another \ninterface).  You should be able to send that Response back into your \ninterface (don&#39;t know what it&#39;s called) and get yet another Response.  \nWhen you have finished requesting and responding unwrap your Response in \nwhatever way seems correct.\n\nIn the test, the thing that receives Requests and returns Responses is a \nmock returning canned data, in production code it uses HTTPClient.  \nBelow is some totally bogus code which I suspect you will not use, but \nit may help when starting to write your test to be able to see something \nto which you /might/ allow your tests to lead you.\n\npublic interface Request {\n    public Collection arguments();\n    public String body(); /* don&#39;t know if this is appropriate type  */\n}\n\npublic interface Response {\n    public String unravel(); /* don&#39;t know if this is appropriate type  */\n}\n\npublic class Controller {\n    public Response doThing() {\n        RequestServer server = RequestServerFactory.instance(); /* your \ntest sets up a mock */\n        Response response = server.sendRequest(new BasicRequest());\n        response = server.sendRequest(response);\n        response = server.sendRequest(response);\n        response = server.sendRequest(response);\n        return response;\n    }\n}\n\n-- \nJason Rogers\n\n&quot;I am crucified with Christ: nevertheless I live; yet not I,\nbut Christ liveth in me: and the life which I now live in \nthe flesh I live by the faith of the Son of God, who loved \nme, and gave himself for me.&quot;\n    Galatians 2:20\n\n\n", 
+    "profile": "jacaetev", 
+    "topicId": 14126, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 109352929, 
+    "prevInTime": 14128, 
+    "contentTrasformed": false, 
+    "postDate": "1121429077", 
+    "canDelete": false, 
+    "nextInTopic": 14188, 
+    "prevInTopic": 14126, 
+    "headers": {
+        "inReplyToHeader": "PGRiNzd1dSs5Z240QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyRDdBNjU1LjMwMzAyMDdAZmFzdC1tYWlsLm9yZz4=", 
+        "referencesHeader": "PGRiNzd1dSs5Z240QGVHcm91cHMuY29tPg=="
+    }
+}

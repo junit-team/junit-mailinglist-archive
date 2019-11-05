@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 18578, 
+    "senderId": "T5jUQ0CxkkOOC11wei2JoX4xpN_-FRV-lH28febEyVo3hQdO5GOlU9ksqWFt4K_STqs0mXK5qDh4CQ9Ehy3Rfxlg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] How JUnit runs test class", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... No.  It doesn t.  I understand what you re suggesting, and I spent some time and effort (not a lot, thanks to the extension mechanism already in place,", 
+    "msgId": 18577, 
+    "profile": "dsaff", 
+    "topicId": 18565, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-2111108420\">On 12/22/06, Cédric Beust ♔ &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cbeust@...\">cbeust@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi David,<br/>\n&gt;<br/>\n&gt; On 12/22/06, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt; &gt; As you already know, I think it would be nice if JUnit at least gave us<br/>\n&gt; &gt; the<br/>\n&gt; &gt; &gt; option.<br/>\n&gt; &gt;<br/>\n&gt; &gt; Well, it does, especially in JUnit 4, which has an extensible Runner<br/>\n&gt; &gt; framework.  The below test class has two inner classes.<br/>\n&gt; &gt; RunWithOneInstance is a test class which will only be run once, and<br/>\n&gt; &gt; OneInstance is the custom Runner that makes it possible.<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Right, but it forces you to introduce a static in your code[.]<br/>\n<br/>\n </span></blockquote>No.  It doesn&#39;t.  I understand what you&#39;re suggesting, and I spent<br/>\nsome time and effort (not a lot, thanks to the extension mechanism<br/>\nalready in place, thankfully) to write a custom runner that addresses<br/>\nyour frustration.  Please re-read my previous post, and then try the<br/>\nnew code sample below, which hopefully makes it more explicit.  If<br/>\neverything still had to be static, then the new custom runner would<br/>\nhave no point.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Sharing expensive immutable state in the same test class is a totally<br/>\n&gt; harmless and extremely common scenario that I wish JUnit made easier to<br/>\n&gt; implement (i.e. no statics and no special runner).<br/>\n<br/>\n </span></blockquote>Requiring expensive immutable state in a unit test is harmful to unit<br/>\ndesign.  (In my opinion, not thinking about unit tests and system<br/>\ntests as different things is harmful to unit and system design.)<br/>\n<br/>\nRequiring expensive immutable state in functional or system tests<br/>\nhappens.  In these cases, I think that adding<br/>\n@RunWith(OneInstance.class) to the top of a class to mark it as<br/>\nrunning differently is pretty easy.  Perhaps someone would like to<br/>\nsuggest that this Runner should ship along with JUnit.  In this case,<br/>\nthe standard procedure is to open a Feature Request on SourceForge.<br/>\n<br/>\nHere&#39;s the code sample.  The code for OneInstance was in my last<br/>\ne-mail.  Only one instance of HumongousDataStructure is constructed.<br/>\nShare and enjoy,<br/>\n<br/>\n   David Saff<br/>\n<br/>\npackage constructonce;<br/>\n<br/>\nimport static org.junit.Assert.*;<br/>\n<br/>\nimport org.junit.Test;<br/>\nimport org.junit.runner.RunWith;<br/>\n<br/>\n@RunWith(OneInstance.class)<br/>\npublic class ConstructOnceTest {<br/>\n\tpublic static class HumongousDataStructure {<br/>\n\t\tstatic int numConstructed = 0;<br/>\n\t\t<br/>\n\t\tpublic HumongousDataStructure() {<br/>\n\t\t\tnumConstructed++;<br/>\n\t\t}<br/>\n\t}<br/>\n<br/>\n\tprivate HumongousDataStructure thisTakesAReallyLongTimeToConstruct =<br/>\nnew HumongousDataStructure();<br/>\n<br/>\n<br/>\n\t@Test<br/>\n\tpublic void firstTest() {<br/>\n\t\tassertEquals(1, HumongousDataStructure.numConstructed);<br/>\n\t}<br/>\n<br/>\n\t@Test<br/>\n\tpublic void secondTest() {<br/>\n\t\tassertEquals(1, HumongousDataStructure.numConstructed);<br/>\n\t}\t<br/>\n}</div>", 
+    "prevInTime": 18576, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1166805277", 
+    "canDelete": false, 
+    "nextInTopic": 18578, 
+    "prevInTopic": 18576, 
+    "headers": {
+        "inReplyToHeader": "PGI4NmI2YTljMDYxMjIyMDgwM242YzJkODJiYXk4OWYwYWI2ODgzYjYzN2Y0QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDYxMjIyMDgzNHQyNTY1YmRkNms1YmUxMjQ1Zjk3OGRkMzNkQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PDg2REYyODgzRUM2ODRBNEM5MDQzRUUxODM0MDUyMUZBMDM2OERFMDhARVgwMDA0LkFsbHN0cmVhbUlUUy5sb2NhbD4JIDw0NThBRDUxNS40MDQwOUBnbWFpbC5jb20+CSA8Yjg2YjZhOWMwNjEyMjExMTQ1bDVjOTc2ZmM2bWQ2ZTI2ZGEwYjZhMmQ5ZDVAbWFpbC5nbWFpbC5jb20+CSA8NGY3ZGE2YjkwNjEyMjIwNzEzajU3OTk1NjRxNGM2NzQwYzBjMmFiMzM0ZUBtYWlsLmdtYWlsLmNvbT4JIDxiODZiNmE5YzA2MTIyMjA4MDNuNmMyZDgyYmF5ODlmMGFiNjg4M2I2MzdmNEBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

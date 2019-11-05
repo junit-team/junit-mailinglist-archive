@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 2, 
+    "nextInTime": 21817, 
+    "senderId": "BOnxa7aSanRIYs0C8GuUox7jKcojOLrsn1H6sdEoEdwb0WohsnVjqvMR8krTcXkHnFTy4xrfd65w__I0LS8VwJFl", 
+    "systemMessage": false, 
+    "subject": "Rules in JUnit 4.7", 
+    "from": "David Saff &lt;david@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "All, JUnit 4.7 will include a new mechanism for changing the behavior and interpretation of test methods.  We are calling this feature Rules (replacing the", 
+    "msgId": 21816, 
+    "rawEmail": "Return-Path: &lt;david.saff@...&gt;\r\nX-Sender: david.saff@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 84124 invoked from network); 16 Jul 2009 18:29:42 -0000\r\nX-Received: from unknown (69.147.108.200)\n  by m6.grp.re1.yahoo.com with QMQP; 16 Jul 2009 18:29:42 -0000\r\nX-Received: from unknown (HELO mail-ew0-f217.google.com) (209.85.219.217)\n  by mta1.grp.re1.yahoo.com with SMTP; 16 Jul 2009 18:29:42 -0000\r\nX-Received: by ewy17 with SMTP id 17so206976ewy.42\n        for &lt;junit@yahoogroups.com&gt;; Thu, 16 Jul 2009 11:28:42 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.210.88.7 with SMTP id l7mr7452551ebb.15.1247768921807; Thu, 16 \n\tJul 2009 11:28:41 -0700 (PDT)\r\nDate: Thu, 16 Jul 2009 14:28:41 -0400\r\nX-Google-Sender-Auth: 29e5937fb03f6f63\r\nMessage-ID: &lt;4f7da6b90907161128s425db590oe715145252d46a9b@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: David Saff &lt;david@...&gt;\r\nSubject: Rules in JUnit 4.7\r\nX-Yahoo-Group-Post: member; u=341876227; y=sYKvi0OMOOWIXSWXsUTIX7wrorq72FvuKtvWMH-GWbo\r\nX-Yahoo-Profile: dsaff\r\n\r\nAll,\n\nJUnit 4.7 will include a new mechanism for changing the behavior and\ninterpretation of test methods.  We are calling this feature Rules\n(replacing the earlier name Interceptors).  You can download a\nsnapshot of this release from\nhttp://github.com/KentBeck/junit/downloads.  We are planning no new\nfeature for this version, and once the tagged bugs are resolved\n(http://github.com/KentBeck/junit/issues/labels/4.7), we will issue an\nofficial release candidate, but early feedback is very, very welcome.\n\nTechnical goodies follow.  Thanks,\n\n   David Saff\n\nThere are already rules you&#39;re probably familiar with from way back in\nJUnit 4.0:\n\n- The fundamental rule of JUnit: a test method is executed on a new\ninstance of its declaring class.  It passes if and only if it\ncompletes without throwing an exception.\n- The Before rule: a @Test method is preceded by all @Before methods\nin the same class.\n- The After rule: a @Test method is followed by all @After methods in\nthe same class.\n- The timeout= rule: if a @Test annotation has a timeout= property, it\nfails if it does not complete in under the given number of\nmilliseconds\n- The expected= rule: if a @Test annotation has an expected= property,\nit passes if it throws an exception of the given class name, and fails\notherwise.\n\nStarting with 4.7, you can add additional rules to methods in a class\nby declaring public fields in the class annotated with @Rule.  For\nexample, here&#39;s a test that uses the TemporaryFolder rule (&quot;All files\ncreated in the temporary folder during the test are deleted after the\ntest completes.&quot;):\n\n  public static class HasTempFolder {\n    @Rule\n    public TemporaryFolder folder= new TemporaryFolder();\n\n    @Test\n    public void testUsingTempFolder() throws IOException {\n      File createdFile= folder.newFile(&quot;myfile.txt&quot;);\n      File createdFolder= folder.newFolder(&quot;subfolder&quot;);\n      // ...\n    }\n  }\n\nWe&#39;re including implementations of the following Rules:\n- TemporaryFolder: delete temp files after test completion\n- ExternalResource: reliably set up and tear down an arbitrary external resource\n- ErrorCollector: collect multiple assertion failures per test method,\nand report all at the end\n- Verifier: turn a passing test to failing if an arbitrary condition\nis not met (all expected mock-object calls made, no ERROR lines in the\nlogs)\n- TestWatchman: Perform an additional task before and after each test\n(a custom log, for example)\n- TestName: remember the name of each test method, and make it\navailable during the test execution.\n- Timeout: like the timeout= rule, but applies to all methods in a\nclass, and can take a run-time value.\n- ExpectedException: like the expected= rule, but can check exception\nmessages, and other arbitrary assertions.\n\nFor more on using these rules, please see the release notes:\n\nhttp://github.com/dsaff/junit/blob/99a84a542f2ac532a8425fa0a77884902b1c01b0/doc/ReleaseNotes4.7.txt\n\nIn addition, you can implement your own Rules by implementing the\nMethodRule interface.  Here&#39;s a Rule that marks all tests as passing,\nas long as I&#39;m the one running them:\n\npublic class DavidsAlwaysRight implements MethodRule {\n\tpublic Statement apply(Statement base, FrameworkMethod method, Object target) {\n\t\tif (&quot;saff&quot;.equals(System.getenv(&quot;USER&quot;)))\n\t\t\treturn alwaysSuccess();\n\t\telse\n\t\t\treturn base;\n\t}\n\n\tprivate Statement alwaysSuccess() {\n\t\treturn new Statement() {\n\t\t\t@Override\n\t\t\tpublic void evaluate() throws Throwable {\n\t\t\t\t// do nothing: always success!\n\t\t\t}\n\t\t};\n\t}\n}\n\n", 
+    "profile": "dsaff", 
+    "topicId": 21816, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 341876227, 
+    "prevInTime": 21815, 
+    "contentTrasformed": false, 
+    "postDate": "1247768921", 
+    "canDelete": false, 
+    "nextInTopic": 21817, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDkwNzE2MTEyOHM0MjVkYjU5MG9lNzE1MTQ1MjUyZDQ2YTliQG1haWwuZ21haWwuY29tPg=="
+    }
+}

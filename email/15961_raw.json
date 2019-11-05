@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 74, 
+    "nextInTime": 15962, 
+    "senderId": "fbN29abBapP5EjanasVkc9pqrsL--TZSTHfWm00KzBanoZPJ6hxUNB2xoSCVyJuqzpP0LdPvfv0yy63ymax3u6urDLskBtPFx1c3wQ", 
+    "systemMessage": false, 
+    "subject": "Re: Observations from a production use of JUnit4", 
+    "from": "&quot;Ben Maurer&quot; &lt;bmaurer@...&gt;", 
+    "authorName": "Ben Maurer", 
+    "msgSnippet": "Yes. It might be nice to make it so that if the timeout was 1000ms it would say 1 second , but that s sugar. -- Ben ... express your", 
+    "msgId": 15961, 
+    "rawEmail": "Return-Path: &lt;bmaurer@...&gt;\r\nX-Sender: bmaurer@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 9902 invoked from network); 4 Feb 2006 01:03:03 -0000\r\nReceived: from unknown (66.218.67.35)\n  by m32.grp.scd.yahoo.com with QMQP; 4 Feb 2006 01:03:03 -0000\r\nReceived: from unknown (HELO n10a.bullet.dcn.yahoo.com) (216.155.203.233)\n  by mta9.grp.scd.yahoo.com with SMTP; 4 Feb 2006 01:03:03 -0000\r\nComment: DomainKeys? See http://antispam.yahoo.com/domainkeys\r\nReceived: from [216.155.201.64] by n10.bullet.dcn.yahoo.com with NNFMP; 04 Feb 2006 01:02:04 -0000\r\nReceived: from [66.218.69.3] by t1.bullet.dcn.yahoo.com with NNFMP; 04 Feb 2006 01:02:04 -0000\r\nReceived: from [66.218.66.82] by t3.bullet.scd.yahoo.com with NNFMP; 04 Feb 2006 01:02:04 -0000\r\nDate: Sat, 04 Feb 2006 01:02:03 -0000\r\nTo: junit@yahoogroups.com\r\nMessage-ID: &lt;ds0ueb+l86i@...&gt;\r\nIn-Reply-To: &lt;E1F4u5p-0000yx-D8@...&gt;\r\nUser-Agent: eGroups-EW/0.82\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;ISO-8859-1&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Mailer: Yahoo Groups Message Poster\r\nX-Yahoo-Newman-Property: groups-compose\r\nX-eGroups-Msg-Info: 1:12:0:0\r\nFrom: &quot;Ben Maurer&quot; &lt;bmaurer@...&gt;\r\nSubject: Re: Observations from a production use of JUnit4\r\nX-Yahoo-Group-Post: member; u=256083789; y=NDbyZWkFDvo3mFuingrvsXNCpdzVCS_o4YOtcth-CG4u4BuUWFQ3AQ6H32-Rgw\r\nX-Yahoo-Profile: benjamindavidmaurer\r\n\r\nYes. It might be nice to make it so that if the timeout was 1000ms it\nwould=\r\n say &#39;1 second&#39;, but that&#39;s sugar.\n\n-- Ben\n\n--- In junit@yahoogroups.com, &quot;=\r\nKent Beck&quot; &lt;kentb@...&gt; wrote:\n&gt;\n&gt; Ben,\n&gt; \n&gt; Thank you for your detailed com=\r\nments. Does the following test\nexpress your\n&gt; expectations?\n&gt; \n&gt; \tstatic pu=\r\nblic class InfiniteLoopTest {\n&gt; \t\t@Test(timeout=3D 100) public void failure=\r\n() {\n&gt; \t\t\tfor(;;);\n&gt; \t\t}\n&gt; \t}\n&gt; \t\n&gt; \t@Test public void infiniteLoop() throw=\r\ns Exception {\n&gt; \t\tJUnitCore core=3D new JUnitCore();\n&gt; \t\tResult result=3D c=\r\nore.run(InfiniteLoopTest.class);\n&gt; \t\tassertEquals(1, result.getRunCount());=\r\n\n&gt; \t\tassertEquals(1, result.getFailureCount());\n&gt; \t\tThrowable exception=3D\n=\r\n&gt; result.getFailures().get(0).getException();\n&gt; \t\tSystem.out.println(except=\r\nion.getMessage());\n&gt; \t\tassertTrue(exception.getMessage().contains(&quot;test tim=\r\ned out\n&gt; after 100 milliseconds&quot;));\n&gt; \t}\n&gt; \n&gt; Sincerely yours,\n&gt; \n&gt; Kent Be=\r\nck\n&gt; Three Rivers Institute \n&gt; \n&gt; &gt; -----Original Message-----\n&gt; &gt; From: ju=\r\nnit@yahoogroups.com [mailto:junit@yahoogroups.com] On \n&gt; &gt; Behalf Of Ben Ma=\r\nurer\n&gt; &gt; Sent: Tuesday, January 31, 2006 12:01 PM\n&gt; &gt; To: junit@yahoogroups=\r\n.com\n&gt; &gt; Subject: [junit] Re: Observations from a production use of JUnit4\n=\r\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; &gt; &gt; &gt; @Test(expected=3D) traces\n&gt; &gt; &gt; &gt; &gt; -------------------=\r\n----\n&gt; &gt; &gt; &gt; &gt;\n&gt; &gt; &gt; &gt; &gt; When you have an expected exception, and another o=\r\nne gets\n&gt; &gt; thrown, the\n&gt; &gt; &gt; &gt; &gt; error trace doesn&#39;t contain the bad excep=\r\ntion. You only get:\n&gt; &gt; &gt; &gt; &gt;\n&gt; &gt; &gt; &gt; &gt; java.lang.AssertionError: Unexpecte=\r\nd exception, \n&gt; &gt; &gt; &gt; &gt; expected&lt;java.util.NoSuchElementException&gt; but \n&gt; &gt;=\r\n &gt; &gt; &gt; was&lt;java.lang.NullPointerException&gt;\n&gt; &gt; &gt; &gt; &gt;\n&gt; &gt; &gt; &gt; &gt; Having the t=\r\nrace of the bad exception would help TAs \n&gt; &gt; debug student\n&gt; &gt; &gt; code. \n&gt; =\r\n&gt; &gt; &gt; That&#39;s a good idea.  We&#39;ll try to have that in the next release.\n&gt; &gt; =\r\n&gt; \n&gt; &gt; &gt; Thanks. This also comes up with timeouts. It&#39;d be really \n&gt; &gt; cool=\r\n to have\n&gt; &gt; &gt; a stacktrace from where the thread was hung.\n&gt; &gt; \n&gt; &gt; Actual=\r\nly, with timeouts there&#39;s another issue that came up from a\n&gt; &gt; student tod=\r\nay. The j.u.concurrent.TimeoutException doesn&#39;t have a\n&gt; &gt; message that mak=\r\nes any sense. When that exception gets thrown it would\n&gt; &gt; be nice to say &quot;=\r\ntest execution timed out&quot; or something.\n&gt; &gt; \n&gt; &gt; -- Ben\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt; =\r\n\n&gt; &gt; \n&gt; &gt;  \n&gt; &gt; Yahoo! Groups Links\n&gt; &gt; \n&gt; &gt; \n&gt; &gt; \n&gt; &gt;  \n&gt; &gt; \n&gt; &gt;\n&gt;\n\n\n\n\n\n\n", 
+    "profile": "benjamindavidmaurer", 
+    "topicId": 15891, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 256083789, 
+    "prevInTime": 15960, 
+    "contentTrasformed": false, 
+    "postDate": "1139014923", 
+    "canDelete": false, 
+    "nextInTopic": 15962, 
+    "prevInTopic": 15960, 
+    "headers": {
+        "inReplyToHeader": "PEUxRjR1NXAtMDAwMHl4LUQ4QHNtdHBhdXRoMDcubWFpbC5hdGwuZWFydGhsaW5rLm5ldD4=", 
+        "messageIdInHeader": "PGRzMHVlYitsODZpQGVHcm91cHMuY29tPg=="
+    }
+}

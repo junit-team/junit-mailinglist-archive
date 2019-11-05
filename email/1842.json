@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 1843, 
+    "senderId": "ow53RtzO79BAoIIT0Q2ABx-d1QX00cpDFghRl2EerN-q4M9E_gvRrvMlWxDMIgx6q6K-7HRQxDADeg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: method dependency", 
+    "from": "rainsber@...", 
+    "authorName": "rainsber@ca.ibm.com", 
+    "msgSnippet": "... Yep! It smells a little. Here are possible refactorings. 1. The constructor opens the file so that write and close operations always make sense on", 
+    "msgId": 1842, 
+    "topicId": 1823, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-1806491876\"><blockquote><span title=\"ireply\">&gt;While people are calling this a &#39;code smell&#39;, does the following smell?<br/>\n&gt;     a() means &quot;open file&quot;<br/>\n&gt;     b() means &quot;write to file&quot;<br/>\n&gt; and c() means &quot;close file&quot;.<br/>\n<br/>\n </span></blockquote>Yep! It smells a little. Here are possible refactorings.<br/>\n<br/>\n1. The constructor opens the file so that &quot;write&quot; and &quot;close&quot; operations<br/>\nalways &quot;make sense&quot; on any instantiation of that class. If open() fails,<br/>\nthen there&#39;s no object on which to erroneously call write() and close().<br/>\n2. The open() operation is a factory method for another object that wraps<br/>\nthe file. You write/close by talking to the file. Come to think of it, this<br/>\nis the same as 1.<br/>\n<br/>\nThe only problem with assertions in code is that people find it easy to<br/>\nabuse them. If every developer were disciplined enough to use in-code<br/>\nassertions only when no other way works, then they wouldn&#39;t be such a<br/>\nproblem.<br/>\n<br/>\nJ. B. Rainsberger  &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:rainsber@...\">rainsber@...</a>&gt;<br/>\nCommerce Suite Accelerator: Rule Services, IBM Toronto Lab<br/>\n8200 Warden Av, Office A3-735 [A3/FNB/8200/MKM]<br/>\nMarkham ON   L6G 1C7<br/>\n905 413-2501 (969-2501)<br/>\n<br/>\n<br/>\nKeith Ray &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:keith.ray@...\">keith.ray@...</a>&gt; on 07/10/2001 11:54:50<br/>\n<br/>\nPlease respond to <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a><br/>\n<br/>\nTo:   &quot;&#39;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&#39;&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>&gt;<br/>\ncc:<br/>\nSubject:  [junit] Re: method dependency<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n<br/>\n    &gt; In my class, I have methods A(),B(), C(), where A() must<br/>\n    &gt; be called before B(), B() before C(). I have individual<br/>\n    &gt; test cases for each method. In order to run the tests in<br/>\n    &gt; the specified order, I must arrange the actual methods in<br/>\n    &gt; the appropriate order. I know this is not a good thing,<br/>\n    &gt; so how do I avoid it? I really hate to lump them into one<br/>\n    &gt; testcase.<br/>\n    &gt;<br/>\n    &gt; Thanks,<br/>\n    &gt;<br/>\n    &gt;<br/>\n    &gt; Scott<br/>\n<br/>\nThis could be a place for non-JUnit assertions in your code. [I subscribe<br/>\nto the Heresy that XP can be enhanced by design-by-contract, using<br/>\nassertions in addition to unit testing.]<br/>\n<br/>\nboolean aWasCalled = false;<br/>\nboolean bWasCalled = false;<br/>\nboolean cWasCalled = false;<br/>\n<br/>\nvoid a()<br/>\n{<br/>\n   Assert.isFalse( bWasCalled );<br/>\n   Assert.isFalse( cWasCalled );<br/>\n   aWasCalled = true;<br/>\n   ....<br/>\n}<br/>\n<br/>\nvoid b()<br/>\n{<br/>\n   Assert.isTrue( aWasCalled );<br/>\n   Assert.isFalse( cWasCalled );<br/>\n   bWasCalled = true;<br/>\n   ....<br/>\n}<br/>\n<br/>\nvoid c()<br/>\n{<br/>\n   Assert.isTrue( aWasCalled );<br/>\n   Assert.isTrue( bWasCalled );<br/>\n   ....<br/>\n}<br/>\n<br/>\nNow your code communicates that a() must be called before b(), which must<br/>\nbe called before c(). This also tests the unit tests, in that your<br/>\nnon-JUnit Assert class methods should throw an unchecked exception if b()<br/>\nis called before a(), or c() is called before b() and a().<br/>\n<br/>\nWhile people are calling this a &#39;code smell&#39;, does the following smell?<br/>\n     a() means &quot;open file&quot;<br/>\n     b() means &quot;write to file&quot;<br/>\n and c() means &quot;close file&quot;.<br/>\n<br/>\nHowever, since the three methods apparently work together, they probably<br/>\nshould be tested together.<br/>\n<br/>\nTo unsubscribe from this group, send an email to:<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n<br/>\n<br/>\nYour use of Yahoo! Groups is subject to the Yahoo! Terms of Service.</div>", 
+    "prevInTime": 1841, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "994781165", 
+    "canDelete": false, 
+    "nextInTopic": 2224, 
+    "prevInTopic": 1841, 
+    "headers": {
+        "messageIdInHeader": "PE9GRTI0ODJERkQuM0ZCMDk5NTUtT044NTI1NkE4NS4wMDU4MDcxOUB0b3JvbGFiLmlibS5jb20+"
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18473, 
+    "senderId": "D8YlrLFWsB8qZSKhMxo-jue6_oxWeheYrfbh5a6efTmPgriFqjv2_9egX2N8FOb7kSFQSMdFDKFy08bVcXLepXCr", 
+    "systemMessage": false, 
+    "subject": "Re: Literate assertions", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... But it means something completely different.  This is what I get for trying to be clever and concise at the same time. [1] ", 
+    "msgId": 18472, 
+    "profile": "dsaff", 
+    "topicId": 18472, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-355427401\">On 11/30/06, Cédric Beust ♔ &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:cbeust@...\">cbeust@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; On 11/30/06, David Saff &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:saff@...\">saff@...</a>&gt; wrote:<br/>\n&gt; &gt;<br/>\n&gt; &gt;<br/>\n&gt; &gt; I&#39;ll second that.  Constraints make a lot of things very nice--I&#39;m<br/>\n&gt; &gt; particularly proud of this, adapted from some GUI testing code:<br/>\n&gt; &gt;<br/>\n&gt; &gt; assertThat(valueOf(button).isEnabled(), eventually(eq(true)));<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; I don&#39;t know, I still have mixed feelings about this approach.  Although I<br/>\n&gt; agree this particular example does read well, it&#39;s still extra verbose (e.g.<br/>\n&gt; the &quot;eq&quot; statement) and I&#39;m not completely convinced that to a programmer,<br/>\n&gt;<br/>\n&gt; assertTrue(valueOf(button).isEnabled())<br/>\n&gt;<br/>\n&gt; is that much harder to read.<br/>\n<br/>\n </span></blockquote>But it means something completely different.  This is what I get for<br/>\ntrying to be clever and concise at the same time. [1]<br/>\n<br/>\nassertThat(valueOf(button).isEnabled(), eventually(eq(true)));<br/>\n<br/>\n...only is useful in a multi-threaded situation, in which the button<br/>\nmay not be enabled the first time you check, but if you wait a while,<br/>\nit should soon become enabled.  The great thing is that this idea of<br/>\nrepeatedly evaluating an expression, checking against a desired<br/>\nresult, and then waiting before evaluating again is all encapsulated<br/>\nwithin the &quot;valueOf&quot; and &quot;eventually&quot; methods.  Once I figured this<br/>\nout, my asynchronous UI tests actually became readable.<br/>\n<br/>\nAnd, now that I think about it, there&#39;s no reason not to special-case<br/>\nthe eq, as JMock does in other places, allowing:<br/>\n<br/>\nassertThat(valueOf(button).isEnabled(), eventually(true));<br/>\n<br/>\nAnd if you find yourself doing this kind of thing very often, you<br/>\ncould write a new matcher, allowing simply:<br/>\n<br/>\nassertThat(button, eventually(isEnabled()));<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Anyway, my experience with this kind of literate assertions is that it<br/>\n&gt; scales very poorly as soon as you try to assert more than a simple equality<br/>\n&gt; or a boolean, and in the end, you&#39;re probably better off simply writing a<br/>\n&gt; method assertButtonIsEnabled(enabled) which, in my opinion, is the most<br/>\n&gt; readable of all.<br/>\n<br/>\n </span></blockquote>The literacy is actually secondary here, which is why I&#39;m willing to<br/>\nlive with and(greaterThan(10), lessThan(20)) when I have to [2].  The<br/>\nprimary win is that the thing you&#39;re trying to assert is separated<br/>\nfrom the act of asserting, so that you can write:<br/>\n<br/>\nassertThat(button, eventually(isEnabled()));  // will become enabled<br/>\n<br/>\nor<br/>\n<br/>\nassertThat(button, isEnabled());  // is now enabled<br/>\n<br/>\nor<br/>\n<br/>\nassertThat(button, not(isEnabled()));  // is disabled<br/>\n<br/>\netc. [3]<br/>\n<br/>\nThis replaces assertButtonIsEnabled, assertButtonIsDisabled,<br/>\nassertButtonIsEventuallyEnabled, etc., with what feels to me as no<br/>\nloss in expressiveness (with some documentation, of course, as<br/>\nevidenced by my original communication failure).<br/>\n<br/>\n   David Saff<br/>\n<br/>\n[1] I have a vision of Tim Robbins in The Hudsucker Proxy holding up a<br/>\ndrawing of a circle and saying &quot;You know, for kids!&quot; [4]<br/>\n<br/>\n[2] I actually very seldom have to use and()--if I do, and it looks<br/>\nugly, and the error reporting isn&#39;t getting me much, there&#39;s nothing<br/>\nstopping me from just doing assertTrue(x &lt; 10 && x &gt; 2), or just<br/>\ndefining between(low, high).<br/>\n<br/>\n[3] or, to get silly, assertThat(button,<br/>\nnot(eventually(not(isEnabled())));  // never becomes disabled<br/>\n<br/>\n[4] If you haven&#39;t seen it, the point is that without explanation, it<br/>\nmakes no sense.</div>", 
+    "prevInTime": 18471, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1164914824", 
+    "canDelete": false, 
+    "nextInTopic": 18473, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDRmN2RhNmI5MDYxMTMwMTEyN3kzZTNiNjE0Mm5jMmNjNDQ2ZDdmZTZhYzAxQG1haWwuZ21haWwuY29tPg=="
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7124, 
+    "senderId": "dT6xZz_4t-PEpXii5NMLHQpKNQx-LtbEiu4Wv2F7LenvwjgfWLUM-n6eHGef-GyVmpQ0KAimKsR5x9l-s2vQbZAJ2fhMx33XHoRsh1VcyCUWmw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: How to test error handling?", 
+    "from": "&quot;Erik Hanson&quot; &lt;yahoogroups@...&gt;", 
+    "authorName": "Erik Hanson", 
+    "msgSnippet": "... How about extracting your error handling code and testing it by itself: public class Foo { public void bar() { try { // execute my sql query ResultSet rs =", 
+    "msgId": 7123, 
+    "profile": "hanson_erik", 
+    "topicId": 7105, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 138399185, 
+    "messageBody": "<div id=\"ygrps-yiv-1564128068\">&quot;Tung Wai Yip&quot; &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:tungwaiyip@...\">tungwaiyip@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Let me give a more concrete example.<br/>\n&gt; <br/>\n&gt;   try {<br/>\n&gt;     // execute my sql query<br/>\n&gt;     ResultSet rs = sql.executeQuery();<br/>\n&gt;     while (rs.next()) {<br/>\n&gt;       String name = rs.getString(&quot;name&quot;);<br/>\n&gt;       // do my processing<br/>\n&gt;     }<br/>\n&gt;     sql.close();<br/>\n&gt;   }<br/>\n&gt;   catch (SQLException e) {<br/>\n&gt;     // do my smart error handling here.<br/>\n&gt;     //<br/>\n&gt;     // however this is never called because it is hard to <br/>\n&gt;     // generate a SQLException.<br/>\n&gt;   }<br/>\n<br/>\n </span></blockquote>How about extracting your error handling code and testing it by itself: <br/>\n<br/>\npublic class Foo {<br/>\n  public void bar() {<br/>\n    try {<br/>\n      // execute my sql query<br/>\n      ResultSet rs = sql.executeQuery();<br/>\n      while (rs.next()) {<br/>\n        String name = rs.getString(&quot;name&quot;);<br/>\n        //do my processing<br/>\n      }<br/>\n      sql.close();<br/>\n    }<br/>\n    catch (SQLException e) {<br/>\n      handleSQLException(e);<br/>\n    }<br/>\n  }<br/>\n<br/>\n  void handleSQLException(e) {<br/>\n    //do my smart error handling here.<br/>\n  }<br/>\n}<br/>\n<br/>\npublic class FooTest extends TestCase {<br/>\n  public void testBar() {<br/>\n    //do whatever tests on bar you want to do<br/>\n  }<br/>\n<br/>\n  public void testHandleSQLException() {<br/>\n    Foo f = new Foo();<br/>\n    f.handleSQLException(newSQLException(...));<br/>\n    //assert that the exeption was handled correctly<br/>\n  }<br/>\n}<br/>\n<br/>\n<br/>\n<br/>\nErik Hanson</div>", 
+    "prevInTime": 7122, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1046878235", 
+    "canDelete": false, 
+    "nextInTopic": 7125, 
+    "prevInTopic": 7120, 
+    "headers": {
+        "messageIdInHeader": "PDAwMWYwMWMyZTMyYyQyYjgzZjY5MCQ2NTAwYThjMEBuaWxsYT4=", 
+        "referencesHeader": "PDIwMDMwMzA0MTc1NDMzLjY2MjAyLnFtYWlsQHdlYjgwNDAyLm1haWwueWFob28uY29tPg=="
+    }
+}

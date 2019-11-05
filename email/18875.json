@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 108, 
+    "nextInTime": 18876, 
+    "senderId": "S6MVhegMuD15UOsDW1W5Id1ZOsJdOjSJbDqCIsyq-SOCeTIUaec5TH4UrHpIb6TY5gNqk_qj35SgDkjLs9-JHeJh", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Testing Private Methods", 
+    "from": "&quot;David Saff&quot; &lt;saff@...&gt;", 
+    "authorName": "David Saff", 
+    "msgSnippet": "... Long time list members of course recognize this discussion already, although many of the good reasons behind various strategies have been repeated here", 
+    "msgId": 18875, 
+    "profile": "dsaff", 
+    "topicId": 1696, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 139771899, 
+    "messageBody": "<div id=\"ygrps-yiv-751387580\">On 2/12/07, J. B. Rainsberger &lt;jbrains762@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Gabriel Nascimento wrote:<br/>\n&gt; &gt; So, I don´t know if changing my private validation methods to protected,<br/>\n&gt; &gt; only for unit test using, is a bad practice...<br/>\n&gt;<br/>\n&gt; Some will say yes, some no.<br/>\n<br/>\n </span></blockquote>Long time list members of course recognize this discussion already,<br/>\nalthough many of the good reasons behind various strategies have been<br/>\nrepeated here positively and clearly, which is valuable.<br/>\n<br/>\nI wonder if we can bring in more at least anecdotal evidence that can<br/>\nhelp us make these decisions even slightly more empirically.  I&#39;m<br/>\nassuming that the ultimate value by which these decisions are made is<br/>\nin which provides the most value to present and future software users:<br/>\n&quot;user value&quot;, for short.  Several proxies have been discussed in this<br/>\nthread so far:<br/>\n<br/>\n1) Striving for stronger encapsulation is correlated with increased user value.<br/>\n2) Striving for more focused tests is correlated with increased user value.<br/>\n<br/>\nI wonder if several people would be willing to tell stories that would<br/>\nprovide anecdotal evidence backing these up, including the reasoning<br/>\nbehind the correlation.  As a personal example:<br/>\n<br/>\nIn late 2006, I was working on a project called &quot;Popper StubGen&quot;,<br/>\nwhich is a plug-in to my Popper plug-in for JUnit<br/>\n(http://popper.tigris.org).  StubGen runs a method that is formatted<br/>\nin a particular way, and gathers the constraints required on the<br/>\nmethod parameters for the method to run to completion.  It then<br/>\ngenerates stubbed parameters for which the method is guaranteed to<br/>\nreturn normally.<br/>\n<br/>\nIn an initial algorithm for StubGen, I created mock objects to serve<br/>\nas stubs for the parameters immediately, and as I gathered<br/>\nconstraints, I solved these and created expectations for the mock<br/>\nobjects on the fly.  When I reached the end of the method, the stubs<br/>\nwould already be created and ready to go.<br/>\n<br/>\nWith this implementation, it seemed that each new method I tried to<br/>\napply StubGen to would stump it.  The coding inside my StubGenerator<br/>\nclass got more and more spaghetti-like, and it became hard to<br/>\ncorrelate what my generated stubs were doing with the implementation<br/>\nchanges I made.  I was spending a lot of time in the debugger, and not<br/>\nhaving fun.<br/>\n<br/>\nSo, I decided to find a way to test the constraint collection<br/>\nseparately from the stub generation (following value #2 above).  This<br/>\nactually involved a significant change to my algorithm: in phase 1,<br/>\nall the constraints are collected, and in phase 2, they are solved to<br/>\ngenerate the stub.  But I was spending a lot less time in the<br/>\ndebugger, and I was starting to be able to more often than not<br/>\ngenerate stubs for new input methods.  Unfortunately, it also meant<br/>\nthat my tests and API&#39;s started looking weird, since they were testing<br/>\nmethods that had been private, and didn&#39;t have very sensible API&#39;s.<br/>\n<br/>\nSo, following value #2, I pulled the gathered constraints into their<br/>\nown data structure, ConstraintTable.  This allowed me to think about<br/>\nthe API of this separate class, give it a handy toString method, and<br/>\nthink about and test corner cases directly.  The privates of<br/>\nStubGenerator could go back to being private and comfortably so.  Now,<br/>\nI&#39;m getting close to feeling that I can generate stubs for an entire<br/>\ninteresting class of methods.<br/>\n<br/>\nSo, having followed value #1 and value #2, and playing off their<br/>\ntension, I now have an implementation that is more successful at<br/>\nproviding value to users.  That is, &quot;user&quot;, since I&#39;m currently the<br/>\nonly one.  But I&#39;m inferring that my future users will benefit from a<br/>\ndesign that will be more easily tested and adapted to meet future<br/>\nneeds.<br/>\n<br/>\nThat&#39;s my story.  Anyone else?<br/>\n<br/>\n   David Saff</div>", 
+    "prevInTime": 18874, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1171307839", 
+    "canDelete": false, 
+    "nextInTopic": 18878, 
+    "prevInTopic": 18874, 
+    "headers": {
+        "inReplyToHeader": "PDQ1RDA5Q0Y2LjMwNDA2MDVAZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDRmN2RhNmI5MDcwMjEyMTExN3I1NjlmNDQ2NWc5OGEwZDY4N2VhOGFjM2QwQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVxZmR2cCs1cjUwQGVHcm91cHMuY29tPiA8NDVDQjNFOEIuMTA3MDEwNUBtaW5kc3ByaW5nLmNvbT4JIDw0OTAwMzA4ZjA3MDIwODEwMjJpMmJmNWM4MmN4MjBjNmQyYWZmZWJlNGFmOUBtYWlsLmdtYWlsLmNvbT4JIDw0NUNDQ0REQi4xMDUwMzA1QGdtYWlsLmNvbT4JIDw0OTAwMzA4ZjA3MDIwOTEyMDhuMmY3ZmUxYnA2YmU3Nzc2MGEzMzc1NjBAbWFpbC5nbWFpbC5jb20+CSA8NDVEMDlDRjYuMzA0MDYwNUBnbWFpbC5jb20+"
+    }
+}

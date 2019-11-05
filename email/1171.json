@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 1172, 
+    "senderId": "8R-mov_xvvo8NZtSY7ZRTRiCgvvOb3TJCOfDvP8fJmxSoSPEMkArZNVHmAvOECy5gz3QW0gY4mrx", 
+    "systemMessage": false, 
+    "subject": "Re: Unit testing stochastic (random) methods", 
+    "from": "mcphee@...", 
+    "authorName": "mcphee@mrs.umn.edu", 
+    "msgSnippet": "... to plug ... to ... Well, sort of... The problem is that our system is quite complex, with lots of different components all feeding off the same random", 
+    "msgId": 1171, 
+    "topicId": 1167, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-434928599\">--- In junit@y..., &quot;Brian Button&quot; &lt;bbutton01@e...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; I&#39;ve never done this myself, but the answer I&#39;ve seen others give is<br/>\n </span></blockquote>to plug<br/>\n<blockquote><span title=\"ireply\"> &gt; in your own random number generator for your tests that just happens<br/>\n </span></blockquote>to<br/>\n<blockquote><span title=\"ireply\"> &gt; return the same sequence of numbers each time. Your tests are now<br/>\n&gt; repeatable.<br/>\n<br/>\n </span></blockquote>Well, sort of...<br/>\n<br/>\nThe problem is that our system is quite complex, with lots of<br/>\ndifferent components all feeding off the same random number stream. <br/>\nIf all you were doing was simulating a 6-sixed die, then fixing the<br/>\nseed (or having a &quot;fake&quot; PRNG that returned all the possible values)<br/>\nwould work quite nicely.  In our case, though, we have tons of<br/>\ncomponents interacting, and the results of one component can affect,<br/>\ne.g., how many times another component is called, which can affect how<br/>\nmany times the random number generator is called, which then changes<br/>\nthe behavior of every component that makes calls to the generator<br/>\nafter that, etc., etc.<br/>\n<br/>\nWe have actually done something like what&#39;s been suggested here. <br/>\nWe&#39;ve run the system with a fixed seed, saved the results to a file,<br/>\nand then just used diff to compare against that &quot;standard&quot; output. <br/>\nUnfortunately even small changes can cascade in ways that lead to very<br/>\ndifferent (but statistically similar) results, rendering this approach<br/>\nessentially useless.  <br/>\n<br/>\nIn one case, for example, profiling pointed up a method that was<br/>\nchewing up more time than we expected.  A little inspection turned up<br/>\na silly inefficiency, so we fixed it.  We then re-ran our test, and<br/>\nLo! and Behold! we&#39;d broken the system (in the sense that the new<br/>\noutput was diff(erent) from the &quot;standard&quot;).  Turns out that the<br/>\n(legitimate) improvement had changed the number of calls to the random<br/>\nnumber generator with predictable consequences.<br/>\n<br/>\nSo...the proposed ideas would probably work for the low level<br/>\ncomponents of the system, but it won&#39;t scale up as we test the higher<br/>\nlevel components.  I&#39;m hoping for something more robust.<br/>\n<br/>\nThoughts?<br/>\n<br/>\nThanks,<br/>\n<br/>\n\tNic (<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mcphee@...\">mcphee@...</a>)</div>", 
+    "prevInTime": 1170, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "989598851", 
+    "canDelete": false, 
+    "nextInTopic": 1172, 
+    "prevInTopic": 1170, 
+    "headers": {
+        "inReplyToHeader": "PDAwNWEwMWMwZGEzNCRlNTA1ZWZlMCQzNWNmYThjMEBvYmplY3RtZW50b3IuY29tPg==", 
+        "messageIdInHeader": "PDlkaDRhMytnN2U5QGVHcm91cHMuY29tPg=="
+    }
+}

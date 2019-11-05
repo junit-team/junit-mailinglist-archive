@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 10, 
+    "nextInTime": 23771, 
+    "senderId": "nl5N1BXHEmsRmcWU7aBlQfjWiwHfzrGYyqEJMqUezNUETooMxBtmbnXS4TjKAhsql3YPux1t7jajBzjFnSEJlLQMsp_k7nGj90VXpjpt", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Reporting on test runs from a custom Runner", 
+    "from": "Matthew Farwell &lt;matthew@...&gt;", 
+    "authorName": "Matthew Farwell", 
+    "msgSnippet": "Salut, The best way would be to create your own RunListener (btw TestListener is JUnit3, RunListener is Junit4). Then, you can plug this into standard tools.", 
+    "msgId": 23770, 
+    "rawEmail": "Return-Path: &lt;matthewjfarwell@...&gt;\r\nReceived: (qmail 18111 invoked by uid 7800); 15 Dec 2011 15:12:55 -0000\r\nX-Sender: matthewjfarwell@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 83203 invoked from network); 15 Dec 2011 12:40:59 -0000\r\nX-Received: from unknown (98.137.35.162)\n  by m4.grp.sp2.yahoo.com with QMQP; 15 Dec 2011 12:40:59 -0000\r\nX-Received: from unknown (HELO mail-qy0-f179.google.com) (209.85.216.179)\n  by mta6.grp.sp2.yahoo.com with SMTP; 15 Dec 2011 12:40:59 -0000\r\nX-Received: by qcol42 with SMTP id l42so1198605qco.38\n        for &lt;junit@yahoogroups.com&gt;; Thu, 15 Dec 2011 04:40:59 -0800 (PST)\r\nMIME-Version: 1.0\r\nX-Received: by 10.224.192.1 with SMTP id do1mr5315080qab.21.1323952859003; Thu,\n 15 Dec 2011 04:40:59 -0800 (PST)\r\nX-Received: by 10.229.133.211 with HTTP; Thu, 15 Dec 2011 04:40:58 -0800 (PST)\r\nIn-Reply-To: &lt;jcb6cl+3cri@...&gt;\r\nReferences: &lt;jcb6cl+3cri@...&gt;\r\nDate: Thu, 15 Dec 2011 13:40:58 +0100\r\nX-Google-Sender-Auth: iYTmhvPUbXPiQxs8NDCZvGYQQwc\r\nMessage-ID: &lt;CAOBkoFU5qBmE3XVPuO3EN96H9QF_EfLavP93180oJSFEUby6_A@...&gt;\r\nTo: junit@yahoogroups.com\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Matthew Farwell &lt;matthew@...&gt;\r\nSubject: Re: [junit] Reporting on test runs from a custom Runner\r\nX-Yahoo-Group-Post: member; u=499556184; y=pTxIpuIMwaFjRtoOd_KzjWYzC6ACQvk-9FP2xkmtjUttTodi\r\nX-Yahoo-Profile: mjfarwell\r\nContent-Type: text/plain\r\nContent-Transfer-Encoding: quoted-printable\r\nX-eGroups-Approved-By: dsaff &lt;david@...&gt; via email; 15 Dec 2011 15:12:55 -0000\r\n\r\nSalut,\n\nThe best way would be to create your own RunListener (btw TestListe=\r\nner is\nJUnit3, RunListener is Junit4). Then, you can plug this into standar=\r\nd\ntools. For instance, in maven surefire, you can specify:\n\n&lt;plugin&gt;\n  &lt;gro=\r\nupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n  &lt;artifactId&gt;maven-surefire-plugin=\r\n&lt;/artifactId&gt;\n  &lt;version&gt;2.10&lt;/version&gt;\n  &lt;configuration&gt;\n    &lt;properties&gt;\n=\r\n      &lt;property&gt;\n        &lt;name&gt;listener&lt;/name&gt;\n\n&lt;value&gt;com.mycompany.MyResu=\r\nltListener,com.mycompany.MyResultListener2&lt;/value&gt;\n      &lt;/property&gt;\n  &lt;/co=\r\nnfiguration&gt;\n&lt;/plugin&gt;\n\nI think you can do similar things with ant. So if y=\r\nou do 1, 3 and 4 aren&#39;t\na problem.\n\nCordialement,\n\nMatthew Farwell.\n\nLe 14 =\r\nd=E9cembre 2011 23:01, jfuerth &lt;jfuerth@...&gt; a =E9crit :\n\n&gt; **\n&gt;\n&gt; Wh=\r\nat I want to do now is produce charts of how long each call took. There\n&gt; a=\r\nre a lot of approaches, but I don&#39;t know which is &quot;right.&quot;\n&gt;\n&gt; 1. Register =\r\na TestListener and write my own reports to disk from it (but\n&gt; is there a g=\r\neneric way to register listeners?)\n&gt; 2. Create my own main program that run=\r\ns the test suite, and have it create\n&gt; the report when the suite is done (m=\r\naybe this is the only way to register a\n&gt; TestListener anyhow?)\n&gt; 3. Transf=\r\norm the XML output of the ant junit task (but then it&#39;s bound to\n&gt; Ant)\n&gt; 4=\r\n. Transform the XML output of the maven-surefure-plugin (but then it&#39;s\n&gt; bo=\r\nund to Maven)\n&gt; 5. Write performance results to disk directly from my TestR=\r\nunner (should\n&gt; work in any environment, but feels like a dirty approach)\n&gt;=\r\n\n&gt; Other ideas are welcome too, of course. My test runner is open source an=\r\nd\n&gt; published on GitHub; I want a solution that can work for everyone. So I=\r\n\n&gt; think ideas 3 and 4 are out.\n&gt;\n&gt; Has anyone else thought about getting d=\r\nata from custom test runners into\n&gt; human-readable reports?\n&gt;\n&gt; -Jonathan\n&gt;=\r\n\n&gt;  \n&gt;\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "mjfarwell", 
+    "topicId": 23768, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 499556184, 
+    "prevInTime": 23769, 
+    "contentTrasformed": false, 
+    "postDate": "1323952858", 
+    "canDelete": false, 
+    "nextInTopic": 23771, 
+    "prevInTopic": 23769, 
+    "headers": {
+        "inReplyToHeader": "PGpjYjZjbCszY3JpQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PENBT0Jrb0ZVNXFCbUUzWFZQdU8zRU45Nkg5UUZfRWZMYXZQOTMxODBvSlNGRVVieTZfQUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PGpjYjZjbCszY3JpQGVHcm91cHMuY29tPg=="
+    }
+}

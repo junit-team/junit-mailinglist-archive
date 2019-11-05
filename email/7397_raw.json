@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 7398, 
+    "senderId": "UJmxi_WLWpk_f5dNOrHyrjP5D8UUbwvbCDEA9WSV8IliYuCRhW4B-SoVYLlk0FpPG61F_Xzg8GE2brKk7DVIxnwv-MF-zT37oEczO2ol", 
+    "systemMessage": false, 
+    "subject": "Non-optimal ordering of parameters", 
+    "from": "Eric Armstrong &lt;eric.armstrong@...&gt;", 
+    "authorName": "Eric Armstrong", 
+    "msgSnippet": "Nit Patrol: The ordering of parameters in the JUnit APIs is non-optimal in a couple of respects. First: * The message string is first in the sequence, instead", 
+    "msgId": 7397, 
+    "rawEmail": "Return-Path: &lt;eric.armstrong@...&gt;\r\nX-Sender: eric.armstrong@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 2 Apr 2003 03:22:48 -0000\r\nReceived: (qmail 41480 invoked from network); 2 Apr 2003 03:22:48 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m15.grp.scd.yahoo.com with QMQP; 2 Apr 2003 03:22:48 -0000\r\nReceived: from unknown (HELO kathmandu.sun.com) (192.18.98.36)\n  by mta2.grp.scd.yahoo.com with SMTP; 2 Apr 2003 03:22:48 -0000\r\nReceived: from ha1sca-mail1.SFBay.Sun.COM ([129.145.155.51])\n\tby kathmandu.sun.com (8.9.3+Sun/8.9.3) with ESMTP id UAA24864\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 1 Apr 2003 20:22:47 -0700 (MST)\r\nReceived: from sun.com (d-usca14-129-126 [129.145.129.126])\n\tby ha1sca-mail1.SFBay.Sun.COM (8.11.6+Sun/8.10.2/ENSMAIL,v2.1p1) with ESMTP id h323Mlf06990\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 1 Apr 2003 19:22:47 -0800 (PST)\r\nMessage-ID: &lt;3E8A5787.4050906@...&gt;\r\nDate: Tue, 01 Apr 2003 19:22:47 -0800\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.3) Gecko/20030312\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: JUnit &lt;junit@yahoogroups.com&gt;\r\nSubject: Non-optimal ordering of parameters\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nFrom: Eric Armstrong &lt;eric.armstrong@...&gt;\r\nX-Yahoo-Group-Post: member; u=78994084\r\nX-Yahoo-Profile: ericsilverlight\r\n\r\nNit Patrol:\nThe ordering of parameters in the JUnit APIs is non-optimal\nin a couple of respects.\n\nFirst:\n  * The message string is first in the sequence, instead of\n    last. It&#39;s a huge things, but it makes it a bit harder to\n    see the orthogonality in the APIs. This ordering would\n    make the orthogonality more apparent:\n        assertTrue(boolean)\n        assertTrue(boolean, String)\n\n    Instead, JUnit chose\n        assertTrue(boolean)\n        assertTrue(String, boolean)\n\n    which is somewhat less apparent to casual observation. (I\n    believe it is for that reason that adding optional parameters\n    last is the normative standard.)\n\n    More importantly, with a long string message, the assert is\n    more difficult to read. Instead of this:\n        assertEquals(var1, var2,\n                     &quot;some very long message down here&quot;);\n\n    You have\n        assertEquals(&quot;some very long message up here&quot;,\n                      var1, var2);\n\nSecond:\n  * Putting the expected results before the observed results in\n    the parameter list is slightly non-optimal.\n\n    I confess this only became apparent to me moments ago. But\n    it now seems ideal to put the observed results variable ahead\n    of the expected results in the parameter list.\n\n    The reason for that is the ability to keep entries both\n    adjacent and in order.\n\n    For example, when examining this pseudo code:\n        String expectedResults=&quot;...&quot;;\n        [long sequence of code]\n            ----top of screen---\n        [more code]\n        String observedResults = [results calculated above]\n        assertEquals(msg, expectedResults, observedResults);\n\n     The expectedResults setting is now far away from the observed\n     results. So down at the bottom of a lengthy code sequence, it\n     may no longer be obvious what it was we expected.\n\n     On the other hand, if we code this way:\n        [long sequence of code]\n            ----top of screen---\n        [more code]\n        String expectedResults=&quot;...&quot;;\n        String observedResults = [results calculated above]\n        assertEquals(msg, expectedResults, observedResults);\n\n      Now the expectedResults are where we can see them, but they\n      interrupt the flow of code that produces the actual results.\n\n      The only remaining choice is this:\n        [long sequence of code]\n            ----top of screen---\n        [more code]\n        String observedResults = [results calculated above]\n        String expectedResults=&quot;...&quot;;\n        assertEquals(msg, expectedResults, observedResults);\n\n      But now the ordering is reversed from the parameter sequence.\n      (A small thing, certainly, but every bit of regularity is of\n       help to the beleagured brain...)\n\n      Were the parameter ordering reversed, the code flows to\n      its normal conclusion, readability is maintained, and the\n      ordering of items is preserved, as well.\n        [long sequence of code]\n            ----top of screen---\n        [more code]\n        String observedResults = [results calculated above]\n        String expectedResults=&quot;...&quot;;\n        assertEquals(msg, observedResults, expectedResults);\n\n\n\n", 
+    "profile": "ericsilverlight", 
+    "topicId": 7397, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 78994084, 
+    "prevInTime": 7396, 
+    "contentTrasformed": false, 
+    "postDate": "1049253767", 
+    "canDelete": false, 
+    "nextInTopic": 7399, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDNFOEE1Nzg3LjQwNTA5MDZAc3VuLmNvbT4="
+    }
+}

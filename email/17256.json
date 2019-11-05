@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 17257, 
+    "senderId": "9HhtBLj1fZTxeKOGr6l6zsl8-lAuY_-oxs9_Dcb-65QxLW3o8aaHEZ-djao0e_k0cVoZeUtuH08Ax86P39xthEqB-UrDNWZJ", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Re: Filtering by method in JUnit 3.8-style tests", 
+    "from": "&quot;Kent Beck&quot; &lt;kentb@...&gt;", 
+    "authorName": "Kent Beck", 
+    "msgSnippet": "Steve, To run just certain tests, you could write your own test runner. As mentioned in the JUnit Pocket Guide, writing runners is a surprising rare but useful", 
+    "msgId": 17256, 
+    "profile": "kentlbeck", 
+    "topicId": 16691, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 173198504, 
+    "messageBody": "<div id=\"ygrps-yiv-1485483479\">Steve,<br/>\n <br/>\nTo run just certain tests, you could write your own test runner. As<br/>\nmentioned in the JUnit Pocket Guide, writing runners is a surprising rare<br/>\nbut useful technique. A simple way to do this is to pass your own TestResult<br/>\nas a parameter to you test suite:<br/>\n <br/>\n...Test suite= ...<br/>\nTestResult result= new TestResult() {<br/>\n  protected void run(final TestCase test) {<br/>\n    // do whatever you want to do here<br/>\n  }<br/>\n};<br/>\nsuite.run(result);<br/>\nreturn result;<br/>\n <br/>\nI hope this helps.<br/>\n <br/>\nCheers,<br/>\n <br/>\nKent Beck<br/>\nThree Rivers Institute<br/>\n<br/>\n<br/>\n  _____  <br/>\n<br/>\nFrom: junit@yahoogroups.com [mailto:junit@yahoogroups.com] On Behalf Of<br/>\nStephen Smith<br/>\nSent: Monday, July 31, 2006 10:32 AM<br/>\nTo: junit@yahoogroups.com<br/>\nSubject: Re: [junit] Re: Filtering by method in JUnit 3.8-style tests<br/>\n<br/>\n<br/>\n<br/>\nSetting aside JUnit 4.x temporarily, is there any way using the JUnit <br/>\n3.8.x API I can filter out particular test methods based upon a set of <br/>\ncriteria, without resorting to implementing a suite() method on each <br/>\nindividual TestCase?<br/>\n<br/>\nThanks,<br/>\n<br/>\nSteve.<br/>\n--<br/>\nStephen Smith, MEng (Wales).<br/>\nhttp://www.stephen- &lt;http://www.stephen-smith.co.uk/&gt; smith.co.uk/<br/>\n<br/>\nMichael Schechter wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; That&#39;s odd - it works just fine for me. However, trying to filter on<br/>\n&gt; more than one method doesn&#39;t seem to be intuitively obvious, and<br/>\n&gt; nothing really seems to work.<br/>\n&gt; <br/>\n&gt; The code I use to get one test to run is as follows (it&#39;s from the<br/>\n&gt; test class&#39;s main() method):<br/>\n&gt; JUnitCore core = new JUnitCore();<br/>\n&gt; Request testRequest = Request.method(aTestClass, someArguments[0]);<br/>\n&gt; core.run(testRequest);<br/>\n&gt; <br/>\n&gt; I have no idea how to extend this model to being able to specify<br/>\n&gt; multiple methods, however.<br/>\n&gt; <br/>\n&gt; In addition, I really hope that someone starts documenting all of the<br/>\n&gt; nifty new features in JUnit 4.x - the current level is somewhat<br/>\n&gt; (frustratingly) incomplete. The basic features have been covered by a<br/>\n&gt; number of writers - the more complex, such as this issue, still seem<br/>\n&gt; to be missing.<br/>\n&gt; <br/>\n&gt; I think JUnit has the potential to become even more popular with a<br/>\n&gt; clearer examination of the framework on which it is built. There seems<br/>\n&gt; to be a great deal of power and flexibility available - it&#39;s just<br/>\n&gt; really unclear as to how to get at it.<br/>\n&gt; <br/>\n&gt; Thanks in advance!<br/>\n&gt; <br/>\n&gt; Michael Schechter<br/>\n&gt; <br/>\n&gt; --- In junit@yahoogroups. &lt;mailto:junit%40yahoogroups.com&gt; com, David Saff<br/>\n </span></blockquote>&lt;saff@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;&gt; Shannon,<br/>\n&gt;&gt;<br/>\n&gt;&gt; You are right--this doesn&#39;t currently work in JUnit 4.1. Could you<br/>\n&gt; open <br/>\n&gt;&gt; a tracker issue on the sourceforge page, and we&#39;ll see if this can be <br/>\n&gt;&gt; remedied in a future version? Thanks,<br/>\n&gt;&gt;<br/>\n&gt;&gt; David Saff<br/>\n&gt;&gt;<br/>\n&gt;&gt; Shannon wrote:<br/>\n&gt;&gt;&gt; Greetings,<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; I&#39;m trying to filter a JUnit 3.8x test case class using the 4.1<br/>\n&gt;&gt;&gt; runner, so that only one of the test methods in the class is run and<br/>\n&gt;&gt;&gt; the others are ignored. I create and run the test like this:<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Request r = Request.method(OldStyleTestCase.class, &quot;testSomeMethod&quot;);<br/>\n&gt;&gt;&gt; jcore.run(r);<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; The outcome is that all test methods are run, not just the one test<br/>\n&gt;&gt;&gt; method I specified. I also tried using a custom filter, but the filter<br/>\n&gt;&gt;&gt; never gets called because the runner for this class is<br/>\n&gt;&gt;&gt; org.junit.internal.runners.OldTestClassRunner which does not implement<br/>\n&gt;&gt;&gt; Filter.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Do I need to write my own runner to get this to work? Is there another<br/>\n&gt;&gt;&gt; work around?<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; Thanks for any help.<br/>\n&gt;&gt;&gt;<br/>\n&gt;&gt;&gt; /Shannon<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; Yahoo! Groups Links<br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n&gt; <br/>\n<br/>\n<br/>\n<br/>\n <br/>\n<br/>\n<br/>\n<br/>\n </span></blockquote>[Non-text portions of this message have been removed]</div>", 
+    "prevInTime": 17255, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1154404664", 
+    "canDelete": false, 
+    "nextInTopic": 17259, 
+    "prevInTopic": 17254, 
+    "headers": {
+        "inReplyToHeader": "PDQ0Q0UzRTk1LjIwMjA0MDBAc3RlcGhlbi1zbWl0aC5jby51az4=", 
+        "messageIdInHeader": "PDAyNzUwMWM2YjUxZSRhNjI0MjFmMCQ2NDAxYThjMEBUNDI+"
+    }
+}

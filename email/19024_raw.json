@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 13, 
+    "nextInTime": 19025, 
+    "senderId": "vuMwkvUiP0tNW-se-2sUweTHcb_iV0tGjCNqBKzLG4bEA7lU3oVN2gpz8cKUITJ8C--1qQ8LOn90vB9ElgFyY7h5K5fboyX_Uu-z_m_hNjAg", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Possible bug with @Ignore @BeforeClass?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Not bad. You could issue a doesn t do what you think it d do warning in this case. ... Instead of thinking of the well-formedness of the test, just think", 
+    "msgId": 19024, 
+    "rawEmail": "Return-Path: &lt;jbrains762@...&gt;\r\nX-Sender: jbrains762@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 94849 invoked from network); 28 Feb 2007 19:06:23 -0000\r\nReceived: from unknown (66.218.66.70)\n  by m23.grp.scd.yahoo.com with QMQP; 28 Feb 2007 19:06:23 -0000\r\nReceived: from unknown (HELO chilco.textdrive.com) (207.7.108.242)\n  by mta12.grp.scd.yahoo.com with SMTP; 28 Feb 2007 19:06:23 -0000\r\nReceived: from [192.168.1.113] (CPE000cf1c2033e-CM0012c9daf7de.cpe.net.cable.rogers.com [74.102.135.232])\n\tby chilco.textdrive.com (Postfix) with ESMTP id D46C7DCBF3\n\tfor &lt;junit@yahoogroups.com&gt;; Wed, 28 Feb 2007 19:05:08 +0000 (UTC)\r\nMessage-ID: &lt;45E5D25E.1060500@...&gt;\r\nDate: Wed, 28 Feb 2007 14:05:02 -0500\r\nUser-Agent: Thunderbird 1.5.0.9 (Macintosh/20061207)\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;ercdq0+gtet@...&gt;\t &lt;4f7da6b90702200646wa818c14xcf85f2545c752d42@...&gt;\t &lt;45DF6A3A.2040106@...&gt;\t &lt;4f7da6b90702231808k4b5e7bcbo6a90844c35d1fa74@...&gt;\t &lt;45E23A35.7080902@...&gt;\t &lt;4f7da6b90702252112i14f017f1kcf3dbe1187dfb859@...&gt;\t &lt;45E4721B.6020905@...&gt; &lt;4f7da6b90702271823i3e42eaa3hbe05d41b36427da7@...&gt;\r\nIn-Reply-To: &lt;4f7da6b90702271823i3e42eaa3hbe05d41b36427da7@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:0:0:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains762@...&gt;\r\nSubject: Re: [junit] Possible bug with @Ignore @BeforeClass?\r\nX-Yahoo-Group-Post: member; u=282027414; y=8O61f_q0x0tipBnVbck4XdwO8slEX57jq8axFUwcuDKVTXo\r\nX-Yahoo-Profile: nails762\r\n\r\nDavid Saff wrote:\n\n&gt;  &gt; I suspect you don&#39;t want to get into &quot;JUnit lint&quot; territory\n&gt; \n&gt; ... is true, I&#39;m not yet convinced to change this. In short, I could\n&gt; make @Ignore @BeforeClass declare the class malformed, with specific\n&gt; directions to the developer about how to accomplish what they want.\n&gt; Would that meet the actual pain point?\n\nNot bad. You could issue a &quot;doesn&#39;t do what you think it&#39;d do&quot; warning \nin this case.\n\n&gt; It&#39;s of course not impossible to change JUnit to have well-formed,\n&gt; somewhat well-formed, and not-at-all well-formed classes, but I&#39;m not\n&gt; yet convinced that there&#39;s pain pushing me in that direction.\n\nInstead of thinking of the well-formedness of the test, just think of \nthe correct use of the annotation. &quot;@Ignore has no effect here.&quot;\n\n&gt;  &gt; but at the\n&gt;  &gt; same time, users are quite logically trying to use @Ignore in a context\n&gt;  &gt; you didn&#39;t intend, but that nevertheless makes sense to them, and in\n&gt;  &gt; general.\n&gt; \n&gt; Very true, and I hadn&#39;t given that enough credit yet.\n\nI feel you: I don&#39;t like to deal with that stuff, either, in general. \nDamn users.\n\n&gt;  &gt; If @Ignore-ing a @Test stops the test from running, then why doesn&#39;t\n&gt;  &gt; @Ignore-ing a @Before stop the before from running? This is, perhaps,\n&gt;  &gt; why I wouldn&#39;t support @Ignore, but would rather just ask the test\n&gt;  &gt; writer to remove the @Test annotation when he doesn&#39;t want the test to\n&gt;  &gt; run. I don&#39;t know that @Ignore provides better results than removing the\n&gt;  &gt; @Test annotation temporarily.\n&gt; \n&gt; Is this a separate issue? Are you suggesting that, given the choice,\n&gt; you would not have included @Ignore, with the attendant reminder to\n&gt; un-@Ignore sometime in the future, in JUnit at all? I&#39;m curious about\n&gt; that position, but first want to make sure if it is your position.\n&gt; Thanks,\n\nI would certainly not have included @Ignore as a decorator annotation of \n@Test. Especially in light of this, I would want to change it to \n@IgnoreTest /replacing/ @Test, as that better reveals the intent behind \nthe annotation. As long-time readers here know about me, I favor \nfeatures that reflect the intent of JUnit as a TDD tool, and I don&#39;t see \n@Ignore as reflecting that intent. @Ignore is more of a regression \ntesting feature.\n\nTake care.\n-- \nJ. B. (Joe) Rainsberger :: http://www.jbrains.ca\nYour guide to software craftsmanship\nJUnit Recipes: Practical Methods for Programmer Testing\n2005 Gordon Pask Award for contribution Agile Software Practice\n\n", 
+    "profile": "nails762", 
+    "topicId": 18940, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 282027414, 
+    "prevInTime": 19023, 
+    "contentTrasformed": false, 
+    "postDate": "1172689502", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 19022, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDcwMjI3MTgyM2kzZTQyZWFhM2hiZTA1ZDQxYjM2NDI3ZGE3QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PDQ1RTVEMjVFLjEwNjA1MDBAZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVyY2RxMCtndGV0QGVHcm91cHMuY29tPgkgPDRmN2RhNmI5MDcwMjIwMDY0NndhODE4YzE0eGNmODVmMjU0NWM3NTJkNDJAbWFpbC5nbWFpbC5jb20+CSA8NDVERjZBM0EuMjA0MDEwNkBnbWFpbC5jb20+CSA8NGY3ZGE2YjkwNzAyMjMxODA4azRiNWU3YmNibzZhOTA4NDRjMzVkMWZhNzRAbWFpbC5nbWFpbC5jb20+CSA8NDVFMjNBMzUuNzA4MDkwMkBnbWFpbC5jb20+CSA8NGY3ZGE2YjkwNzAyMjUyMTEyaTE0ZjAxN2Yxa2NmM2RiZTExODdkZmI4NTlAbWFpbC5nbWFpbC5jb20+CSA8NDVFNDcyMUIuNjAyMDkwNUBnbWFpbC5jb20+IDw0ZjdkYTZiOTA3MDIyNzE4MjNpM2U0MmVhYTNoYmUwNWQ0MWIzNjQyN2RhN0BtYWlsLmdtYWlsLmNvbT4="
+    }
+}

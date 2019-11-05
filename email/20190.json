@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 20191, 
+    "senderId": "uPTB_tKstkscE7GIk5m3pCNDFa5zmJVoi-qLIe56xGWgHGRUq9Hhc2NcZ09j3igGHl8f2mJqROucpQXuwgfFIqAyJt_LkUnh", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Ideas for testing large methods..", 
+    "from": "&quot;Nat Pryce&quot; &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "... This is not what jMock is designed for.  Mock Objects are used to test how the object under test affects its environment by sending commands to other", 
+    "msgId": 20190, 
+    "profile": "nat_pryce", 
+    "topicId": 20180, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "messageBody": "<div id=\"ygrps-yiv-1480225287\">On 21/12/2007, edu_kumar &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:sarat.beesa@...\">sarat.beesa@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt;  My problem is that i&#39;ve a really huge method,which calls several small<br/>\n&gt;  methods ( methods so small, they&#39;re just getters for member<br/>\n&gt;  variables), If i have to unit test this method, i&#39;ve to make sure all<br/>\n&gt;  the small methods that it subsequently invoke, work as they&#39;re<br/>\n&gt;  expected. But all my member variables get initialized seperately in a<br/>\n&gt;  different method which is of no relation with the BIG method I wanted<br/>\n&gt;  to test in the first place.<br/>\n </span></blockquote>....<br/>\n<blockquote><span title=\"ireply\"> &gt;  Can I test my method without worrying about the initialization of my<br/>\n&gt;  object&#39;s data, by mocking the results of all my getter methods ?<br/>\n&gt;  I tried using Jmock for creating mocks in my test case, but it fails<br/>\n&gt;  because the mock object only knows what exactly I wanted to mock but<br/>\n&gt;  nothing more than that. All my application logic is present in<br/>\n&gt;  &#39;MyClass&#39; object not in its mock.<br/>\n&gt;<br/>\n&gt;  How can I achieve this using Jmock ?<br/>\n<br/>\n </span></blockquote>This is not what jMock is designed for.  Mock Objects are used to test<br/>\nhow the object under test affects its environment by sending commands<br/>\nto other objects.  They are not for testing the implementation details<br/>\nof what goes on *inside* the object under test.<br/>\n<br/>\nIn your description of what you&#39;re trying to test, you described<br/>\ntrying to test a method.  That to me is a smell.  It would be better<br/>\nto think about testing the *object*, not individual methods.<br/>\n<br/>\nTo write a test for an object you need to answer questions like: What<br/>\ndoes the object do? What messages do I send the object to make it<br/>\nperform the behaviour I am testing? What resources does it need<br/>\nperform that behaviour?  What other objects does it need to talk to?<br/>\nAre those objects internal implementation details, or peers of the<br/>\nobject under test?<br/>\n<br/>\nIf you can answer those questions, you can easily work out which<br/>\nobjects should be mocked out, and which should be hidden within the<br/>\nobject under test.<br/>\n<br/>\nThe other smell is that the method is huge, and has complicated<br/>\ndependencies on initialisation methods.  It sounds as if the class<br/>\nneeds to be divided into smaller, simpler objects that can be more<br/>\neasily unit tested and that define proper constructors.<br/>\n<br/>\nTo do that without an extensive suite of unit tests, I would first<br/>\nwrite some integration or system tests that cover the behaviour of the<br/>\nclass. I would then pull behaviour out of the big class into smaller<br/>\nclasses, writing those smaller classes test-first.  The system tests<br/>\nwould give me some confidence that my refactoring had not broken<br/>\neverything.  Writing the new classes test-first would drive out a less<br/>\ncoupled design that would be easier to maintain in the future.<br/>\n<br/>\n--Nat</div>", 
+    "prevInTime": 20189, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1198493089", 
+    "canDelete": false, 
+    "nextInTopic": 20191, 
+    "prevInTopic": 20187, 
+    "headers": {
+        "inReplyToHeader": "PGZrZzZlZCtzc2kwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDE3ZmE1M2QwNzEyMjQwMjQ0cDU1OTI3ZmI5aWNkZDUxNmFkYWRkOGRkZGRAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PGZrZzZlZCtzc2kwQGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 3, 
+    "nextInTime": 9266, 
+    "senderId": "vEO87KIpvKrZTEr8BXfQuw8WTXqMeSo1irjI6sBOLn7EMxh0AUEIDYCi0o115EHgwbO1yofQIkm1xOuqoj6MsNa6fw7linOq5IJ9Imo", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Class that calls on database helper class. How to\twrite test case?", 
+    "from": "Brian Button &lt;bbutton01@...&gt;", 
+    "authorName": "Brian Button", 
+    "msgSnippet": "... Hi, Veny, I know you ve already had an answer, but I ve got a couple of other options that I ve used in the past that might be useful as well. ... ", 
+    "msgId": 9265, 
+    "profile": "bbutton", 
+    "topicId": 9245, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30216623, 
+    "messageBody": "<div id=\"ygrps-yiv-2089516239\">On Fri, 2003-08-29 at 20:43, Veny handoko wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hi all,<br/>\n<br/>\n </span></blockquote>Hi, Veny,<br/>\n<br/>\nI know you&#39;ve already had an answer, but I&#39;ve got a couple of other<br/>\noptions that I&#39;ve used in the past that might be useful as well.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt;  <br/>\n&gt; I am new to Junit and i am trying to write test case on class that involve database.<br/>\n<br/>\n </span></blockquote>Basically, you&#39;re problem comes down to the design smell of directly<br/>\ninstantiating another object inside your code. The act of instantiating<br/>\nan object and the act of using are two different concerns, so they may<br/>\nwant to live in two different functions -- there are exceptions to this,<br/>\nso consider it a guideline more than a rule. Actually, I usually start<br/>\nby creating an object inline, then refactor to something better if I<br/>\nneed it. And in this case, you need it :)<br/>\n<br/>\nSo, first of all, refactor the creation into a factory method in your<br/>\nclass:<br/>\n <br/>\n<blockquote><span title=\"ireply\"> &gt; public class BusinessObject{<br/>\n&gt;     public boolean methodCall(int key){<br/>\n&gt;         DatabaseHelper dbHelper = createDatabaseHelper();<br/>\n&gt;         Vector v = dbHelper.getList();<br/>\n&gt;         if(v.size() == 0){<br/>\n&gt;             return false;<br/>\n&gt;         }else{<br/>\n&gt;             return true;<br/>\n&gt;         } <br/>\n&gt;     }<br/>\n<br/>\n </span></blockquote>\tprotected DatabaseHelper createDatabaseHelper() {<br/>\n\t\treturn DatabaseHelper();<br/>\n\t}<br/>\n<blockquote><span title=\"ireply\"> &gt; }<br/>\n<br/>\n </span></blockquote>Now in your test code, you can inherit from BusinessObject, and<br/>\nsubstitute your own factory method in your derived class to create and<br/>\nreturn whatever mock DatabaseHelper you want. This is probably the least<br/>\nintrusive way to solve this problem.<br/>\n<br/>\nAnother solution is to put the onus of creating the appropriate kind of<br/>\nDatabaseHelper onto the creator of the BusinessObject. They can create<br/>\neither the real one (DatabaseHelper) or a mock one, and pass it into the<br/>\nconstructor of BusinessObject. This requires that the client knows a<br/>\nlittle more about what they want to do, and it requires a change to the<br/>\nsignature of this object.<br/>\n<br/>\nThe final solution, as proposed by another poster, is to use a factory<br/>\nobject whose job it is to create an instance of DatabaseHelper. You<br/>\nwould still have to pass in an instance of this factory to the<br/>\nBusinessObject class, so it could call it instead of directly creating<br/>\nthe object in the createDatabaseHelper() method:<br/>\n<br/>\n\tprotected DatabaseHelper createDatabaseHelper() {<br/>\n\t\treturn factory.createDatabaseHelper();<br/>\n\t}<br/>\n<br/>\nGiven all the options, I&#39;d choose the first one most of the time, only<br/>\nusing one of the other two if I needed something more flexible than<br/>\noption 1.<br/>\n<br/>\nHTH,<br/>\nbab<br/>\n<br/>\n-- <br/>\nBrian Button\t\t\t<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bbutton@...\">bbutton@...</a><br/>\nPrincipal Consultant\t\t<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.agilesolutionsgroup.com\">http://www.agilesolutionsgroup.com</a><br/>\nAgile Solutions Group\t\t636.399.3146<br/>\nSt. Louis, MO<br/>\n<br/>\nExtreme Programming in St. Louis-<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.groups.yahoo.com/group/xpstl\">http://www.groups.yahoo.com/group/xpstl</a></div>", 
+    "prevInTime": 9264, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1062525376", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 9247, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDMwODMwMDE0MzA5LjI0MTY4LnFtYWlsQHdlYjEzODAzLm1haWwueWFob28uY29tPg==", 
+        "messageIdInHeader": "PDEwNjI1MjUzNzYuODU2LjkuY2FtZWxAYnJpYW4tZGVza3RvcD4=", 
+        "referencesHeader": "PDIwMDMwODMwMDE0MzA5LjI0MTY4LnFtYWlsQHdlYjEzODAzLm1haWwueWFob28uY29tPg=="
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 11315, 
+    "senderId": "xlos1n-Hx-m-m43X4w56O5m88iV2iv2Yk0_3-zh05tbpLbN6miPtiynYIPO1EO8Xw2VF6-FTVdOfin-sXCGZN-GBfKAT_XwZsEA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Creating own subclass of TestCase as base for tests", 
+    "from": "Kevin Klinemeier &lt;zipwow@...&gt;", 
+    "authorName": "Kevin Klinemeier", 
+    "msgSnippet": "This is just from the hip, but if you re intending to provide new functionality in a similar API, you might consider this: 1. Put your setUp and tearDown", 
+    "msgId": 11314, 
+    "rawEmail": "Return-Path: &lt;zipwow@...&gt;\r\nX-Sender: zipwow@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 4397 invoked from network); 30 Jun 2004 00:10:58 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m11.grp.scd.yahoo.com with QMQP; 30 Jun 2004 00:10:58 -0000\r\nReceived: from unknown (HELO web60310.mail.yahoo.com) (216.109.118.121)\n  by mta1.grp.scd.yahoo.com with SMTP; 30 Jun 2004 00:10:58 -0000\r\nMessage-ID: &lt;20040630001053.4602.qmail@...&gt;\r\nReceived: from [207.14.29.3] by web60310.mail.yahoo.com via HTTP; Tue, 29 Jun 2004 17:10:53 PDT\r\nDate: Tue, 29 Jun 2004 17:10:53 -0700 (PDT)\r\nTo: junit@yahoogroups.com\r\nIn-Reply-To: &lt;40E1D509.2060204@...&gt;\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=us-ascii\r\nX-eGroups-Remote-IP: 216.109.118.121\r\nFrom: Kevin Klinemeier &lt;zipwow@...&gt;\r\nSubject: Re: [junit] Creating own subclass of TestCase as base for tests\r\nX-Yahoo-Group-Post: member; u=82914509\r\nX-Yahoo-Profile: zipwow\r\n\r\nThis is just from the hip, but if you&#39;re intending to provide new\nfunctionality in a &quot;similar&quot; API, you might consider this:\n\n1. Put your setUp and tearDown code in the TestCase.setUp() and\ntearDown() as usual.\n\n2. Declare your setUp() and tearDown() as final.\n\n3. Expose a new overridable method for clients to use.\n\nIn general, that&#39;s the approach I use when I want to allow subclasses\nto add functionality, but fear that they&#39;ll &quot;forget&quot; to call super(..).\n\nThis, of course, breaks every test currently written for your\nframework, and changes your API slightly from the very familiar JUnit\nAPI.  As a rebuttal (although I have no opinion either way) it isn&#39;t as\nthough it&#39;s a difficult fix since your compiler will tell you\neverywhere to do it.  \n\nAlternatively, whatever functionality your test classes provide could\nsimply fail with a useful message if the super.setUp() isn&#39;t called. \nCatching and reliably reporting a forgotten tearDown() call is tricker,\nthough.\n\nHope this helps,\n\nKevin Klinemeier\n\n--- Martijn Dashorst &lt;yahoogroups@...&gt; wrote:\n&gt; Hi,\n&gt; \n&gt; I&#39;m a maintainer of jWebUnit and we&#39;ve got a problem with resource \n&gt; deallocation when many tests are run (1000+). This is due to the HTTP\n&gt; \n&gt; driver (WebTester) which is allocated in the constructor (bad policy,\n&gt; I \n&gt; know) and which is only freed when the TestCase is cleaned up by the\n&gt; GC.\n&gt; \n&gt; Now my question is: how do I allocate/deallocate the HTTP driver\n&gt; without \n&gt; needing my clients&#39; subclasses to call super.setUp() and \n&gt; super.tearDown() in their implementations of setUp()/tearDown().\n&gt; \n&gt; I was thinking of overriding runBare() in which I allocate the driver\n&gt; \n&gt; before calling super.runBare(), and in a finally block, I dereference\n&gt; \n&gt; the driver:\n&gt; \n&gt;   public void runBare() throws Throwable {\n&gt;       try {\n&gt;           tester = new WebTester();\n&gt;           super.runBare();\n&gt;       } finally {\n&gt;           tester = null;\n&gt;       }\n&gt;   }\n&gt; \n&gt; This allows subclasses of WebTestCase to override setUp() and\n&gt; tearDown() \n&gt; without requiring them to call super.setUp()/tearDown().\n&gt; \n&gt; This is rather risky, for I have no guarantee that runBare() is\n&gt; called \n&gt; in each environment (ant, Eclipse, IntelliJ, etc).\n&gt; \n&gt; Creating my own WebTestCase extends Assert implements Test would\n&gt; require \n&gt; me to implement a lot of code, not just delegation, or am I missing \n&gt; something?\n&gt; \n&gt; I hope you could shed some light on this.\n&gt; \n&gt; Martijn Dashorst\n&gt; \n&gt; \n\n\n\n\t\t\n__________________________________\nDo you Yahoo!?\nYahoo! Mail - You care about security. So do we.\nhttp://promotions.yahoo.com/new_mail\n\n", 
+    "profile": "zipwow", 
+    "topicId": 11313, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 82914509, 
+    "prevInTime": 11313, 
+    "contentTrasformed": false, 
+    "postDate": "1088554253", 
+    "canDelete": false, 
+    "nextInTopic": 11321, 
+    "prevInTopic": 11313, 
+    "headers": {
+        "inReplyToHeader": "PDQwRTFENTA5LjIwNjAyMDRAZGFzaG9yc3QuZGRzLm5sPg==", 
+        "messageIdInHeader": "PDIwMDQwNjMwMDAxMDUzLjQ2MDIucW1haWxAd2ViNjAzMTAubWFpbC55YWhvby5jb20+"
+    }
+}

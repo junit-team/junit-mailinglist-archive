@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 21455, 
+    "senderId": "yFIbVzgJDCscDzHXIcgDiYLRGgsvTqYcYaywFuzs4qgKCKfC2KmdNWM3woiJs0ZZLolUkouTtGxDsLJzN67tkrlyVbU", 
+    "systemMessage": true, 
+    "subject": "Re: ClasspathSuite, JUnit 3.8 mixed with 4.5, big suites and memory leaks", 
+    "from": "&quot;pgbossi&quot; &lt;pgbossi@...&gt;", 
+    "authorName": "pgbossi", 
+    "msgSnippet": "... Not exactly. Until a few months ago all our tests were JUnit 3.8 tests organized with AllTests suite. Then we introduced JUnit 4.5 and we started having: ", 
+    "msgId": 21454, 
+    "profile": "pgbossi", 
+    "topicId": 21449, 
+    "spamInfo": {
+        "reason": "6", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 206615490, 
+    "messageBody": "<div id=\"ygrps-yiv-50664616\">--- In <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit@yahoogroups.com\">junit@yahoogroups.com</a>, David Saff &lt;david@...&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Giuliano,<br/>\n<br/>\n&gt; Let me see if I have the situation clear:<br/>\n<br/>\n&gt; Using all 3.8 tests joined in a 3.8 AllTests suite, there are no problems.<br/>\n&gt; Using the same tests, with some converted to 4.5, joined with<br/>\n&gt; ClasspathSuite, you run out of memory.<br/>\n<br/>\n </span></blockquote>Not exactly. Until a few months ago all our tests were JUnit 3.8 tests organized with AllTests suite.<br/>\n<br/>\nThen we introduced JUnit 4.5 and we started having:<br/>\n*) 3.8 suites running a mix of 3.8 & 4.5 tests<br/>\n*) 4.5 suites running 4.5 tests<br/>\nI don&#39;t think we ever had 4.5 suites running 3.8 tests as well.<br/>\n<br/>\nAt the root of everything there were 3 main 3.8 suites. Let&#39;s call them:<br/>\n*) AllTestsSuite1 (related to project P1) ==&gt; ~650 tests (mostly unit tests)<br/>\n*) AllTestsSuite2 (related to project P2) ==&gt; ~350 tests (a mix of unit tests and HttpUnit tests)<br/>\n*) AllTestsSuite3 (related to project P3) ==&gt; ~500 tests (mostly HttpUnit tests)<br/>\nThe 3 suites are merged together in a big bang 3.8 suites, called AllSuperMegaHyperTestSuite for evident reasons :)<br/>\n<br/>\nAll the tests run fine with 196 MB of heap until a few days ago.<br/>\nEvery developer runs typically one of the 3 suites above, not AllSuperMegaHyperTestSuite, depending on which area of the system they are working on. <br/>\nI run AllSuperMegaHyperTestSuite from time to time. Hudson runs it with Clover every day.<br/>\n<br/>\nSome days ago we noticed an increase in memory consumption, noticeable on Hudson only. We thought that this was related more to Clover than anything else.<br/>\n<br/>\nBut when we decided to get rid of 3.8 suites in P1 it became very noticeable. The message on the Spring Framework forum confirmed my doubts: a memory leak related to 3.8 tests run by 4.5 suites. Implementing the suggested fix didn&#39;t help though.<br/>\n<br/>\nSo we have proceeded converting all 3.8 tests to 4.5 in P1: the situation has improved significantly, but still now the tests run only with 1048 MB of heap (and 128 MB of PermGen space). Now, I don&#39;t think that the root of the problem is necessarily in JUnit, but the way it holds onto instance fields in the tests doesn&#39;t help ==&gt; some of our tests, especially those based on HttpUnit, have a lot of state in instance fields.<br/>\n<br/>\nSo I was wondering if this &quot;issue&quot; (well, whatever you wanna call it) is known to you guys, if workarounds are available, etc.<br/>\nWe think of converting all 3.8 tests to 4.5 in P2 & P3 anyway. That should help, if I&#39;m not mistaken.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; Is that right? If so, it&#39;s certainly troubling. Some questions to<br/>\n&gt; help identify a potential JUnit bug:<br/>\n<br/>\n&gt; 1) Do you run out of memory if you use ClasspathSuite, but skip the 4.5 tests?<br/>\n<br/>\n </span></blockquote>Well, right now I don&#39;t have any 3.8 tests anymore in P1. When I&#39;ll get rid of the suites in P2 I&#39;ll try avoiding 4.5 tests first for sure.<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; 2) Do you run out of memory if you replace your AllTests suite with a 4.5-style Suite?<br/>\n<br/>\n </span></blockquote>Haven&#39;t tried that. I suppose I can give it a shot in P2.<br/>\n<br/>\nThanks,<br/>\nGiuliano<br/>\n<br/>\n<br/>\n-- <br/>\nPiergiuliano Bossi<br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://thinkingbox.wordpress.com/\">http://thinkingbox.wordpress.com/</a><br/>\n<a rel=\"nofollow\" target=\"_blank\" href=\"http://stacktrace.it\">http://stacktrace.it</a></div>", 
+    "prevInTime": 21453, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1238208215", 
+    "canDelete": false, 
+    "nextInTopic": 21458, 
+    "prevInTopic": 21452, 
+    "headers": {
+        "inReplyToHeader": "PDRmN2RhNmI5MDkwMzI3MDU1OXc2ZWE0MGVhOHgzN2Y0NWZiOWEwNGMxYzg1QG1haWwuZ21haWwuY29tPg==", 
+        "messageIdInHeader": "PGdxazJzbit1a2I5QGVHcm91cHMuY29tPg=="
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "topicId": 214, 
+    "postDate": "979078378", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "&quot;Scott Eade&quot; &lt;seade@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "e72DwY6WR4pGLjbyroul7Dffez5CMq8zidxejQoUnMLHhuuBX_L177dOGRm3us9S7c-P2HwMdXDJ7YG9AFAPx4OQFq7LR-B31ng", 
+    "nextInTime": 218, 
+    "userId": 0, 
+    "prevInTime": 216, 
+    "prevInTopic": 215, 
+    "headers": {
+        "messageIdInHeader": "PDAwMTUwMWMwN2E4OSQ1NDg4YmVkMCQwMTAwYThjMEBzY29vYnkwMD4=", 
+        "referencesHeader": "PDkzZmRkMys3NDZoQGVHcm91cHMuY29tPg=="
+    }, 
+    "authorName": "Scott Eade", 
+    "numMessagesInTopic": 5, 
+    "msgSnippet": "To get JUnit 3.4 to run under jdk 1.1.8 you need to change the initializer in junit.runner.BaseTestRunner by replacing the line: ", 
+    "contentTrasformed": false, 
+    "msgId": 217, 
+    "nextInTopic": 218, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;seade@...&gt;\r\nX-Sender: seade@...\r\nX-Apparently-To: junit@egroups.com\r\nReceived: (EGP: mail-6_3_1_3); 9 Jan 2001 21:16:19 -0000\r\nReceived: (qmail 1386 invoked from network); 9 Jan 2001 21:15:16 -0000\r\nReceived: from unknown (10.1.10.142) by l8.egroups.com with QMQP; 9 Jan 2001 21:15:16 -0000\r\nReceived: from unknown (HELO mr14.vic-remote.bigpond.net.au) (24.192.1.29) by mta3 with SMTP; 9 Jan 2001 22:16:21 -0000\r\nReceived: from scooby00 (CPE-61-9-177-220.vic.bigpond.net.au [61.9.177.220]) by mr14.vic-remote.bigpond.net.au (Pro-8.9.3/8.9.3) with SMTP id IAA29904 for &lt;junit@egroups.com&gt;; Wed, 10 Jan 2001 08:15:12 +1100 (EDT)\r\nMessage-ID: &lt;001501c07a89$5488bed0$0100a8c0@scooby00&gt;\r\nTo: &lt;junit@egroups.com&gt;\r\nReferences: &lt;93fdd3+746h@...&gt;\r\nSubject: Re: [junit] JUNIT3.4 and JDK1.1.x support\r\nDate: Wed, 10 Jan 2001 08:12:58 +1000\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nContent-Transfer-Encoding: 7bit\r\nX-Priority: 3\r\nX-MSMail-Priority: Normal\r\nX-Mailer: Microsoft Outlook Express 5.00.2919.6700\r\nX-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700\r\nFrom: &quot;Scott Eade&quot; &lt;seade@...&gt;\r\n\r\nTo get JUnit 3.4 to run under jdk 1.1.8 you need to change the \ninitializer in junit.runner.BaseTestRunner by replacing the line:\n\n        fPreferences.setProperty(&quot;loading&quot;, &quot;true&quot;);\n\n...as setProperty() is not supported by Properties objects in 1.1.8.\nYou can replace this line with the following:\n\n        try {\n            ByteArrayInputStream input = new ByteArrayInputStream((&quot;loading=true&quot;).getBytes(&quot;ASCII&quot;));\n            fPreferences.load(input);\n        }\n        catch (Exception e) {\n            throw new RuntimeException(&quot;&quot; + e);\n        }\n\n... which will achieve the same result.\n\nI don&#39;t know of a way to override an initializer so the only way \nto get this change in is to patch the existing class (please tell me \nif there is a way).\n\nThere is actually a survey up on SourceForge asking whether \nor not JUnit 3.5 should be the last version to support jdk 1.1.*\nIf support for 1.1.* is important to you then I suggest you fill \nout the one question survey (mind you if support for 1.1.* is not \nimportant to you then fill out the survey anyway so that the \nresults aren&#39;t skewed).\n\nCheers,\n\nScott\n\n----- Original Message ----- \nFrom: &lt;csampietro@...&gt;\nTo: &lt;junit@egroups.com&gt;\nSent: Wednesday, January 10, 2001 2:14 AM\nSubject: [junit] JUNIT3.4 and JDK1.1.x support\n\n\n&gt; Hi all eGroups members,\n&gt; \n&gt; is it possible to use JUnit 3.4 with JDK 1.1.* ?\n&gt;  \n&gt; If I run it with JDK 1.1.8, I get the following error output:\n&gt; \n&gt; D:&#92;junit3.4&gt;e:&#92;jdk1.1.8&#92;bin&#92;java -classpath \n&gt; e:&#92;jdk1.1.8&#92;lib&#92;classes.zip;.&#92;junit.\n&gt; jar;. junit.textui.TestRunner junit.samples.AllTests\n&gt; java.lang.NoSuchMethodError: java.util.Properties: method \n&gt; setProperty(Ljava/lang\n&gt; /String;Ljava/lang/String;)Ljava/lang/Object; not found\n&gt;         at junit.runner.BaseTestRunner.&lt;init&gt;(BaseTestRunner.java:157)\n&gt;         at junit.textui.TestRunner.&lt;init&gt;(TestRunner.java:35)\n&gt;         at junit.textui.TestRunner.main(TestRunner.java:87)\n&gt; \n&gt; while using JDK1.2.2 (or JDK1.3) everything works well.\n&gt; \n&gt; Is there any compatibility jar (or other tips) to support JDK 1.1.* ?\n&gt; Thanks for the attention\n&gt; Regards\n&gt; Carlo\n&gt; \n&gt; \n&gt; \n&gt; To unsubscribe from this group, send an email to:\n&gt; junit-unsubscribe@egroups.com\n&gt; \n&gt; \n&gt; \n&gt; \n\n\n", 
+    "subject": "Re: [junit] JUNIT3.4 and JDK1.1.x support"
+}

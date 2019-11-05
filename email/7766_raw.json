@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 7767, 
+    "senderId": "RsKmI7gDNIcLQ2j5WOfhmOE9eym0X3D33-S-6QknWPQpc7sUY5ZNAdQFwaa1GUkkeph2ba2ZSXgBh3PPPHuAmRi5mWFu3_n2iA6Vk7fW5A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] A test to verify that an event is generated", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "Q: Is threading required to verify generating the event? Avoiding it would be better. My general strategy involves attaching a spy listener to the event", 
+    "msgId": 7766, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_6_5); 17 Apr 2003 21:33:23 -0000\r\nReceived: (qmail 27469 invoked from network); 17 Apr 2003 21:33:22 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m5.grp.scd.yahoo.com with QMQP; 17 Apr 2003 21:33:22 -0000\r\nReceived: from unknown (HELO fep01-mail.bloor.is.net.cable.rogers.com) (66.185.86.71)\n  by mta2.grp.scd.yahoo.com with SMTP; 17 Apr 2003 21:33:22 -0000\r\nReceived: from quincy ([24.156.202.2])\n          by fep01-mail.bloor.is.net.cable.rogers.com\n          (InterMail vM.5.01.05.12 201-253-122-126-112-20020820) with ESMTP\n          id &lt;20030417213321.BWJQ319328.fep01-mail.bloor.is.net.cable.rogers.com@quincy&gt;\n          for &lt;junit@yahoogroups.com&gt;; Thu, 17 Apr 2003 17:33:21 -0400\r\nMessage-ID: &lt;200304171733200286.0174C536@...&gt;\r\nIn-Reply-To: &lt;4A798B3E3B58794FB40A47DFCE728BA80914B8@...&gt;\r\nReferences: &lt;4A798B3E3B58794FB40A47DFCE728BA80914B8@...&gt;\r\nX-Mailer: Calypso Version 3.30.00.00 (4)\r\nDate: Thu, 17 Apr 2003 17:33:20 -0400\r\nTo: junit@yahoogroups.com\r\nSubject: Re: [junit] A test to verify that an event is generated\r\nMime-Version: 1.0\r\nContent-Type: text/plain; charset=&quot;us-ascii&quot;\r\nContent-Transfer-Encoding: quoted-printable\r\nX-Authentication-Info: Submitted using SMTP AUTH LOGIN at fep01-mail.bloor.is.net.cable.rogers.com from [24.156.202.2] using ID &lt;jbrains@...&gt; at Thu, 17 Apr 2003 17:33:21 -0400\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nReply-To: jbr@...\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nQ: Is threading required to verify generating the event? Avoiding it would =\r\nbe better.\n\nMy general strategy involves attaching a spy listener to the ev=\r\nent source, invoking the method, then examining the spy listener. The spy l=\r\nistener would simply collect events in a list for comparison with an expect=\r\ned list. The alternatives include counting the number of actual events fire=\r\nd or asking whether the event source fired *at least* the expected event.\n\n=\r\n&gt;So said Kris Henderson on 4/16/2003 --------------------\n&gt;I searched the a=\r\nrchives but wasn&#39;t able to find what I was looking for.\n&gt;If this has alread=\r\ny been discussed a pointer to the thread would be\n&gt;appreciated.\n&gt;\n&gt;I want t=\r\no write a JUnit test to verify that an event is generated when I\n&gt;call a me=\r\nthod.  It seems to work but I have two questions.  Does anyone\n&gt;see any pro=\r\nblems that might arise in this test?  Is there a better/more\n&gt;prefered way =\r\nto do this?\n&gt;\n&gt;Here is the code/pseudocode of the test case I came up with:=\r\n\n&gt;\n&gt;public void testEventGenerated()\n&gt;{\n&gt;     MyClassThatFiresAnEvent myCla=\r\nss =3D new MyClassThatFiresAnEvent();\n&gt;\n&gt;     final Thread currentThread =\r\n=3D Thread.currentThread();\n&gt;\n&gt;     myClass.addMyEventListener(new MyEventL=\r\nistener()\n&gt;     {\n&gt;         public void somethingHappened(MyEvent event)\n&gt; =\r\n        {\n&gt;             currentThread.interrupt();\n&gt;         }\n&gt;     });\n&gt; =\r\n               \n&gt;     Thread thread =3D new Thread()\n&gt;     {\n&gt;         publ=\r\nic void run()\n&gt;         {\n&gt;             myClass.callMethodThatFiresTheEvent=\r\n();\n&gt;         }\n&gt;     };\n&gt;     thread.start();\n&gt;        \n&gt;     try\n&gt;     {\n=\r\n&gt;         currentThread.sleep(5000);\n&gt;         fail(&quot;Timed out waiting for =\r\nthe event.&quot;);\n&gt;     }\n&gt;     catch(InterruptedException ie)\n&gt;     {\n&gt;       =\r\n  System.out.println(&quot;Expect this exception&quot;);\n&gt;     }\n&gt;}\n&gt;\n&gt;Thanks,\n&gt;Kris\n=\r\n&gt;\n&gt;Yahoo! Groups Sponsor\n&gt;\n&gt;\n&gt;\n&gt;To unsubscribe from this group, send an ema=\r\nil to:\n&gt;junit-unsubscribe@yahoogroups.com\n&gt;\n&gt;\n&gt;Your use of Yahoo! Groups is=\r\n subject to the Yahoo! Terms of Service.\nJ. B. Rainsberger,\nPresident, Dias=\r\npar Software Services\nLet&#39;s write software that people understand.\nhttp://w=\r\nww.diasparsoftware.com/\ntelephone: +1 416 791-8603\n\n\n", 
+    "profile": "nails762", 
+    "topicId": 7751, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 7765, 
+    "contentTrasformed": false, 
+    "postDate": "1050615200", 
+    "canDelete": false, 
+    "nextInTopic": 7771, 
+    "prevInTopic": 7762, 
+    "headers": {
+        "inReplyToHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEI4QFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4=", 
+        "messageIdInHeader": "PDIwMDMwNDE3MTczMzIwMDI4Ni4wMTc0QzUzNkBzc210cC5ibG9vci5pcy5uZXQuY2FibGUucm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PDRBNzk4QjNFM0I1ODc5NEZCNDBBNDdERkNFNzI4QkE4MDkxNEI4QFNUUjFWRVhDMDAyLkNUSEVTLkNPTT4="
+    }
+}

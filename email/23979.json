@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 12, 
+    "nextInTime": 23980, 
+    "senderId": "V0bSDaFw72iPrUwcm_vykYhmitMARqSJY8IoWeeTDUMclc4z3-rBRVe9Bd3Z0G3qcWXeX_EtBddcIefmY3ryaX3lTwgjJk0Zd9xhEn9_LmE", 
+    "systemMessage": true, 
+    "subject": "Re: [junit] Tests starting before Logback initialisation complete when run in parallel", 
+    "from": "Brett Delle Grazie &lt;bdellegrazie@...&gt;", 
+    "authorName": "Brett Delle Grazie", 
+    "msgSnippet": "... Hi Mirko, No, commons-logging is explicitly excluded. The problem is definitely due to parallelism configuration. Disabling parallelism via none in maven", 
+    "msgId": 23979, 
+    "topicId": 23967, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 79191679, 
+    "messageBody": "<div id=\"ygrps-yiv-783470654\">On 5 September 2012 15:41, Mirko Friedenhagen &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:mfriedenhagen@...\">mfriedenhagen@...</a>&gt; wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; Hello,<br/>\n&gt;<br/>\n&gt; wild guess: do you have both commons-logging as well as jcl-over-slf4j in<br/>\n&gt; your test class path?<br/>\n<br/>\n </span></blockquote>Hi Mirko,<br/>\nNo, commons-logging is explicitly excluded. The problem is definitely<br/>\ndue to parallelism<br/>\nconfiguration. Disabling parallelism via &#39;none&#39; in maven resolves the<br/>\nissue but obviously<br/>\nexecutes the tests slower.<br/>\n<br/>\nEssentially what happens is Logback is still executing its<br/>\nauto-initialisation while some<br/>\ntests start to write to the logs resulting in lost log information.<br/>\n<br/>\nAs noted by another post in this thread, I&#39;ll have to serialise the<br/>\ninitialisation explicitly.<br/>\n<br/>\nThanks,<br/>\n<br/>\nBrett<br/>\n<blockquote><span title=\"qreply\"> &gt;<br/>\n&gt; Regards Mirko<br/>\n&gt;<br/>\n&gt; On Mon, Sep 3, 2012 at 9:51 PM, Brett Delle Grazie &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bdellegrazie@...\">bdellegrazie@...</a>&gt;wrote:<br/>\n&gt;<br/>\n&gt;&gt; **<br/>\n&gt;&gt;<br/>\n&gt;&gt;<br/>\n&gt;&gt; Hi,<br/>\n&gt;&gt;<br/>\n&gt;&gt; I&#39;m using JUnit 4.10 with Maven 3.0.4, Surefire 2.12.3, JDK 1.6.0_35<br/>\n&gt;&gt; on Windows 7<br/>\n&gt;&gt; Surefire is configured with parallel=methods and threadCount=10<br/>\n&gt;&gt; For logging, I&#39;m using SLF4J to Logback, initialised by default method<br/>\n&gt;&gt; (i.e. configuration file logback-test.xml is on the test classpath)<br/>\n&gt;&gt;<br/>\n&gt;&gt; I have an order of initialisation problem in that:<br/>\n&gt;&gt; (1) Some unit tests test classes that use commons-logging (and logback<br/>\n&gt;&gt; via jcl-slf4j) but are ending up with<br/>\n&gt;&gt; Null loggers.<br/>\n&gt;&gt; (2) jcl-slf4j is not initialised _until_ those classes are called.<br/>\n&gt;&gt;<br/>\n&gt;&gt; If I disable parallelism the code works correctly, implying an order<br/>\n&gt;&gt; of initialisation issue.<br/>\n&gt;&gt;<br/>\n&gt;&gt; According to the most recent FAQ on Junit.org (Section 5, #3) I could<br/>\n&gt;&gt; use @BeforeClass and @AfterClass at the class<br/>\n&gt;&gt; level but I&#39;m talking about at the global level, something that needs<br/>\n&gt;&gt; to be executed even if only a single test is run.<br/>\n&gt;&gt;<br/>\n&gt;&gt; What is the correct method to add global, one-time, setup / tear-down<br/>\n&gt;&gt; hooks? In this case they would need to execute and<br/>\n&gt;&gt; complete (i.e. blocking) before any parallel tests are run.<br/>\n&gt;&gt; Is it simplest to override the Runner and initialise the logging in code<br/>\n&gt;&gt; there?<br/>\n&gt;&gt;<br/>\n&gt;&gt; Thanks,<br/>\n&gt;&gt;<br/>\n&gt;&gt; Best Regards,<br/>\n&gt;&gt;<br/>\n&gt;&gt; Brett<br/>\n&gt;&gt; </span></blockquote></div>", 
+    "prevInTime": 23978, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1346859720", 
+    "canDelete": false, 
+    "nextInTopic": 23980, 
+    "prevInTopic": 23978, 
+    "headers": {
+        "inReplyToHeader": "PENBSzhqdnF6Yl9hQmNrZVY1NFBjTmcyYmJOV1ErRjJOYUNhPVB5QzZzTVhUS0VheEtlQUBtYWlsLmdtYWlsLmNvbT4=", 
+        "messageIdInHeader": "PENBQ0xEMD03ajM3Z0YrZTFkMV9CeDZma29vdVFBTEZXVC1HazRuTGlrMEhiZ0ZFSit3QUBtYWlsLmdtYWlsLmNvbT4=", 
+        "referencesHeader": "PENBQ0xEMD02eERHZ3B4RWFiK00yaFlDRnlEd3VDVVNnLXF5YS1MQ1lxanhjOU9abXpKQUBtYWlsLmdtYWlsLmNvbT4JPENBSzhqdnF6Yl9hQmNrZVY1NFBjTmcyYmJOV1ErRjJOYUNhPVB5QzZzTVhUS0VheEtlQUBtYWlsLmdtYWlsLmNvbT4="
+    }
+}

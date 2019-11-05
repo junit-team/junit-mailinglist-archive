@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 9, 
+    "nextInTime": 16032, 
+    "senderId": "tp40kSaQfKtRIqnw57aIdug8prB9MQ6FiLtpNsg5vzrFPWeRdY4S8R7ZTSUAO95Td17FdJ1zJiKWRw933ps7ivoj7QPGOMqCWinPurs71A", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] testing private methods in Struts Actions ?", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... What do you want to test here? 1. How well your business logic integrates with Struts (reading form beans, populating error messages, that kind of thing..)", 
+    "msgId": 16031, 
+    "profile": "nails762", 
+    "topicId": 16019, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "messageBody": "<div id=\"ygrps-yiv-612506645\">frank zou wrote:<br/>\n<br/>\n<blockquote><span title=\"ireply\"> &gt; The issues really confused me. Testing gurus, please give me a hand.<br/>\n&gt; Thanks.<br/>\n<br/>\n </span></blockquote>What do you want to test here?<br/>\n<br/>\n1. How well your business logic integrates with Struts (reading form <br/>\nbeans, populating error messages, that kind of thing..)<br/>\n<br/>\nor<br/>\n<br/>\n2. Your business logic itself<br/>\n<br/>\nEither way, putting the business logic directly into the Struts Action <br/>\ncreates a problem; therefore, create a separate class for your business <br/>\nlogic and have the Struts Action invoke it. It looks somethign like this:<br/>\n<br/>\npublic ActionForward execute(ActionMapping mapping, ActionForm form,<br/>\n                   HttpServletRequest request,<br/>\n                   HttpServletResponse response)<br/>\n       {<br/>\n<br/>\n             createEventLog(request);<br/>\n<br/>\n             handleSessionAndToken(request);<br/>\n<br/>\n             doBusinessLogic(new BusinessLogicImpl(...));<br/>\n             ...<br/>\n             clearUserRelatedCookies(siteId, response);<br/>\n<br/>\n             String returnUrl = createReturnUrl(mapping, request);<br/>\n             request.setAttribute(LOGIN_RETURN_URL, returnUrl);<br/>\n             return mapping.findForward(PAGE_SUCCESS);<br/>\n       }<br/>\n<br/>\npublic void doBusinessLogic(BusinessLogic logic) {<br/>\n     logic.execute();<br/>\n}<br/>\n<br/>\nNow the interface BusinessLogic represents your transaction script. The <br/>\nimplementation BusinessLogicImpl does the production work. You can test <br/>\nthe business logic on its own by instantiating whatever you need: action <br/>\nform objects, request objects, whatever. You can test the integration <br/>\nwith Struts by faking/mocking the business logic (Google &quot;jmock&quot;).<br/>\n<br/>\nThe entire technique probably requires 10 pages to describe with <br/>\nexamples, so I won&#39;t be doing that here. :)<br/>\n<br/>\nGood luck.<br/>\n-- <br/>\nJ. B. (Joe) Rainsberger :: <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.jbrains.info\">http://www.jbrains.info</a><br/>\nYour guide to software craftsmanship<br/>\nJUnit Recipes: Practical Methods for Programmer Testing<br/>\n2005 Gordon Pask Award for contribution Agile Software Practice</div>", 
+    "prevInTime": 16030, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1139456297", 
+    "canDelete": false, 
+    "nextInTopic": 16037, 
+    "prevInTopic": 16019, 
+    "headers": {
+        "inReplyToHeader": "PGRzYm5qciszbGNpQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQzRUFCOTI5LjIwNjA5MDBAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGRzYm5qciszbGNpQGVHcm91cHMuY29tPg=="
+    }
+}

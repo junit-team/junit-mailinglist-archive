@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 21677, 
+    "senderId": "K0a_M-3gqoPwgdC60PAuek_W7joh0shFkPaiJXvat-_JjBgQfcQJchXWhtmb4D4cLhdz23SO_Jr5is_wViZvOYVqITDJhQ", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Change generic signature of assert that", 
+    "from": "Nat Pryce &lt;nat.pryce@...&gt;", 
+    "authorName": "Nat Pryce", 
+    "msgSnippet": "... Because the wildcard bounds are the wrong way round.  Matcher makes sense, Matcher does not. Consider the following silly", 
+    "msgId": 21676, 
+    "rawEmail": "Return-Path: &lt;nat.pryce@...&gt;\r\nX-Sender: nat.pryce@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nX-Received: (qmail 54100 invoked from network); 23 May 2009 11:49:35 -0000\r\nX-Received: from unknown (98.137.34.45)\n  by m1.grp.sp2.yahoo.com with QMQP; 23 May 2009 11:49:35 -0000\r\nX-Received: from unknown (HELO mail-bw0-f177.google.com) (209.85.218.177)\n  by mta2.grp.sp2.yahoo.com with SMTP; 23 May 2009 11:49:35 -0000\r\nX-Received: by bwz25 with SMTP id 25so2608072bwz.39\n        for &lt;junit@yahoogroups.com&gt;; Sat, 23 May 2009 04:49:30 -0700 (PDT)\r\nMIME-Version: 1.0\r\nX-Received: by 10.204.116.69 with SMTP id l5mr4577056bkq.102.1243079370696; Sat, \n\t23 May 2009 04:49:30 -0700 (PDT)\r\nIn-Reply-To: &lt;gv6qqb+t0kp@...&gt;\r\nReferences: &lt;4f7da6b90905221102u7d072ea2yd0db0b043f26411b@...&gt;\n\t &lt;gv6qqb+t0kp@...&gt;\r\nDate: Sat, 23 May 2009 12:49:30 +0100\r\nMessage-ID: &lt;17fa53d0905230449q2f45070eg2118b7a71f0abbee@...&gt;\r\nTo: junit@yahoogroups.com\r\nContent-Type: text/plain; charset=ISO-8859-1\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0:0:0\r\nFrom: Nat Pryce &lt;nat.pryce@...&gt;\r\nSubject: Re: [junit] Re: Change generic signature of assert that\r\nX-Yahoo-Group-Post: member; u=216973656; y=igeQEqgyXoWEmQSP0lIUz6p8AMuzcYu7fCYXh2chyn-R7GYT\r\nX-Yahoo-Profile: nat_pryce\r\n\r\n2009/5/22 yme0987654321 &lt;yme0987654321@...&gt;:\n&gt; I&#39;m curious if you know of a reason that\n&gt;\n&gt; public static &lt;T&gt; void assertThat(T actual, Matcher&lt;? extends T&gt; matcher)\n&gt;\n&gt; is wrong. Does it break something that you know of?\n\n\nBecause the wildcard bounds are the wrong way round.  Matcher&lt;? super\nT&gt; makes sense, Matcher&lt;? extends T&gt; does not.\n\nConsider the following silly inheritance hierarchy:\n\n  Object &lt;- Fruit &lt;- {Banana, Apple}\n\nA Matcher&lt;Fruit&gt; represents some property of the Fruit type that\napplies to *all* fruit. I should be able to use it to match against\nboth Bananas and Apples.  In that case, T is bound to Banana, Fruit is\na supertype of Banana, so the matcher satisfies the wildcard Matcher&lt;?\nsuper Banana&gt;.\n\nIf I have a Fruit reference, I don&#39;t know what kind of Fruit it points\nto.  If the matcher wildcard was &lt;? extends T&gt; it would allow me pass\nthe fruit to a Matcher&lt;Apple&gt; even when the fruit was actually a\nBanana.  If I know a-priori that the Fruit really is an Apple, it is\ngood practice to explicitly downcast the reference.  The test will\nfail with an obvious exception if my assumption is wrong.\n\nBut I think David is right.  We will probably have to get rid of the\ngenerics from assertThat altogether because the Java type system is\nbroken.\n\n--Nat.\n\n", 
+    "profile": "nat_pryce", 
+    "topicId": 21666, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 216973656, 
+    "prevInTime": 21675, 
+    "contentTrasformed": false, 
+    "postDate": "1243079370", 
+    "canDelete": false, 
+    "nextInTopic": 21677, 
+    "prevInTopic": 21675, 
+    "headers": {
+        "inReplyToHeader": "PGd2NnFxYit0MGtwQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDE3ZmE1M2QwOTA1MjMwNDQ5cTJmNDUwNzBlZzIxMThiN2E3MWYwYWJiZWVAbWFpbC5nbWFpbC5jb20+", 
+        "referencesHeader": "PDRmN2RhNmI5MDkwNTIyMTEwMnU3ZDA3MmVhMnlkMGRiMGIwNDNmMjY0MTFiQG1haWwuZ21haWwuY29tPgkgPGd2NnFxYit0MGtwQGVHcm91cHMuY29tPg=="
+    }
+}

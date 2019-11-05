@@ -1,0 +1,29 @@
+{
+    "numMessagesInTopic": 7, 
+    "nextInTime": 6869, 
+    "senderId": "ZOxIGaPnDKPHC1QQQfz4y7rjlL2tYbcn7FGlzRWBzhASsDOqIgVjpIP1CI_csM4QcX4epkDFOz_Zygj6QbcUBHOhW1h1AI6IZOyHEKFTabw_wPtU1NeKxzojMHAcYupROD0uC8WsFQaq", 
+    "systemMessage": false, 
+    "subject": "RE: [junit] Dynamically generating test methods?", 
+    "from": "&quot;Stevens, Timothy J. (LNG-ALB)&quot; &lt;timothy.j.stevens@...&gt;", 
+    "authorName": "Stevens, Timothy J. (LNG-ALB)", 
+    "msgSnippet": "Not really what you re looking for by the sounds, but you could have a test method that tests the entire XML file, and have a StringBuffer in that method that", 
+    "msgId": 6868, 
+    "rawEmail": "Return-Path: &lt;Timothy.J.Stevens@...&gt;\r\nX-Sender: Timothy.J.Stevens@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-8_2_3_4); 4 Feb 2003 19:34:35 -0000\r\nReceived: (qmail 45642 invoked from network); 4 Feb 2003 19:34:34 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m9.grp.scd.yahoo.com with QMQP; 4 Feb 2003 19:34:34 -0000\r\nReceived: from unknown (HELO lexis-nexis.com) (207.25.178.45)\n  by mta1.grp.scd.yahoo.com with SMTP; 4 Feb 2003 19:34:35 -0000\r\nReceived: from lexis-nexis.com (mailgate [138.12.44.45])\n\tby lexis-nexis.com (8.10.2+Sun/8.10.2) with ESMTP id h14JY0h19439\n\tfor &lt;junit@yahoogroups.com&gt;; Tue, 4 Feb 2003 14:34:00 -0500 (EST)\r\nReceived: from bender.com \n        by lexis-nexis.com (8.11.6+Sun/8.11.6) with ESMTP id h14JXoZ25447\n        for &lt;junit@yahoogroups.com&gt;; Tue, 4 Feb 2003 14:33:50 -0500 (EST)\r\nReceived: from mbcalbexc01.bender.com by bender.com (8.8.8+Sun/SMI-SVR4)\n\tid OAA17398; Tue, 4 Feb 2003 14:33:49 -0500 (EST)\r\nReceived: by MBCALBEXC01.BENDER.COM with Internet Mail Service (5.5.2655.55)\n\tid &lt;DVX691B2&gt;; Tue, 4 Feb 2003 14:33:49 -0500\r\nMessage-ID: &lt;C137A0B27FAAD411B7DD00805F19D0EE0237C2DE@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] Dynamically generating test methods?\r\nDate: Tue, 4 Feb 2003 14:33:47 -0500 \r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2655.55)\r\nFrom: &quot;Stevens, Timothy J. (LNG-ALB)&quot; &lt;timothy.j.stevens@...&gt;\r\nX-Yahoo-Group-Post: member; u=75310489\r\nX-Yahoo-Profile: timothy_j_stevens\r\nContent-Type: text/plain; charset=US-ASCII\r\nContent-Transfer-Encoding: 7bit\r\n\r\n\n\tNot really what you&#39;re looking for by the sounds, but you could have\na test method that tests the entire XML file, and have a StringBuffer in\nthat method that you append a message like &quot;test12.xml failed&quot; to if there\nis an error with any &lt;file&gt; entry in the XML file. Then, at the end of the\ntest, if there is anything in the StringBuffer, you could fail and provide\nthe text within the StringBuffer. No separate tests, but it does allow the\ntest to continue after a failure.\n\n\t-tim\n\n-----Original Message-----\nFrom: David Goudreau [mailto:dgoudreau@...]\nSent: Tuesday, February 04, 2003 2:18 PM\nTo: Junit (E-mail)\nSubject: [junit] Dynamically generating test methods?\n\n\nI&#39;m creating a framework to test XML responses to our system.  Right now I\nhave a properties file that contains 1) every file request I want to send to\nour system and 2) the xpath expressions I want to run on the XML response,\nto make sure it&#39;s correct.  The properties file looks like this:\n\n&lt;xml_testing controldir=&quot;controlxml&quot; requestdir=&quot;requestxml&quot;&gt;\n   &lt;file name=&quot;test1.xml&quot;&gt;\n      &lt;xpath expression=&quot;//FUNCTION/RESPONSE_DATA&quot;/&gt;\n      &lt;xpath expression=&quot;//USER&quot;/&gt;\n   &lt;/file&gt;\n   &lt;file name=&quot;test2.xml&quot;&gt;\n      &lt;xpath expression=&quot;//HEADER/IP_ADDRESS&quot;/&gt;\n   &lt;/file&gt;\n   &lt;file name=&quot;test3.xml&quot;&gt;\n      &lt;xpath expression=&quot;//USER/NAME&quot;/&gt;\n      &lt;xpath expression=&quot;//USER/ADDRESS&quot;/&gt;\n   &lt;/file&gt;\n&lt;/xml_testing&gt;\n\nThe problem I&#39;m having is that I want each &lt;file&gt; to run as a separate test\nin the JUnit framework.  Right now, even if I have 100 files that I want to\ntest in my properties file, the JUnit framework treats it all as one test.\nI don&#39;t want test #4 to fail and then prevent the other 96 tests from\nrunning, which is what&#39;s happening now.  Any ideas?  Thanks.\n\n\n\n=======================\nDavid Goudreau\nSenior QA Automation Engineer\nQRS Corporation\n1400 Marina Way South\nRichmond, CA 94804 USA\nt: 510-965-4742\nf: 510-621-4742\nDGoudreau@...\nhttp://www.qrs.com\n=======================\n\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ \n\n\n\n[Non-text portions of this message have been removed]\n\n\n", 
+    "profile": "timothy_j_stevens", 
+    "topicId": 6867, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 75310489, 
+    "prevInTime": 6867, 
+    "contentTrasformed": false, 
+    "postDate": "1044387227", 
+    "canDelete": false, 
+    "nextInTopic": 6872, 
+    "prevInTopic": 6867, 
+    "headers": {
+        "messageIdInHeader": "PEMxMzdBMEIyN0ZBQUQ0MTFCN0REMDA4MDVGMTlEMEVFMDIzN0MyREVATUJDQUxCRVhDMDQuQkVOREVSLkNPTT4="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 4, 
+    "nextInTime": 18135, 
+    "senderId": "vMJGdoXpKlAx4MqyzPaLa2bla5aLUFFGdbLltcsJijBCbMo5F3Qq95LUCkHMmyK__l9Mz1Va9Fib8ynPmjQPjvBRTzga3_DB4-X_QQ", 
+    "systemMessage": false, 
+    "subject": "Re: Re: [junit] Testing Static block, members, class with JUnit", 
+    "from": "&quot;Jason Rogers&quot; &lt;jacaetevha@...&gt;", 
+    "authorName": "Jason Rogers", 
+    "msgSnippet": "I don t think you need to test the static block directly -- it s only a by-product of the language.  The real test is in the lookup.  So, test that looking up", 
+    "msgId": 18134, 
+    "profile": "jacaetev", 
+    "topicId": 18131, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 268623572, 
+    "messageBody": "<div id=\"ygrps-yiv-1213808181\">I don&#39;t think you need to test the static block directly -- it&#39;s only<br/>\na by-product of the language.  The real test is in the lookup.  So,<br/>\ntest that looking up abbreviations works properly and your are done.<br/>\nIf you are concerned about testing /where/ the data comes from<br/>\nintroduce a factory.  Test the real factory in isolation, then if<br/>\nnecessary provide a mock/fake factory for other testing purposes.<br/>\n<br/>\nJason<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On 10/12/06, Robert Wenner &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:robert.wenner@...\">robert.wenner@...</a>&gt; wrote:<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; On Thursday 12 October 2006 13:36, mcdonald6692 wrote:<br/>\n&gt;  &gt; This brings up the general question, &quot;How do you<br/>\n&gt;  &gt; test static blocks, classes and data-members?&quot;<br/>\n&gt;<br/>\n&gt;  I would refactor the code to get rid of the static initializer for exactly<br/>\n&gt;  the problems you noticed.<br/>\n&gt;<br/>\n&gt;  You could use lazy initialization. Make the static block a method. In the<br/>\n&gt;  lookup method, check whether the static member is null. If it is, call<br/>\n&gt;  the former static block (now method) to initialize the static members.<br/>\n&gt;  Then proceed as usual.<br/>\n&gt;<br/>\n&gt;  &gt; public class StateAbbrev {<br/>\n&gt;  &gt; // static list of all the abbreviations.<br/>\n&gt;  &gt; private static List accronyms = new ArrayList();<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; private String text = &quot;&quot;;<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; static {<br/>\n&gt;  &gt; DataSource ds = DataSource.getInstance();<br/>\n&gt;  &gt; List strings = ds.getAccronyms();<br/>\n&gt;  &gt; for (Iterator i = strings.iterator(); i.hasNext(); )<br/>\n&gt;  &gt; accronyms.add(new StateAbbrev((String)i.next()) );<br/>\n&gt;  &gt; }<br/>\n&gt;  &gt;<br/>\n&gt;  &gt; public static StateAbbrev lookup(String letters)<br/>\n&gt;  &gt; {<br/>\n&gt;  &gt; for (Iterator i = accronyms.iterator(); i.hasNext(); )<br/>\n&gt;  &gt; {<br/>\n&gt;  &gt; StateAbbrev abbrev (StateAbbrev) i.next();<br/>\n&gt;  &gt; String accronym = abbrev.getText();<br/>\n&gt;  &gt; if (accronym.equals(letters))<br/>\n&gt;  &gt; return abbrev;<br/>\n&gt;  &gt; }<br/>\n&gt;  &gt; return null;<br/>\n&gt;  &gt; }<br/>\n&gt;<br/>\n&gt;  becomes<br/>\n&gt;<br/>\n&gt;  public class StateAbbrev {<br/>\n&gt;  // static list of all the abbreviations.<br/>\n&gt;  private static List accronyms = null;<br/>\n&gt;  private String text = &quot;&quot;;<br/>\n&gt;<br/>\n&gt;  private static void initialize() {<br/>\n&gt;  acronyms = new ArrayList();<br/>\n&gt;  DataSource ds = DataSource.getInstance();<br/>\n&gt;  List strings = ds.getAccronyms();<br/>\n&gt;  for (Iterator i = strings.iterator(); i.hasNext(); )<br/>\n&gt;  accronyms.add(new StateAbbrev((String)i.next()) );<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt;  public static StateAbbrev lookup(String letters)<br/>\n&gt;  {<br/>\n&gt;  if (acronyms == null)<br/>\n&gt;  {<br/>\n&gt;  initialize();<br/>\n&gt;  }<br/>\n&gt;  for (Iterator i = accronyms.iterator(); i.hasNext(); )<br/>\n&gt;  {<br/>\n&gt;  StateAbbrev abbrev (StateAbbrev) i.next();<br/>\n&gt;  String accronym = abbrev.getText();<br/>\n&gt;  if (accronym.equals(letters))<br/>\n&gt;  return abbrev;<br/>\n&gt;  }<br/>\n&gt;  return null;<br/>\n&gt;  }<br/>\n&gt;  }<br/>\n&gt;<br/>\n&gt;  If you like, you can also make acronyms more accessible than private (eg<br/>\n&gt;  protected and have the test in the same package) and then set the static<br/>\n&gt;  members to null if you need (eg in tearDown).<br/>\n&gt;<br/>\n&gt;  Robert<br/>\n&gt;  <br/>\n<br/>\n<br/>\n-- <br/>\nJason Rogers<br/>\n<br/>\n&quot;Where there is no vision, the people perish...&quot;<br/>\n    Proverbs 29:18 </span></blockquote></div>", 
+    "prevInTime": 18133, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1160747127", 
+    "canDelete": false, 
+    "nextInTopic": 18159, 
+    "prevInTopic": 18132, 
+    "headers": {
+        "inReplyToHeader": "PDIwMDYxMDEyMTgzNi4xNjAxMy5yb2JlcnQud2VubmVyQGdteC5kZT4=", 
+        "messageIdInHeader": "PDcyNDEyZjFmMDYxMDEzMDY0NXIxNzA1N2RhNmw1ZWFkZDE4NWJiZWExYzNhQG1haWwuZ21haWwuY29tPg==", 
+        "referencesHeader": "PGVnbTF2NCtvb3M3QGVHcm91cHMuY29tPiA8MjAwNjEwMTIxODM2LjE2MDEzLnJvYmVydC53ZW5uZXJAZ214LmRlPg=="
+    }
+}

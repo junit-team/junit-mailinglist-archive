@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 10830, 
+    "senderId": "RFRx9HsgXPKYwgdpzYl5tAu3ZT2_-9RJXHyEFKkgN0zoytCA3r0QmCuTq85Tpq5yZj0XQxt8HvPhJF4eCs4Ucs9f12aYFVOr3xMda8VTql0", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] java versus junit tasks with ant", 
+    "from": "Brendan Humphreys &lt;brendan@...&gt;", 
+    "authorName": "Brendan Humphreys", 
+    "msgSnippet": "Hi Nathan, You can use the failonerror and resultproperty attributes of the  task to stop the build if the junit.textui.TestRunner returns non-zero", 
+    "msgId": 10829, 
+    "rawEmail": "Return-Path: &lt;brendan@...&gt;\r\nReceived: (qmail 12829 invoked from network); 12 Apr 2004 19:31:14 -0000\r\nReceived: from unknown (66.218.66.217)\n  by m24.grp.scd.yahoo.com with QMQP; 12 Apr 2004 19:31:14 -0000\r\nReceived: from unknown (HELO n30.grp.scd.yahoo.com) (66.218.66.87)\n  by mta2.grp.scd.yahoo.com with SMTP; 12 Apr 2004 19:31:13 -0000\r\nX-eGroups-Return: brendan@...\r\nReceived: from [66.218.67.149] by n30.grp.scd.yahoo.com with NNFMP; 12 Apr 2004 19:31:06 -0000\r\nX-Sender: brendan@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 42864 invoked from network); 12 Apr 2004 13:50:26 -0000\r\nReceived: from unknown (66.218.66.216)\n  by m9.grp.scd.yahoo.com with QMQP; 12 Apr 2004 13:50:26 -0000\r\nReceived: from unknown (HELO rs9.luxsci.com) (66.216.98.59)\n  by mta1.grp.scd.yahoo.com with SMTP; 12 Apr 2004 13:50:26 -0000\r\nReceived: from thecortex.net (adsl-48-168.swiftdsl.com.au [218.214.48.168])\n\t(authenticated bits=0)\n\tby rs9.luxsci.com (8.12.11/8.12.10) with ESMTP id i3CDnbeb008313\n\tfor &lt;junit@yahoogroups.com&gt;; Mon, 12 Apr 2004 08:49:39 -0500\r\nMessage-ID: &lt;407A9E6C.9050704@...&gt;\r\nDate: Mon, 12 Apr 2004 23:49:32 +1000\r\nUser-Agent: Mozilla Thunderbird 0.5 (Windows/20040207)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;c5c877+6u7j@...&gt;\r\nIn-Reply-To: &lt;c5c877+6u7j@...&gt;\r\nContent-Type: text/plain; charset=us-ascii; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 66.216.98.59\r\nFrom: Brendan Humphreys &lt;brendan@...&gt;\r\nSubject: Re: [junit] java versus junit tasks with ant\r\nX-Yahoo-Group-Post: member; u=172511251\r\nX-Yahoo-Profile: brendan_humphreys\r\nX-eGroups-Approved-By: nails762 &lt;jbrains@...&gt; via web; 12 Apr 2004 19:31:04 -0000\r\nX-eGroups-Remote-IP: 66.218.66.87\r\n\r\nHi Nathan,\n\nYou can use the &quot;failonerror&quot; and &quot;resultproperty&quot; attributes of the \n&lt;java&gt; task to stop the build if the junit.textui.TestRunner returns \nnon-zero (indicating test failure or error).\n\nHaving said that, I would personally recommend using the &lt;junit&gt; task \nthat is provided in the Ant optional tasks package, because it gives you \nmuch better control of how your tests are executed and nicer reporting.\n\nRegards,\n-Brendan\nhttp://www.thecortex.net\n\n\nnathan wrote:\n\n&gt; hello,\n&gt; \n&gt; i have a java-task in an ant builfile that runs(junit) successfully \n&gt; thanks to this yahoo group, but I am\n&gt; wondering if i am using the wrong task. here is the ant code:\n&gt; \n&gt;    &lt;target name=&quot;run-tests&quot; description=&quot;Test with Junit&quot; \n&gt; depends=&quot;compile-tests&quot;&gt;\n&gt;   &lt;echo message=&quot;Running run-tests&quot;/&gt;\n&gt;   &lt;java\n&gt;     classname=&quot;junit.textui.TestRunner&quot;\n&gt;     taskname=&quot;junit&quot;\n&gt;     fork=&quot;true&quot;&gt;\n&gt;     &lt;arg value=&quot;${test.classpath}.TestMain&quot;/&gt;\n&gt;     &lt;classpath&gt;\n&gt;       &lt;pathelement location=&quot;${dir.lib}/junit3.8.1.jar&quot;/&gt;\n&gt;       &lt;pathelement location=&quot;${dir.lib}/log4j-1.2.8.jar&quot;/&gt;\n&gt;       &lt;pathelement location=&quot;${dir.build}&quot;/&gt;\n&gt;       &lt;pathelement path=&quot;&quot;/&gt;\n&gt;       &lt;pathelement path=&quot;${java.class.path}&quot;/&gt;\n&gt;     &lt;/classpath&gt;\n&gt;   &lt;/java&gt;\n&gt;   &lt;/target&gt;\n&gt; my ultimate goal for the build process is to compile the source, test \n&gt; the compiled source code with\n&gt; junit, and throw build exceptions any time an error or failure is made \n&gt; during the testing. if all of the\n&gt; tests pass then the build would continue on to a publish task that would \n&gt; post the code to the net.\n&gt; \n&gt; thus my question about the java versus junit tasks. i am using java to \n&gt; run the junit tests, but dont know\n&gt; how to throw build exceptions. whereas with the junit-task (which i am \n&gt; not currently using) there are\n&gt; attributes, namely,haltOnError and haltOnFailure which quit the build \n&gt; process is any failures or errors\n&gt; occur.\n&gt; is there a way to achieve the same results using the ant java task, or \n&gt; should i just revert to using the\n&gt; junit task?\n&gt; \n&gt; thanks for any help with this.\n&gt; \n&gt; \n&gt; \n&gt; ------------------------------------------------------------------------\n&gt; *Yahoo! Groups Links*\n&gt; \n&gt;     * To visit your group on the web, go to:\n&gt;       http://groups.yahoo.com/group/junit/\n&gt;        \n&gt;     * To unsubscribe from this group, send an email to:\n&gt;       junit-unsubscribe@yahoogroups.com\n&gt;       &lt;mailto:junit-unsubscribe@yahoogroups.com?subject=Unsubscribe&gt;\n&gt;        \n&gt;     * Your use of Yahoo! Groups is subject to the Yahoo! Terms of\n&gt;       Service &lt;http://docs.yahoo.com/info/terms/&gt;. \n&gt; \n&gt; \n\n\n\n", 
+    "profile": "brendan_humphreys", 
+    "topicId": 10824, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 172511251, 
+    "prevInTime": 10828, 
+    "contentTrasformed": false, 
+    "postDate": "1081777772", 
+    "canDelete": false, 
+    "nextInTopic": 10831, 
+    "prevInTopic": 10828, 
+    "headers": {
+        "inReplyToHeader": "PGM1Yzg3Nys2dTdqQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQwN0E5RTZDLjkwNTA3MDRAdGhlY29ydGV4Lm5ldD4=", 
+        "referencesHeader": "PGM1Yzg3Nys2dTdqQGVHcm91cHMuY29tPg=="
+    }
+}

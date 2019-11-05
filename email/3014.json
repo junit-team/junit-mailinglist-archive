@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 8, 
+    "nextInTime": 3015, 
+    "senderId": "hy9VKIg7DW8bSX_6Ic2ks7dVgMshRTLd7jh2Rrfg7-GBjCFGfjaIrUN1VzmunidVCkqzx1NUa8EDvgiyUFr64eEyM_yrV-MCRMrmJ2pdeYTu3LQ", 
+    "systemMessage": false, 
+    "subject": "Problems with WL transactions and JUnit", 
+    "from": "Laurent Duperval &lt;lduperval@...&gt;", 
+    "authorName": "Laurent Duperval", 
+    "msgSnippet": "Hi, I m hoping to be able to provide all the information needed to make this question a useful one. We re running a bunch of unit tests for EJBs in our test", 
+    "msgId": 3014, 
+    "profile": "lduperval", 
+    "topicId": 3014, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 0, 
+    "messageBody": "<div id=\"ygrps-yiv-566296916\">Hi,<br/>\n<br/>\nI&#39;m hoping to be able to provide all the information needed to make this<br/>\nquestion a useful one. We&#39;re running a bunch of unit tests for EJBs in our<br/>\ntest suites. I&#39;ve come upon a problem that seems to do with transactions in<br/>\nWebLogic 5.x and I was wondering if anyone else has seen this.<br/>\n<br/>\nWe have subclassed TestCase into a TransactionTestCase for which the setUp()<br/>\ncreates a new javax.transaction.UserTransaction. When the test is finished,<br/>\nthe tearDown() rolls back the transaction. It works on almost all our test<br/>\ncases. <br/>\n<br/>\nOf the 200+ test cases we have, two of them have a weird behaviour. Our<br/>\nentity EJBs are all container-managed and pretty much all of them have<br/>\nfinder methods described in the descriptor. What we have found with the two<br/>\nill-behaved tests is that modifying some beans within the UnitTest does not<br/>\naffect the finder method. For example:<br/>\n<br/>\nFoo foo = home.create();<br/>\nfoo.setDefault(true);<br/>\nFoo foo2 = home.findDefault();<br/>\n// foo2 has the same data as foo<br/>\nfoo.setDefault(false);<br/>\n// The following should throw an exception but doesn&#39;t<br/>\nfoo2 = home.findDefault();<br/>\n<br/>\nNow, if print the content of foo2, I can see that the value of isDefault()<br/>\nis set to false. So the finder should never have found it, yet it does. We<br/>\nhave found that if we remove the transactional environment from our unit<br/>\ntest (i.e. extend TestCase instead of TransactionTestCase), then it works.<br/>\n<br/>\nWhy do we make our tests as transactions? To prevent pollution of the<br/>\ndatabase after failed tests or if developers forget to remove the data that<br/>\nthey added during the test.<br/>\n<br/>\nHas anyone else had experience in this reagard? Has anyone encountered this<br/>\ntype of behavior? How did you fix it?<br/>\n<br/>\nThanks,<br/>\n<br/>\nL<br/>\n<br/>\n-- <br/>\nLaurent Duperval &lt;mailto:<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:lduperval@...\">lduperval@...</a>&gt;<br/>\n<br/>\nWhy are there D batteries, C batteries, AAA batteries, AA batteries, but<br/>\nno B or single A batteries??</div>", 
+    "prevInTime": 3013, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1003515032", 
+    "canDelete": false, 
+    "nextInTopic": 3015, 
+    "prevInTopic": 0, 
+    "headers": {
+        "messageIdInHeader": "PDIwMDExMDE5MTgxNDUyLjgxREZFNDY4OEFAbGVuYXJkLm1pY3JvY2VsbGk1LmNvbT4="
+    }
+}

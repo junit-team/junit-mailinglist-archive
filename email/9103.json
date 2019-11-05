@@ -1,0 +1,30 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 9104, 
+    "senderId": "7OsV_6rkVROhQMRr-90kuQyDA-u1CTduT8p0U3uQDBFAfPxEbkyHZJ2e-5dMoCYFuLiL_C64gNdMjSf_ft3ZX-F2UpVzQ6a88tA", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Simple multithreaded test case", 
+    "from": "Timothy Wall &lt;twall@...&gt;", 
+    "authorName": "Timothy Wall", 
+    "msgSnippet": "Your Server throws an exception on its own thread (that s all fail does, read the source).  In the absence of anyone else catching it, its ThreadGroup will", 
+    "msgId": 9103, 
+    "topicId": 9101, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 106503903, 
+    "messageBody": "<div id=\"ygrps-yiv-308309763\">Your Server throws an exception on its own thread (that&#39;s all fail  <br/>\ndoes, read the source).  In the absence of anyone else catching it, its  <br/>\nThreadGroup will handle it in uncaughtException.  It never reaches the  <br/>\nJUnit thread that is actually running your test.<br/>\n<br/>\nYou need to  have your server thread signal the failure to the JUnit  <br/>\nthread.  This could be as simple as setting a flag that gets checked  <br/>\njust before your main testXXX method returns.<br/>\n<br/>\n<blockquote><span title=\"qreply\"> On Wednesday, August 13, 2003, at 12:56 PM, vocaro2000 wrote:<br/>\n<br/>\n&gt; Hi everyone,<br/>\n&gt;<br/>\n&gt; This topic may have been discussed before, but I couldn&#39;t find it<br/>\n&gt; anywhere in the FAQ, the forums, or the docs. (The GroboUtils package<br/>\n&gt; is related to this but doesn&#39;t seem to specifically address my<br/>\n&gt; question.) The issue is this code:<br/>\n&gt;<br/>\n&gt; import junit.framework.*;<br/>\n&gt;<br/>\n&gt; public class ThreadTest extends TestCase<br/>\n&gt; {<br/>\n&gt;    class Server extends Thread<br/>\n&gt;    {<br/>\n&gt;       public void run()<br/>\n&gt;       {<br/>\n&gt;          fail(&quot;The server failed its test case&quot;);<br/>\n&gt;<br/>\n&gt;          synchronized (this)<br/>\n&gt;          {<br/>\n&gt;             notifyAll();<br/>\n&gt;          }<br/>\n&gt;       }<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    Server server;<br/>\n&gt;<br/>\n&gt;    public ThreadTest(String name)<br/>\n&gt;    {<br/>\n&gt;       super(name);<br/>\n&gt;<br/>\n&gt;       server = new Server();<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    protected void setUp()<br/>\n&gt;    {<br/>\n&gt;       try<br/>\n&gt;       {<br/>\n&gt;          server.start();<br/>\n&gt;<br/>\n&gt;          synchronized (server)<br/>\n&gt;          {<br/>\n&gt;             server.wait();<br/>\n&gt;          }<br/>\n&gt;       }<br/>\n&gt;       catch (Exception e)<br/>\n&gt;       {<br/>\n&gt;          fail(e.toString());<br/>\n&gt;       }<br/>\n&gt;    }<br/>\n&gt;<br/>\n&gt;    public void testSomething() {}<br/>\n&gt; }<br/>\n&gt;<br/>\n&gt; And here&#39;s an Ant file for your convenience:<br/>\n&gt;<br/>\n&gt; &lt;project name=&quot;Thread Test&quot; default=&quot;compile&quot;&gt;<br/>\n&gt;<br/>\n&gt;    &lt;target name=&quot;compile&quot;&gt;<br/>\n&gt;       &lt;javac srcdir=&quot;.&quot;/&gt;<br/>\n&gt;    &lt;/target&gt;<br/>\n&gt;<br/>\n&gt;    &lt;target name=&quot;runtest&quot;&gt;<br/>\n&gt;       &lt;junit printsummary=&quot;true&quot;&gt;<br/>\n&gt;          &lt;test name=&quot;ThreadTest&quot;/&gt;<br/>\n&gt;       &lt;/junit&gt;<br/>\n&gt;    &lt;/target&gt;<br/>\n&gt;<br/>\n&gt; &lt;/project&gt;<br/>\n&gt;<br/>\n&gt; When you look at the source code, it seems quite clear that the test<br/>\n&gt; case should always fail. This is not what happens, however. Although<br/>\n&gt; JUnit prints the correct assertion failure to System.out, it doesn&#39;t<br/>\n&gt; report any failures. It thinks that the test succeeded. Is this a bug<br/>\n&gt; in JUnit, or am I just not understanding how it works?<br/>\n&gt;<br/>\n&gt; Thanks for any pointers,<br/>\n&gt;<br/>\n&gt; Trevor<br/>\n&gt;<br/>\n&gt;<br/>\n&gt;<br/>\n&gt; ------------------------ Yahoo! Groups Sponsor  <br/>\n&gt; ---------------------~--&gt;<br/>\n&gt; Buy Ink Cartridges or Refill Kits for Your HP, Epson, Canon or Lexmark<br/>\n&gt; Printer at Myinks.com. Free s/h on orders $50 or more to the US &  <br/>\n&gt; Canada. <a rel=\"nofollow\" target=\"_blank\" href=\"http://www.c1tracking.com/l.asp?cid=5511\">http://www.c1tracking.com/l.asp?cid=5511</a><br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://us.click.yahoo.com/l.m7sD/LIdGAA/qnsNAA/5cFolB/TM\">http://us.click.yahoo.com/l.m7sD/LIdGAA/qnsNAA/5cFolB/TM</a><br/>\n&gt; --------------------------------------------------------------------- <br/>\n&gt; ~-&gt;<br/>\n&gt;<br/>\n&gt; To unsubscribe from this group, send an email to:<br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:junit-unsubscribe@yahoogroups.com\">junit-unsubscribe@yahoogroups.com</a><br/>\n&gt;<br/>\n&gt;<br/>\n&gt; Your use of Yahoo! Groups is subject to  <br/>\n&gt; <a rel=\"nofollow\" target=\"_blank\" href=\"http://docs.yahoo.com/info/terms/\">http://docs.yahoo.com/info/terms/</a><br/>\n&gt;<br/>\n&gt; </span></blockquote></div>", 
+    "prevInTime": 9102, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1060837685", 
+    "canDelete": false, 
+    "nextInTopic": 9106, 
+    "prevInTopic": 9102, 
+    "headers": {
+        "inReplyToHeader": "PGJoZHFrYitkZjJuQGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQ5NTIwODc4LUNFMTUtMTFENy05QzEzLTAwMzA2NUJGODNEQUBvY3VsdXN0ZWNoLmNvbT4="
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 32, 
+    "nextInTime": 13847, 
+    "senderId": "b9l8ufxDvpYVBvv5S0o-umq9Z18CGAZJqezUECcawzc-lYLBz5Rr5E3tnOFiRngy89hXCBZcoLbJbbMlo7Usjcu3UatnnIpKXmL7", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Testing multiple interfaces?", 
+    "from": "Robert Wenner &lt;robert.wenner@...&gt;", 
+    "authorName": "Robert Wenner", 
+    "msgSnippet": "... I faced the same problem a few days ago. It maybe was a little worse, because the interfaces are interfaces in a framework and I wanted to provide an", 
+    "msgId": 13846, 
+    "profile": "robertwenner", 
+    "topicId": 13795, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 115089258, 
+    "messageBody": "<div id=\"ygrps-yiv-2000678260\">On Thursday 02 June 2005 08:59, jason r tibbetts wrote:<br/>\n<blockquote><span title=\"ireply\"> &gt; So far, so good. But what&#39;s a good way to handle this when the CUT<br/>\n&gt; implements multiple interfaces, each of which has an abstract base<br/>\n&gt; test? <br/>\n<br/>\n </span></blockquote>I faced the same problem a few days ago.<br/>\n<br/>\nIt maybe was a little worse, because the interfaces are interfaces in a <br/>\nframework and I wanted to provide an abstract test from which users of <br/>\nthe framework could derive and have their objects tested against basic <br/>\nassumptions the framework has. <br/>\n<br/>\nI wanted just one test case, because I could not even be sure that future <br/>\nusers will write any tests at all and I didn&#39;t want to scare them by <br/>\npushing two or three tests on them.<br/>\n<br/>\nI came up with a solution like this:<br/>\n<br/>\nHave the tests as static public members that take the object under test as <br/>\nan argument. <br/>\n<br/>\npublic class FooCheck extends TestCase {<br/>\n\tpublic static void doTestXyz(ObjectUnderTest o) {<br/>\n\t\t...<br/>\n\t}<br/>\n}<br/>\n<br/>\nThese tests were sometimes more complex than I wanted them to be, so I had <br/>\ntests for these tests.<br/>\n<br/>\npublic class FooCheckTest extends TestCase {<br/>\n\tpublic void testDoesFooXyzCorrectly() {<br/>\n\t\tObject o = new ...;<br/>\n\t\tFooCheck.doTestXzy(o);<br/>\n\t}<br/>\n}<br/>\n<br/>\nThe actual abstract test case then has one liners that call the static <br/>\nmethods in the real checking class:<br/>\n<br/>\npublic abstract class AbstractFrameworkObjectTest extends TestCase {<br/>\n\tpublic abstract Object getObjectUnderTest();<br/>\n<br/>\n\tpublic void testXyz() {<br/>\n\t\tFooCheck.doTestXyz(getObjectUnderTest());<br/>\n\t}<br/>\n}<br/>\n<br/>\nSeems to work pretty well.<br/>\n<br/>\nHowever, I like your inner classes idea as well.<br/>\n<br/>\nRobert</div>", 
+    "prevInTime": 13845, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1117759694", 
+    "canDelete": false, 
+    "nextInTopic": 13848, 
+    "prevInTopic": 13838, 
+    "headers": {
+        "inReplyToHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg==", 
+        "messageIdInHeader": "PDIwMDUwNjAyMTk0OC4xNTA0NC5yb2JlcnQud2VubmVyQGdteC5kZT4=", 
+        "referencesHeader": "PDQyOUYxMERFLjgwNjAyMDJAdmVyZGkuaWlzZC5zcmEuY29tPg=="
+    }
+}

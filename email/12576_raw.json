@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 5, 
+    "nextInTime": 12577, 
+    "senderId": "XHqbX1N1Fnitff24cAmLm4EM2AzY4keCWIA7WhGkMK4ImGqJVFwP6Ctx-rrg8wM0bYTLmaIeq5Ixvs9ykMG46W68w9UOGTUZaA5DBTwaGw", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] JUnit dynamic testing with file modifications", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... It sounds like you have this situation: a bunch of tests are essentially the same, except for the input data and expected output data (called fixture", 
+    "msgId": 12576, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 20385 invoked from network); 3 Jan 2005 23:32:00 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m25.grp.scd.yahoo.com with QMQP; 3 Jan 2005 23:32:00 -0000\r\nReceived: from unknown (HELO smtp103.rog.mail.re2.yahoo.com) (206.190.36.81)\n  by mta6.grp.scd.yahoo.com with SMTP; 3 Jan 2005 23:31:59 -0000\r\nReceived: from unknown (HELO ?192.168.1.117?) (srainsberger5790@24.156.43.226 with plain)\n  by smtp103.rog.mail.re2.yahoo.com with SMTP; 3 Jan 2005 23:31:58 -0000\r\nMessage-ID: &lt;41D9D5ED.3020609@...&gt;\r\nDate: Mon, 03 Jan 2005 18:31:57 -0500\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;cqsmtg+6vf6@...&gt;\r\nIn-Reply-To: &lt;cqsmtg+6vf6@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Remote-IP: 206.190.36.81\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] JUnit dynamic testing with file modifications\r\nX-Yahoo-Group-Post: member; u=127224993\r\nX-Yahoo-Profile: nails762\r\n\r\nareinmeyer@... wrote:\n\n&gt; My problem is this.  Before development moves along much further, I\n&gt; would like to take the test harnesses for each object and remove the\n&gt; hardcoding from them.  Each test harness should still be able to be\n&gt; run individually as it&#39;s own test, but I&#39;m looking to the future as\n&gt; well, when we have the potential to do nightly builds and will want to\n&gt; run all of the test harnesses as a suite together.  This definitely\n&gt; cannot happen if any hardcoding exists, but there needs to be some\n&gt; external way to pass each object the information specific to it only\n&gt; to test.  I don&#39;t want to create a properties/configuration file for\n&gt; each object, as many of of the objects can re-use the same sdf file,\n&gt; logger, and other config files. \n&gt; \n&gt; Any suggestions?\n\nIt sounds like you have this situation: a bunch of tests are essentially \nthe same, except for the input data and expected output data (called \n&quot;fixture data&quot;). There are two different solutions, depending on your \nstyle of testing.\n\n1. Write one test that loops over all the data.\n\nIn xUnit pseudocode, you have this:\n\ntestTheBigAlgorithm\n     foreach (row in testFixtures)\n         doTest(row)\n\ndoTest(row)\n     // Put the real test in here, using data from row\n\nHere, &#39;testFixtures&#39; is a collection of objects, each containing your \ninput data and expected output data.\n\nPROS: Simple and effective.\nCON: If the test fails for row 5 of your fixture data, the remaining \ntests don&#39;t run\n\n2. The Parameterized Test Case pattern.\n\nWrite a custom suite() method that builds a suite of tests, each test \nwith a row of your fixture data. To do this, you need to add a \nconstructor to your subclass of TestCase that&#39;ll accept the fixture data \nas a parameter:\n\nclass MyTestCase extends TestCase {\n     private MyTestCaseFixture fixture;\n\n     public MyTestCase(MyTestCaseFixture fixture) {\n         this.fixture = fixture;\n     }\n\n     protected void runTest() {\n         // Put the real test in here, using data from &#39;fixture&#39;\n     }\n\n     public static Test suite() {\n         TestSuite suite = new TestSuite(&quot;My Tests&quot;);\n\n         foreach (row in testFixtures) {\n             suite.addTest(new MyTestCase(row));\n         }\n\n         return suite;\n     }\n}\n\nThe method suite() contains some pseudoJava, but I think you know what I \nmean.\n\nIn either case, you can always write code to retrieve the fixture data \nfrom an external source, like a file or a relational database.\n\nI hope this helps you out. Does it?\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 12557, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 12575, 
+    "contentTrasformed": false, 
+    "postDate": "1104795117", 
+    "canDelete": false, 
+    "nextInTopic": 0, 
+    "prevInTopic": 12568, 
+    "headers": {
+        "inReplyToHeader": "PGNxc210Zys2dmY2QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQxRDlENUVELjMwMjA2MDlAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGNxc210Zys2dmY2QGVHcm91cHMuY29tPg=="
+    }
+}

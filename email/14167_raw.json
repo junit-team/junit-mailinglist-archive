@@ -1,0 +1,31 @@
+{
+    "numMessagesInTopic": 6, 
+    "nextInTime": 14168, 
+    "senderId": "Oskd8uxTMZdnbnv3NpL8FUXgCmzbYa1ULg8V5KYw1ABg1ICnJxRig8rX5irgIe9qT7r96VKDEBwInVlA0lD_9GgG9Ds2JxOQ0u4662Mv1g", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Unit testing a method that contains objects", 
+    "from": "&quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;", 
+    "authorName": "J. B. Rainsberger", 
+    "msgSnippet": "... Since fetchSomething() creates an instance of SomeClass, there is no easy way to substitute a test double for SomeClass in your tests. I would certainly", 
+    "msgId": 14167, 
+    "rawEmail": "Return-Path: &lt;jbrains@...&gt;\r\nX-Sender: jbrains@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (qmail 32857 invoked from network); 18 Jul 2005 18:47:58 -0000\r\nReceived: from unknown (66.218.66.167)\n  by m32.grp.scd.yahoo.com with QMQP; 18 Jul 2005 18:47:58 -0000\r\nReceived: from unknown (HELO smtp100.rog.mail.re2.yahoo.com) (206.190.36.78)\n  by mta6.grp.scd.yahoo.com with SMTP; 18 Jul 2005 18:47:58 -0000\r\nReceived: (qmail 88796 invoked from network); 18 Jul 2005 18:47:47 -0000\r\nReceived: from unknown (HELO ?192.168.0.144?) (srainsberger5790@207.161.70.126 with plain)\n  by smtp100.rog.mail.re2.yahoo.com with SMTP; 18 Jul 2005 18:47:46 -0000\r\nMessage-ID: &lt;42DBF986.8040202@...&gt;\r\nDate: Mon, 18 Jul 2005 14:48:38 -0400\r\nUser-Agent: Mozilla Thunderbird 0.9 (Macintosh/20041103)\r\nX-Accept-Language: en-us, en\r\nMIME-Version: 1.0\r\nTo: junit@yahoogroups.com\r\nReferences: &lt;dbcmk1+c7a8@...&gt;\r\nIn-Reply-To: &lt;dbcmk1+c7a8@...&gt;\r\nContent-Type: text/plain; charset=ISO-8859-1; format=flowed\r\nContent-Transfer-Encoding: 7bit\r\nX-eGroups-Msg-Info: 1:12:0\r\nFrom: &quot;J. B. Rainsberger&quot; &lt;jbrains@...&gt;\r\nSubject: Re: [junit] Unit testing a method that contains objects\r\nX-Yahoo-Group-Post: member; u=127224993; y=ADY5GbJVWqwsRxnxLJhnhD4JEjpU0s_z10B9V5S8G1pn2ak\r\nX-Yahoo-Profile: nails762\r\n\r\nlzhao75 wrote:\n&gt; Hi All,\n&gt; \n&gt; I just got started with TDD and would like seek help you from the\n&gt; experts in this mailing-list.\n&gt; \n&gt; I have a business service layer that calls a third party application:\n&gt; \n&gt; public Object fetchSomething() {\n&gt; \n&gt;   SomeClass obj = new SomeClasss();\n&gt; \n&gt;   obj.set(...);\n&gt; \n&gt;   Object returnObj = obj.retrieveSomething();\n&gt; \n&gt;   return Obj;\n&gt; \n&gt; }\n&gt; \n&gt; When writing a test case, I don&#39;t know how to mock the third party\n&gt; object to return data for testing purposes. Could someone gives let me\n&gt; know what is the best approach to test the above code using JUnit?\n&gt; \n&gt; Thank you in advance for your help.\n\nSince fetchSomething() creates an instance of SomeClass, there is no \neasy way to substitute a test double for SomeClass in your tests. I \nwould certainly change fetchSomething()--or the class it belongs to--so \nthat I could pass a SomeClass instance as a parameter to it. There is a \ngreat example of this in the April 2004 issue of &quot;Better Software&quot; \nmagazine. You can Google the term &quot;Dependency Injection&quot; for more \ninformation on the topic.\n\nOne simple way to do it is to change fetchSomething() so that it takes a \nSomeClass as a parameter...\n\n// Backwards compatible with the old version, probably remains untested\npublic Object fetchSomething() {\n     return fetchSomething(new SomeClass());\n}\n\n// New version that you test\npublic Object fetchSomething(SomeClass someClass) {\n     ....\n}\n\nThe &quot;old version&quot; is not tested directly, but it&#39;s so small that it&#39;s \nnot likely to break.\n\nIf you can move all clients away from fetchSomething() towards \nfetchSomething(SomeClass), then you can remove the last line of untested \ncode.\n\nGood luck.\n-- \nJ. B. (Joe) Rainsberger\nDiaspar Software Services\nhttp://www.diasparsoftware.com\nAuthor, JUnit Recipes: Practical Methods for Programmer Testing\n\n", 
+    "profile": "nails762", 
+    "topicId": 14150, 
+    "spamInfo": {
+        "reason": "12", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 127224993, 
+    "prevInTime": 14166, 
+    "contentTrasformed": false, 
+    "postDate": "1121712518", 
+    "canDelete": false, 
+    "nextInTopic": 14168, 
+    "prevInTopic": 14163, 
+    "headers": {
+        "inReplyToHeader": "PGRiY21rMStjN2E4QGVHcm91cHMuY29tPg==", 
+        "messageIdInHeader": "PDQyREJGOTg2LjgwNDAyMDJAcm9nZXJzLmNvbT4=", 
+        "referencesHeader": "PGRiY21rMStjN2E4QGVHcm91cHMuY29tPg=="
+    }
+}

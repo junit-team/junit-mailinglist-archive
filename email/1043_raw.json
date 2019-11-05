@@ -1,0 +1,28 @@
+{
+    "topicId": 1009, 
+    "postDate": "988204421", 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "from": "Ralf Krakowski &lt;ralf.krakowski@...&gt;", 
+    "canDelete": false, 
+    "replyTo": "LIST", 
+    "senderId": "G1YZDBoH79x4-D8o1B4A3LvKBvq0DEBqIDTVGNBOkR0bPU0YJxJV_jCkzbwXxX1ER-OYfq3xWE-HdjbwruiOHyv2vL0vV4sOmaHAV0Z98D8Wnozuyw", 
+    "nextInTime": 1044, 
+    "userId": 0, 
+    "prevInTime": 1042, 
+    "prevInTopic": 1009, 
+    "headers": {
+        "messageIdInHeader": "PDcwMEVBMTdBMTQyQUQzMTE4QTFFMDAwOEM3MjRCQ0I0QjcyQTYyQGFnYmdudHMwMy5hZ2JnLmludHJhbmV0Pg=="
+    }, 
+    "authorName": "Ralf Krakowski", 
+    "numMessagesInTopic": 2, 
+    "msgSnippet": "Hi, I have tried your extension and it works really good for me. I have two qestions. * How do I get it to work with the swingui? * My test classes doesn t", 
+    "contentTrasformed": false, 
+    "msgId": 1043, 
+    "nextInTopic": 0, 
+    "systemMessage": false, 
+    "rawEmail": "Return-Path: &lt;ralf.krakowski@...&gt;\r\nX-Sender: ralf.krakowski@...\r\nX-Apparently-To: junit@yahoogroups.com\r\nReceived: (EGP: mail-7_1_2); 25 Apr 2001 13:18:28 -0000\r\nReceived: (qmail 63025 invoked from network); 25 Apr 2001 13:18:26 -0000\r\nReceived: from unknown (10.1.10.26) by m8.onelist.org with QMQP; 25 Apr 2001 13:18:26 -0000\r\nReceived: from unknown (HELO tops.adera.se) (195.198.74.10) by mta1 with SMTP; 25 Apr 2001 13:18:26 -0000\r\nReceived: from gbgnts03.intranet (mail.adera.se [192.168.1.27]) by tops.adera.se (Postfix) with ESMTP id 18F5C4AF7F for &lt;junit@yahoogroups.com&gt;; Wed, 25 Apr 2001 16:09:08 +0200 (CEST)\r\nReceived: from agbgnts03.agbg.intranet ([192.168.14.22]) by gbgnts03.intranet with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2653.13) id 2SXCKV5L; Wed, 25 Apr 2001 15:21:14 +0200\r\nReceived: by agbgnts03.agbg.intranet with Internet Mail Service (5.5.2653.19) id &lt;JT510JZV&gt;; Wed, 25 Apr 2001 15:13:41 +0200\r\nMessage-ID: &lt;700EA17A142AD3118A1E0008C724BCB4B72A62@...&gt;\r\nTo: &quot;&#39;junit@yahoogroups.com&#39; &#39;&quot; &lt;junit@yahoogroups.com&gt;\r\nSubject: RE: [junit] TestFinderSuite for JUnit\r\nDate: Wed, 25 Apr 2001 15:13:41 +0200\r\nMIME-Version: 1.0\r\nX-Mailer: Internet Mail Service (5.5.2653.19)\r\nList-Unsubscribe: &lt;mailto:junit-unsubscribe@yahoogroups.com&gt;\r\nContent-Type: text/plain; charset=&quot;iso-8859-1&quot;\r\nFrom: Ralf Krakowski &lt;ralf.krakowski@...&gt;\r\n\r\n Hi,\nI have tried your extension and it works really good for me. I have two\nqestions.\n* How do I get it to work with the swingui?\n* My test classes doesn&#39;t extend Testcase. They extend &#39;ourtestclass&#39; which\nextends testcase. How can I get it to work with that setup?\n\nThank you\n\nRalf\n\n-----Original Message-----\nFrom: Di Iorio, Matthew (ISS Atlanta)\nTo: &#39;junit@yahoogroups.com&#39;\nSent: 2001-04-20 23:59\nSubject: [junit] TestFinderSuite for JUnit\n\nImagine never having to maintain an AllTests class again!  Wouldn&#39;t it\nbe\ngreat if JUnit would pick-up test classes the same way it picks up\ntests?\nIf this sounds good, read on...\n\nI&#39;ve taken Andy Schneider&#39;s TestAll code from his JavaWorld article\n(http://www.javaworld.com/javaworld/jw-12-2000/jw-1221-junit.html) and\nreworked it a bit to fit into JUnit (in the extensions package).  For\nthose\nof you not familiar with the TestAll code, it is a mechanism to\nauto-discover tests so you don&#39;t have to remember to add your tests to a\nTestSuite.\n\nThe TestFinderSuite will build a TestSuite by searching through the\nclasspath looking for TestCases.  You can even give it a package to\nlimit\nthe search.  The following example would run all the tests in the\n&#39;com.foo&#39;\npackage:\n\nimport junit.extensions.TestFinderSuite;\npublic class AllTests {\n  public static void main( String args[] ) {\n    junit.textui.TestRunner.run( new TestFinderSuite( &quot;com.foo&quot; ) );\n  }\n}\n\nOR to run tests in certain packages:\n\n    TestSuite allMyTests = new TestSuite();\n    allMyTests.addTest( new TestFinderSuite( &quot;com.foo.common.tests&quot; ) );\n    allMyTests.addTest( new TestFinderSuite( &quot;com.foo.application.tests&quot;\n)\n);\n    junit.textui.TestRunner.run( allMyTests );\n\nTo use it just put the attached jar file in your classpath when running\nJUnit.  You will have to modify your current AllTests or create a new\none.\n\nThe TestFinderSuite tries to pickup only valid TestCases.  That said,\nit&#39;s\nnot advisable to run it against the junit.test package, since there are\nso\nmany mock TestCase&#39;s that get picked up.  I&#39;ve found that it works for\nmost\nother projects, though.\n\nI&#39;m curious to see if anyone finds this useful.  Feel free to mail me\nwith\nquestions, comments or bugs.\n\n-- \nMatt Di Iorio                Software Engineer\nmdiiorio@...         Phone: (404) 236-2748\nInternet Security Systems (http://www.iss.net)\n\n\n\nTo unsubscribe from this group, send an email to:\njunit-unsubscribe@yahoogroups.com\n \n\nYour use of Yahoo! Groups is subject to\nhttp://docs.yahoo.com/info/terms/ \n\n &lt;&lt;TestFinderSuite.jar&gt;&gt;  &lt;&lt;TestFinderSuite.html&gt;&gt; \n\n", 
+    "subject": "RE: [junit] TestFinderSuite for JUnit"
+}

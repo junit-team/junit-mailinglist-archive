@@ -1,0 +1,32 @@
+{
+    "numMessagesInTopic": 14, 
+    "nextInTime": 4408, 
+    "senderId": "5EXqVGuGSj-in8rRYfku7XIzVp4PjYwldVO0_Rtsz5k_hJqDgUuMQQrFrQ_yIvohm1zJ68Qa-fhYarZNXIvLGRcisLreMaNtI-My-gI", 
+    "systemMessage": false, 
+    "subject": "Re: [junit] Re: Get AssertionFailedError when assert from another thread.", 
+    "from": "Brian Button &lt;bbutton01@...&gt;", 
+    "authorName": "Brian Button", 
+    "msgSnippet": "... Theodore Here s an idea that might work. In your new thread catch Theodore the errors and failures and put them in the TestResult. Theodore The problem", 
+    "msgId": 4407, 
+    "profile": "bbutton", 
+    "topicId": 4397, 
+    "spamInfo": {
+        "reason": "0", 
+        "isSpam": false
+    }, 
+    "replyTo": "LIST", 
+    "userId": 30216623, 
+    "messageBody": "<div id=\"ygrps-yiv-1466135994\"><blockquote><span title=\"ireply\">&gt;&gt;&gt;&gt;&gt; &quot;Theodore&quot; == Theodore Norvell &lt;<a rel=\"nofollow\" target=\"_blank\" href=\"mailto:theo@...\">theo@...</a>&gt; writes:<br/>\n<br/>\n </span></blockquote>    Theodore&gt; On Mon, 18 Mar 2002, nsparis wrote:<br/>\n<blockquote><span title=\"ireply\">     &gt;&gt; Let me make it clearer...The exception is thrown, which is what<br/>\n    &gt;&gt; is suppose to happen, but instead of being printed out in JUnit<br/>\n    &gt;&gt; it crashes JUnit.  I.e. JUnit isnt automatically catching it<br/>\n    &gt;&gt; and flagging it as an error for the test case.<br/>\n    &gt;&gt;<br/>\n    &gt;&gt; What do I need to change so that JUnit catches the exception<br/>\n    &gt;&gt; and reports it as an error?<br/>\n<br/>\n </span></blockquote>    Theodore&gt; Here&#39;s an idea that might work. In your new thread catch<br/>\n    Theodore&gt; the errors and failures and put them in the TestResult.<br/>\n    Theodore&gt; The problem is that it is not clear how to find the<br/>\n    Theodore&gt; TestResult using a standard TestCase.  Below is a stab<br/>\n    Theodore&gt; at how it might be done.<br/>\n<br/>\nI did something like this for a socket server test I was writing. It<br/>\nis not as robust as it should be, as it doesn&#39;t handle ThreadDeath,<br/>\netc, but it worked for my purposes.<br/>\n<br/>\nHere is the pertinent code:<br/>\n<br/>\n================================<br/>\nimport junit.framework.*;<br/>\n<br/>\npublic class SocketServerTest extends TestCase {<br/>\n  private TestResult result;<br/>\n<br/>\n  public void run(TestResult result) {<br/>\n    this.result = result;<br/>\n    super.run(result);<br/>\n  }<br/>\n<br/>\n  private void runServer() {<br/>\n    Runnable r = new Runnable() {<br/>\n      public void run() {<br/>\n        try {<br/>\n          server.acceptConnection();<br/>\n        }<br/>\n        catch (Exception e) {<br/>\n          result.addError(SocketServerTest.this, e);<br/>\n        }<br/>\n      }<br/>\n    };<br/>\n    t = new Thread(r);<br/>\n    t.start();<br/>\n  }<br/>\n}<br/>\n===============================<br/>\n<br/>\nBy doing this, the framework just works. Note that if I wanted to<br/>\ncatch test Failures, my exception handling in the runServer method<br/>\nwould need to be a little more complicated.<br/>\n<br/>\nHTH,<br/>\nbab<br/>\n<br/>\n-- <br/>\nBrian Button            <a rel=\"nofollow\" target=\"_blank\" href=\"mailto:bbutton@...\">bbutton@...</a><br/>\nSenior Consultant       Object Mentor, Inc<br/>\nSt. Louis, MO\t\t<a rel=\"nofollow\" target=\"_blank\" href=\"http://www.objectmentor.com\">http://www.objectmentor.com</a><br/>\n<br/>\nExtreme Programming in St. Louis - <a rel=\"nofollow\" target=\"_blank\" href=\"http://groups.yahoo.com/group/xpstl\">http://groups.yahoo.com/group/xpstl</a></div>", 
+    "prevInTime": 4406, 
+    "specialLinks": [], 
+    "contentTrasformed": false, 
+    "postDate": "1016556186", 
+    "canDelete": false, 
+    "nextInTopic": 4408, 
+    "prevInTopic": 4403, 
+    "headers": {
+        "inReplyToHeader": "PFBpbmUuU09MLjQuNDQuMDIwMzE4MjEwNjUxMC4xMjA3Mi0xMDAwMDBAY2FzY2FkZS5jcy51YmMuY2E+", 
+        "messageIdInHeader": "PG0zNHJqY2p5cDEuZnNmQG9iamVjdG1lbnRvci5jb20+", 
+        "referencesHeader": "PFBpbmUuU09MLjQuNDQuMDIwMzE4MjEwNjUxMC4xMjA3Mi0xMDAwMDBAY2FzY2FkZS5jcy51YmMuY2E+"
+    }
+}
